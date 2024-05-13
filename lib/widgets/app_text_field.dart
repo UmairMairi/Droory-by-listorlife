@@ -1,0 +1,159 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:list_and_life/base/base.dart';
+
+import '../animations/fade_animation.dart';
+
+class AppTextField extends StatelessWidget {
+  final String? title;
+  final String? hint;
+  final bool menditry;
+  final int? lines;
+  final Widget? titleWidget;
+  final TextEditingController? controller;
+  final FormFieldValidator<String>? validator;
+  final TextInputType? inputType;
+  final TextInputAction? action;
+  final TextAlign? textAlign;
+  final Widget? suffix;
+  final bool? password;
+  final double? vPadding;
+  final EdgeInsetsGeometry? hPadding;
+  final bool isExpanded;
+  final Color? fillColor;
+  final Color? borderSideColor;
+  final double? sizedBoxWidth;
+  final FocusNode? focusNode;
+  final Function(String)? onChanged;
+  final bool? isMendotary;
+  final double? width;
+  final onSuffixTap;
+  final bool? isDropDownShowing;
+  final String? placeHolderText;
+  final String? errorText;
+  final Widget? prefix;
+  final int? maxLength;
+  final Function(bool)? onPrefixTap;
+  final String? prefixText;
+  final bool? editabled;
+  final TextStyle? hintStyle;
+  final bool readOnly;
+  final EdgeInsetsGeometry? padding;
+  final Color? titleColor;
+  final List<TextInputFormatter>? inputFormatters;
+  final bool? enableCopyPaste;
+  final VoidCallback? onTap;
+
+  const AppTextField({
+    super.key,
+    this.title,
+    this.onTap,
+    this.hint,
+    this.vPadding,
+    this.onChanged,
+    this.lines,
+    this.titleWidget,
+    this.action,
+    this.inputType,
+    this.validator,
+    this.password,
+    this.suffix,
+    this.inputFormatters,
+    this.textAlign,
+    this.sizedBoxWidth,
+    this.fillColor,
+    this.isExpanded = true,
+    this.hPadding,
+    this.borderSideColor,
+    this.controller,
+    this.focusNode,
+    this.isMendotary,
+    this.width,
+    this.onSuffixTap,
+    this.isDropDownShowing = false,
+    this.placeHolderText,
+    this.errorText,
+    this.prefix,
+    this.maxLength,
+    this.onPrefixTap,
+    this.prefixText,
+    this.editabled,
+    this.readOnly = false,
+    this.menditry = false,
+    this.padding,
+    this.titleColor,
+    this.hintStyle,
+    this.enableCopyPaste = true,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title ?? '',
+          style: context.textTheme.titleSmall,
+        ),
+        SizedBox(
+          height: 02,
+        ),
+        SizedBox(
+          width: width ?? MediaQuery.of(context).size.width,
+          child: FadeAnimation(
+            delay: 0.3,
+            child: Card(
+              elevation: 1,
+              margin: const EdgeInsets.symmetric(vertical: 5),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: TextFormField(
+                  autovalidateMode: AutovalidateMode.disabled,
+                  controller: controller,
+                  keyboardType: inputType,
+                  readOnly: readOnly,
+                  onTap: onTap,
+                  cursorColor: titleColor ?? Colors.black,
+                  maxLines: password == true ? 1 : lines,
+                  obscureText: lines == null ? password == true : false,
+                  validator: validator ?? validator,
+                  maxLength: maxLength,
+                  textAlign: textAlign ?? TextAlign.start,
+                  focusNode: focusNode,
+                  enabled: editabled ?? true,
+                  textInputAction: action ?? TextInputAction.done,
+                  textAlignVertical: TextAlignVertical.center,
+                  onChanged: onChanged,
+                  inputFormatters: inputFormatters,
+                  enableInteractiveSelection: enableCopyPaste ?? false,
+                  style: context.textTheme.bodyMedium,
+                  decoration: InputDecoration(
+                      hintText:
+                          (hint ?? '').isNotEmpty ? capitalize(hint ?? '') : "",
+                      counterText: "",
+                      hintStyle: hintStyle,
+                      errorText: errorText,
+                      filled: false,
+                      errorMaxLines: 2,
+                      prefixIcon: prefix,
+                      prefixIconColor: Theme.of(context).colorScheme.primary,
+                      border: InputBorder.none,
+                      suffixIconColor: Theme.of(context).colorScheme.primary,
+                      suffixIcon: suffix),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  String capitalize(String value) {
+    if (value.trim().isEmpty) return "";
+    return "${value[0].toUpperCase()}${value.substring(1).toLowerCase()}";
+  }
+}
