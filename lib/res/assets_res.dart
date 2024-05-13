@@ -20,21 +20,16 @@ class AssetsRes {
   static const String IC_PROFILE = 'assets/icons/ic_profile.png';
   static const String IC_T_AND_C = 'assets/icons/ic_t_and_c.png';
   static const String APP_LOGO = 'assets/images/app_logo.png';
-  static const String LOCATION_PERMISSION_ILLUSTRATIONS =
-      'assets/images/location_permission_illustrations.png';
+  static const String LOCATION_PERMISSION_ILLUSTRATIONS = 'assets/images/location_permission_illustrations.png';
   static const String ON_BOARD_FIRST = 'assets/images/on_board_first.png';
   static const String ON_BOARD_SECOND = 'assets/images/on_board_second.png';
   static const String ON_BOARD_THIRD = 'assets/images/on_board_third.png';
   static const String SPLASH = 'assets/images/splash.png';
   static const String EMPTY_LOTTIE = 'assets/lottie_jsons/empty_lottie.json';
   static const String ERROR_LOTTIE = 'assets/lottie_jsons/error_lottie.json';
-  static const String NO_IMAGE_LOTTIE =
-      'assets/lottie_jsons/no_image_lottie.json';
-  static const String NO_NOTIFICATION_LOTTIE =
-      'assets/lottie_jsons/no_notification_lottie.json';
-  static const String PAGE_NOT_FOUND =
-      'assets/lottie_jsons/page_not_found.json';
+  static const String NO_IMAGE_LOTTIE = 'assets/lottie_jsons/no_image_lottie.json';
+  static const String NO_NOTIFICATION_LOTTIE = 'assets/lottie_jsons/no_notification_lottie.json';
+  static const String PAGE_NOT_FOUND = 'assets/lottie_jsons/page_not_found.json';
   static const String TIMEUP_LOTTIE = 'assets/lottie_jsons/timeup_lottie.json';
-  static const String VERIFY_OTP_LOTTIE =
-      'assets/lottie_jsons/verify_otp_lottie.json';
+  static const String VERIFY_OTP_LOTTIE = 'assets/lottie_jsons/verify_otp_lottie.json';
 }

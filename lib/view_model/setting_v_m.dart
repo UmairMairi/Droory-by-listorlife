@@ -9,10 +9,12 @@ class SettingVM extends BaseViewModel {
 
   List<SettingItemModel> settingList = [
     SettingItemModel(
+      isArrow: true,
         icon: AssetsRes.IC_PRIVCY_POLICY,
         title: 'Privacy Policy',
         onTap: () {}),
     SettingItemModel(
+      isArrow: true,
         icon: AssetsRes.IC_T_AND_C, title: 'Terms & Conditions', onTap: () {}),
     SettingItemModel(
         icon: AssetsRes.IC_DELETE_ACCOUNT,
@@ -33,8 +35,9 @@ class SettingVM extends BaseViewModel {
 
 class SettingItemModel {
   final String icon;
+  final bool isArrow;
   final String title;
   final VoidCallback onTap;
   SettingItemModel(
-      {required this.icon, required this.title, required this.onTap});
+      {required this.icon, required this.title, required this.onTap, this.isArrow = false});
 }
