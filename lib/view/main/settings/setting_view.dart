@@ -96,43 +96,49 @@ class SettingView extends BaseView<SettingVM> {
             ListView.builder(
                 itemCount: viewModel.settingList.length,
                 itemBuilder: (context, index) {
-                  return Container(
-                    width: context.width,
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5), // Shadow color
-                          spreadRadius: 2, // Spread radius
-                          blurRadius: 5, // Blur radius
-                          offset: const Offset(0, 5), // Offset from the top
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Image.asset(
-                              AssetsRes.IC_NOTIFICATION,
-                              width: 40,
-                            ),
-                            Gap(10),
-                            Text(
-                              'Notifications',
-                              style: context.textTheme.titleSmall,
-                            ),
-                          ],
-                        ),
-                        CupertinoSwitch(
-                            value: viewModel.isActiveNotification,
-                            onChanged: viewModel.onSwitchChanged)
-                      ],
+                  return InkWell(
+                    onTap: () {
+                      viewModel.settingList[index].onTap;
+                    },
+                    child: Container(
+                      width: context.width,
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5), // Shadow color
+                            spreadRadius: 2, // Spread radius
+                            blurRadius: 5, // Blur radius
+                            offset: const Offset(0, 5), // Offset from the top
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Image.asset(
+                                viewModel.settingList[index].icon,
+                                width: 40,
+                              ),
+                              Gap(10),
+                              Text(
+                                viewModel.settingList[index].title,
+                                style: context.textTheme.titleSmall,
+                              ),
+                            ],
+                          ),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            size: 15,
+                          )
+                        ],
+                      ),
                     ),
                   );
                 }),
