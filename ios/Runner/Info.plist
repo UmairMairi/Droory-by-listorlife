@@ -9,58 +9,72 @@
         <array>
             <string>UIInterfaceOrientationPortrait</string>
         </array>
+
         <key>NSPhotoLibraryUsageDescription</key>
         <string>Describe why your app needs permission for the photo library.</string>
+
         <key>NSCameraUsageDescription</key>
         <string>Describe why your app needs access to the camera.</string>
+
         <key>NSMicrophoneUsageDescription</key>
         <string>Describe why your app needs access to the microphone, if you intend to record videos.</string>
 
         <key>NSLocationWhenInUseUsageDescription</key>
         <string>We use your location to provide relevant services and information while you use the app.</string>
 
-        <!-- This key is deprecated and should be avoided. Use NSLocationAlwaysAndWhenInUseUsageDescription instead. -->
         <key>NSLocationAlwaysUsageDescription</key>
         <string>Your app's access to location data is being updated in the background. Please use NSLocationAlwaysAndWhenInUseUsageDescription instead.</string>
 
-        <!-- This key is required if your app uses location services both in the foreground and background, even when the app is not running.
-         It's crucial to explain why your app needs continuous access to the user's location. -->
         <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
         <string>Your location is used to provide essential features, even when the app is not in use. This helps us offer location-based services like geofencing and location alerts.</string>
 
 
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
+
 		<key>CFBundleDisplayName</key>
 		<string>List Or Life</string>
+
 		<key>CFBundleExecutable</key>
 		<string>$(EXECUTABLE_NAME)</string>
+
 		<key>CFBundleIdentifier</key>
 		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+
 		<key>CFBundleInfoDictionaryVersion</key>
 		<string>6.0</string>
+
 		<key>CFBundleName</key>
 		<string>List Or Life</string>
+
 		<key>CFBundlePackageType</key>
 		<string>APPL</string>
+
 		<key>CFBundleShortVersionString</key>
 		<string>$(FLUTTER_BUILD_NAME)</string>
+
 		<key>CFBundleSignature</key>
 		<string>????</string>
+
 		<key>CFBundleVersion</key>
 		<string>$(FLUTTER_BUILD_NUMBER)</string>
+
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
+
 		<key>UILaunchStoryboardName</key>
 		<string>LaunchScreen</string>
+
 		<key>UIMainStoryboardFile</key>
 		<string>Main</string>
+
 		<key>UISupportedInterfaceOrientations</key>
 		<array>
 			<string>UIInterfaceOrientationPortrait</string>
 			<string>UIInterfaceOrientationLandscapeLeft</string>
 			<string>UIInterfaceOrientationLandscapeRight</string>
 		</array>
+
 		<key>UISupportedInterfaceOrientations~ipad</key>
 		<array>
 			<string>UIInterfaceOrientationPortrait</string>

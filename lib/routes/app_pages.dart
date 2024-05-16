@@ -59,7 +59,11 @@ class AppPages {
       GoRoute(
         path: Routes.termsOfUse,
         pageBuilder: (context, state) {
-          return getPage(child: const TermsOfUseView(), state: state);
+          return getPage(
+              child: TermsOfUseView(
+                type: state.extra as int?,
+              ),
+              state: state);
         },
       ),
       GoRoute(

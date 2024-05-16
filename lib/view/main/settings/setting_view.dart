@@ -100,30 +100,35 @@ class SettingView extends BaseView<SettingVM> {
               ),
             ),
             Gap(20),
-        Container(
-          width: context.width,
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5), // Shadow color
-                spreadRadius: 2, // Spread radius
-                blurRadius: 5, // Blur radius
-                offset: const Offset(0, 5), // Offset from the top
+            Container(
+              width: context.width,
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5), // Shadow color
+                    spreadRadius: 2, // Spread radius
+                    blurRadius: 5, // Blur radius
+                    offset: const Offset(0, 5), // Offset from the top
+                  ),
+                ],
               ),
-            ],
-          ),
-          child: ListView.separated(
-            shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index){
-            return SettingItemView(item: viewModel.settingList[index]);
-          }, separatorBuilder: (context, index){
-            return Divider();
-          }, itemCount: viewModel.settingList.length),
-        )
+              child: ListView.separated(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                        onTap: viewModel.settingList[index].onTap,
+                        child: SettingItemView(
+                            item: viewModel.settingList[index]));
+                  },
+                  separatorBuilder: (context, index) {
+                    return Divider();
+                  },
+                  itemCount: viewModel.settingList.length),
+            )
           ],
         ),
       ),
@@ -131,7 +136,7 @@ class SettingView extends BaseView<SettingVM> {
   }
 }
 
-class SettingItemView extends StatelessWidget{
+class SettingItemView extends StatelessWidget {
   final SettingItemModel item;
   const SettingItemView({super.key, required this.item});
 
@@ -156,12 +161,13 @@ class SettingItemView extends StatelessWidget{
             ),
           ],
         ),
-        item.isArrow ?
-        const Icon(
-          Icons.arrow_forward_ios,
-          size: 15,
-          color: Colors.grey,
-        ): const SizedBox.shrink()
+        item.isArrow
+            ? const Icon(
+                Icons.arrow_forward_ios,
+                size: 15,
+                color: Colors.grey,
+              )
+            : const SizedBox.shrink()
       ],
     );
   }

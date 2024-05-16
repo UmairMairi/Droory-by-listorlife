@@ -94,3 +94,45 @@ class AppElevatedButtonWithIcon extends StatelessWidget {
     );
   }
 }
+
+class AppElevatedButtonWithoutAnimation extends StatelessWidget {
+  final String? title;
+  final VoidCallback? onTap;
+
+  final double? height;
+  final double? width;
+  final EdgeInsetsGeometry? padding;
+  final Color? backgroundColor;
+  final Color? titleColor;
+  const AppElevatedButtonWithoutAnimation(
+      {super.key,
+      this.title,
+      this.titleColor,
+      this.onTap,
+      this.backgroundColor,
+      this.width,
+      this.padding,
+      this.height});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: padding ?? EdgeInsets.zero,
+      child: ElevatedButton(
+        onPressed: onTap,
+        style: ElevatedButton.styleFrom(
+            backgroundColor:
+                backgroundColor ?? context.theme.colorScheme.primary,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+            minimumSize: Size(width ?? 150, height ?? 50),
+            foregroundColor: context.theme.cardColor),
+        child: Text(
+          title ?? '',
+          style: TextStyle(fontWeight: FontWeight.bold, color: titleColor),
+        ),
+      ),
+    );
+  }
+}

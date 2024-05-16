@@ -98,6 +98,7 @@ flutter:
     - assets/icons/ic_google_icon.png
     - assets/icons/ic_image.png
     - assets/icons/ic_logout.png
+    - assets/icons/ic_logout_icon.png
     - assets/icons/ic_no_wifi.png
     - assets/icons/ic_notification.png
     - assets/icons/ic_privcy_policy.png
@@ -109,11 +110,15 @@ flutter:
     - assets/images/on_board_second.png
     - assets/images/on_board_third.png
     - assets/images/splash.png
+    - assets/lottie_jsons/delete_lottie.json
     - assets/lottie_jsons/empty_lottie.json
     - assets/lottie_jsons/error_lottie.json
+    - assets/lottie_jsons/logout_lottie_file.json
     - assets/lottie_jsons/no_image_lottie.json
     - assets/lottie_jsons/no_notification_lottie.json
     - assets/lottie_jsons/page_not_found.json
+    - assets/lottie_jsons/signout_animation.json
+    - assets/lottie_jsons/tick_mark_lottie.json
     - assets/lottie_jsons/timeup_lottie.json
     - assets/lottie_jsons/verify_otp_lottie.json
   fonts:

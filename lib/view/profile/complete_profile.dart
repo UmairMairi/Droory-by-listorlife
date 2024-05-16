@@ -27,7 +27,7 @@ class CompleteProfileView extends BaseView<ProfileVM> {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
+      body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -87,7 +87,7 @@ class CompleteProfileView extends BaseView<ProfileVM> {
                       ],
                     ),
             ),
-            const Gap(30),
+            const Flexible(child: const Gap(80)),
             const AppTextField(
               title: 'First Name',
               hint: 'Enter',
@@ -137,17 +137,23 @@ class CompleteProfileView extends BaseView<ProfileVM> {
             AppElevatedButton(
               width: context.width,
               onTap: () {
-                DialogHelper.showSuccessDialog(
+                showDialog(
                     context: context,
-                    title: 'Complete Profile',
-                    onTap: () async {
-                      if (await Permission.location.request().isGranted) {
-                        if (context.mounted) context.go(Routes.main);
-                      } else {
-                        if (context.mounted) context.go(Routes.permission);
-                      }
-                    },
-                    message: 'Your Profile has been created successfully!');
+                    builder: (context) {
+                      return AppAlertDialog(
+                        title: 'Complete Profile',
+                        onTap: () async {
+                          context.pop();
+                          if (await Permission.location.isGranted) {
+                            if (context.mounted) context.go(Routes.main);
+                          } else {
+                            if (context.mounted) context.go(Routes.permission);
+                          }
+                        },
+                        description:
+                            'Your Profile has been created successfully!',
+                      );
+                    });
               },
               title: 'Continue',
             )

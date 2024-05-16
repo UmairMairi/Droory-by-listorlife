@@ -1,11 +1,16 @@
 import 'dart:developer';
 
 import 'package:cool_alert/cool_alert.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/routes/app_pages.dart';
+import 'package:list_and_life/widgets/app_elevated_button.dart';
+import 'package:list_and_life/widgets/app_outline_button.dart';
+import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
@@ -113,5 +118,101 @@ class DialogHelper {
     DbHelper.eraseData();
     AppPages.rootNavigatorKey.currentContext?.go(Routes.root);
     showToast(message: message);
+  }
+}
+
+class AppAlertDialog extends StatelessWidget {
+  final String? lottieIcon;
+  final String? title;
+  final String description;
+  final VoidCallback onTap;
+  final VoidCallback? onCancelTap;
+
+  final bool showCancelButton;
+
+  final String? buttonText;
+  final String? cancelButtonText;
+  const AppAlertDialog({
+    super.key,
+    this.lottieIcon,
+    this.title,
+    required this.description,
+    required this.onTap,
+    this.onCancelTap,
+    this.showCancelButton = false,
+    this.buttonText,
+    this.cancelButtonText,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+        backgroundColor: Color(0xFFEEEEEE),
+        contentPadding: EdgeInsets.zero,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25.0),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Lottie.asset(lottieIcon ?? AssetsRes.TICK_MARK_LOTTIE,
+                repeat: false, height: 120),
+            Container(
+              width: context.width,
+              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(25)),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    title ?? 'Alert',
+                    style: context.textTheme.titleMedium,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    description ??
+                        'Your Profile has been created successfully!',
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: AppElevatedButtonWithoutAnimation(
+                          width: context.width,
+                          onTap: onTap,
+                          title: buttonText ?? ' Ok',
+                        ),
+                      ),
+                      if (showCancelButton) ...{
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                            child: AppElevatedButtonWithoutAnimation(
+                          width: context.width,
+                          backgroundColor: Color(0xffeeeeee),
+                          onTap: onCancelTap ??
+                              () {
+                                context.pop();
+                              },
+                          titleColor: Colors.black,
+                          title: cancelButtonText ?? ' Cencel',
+                        )),
+                      }
+                    ],
+                  )
+                ],
+              ),
+            )
+          ],
+        ));
   }
 }
