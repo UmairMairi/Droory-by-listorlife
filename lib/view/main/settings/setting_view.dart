@@ -6,6 +6,8 @@ import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/view_model/setting_v_m.dart';
 
+import '../../../models/setting_item_model.dart';
+
 class SettingView extends BaseView<SettingVM> {
   const SettingView({super.key});
 
@@ -151,17 +153,17 @@ class SettingItemView extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
-              item.icon,
+              item.icon ?? '',
               width: 40,
             ),
             Gap(10),
             Text(
-              item.title,
+              item.title ?? '',
               style: context.textTheme.titleSmall,
             ),
           ],
         ),
-        item.isArrow
+        item.isArrow ?? false
             ? const Icon(
                 Icons.arrow_forward_ios,
                 size: 15,

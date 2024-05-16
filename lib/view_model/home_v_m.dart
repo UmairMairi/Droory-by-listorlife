@@ -1,0 +1,48 @@
+import 'package:geolocator/geolocator.dart';
+import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/helpers/location_helper.dart';
+import 'package:list_and_life/res/assets_res.dart';
+import 'package:list_and_life/view_model/setting_v_m.dart';
+
+import '../models/setting_item_model.dart';
+
+class HomeVM extends BaseViewModel {
+  String _currentLocation = "";
+
+  String get currentLocation => _currentLocation;
+
+  List<SettingItemModel> categoryItems = [];
+
+  set currentLocation(String value) {
+    _currentLocation = value;
+    notifyListeners();
+  }
+
+  void initCategories() {
+    categoryItems = [
+      SettingItemModel(icon: AssetsRes.IC_CAT_CAR, title: 'Cars', onTap: () {}),
+      SettingItemModel(
+          icon: AssetsRes.IC_CAT_MOBILE, title: 'Mobile', onTap: () {}),
+      SettingItemModel(
+          icon: AssetsRes.IC_CAT_LAPTOP, title: 'Laptops', onTap: () {}),
+      SettingItemModel(
+          icon: AssetsRes.IC_CAT_FURNITURE, title: 'Furniture', onTap: () {}),
+      SettingItemModel(
+          icon: AssetsRes.IC_CAT_CLOTHS, title: 'Clothes', onTap: () {}),
+    ];
+  }
+
+  Future<void> updateLocation() async {
+    Position position = await LocationHelper.getCurrentLocation();
+    currentLocation = await LocationHelper.getAddressFromCoordinates(
+        position.latitude, position.longitude);
+  }
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    initCategories();
+    updateLocation();
+    super.onInit();
+  }
+}

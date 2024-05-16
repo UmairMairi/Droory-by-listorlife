@@ -5,8 +5,8 @@ import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/helpers/dialog_helper.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
-import 'package:lottie/lottie.dart';
 
+import '../models/setting_item_model.dart';
 import '../widgets/app_elevated_button.dart';
 
 class SettingVM extends BaseViewModel {
@@ -171,16 +171,4 @@ class SettingVM extends BaseViewModel {
   void onSwitchChanged(bool? value) {
     isActiveNotification = value ?? true;
   }
-}
-
-class SettingItemModel {
-  final String icon;
-  final bool isArrow;
-  final String title;
-  final VoidCallback onTap;
-  SettingItemModel(
-      {required this.icon,
-      required this.title,
-      required this.onTap,
-      this.isArrow = false});
 }

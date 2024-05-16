@@ -8,11 +8,29 @@ class AssetsRes {
 
   static const String PLUGIN_NAME = 'list_and_life';
   static const String PLUGIN_VERSION = '1.0.0+1';
+  static const String DUMMY_IPHONE_IMAGE1 =
+      'assets/dummy/dummy_iphone_image1.jpg';
+  static const String DUMMY_IPHONE_IMAGE2 =
+      'assets/dummy/dummy_iphone_image2.jpg';
+  static const String DUMMY_IPHONE_IMAGE3 =
+      'assets/dummy/dummy_iphone_image3.jpg';
+  static const String DUMMY_IPHONE_IMAGE4 =
+      'assets/dummy/dummy_iphone_image4.jpg';
   static const String DUMMY_PROFILE = 'assets/dummy/dummy_profile.png';
   static const String IC_APPLE_ICON = 'assets/icons/ic_apple_icon.png';
+  static const String IC_BELL_ICON = 'assets/icons/ic_bell_icon.png';
+  static const String IC_CALL_ICON = 'assets/icons/ic_call_icon.png';
+  static const String IC_CAT_CAR = 'assets/icons/ic_cat_car.png';
+  static const String IC_CAT_CLOTHS = 'assets/icons/ic_cat_cloths.png';
+  static const String IC_CAT_FURNITURE = 'assets/icons/ic_cat_furniture.png';
+  static const String IC_CAT_LAPTOP = 'assets/icons/ic_cat_laptop.png';
+  static const String IC_CAT_MOBILE = 'assets/icons/ic_cat_mobile.png';
+  static const String IC_CHAT_ICON = 'assets/icons/ic_chat_icon.png';
   static const String IC_DELETE_ACCOUNT = 'assets/icons/ic_delete_account.png';
+  static const String IC_FILTER_ICON = 'assets/icons/ic_filter_icon.png';
   static const String IC_GOOGLE_ICON = 'assets/icons/ic_google_icon.png';
   static const String IC_IMAGE = 'assets/icons/ic_image.png';
+  static const String IC_ITEM_LOCATION = 'assets/icons/ic_item_location.png';
   static const String IC_LOGOUT = 'assets/icons/ic_logout.png';
   static const String IC_LOGOUT_ICON = 'assets/icons/ic_logout_icon.png';
   static const String IC_NO_WIFI = 'assets/icons/ic_no_wifi.png';
@@ -20,6 +38,7 @@ class AssetsRes {
   static const String IC_PRIVCY_POLICY = 'assets/icons/ic_privcy_policy.png';
   static const String IC_PROFILE = 'assets/icons/ic_profile.png';
   static const String IC_T_AND_C = 'assets/icons/ic_t_and_c.png';
+  static const String IC_WHATSAPP_ICON = 'assets/icons/ic_whatsapp_icon.png';
   static const String APP_LOGO = 'assets/images/app_logo.png';
   static const String LOCATION_PERMISSION_ILLUSTRATIONS =
       'assets/images/location_permission_illustrations.png';
