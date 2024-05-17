@@ -96,54 +96,62 @@ class AppTextField extends StatelessWidget {
           title ?? '',
           style: context.textTheme.titleSmall,
         ),
-        SizedBox(
+        const SizedBox(
           height: 02,
         ),
-        SizedBox(
-          width: width ?? MediaQuery.of(context).size.width,
-          child: FadeAnimation(
-            delay: 0.3,
-            child: Card(
-              elevation: 1,
-              margin: const EdgeInsets.symmetric(vertical: 5),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: TextFormField(
-                  autovalidateMode: AutovalidateMode.disabled,
-                  controller: controller,
-                  keyboardType: inputType,
-                  readOnly: readOnly,
-                  onTap: onTap,
-                  cursorColor: titleColor ?? Colors.black,
-                  maxLines: password == true ? 1 : lines,
-                  obscureText: lines == null ? password == true : false,
-                  validator: validator ?? validator,
-                  maxLength: maxLength,
-                  textAlign: textAlign ?? TextAlign.start,
-                  focusNode: focusNode,
-                  enabled: editabled ?? true,
-                  textInputAction: action ?? TextInputAction.done,
-                  textAlignVertical: TextAlignVertical.center,
-                  onChanged: onChanged,
-                  inputFormatters: inputFormatters,
-                  enableInteractiveSelection: enableCopyPaste ?? false,
-                  style: context.textTheme.bodyMedium,
-                  decoration: InputDecoration(
-                      hintText:
-                          (hint ?? '').isNotEmpty ? capitalize(hint ?? '') : "",
-                      counterText: "",
-                      hintStyle: hintStyle,
-                      errorText: errorText,
-                      filled: false,
-                      errorMaxLines: 2,
-                      prefixIcon: prefix,
-                      prefixIconColor: Theme.of(context).colorScheme.primary,
-                      border: InputBorder.none,
-                      suffixIconColor: Theme.of(context).colorScheme.primary,
-                      suffixIcon: suffix),
+        FadeAnimation(
+          delay: 0.3,
+          child: Container(
+            alignment: Alignment.center,
+            width: width ?? MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5), // Shadow color
+                  spreadRadius: 2, // Spread radius
+                  blurRadius: 5, // Blur radius
+                  offset: const Offset(0, 5), // Offset from the top
                 ),
+              ],
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 10.0), // Adjusted padding
+            child: TextFormField(
+              autovalidateMode: AutovalidateMode.disabled,
+              controller: controller,
+              keyboardType: inputType,
+              readOnly: readOnly,
+              onTap: onTap,
+              cursorColor: titleColor ?? Colors.black,
+              maxLines: password == true ? 1 : lines,
+              obscureText: lines == null ? password == true : false,
+              validator: validator ?? validator,
+              maxLength: maxLength,
+              textAlign: textAlign ?? TextAlign.start,
+              focusNode: focusNode,
+              enabled: editabled ?? true,
+              textInputAction: action ?? TextInputAction.done,
+              textAlignVertical:
+                  TextAlignVertical.center, // Center text vertically
+              onChanged: onChanged,
+              inputFormatters: inputFormatters,
+              enableInteractiveSelection: enableCopyPaste ?? false,
+              style: context.textTheme.bodyMedium,
+              decoration: InputDecoration(
+                hintText: (hint ?? '').isNotEmpty ? capitalize(hint ?? '') : "",
+                counterText: "",
+                hintStyle: hintStyle,
+                errorText: errorText,
+                filled: false,
+                errorMaxLines: 2,
+                prefixIcon: prefix,
+                prefixIconColor: Theme.of(context).colorScheme.primary,
+                border: InputBorder.none,
+                suffixIconColor: Theme.of(context).colorScheme.primary,
+                suffixIcon: suffix,
+                contentPadding: EdgeInsets.symmetric(
+                    vertical: 15.0), // Ensure vertical centering
               ),
             ),
           ),

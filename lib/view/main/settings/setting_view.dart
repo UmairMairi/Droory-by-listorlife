@@ -2,9 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/res/assets_res.dart';
+import 'package:list_and_life/routes/app_routes.dart';
+import 'package:list_and_life/view_model/profile_vm.dart';
 import 'package:list_and_life/view_model/setting_v_m.dart';
+import 'package:provider/provider.dart';
 
 import '../../../models/setting_item_model.dart';
 
@@ -50,7 +54,10 @@ class SettingView extends BaseView<SettingVM> {
                       backgroundImage: AssetImage(AssetsRes.DUMMY_PROFILE),
                     ),
                     IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          context.read<ProfileVM>().imagePath = '';
+                          context.push(Routes.editProfile);
+                        },
                         icon: const Icon(CupertinoIcons.square_pencil)),
                     Text('john@gmail.com')
                   ],

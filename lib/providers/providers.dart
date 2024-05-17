@@ -4,7 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
 import '../view_model/auth_vm.dart';
-import '../view_model/home_v_m.dart';
+import '../view_model/chat_vm.dart';
+import '../view_model/home_vm.dart';
 import '../view_model/main_vm.dart';
 import '../view_model/profile_vm.dart';
 import '../view_model/setting_v_m.dart';
@@ -18,6 +19,7 @@ class Providers {
       ChangeNotifierProvider(create: (BuildContext context) => ProfileVM()),
       ChangeNotifierProvider(create: (BuildContext context) => SettingVM()),
       ChangeNotifierProvider(create: (BuildContext context) => HomeVM()),
+      ChangeNotifierProvider(create: (BuildContext context) => ChatVM()),
     ];
   }
 }

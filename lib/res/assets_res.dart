@@ -8,6 +8,16 @@ class AssetsRes {
 
   static const String PLUGIN_NAME = 'list_and_life';
   static const String PLUGIN_VERSION = '1.0.0+1';
+  static const String DUMMY_CAR_IMAGE1 = 'assets/dummy/dummy_car_image1.jpg';
+  static const String DUMMY_CAR_IMAGE2 = 'assets/dummy/dummy_car_image2.jpg';
+  static const String DUMMY_CAR_IMAGE3 = 'assets/dummy/dummy_car_image3.jpg';
+  static const String DUMMY_CAR_IMAGE4 = 'assets/dummy/dummy_car_image4.jpg';
+  static const String DUMMY_CHAT_IMAGE1 = 'assets/dummy/dummy_chat_image1.png';
+  static const String DUMMY_CHAT_IMAGE2 = 'assets/dummy/dummy_chat_image2.png';
+  static const String DUMMY_CHAT_IMAGE3 = 'assets/dummy/dummy_chat_image3.png';
+  static const String DUMMY_CHAT_IMAGE4 = 'assets/dummy/dummy_chat_image4.png';
+  static const String DUMMY_CHAT_IMAGE5 = 'assets/dummy/dummy_chat_image5.png';
+  static const String DUMMY_CHAT_IMAGE6 = 'assets/dummy/dummy_chat_image6.png';
   static const String DUMMY_IPHONE_IMAGE1 =
       'assets/dummy/dummy_iphone_image1.jpg';
   static const String DUMMY_IPHONE_IMAGE2 =

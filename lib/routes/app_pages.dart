@@ -6,6 +6,7 @@ import 'package:list_and_life/view/main/permission/location_permission_view.dart
 import 'package:list_and_life/view/main/sell/sell_view.dart';
 import 'package:list_and_life/view/main/settings/TermsOfUseView.dart';
 import 'package:list_and_life/view/profile/complete_profile.dart';
+import 'package:list_and_life/view/profile/edit_profile.dart';
 
 import '../view/auth/login_view.dart';
 import '../view/auth/verification_view.dart';
@@ -54,6 +55,12 @@ class AppPages {
         path: Routes.notifications,
         pageBuilder: (context, state) {
           return getPage(child: const NotificationView(), state: state);
+        },
+      ),
+      GoRoute(
+        path: Routes.editProfile,
+        pageBuilder: (context, state) {
+          return getPage(child: const EditProfile(), state: state);
         },
       ),
       GoRoute(

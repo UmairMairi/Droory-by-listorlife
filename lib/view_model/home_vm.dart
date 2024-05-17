@@ -2,7 +2,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/helpers/location_helper.dart';
 import 'package:list_and_life/res/assets_res.dart';
-import 'package:list_and_life/view_model/setting_v_m.dart';
 
 import '../models/setting_item_model.dart';
 
@@ -12,6 +11,8 @@ class HomeVM extends BaseViewModel {
   String get currentLocation => _currentLocation;
 
   List<SettingItemModel> categoryItems = [];
+
+  List<SettingItemModel> homeItemList = [];
 
   set currentLocation(String value) {
     _currentLocation = value;
@@ -29,6 +30,35 @@ class HomeVM extends BaseViewModel {
           icon: AssetsRes.IC_CAT_FURNITURE, title: 'Furniture', onTap: () {}),
       SettingItemModel(
           icon: AssetsRes.IC_CAT_CLOTHS, title: 'Clothes', onTap: () {}),
+    ];
+    homeItemList = [
+      SettingItemModel(
+        imageList: [
+          AssetsRes.DUMMY_IPHONE_IMAGE1,
+          AssetsRes.DUMMY_IPHONE_IMAGE2,
+          AssetsRes.DUMMY_IPHONE_IMAGE3,
+          AssetsRes.DUMMY_IPHONE_IMAGE4,
+        ],
+        title: 'EGP300',
+        subTitle: 'Apple iPhone 15 Pro',
+        description:
+            'Open Box iPhone 15 & 14 Plus Pro Max 128GB 256GB 512GB 1TB Warranty 76',
+        location: 'New York City',
+        timeStamp: 'Today',
+      ),
+      SettingItemModel(
+        imageList: [
+          AssetsRes.DUMMY_CAR_IMAGE1,
+          AssetsRes.DUMMY_CAR_IMAGE2,
+          AssetsRes.DUMMY_CAR_IMAGE3,
+          AssetsRes.DUMMY_CAR_IMAGE4,
+        ],
+        title: 'EGP300',
+        subTitle: 'Maruti Suzuki Swift 1.2 VXI (O), 2015, Petrol',
+        description: '2015 - 48000 km',
+        location: 'New York City',
+        timeStamp: 'Today',
+      ),
     ];
   }
 

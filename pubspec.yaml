@@ -92,6 +92,16 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
+    - assets/dummy/dummy_car_image1.jpg
+    - assets/dummy/dummy_car_image2.jpg
+    - assets/dummy/dummy_car_image3.jpg
+    - assets/dummy/dummy_car_image4.jpg
+    - assets/dummy/dummy_chat_image1.png
+    - assets/dummy/dummy_chat_image2.png
+    - assets/dummy/dummy_chat_image3.png
+    - assets/dummy/dummy_chat_image4.png
+    - assets/dummy/dummy_chat_image5.png
+    - assets/dummy/dummy_chat_image6.png
     - assets/dummy/dummy_iphone_image1.jpg
     - assets/dummy/dummy_iphone_image2.jpg
     - assets/dummy/dummy_iphone_image3.jpg

@@ -36,7 +36,7 @@ class AppProductItemWidget extends StatelessWidget {
             children: [
               CardSwipeWidget(
                 imagesList: data?.imageList,
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(20),
                   topRight: Radius.circular(20),
                 ),
@@ -45,10 +45,10 @@ class AppProductItemWidget extends StatelessWidget {
                   top: 10,
                   right: 10,
                   child: Container(
-                    padding: EdgeInsets.all(08),
-                    margin: EdgeInsets.all(08),
+                    padding: const EdgeInsets.all(08),
+                    margin: const EdgeInsets.all(08),
                     alignment: Alignment.center,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                         color: Colors.white, shape: BoxShape.circle),
                     child: FavoriteButton(
                       isFav: data?.isFav ?? false,
@@ -66,18 +66,17 @@ class AppProductItemWidget extends StatelessWidget {
               children: [
                 const Gap(10),
                 Text(
-                  data?.title ?? 'EGP300',
+                  data?.title ?? '',
                   style: context.textTheme.titleLarge
                       ?.copyWith(color: context.theme.colorScheme?.error),
                 ),
                 const Gap(10),
                 Text(
-                  data?.subTitle ?? 'Apple iPhone 15 Pro',
+                  data?.subTitle ?? '',
                   style: context.textTheme.titleMedium,
                 ),
                 const Gap(5),
-                Text(data?.description ??
-                    'Open Box iPhone 15 & 14 Plus Pro Max 128GB 256GB 512GB 1TB Warranty 76'),
+                Text(data?.description ?? ''),
                 const Gap(10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -92,7 +91,7 @@ class AppProductItemWidget extends StatelessWidget {
                         ),
                         Gap(05),
                         Text(
-                          data?.location ?? 'New York City',
+                          data?.location ?? '',
                           style: context.textTheme.labelSmall,
                         ),
                       ],
@@ -108,30 +107,100 @@ class AppProductItemWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
-                        child: AppElevatedButton(
-                          onTap: () {},
+                        child: Container(
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 08),
+                          decoration: BoxDecoration(
+                            color: Colors.black54,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Image.asset(
+                                AssetsRes.IC_CALL_ICON,
+                                height: 16,
+                              ),
+                              Gap(05),
+                              Text(
+                                'Call',
+                                style: context.textTheme.labelLarge?.copyWith(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600),
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                      Gap(05),
+                      Gap(02),
                       Expanded(
-                        child: AppElevatedButton(
-                          onTap: () {},
+                        child: Container(
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 08),
+                          decoration: BoxDecoration(
+                            color: Colors.black54,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Image.asset(
+                                AssetsRes.IC_CHAT_ICON,
+                                height: 16,
+                              ),
+                              Gap(05),
+                              Text(
+                                'Chat',
+                                style: context.textTheme.labelLarge?.copyWith(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600),
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                      Gap(05),
+                      Gap(02),
                       Expanded(
-                        child: AppElevatedButtonWithIcon(
-                          onTap: () {},
-                          title: 'WhatsApp',
-                          icon: ImageIcon(
-                            AssetImage(
-                              AssetsRes.IC_WHATSAPP_ICON,
-                            ),
-                            size: 20,
+                        child: Container(
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 08),
+                          decoration: BoxDecoration(
+                            color: Colors.black54,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Image.asset(
+                                AssetsRes.IC_WHATSAPP_ICON,
+                                height: 18,
+                              ),
+                              Gap(05),
+                              Text(
+                                'Whatsapp',
+                                style: context.textTheme.labelLarge?.copyWith(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              )
+                            ],
                           ),
                         ),
                       ),
                     ]),
+                const Gap(10),
               ],
             ),
           )
