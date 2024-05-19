@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/src/route.dart';
 import 'package:list_and_life/view/main/chat/inbox_view.dart';
-import 'package:list_and_life/view/main/fevorite/favorite_view.dart';
+import 'package:list_and_life/view/main/fevorite/ads_view.dart';
 import 'package:list_and_life/view/main/home/home_view.dart';
 import 'package:list_and_life/view/main/sell/sell_view.dart';
 import 'package:list_and_life/view/main/settings/setting_view.dart';
@@ -33,7 +33,7 @@ class _MainViewState extends State<MainView> {
             HomeView(),
             InboxView(),
             SellView(),
-            FavoriteView(),
+            AdsView(),
             SettingView()
           ],
           items: [

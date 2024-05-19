@@ -3,13 +3,14 @@ import 'package:go_router/go_router.dart';
 import 'package:list_and_life/models/setting_item_model.dart';
 import 'package:list_and_life/view/main/chat/inbox_view.dart';
 import 'package:list_and_life/view/main/chat/message_view.dart';
-import 'package:list_and_life/view/main/fevorite/favorite_view.dart';
+import 'package:list_and_life/view/main/fevorite/ads_view.dart';
 import 'package:list_and_life/view/main/permission/location_permission_view.dart';
 import 'package:list_and_life/view/main/sell/sell_view.dart';
 import 'package:list_and_life/view/main/settings/TermsOfUseView.dart';
 import 'package:list_and_life/view/product/product_detail_view.dart';
 import 'package:list_and_life/view/profile/complete_profile.dart';
 import 'package:list_and_life/view/profile/edit_profile.dart';
+import 'package:list_and_life/view/purchase/plans_list_view.dart';
 
 import '../view/auth/login_view.dart';
 import '../view/auth/verification_view.dart';
@@ -62,6 +63,12 @@ class AppPages {
         path: Routes.editProfile,
         pageBuilder: (context, state) {
           return getPage(child: const EditProfile(), state: state);
+        },
+      ),
+      GoRoute(
+        path: Routes.planList,
+        pageBuilder: (context, state) {
+          return getPage(child: const PlansListView(), state: state);
         },
       ),
       GoRoute(

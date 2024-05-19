@@ -15,4 +15,5 @@ class Routes {
   static const String sell = '/sell';
   static const String termsOfUse = '/termsOfUse';
   static const String permission = '/permission';
+  static const String planList = '/plan_list';
 }

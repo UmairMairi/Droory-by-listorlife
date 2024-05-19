@@ -3,10 +3,12 @@ import 'package:list_and_life/view_model/on_boarding_vm.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
+import '../view_model/active_plan_v_m.dart';
 import '../view_model/auth_vm.dart';
 import '../view_model/chat_vm.dart';
 import '../view_model/home_vm.dart';
 import '../view_model/main_vm.dart';
+import '../view_model/my_ads_v_m.dart';
 import '../view_model/notification_v_m.dart';
 import '../view_model/product_v_m.dart';
 import '../view_model/profile_vm.dart';
@@ -23,6 +25,8 @@ class Providers {
       ChangeNotifierProvider(create: (BuildContext context) => HomeVM()),
       ChangeNotifierProvider(create: (BuildContext context) => ChatVM()),
       ChangeNotifierProvider(create: (BuildContext context) => ProductVM()),
+      ChangeNotifierProvider(create: (BuildContext context) => MyAdsVM()),
+      ChangeNotifierProvider(create: (BuildContext context) => ActivePlanVM()),
       ChangeNotifierProvider(
           create: (BuildContext context) => NotificationVM()),
     ];
