@@ -13,6 +13,8 @@ class SettingItemModel {
   final String? location;
   final String? timeStamp;
   final VoidCallback? onTap;
+  final String? likes;
+  final String? views;
   SettingItemModel(
       {this.icon,
       this.title,
@@ -24,5 +26,7 @@ class SettingItemModel {
       this.timeStamp,
       this.onTap,
       this.imageList,
+      this.likes,
+      this.views,
       this.isArrow = false});
 }

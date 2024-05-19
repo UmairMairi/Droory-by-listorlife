@@ -7,6 +7,7 @@ import '../view_model/auth_vm.dart';
 import '../view_model/chat_vm.dart';
 import '../view_model/home_vm.dart';
 import '../view_model/main_vm.dart';
+import '../view_model/notification_v_m.dart';
 import '../view_model/product_v_m.dart';
 import '../view_model/profile_vm.dart';
 import '../view_model/setting_v_m.dart';
@@ -22,6 +23,8 @@ class Providers {
       ChangeNotifierProvider(create: (BuildContext context) => HomeVM()),
       ChangeNotifierProvider(create: (BuildContext context) => ChatVM()),
       ChangeNotifierProvider(create: (BuildContext context) => ProductVM()),
+      ChangeNotifierProvider(
+          create: (BuildContext context) => NotificationVM()),
     ];
   }
 }

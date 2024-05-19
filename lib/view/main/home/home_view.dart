@@ -35,12 +35,18 @@ class HomeView extends BaseView<HomeVM> {
           ],
         ),
         actions: [
-          Container(
-              padding: const EdgeInsets.all(05),
-              margin: const EdgeInsets.symmetric(horizontal: 05),
-              decoration: BoxDecoration(
-                  color: Colors.black, borderRadius: BorderRadius.circular(10)),
-              child: Image.asset(AssetsRes.IC_BELL_ICON))
+          InkWell(
+            onTap: () {
+              context.push(Routes.notifications);
+            },
+            child: Container(
+                padding: const EdgeInsets.all(05),
+                margin: const EdgeInsets.symmetric(horizontal: 05),
+                decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(10)),
+                child: Image.asset(AssetsRes.IC_BELL_ICON)),
+          )
         ],
       ),
       body: SingleChildScrollView(
