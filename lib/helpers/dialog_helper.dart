@@ -1,10 +1,12 @@
 import 'dart:developer';
 
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
+import 'package:list_and_life/animations/glow_background_animation.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/routes/app_pages.dart';
@@ -14,6 +16,7 @@ import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
+import '../animations/bouncing_animation.dart';
 import '../routes/app_routes.dart';
 import 'db_helper.dart';
 
@@ -121,7 +124,7 @@ class DialogHelper {
   }
 }
 
-class AppAlertDialog extends StatelessWidget {
+class AppAlertDialogWithLottie extends StatelessWidget {
   final String? lottieIcon;
   final String? title;
   final String description;
@@ -132,7 +135,7 @@ class AppAlertDialog extends StatelessWidget {
 
   final String? buttonText;
   final String? cancelButtonText;
-  const AppAlertDialog({
+  const AppAlertDialogWithLottie({
     super.key,
     this.lottieIcon,
     this.title,
@@ -158,6 +161,123 @@ class AppAlertDialog extends StatelessWidget {
           children: [
             Lottie.asset(lottieIcon ?? AssetsRes.TICK_MARK_LOTTIE,
                 repeat: false, height: 120),
+            Container(
+              width: context.width,
+              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(25)),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    title ?? 'Alert',
+                    style: context.textTheme.titleMedium,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    description ??
+                        'Your Profile has been created successfully!',
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: AppElevatedButtonWithoutAnimation(
+                          width: context.width,
+                          onTap: onTap,
+                          title: buttonText ?? ' Ok',
+                        ),
+                      ),
+                      if (showCancelButton) ...{
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                            child: AppElevatedButtonWithoutAnimation(
+                          width: context.width,
+                          backgroundColor: Color(0xffeeeeee),
+                          onTap: onCancelTap ??
+                              () {
+                                context.pop();
+                              },
+                          titleColor: Colors.black,
+                          title: cancelButtonText ?? ' Cencel',
+                        )),
+                      }
+                    ],
+                  )
+                ],
+              ),
+            )
+          ],
+        ));
+  }
+}
+
+class AppAlertDialogWithWidget extends StatelessWidget {
+  final String? icon;
+  final String? title;
+  final String description;
+  final VoidCallback onTap;
+  final VoidCallback? onCancelTap;
+
+  final bool showCancelButton;
+  final Color? glowColor;
+  final String? buttonText;
+  final String? cancelButtonText;
+  const AppAlertDialogWithWidget({
+    super.key,
+    this.icon,
+    this.title,
+    this.glowColor,
+    required this.description,
+    required this.onTap,
+    this.onCancelTap,
+    this.showCancelButton = false,
+    this.buttonText,
+    this.cancelButtonText,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+        backgroundColor: const Color(0xFFEEEEEE),
+        contentPadding: EdgeInsets.zero,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25.0),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            /*Lottie.asset(lottieIcon ?? AssetsRes.TICK_MARK_LOTTIE,
+                repeat: false, height: 120),*/
+            Padding(
+              padding: const EdgeInsets.all(30.0),
+              child: AvatarGlow(
+                startDelay: const Duration(milliseconds: 300),
+                glowColor: glowColor ?? Colors.black12,
+                glowShape: BoxShape.circle,
+                curve: Curves.fastOutSlowIn,
+                repeat: false,
+                child: Material(
+                  elevation: 8.0,
+                  shape: const CircleBorder(),
+                  color: Colors.transparent,
+                  child: CircleAvatar(
+                    backgroundImage:
+                        AssetImage(icon ?? AssetsRes.IC_BLOCK_USER),
+                    radius: 40.0,
+                  ),
+                ),
+              ),
+            ),
             Container(
               width: context.width,
               padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),

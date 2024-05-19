@@ -29,6 +29,7 @@ class AssetsRes {
   static const String DUMMY_PROFILE = 'assets/dummy/dummy_profile.png';
   static const String IC_APPLE_ICON = 'assets/icons/ic_apple_icon.png';
   static const String IC_BELL_ICON = 'assets/icons/ic_bell_icon.png';
+  static const String IC_BLOCK_USER = 'assets/icons/ic_block_user.png';
   static const String IC_CALL_ICON = 'assets/icons/ic_call_icon.png';
   static const String IC_CAT_CAR = 'assets/icons/ic_cat_car.png';
   static const String IC_CAT_CLOTHS = 'assets/icons/ic_cat_cloths.png';

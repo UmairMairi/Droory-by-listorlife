@@ -140,7 +140,7 @@ class CompleteProfileView extends BaseView<ProfileVM> {
                 showDialog(
                     context: context,
                     builder: (context) {
-                      return AppAlertDialog(
+                      return AppAlertDialogWithLottie(
                         title: 'Complete Profile',
                         onTap: () async {
                           context.pop();

@@ -31,12 +31,14 @@ class AppTextInputFormatters {
   static List<TextInputFormatter> withNumericFormatter() {
     return [
       FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+      LengthLimitingTextInputFormatter(10),
     ];
   }
 
   static List<TextInputFormatter> withDecimalFormatter() {
     return [
       FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+      LengthLimitingTextInputFormatter(10),
     ];
   }
 

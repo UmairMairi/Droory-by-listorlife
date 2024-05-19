@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:list_and_life/models/setting_item_model.dart';
 import 'package:list_and_life/view/main/chat/inbox_view.dart';
+import 'package:list_and_life/view/main/chat/message_view.dart';
 import 'package:list_and_life/view/main/fevorite/favorite_view.dart';
 import 'package:list_and_life/view/main/permission/location_permission_view.dart';
 import 'package:list_and_life/view/main/sell/sell_view.dart';
@@ -61,6 +63,16 @@ class AppPages {
         path: Routes.editProfile,
         pageBuilder: (context, state) {
           return getPage(child: const EditProfile(), state: state);
+        },
+      ),
+      GoRoute(
+        path: Routes.message,
+        pageBuilder: (context, state) {
+          return getPage(
+              child: MessageView(
+                chat: state.extra as SettingItemModel,
+              ),
+              state: state);
         },
       ),
       GoRoute(

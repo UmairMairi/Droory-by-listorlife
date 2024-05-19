@@ -40,7 +40,7 @@ class SettingVM extends BaseViewModel {
               context: context,
               barrierDismissible: false,
               builder: (BuildContext dialogContext) {
-                return AppAlertDialog(
+                return AppAlertDialogWithLottie(
                   lottieIcon: AssetsRes.DELETE_LOTTIE,
                   title: 'Account Delete',
                   description: 'Are you sure you want to delete this account?',

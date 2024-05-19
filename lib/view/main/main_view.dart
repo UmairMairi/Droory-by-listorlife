@@ -29,7 +29,7 @@ class _MainViewState extends State<MainView> {
         body: PersistentTabView(
           context,
           controller: _controller,
-          screens: [
+          screens: const [
             HomeView(),
             InboxView(),
             SellView(),

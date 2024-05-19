@@ -1,17 +1,24 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:list_and_life/providers/providers.dart';
 import 'package:list_and_life/routes/app_pages.dart';
 import 'package:list_and_life/widgets/app_loading_widget.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:provider/provider.dart';
 
+import 'package:intl/date_symbol_data_local.dart';
+
 import 'helpers/theme_helper.dart';
 
-void main() {
+void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting('en', null);
+  await initializeDateFormatting('en_US,', null);
+  await GetStorage.init();
   runApp(const MyApp());
 }
 

@@ -69,6 +69,7 @@ dependencies:
   google_sign_in: ^6.2.1
   flutter_facebook_auth: ^6.0.4
   firebase_auth: ^4.19.5
+  avatar_glow: ^3.0.1
 
 dev_dependencies:
   flutter_test:
@@ -109,6 +110,7 @@ flutter:
     - assets/dummy/dummy_profile.png
     - assets/icons/ic_apple_icon.png
     - assets/icons/ic_bell_icon.png
+    - assets/icons/ic_block_user.png
     - assets/icons/ic_call_icon.png
     - assets/icons/ic_cat_car.png
     - assets/icons/ic_cat_cloths.png

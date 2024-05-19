@@ -7,6 +7,7 @@ class Routes {
   static const String completeProfile = '/complete_profile';
   static const String notifications = '/notifications';
   static const String editProfile = '/edit_profile';
+  static const String message = '/message';
 
   static const String main = '/main';
   static const String noInternet = '/no_internet';
