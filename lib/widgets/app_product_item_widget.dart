@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/helpers/dialog_helper.dart';
 import 'package:list_and_life/models/setting_item_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
-import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/card_swipe_widget.dart';
 import 'package:list_and_life/widgets/favorite_button.dart';
+
+import '../routes/app_routes.dart';
 
 class AppProductItemWidget extends StatelessWidget {
   final SettingItemModel? data;
@@ -107,95 +110,117 @@ class AppProductItemWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
-                        child: Container(
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 08),
-                          decoration: BoxDecoration(
-                            color: Colors.black54,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Image.asset(
-                                AssetsRes.IC_CALL_ICON,
-                                height: 16,
-                              ),
-                              Gap(05),
-                              Text(
-                                'Call',
-                                style: context.textTheme.labelLarge?.copyWith(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      Gap(02),
-                      Expanded(
-                        child: Container(
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 08),
-                          decoration: BoxDecoration(
-                            color: Colors.black54,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Image.asset(
-                                AssetsRes.IC_CHAT_ICON,
-                                height: 16,
-                              ),
-                              Gap(05),
-                              Text(
-                                'Chat',
-                                style: context.textTheme.labelLarge?.copyWith(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      Gap(02),
-                      Expanded(
-                        child: Container(
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 08),
-                          decoration: BoxDecoration(
-                            color: Colors.black54,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Image.asset(
-                                AssetsRes.IC_WHATSAPP_ICON,
-                                height: 18,
-                              ),
-                              Gap(05),
-                              Text(
-                                'Whatsapp',
-                                style: context.textTheme.labelLarge?.copyWith(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
+                        child: InkWell(
+                          onTap: () => DialogHelper.goToUrl(
+                              uri: Uri.parse("tel://+919876543210")),
+                          child: Container(
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 08),
+                            decoration: BoxDecoration(
+                              color: Colors.black54,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Image.asset(
+                                  AssetsRes.IC_CALL_ICON,
+                                  height: 16,
                                 ),
-                              )
-                            ],
+                                Gap(05),
+                                Text(
+                                  'Call',
+                                  style: context.textTheme.labelLarge?.copyWith(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Gap(02),
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            context.push(
+                              Routes.message,
+                              extra: SettingItemModel(
+                                icon: AssetsRes.DUMMY_CHAT_IMAGE2,
+                                title: 'John Marker',
+                                subTitle: 'Lorem Ipsum is simply dummy text.',
+                                timeStamp: '1 min ago',
+                              ),
+                            );
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 08),
+                            decoration: BoxDecoration(
+                              color: Colors.black54,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Image.asset(
+                                  AssetsRes.IC_CHAT_ICON,
+                                  height: 16,
+                                ),
+                                Gap(05),
+                                Text(
+                                  'Chat',
+                                  style: context.textTheme.labelLarge?.copyWith(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Gap(02),
+                      Expanded(
+                        child: InkWell(
+                          onTap: () => DialogHelper.goToUrl(
+                              uri: Uri.parse(
+                                  'https://wa.me/+919876543210?text=Hii, I am from List & Live app and interested in your ad.')),
+                          child: Container(
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 08),
+                            decoration: BoxDecoration(
+                              color: Colors.black54,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Image.asset(
+                                  AssetsRes.IC_WHATSAPP_ICON,
+                                  height: 18,
+                                ),
+                                Gap(05),
+                                Text(
+                                  'Whatsapp',
+                                  style: context.textTheme.labelLarge?.copyWith(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),

@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/models/setting_item_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
+import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/view_model/home_vm.dart';
 import 'package:list_and_life/widgets/card_swipe_widget.dart';
 
@@ -114,12 +116,18 @@ class HomeView extends BaseView<HomeVM> {
               physics: const NeverScrollableScrollPhysics(),
               itemCount: viewModel.homeItemList.length,
               itemBuilder: (context, index) {
-                return AppProductItemWidget(
-                  data: viewModel.homeItemList[index],
+                return GestureDetector(
+                  onTap: () {
+                    context.push(Routes.productDetails,
+                        extra: viewModel.homeItemList[index]);
+                  },
+                  child: AppProductItemWidget(
+                    data: viewModel.homeItemList[index],
+                  ),
                 );
               },
               separatorBuilder: (BuildContext context, int index) {
-                return Gap(20);
+                return const Gap(20);
               },
             ),
             const Gap(20),

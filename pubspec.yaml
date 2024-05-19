@@ -42,9 +42,9 @@ dependencies:
   cached_network_image: ^3.3.1
   shimmer: ^3.0.0
   flutter_spinkit: ^5.2.1
-  lottie: ^3.1.1
+  lottie: ^3.1.2
   url_launcher: ^6.2.6
-  go_router: ^14.1.1
+  go_router: ^14.1.2
   http_parser: ^4.0.2
   dio: ^5.4.3+1
   mime: ^1.0.5
@@ -103,14 +103,17 @@ flutter:
     - assets/dummy/dummy_chat_image4.png
     - assets/dummy/dummy_chat_image5.png
     - assets/dummy/dummy_chat_image6.png
+    - assets/dummy/dummy_circle_map.png
     - assets/dummy/dummy_iphone_image1.jpg
     - assets/dummy/dummy_iphone_image2.jpg
     - assets/dummy/dummy_iphone_image3.jpg
     - assets/dummy/dummy_iphone_image4.jpg
+    - assets/dummy/dummy_map_image.png
     - assets/dummy/dummy_profile.png
     - assets/icons/ic_apple_icon.png
     - assets/icons/ic_bell_icon.png
     - assets/icons/ic_block_user.png
+    - assets/icons/ic_calender_icon.png
     - assets/icons/ic_call_icon.png
     - assets/icons/ic_cat_car.png
     - assets/icons/ic_cat_cloths.png
@@ -120,16 +123,21 @@ flutter:
     - assets/icons/ic_chat_icon.png
     - assets/icons/ic_delete_account.png
     - assets/icons/ic_filter_icon.png
+    - assets/icons/ic_gear_icon.png
     - assets/icons/ic_google_icon.png
     - assets/icons/ic_image.png
     - assets/icons/ic_item_location.png
+    - assets/icons/ic_loaction_icon.png
     - assets/icons/ic_logout.png
     - assets/icons/ic_logout_icon.png
     - assets/icons/ic_no_wifi.png
     - assets/icons/ic_notification.png
+    - assets/icons/ic_petrol_icon.png
     - assets/icons/ic_privcy_policy.png
     - assets/icons/ic_profile.png
+    - assets/icons/ic_speed_icon.png
     - assets/icons/ic_t_and_c.png
+    - assets/icons/ic_user_icon.png
     - assets/icons/ic_whatsapp_icon.png
     - assets/images/app_logo.png
     - assets/images/location_permission_illustrations.png

@@ -10,6 +10,17 @@
             <string>UIInterfaceOrientationPortrait</string>
         </array>
 
+        <key>LSApplicationQueriesSchemes</key>
+        <array>
+          <string>googlechrome</string>
+          <string>googlechromes</string>
+          <string>http</string>
+          <string>https</string>
+          <string>mailto</string>
+          <string>tel</string>
+          <string>whatsapp</string>
+        </array>
+
         <key>NSPhotoLibraryUsageDescription</key>
         <string>Describe why your app needs permission for the photo library.</string>
 

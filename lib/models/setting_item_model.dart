@@ -9,6 +9,7 @@ class SettingItemModel {
   final String? title;
   final String? subTitle;
   final String? description;
+  final String? longDescription;
   final String? location;
   final String? timeStamp;
   final VoidCallback? onTap;
@@ -18,6 +19,7 @@ class SettingItemModel {
       this.isFav,
       this.subTitle,
       this.description,
+      this.longDescription,
       this.location,
       this.timeStamp,
       this.onTap,
