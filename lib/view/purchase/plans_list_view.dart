@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/view_model/active_plan_v_m.dart';
+import 'package:list_and_life/widgets/app_elevated_button.dart';
 
 class PlansListView extends BaseView<ActivePlanVM> {
   const PlansListView({super.key});
@@ -10,11 +13,11 @@ class PlansListView extends BaseView<ActivePlanVM> {
   Widget build(BuildContext context, ActivePlanVM viewModel) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sell Faster Now'),
+        title: const Text('Sell Faster Now'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -23,33 +26,122 @@ class PlansListView extends BaseView<ActivePlanVM> {
               'Feature Ad',
               style: context.textTheme.titleMedium,
             ),
-            Gap(10),
             ListView.separated(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
-                  return Card();
+                  return Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                viewModel.plansList[index].title ?? '',
+                                style: context.textTheme.titleLarge,
+                              ),
+                              Text(viewModel.plansList[index].subTitle ?? ''),
+                            ],
+                          ),
+                          Gap(10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                viewModel.plansList[index].description ?? '',
+                                style: context.textTheme.labelMedium,
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  viewModel.activateFeaturePlan(index);
+                                },
+                                child: viewModel.selectedFeaturePlan == index
+                                    ? Icon(Icons.check_circle)
+                                    : Icon(
+                                        Icons.circle,
+                                        color: Colors.grey,
+                                      ),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  );
                 },
                 separatorBuilder: (context, index) {
                   return Gap(20);
                 },
                 itemCount: viewModel.plansList.length),
-            Gap(20),
             Text(
               'Boost to Top',
               style: context.textTheme.titleMedium,
             ),
-            Gap(10),
             ListView.separated(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
-                  return Card();
+                  return Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                viewModel.boosterList[index].title ?? '',
+                                style: context.textTheme.titleLarge,
+                              ),
+                              Text(viewModel.boosterList[index].subTitle ?? ''),
+                            ],
+                          ),
+                          Gap(10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                viewModel.boosterList[index].description ?? '',
+                                style: context.textTheme.labelMedium,
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  viewModel.activateBoosterPlan(index);
+                                },
+                                child: viewModel.selectedBoosterPlan == index
+                                    ? Icon(Icons.check_circle)
+                                    : Icon(
+                                        Icons.circle,
+                                        color: Colors.grey,
+                                      ),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  );
                 },
                 separatorBuilder: (context, index) {
                   return Gap(20);
                 },
                 itemCount: viewModel.boosterList.length),
+            AppElevatedButton(
+              width: context.width,
+              onTap: () {
+                context.go(Routes.main);
+              },
+              title: 'Buy Now',
+            ),
+            const Gap(20),
           ],
         ),
       ),
