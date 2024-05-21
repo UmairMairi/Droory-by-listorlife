@@ -18,9 +18,9 @@ class SellView extends BaseView<SellVM> {
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
         child: Column(
           children: [
-            const Text(
+            Text(
               "What are you offering?",
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+              style: context.textTheme.titleLarge,
             ),
             const SizedBox(
               height: 20,
