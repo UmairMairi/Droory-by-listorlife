@@ -209,7 +209,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                     AssetsRes.IC_CALENDER_ICON,
                                     height: 18,
                                   ),
-                                  Gap(05),
+                                  const Gap(10),
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
@@ -274,7 +274,9 @@ class ProductDetailView extends BaseView<ProductVM> {
                               ),
                               Gap(10),
                               InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  context.push(Routes.seeProfile);
+                                },
                                 child: Text(
                                   'See Profile',
                                   style: context.textTheme.titleSmall?.copyWith(

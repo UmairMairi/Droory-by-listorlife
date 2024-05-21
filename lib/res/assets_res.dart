@@ -34,21 +34,32 @@ class AssetsRes {
   static const String IC_BLOCK_USER = 'assets/icons/ic_block_user.png';
   static const String IC_CALENDER_ICON = 'assets/icons/ic_calender_icon.png';
   static const String IC_CALL_ICON = 'assets/icons/ic_call_icon.png';
+  static const String IC_CAR_CAT_IMAGE = 'assets/icons/ic_car_cat_image.png';
   static const String IC_CAT_CAR = 'assets/icons/ic_cat_car.png';
   static const String IC_CAT_CLOTHS = 'assets/icons/ic_cat_cloths.png';
   static const String IC_CAT_FURNITURE = 'assets/icons/ic_cat_furniture.png';
   static const String IC_CAT_LAPTOP = 'assets/icons/ic_cat_laptop.png';
   static const String IC_CAT_MOBILE = 'assets/icons/ic_cat_mobile.png';
   static const String IC_CHAT_ICON = 'assets/icons/ic_chat_icon.png';
+  static const String IC_CLOTHES_CAT_IMGE =
+      'assets/icons/ic_clothes_cat_imge.png';
+  static const String IC_CONGRATULATION_IMAGE =
+      'assets/icons/ic_congratulation_image.png';
   static const String IC_DELETE_ACCOUNT = 'assets/icons/ic_delete_account.png';
   static const String IC_FILTER_ICON = 'assets/icons/ic_filter_icon.png';
+  static const String IC_FURNITURE_CAT_IMGE =
+      'assets/icons/ic_furniture_cat_imge.png';
   static const String IC_GEAR_ICON = 'assets/icons/ic_gear_icon.png';
   static const String IC_GOOGLE_ICON = 'assets/icons/ic_google_icon.png';
   static const String IC_IMAGE = 'assets/icons/ic_image.png';
   static const String IC_ITEM_LOCATION = 'assets/icons/ic_item_location.png';
+  static const String IC_LAPTOP_CAT_IMGE =
+      'assets/icons/ic_laptop_cat_imge.png';
   static const String IC_LOACTION_ICON = 'assets/icons/ic_loaction_icon.png';
   static const String IC_LOGOUT = 'assets/icons/ic_logout.png';
   static const String IC_LOGOUT_ICON = 'assets/icons/ic_logout_icon.png';
+  static const String IC_MOBILE_CAT_IMGE =
+      'assets/icons/ic_mobile_cat_imge.png';
   static const String IC_NO_WIFI = 'assets/icons/ic_no_wifi.png';
   static const String IC_NOTIFICATION = 'assets/icons/ic_notification.png';
   static const String IC_PETROL_ICON = 'assets/icons/ic_petrol_icon.png';

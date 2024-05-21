@@ -70,6 +70,7 @@ dependencies:
   flutter_facebook_auth: ^6.0.4
   firebase_auth: ^4.19.5
   avatar_glow: ^3.0.1
+  syncfusion_flutter_sliders: ^25.2.4
 
 dev_dependencies:
   flutter_test:
@@ -115,21 +116,27 @@ flutter:
     - assets/icons/ic_block_user.png
     - assets/icons/ic_calender_icon.png
     - assets/icons/ic_call_icon.png
+    - assets/icons/ic_car_cat_image.png
     - assets/icons/ic_cat_car.png
     - assets/icons/ic_cat_cloths.png
     - assets/icons/ic_cat_furniture.png
     - assets/icons/ic_cat_laptop.png
     - assets/icons/ic_cat_mobile.png
     - assets/icons/ic_chat_icon.png
+    - assets/icons/ic_clothes_cat_imge.png
+    - assets/icons/ic_congratulation_image.png
     - assets/icons/ic_delete_account.png
     - assets/icons/ic_filter_icon.png
+    - assets/icons/ic_furniture_cat_imge.png
     - assets/icons/ic_gear_icon.png
     - assets/icons/ic_google_icon.png
     - assets/icons/ic_image.png
     - assets/icons/ic_item_location.png
+    - assets/icons/ic_laptop_cat_imge.png
     - assets/icons/ic_loaction_icon.png
     - assets/icons/ic_logout.png
     - assets/icons/ic_logout_icon.png
+    - assets/icons/ic_mobile_cat_imge.png
     - assets/icons/ic_no_wifi.png
     - assets/icons/ic_notification.png
     - assets/icons/ic_petrol_icon.png

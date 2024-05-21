@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
-import 'package:list_and_life/view/product/edit_product_view.dart';
+import 'package:list_and_life/view/product/my_product_view.dart';
 
 import '../../../view_model/my_ads_v_m.dart';
 
@@ -23,8 +23,8 @@ class MyAdsView extends BaseView<MyAdsVM> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => EditProductView(
-                        data: viewModel.favItemList[index + 1])));
+                    builder: (context) =>
+                        MyProductView(data: viewModel.favItemList[index + 1])));
           },
           child: Card(
             shape: RoundedRectangleBorder(

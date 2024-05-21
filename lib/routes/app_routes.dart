@@ -16,4 +16,8 @@ class Routes {
   static const String termsOfUse = '/termsOfUse';
   static const String permission = '/permission';
   static const String planList = '/plan_list';
+  static const String seeProfile = '/see_profile';
+  static const String filter = '/filter';
+  static const String chooseLocationView = '/choose_location';
+  static const String postAddedFinalView = '/post_added_final';
 }

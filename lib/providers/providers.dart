@@ -12,6 +12,7 @@ import '../view_model/my_ads_v_m.dart';
 import '../view_model/notification_v_m.dart';
 import '../view_model/product_v_m.dart';
 import '../view_model/profile_vm.dart';
+import '../view_model/sell_v_m.dart';
 import '../view_model/setting_v_m.dart';
 
 class Providers {
@@ -27,6 +28,7 @@ class Providers {
       ChangeNotifierProvider(create: (BuildContext context) => ProductVM()),
       ChangeNotifierProvider(create: (BuildContext context) => MyAdsVM()),
       ChangeNotifierProvider(create: (BuildContext context) => ActivePlanVM()),
+      ChangeNotifierProvider(create: (BuildContext context) => SellVM()),
       ChangeNotifierProvider(
           create: (BuildContext context) => NotificationVM()),
     ];

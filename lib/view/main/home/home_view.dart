@@ -70,14 +70,19 @@ class HomeView extends BaseView<HomeVM> {
                       hintText: 'Find Cars, Mobile Phones and more...'),
                 )),
                 const Gap(10),
-                Container(
-                  padding: const EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                      color: const Color(0xffd5d5d5),
-                      borderRadius: BorderRadius.circular(8)),
-                  child: Image.asset(
-                    AssetsRes.IC_FILTER_ICON,
-                    height: 25,
+                InkWell(
+                  onTap: () {
+                    context.push(Routes.filter);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                        color: const Color(0xffd5d5d5),
+                        borderRadius: BorderRadius.circular(8)),
+                    child: Image.asset(
+                      AssetsRes.IC_FILTER_ICON,
+                      height: 25,
+                    ),
                   ),
                 ),
                 const Gap(10),

@@ -6,9 +6,9 @@ import '../../models/setting_item_model.dart';
 import '../../res/assets_res.dart';
 import '../../widgets/card_swipe_widget.dart';
 
-class EditProductView extends StatelessWidget {
+class MyProductView extends StatelessWidget {
   final SettingItemModel? data;
-  const EditProductView({super.key, this.data});
+  const MyProductView({super.key, this.data});
 
   @override
   Widget build(BuildContext context) {
