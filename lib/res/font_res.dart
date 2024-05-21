@@ -11,4 +11,22 @@ class FontRes {
   static const String MONTSERRAT_MEDIUM = 'Montserrat-Medium';
   static const String MONTSERRAT_REGULAR = 'Montserrat-Regular';
   static const String MONTSERRAT_SEMIBOLD = 'Montserrat-SemiBold';
+  static const String POPPINS_BLACK = 'Poppins-Black';
+  static const String POPPINS_BLACKITALIC = 'Poppins-BlackItalic';
+  static const String POPPINS_BOLD = 'Poppins-Bold';
+  static const String POPPINS_BOLDITALIC = 'Poppins-BoldItalic';
+  static const String POPPINS_EXTRABOLD = 'Poppins-ExtraBold';
+  static const String POPPINS_EXTRABOLDITALIC = 'Poppins-ExtraBoldItalic';
+  static const String POPPINS_EXTRALIGHT = 'Poppins-ExtraLight';
+  static const String POPPINS_EXTRALIGHTITALIC = 'Poppins-ExtraLightItalic';
+  static const String POPPINS_ITALIC = 'Poppins-Italic';
+  static const String POPPINS_LIGHT = 'Poppins-Light';
+  static const String POPPINS_LIGHTITALIC = 'Poppins-LightItalic';
+  static const String POPPINS_MEDIUM = 'Poppins-Medium';
+  static const String POPPINS_MEDIUMITALIC = 'Poppins-MediumItalic';
+  static const String POPPINS_REGULAR = 'Poppins-Regular';
+  static const String POPPINS_SEMIBOLD = 'Poppins-SemiBold';
+  static const String POPPINS_SEMIBOLDITALIC = 'Poppins-SemiBoldItalic';
+  static const String POPPINS_THIN = 'Poppins-Thin';
+  static const String POPPINS_THINITALIC = 'Poppins-ThinItalic';
 }

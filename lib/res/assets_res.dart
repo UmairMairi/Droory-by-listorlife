@@ -29,6 +29,8 @@ class AssetsRes {
       'assets/dummy/dummy_iphone_image4.jpg';
   static const String DUMMY_MAP_IMAGE = 'assets/dummy/dummy_map_image.png';
   static const String DUMMY_PROFILE = 'assets/dummy/dummy_profile.png';
+  static const String IC_ACCESSORIES_IMAGE =
+      'assets/icons/ic_accessories_image.png';
   static const String IC_APPLE_ICON = 'assets/icons/ic_apple_icon.png';
   static const String IC_BELL_ICON = 'assets/icons/ic_bell_icon.png';
   static const String IC_BLOCK_USER = 'assets/icons/ic_block_user.png';
@@ -67,6 +69,7 @@ class AssetsRes {
   static const String IC_PROFILE = 'assets/icons/ic_profile.png';
   static const String IC_SPEED_ICON = 'assets/icons/ic_speed_icon.png';
   static const String IC_T_AND_C = 'assets/icons/ic_t_and_c.png';
+  static const String IC_TABLET_IMAGE = 'assets/icons/ic_tablet_image.png';
   static const String IC_USER_ICON = 'assets/icons/ic_user_icon.png';
   static const String IC_WHATSAPP_ICON = 'assets/icons/ic_whatsapp_icon.png';
   static const String APP_LOGO = 'assets/images/app_logo.png';

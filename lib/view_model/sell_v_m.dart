@@ -23,6 +23,7 @@ class SellVM extends BaseViewModel {
         context.push(Routes.chooseLocationView);
         break;
       case 1:
+        context.push(Routes.mobileSubcategoryView);
         break;
       case 2:
         break;

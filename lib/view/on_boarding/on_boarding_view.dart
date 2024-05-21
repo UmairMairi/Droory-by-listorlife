@@ -37,19 +37,19 @@ class OnBoardingView extends BaseView<OnBoardingVM> {
                             const Gap(10),
                             Text(
                               viewModel.itemsList[index].title,
-                              style: context.textTheme.titleMedium,
+                              style: context.textTheme.titleLarge,
                               textAlign: TextAlign.center,
                             ),
                             const Gap(10),
                             Text(
                               viewModel.itemsList[index].description,
-                              style: context.textTheme.bodySmall,
+                              style: context.textTheme.bodyMedium,
                               textAlign: TextAlign.center,
                             )
                           ],
                         );
                       })),
-              Gap(20),
+              Gap(40),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

@@ -8,28 +8,41 @@ import '../../../routes/app_routes.dart';
 import '../../../widgets/app_product_item_widget.dart';
 
 class MyFavouritesView extends BaseView<MyAdsVM> {
-  const MyFavouritesView({Key? key}) : super(key: key);
+  const MyFavouritesView({super.key});
 
   @override
   Widget build(BuildContext context, MyAdsVM viewModel) {
-    return ListView.separated(
-      shrinkWrap: true,
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      itemCount: viewModel.favItemList.length,
-      itemBuilder: (context, index) {
-        return GestureDetector(
-          onTap: () {
-            context.push(Routes.productDetails,
-                extra: viewModel.favItemList[index]);
-          },
-          child: AppProductItemWidget(
-            data: viewModel.favItemList[index],
-          ),
-        );
-      },
-      separatorBuilder: (BuildContext context, int index) {
-        return const Gap(20);
-      },
+    return Scaffold(
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+        child: Column(
+          children: [
+            ListView.separated(
+              clipBehavior: Clip.antiAlias,
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: viewModel.favItemList.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    context.push(Routes.productDetails,
+                        extra: viewModel.favItemList[index]);
+                  },
+                  child: AppProductItemWidget(
+                    data: viewModel.favItemList[index],
+                  ),
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return const SizedBox(
+                    height:
+                        20); // Use SizedBox instead of Gap for better control
+              },
+            ),
+            const SizedBox(height: 40), // Ensure this is intended
+          ],
+        ),
+      ),
     );
   }
 }

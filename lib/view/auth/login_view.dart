@@ -48,7 +48,10 @@ class LoginView extends BaseView<AuthVM> {
             AppTextField(
               title: "Phone Number",
               hint: 'Phone Number',
+              inputFormatters:
+                  AppTextInputFormatters.withPhoneNumberFormatter(),
               controller: viewModel.phoneTextController,
+              inputType: TextInputType.phone,
               prefix: CountryPicker(
                   selectedCountry: viewModel.selectedCountry,
                   dense: false,
@@ -56,7 +59,7 @@ class LoginView extends BaseView<AuthVM> {
                   showLine: false,
                   showFlag: true,
                   showFlagCircle: false,
-                  showDialingCode: false,
+                  showDialingCode: true,
                   //displays dialing code, false by default
                   showName: false,
                   //displays Name, true by default
@@ -67,7 +70,7 @@ class LoginView extends BaseView<AuthVM> {
                   showCurrencyISO: false,
                   onChanged: (country) => viewModel.updateCountry(country)),
             ),
-            Gap(30),
+            const Flexible(child: Gap(50)),
             AppElevatedButton(
               width: context.width,
               onTap: () {

@@ -3,13 +3,15 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/res/assets_res.dart';
+import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/view/product/my_product_view.dart';
+import 'package:list_and_life/widgets/app_elevated_button.dart';
 
 import '../../../view_model/my_ads_v_m.dart';
 
 class MyAdsView extends BaseView<MyAdsVM> {
-  const MyAdsView({Key? key}) : super(key: key);
+  const MyAdsView({super.key});
 
   @override
   Widget build(BuildContext context, MyAdsVM viewModel) {
@@ -31,13 +33,23 @@ class MyAdsView extends BaseView<MyAdsVM> {
                 side: new BorderSide(color: Colors.grey.shade200, width: 2.0),
                 borderRadius: BorderRadius.circular(20.0)),
             elevation: 0,
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 15.0, vertical: 10),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Colors.grey.shade200,
+                        width: 2.0,
+                      ),
+                    ),
+                  ),
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
@@ -47,8 +59,11 @@ class MyAdsView extends BaseView<MyAdsVM> {
                       Icon(Icons.more_horiz),
                     ],
                   ),
-                  const Gap(10),
-                  Row(
+                ),
+                const Gap(20),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -57,7 +72,6 @@ class MyAdsView extends BaseView<MyAdsVM> {
                           borderRadius: BorderRadius.circular(10),
                           child: Image.asset(
                             AssetsRes.DUMMY_CAR_IMAGE1,
-                            width: 150,
                           ),
                         ),
                       ),
@@ -68,16 +82,17 @@ class MyAdsView extends BaseView<MyAdsVM> {
                         children: [
                           Text(
                             'Maruti Suzuki Swift',
-                            style: context.textTheme.titleSmall,
+                            style: context.textTheme.titleMedium,
                           ),
                           Text(
                             '2015 - 48000.0 km',
-                            style: context.textTheme.labelSmall
-                                ?.copyWith(color: Colors.grey),
+                            style: context.textTheme.labelMedium?.copyWith(
+                                fontFamily: FontRes.MONTSERRAT_SEMIBOLD,
+                                color: Colors.grey),
                           ),
                           Text(
                             'EGP300',
-                            style: context.textTheme.titleLarge
+                            style: context.textTheme.titleMedium
                                 ?.copyWith(color: Colors.red),
                           ),
                           const Gap(10),
@@ -97,7 +112,10 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                 const Gap(02),
                                 Text(
                                   'Likes: 5',
-                                  style: context.textTheme.labelSmall,
+                                  style: context.textTheme.labelMedium
+                                      ?.copyWith(
+                                          fontFamily:
+                                              FontRes.MONTSERRAT_MEDIUM),
                                 ),
                                 const Gap(10),
                                 const Icon(
@@ -107,7 +125,10 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                 const Gap(02),
                                 Text(
                                   'Views: 10',
-                                  style: context.textTheme.labelSmall,
+                                  style: context.textTheme.labelMedium
+                                      ?.copyWith(
+                                          fontFamily:
+                                              FontRes.MONTSERRAT_MEDIUM),
                                 )
                               ],
                             ),
@@ -116,32 +137,55 @@ class MyAdsView extends BaseView<MyAdsVM> {
                       )
                     ],
                   ),
-                  const Gap(20),
-                  Container(
-                    width: context.width,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 10),
-                    decoration: BoxDecoration(color: Colors.grey.shade300),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {},
-                          child: const Text('Active '),
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                              foregroundColor: Colors.white),
-                        ),
-                        const Gap(05),
-                        Text(
-                          'This ad is currently live',
-                          style: context.textTheme.labelSmall,
-                        ),
-                        const Gap(05),
-                        Row(
-                          children: [
-                            Expanded(
+                ),
+                const Gap(20),
+                Container(
+                  width: context.width,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  decoration: BoxDecoration(color: Colors.grey.shade300),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AppElevatedButton(
+                        onTap: () {},
+                        title: 'Active',
+                        height: 40,
+                        width: 80,
+                        backgroundColor: Colors.red,
+                      ),
+                      const Gap(10),
+                      Text(
+                        'This ad is currently live',
+                        style: context.textTheme.labelMedium
+                            ?.copyWith(fontFamily: FontRes.MONTSERRAT_MEDIUM),
+                      ),
+                      const Gap(10),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              alignment: Alignment.center,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 08),
+                              decoration: BoxDecoration(
+                                color: Colors.black54,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                'Mark as Sold',
+                                style: context.textTheme.labelLarge?.copyWith(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ),
+                          Gap(10),
+                          Expanded(
+                            child: InkWell(
+                              onTap: () => context.push(Routes.planList),
                               child: Container(
                                 alignment: Alignment.center,
                                 padding: EdgeInsets.symmetric(
@@ -151,7 +195,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Text(
-                                  'Mark as Sold',
+                                  'Sell Faster Now',
                                   style: context.textTheme.labelLarge?.copyWith(
                                       color: Colors.white,
                                       fontSize: 12,
@@ -159,36 +203,13 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                 ),
                               ),
                             ),
-                            Gap(10),
-                            Expanded(
-                              child: InkWell(
-                                onTap: () => context.push(Routes.planList),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 08),
-                                  decoration: BoxDecoration(
-                                    color: Colors.black54,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Text(
-                                    'Sell Faster Now',
-                                    style: context.textTheme.labelLarge
-                                        ?.copyWith(
-                                            color: Colors.white,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w600),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                )
+              ],
             ),
           ),
         );

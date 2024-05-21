@@ -42,4 +42,13 @@ class MyAdsVM extends BaseViewModel {
         longDescription:
             'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry.'),
   ];
+
+  int _selectIndex = 0;
+
+  int get selectIndex => _selectIndex;
+
+  set selectIndex(int index) {
+    _selectIndex = index;
+    notifyListeners();
+  }
 }

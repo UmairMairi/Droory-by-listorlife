@@ -47,7 +47,7 @@ class VerificationView extends BaseView<AuthVM> {
                 print("Entered OTP: $otp");
               },
             ),
-            const Gap(30),
+            const Flexible(child: Gap(50)),
             AppElevatedButton(
               width: context.width,
               onTap: () {

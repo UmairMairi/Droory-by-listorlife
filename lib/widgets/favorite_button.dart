@@ -61,7 +61,7 @@ class _FavoriteButtonState extends State<FavoriteButton>
         animation: _controller,
         builder: (BuildContext context, Widget? child) {
           return Icon(
-            _isFavorite ? Icons.favorite : Icons.favorite_border,
+            Icons.favorite,
             color: _isFavorite ? Colors.red : Colors.grey,
             size: 24.0 * _animation.value,
           );

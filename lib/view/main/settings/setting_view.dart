@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/res/assets_res.dart';
+import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/view_model/profile_vm.dart';
 import 'package:list_and_life/view_model/setting_v_m.dart';
@@ -59,7 +60,13 @@ class SettingView extends BaseView<SettingVM> {
                           context.push(Routes.editProfile);
                         },
                         icon: const Icon(CupertinoIcons.square_pencil)),
-                    Text('john@gmail.com')
+                    Text(
+                      'john@gmail.com',
+                      style: context.textTheme.bodyMedium?.copyWith(
+                        fontFamily: FontRes.POPPINS_REGULAR,
+                        fontSize: 18,
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -94,7 +101,8 @@ class SettingView extends BaseView<SettingVM> {
                       const Gap(10),
                       Text(
                         'Notifications',
-                        style: context.textTheme.titleSmall,
+                        style: context.textTheme.titleMedium
+                            ?.copyWith(fontFamily: FontRes.POPPINS_MEDIUM),
                       ),
                     ],
                   ),
@@ -126,7 +134,7 @@ class SettingView extends BaseView<SettingVM> {
               ),
               child: ListView.separated(
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     return InkWell(
                         onTap: viewModel.settingList[index].onTap,
@@ -163,10 +171,11 @@ class SettingItemView extends StatelessWidget {
               item.icon ?? '',
               width: 40,
             ),
-            Gap(10),
+            const Gap(10),
             Text(
               item.title ?? '',
-              style: context.textTheme.titleSmall,
+              style: context.textTheme.titleMedium
+                  ?.copyWith(fontFamily: FontRes.POPPINS_MEDIUM),
             ),
           ],
         ),

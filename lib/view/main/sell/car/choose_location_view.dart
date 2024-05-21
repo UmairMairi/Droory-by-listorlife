@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:list_and_life/view/main/sell/car/post_added_final_view.dart';
 
+import 'include_car_detail_view.dart';
+
 class ChooseLocationView extends StatelessWidget {
   const ChooseLocationView({super.key});
 
@@ -98,7 +100,8 @@ class ChooseLocationView extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => PostAddedFinalView()),
+                  MaterialPageRoute(
+                      builder: (context) => const IncludeCarDetailView()),
                 );
               },
               child: Container(

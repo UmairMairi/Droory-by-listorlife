@@ -45,7 +45,10 @@ class HomeView extends BaseView<HomeVM> {
                 decoration: BoxDecoration(
                     color: Colors.black,
                     borderRadius: BorderRadius.circular(10)),
-                child: Image.asset(AssetsRes.IC_BELL_ICON)),
+                child: Image.asset(
+                  AssetsRes.IC_BELL_ICON,
+                  scale: 1.3,
+                )),
           )
         ],
       ),
@@ -62,11 +65,12 @@ class HomeView extends BaseView<HomeVM> {
                     child: TextField(
                   autofocus: false,
                   decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.search),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                           borderSide:
                               const BorderSide(color: Color(0xffd5d5d5))),
-                      hintStyle: context.textTheme.labelMedium,
+                      hintStyle: context.textTheme.labelSmall,
                       hintText: 'Find Cars, Mobile Phones and more...'),
                 )),
                 const Gap(10),
@@ -94,23 +98,30 @@ class HomeView extends BaseView<HomeVM> {
               child: Row(
                 children:
                     List.generate(viewModel.categoryItems.length, (index) {
-                  return Column(
+                  return Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
-                        child: Image.asset(
-                          viewModel.categoryItems[index].icon ?? '',
-                          height: 70,
-                        ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: Image.asset(
+                              viewModel.categoryItems[index].icon ?? '',
+                              height: 70,
+                            ),
+                          ),
+                          const Gap(10),
+                          Text(
+                            viewModel.categoryItems[index].title ?? '',
+                            style: context.textTheme.titleSmall,
+                          ),
+                        ],
                       ),
-                      const Gap(10),
-                      Text(
-                        viewModel.categoryItems[index].title ?? '',
-                        style: context.textTheme.titleSmall,
-                      ),
+                      Gap(18),
                     ],
                   );
                 }),
@@ -141,7 +152,7 @@ class HomeView extends BaseView<HomeVM> {
                 return const Gap(20);
               },
             ),
-            const Gap(20),
+            const Gap(40),
           ],
         ),
       ),

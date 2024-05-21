@@ -10,6 +10,14 @@ class ThemeHelper {
       colorScheme: lightColorScheme,
       brightness: Brightness.light,
       fontFamily: 'Montserrat-Medium',
+      appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.transparent,
+          shadowColor: Colors.transparent,
+          centerTitle: true,
+          titleTextStyle: TextStyle(
+              fontSize: 18,
+              fontFamily: FontRes.MONTSERRAT_BOLD,
+              color: Colors.black)),
       cardTheme: const CardTheme(surfaceTintColor: Colors.white),
       textTheme: const TextTheme(
         headlineLarge:
@@ -19,7 +27,7 @@ class ThemeHelper {
         headlineSmall:
             TextStyle(fontFamily: FontRes.MONTSERRAT_BOLD, fontSize: 18),
         titleLarge:
-            TextStyle(fontFamily: FontRes.MONTSERRAT_SEMIBOLD, fontSize: 18),
+            TextStyle(fontFamily: FontRes.MONTSERRAT_BOLD, fontSize: 18),
         titleMedium:
             TextStyle(fontFamily: FontRes.MONTSERRAT_SEMIBOLD, fontSize: 16),
         titleSmall:
@@ -29,9 +37,13 @@ class ThemeHelper {
         bodyMedium:
             TextStyle(fontFamily: FontRes.MONTSERRAT_REGULAR, fontSize: 14),
         bodySmall:
-            TextStyle(fontFamily: FontRes.MONTSERRAT_REGULAR, fontSize: 14),
-        labelMedium:
+            TextStyle(fontFamily: FontRes.MONTSERRAT_REGULAR, fontSize: 12),
+        labelLarge:
             TextStyle(fontFamily: FontRes.MONTSERRAT_LIGHT, fontSize: 14),
+        labelMedium:
+            TextStyle(fontFamily: FontRes.MONTSERRAT_LIGHT, fontSize: 12),
+        labelSmall:
+            TextStyle(fontFamily: FontRes.MONTSERRAT_LIGHT, fontSize: 10),
       ),
     );
   }
@@ -62,7 +74,7 @@ class ThemeHelper {
         bodySmall:
             TextStyle(fontFamily: FontRes.MONTSERRAT_REGULAR, fontSize: 14),
         labelMedium:
-            TextStyle(fontFamily: FontRes.MONTSERRAT_LIGHT, fontSize: 14),
+            TextStyle(fontFamily: FontRes.MONTSERRAT_LIGHT, fontSize: 12),
       ),
     );
   }

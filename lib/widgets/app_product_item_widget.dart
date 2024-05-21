@@ -6,6 +6,7 @@ import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/helpers/dialog_helper.dart';
 import 'package:list_and_life/models/setting_item_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
+import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/widgets/card_swipe_widget.dart';
 import 'package:list_and_life/widgets/favorite_button.dart';
 
@@ -95,13 +96,15 @@ class AppProductItemWidget extends StatelessWidget {
                         Gap(05),
                         Text(
                           data?.location ?? '',
-                          style: context.textTheme.labelSmall,
+                          style: context.textTheme.labelLarge?.copyWith(
+                              fontFamily: FontRes.MONTSERRAT_REGULAR),
                         ),
                       ],
                     ),
                     Text(
                       data?.timeStamp ?? 'Today',
-                      style: context.textTheme.labelSmall,
+                      style: context.textTheme.labelLarge
+                          ?.copyWith(fontFamily: FontRes.MONTSERRAT_REGULAR),
                     )
                   ],
                 ),
@@ -143,7 +146,7 @@ class AppProductItemWidget extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Gap(02),
+                      Gap(7.8),
                       Expanded(
                         child: InkWell(
                           onTap: () {
@@ -187,7 +190,7 @@ class AppProductItemWidget extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Gap(02),
+                      Gap(7.8),
                       Expanded(
                         child: InkWell(
                           onTap: () => DialogHelper.goToUrl(

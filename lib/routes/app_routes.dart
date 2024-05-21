@@ -20,4 +20,5 @@ class Routes {
   static const String filter = '/filter';
   static const String chooseLocationView = '/choose_location';
   static const String postAddedFinalView = '/post_added_final';
+  static const String mobileSubcategoryView = '/mobile_subcategory';
 }

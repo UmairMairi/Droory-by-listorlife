@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/res/assets_res.dart';
+import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -60,9 +61,11 @@ class LocationPermissionView extends StatelessWidget {
                 onPressed: () {
                   context.go(Routes.main);
                 },
-                child: Text(
+                child: const Text(
                   'Skip',
-                  style: TextStyle(decoration: TextDecoration.underline),
+                  style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      fontFamily: FontRes.MONTSERRAT_SEMIBOLD),
                 ))
           ],
         ),

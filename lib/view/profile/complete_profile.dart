@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/base/text_formatters/text_formatters.dart';
 import 'package:list_and_life/helpers/dialog_helper.dart';
 import 'package:list_and_life/helpers/image_picker_helper.dart';
 import 'package:list_and_life/routes/app_routes.dart';
@@ -27,7 +28,7 @@ class CompleteProfileView extends BaseView<ProfileVM> {
         ),
         centerTitle: true,
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -87,20 +88,26 @@ class CompleteProfileView extends BaseView<ProfileVM> {
                       ],
                     ),
             ),
-            const Flexible(child: const Gap(80)),
-            const AppTextField(
+            const Gap(50),
+            AppTextField(
               title: 'First Name',
               hint: 'Enter',
+              inputType: TextInputType.name,
+              inputFormatters: AppTextInputFormatters.withNameFormatter(),
             ),
             const Gap(10),
-            const AppTextField(
+            AppTextField(
               title: 'Last Name',
               hint: 'Enter',
+              inputType: TextInputType.name,
+              inputFormatters: AppTextInputFormatters.withNameFormatter(),
             ),
             const Gap(10),
-            const AppTextField(
+            AppTextField(
               title: 'Email',
               hint: 'Enter',
+              inputType: TextInputType.emailAddress,
+              inputFormatters: AppTextInputFormatters.withEmailFormatter(),
             ),
             const Gap(10),
             Row(
@@ -133,7 +140,7 @@ class CompleteProfileView extends BaseView<ProfileVM> {
                 ),
               ],
             ),
-            const Gap(30),
+            const Gap(50),
             AppElevatedButton(
               width: context.width,
               onTap: () {

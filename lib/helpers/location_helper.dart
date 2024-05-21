@@ -57,7 +57,7 @@ class LocationHelper {
       List<Placemark> placemarks =
           await placemarkFromCoordinates(latitude, longitude);
       Placemark place = placemarks.first;
-      return "${place.subLocality}, ${place.locality}, ${place.administrativeArea}, ${place.country}";
+      return "${place.locality}, ${place.administrativeArea}, ${place.country}";
     } catch (e) {
       return "Unable to get address for the provided coordinates.";
     }

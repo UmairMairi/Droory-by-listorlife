@@ -4,6 +4,7 @@ import 'package:list_and_life/models/setting_item_model.dart';
 import 'package:list_and_life/view/main/chat/message_view.dart';
 import 'package:list_and_life/view/main/filtter/Filter_view.dart';
 import 'package:list_and_life/view/main/permission/location_permission_view.dart';
+import 'package:list_and_life/view/main/sell/mobile/mobile_category_view.dart';
 
 import 'package:list_and_life/view/main/settings/TermsOfUseView.dart';
 import 'package:list_and_life/view/product/product_detail_view.dart';
@@ -131,6 +132,12 @@ class AppPages {
         path: Routes.postAddedFinalView,
         pageBuilder: (context, state) {
           return getPage(child: const PostAddedFinalView(), state: state);
+        },
+      ),
+      GoRoute(
+        path: Routes.mobileSubcategoryView,
+        pageBuilder: (context, state) {
+          return getPage(child: const MobileCategoryView(), state: state);
         },
       ),
       GoRoute(
