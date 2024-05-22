@@ -116,13 +116,13 @@ class _MessageBarWithSuggetionsState extends State<MessageBarWithSuggestions> {
                 ),
               ),
               IconButton(
-                icon: Icon(Icons.attach_file),
+                icon: const Icon(Icons.attach_file),
                 onPressed: () {
                   widget.onPickImageClick();
                 },
               ),
               IconButton(
-                icon: Icon(Icons.mic),
+                icon: const Icon(Icons.mic),
                 onPressed: () {
                   widget.onRecordingClick();
                 },
@@ -156,7 +156,7 @@ class _MessageBarWithSuggetionsState extends State<MessageBarWithSuggestions> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30),
             ),
-            margin: EdgeInsets.symmetric(horizontal: 20),
+            margin: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               children: [
                 Padding(
@@ -219,11 +219,11 @@ class _MessageBarWithSuggetionsState extends State<MessageBarWithSuggestions> {
           ),
         ),
         IconButton(
-          icon: Icon(Icons.attach_file),
+          icon: const Icon(Icons.attach_file),
           onPressed: () {},
         ),
         IconButton(
-          icon: Icon(Icons.mic),
+          icon: const Icon(Icons.mic),
           onPressed: () {},
         ),
       ],

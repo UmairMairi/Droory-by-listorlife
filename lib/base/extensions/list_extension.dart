@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 extension ListExtension<E> on List<E> {
   /// Add [item] to [List<E>] only if [item] is not null.

@@ -71,7 +71,7 @@ class SettingView extends BaseView<SettingVM> {
                 ),
               ),
             ),
-            Gap(20),
+            const Gap(20),
             Container(
               width: context.width,
               padding: const EdgeInsets.all(10),
@@ -116,7 +116,7 @@ class SettingView extends BaseView<SettingVM> {
                 ],
               ),
             ),
-            Gap(20),
+            const Gap(20),
             Container(
               width: context.width,
               padding: const EdgeInsets.all(10),
@@ -142,7 +142,7 @@ class SettingView extends BaseView<SettingVM> {
                             item: viewModel.settingList[index]));
                   },
                   separatorBuilder: (context, index) {
-                    return Divider();
+                    return const Divider();
                   },
                   itemCount: viewModel.settingList.length),
             )

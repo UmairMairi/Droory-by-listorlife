@@ -89,7 +89,7 @@ class PostAddedFinalView extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                   color: Colors.black.withOpacity(0.50)),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Image.asset(

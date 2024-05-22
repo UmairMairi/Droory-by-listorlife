@@ -264,7 +264,7 @@ class _FilterViewState extends State<FilterView> {
                   color: Colors.black,
                   borderRadius: BorderRadius.circular(50),
                 ),
-                child: Text(
+                child: const Text(
                   "Apply",
                   style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
@@ -283,7 +283,7 @@ class _FilterViewState extends State<FilterView> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(50),
                     border: Border.all(color: Colors.black, width: 2)),
-                child: Text(
+                child: const Text(
                   "Reset",
                   style: TextStyle(color: Colors.black, fontSize: 16),
                 ),

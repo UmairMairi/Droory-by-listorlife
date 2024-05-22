@@ -1,7 +1,5 @@
 import 'package:ccp_dialog/country_picker/flutter_country_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
@@ -78,12 +76,12 @@ class LoginView extends BaseView<AuthVM> {
               },
               title: 'Continue',
             ),
-            Flexible(child: Gap(100)),
+            const Flexible(child: Gap(100)),
             Text(
               'Login with Social',
               style: context.textTheme.titleSmall,
             ),
-            Gap(30),
+            const Gap(30),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -96,7 +94,7 @@ class LoginView extends BaseView<AuthVM> {
                     ),
                   ),
                 ),
-                Gap(10),
+                const Gap(10),
                 Card(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),

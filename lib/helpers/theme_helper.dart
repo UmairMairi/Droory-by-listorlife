@@ -10,6 +10,10 @@ class ThemeHelper {
       colorScheme: lightColorScheme,
       brightness: Brightness.light,
       fontFamily: 'Montserrat-Medium',
+      popupMenuTheme:  PopupMenuThemeData(
+        textStyle: const TextStyle(fontFamily: FontRes.MONTSERRAT_BOLD, color: Colors.black),
+        labelTextStyle: WidgetStateProperty.all<TextStyle>(const TextStyle(fontFamily: FontRes.MONTSERRAT_SEMIBOLD, color: Colors.black)),
+      ),
       appBarTheme: const AppBarTheme(
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,

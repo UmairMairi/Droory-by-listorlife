@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -72,7 +71,7 @@ class AppProductItemWidget extends StatelessWidget {
                 Text(
                   data?.title ?? '',
                   style: context.textTheme.titleLarge
-                      ?.copyWith(color: context.theme.colorScheme?.error),
+                      ?.copyWith(color: context.theme.colorScheme.error),
                 ),
                 const Gap(10),
                 Text(
@@ -93,7 +92,7 @@ class AppProductItemWidget extends StatelessWidget {
                           AssetsRes.IC_ITEM_LOCATION,
                           scale: 2.5,
                         ),
-                        Gap(05),
+                        const Gap(05),
                         Text(
                           data?.location ?? '',
                           style: context.textTheme.labelLarge?.copyWith(
@@ -118,7 +117,7 @@ class AppProductItemWidget extends StatelessWidget {
                               uri: Uri.parse("tel://+919876543210")),
                           child: Container(
                             alignment: Alignment.center,
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 08),
                             decoration: BoxDecoration(
                               color: Colors.black54,
@@ -133,7 +132,7 @@ class AppProductItemWidget extends StatelessWidget {
                                   AssetsRes.IC_CALL_ICON,
                                   height: 16,
                                 ),
-                                Gap(05),
+                                const Gap(05),
                                 Text(
                                   'Call',
                                   style: context.textTheme.labelLarge?.copyWith(
@@ -146,7 +145,7 @@ class AppProductItemWidget extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Gap(7.8),
+                      const Gap(7.8),
                       Expanded(
                         child: InkWell(
                           onTap: () {
@@ -162,7 +161,7 @@ class AppProductItemWidget extends StatelessWidget {
                           },
                           child: Container(
                             alignment: Alignment.center,
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 08),
                             decoration: BoxDecoration(
                               color: Colors.black54,
@@ -177,7 +176,7 @@ class AppProductItemWidget extends StatelessWidget {
                                   AssetsRes.IC_CHAT_ICON,
                                   height: 16,
                                 ),
-                                Gap(05),
+                                const Gap(05),
                                 Text(
                                   'Chat',
                                   style: context.textTheme.labelLarge?.copyWith(
@@ -190,7 +189,7 @@ class AppProductItemWidget extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Gap(7.8),
+                      const Gap(7.8),
                       Expanded(
                         child: InkWell(
                           onTap: () => DialogHelper.goToUrl(
@@ -198,7 +197,7 @@ class AppProductItemWidget extends StatelessWidget {
                                   'https://wa.me/+919876543210?text=Hii, I am from List & Live app and interested in your ad.')),
                           child: Container(
                             alignment: Alignment.center,
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 08),
                             decoration: BoxDecoration(
                               color: Colors.black54,
@@ -213,7 +212,7 @@ class AppProductItemWidget extends StatelessWidget {
                                   AssetsRes.IC_WHATSAPP_ICON,
                                   height: 18,
                                 ),
-                                Gap(05),
+                                const Gap(05),
                                 Text(
                                   'Whatsapp',
                                   style: context.textTheme.labelLarge?.copyWith(

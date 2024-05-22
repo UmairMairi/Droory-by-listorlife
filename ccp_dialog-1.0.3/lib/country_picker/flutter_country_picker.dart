@@ -7,7 +7,7 @@ export 'country.dart';
 /// pre defined list, see [Country.ALL]
 class CountryPicker extends StatelessWidget {
   const CountryPicker(
-      {Key? key,
+      {super.key,
       required this.selectedCountry,
       required this.onChanged,
       this.dense = true,
@@ -25,8 +25,7 @@ class CountryPicker extends StatelessWidget {
       this.currencyISOTextStyle,
       this.isNationality = false,
       this.withBottomSheet = false,
-      this.isEnable = true})
-      : super(key: key);
+      this.isEnable = true});
 
   final Country selectedCountry;
   final ValueChanged<Country> onChanged;
@@ -243,10 +242,9 @@ Future<Country?> showBottomSheet({
 class _CountryPickerDialog extends StatefulWidget {
   final bool withBottomSheet;
   const _CountryPickerDialog({
-    Key? key,
     Country? defaultCountry,
     required this.withBottomSheet,
-  }) : super(key: key);
+  });
 
   @override
   State<StatefulWidget> createState() => _CountryPickerDialogState();

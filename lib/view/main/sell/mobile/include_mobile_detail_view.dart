@@ -27,7 +27,7 @@ class _IncludeSomeDetailState extends State<IncludeMobileDetailView> {
     if (imagepicker == null) return;
     final tempImage = File(imagepicker.path);
     setState(() {
-      this.image = tempImage;
+      image = tempImage;
     });
   }
 

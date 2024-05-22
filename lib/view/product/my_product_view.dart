@@ -34,7 +34,7 @@ class MyProductView extends StatelessWidget {
                     left: 10,
                     child: SafeArea(
                       child: IconButton(
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.arrow_back,
                           color: Colors.white70,
                         ),
@@ -49,16 +49,9 @@ class MyProductView extends StatelessWidget {
                     child: SafeArea(
                       child: Row(
                         children: [
-                          Container(
-                            padding: const EdgeInsets.all(08),
-                            margin: const EdgeInsets.all(08),
-                            alignment: Alignment.center,
-                            decoration: const BoxDecoration(
-                                color: Colors.white, shape: BoxShape.circle),
-                            child: Icon(Icons.share_outlined),
-                          ),
+                          const Icon(Icons.share_outlined, color: Colors.white,),
                           PopupMenuButton<int>(
-                            icon: const Icon(Icons.more_vert_outlined),
+                            icon: const Icon(Icons.more_vert_outlined, color: Colors.white,),
                             offset: const Offset(0, 40),
                             shape: const RoundedRectangleBorder(
                                 borderRadius:
@@ -97,147 +90,137 @@ class MyProductView extends StatelessWidget {
                     data?.subTitle ?? '',
                     style: context.textTheme.titleMedium,
                   ),
-                  Gap(5),
+                  const Gap(5),
                   Text(data?.description ?? ''),
-                  Gap(10),
+                  const Gap(10),
                   Text(
                     data?.title ?? '',
                     style: context.textTheme.titleLarge
                         ?.copyWith(color: Colors.red),
                   ),
                   const Gap(10),
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Column(
-                        children: [
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color:  Colors.grey.withOpacity(0.2),
+                    ),
+                    padding: const EdgeInsets.only(top: 20,bottom:20, left: 15,right: 10),
+                    child: Table(
+                      children: [
+                        TableRow(children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Row(
-                                children: [
-                                  Image.asset(
-                                    AssetsRes.IC_PETROL_ICON,
-                                    height: 18,
-                                  ),
-                                  Gap(05),
-                                  Text(
-                                    'Petrol',
-                                    style: context.textTheme.titleMedium,
-                                  ),
-                                ],
+                              Image.asset(
+                                AssetsRes.IC_PETROL_ICON,
+                                height: 15,
                               ),
-                              Row(
-                                children: [
-                                  Image.asset(
-                                    AssetsRes.IC_SPEED_ICON,
-                                    height: 18,
-                                  ),
-                                  Gap(05),
-                                  Text(
-                                    '70,000.0 KM',
-                                    style: context.textTheme.titleMedium,
-                                  ),
-                                ],
+                              const SizedBox(
+                                width: 5,
                               ),
-                              Row(children: [
+                              Text('Petrol', style: context.textTheme.titleSmall,),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Image.asset(
+                                AssetsRes.IC_SPEED_ICON,
+                                width: 17,
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              Text('7000 KM', style: context.textTheme.titleSmall,),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Image.asset(
+                                AssetsRes.IC_GEAR_ICON,
+                                height: 13,
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              Text('Automatic',style: context.textTheme.titleSmall,),
+                            ],
+                          ),
+                        ]),
+                        TableRow(children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 20),
+                            child: Row(
+                              children: [
                                 Image.asset(
-                                  AssetsRes.IC_GEAR_ICON,
-                                  height: 18,
+                                  AssetsRes.IC_USER_ICON,
+                                  height: 15,
                                 ),
-                                Gap(05),
-                                Text(
-                                  'Automatic',
-                                  style: context.textTheme.titleMedium,
+                                const SizedBox(
+                                  width: 5,
                                 ),
-                              ]),
-                            ],
+                                Text('Owner',style: context.textTheme.titleSmall,),
+                              ],
+                            ),
                           ),
-                          const SizedBox(
-                            height: 20,
+                          Padding(
+                            padding: const EdgeInsets.only(top: 20),
+                            child: Row(
+                              children: [
+                                Image.asset(
+                                  AssetsRes.IC_LOACTION_ICON,
+                                  height: 15,
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                Text('New York', style: context.textTheme.titleSmall,),
+                              ],
+                            ),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Image.asset(
-                                    AssetsRes.IC_USER_ICON,
-                                    height: 18,
-                                  ),
-                                  Gap(05),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Owner',
-                                        style: context.textTheme.titleMedium,
-                                      ),
-                                      Text(
-                                        '2nd',
-                                        style: context.textTheme.titleMedium,
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Image.asset(
-                                    AssetsRes.IC_LOACTION_ICON,
-                                    height: 18,
-                                  ),
-                                  Gap(05),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'New York',
-                                        style: context.textTheme.titleMedium,
-                                      ),
-                                      Text(
-                                        'City',
-                                        style: context.textTheme.titleMedium,
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Image.asset(
-                                    AssetsRes.IC_CALENDER_ICON,
-                                    height: 18,
-                                  ),
-                                  Gap(05),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Posting Date',
-                                        style: context.textTheme.titleMedium,
-                                      ),
-                                      Text(
-                                        '30-Mar-24',
-                                        style: context.textTheme.titleMedium,
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
+                          Padding(
+                            padding: const EdgeInsets.only(top: 20),
+                            child: Row(
+                              children: [
+                                Image.asset(
+                                  AssetsRes.IC_CALENDER_ICON,
+                                  height: 13,
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                Text('Posting Date', style: context.textTheme.titleSmall,),
+                              ],
+                            ),
                           ),
-                        ],
-                      ),
+                        ]),
+
+                        const TableRow(children: [
+                          Padding(
+                            padding: EdgeInsets.only(left:18,top: 5),
+                            child: Text(
+                              '2nd',
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left:18,top: 5),
+                            child: Text(
+                              'City',
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left:18,top: 5),
+                            child: Text(
+                              '30-Mar-24',
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                        ]),
+                      ],
                     ),
                   ),
                   const Gap(10),
@@ -246,7 +229,7 @@ class MyProductView extends StatelessWidget {
                       Expanded(
                         child: Container(
                           alignment: Alignment.center,
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 08),
                           decoration: BoxDecoration(
                             color: Colors.black54,
@@ -261,11 +244,11 @@ class MyProductView extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Gap(10),
+                      const Gap(10),
                       Expanded(
                         child: Container(
                           alignment: Alignment.center,
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 08),
                           decoration: BoxDecoration(
                             color: Colors.black54,

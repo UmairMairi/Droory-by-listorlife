@@ -53,7 +53,7 @@ class SeeProfileView extends StatelessWidget {
                             Icons.calendar_month,
                             size: 15,
                           ),
-                          const Gap(05),
+                          Gap(05),
                           Text(
                             "Member since Mar 2018",
                             style: TextStyle(

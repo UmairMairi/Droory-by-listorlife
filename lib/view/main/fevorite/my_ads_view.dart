@@ -30,7 +30,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
           },
           child: Card(
             shape: RoundedRectangleBorder(
-                side: new BorderSide(color: Colors.grey.shade200, width: 2.0),
+                side: BorderSide(color: Colors.grey.shade200, width: 2.0),
                 borderRadius: BorderRadius.circular(20.0)),
             elevation: 0,
             child: Column(
@@ -56,7 +56,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                         'From:25 APR 2024 TO 25 MAY 2024',
                         style: context.textTheme.titleSmall,
                       ),
-                      Icon(Icons.more_horiz),
+                      const Icon(Icons.more_horiz),
                     ],
                   ),
                 ),
@@ -75,7 +75,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                           ),
                         ),
                       ),
-                      Gap(10),
+                      const Gap(10),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -141,18 +141,22 @@ class MyAdsView extends BaseView<MyAdsVM> {
                 const Gap(20),
                 Container(
                   width: context.width,
+
                   padding:
                       const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                  decoration: BoxDecoration(color: Colors.grey.shade300),
+                  decoration: BoxDecoration(color: Colors.grey.shade300, borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20),
+                  )),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      AppElevatedButton(
+                      AppElevatedButtonWithoutAnimation(
                         onTap: () {},
                         title: 'Active',
-                        height: 40,
-                        width: 80,
+                        height: 30,
+                        width: 100,
                         backgroundColor: Colors.red,
                       ),
                       const Gap(10),
@@ -167,11 +171,11 @@ class MyAdsView extends BaseView<MyAdsVM> {
                           Expanded(
                             child: Container(
                               alignment: Alignment.center,
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 08),
                               decoration: BoxDecoration(
                                 color: Colors.black54,
-                                borderRadius: BorderRadius.circular(10),
+                                borderRadius: BorderRadius.circular(08),
                               ),
                               child: Text(
                                 'Mark as Sold',
@@ -182,17 +186,17 @@ class MyAdsView extends BaseView<MyAdsVM> {
                               ),
                             ),
                           ),
-                          Gap(10),
+                          const Gap(15),
                           Expanded(
                             child: InkWell(
                               onTap: () => context.push(Routes.planList),
                               child: Container(
                                 alignment: Alignment.center,
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 08),
                                 decoration: BoxDecoration(
                                   color: Colors.black54,
-                                  borderRadius: BorderRadius.circular(10),
+                                  borderRadius: BorderRadius.circular(08),
                                 ),
                                 child: Text(
                                   'Sell Faster Now',

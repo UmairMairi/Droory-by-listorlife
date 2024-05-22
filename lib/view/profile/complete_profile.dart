@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/base/text_formatters/text_formatters.dart';
 import 'package:list_and_life/helpers/dialog_helper.dart';
 import 'package:list_and_life/helpers/image_picker_helper.dart';
 import 'package:list_and_life/routes/app_routes.dart';

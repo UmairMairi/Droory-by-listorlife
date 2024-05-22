@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 class GlowBackgroundAnimation extends StatefulWidget {
   final ImageProvider image;
 
-  const GlowBackgroundAnimation({required this.image, Key? key})
-      : super(key: key);
+  const GlowBackgroundAnimation({required this.image, super.key});
 
   @override
   State<GlowBackgroundAnimation> createState() => _GlowAvatarAnimationState();

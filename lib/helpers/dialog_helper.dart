@@ -2,21 +2,17 @@ import 'dart:developer';
 
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:cool_alert/cool_alert.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
-import 'package:list_and_life/animations/glow_background_animation.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/routes/app_pages.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
-import 'package:list_and_life/widgets/app_outline_button.dart';
 import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
-import '../animations/bouncing_animation.dart';
 import '../routes/app_routes.dart';
 import 'db_helper.dart';
 
@@ -150,7 +146,7 @@ class AppAlertDialogWithLottie extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-        backgroundColor: Color(0xFFEEEEEE),
+        backgroundColor: const Color(0xFFEEEEEE),
         contentPadding: EdgeInsets.zero,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(25.0),
@@ -163,7 +159,7 @@ class AppAlertDialogWithLottie extends StatelessWidget {
                 repeat: false, height: 120),
             Container(
               width: context.width,
-              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(25)),
               child: Column(
@@ -195,13 +191,13 @@ class AppAlertDialogWithLottie extends StatelessWidget {
                         ),
                       ),
                       if (showCancelButton) ...{
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         Expanded(
                             child: AppElevatedButtonWithoutAnimation(
                           width: context.width,
-                          backgroundColor: Color(0xffeeeeee),
+                          backgroundColor: const Color(0xffeeeeee),
                           onTap: onCancelTap ??
                               () {
                                 context.pop();
@@ -280,7 +276,7 @@ class AppAlertDialogWithWidget extends StatelessWidget {
             ),
             Container(
               width: context.width,
-              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(25)),
               child: Column(
@@ -312,13 +308,13 @@ class AppAlertDialogWithWidget extends StatelessWidget {
                         ),
                       ),
                       if (showCancelButton) ...{
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         Expanded(
                             child: AppElevatedButtonWithoutAnimation(
                           width: context.width,
-                          backgroundColor: Color(0xffeeeeee),
+                          backgroundColor: const Color(0xffeeeeee),
                           onTap: onCancelTap ??
                               () {
                                 context.pop();

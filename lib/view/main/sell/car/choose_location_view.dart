@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:list_and_life/view/main/sell/car/post_added_final_view.dart';
 
 import 'include_car_detail_view.dart';
 

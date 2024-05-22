@@ -33,7 +33,7 @@ class _AppResendOtpButtonState extends State<AppResendOtpButton> {
   }
 
   void _startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         if (_countdown > 0) {
           _countdown--;
@@ -45,10 +45,8 @@ class _AppResendOtpButtonState extends State<AppResendOtpButton> {
   }
 
   void _cancelTimer() {
-    if (_timer != null) {
-      _timer.cancel();
+    _timer.cancel();
     }
-  }
 
   void _handleResend() {
     widget.onResend();

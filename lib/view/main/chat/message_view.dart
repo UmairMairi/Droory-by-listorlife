@@ -9,7 +9,6 @@ import 'package:list_and_life/view_model/chat_vm.dart';
 import '../../../chat_bubble/bubble_normal_message.dart';
 import '../../../chat_bubble/message_bar_with_suggetion.dart';
 import '../../../helpers/date_helper.dart';
-import '../../../helpers/db_helper.dart';
 
 class MessageView extends BaseView<ChatVM> {
   final SettingItemModel? chat;
@@ -27,7 +26,7 @@ class MessageView extends BaseView<ChatVM> {
             CircleAvatar(
               foregroundImage: AssetImage(chat?.icon ?? ''),
             ),
-            Gap(5),
+            const Gap(5),
             Text(chat?.title ?? ''),
           ],
         ),

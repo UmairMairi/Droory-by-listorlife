@@ -52,7 +52,7 @@ class LocationPermissionView extends StatelessWidget {
                   if (context.mounted) context.go(Routes.main);
                 },
                 title: 'Use Current Location',
-                icon: Icon(
+                icon: const Icon(
                   CupertinoIcons.location_fill,
                   color: Colors.white,
                 )),

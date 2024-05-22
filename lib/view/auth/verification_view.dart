@@ -17,7 +17,7 @@ class VerificationView extends BaseView<AuthVM> {
   Widget build(BuildContext context, AuthVM viewModel) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Verification'),
+        title: const Text('Verification'),
         centerTitle: true,
       ),
       body: Padding(

@@ -22,7 +22,7 @@ class InboxView extends BaseView<ChatVM> {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
         child: Column(
           children: [
-            AppTextField(
+            const AppTextField(
               hint: 'Search...',
               suffix: Icon(Icons.search),
             ),
@@ -74,11 +74,11 @@ class InboxView extends BaseView<ChatVM> {
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.remove_red_eye_outlined,
                                 size: 12,
                               ),
-                              Gap(02),
+                              const Gap(02),
                               Text(
                                 viewModel.inboxItems[index].timeStamp ?? '',
                                 style: context.textTheme.labelMedium?.copyWith(

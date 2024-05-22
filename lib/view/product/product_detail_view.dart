@@ -39,7 +39,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                     left: 10,
                     child: SafeArea(
                       child: IconButton(
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.arrow_back,
                           color: Colors.white70,
                         ),
@@ -71,7 +71,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                             alignment: Alignment.center,
                             decoration: const BoxDecoration(
                                 color: Colors.white, shape: BoxShape.circle),
-                            child: Icon(Icons.share_outlined),
+                            child: const Icon(Icons.share_outlined),
                           ),
                         ],
                       ),
@@ -80,7 +80,7 @@ class ProductDetailView extends BaseView<ProductVM> {
             ),
             Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -90,16 +90,16 @@ class ProductDetailView extends BaseView<ProductVM> {
                     data?.subTitle ?? '',
                     style: context.textTheme.titleMedium,
                   ),
-                  Gap(5),
+                  const Gap(5),
                   Text(data?.description ?? ''),
-                  Gap(10),
+                  const Gap(10),
                   Text(
                     data?.title ?? '',
                     style: context.textTheme.titleLarge
                         ?.copyWith(color: Colors.red),
                   ),
-                  Gap(10),
-                  Card(
+                  const Gap(10),
+                  /*Card(
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Column(
@@ -113,7 +113,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                     AssetsRes.IC_PETROL_ICON,
                                     height: 18,
                                   ),
-                                  Gap(05),
+                                  const Gap(05),
                                   Text(
                                     'Petrol',
                                     style: context.textTheme.titleMedium,
@@ -126,7 +126,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                     AssetsRes.IC_SPEED_ICON,
                                     height: 18,
                                   ),
-                                  Gap(05),
+                                  const Gap(05),
                                   Text(
                                     '70,000.0 KM',
                                     style: context.textTheme.titleMedium,
@@ -138,7 +138,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                   AssetsRes.IC_GEAR_ICON,
                                   height: 18,
                                 ),
-                                Gap(05),
+                                const Gap(05),
                                 Text(
                                   'Automatic',
                                   style: context.textTheme.titleMedium,
@@ -159,7 +159,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                     AssetsRes.IC_USER_ICON,
                                     height: 18,
                                   ),
-                                  Gap(05),
+                                  const Gap(05),
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
@@ -184,7 +184,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                     AssetsRes.IC_LOACTION_ICON,
                                     height: 18,
                                   ),
-                                  Gap(05),
+                                  const Gap(05),
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
@@ -232,15 +232,139 @@ class ProductDetailView extends BaseView<ProductVM> {
                         ],
                       ),
                     ),
+                  ),*/
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color:  Colors.grey.withOpacity(0.2),
+                    ),
+                    padding: const EdgeInsets.only(top: 20,bottom:20, left: 15,right: 10),
+                    child: Table(
+                      children: [
+                        TableRow(children: [
+                          Row(
+                            children: [
+                              Image.asset(
+                                AssetsRes.IC_PETROL_ICON,
+                                height: 15,
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                               Text('Petrol', style: context.textTheme.titleSmall,),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Image.asset(
+                                AssetsRes.IC_SPEED_ICON,
+                                width: 17,
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                               Text('7000 KM', style: context.textTheme.titleSmall,),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Image.asset(
+                                AssetsRes.IC_GEAR_ICON,
+                                height: 13,
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                               Text('Automatic',style: context.textTheme.titleSmall,),
+                            ],
+                          ),
+                        ]),
+                        TableRow(children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 20),
+                            child: Row(
+                              children: [
+                                Image.asset(
+                                  AssetsRes.IC_USER_ICON,
+                                  height: 15,
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                 Text('Owner',style: context.textTheme.titleSmall,),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 20),
+                            child: Row(
+                              children: [
+                                Image.asset(
+                                  AssetsRes.IC_LOACTION_ICON,
+                                  height: 15,
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                 Text('New York', style: context.textTheme.titleSmall,),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 20),
+                            child: Row(
+                              children: [
+                                Image.asset(
+                                  AssetsRes.IC_CALENDER_ICON,
+                                  height: 13,
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                 Text('Posting Date', style: context.textTheme.titleSmall,),
+                              ],
+                            ),
+                          ),
+                        ]),
+
+                        const TableRow(children: [
+                          Padding(
+                            padding: EdgeInsets.only(left:18,top: 5),
+                            child: Text(
+                              '2nd',
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left:18,top: 5),
+                            child: Text(
+                              'City',
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left:18,top: 5),
+                            child: Text(
+                              '30-Mar-24',
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                        ]),
+                      ],
+                    ),
                   ),
-                  Gap(10),
+                  const Gap(10),
                   Text(
                     'Description',
                     style: context.textTheme.titleMedium,
                   ),
-                  Gap(05),
+                  const Gap(05),
                   Text(data?.longDescription ?? ''),
-                  Gap(10),
+                  const Gap(10),
                   Card(
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
@@ -248,12 +372,12 @@ class ProductDetailView extends BaseView<ProductVM> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CircleAvatar(
+                          const CircleAvatar(
                             radius: 40,
                             backgroundImage:
                                 AssetImage(AssetsRes.DUMMY_PROFILE),
                           ),
-                          Gap(20),
+                          const Gap(20),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -272,7 +396,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                 style: context.textTheme.titleMedium
                                     ?.copyWith(color: Colors.grey),
                               ),
-                              Gap(10),
+                              const Gap(10),
                               InkWell(
                                 onTap: () {
                                   context.push(Routes.seeProfile);
@@ -291,7 +415,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                       ),
                     ),
                   ),
-                  Gap(20),
+                  const Gap(20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -306,19 +430,19 @@ class ProductDetailView extends BaseView<ProductVM> {
                                 AssetsRes.IC_LOACTION_ICON,
                                 height: 24,
                               ),
-                              Gap(05),
+                              const Gap(05),
                               Text(
                                 'New York',
                                 style: context.textTheme.titleLarge,
                               ),
                             ],
                           ),
-                          Gap(05),
+                          const Gap(05),
                           Text(
                             'City',
                             style: context.textTheme.titleLarge,
                           ),
-                          Gap(25),
+                          const Gap(25),
                           InkWell(
                             onTap: () {},
                             child: Text(
@@ -331,7 +455,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                           )
                         ],
                       ),
-                      Gap(10),
+                      const Gap(10),
                       Expanded(
                           child: Stack(
                         alignment: Alignment.center,
@@ -355,7 +479,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                 uri: Uri.parse("tel://+919876543210")),
                             child: Container(
                               alignment: Alignment.center,
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 08),
                               decoration: BoxDecoration(
                                 color: Colors.black54,
@@ -370,7 +494,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                     AssetsRes.IC_CALL_ICON,
                                     height: 16,
                                   ),
-                                  Gap(05),
+                                  const Gap(05),
                                   Text(
                                     'Call',
                                     style: context.textTheme.labelLarge
@@ -384,7 +508,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                             ),
                           ),
                         ),
-                        Gap(02),
+                        const Gap(08),
                         Expanded(
                           child: InkWell(
                             onTap: () {
@@ -400,7 +524,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                             },
                             child: Container(
                               alignment: Alignment.center,
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 08),
                               decoration: BoxDecoration(
                                 color: Colors.black54,
@@ -415,7 +539,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                     AssetsRes.IC_CHAT_ICON,
                                     height: 16,
                                   ),
-                                  Gap(05),
+                                  const Gap(05),
                                   Text(
                                     'Chat',
                                     style: context.textTheme.labelLarge
@@ -429,7 +553,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                             ),
                           ),
                         ),
-                        Gap(02),
+                        const Gap(08),
                         Expanded(
                           child: InkWell(
                             onTap: () => DialogHelper.goToUrl(
@@ -437,7 +561,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                     'https://wa.me/+919876543210?text=Hii, I am from List & Live app and interested in your ad.')),
                             child: Container(
                               alignment: Alignment.center,
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 08),
                               decoration: BoxDecoration(
                                 color: Colors.black54,
@@ -452,7 +576,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                     AssetsRes.IC_WHATSAPP_ICON,
                                     height: 18,
                                   ),
-                                  Gap(05),
+                                  const Gap(05),
                                   Text(
                                     'Whatsapp',
                                     style:

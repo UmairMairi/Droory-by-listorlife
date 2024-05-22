@@ -1,15 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/src/route.dart';
 import 'package:list_and_life/view/main/chat/inbox_view.dart';
 import 'package:list_and_life/view/main/fevorite/ads_view.dart';
 import 'package:list_and_life/view/main/home/home_view.dart';
 import 'package:list_and_life/view/main/sell/sell_view.dart';
 import 'package:list_and_life/view/main/settings/setting_view.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:persistent_bottom_nav_bar_plus/persistent_bottom_nav_bar_plus.dart';
 
-import '../../helpers/string_helper.dart';
-import '../../res/assets_res.dart';
 
 class MainView extends StatefulWidget {
   const MainView({super.key});
@@ -61,13 +58,13 @@ class _MainViewState extends State<MainView> {
               inactiveColorPrimary: CupertinoColors.systemGrey,
             ),
             PersistentBottomNavBarItem(
-              icon: Icon(Icons.favorite_border_outlined),
+              icon: const Icon(Icons.favorite_border_outlined),
               title: ("My Ads"),
               activeColorPrimary: CupertinoColors.black,
               inactiveColorPrimary: CupertinoColors.systemGrey,
             ),
             PersistentBottomNavBarItem(
-              icon: Icon(Icons.person),
+              icon: const Icon(Icons.person),
               title: ("My Profile"),
               activeColorPrimary: CupertinoColors.black,
               inactiveColorPrimary: CupertinoColors.systemGrey,

@@ -39,7 +39,7 @@ class SellView extends BaseView<SellVM> {
                       viewModel.handelSellCat(index: index);
                     },
                     child: Card(
-                      color: Color(0xffFCFCFD),
+                      color: const Color(0xffFCFCFD),
                       elevation: 0.3,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
@@ -51,12 +51,12 @@ class SellView extends BaseView<SellVM> {
                             height: 38,
                             width: 46,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 13,
                           ),
                           Text(
                             viewModel.data[index].title,
-                            style: TextStyle(fontSize: 14),
+                            style: const TextStyle(fontSize: 14),
                           ),
                         ],
                       ),

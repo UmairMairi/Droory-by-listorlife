@@ -30,7 +30,7 @@ class _MobileCategoryViewState extends State<MobileCategoryView> {
         ),
       ),
       body: GridView.builder(
-          physics: ClampingScrollPhysics(),
+          physics: const ClampingScrollPhysics(),
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
           shrinkWrap: true,
           itemCount: data.length,
@@ -49,7 +49,7 @@ class _MobileCategoryViewState extends State<MobileCategoryView> {
                 );
               },
               child: Card(
-                color: Color(0xffFCFCFD),
+                color: const Color(0xffFCFCFD),
                 elevation: 0.3,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
@@ -61,12 +61,12 @@ class _MobileCategoryViewState extends State<MobileCategoryView> {
                       height: 38,
                       width: 46,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 13,
                     ),
                     Text(
                       data[index].title,
-                      style: TextStyle(fontSize: 14),
+                      style: const TextStyle(fontSize: 14),
                     ),
                   ],
                 ),

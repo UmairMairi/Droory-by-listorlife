@@ -116,7 +116,7 @@ class AppTextField extends StatelessWidget {
                 ),
               ],
             ),
-            padding: EdgeInsets.symmetric(horizontal: 10.0), // Adjusted padding
+            padding: const EdgeInsets.symmetric(horizontal: 10.0), // Adjusted padding
             child: TextFormField(
               autovalidateMode: AutovalidateMode.disabled,
               controller: controller,
@@ -150,7 +150,7 @@ class AppTextField extends StatelessWidget {
                 border: InputBorder.none,
                 suffixIconColor: Theme.of(context).colorScheme.primary,
                 suffixIcon: suffix,
-                contentPadding: EdgeInsets.symmetric(
+                contentPadding: const EdgeInsets.symmetric(
                     vertical: 15.0), // Ensure vertical centering
               ),
             ),

@@ -28,7 +28,7 @@ class PlansListView extends BaseView<ActivePlanVM> {
             ),
             ListView.separated(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   return Card(
                     child: Padding(
@@ -47,7 +47,7 @@ class PlansListView extends BaseView<ActivePlanVM> {
                               Text(viewModel.plansList[index].subTitle ?? ''),
                             ],
                           ),
-                          Gap(10),
+                          const Gap(10),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,8 +61,8 @@ class PlansListView extends BaseView<ActivePlanVM> {
                                   viewModel.activateFeaturePlan(index);
                                 },
                                 child: viewModel.selectedFeaturePlan == index
-                                    ? Icon(Icons.check_circle)
-                                    : Icon(
+                                    ? const Icon(Icons.check_circle)
+                                    : const Icon(
                                         Icons.circle,
                                         color: Colors.grey,
                                       ),
@@ -75,7 +75,7 @@ class PlansListView extends BaseView<ActivePlanVM> {
                   );
                 },
                 separatorBuilder: (context, index) {
-                  return Gap(20);
+                  return const Gap(20);
                 },
                 itemCount: viewModel.plansList.length),
             Text(
@@ -103,7 +103,7 @@ class PlansListView extends BaseView<ActivePlanVM> {
                               Text(viewModel.boosterList[index].subTitle ?? ''),
                             ],
                           ),
-                          Gap(10),
+                          const Gap(10),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,8 +117,8 @@ class PlansListView extends BaseView<ActivePlanVM> {
                                   viewModel.activateBoosterPlan(index);
                                 },
                                 child: viewModel.selectedBoosterPlan == index
-                                    ? Icon(Icons.check_circle)
-                                    : Icon(
+                                    ? const Icon(Icons.check_circle)
+                                    : const Icon(
                                         Icons.circle,
                                         color: Colors.grey,
                                       ),
@@ -131,7 +131,7 @@ class PlansListView extends BaseView<ActivePlanVM> {
                   );
                 },
                 separatorBuilder: (context, index) {
-                  return Gap(20);
+                  return const Gap(20);
                 },
                 itemCount: viewModel.boosterList.length),
             AppElevatedButton(

@@ -29,7 +29,7 @@ class AdsView extends BaseView<MyAdsVM> {
                     viewModel.selectIndex = 0;
                   },
                 ),
-                Gap(10),
+                const Gap(10),
                 AppElevatedButtonWithoutAnimation(
                   title: 'Favourites',
                   height: 40,

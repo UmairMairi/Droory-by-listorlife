@@ -63,99 +63,16 @@ class SettingVM extends BaseViewModel {
               context: context,
               barrierDismissible: false,
               builder: (BuildContext dialogContext) {
-                return AlertDialog(
-                    backgroundColor: const Color(0xFFEEEEEE),
-                    contentPadding: EdgeInsets.zero,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25.0),
-                    ),
-                    content: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 10,
-                        ),
-                        BouncingAnimation(
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Image.asset(
-                              AssetsRes.IC_LOGOUT_ICON,
-                              height: 80,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          width: context.width,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 30, vertical: 20),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(25)),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Logout',
-                                style: context.textTheme.titleMedium,
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                'Are you sure you want to logout this account?',
-                                textAlign: TextAlign.center,
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: AppElevatedButtonWithoutAnimation(
-                                      width: context.width,
-                                      onTap: () {},
-                                      title: ' Yes',
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Expanded(
-                                      child: AppElevatedButtonWithoutAnimation(
-                                    width: context.width,
-                                    backgroundColor: Color(0xffeeeeee),
-                                    onTap: () {
-                                      context.pop();
-                                    },
-                                    titleColor: Colors.black,
-                                    title: ' No',
-                                  )),
-                                ],
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ));
-
-                /*AppAlertDialog(
-                  lottieIcon: AssetsRes.DELETE_LOTTIE,
-                  title: 'Logout',
-                  description: 'Are you sure you want to logout this account?',
-                  onTap: () {},
+                return AppAlertDialogWithWidget(title:'Logout',
+                  description:  'Are you sure you want to logout this account?',
+                  onTap: (){},
+                  icon: AssetsRes.IC_LOGOUT_ICON,
                   onCancelTap: () {
                     context.pop();
                   },
                   buttonText: 'Yes',
                   cancelButtonText: 'No',
-                  showCancelButton: true,
-                )*/
-                ;
+                  showCancelButton: true,);
               },
             );
           }),

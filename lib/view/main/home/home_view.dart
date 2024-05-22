@@ -1,18 +1,15 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/models/setting_item_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/view_model/home_vm.dart';
-import 'package:list_and_life/widgets/card_swipe_widget.dart';
 
 import '../../../widgets/app_product_item_widget.dart';
 
 class HomeView extends BaseView<HomeVM> {
-  const HomeView({Key? key}) : super(key: key);
+  const HomeView({super.key});
 
   @override
   Widget build(BuildContext context, HomeVM viewModel) {
@@ -65,7 +62,7 @@ class HomeView extends BaseView<HomeVM> {
                     child: TextField(
                   autofocus: false,
                   decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.search),
+                      prefixIcon: const Icon(Icons.search),
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                           borderSide:
@@ -121,7 +118,7 @@ class HomeView extends BaseView<HomeVM> {
                           ),
                         ],
                       ),
-                      Gap(18),
+                      const Gap(18),
                     ],
                   );
                 }),
