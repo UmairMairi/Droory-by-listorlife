@@ -7,11 +7,13 @@ class SellVM extends BaseViewModel {
   List<Item> categoryData = [
     Item(
       id: 0,
+      type: 'electronics',
       title: "Electronics",
       image: AssetsRes.IC_ELECTRONICS_ICONS,
       subCategories: [
         Item(title: 'Computers', subCategories: [
-          Item(title: 'Laptops', brands: [
+          Item(title: 'Laptops',
+              brands: [
             "HP",
             "Dell",
             "Lenovo",
@@ -74,6 +76,7 @@ class SellVM extends BaseViewModel {
     ),
     Item(
       id: 1,
+      type: 'mobiles',
       title: "Mobiles & Tablets",
       image: AssetsRes.IC_PHONE_ICON,
       subCategories: [
@@ -132,6 +135,7 @@ class SellVM extends BaseViewModel {
     ),
     Item(
         id: 2,
+        type: 'home_living',
         title: "Home & Living",
         image: AssetsRes.IC_HOME_AND_LIVING_ICON,
         subCategories: [
@@ -162,7 +166,11 @@ class SellVM extends BaseViewModel {
             Item(title: 'Other'),
           ]),
         ]),
-    Item(id: 3, title: "Fashion", image: AssetsRes.IC_FASHION, subCategories: [
+    Item(id: 3,
+        title: "Fashion",
+        type: 'fashion',
+        image: AssetsRes.IC_FASHION,
+        subCategories: [
       Item(title: 'Men’s Fashion', subCategories: [
         Item(title: 'Clothing'),
         Item(title: 'Shoes'),
@@ -189,6 +197,7 @@ class SellVM extends BaseViewModel {
     ]),
     Item(
       id: 4,
+      type: 'vehicles',
       title: "Vehicles",
       image: AssetsRes.IC_VEHICLE_ICONS,
       subCategories: [
@@ -296,6 +305,7 @@ class SellVM extends BaseViewModel {
     ),
     Item(
       id: 5,
+      type: 'hobbies',
       title: "Hobbies, Music, Art & Books",
       image: AssetsRes.IC_HOBBY_ICONS,
       subCategories: [
@@ -317,6 +327,7 @@ class SellVM extends BaseViewModel {
     ),
     Item(
       id: 6,
+      type:'pets',
       title: "Pets",
       image: AssetsRes.IC_PETS_ICON,
       subCategories: [
@@ -358,6 +369,7 @@ class SellVM extends BaseViewModel {
     ),
     Item(
       id: 7,
+      type: 'business',
       title: "Business & Industrial",
       image: AssetsRes.IC_BUSSINESS_ICON,
       subCategories: [
@@ -375,6 +387,7 @@ class SellVM extends BaseViewModel {
     ),
     Item(
       id: 8,
+      type: 'services',
       title: "Services",
       image: AssetsRes.IC_SERVICE_ICON,
       subCategories: [
@@ -392,6 +405,7 @@ class SellVM extends BaseViewModel {
     ),
     Item(
       id: 9,
+      type: 'jobs',
       title: "Jobs",
       image: AssetsRes.IC_JOBS_ICON,
       subCategories: [
@@ -423,12 +437,13 @@ class SellVM extends BaseViewModel {
   ];
 
   void handelSellCat({required Item item}) async {
-    context.push(Routes.sellSubCategoryView, extra: item);
+    context.push(Routes.sellSubCategoryView, extra: {'category':item, 'type': item.type});
   }
 }
 
 class Item {
   String? title;
+  String? type;
   String? image;
   int? id;
   List<Item>? subCategories;
@@ -436,6 +451,7 @@ class Item {
 
   Item({
     this.id,
+    this.type,
     this.subCategories,
     this.brands,
     this.title,

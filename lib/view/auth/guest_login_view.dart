@@ -19,10 +19,7 @@ class GuestLoginView extends BaseView<AuthVM> {
         title: const Text("Log In"),
         titleTextStyle: const TextStyle(
             fontWeight: FontWeight.w600, fontSize: 20, color: Colors.black),
-        leading: IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.arrow_back),
-        ),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),

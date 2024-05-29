@@ -34,14 +34,20 @@ class MyProductView extends StatelessWidget {
                     top: 10,
                     left: 10,
                     child: SafeArea(
-                      child: IconButton(
-                        icon: const Icon(
-                          Icons.arrow_back,
-                          color: Colors.white70,
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.black26
                         ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.arrow_back,
+                            color: Colors.white70,
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
                       ),
                     )),
                 Positioned(
@@ -50,15 +56,25 @@ class MyProductView extends StatelessWidget {
                     child: SafeArea(
                       child: Row(
                         children: [
-                          InkWell(
-                              onTap: () => Share.share(
-                                  'Check my this product on List or lift app url: www.google.com'),
-                              child: const Icon(
-                                Icons.share_outlined,
-                                color: Colors.white,
-                              )),
                           Container(
-                            decoration: BoxDecoration(shape: BoxShape.circle),
+                            decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.black26
+                            ),
+                            child: IconButton(
+                                onPressed: () => Share.share(
+                                    'Check my this product on List or lift app url: www.google.com'),
+                                icon: const Icon(
+                                  Icons.share_outlined,
+                                  color: Colors.white,
+                                )),
+                          ),
+                          const Gap(05),
+                          Container(
+                            decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.black26
+                            ),
                             child: PopupMenuButton<int>(
                               icon: const Icon(
                                 Icons.more_vert_outlined,

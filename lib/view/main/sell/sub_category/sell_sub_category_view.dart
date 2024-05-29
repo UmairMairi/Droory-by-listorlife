@@ -12,7 +12,9 @@ import '../../../../view_model/sell_v_m.dart';
 
 class SellSubCategoryView extends StatelessWidget {
   final Item? category;
-  const SellSubCategoryView({super.key, this.category});
+  final String? type;
+
+  const SellSubCategoryView({super.key, this.category, required this.type});
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +28,7 @@ class SellSubCategoryView extends StatelessWidget {
           itemBuilder: (context, index) {
             return ListTile(
               onTap: () {
+
                 if (category?.subCategories?[index].subCategories?.isNotEmpty ??
                     false) {
                   Navigator.push(
@@ -33,6 +36,7 @@ class SellSubCategoryView extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) => SellSubSubCategoryView(
                               category: category,
+                              type: type,
                               subCategory: category?.subCategories?[index])));
                   return;
                 }
@@ -41,8 +45,10 @@ class SellSubCategoryView extends StatelessWidget {
                     MaterialPageRoute(
                         builder: (context) => SellFormView(
                               category: category,
+                              brands: category?.subCategories?[index].brands ?? [],
                               subCategory: category?.subCategories?[index],
-                              type: index,
+                              type: type,
+
                             )));
               },
               title: Text(

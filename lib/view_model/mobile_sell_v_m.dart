@@ -14,6 +14,20 @@ class SellFormsVM extends BaseViewModel {
   String _mainImagePath = "";
   List<String> imagesList = <String>[];
 
+  List<String> jobPositionList = [
+    'Contract',
+    'Full Time',
+    'Part-time',
+    'Temporary'
+  ];
+
+  List<String> salaryPeriodList = [
+    'Hourly',
+    'Monthly',
+    'Weekly',
+    'Yearly'
+  ];
+
   void addImage(String path) {
     imagesList.add(path);
     notifyListeners();
@@ -39,7 +53,10 @@ class SellFormsVM extends BaseViewModel {
     _transmission = value;
     notifyListeners();
   }
-
+  TextEditingController jobPositionTextController = TextEditingController();
+  TextEditingController jobSalaryTextController = TextEditingController();
+  TextEditingController jobSalaryFromController = TextEditingController();
+  TextEditingController jobSalaryToController = TextEditingController();
   TextEditingController brandTextController = TextEditingController();
   TextEditingController yearTextController = TextEditingController();
   TextEditingController fuelTextController = TextEditingController();

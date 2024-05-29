@@ -166,9 +166,11 @@ class AppPages {
       GoRoute(
         path: Routes.sellSubCategoryView,
         pageBuilder: (context, state) {
+          Map<String, dynamic>? data = state.extra as Map<String, dynamic>;
           return getPage(
               child: SellSubCategoryView(
-                category: state.extra as Item,
+                category: data['category'] as Item?,
+                type: data['type'] as String?,
               ),
               state: state);
         },

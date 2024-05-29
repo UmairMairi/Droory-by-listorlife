@@ -14,7 +14,7 @@ class CardSwipeWidget extends StatefulWidget {
   State<CardSwipeWidget> createState() => _CardSwipeWidgetState();
 }
 
-class _CardSwipeWidgetState extends State<CardSwipeWidget> {
+class _CardSwipeWidgetState extends State<CardSwipeWidget> with AutomaticKeepAliveClientMixin<CardSwipeWidget>{
   List<String> bannerImages = [];
 
   int _currentPage = 0;
@@ -43,6 +43,7 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return SizedBox(
       height: widget.height ?? 220,
       width: context.width,
@@ -94,4 +95,8 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget> {
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
