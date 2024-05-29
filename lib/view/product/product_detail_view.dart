@@ -5,6 +5,7 @@ import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/models/setting_item_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/view_model/product_v_m.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../helpers/dialog_helper.dart';
 import '../../routes/app_routes.dart';
@@ -65,13 +66,17 @@ class ProductDetailView extends BaseView<ProductVM> {
                               onTap: () {},
                             ),
                           ),
-                          Container(
-                            padding: const EdgeInsets.all(08),
-                            margin: const EdgeInsets.all(08),
-                            alignment: Alignment.center,
-                            decoration: const BoxDecoration(
-                                color: Colors.white, shape: BoxShape.circle),
-                            child: const Icon(Icons.share_outlined),
+                          InkWell(
+                            onTap: () => Share.share(
+                                'Check my this product on List or lift app url: www.google.com'),
+                            child: Container(
+                              padding: const EdgeInsets.all(08),
+                              margin: const EdgeInsets.all(08),
+                              alignment: Alignment.center,
+                              decoration: const BoxDecoration(
+                                  color: Colors.white, shape: BoxShape.circle),
+                              child: const Icon(Icons.share_outlined),
+                            ),
                           ),
                         ],
                       ),
@@ -237,9 +242,10 @@ class ProductDetailView extends BaseView<ProductVM> {
                     width: double.infinity,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
-                      color:  Colors.grey.withOpacity(0.2),
+                      color: Colors.grey.withOpacity(0.2),
                     ),
-                    padding: const EdgeInsets.only(top: 20,bottom:20, left: 15,right: 10),
+                    padding: const EdgeInsets.only(
+                        top: 20, bottom: 20, left: 15, right: 10),
                     child: Table(
                       children: [
                         TableRow(children: [
@@ -252,7 +258,10 @@ class ProductDetailView extends BaseView<ProductVM> {
                               const SizedBox(
                                 width: 5,
                               ),
-                               Text('Petrol', style: context.textTheme.titleSmall,),
+                              Text(
+                                'Petrol',
+                                style: context.textTheme.titleSmall,
+                              ),
                             ],
                           ),
                           Row(
@@ -264,7 +273,10 @@ class ProductDetailView extends BaseView<ProductVM> {
                               const SizedBox(
                                 width: 5,
                               ),
-                               Text('7000 KM', style: context.textTheme.titleSmall,),
+                              Text(
+                                '7000 KM',
+                                style: context.textTheme.titleSmall,
+                              ),
                             ],
                           ),
                           Row(
@@ -276,7 +288,10 @@ class ProductDetailView extends BaseView<ProductVM> {
                               const SizedBox(
                                 width: 5,
                               ),
-                               Text('Automatic',style: context.textTheme.titleSmall,),
+                              Text(
+                                'Automatic',
+                                style: context.textTheme.titleSmall,
+                              ),
                             ],
                           ),
                         ]),
@@ -292,7 +307,10 @@ class ProductDetailView extends BaseView<ProductVM> {
                                 const SizedBox(
                                   width: 5,
                                 ),
-                                 Text('Owner',style: context.textTheme.titleSmall,),
+                                Text(
+                                  'Owner',
+                                  style: context.textTheme.titleSmall,
+                                ),
                               ],
                             ),
                           ),
@@ -307,7 +325,10 @@ class ProductDetailView extends BaseView<ProductVM> {
                                 const SizedBox(
                                   width: 5,
                                 ),
-                                 Text('New York', style: context.textTheme.titleSmall,),
+                                Text(
+                                  'New York',
+                                  style: context.textTheme.titleSmall,
+                                ),
                               ],
                             ),
                           ),
@@ -322,15 +343,17 @@ class ProductDetailView extends BaseView<ProductVM> {
                                 const SizedBox(
                                   width: 5,
                                 ),
-                                 Text('Posting Date', style: context.textTheme.titleSmall,),
+                                Text(
+                                  'Posting Date',
+                                  style: context.textTheme.titleSmall,
+                                ),
                               ],
                             ),
                           ),
                         ]),
-
                         const TableRow(children: [
                           Padding(
-                            padding: EdgeInsets.only(left:18,top: 5),
+                            padding: EdgeInsets.only(left: 18, top: 5),
                             child: Text(
                               '2nd',
                               style: TextStyle(
@@ -338,7 +361,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(left:18,top: 5),
+                            padding: EdgeInsets.only(left: 18, top: 5),
                             child: Text(
                               'City',
                               style: TextStyle(
@@ -346,7 +369,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(left:18,top: 5),
+                            padding: EdgeInsets.only(left: 18, top: 5),
                             child: Text(
                               '30-Mar-24',
                               style: TextStyle(

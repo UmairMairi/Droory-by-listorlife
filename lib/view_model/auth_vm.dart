@@ -6,6 +6,8 @@ class AuthVM extends BaseViewModel {
   TextEditingController phoneTextController = TextEditingController();
   TextEditingController otpTextController = TextEditingController();
 
+  final FocusNode nodeText = FocusNode();
+
   String countryCode = "+91";
   Country selectedCountry = Country.IN;
 

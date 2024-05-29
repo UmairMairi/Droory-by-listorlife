@@ -14,6 +14,9 @@ class AdsView extends BaseView<MyAdsVM> {
     return Scaffold(
       body: Column(
         children: [
+          SizedBox(
+            height: 15,
+          ),
           SafeArea(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -22,6 +25,8 @@ class AdsView extends BaseView<MyAdsVM> {
                 AppElevatedButtonWithoutAnimation(
                   title: 'Ads',
                   height: 40,
+                  titleColor:
+                      viewModel.selectIndex == 0 ? Colors.white : Colors.black,
                   backgroundColor:
                       viewModel.selectIndex == 1 ? Colors.grey : Colors.black,
                   width: 120,
@@ -33,6 +38,8 @@ class AdsView extends BaseView<MyAdsVM> {
                 AppElevatedButtonWithoutAnimation(
                   title: 'Favourites',
                   height: 40,
+                  titleColor:
+                      viewModel.selectIndex == 1 ? Colors.white : Colors.black,
                   backgroundColor:
                       viewModel.selectIndex == 0 ? Colors.grey : Colors.black,
                   width: 120,

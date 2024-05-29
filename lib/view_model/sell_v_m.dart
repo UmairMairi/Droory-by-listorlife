@@ -4,41 +4,441 @@ import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
 
 class SellVM extends BaseViewModel {
-  List<Item> data = [
+  List<Item> categoryData = [
     Item(
-      title: "Cars",
-      image: AssetsRes.IC_CAR_CAT_IMAGE,
+      id: 0,
+      title: "Electronics",
+      image: AssetsRes.IC_ELECTRONICS_ICONS,
+      subCategories: [
+        Item(title: 'Computers', subCategories: [
+          Item(title: 'Laptops', brands: [
+            "HP",
+            "Dell",
+            "Lenovo",
+            "Asus",
+            "Acer",
+            "Apple",
+            "Microsoft",
+            "MSI",
+            "Samsung",
+            "LG",
+            "Sony",
+            "Toshiba",
+            "Huawei",
+            "Honor",
+            "Google",
+            "Alienware",
+            "Razer",
+            "Fujitsu",
+            "Panasonic",
+            "Avita",
+            "Nokia",
+            "Xiaomi",
+            "Vaio",
+            "Infinix",
+            "Realme",
+            "Redmi",
+            "Mi",
+            "iBall",
+            "Lava",
+            "Micromax",
+            "Smartron",
+            "HCL",
+            "Compaq"
+          ]),
+          Item(title: 'Desktops'),
+          Item(title: 'Monitors'),
+          Item(title: 'Printers & Scanners'),
+          Item(title: 'Computer Components & Accessories'),
+          Item(title: 'Other'),
+        ]),
+        Item(title: 'TV, Audio & Video', subCategories: [
+          Item(title: 'Televisions'),
+          Item(title: 'Home Audio & Theater Systems'),
+          Item(title: 'DVD & Blu-ray Players'),
+          Item(title: 'Projectors'),
+          Item(title: 'Music & Media Players'),
+          Item(title: 'Audio Accessories and Speakers'),
+          Item(title: 'Other'),
+        ]),
+        Item(title: 'Cameras & Photography', subCategories: [
+          Item(title: 'Digital Cameras'),
+          Item(title: 'Professional Cameras'),
+          Item(title: 'Camcorders'),
+          Item(title: 'Lenses, Filters & Lighting'),
+          Item(title: 'Tripods & Supports'),
+          Item(title: 'Camera Accessories'),
+          Item(title: 'Other'),
+        ]),
+      ],
     ),
-    Item(title: "Mobiles", image: AssetsRes.IC_MOBILE_CAT_IMGE),
-    Item(title: "Furniture", image: AssetsRes.IC_FURNITURE_CAT_IMGE),
-    Item(title: "Clothes", image: AssetsRes.IC_CLOTHES_CAT_IMGE),
-    Item(title: "Laptops", image: AssetsRes.IC_LAPTOP_CAT_IMGE),
+    Item(
+      id: 1,
+      title: "Mobiles & Tablets",
+      image: AssetsRes.IC_PHONE_ICON,
+      subCategories: [
+        Item(title: 'Mobile Phones', brands: [
+          "Samsung",
+          "Apple",
+          "OnePlus",
+          "Xiaomi",
+          "Realme",
+          "Oppo",
+          "Vivo",
+          "Nokia",
+          "Sony",
+          "LG",
+          "Asus",
+          "Motorola",
+          "Huawei",
+          "Google",
+          "Micromax",
+          "Lava",
+          "Infinix",
+          "Tecno",
+          "iQOO",
+          "POCO",
+          "Honor",
+          "HTC",
+          "Gionee",
+          "Intex",
+          "Karbonn",
+          "Lenovo",
+          "Panasonic",
+          "Coolpad",
+          "Meizu",
+          "ZTE",
+          "BlackBerry",
+          "LeEco",
+          "Alcatel",
+          "Itel",
+          "Celkon",
+          "Spice",
+          "Yu",
+          "Swipe",
+          "Xolo"
+        ]),
+        Item(title: 'Tablets', brands: ['iPods', 'Samsung', 'Other Tablets']),
+        Item(
+          title: 'Mobile & Tablet Accessories',
+        ),
+        Item(
+          title: 'Mobile Numbers',
+        ),
+        Item(
+          title: 'Other',
+        ),
+      ],
+    ),
+    Item(
+        id: 2,
+        title: "Home & Living",
+        image: AssetsRes.IC_HOME_AND_LIVING_ICON,
+        subCategories: [
+          Item(title: 'Furniture', subCategories: [
+            Item(title: 'Sofas & Seating'),
+            Item(title: 'Beds & Bedroom Furniture'),
+            Item(title: 'Tables & Dining'),
+            Item(title: 'Cabinets & Storage'),
+            Item(title: 'Children\'s Furniture'),
+            Item(title: 'Other'),
+          ]),
+          Item(title: 'Home Appliances', subCategories: [
+            Item(title: 'Refrigerators & Freezers'),
+            Item(title: 'Washing Machines & Dryers'),
+            Item(title: 'Ovens, Microwaves & Cooking'),
+            Item(title: 'Dishwashers'),
+            Item(title: 'Small Kitchen Appliances'),
+            Item(title: 'Vacuum Cleaners'),
+            Item(title: 'Other'),
+          ]),
+          Item(title: 'Home Decor & Garden', subCategories: [
+            Item(title: 'Wall Art'),
+            Item(title: 'Curtains & Blinds'),
+            Item(title: 'Rugs & Carpets'),
+            Item(title: 'Lighting'),
+            Item(title: 'Garden & Outdoor Furniture'),
+            Item(title: 'Plants & Flowers'),
+            Item(title: 'Other'),
+          ]),
+        ]),
+    Item(id: 3, title: "Fashion", image: AssetsRes.IC_FASHION, subCategories: [
+      Item(title: 'Men’s Fashion', subCategories: [
+        Item(title: 'Clothing'),
+        Item(title: 'Shoes'),
+        Item(title: 'Accessories & Watches'),
+        Item(title: 'Other', subCategories: []),
+      ]),
+      Item(title: 'Women’s Fashion', subCategories: [
+        Item(title: 'Clothing'),
+        Item(title: 'Shoes'),
+        Item(title: 'Handbags & Accessories'),
+        Item(title: 'Jewelry & Watches'),
+        Item(title: 'Other'),
+      ]),
+      Item(title: 'Kids & Baby', subCategories: [
+        Item(title: 'Boys\' Clothing'),
+        Item(title: 'Girls\' Clothing'),
+        Item(title: 'Baby Clothing'),
+        Item(title: 'Kids Feeding Tools'),
+        Item(title: 'Toys'),
+        Item(title: 'Kids Equipment & Strollers'),
+        Item(title: 'Shoes'),
+        Item(title: 'Other'),
+      ]),
+    ]),
+    Item(
+      id: 4,
+      title: "Vehicles",
+      image: AssetsRes.IC_VEHICLE_ICONS,
+      subCategories: [
+        Item(title: 'Cars', subCategories: [
+          Item(title: 'Cars for Sale', brands: [
+            "Maruti Suzuki",
+            "Hyundai",
+            "Tata Motors",
+            "Mahindra",
+            "Kia",
+            "Toyota",
+            "Honda",
+            "Ford",
+            "Renault",
+            "Volkswagen",
+            "Skoda",
+            "Nissan",
+            "MG Motor",
+            "Fiat",
+            "Jeep",
+            "Datsun",
+            "Mercedes-Benz",
+            "BMW",
+            "Audi",
+            "Jaguar",
+            "Land Rover",
+            "Volvo",
+            "Porsche",
+            "Lexus",
+            "Mini",
+            "Isuzu",
+            "Maserati",
+            "Ferrari",
+            "Lamborghini",
+            "Bentley",
+            "Rolls-Royce",
+            "Bugatti",
+            "Aston Martin",
+            "Citroën",
+            "Peugeot",
+            "Mitsubishi",
+            "Chevrolet",
+            "Hindustan Motors",
+            "Force Motors",
+            "Opel",
+            "SsangYong"
+          ]),
+          Item(title: ' Cars for Rent', brands: [
+            "Maruti Suzuki",
+            "Hyundai",
+            "Tata Motors",
+            "Mahindra",
+            "Kia",
+            "Toyota",
+            "Honda",
+            "Ford",
+            "Renault",
+            "Volkswagen",
+            "Skoda",
+            "Nissan",
+            "MG Motor",
+            "Fiat",
+            "Jeep",
+            "Datsun",
+            "Mercedes-Benz",
+            "BMW",
+            "Audi",
+            "Jaguar",
+            "Land Rover",
+            "Volvo",
+            "Porsche",
+            "Lexus",
+            "Mini",
+            "Isuzu",
+            "Maserati",
+            "Ferrari",
+            "Lamborghini",
+            "Bentley",
+            "Rolls-Royce",
+            "Bugatti",
+            "Aston Martin",
+            "Citroën",
+            "Peugeot",
+            "Mitsubishi",
+            "Chevrolet",
+            "Hindustan Motors",
+            "Force Motors",
+            "Opel",
+            "SsangYong"
+          ]),
+        ]),
+        Item(title: 'MotorCycle & ATVs', subCategories: []),
+        Item(title: 'Heavy or Big Vehicles', subCategories: [
+          Item(title: 'Trucks & Buses'),
+          Item(title: 'Heavy Equipment'),
+          Item(title: 'Parts & Accessories'),
+        ]),
+        Item(title: 'Boats', subCategories: [
+          Item(title: 'Fishing Boats'),
+          Item(title: 'Jet Skis'),
+          Item(title: 'Yachts & Sailboats'),
+          Item(title: 'Boat Parts & Accessories'),
+        ]),
+      ],
+    ),
+    Item(
+      id: 5,
+      title: "Hobbies, Music, Art & Books",
+      image: AssetsRes.IC_HOBBY_ICONS,
+      subCategories: [
+        Item(title: 'Musical Instruments', subCategories: []),
+        Item(title: 'Books', subCategories: []),
+        Item(title: 'Movies, Music & Games', subCategories: []),
+        Item(title: 'Board Games & Puzzles', subCategories: []),
+        Item(title: 'Art, Antiques & Collectibles', subCategories: []),
+        Item(title: 'Luggage', subCategories: []),
+        Item(
+          title: 'Tickets & Vouchers',
+          subCategories: [],
+        ),
+        Item(title: 'Bicycles'),
+        Item(title: 'Fitness Equipment'),
+        Item(title: 'Study Equipment'),
+        Item(title: 'Other'),
+      ],
+    ),
+    Item(
+      id: 6,
+      title: "Pets",
+      image: AssetsRes.IC_PETS_ICON,
+      subCategories: [
+        Item(title: 'Animals', subCategories: [
+          Item(
+            title: 'Dogs',
+          ),
+          Item(
+            title: 'Cats',
+          ),
+          Item(
+            title: 'Birds',
+          ),
+          Item(
+            title: 'Fish',
+          ),
+          Item(
+            title: 'Other',
+          ),
+        ]),
+        Item(title: 'Pet Accessories', subCategories: [
+          Item(
+            title: 'Pet Food',
+          ),
+          Item(
+            title: 'Toys',
+          ),
+          Item(
+            title: 'Health & Grooming',
+          ),
+          Item(
+            title: 'Kennels & Carriers',
+          ),
+          Item(
+            title: 'Other',
+          ),
+        ])
+      ],
+    ),
+    Item(
+      id: 7,
+      title: "Business & Industrial",
+      image: AssetsRes.IC_BUSSINESS_ICON,
+      subCategories: [
+        Item(title: 'Office Furniture and Supplies', subCategories: []),
+        Item(title: 'Construction Materials', subCategories: []),
+        Item(title: 'Medical Equipment', subCategories: []),
+        Item(title: 'Agricultural Supplies', subCategories: []),
+        Item(title: 'Restaurant & Catering Equipment', subCategories: []),
+        Item(title: 'Retail & Services', subCategories: []),
+        Item(title: 'Industrial Supplies', subCategories: []),
+        Item(title: 'Cleaning & Janitorial Supplies', subCategories: []),
+        Item(title: 'Laboratory & Scientific', subCategories: []),
+        Item(title: 'Other', subCategories: []),
+      ],
+    ),
+    Item(
+      id: 8,
+      title: "Services",
+      image: AssetsRes.IC_SERVICE_ICON,
+      subCategories: [
+        Item(title: 'Home Services'),
+        Item(title: 'Car Maintenance'),
+        Item(title: 'Education'),
+        Item(title: 'Health & Fitness'),
+        Item(title: 'Event Services'),
+        Item(title: 'Technical & IT'),
+        Item(title: 'Pets'),
+        Item(title: 'Beauty'),
+        Item(title: 'Movers and Installations'),
+        Item(title: 'Others')
+      ],
+    ),
+    Item(
+      id: 9,
+      title: "Jobs",
+      image: AssetsRes.IC_JOBS_ICON,
+      subCategories: [
+        Item(title: 'Healthcare & Medical'),
+        Item(title: 'Engineering'),
+        Item(title: 'Technology & IT'),
+        Item(title: 'Sales'),
+        Item(title: 'Marketing'),
+        Item(title: 'Business & Finance'),
+        Item(title: 'Education'),
+        Item(title: 'Retail'),
+        Item(title: 'Customer Service & Call Center'),
+        Item(title: 'Manufacturing'),
+        Item(title: 'Transportation & Logistics'),
+        Item(title: 'Media & Entertainment'),
+        Item(title: 'Arts & Design'),
+        Item(title: 'Legal & Lawyers'),
+        Item(title: 'Construction'),
+        Item(title: 'Real Estate'),
+        Item(title: 'Environmental'),
+        Item(title: 'Agriculture'),
+        Item(title: 'Sports & Recreation'),
+        Item(title: 'Government & Public Administration'),
+        Item(title: 'Tourism & Hospitality'),
+        Item(title: 'HR'),
+        Item(title: 'Guards and Security'),
+      ],
+    ),
   ];
 
-  void handelSellCat({required int index}) async {
-    switch (index) {
-      case 0:
-        context.push(Routes.chooseLocationView);
-        break;
-      case 1:
-        context.push(Routes.mobileSubcategoryView);
-        break;
-      case 2:
-        break;
-      case 3:
-        break;
-      case 4:
-        break;
-    }
+  void handelSellCat({required Item item}) async {
+    context.push(Routes.sellSubCategoryView, extra: item);
   }
 }
 
 class Item {
-  String title = "";
-  String image = "";
+  String? title;
+  String? image;
+  int? id;
+  List<Item>? subCategories;
+  List<String>? brands;
 
   Item({
-    required this.title,
-    required this.image,
+    this.id,
+    this.subCategories,
+    this.brands,
+    this.title,
+    this.image,
   });
 }

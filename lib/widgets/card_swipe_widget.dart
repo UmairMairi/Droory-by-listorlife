@@ -87,7 +87,7 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget> {
               shape: BoxShape.circle,
               color: _currentPage == index
                   ? context.theme.primaryColor
-                  : Colors.grey,
+                  : Colors.white,
             ),
           );
         }).toList(),

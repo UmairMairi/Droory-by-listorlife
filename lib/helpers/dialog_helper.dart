@@ -219,7 +219,7 @@ class AppAlertDialogWithLottie extends StatelessWidget {
 class AppAlertDialogWithWidget extends StatelessWidget {
   final String? icon;
   final String? title;
-  final String description;
+  final String? description;
   final VoidCallback onTap;
   final VoidCallback? onCancelTap;
 
@@ -227,15 +227,19 @@ class AppAlertDialogWithWidget extends StatelessWidget {
   final Color? glowColor;
   final String? buttonText;
   final String? cancelButtonText;
+  final Widget? content;
+  final bool isTextDescription;
   const AppAlertDialogWithWidget({
     super.key,
     this.icon,
     this.title,
     this.glowColor,
-    required this.description,
+    this.description,
     required this.onTap,
     this.onCancelTap,
+    this.content,
     this.showCancelButton = false,
+    this.isTextDescription = true,
     this.buttonText,
     this.cancelButtonText,
   });
@@ -267,6 +271,7 @@ class AppAlertDialogWithWidget extends StatelessWidget {
                   shape: const CircleBorder(),
                   color: Colors.transparent,
                   child: CircleAvatar(
+                    backgroundColor: Colors.transparent,
                     backgroundImage:
                         AssetImage(icon ?? AssetsRes.IC_BLOCK_USER),
                     radius: 40.0,
@@ -290,11 +295,15 @@ class AppAlertDialogWithWidget extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  Text(
-                    description ??
-                        'Your Profile has been created successfully!',
-                    textAlign: TextAlign.center,
-                  ),
+                  isTextDescription
+                      ? Text(
+                          description ??
+                              'Your Profile has been created successfully!',
+                          textAlign: TextAlign.center,
+                        )
+                      : content != null
+                          ? content!
+                          : const SizedBox.shrink(),
                   const SizedBox(
                     height: 20,
                   ),

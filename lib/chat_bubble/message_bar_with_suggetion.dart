@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/helpers/dialog_helper.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 
 class MessageBarWithSuggestions extends StatefulWidget {
@@ -54,9 +56,11 @@ class _MessageBarWithSuggetionsState extends State<MessageBarWithSuggestions> {
                 tabs: [
                   Tab(
                     text: 'Questions',
+                    height: 40,
                   ),
                   Tab(
                     text: 'Make Offer',
+                    height: 40,
                   ),
                 ]),
             Flexible(
@@ -81,16 +85,19 @@ class _MessageBarWithSuggetionsState extends State<MessageBarWithSuggestions> {
         const SizedBox(
           height: 10,
         ),
-        Wrap(
-          spacing: 8.0,
-          children: widget.suggestions
-              .map((suggestion) => ActionChip(
-                    label: Text(suggestion),
-                    onPressed: () {
-                      widget.onSuggestionSelected(suggestion);
-                    },
-                  ))
-              .toList(),
+        Padding(
+          padding: const EdgeInsets.only(right: 20.0, left: 20),
+          child: Wrap(
+            spacing: 8.0,
+            children: widget.suggestions
+                .map((suggestion) => ActionChip(
+                      label: Text(suggestion),
+                      onPressed: () {
+                        widget.onSuggestionSelected(suggestion);
+                      },
+                    ))
+                .toList(),
+          ),
         ),
         const SizedBox(
           height: 20,
@@ -115,15 +122,16 @@ class _MessageBarWithSuggetionsState extends State<MessageBarWithSuggestions> {
                       hintText: 'Type here...', border: InputBorder.none),
                 ),
               ),
-              IconButton(
-                icon: const Icon(Icons.attach_file),
-                onPressed: () {
+              InkWell(
+                child: const Icon(Icons.attach_file),
+                onTap: () {
                   widget.onPickImageClick();
                 },
               ),
-              IconButton(
-                icon: const Icon(Icons.mic),
-                onPressed: () {
+              Gap(03),
+              InkWell(
+                child: const Icon(Icons.mic),
+                onTap: () {
                   widget.onRecordingClick();
                 },
               ),
@@ -191,17 +199,24 @@ class _MessageBarWithSuggetionsState extends State<MessageBarWithSuggestions> {
             ),
           ),
           const SizedBox(
-            height: 10,
+            height: 15,
           ),
-          AppElevatedButtonWithoutAnimation(
-            width: context.width,
-            onTap: () {
-              if (_offerController.text.trim().isEmpty) {
-                return;
-              }
-              widget.onOfferMade(double.parse(_offerController.text));
-            },
-            title: 'Send',
+          Padding(
+            padding: const EdgeInsets.only(right: 50.0, left: 50),
+            child: AppElevatedButtonWithoutAnimation(
+              height: 45,
+              width: context.width,
+              onTap: () {
+                if (_offerController.text.trim().isEmpty) {
+                  DialogHelper.showToast(message: "Please enter offer amount");
+                  return;
+                }
+
+                widget.onOfferMade(double.parse(_offerController.text));
+                _offerController.clear();
+              },
+              title: 'Send',
+            ),
           )
         ],
       ),

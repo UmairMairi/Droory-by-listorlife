@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/helpers/db_helper.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/view_model/home_vm.dart';
@@ -137,6 +138,10 @@ class HomeView extends BaseView<HomeVM> {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
+                    if (DbHelper.getIsGuest()) {
+                      context.push(Routes.guestLogin);
+                      return;
+                    }
                     context.push(Routes.productDetails,
                         extra: viewModel.homeItemList[index]);
                   },

@@ -2,46 +2,17 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:list_and_life/view/main/sell/car/post_added_final_view.dart';
+import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/helpers/image_picker_helper.dart';
+import 'package:list_and_life/view/main/sell/forms/post_added_final_view.dart';
 
-class IncludeCarDetailView extends StatefulWidget {
+import '../../../../view_model/car_sell_v_m.dart';
+
+class IncludeCarDetailView extends BaseView<CarSellVM> {
   const IncludeCarDetailView({super.key});
 
   @override
-  State<IncludeCarDetailView> createState() => _IncludeCarDetailViewState();
-}
-
-class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
-  Pattern pattern =
-      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-
-  var regexToRemoveEmoji =
-      r'(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])';
-  int currentIndex = 1;
-  int transmission = 0;
-
-  File? image;
-  Future pickImage(ImageSource source) async {
-    final imagepicker = await ImagePicker().pickImage(source: source);
-    if (imagepicker == null) return;
-    final tempImage = File(imagepicker.path);
-    setState(() {
-      image = tempImage;
-    });
-  }
-
-  TextEditingController brandTextController = TextEditingController();
-  TextEditingController yearTextController = TextEditingController();
-  TextEditingController fuelTextController = TextEditingController();
-  TextEditingController kmDrivenTextController = TextEditingController();
-  TextEditingController numOfOwnerTextController = TextEditingController();
-  TextEditingController adTitleTextController = TextEditingController();
-  TextEditingController descriptionTextController = TextEditingController();
-  TextEditingController priceTextController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, CarSellVM viewModel) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -56,13 +27,16 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               "Upload Images",
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+              style: context.textTheme.titleMedium,
             ),
             GestureDetector(
-              onTap: () {
-                openImagePicker();
+              onTap: () async {
+                viewModel.mainImagePath =
+                    await ImagePickerHelper.openImagePicker(
+                            context: context, isCropping: true) ??
+                        '';
               },
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 10),
@@ -78,12 +52,12 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
                     ],
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10)),
-                child: image != null
+                child: viewModel.mainImagePath.isNotEmpty
                     ? ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: Image.file(
-                          image!,
-                          fit: BoxFit.fill,
+                          File(viewModel.mainImagePath),
+                          fit: BoxFit.fitWidth,
                         ))
                     : const Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -102,51 +76,86 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
                       ),
               ),
             ),
-            GestureDetector(
-              onTap: () {
-                openImagePicker();
-              },
-              child: Container(
-                margin: const EdgeInsets.only(top: 5, bottom: 35),
-                width: 90,
-                height: 80,
-                decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        offset: const Offset(0, 1),
-                        blurRadius: 6,
-                      ),
-                    ],
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10)),
-                child: const Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.add),
-                    SizedBox(
-                      height: 2,
+            Wrap(
+              children: List.generate(viewModel.imagesList.length + 1, (index) {
+                if (index < viewModel.imagesList.length) {
+                  return Container(
+                    margin: const EdgeInsets.all(10),
+                    width: 90,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          offset: const Offset(0, 1),
+                          blurRadius: 6,
+                        ),
+                      ],
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    Text(
-                      "Add",
-                      style: TextStyle(
-                        fontSize: 14,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.file(
+                        File(viewModel.imagesList[index]),
+                        fit: BoxFit.fill,
                       ),
                     ),
-                  ],
-                ),
-              ),
+                  );
+                } else {
+                  return GestureDetector(
+                    onTap: () async {
+                      var image = await ImagePickerHelper.openImagePicker(
+                              context: context) ??
+                          '';
+                      if (image.isNotEmpty) {
+                        viewModel.addImage(image);
+                      }
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.all(10),
+                      width: 90,
+                      height: 80,
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            offset: const Offset(0, 1),
+                            blurRadius: 6,
+                          ),
+                        ],
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.add),
+                          SizedBox(
+                            height: 2,
+                          ),
+                          Text(
+                            "Add",
+                            style: TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+              }),
             ),
-            const Text(
+            Text(
               "Item Condition",
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+              style: context.textTheme.titleMedium,
             ),
             Row(
               children: [
                 GestureDetector(
                   onTap: () {
-                    setState(() {});
-                    currentIndex = 1;
+                    viewModel.currentIndex = 1;
                   },
                   child: Container(
                     width: 105,
@@ -154,10 +163,10 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
                     margin: const EdgeInsets.only(top: 10, right: 10),
                     decoration: BoxDecoration(
                       border: Border.all(
-                          color: currentIndex == 1
+                          color: viewModel.currentIndex == 1
                               ? Colors.transparent
                               : Colors.grey.withOpacity(0.5)),
-                      color: currentIndex == 1
+                      color: viewModel.currentIndex == 1
                           ? Colors.black
                           : const Color(0xffFCFCFD),
                       borderRadius: BorderRadius.circular(5),
@@ -166,28 +175,29 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
                         child: Text(
                       "New",
                       style: TextStyle(
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w600,
                         fontSize: 16,
-                        color: currentIndex == 1 ? Colors.white : Colors.black,
+                        color: viewModel.currentIndex == 1
+                            ? Colors.white
+                            : Colors.black,
                       ),
                     )),
                   ),
                 ),
                 GestureDetector(
                   onTap: () {
-                    setState(() {});
-                    currentIndex = 2;
+                    viewModel.currentIndex = 2;
                   },
                   child: Container(
                     width: 105,
                     height: 42,
                     margin: const EdgeInsets.only(top: 10, left: 10),
                     decoration: BoxDecoration(
-                      color: currentIndex == 2
+                      color: viewModel.currentIndex == 2
                           ? Colors.black
                           : const Color(0xffFCFCFD),
                       border: Border.all(
-                          color: currentIndex == 2
+                          color: viewModel.currentIndex == 2
                               ? Colors.transparent
                               : Colors.grey.withOpacity(0.5)),
                       borderRadius: BorderRadius.circular(5),
@@ -196,9 +206,11 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
                         child: Text(
                       "Used",
                       style: TextStyle(
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w600,
                         fontSize: 16,
-                        color: currentIndex == 2 ? Colors.white : Colors.black,
+                        color: viewModel.currentIndex == 2
+                            ? Colors.white
+                            : Colors.black,
                       ),
                     )),
                   ),
@@ -213,7 +225,7 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
               TextSpan(
                 text: "Brand",
                 style: TextStyle(
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
                     fontSize: 14,
                     color: Colors.black),
               ),
@@ -221,7 +233,7 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
                   text: "*",
                   style: TextStyle(
                     color: Color(0xffFF385C),
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
                     fontSize: 14,
                   ))
             ])),
@@ -239,7 +251,7 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
                 ],
               ),
               child: TextFormField(
-                controller: brandTextController,
+                controller: viewModel.brandTextController,
                 readOnly: true,
                 cursorColor: Colors.black,
                 decoration: InputDecoration(
@@ -258,9 +270,7 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
                       color: Colors.black,
                     ),
                     onSelected: (String value) {
-                      setState(() {
-                        brandTextController.text = value;
-                      });
+                      viewModel.brandTextController.text = value;
                     },
                     itemBuilder: (BuildContext context) {
                       return ['Brand 1', 'Brand 2', 'Brand 3'].map((option) {
@@ -274,7 +284,8 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
                 ),
                 inputFormatters: [
                   FilteringTextInputFormatter.deny(RegExp(r"\s+")),
-                  FilteringTextInputFormatter.deny(RegExp(regexToRemoveEmoji)),
+                  FilteringTextInputFormatter.deny(
+                      RegExp(viewModel.regexToRemoveEmoji)),
                 ],
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
@@ -285,7 +296,7 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
               TextSpan(
                 text: "Year",
                 style: TextStyle(
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
                     fontSize: 14,
                     color: Colors.black),
               ),
@@ -293,7 +304,7 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
                   text: "*",
                   style: TextStyle(
                     color: Color(0xffFF385C),
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
                     fontSize: 14,
                   ))
             ])),
@@ -311,7 +322,7 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
                 ],
               ),
               child: TextFormField(
-                controller: yearTextController,
+                controller: viewModel.yearTextController,
                 cursorColor: Colors.black,
                 decoration: const InputDecoration(
                     contentPadding:
@@ -324,7 +335,8 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
                     )),
                 inputFormatters: [
                   FilteringTextInputFormatter.deny(RegExp(r"\s+")),
-                  FilteringTextInputFormatter.deny(RegExp(regexToRemoveEmoji)),
+                  FilteringTextInputFormatter.deny(
+                      RegExp(viewModel.regexToRemoveEmoji)),
                   FilteringTextInputFormatter.digitsOnly,
                   LengthLimitingTextInputFormatter(4)
                 ],
@@ -337,7 +349,7 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
               TextSpan(
                 text: "Fuel",
                 style: TextStyle(
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
                     fontSize: 14,
                     color: Colors.black),
               ),
@@ -345,7 +357,7 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
                   text: "*",
                   style: TextStyle(
                     color: Color(0xffFF385C),
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
                     fontSize: 14,
                   ))
             ])),
@@ -363,7 +375,7 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
                 ],
               ),
               child: TextFormField(
-                controller: fuelTextController,
+                controller: viewModel.fuelTextController,
                 cursorColor: Colors.black,
                 decoration: const InputDecoration(
                     contentPadding:
@@ -376,7 +388,8 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
                     )),
                 inputFormatters: [
                   FilteringTextInputFormatter.deny(RegExp(r"\s+")),
-                  FilteringTextInputFormatter.deny(RegExp(regexToRemoveEmoji)),
+                  FilteringTextInputFormatter.deny(
+                      RegExp(viewModel.regexToRemoveEmoji)),
                   FilteringTextInputFormatter.digitsOnly,
                 ],
                 keyboardType: TextInputType.number,
@@ -388,7 +401,7 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
               TextSpan(
                 text: "Transmission",
                 style: TextStyle(
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
                     fontSize: 14,
                     color: Colors.black),
               ),
@@ -396,7 +409,7 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
                   text: "*",
                   style: TextStyle(
                     color: Color(0xffFF385C),
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
                     fontSize: 14,
                   ))
             ])),
@@ -404,8 +417,7 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    setState(() {});
-                    transmission = 1;
+                    viewModel.transmission = 1;
                   },
                   child: Container(
                     width: 130,
@@ -413,36 +425,41 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
                     margin: const EdgeInsets.only(top: 10, right: 10),
                     decoration: BoxDecoration(
                       border: Border.all(
-                          color: transmission == 1
+                          color: viewModel.transmission == 1
                               ? Colors.transparent
                               : Colors.grey.withOpacity(0.5)),
-                      color: transmission == 1 ? Colors.black : Colors.white,
+                      color: viewModel.transmission == 1
+                          ? Colors.black
+                          : Colors.white,
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: Center(
                         child: Text(
                       "New",
                       style: TextStyle(
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w600,
                         fontSize: 16,
-                        color: transmission == 1 ? Colors.white : Colors.black,
+                        color: viewModel.transmission == 1
+                            ? Colors.white
+                            : Colors.black,
                       ),
                     )),
                   ),
                 ),
                 GestureDetector(
                   onTap: () {
-                    setState(() {});
-                    transmission = 2;
+                    viewModel.transmission = 2;
                   },
                   child: Container(
                     width: 130,
                     height: 50,
                     margin: const EdgeInsets.only(top: 10, left: 10),
                     decoration: BoxDecoration(
-                      color: transmission == 2 ? Colors.black : Colors.white,
+                      color: viewModel.transmission == 2
+                          ? Colors.black
+                          : Colors.white,
                       border: Border.all(
-                          color: transmission == 2
+                          color: viewModel.transmission == 2
                               ? Colors.transparent
                               : Colors.grey.withOpacity(0.5)),
                       borderRadius: BorderRadius.circular(5),
@@ -451,9 +468,11 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
                         child: Text(
                       "Used",
                       style: TextStyle(
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w600,
                         fontSize: 16,
-                        color: transmission == 2 ? Colors.white : Colors.black,
+                        color: viewModel.transmission == 2
+                            ? Colors.white
+                            : Colors.black,
                       ),
                     )),
                   ),
@@ -468,7 +487,7 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
               TextSpan(
                 text: "KM Driven",
                 style: TextStyle(
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
                     fontSize: 14,
                     color: Colors.black),
               ),
@@ -487,7 +506,7 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
                 ],
               ),
               child: TextFormField(
-                controller: kmDrivenTextController,
+                controller: viewModel.kmDrivenTextController,
                 cursorColor: Colors.black,
                 decoration: const InputDecoration(
                     contentPadding:
@@ -500,7 +519,8 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
                     )),
                 inputFormatters: [
                   FilteringTextInputFormatter.deny(RegExp(r"\s+")),
-                  FilteringTextInputFormatter.deny(RegExp(regexToRemoveEmoji)),
+                  FilteringTextInputFormatter.deny(
+                      RegExp(viewModel.regexToRemoveEmoji)),
                   FilteringTextInputFormatter.digitsOnly,
                 ],
                 keyboardType: TextInputType.number,
@@ -512,7 +532,7 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
               TextSpan(
                 text: "No. of Onwers",
                 style: TextStyle(
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
                     fontSize: 14,
                     color: Colors.black),
               ),
@@ -531,7 +551,7 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
                 ],
               ),
               child: TextFormField(
-                controller: numOfOwnerTextController,
+                controller: viewModel.numOfOwnerTextController,
                 cursorColor: Colors.black,
                 decoration: const InputDecoration(
                     contentPadding:
@@ -544,7 +564,8 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
                     )),
                 inputFormatters: [
                   FilteringTextInputFormatter.deny(RegExp(r"\s+")),
-                  FilteringTextInputFormatter.deny(RegExp(regexToRemoveEmoji)),
+                  FilteringTextInputFormatter.deny(
+                      RegExp(viewModel.regexToRemoveEmoji)),
                   FilteringTextInputFormatter.digitsOnly,
                 ],
                 keyboardType: TextInputType.number,
@@ -556,7 +577,7 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
               TextSpan(
                 text: "Ad Title",
                 style: TextStyle(
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
                     fontSize: 14,
                     color: Colors.black),
               ),
@@ -564,7 +585,7 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
                   text: "*",
                   style: TextStyle(
                     color: Color(0xffFF385C),
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
                     fontSize: 14,
                   ))
             ])),
@@ -582,7 +603,7 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
                 ],
               ),
               child: TextFormField(
-                controller: adTitleTextController,
+                controller: viewModel.adTitleTextController,
                 cursorColor: Colors.black,
                 decoration: const InputDecoration(
                     contentPadding:
@@ -595,7 +616,8 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
                     )),
                 inputFormatters: [
                   FilteringTextInputFormatter.deny(RegExp(r"\s+")),
-                  FilteringTextInputFormatter.deny(RegExp(regexToRemoveEmoji)),
+                  FilteringTextInputFormatter.deny(
+                      RegExp(viewModel.regexToRemoveEmoji)),
                 ],
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
@@ -606,7 +628,7 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
               TextSpan(
                 text: "Describe what you are selling",
                 style: TextStyle(
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
                     fontSize: 14,
                     color: Colors.black),
               ),
@@ -625,7 +647,7 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
                 ],
               ),
               child: TextFormField(
-                controller: descriptionTextController,
+                controller: viewModel.descriptionTextController,
                 maxLines: 5,
                 cursorColor: Colors.black,
                 decoration: const InputDecoration(
@@ -639,7 +661,8 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
                     )),
                 inputFormatters: [
                   FilteringTextInputFormatter.deny(RegExp(r"\s+")),
-                  FilteringTextInputFormatter.deny(RegExp(regexToRemoveEmoji)),
+                  FilteringTextInputFormatter.deny(
+                      RegExp(viewModel.regexToRemoveEmoji)),
                 ],
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
@@ -650,7 +673,7 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
               TextSpan(
                 text: "Price (in EGP)",
                 style: TextStyle(
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
                     fontSize: 14,
                     color: Colors.black),
               ),
@@ -669,7 +692,7 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
                 ],
               ),
               child: TextFormField(
-                controller: priceTextController,
+                controller: viewModel.priceTextController,
                 cursorColor: Colors.black,
                 decoration: const InputDecoration(
                     contentPadding:
@@ -682,7 +705,8 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
                     )),
                 inputFormatters: [
                   FilteringTextInputFormatter.deny(RegExp(r"\s+")),
-                  FilteringTextInputFormatter.deny(RegExp(regexToRemoveEmoji)),
+                  FilteringTextInputFormatter.deny(
+                      RegExp(viewModel.regexToRemoveEmoji)),
                   FilteringTextInputFormatter.digitsOnly,
                 ],
                 keyboardType: TextInputType.number,
@@ -719,140 +743,6 @@ class _IncludeCarDetailViewState extends State<IncludeCarDetailView> {
             )
           ],
         ),
-      ),
-    );
-  }
-
-  void openImagePicker() {
-    showModalBottomSheet(
-      context: context,
-      useRootNavigator: false,
-      backgroundColor: Colors.transparent,
-      builder: (BuildContext bc) => GestureDetector(
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-          padding: const EdgeInsets.symmetric(
-            vertical: 15,
-          ),
-          decoration: const BoxDecoration(
-              color: Colors.black,
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.all(Radius.circular(15))),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    child: Column(
-                      children: [
-                        Container(
-                          margin: const EdgeInsetsDirectional.only(end: 70),
-                          height: 50,
-                          width: 50,
-                          decoration: const BoxDecoration(
-                              color: Color(0xffFF385C),
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Color(0x194A841C),
-                                  offset: Offset(0.0, 1.0),
-                                  blurRadius: 19,
-                                ),
-                              ]),
-                          child: const Icon(
-                            Icons.camera_alt_rounded,
-                            size: 25,
-                            color: Colors.white,
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(right: 70, top: 10),
-                          child: Text(
-                            "Camera",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12),
-                          ),
-                        )
-                      ],
-                    ),
-                    onTap: () async {
-                      Navigator.pop(context);
-                      pickImage(ImageSource.camera);
-                    },
-                  ),
-                  GestureDetector(
-                    child: Column(
-                      children: [
-                        Container(
-                          height: 50,
-                          width: 50,
-                          decoration: const BoxDecoration(
-                              color: Color(0xffFF385C),
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Color(0x194A841C),
-                                  offset: Offset(0.0, 1.0),
-                                  blurRadius: 19,
-                                ),
-                              ]),
-                          child: const Icon(
-                            Icons.image_rounded,
-                            size: 25,
-                            color: Colors.white,
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(right: 5, top: 10),
-                          child: Text(
-                            "Gallery",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12),
-                          ),
-                        )
-                      ],
-                    ),
-                    onTap: () async {
-                      Navigator.pop(context);
-                      pickImage(ImageSource.gallery);
-                    },
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              InkWell(
-                child: const Padding(
-                  padding: EdgeInsets.all(13.0),
-                  child: Text(
-                    "Cancel",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.normal,
-                      fontSize: 14,
-                      decoration: TextDecoration.underline,
-                    ),
-                  ),
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              )
-            ],
-          ),
-        ),
-        onTap: () {
-          FocusScope.of(context).requestFocus(FocusScopeNode());
-        },
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/animations/bouncing_animation.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/helpers/db_helper.dart';
 import 'package:list_and_life/helpers/dialog_helper.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
@@ -63,16 +64,21 @@ class SettingVM extends BaseViewModel {
               context: context,
               barrierDismissible: false,
               builder: (BuildContext dialogContext) {
-                return AppAlertDialogWithWidget(title:'Logout',
-                  description:  'Are you sure you want to logout this account?',
-                  onTap: (){},
+                return AppAlertDialogWithWidget(
+                  title: 'Logout',
+                  description: 'Are you sure you want to logout this account?',
+                  onTap: () {
+                    DbHelper.eraseData();
+                    context.go(Routes.login);
+                  },
                   icon: AssetsRes.IC_LOGOUT_ICON,
                   onCancelTap: () {
                     context.pop();
                   },
                   buttonText: 'Yes',
                   cancelButtonText: 'No',
-                  showCancelButton: true,);
+                  showCancelButton: true,
+                );
               },
             );
           }),

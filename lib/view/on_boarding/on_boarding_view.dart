@@ -30,16 +30,16 @@ class OnBoardingView extends BaseView<OnBoardingVM> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Expanded(
+                            Flexible(
                                 child: Image.asset(
                                     viewModel.itemsList[index].image)),
-                            const Gap(10),
+                            Gap(50),
                             Text(
                               viewModel.itemsList[index].title,
                               style: context.textTheme.titleLarge,
                               textAlign: TextAlign.center,
                             ),
-                            const Gap(10),
+                            const Gap(15),
                             Text(
                               viewModel.itemsList[index].description,
                               style: context.textTheme.bodyMedium,
@@ -48,7 +48,7 @@ class OnBoardingView extends BaseView<OnBoardingVM> {
                           ],
                         );
                       })),
-              const Gap(40),
+              const Gap(20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

@@ -255,7 +255,7 @@ class ImagePickerHelper {
       sourcePath: imageFile,
       compressQuality: 60,
       aspectRatioPresets: [
-        cropAspectRatioPreset ?? CropAspectRatioPreset.square,
+        cropAspectRatioPreset ?? CropAspectRatioPreset.ratio16x9,
       ],
       uiSettings: [
         AndroidUiSettings(

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/helpers/dialog_helper.dart';
 import 'package:list_and_life/models/setting_item_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/view_model/chat_vm.dart';
+import 'package:list_and_life/widgets/app_text_field.dart';
 
 import '../../../chat_bubble/bubble_normal_message.dart';
 import '../../../chat_bubble/message_bar_with_suggetion.dart';
@@ -46,7 +48,10 @@ class MessageView extends BaseView<ChatVM> {
                       builder: (context) => AppAlertDialogWithLottie(
                             description:
                                 'Are you sure want to delete this chat?',
-                            onTap: () {},
+                            onTap: () {
+                              context.pop();
+                              context.pop();
+                            },
                             lottieIcon: AssetsRes.DELETE_LOTTIE,
                             showCancelButton: true,
                             cancelButtonText: 'No',
@@ -59,14 +64,20 @@ class MessageView extends BaseView<ChatVM> {
                   ///Report User
                   showDialog(
                       context: context,
-                      builder: (context) => AppAlertDialogWithLottie(
-                            description:
-                                'Are you sure want to delete this chat?',
-                            onTap: () {},
-                            lottieIcon: AssetsRes.DELETE_LOTTIE,
+                      builder: (context) => AppAlertDialogWithWidget(
+                            description: '',
+                            onTap: () {
+                              context.pop();
+                            },
+                            icon: AssetsRes.IC_REPORT_USER,
                             showCancelButton: true,
+                            isTextDescription: false,
+                            content: AppTextField(
+                              lines: 4,
+                              hint: 'Reason...',
+                            ),
                             cancelButtonText: 'No',
-                            title: 'Delete Chat',
+                            title: 'Report User',
                             buttonText: 'Yes',
                           ));
                   return;
@@ -75,8 +86,11 @@ class MessageView extends BaseView<ChatVM> {
                       context: context,
                       builder: (context) => AppAlertDialogWithWidget(
                             description:
-                                'Are you sure want to delete this block user?',
-                            onTap: () {},
+                                'Are you sure want to block this user?',
+                            onTap: () {
+                              context.pop();
+                              context.pop();
+                            },
                             icon: AssetsRes.IC_BLOCK_USER,
                             showCancelButton: true,
                             cancelButtonText: 'No',
@@ -109,15 +123,15 @@ class MessageView extends BaseView<ChatVM> {
         children: [
           Expanded(
             child: ListView.builder(
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
                 itemCount: viewModel.chatItems.length,
                 reverse: true,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return BubbleNormalMessage(
-                    textStyle: TextStyle(
-                      color: viewModel.chatItems[index].isSender!
-                          ? Colors.white
-                          : Colors.white,
+                    textStyle: const TextStyle(
+                      color: Colors.white,
                     ),
                     timeStamp: true,
                     createdAt: DateHelper.getChatTime(
@@ -126,7 +140,7 @@ class MessageView extends BaseView<ChatVM> {
                     isSender: viewModel.chatItems[index].isSender ?? false,
                     color: viewModel.chatItems[index].isSender!
                         ? Colors.black
-                        : Colors.grey,
+                        : Color(0xff5A5B55),
                   );
                 }),
           ),

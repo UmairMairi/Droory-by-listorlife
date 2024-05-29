@@ -9,6 +9,7 @@ class DbHelper {
 
   static const String _userModel = "userModel";
   static const String _isLoggedIn = "isLoggedIn";
+  static const String _isGuest = "isGuest";
   static const String _isVerified = "isVerified";
   static const String _token = "token";
   static const String _selectedCategory = "selectedCategory";
@@ -31,6 +32,14 @@ class DbHelper {
 
   static eraseData() async {
     await box.erase();
+  }
+
+  static void saveIsGuest(bool value) {
+    writeData(_isGuest, value);
+  }
+
+  static bool getIsGuest() {
+    return readData(_isGuest) ?? false;
   }
 
   static bool getIsLoggedIn() {

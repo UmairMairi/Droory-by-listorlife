@@ -43,10 +43,11 @@ class AppTextField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final bool? enableCopyPaste;
   final VoidCallback? onTap;
-
+  final bool animation;
   const AppTextField({
     super.key,
     this.title,
+    this.animation = true,
     this.onTap,
     this.hint,
     this.vPadding,
@@ -97,10 +98,10 @@ class AppTextField extends StatelessWidget {
           style: context.textTheme.titleSmall,
         ),
         const SizedBox(
-          height: 02,
+          height: 05,
         ),
         FadeAnimation(
-          delay: 0.3,
+          delay: animation ? 0.3 : 0.0,
           child: Container(
             alignment: Alignment.center,
             width: width ?? MediaQuery.of(context).size.width,
@@ -116,7 +117,8 @@ class AppTextField extends StatelessWidget {
                 ),
               ],
             ),
-            padding: const EdgeInsets.symmetric(horizontal: 10.0), // Adjusted padding
+            padding: const EdgeInsets.symmetric(
+                horizontal: 10.0), // Adjusted padding
             child: TextFormField(
               autovalidateMode: AutovalidateMode.disabled,
               controller: controller,

@@ -18,6 +18,8 @@ class ProfileVM extends BaseViewModel {
 
   bool get agreedToTerms => _agreedToTerms;
 
+  final FocusNode nodeText = FocusNode();
+
   set agreedToTerms(bool value) {
     _agreedToTerms = value;
     notifyListeners();

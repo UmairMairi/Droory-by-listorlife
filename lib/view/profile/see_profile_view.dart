@@ -1,15 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/res/assets_res.dart';
+import 'package:list_and_life/widgets/app_elevated_button.dart';
+import 'package:list_and_life/widgets/app_outline_button.dart';
+import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:list_and_life/widgets/favorite_button.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../models/setting_item_model.dart';
 import '../../routes/app_routes.dart';
 
-class SeeProfileView extends StatelessWidget {
+class SeeProfileView extends StatefulWidget {
   const SeeProfileView({super.key});
 
+  @override
+  State<SeeProfileView> createState() => _SeeProfileViewState();
+}
+
+class _SeeProfileViewState extends State<SeeProfileView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +27,209 @@ class SeeProfileView extends StatelessWidget {
         title: const Text("See Profile"),
         centerTitle: true,
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert)),
+          PopupMenuButton<int>(
+              icon: const Icon(Icons.more_vert),
+              onSelected: (int value) {
+                switch (value) {
+                  case 1:
+
+                    ///Share Profile
+                    Share.share(
+                        "Check this user profile in List or Lift app url: www.google.com");
+                    return;
+                  case 2:
+
+                    ///Report User
+                    showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        builder: (context) {
+                          int selectedReport = 0;
+                          return Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child:
+                                StatefulBuilder(builder: (context, setState) {
+                              return Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  const SizedBox(
+                                    height: 25,
+                                  ),
+                                  Text(
+                                    'Report User',
+                                    style: context.textTheme.titleMedium,
+                                  ),
+                                  RadioListTile<int?>(
+                                      value: 1,
+                                      title: const Text(
+                                          'Inappropriate profile picture'),
+                                      groupValue: selectedReport,
+                                      onChanged: (int? value) {
+                                        selectedReport = value ?? 0;
+                                        setState(() {});
+                                      }),
+                                  RadioListTile<int?>(
+                                      value: 2,
+                                      title: const Text(
+                                          'This user is threatening me'),
+                                      groupValue: selectedReport,
+                                      onChanged: (int? value) {
+                                        selectedReport = value ?? 0;
+                                        setState(() {});
+                                      }),
+                                  RadioListTile<int?>(
+                                      value: 3,
+                                      title: const Text(
+                                          'This User is insulting me'),
+                                      groupValue: selectedReport,
+                                      onChanged: (int? value) {
+                                        selectedReport = value ?? 0;
+                                        setState(() {});
+                                      }),
+                                  RadioListTile<int?>(
+                                      value: 4,
+                                      title: const Text('Spam'),
+                                      groupValue: selectedReport,
+                                      onChanged: (int? value) {
+                                        selectedReport = value ?? 0;
+                                        setState(() {});
+                                      }),
+                                  RadioListTile<int?>(
+                                      value: 5,
+                                      title: Text('Fraud'),
+                                      groupValue: selectedReport,
+                                      onChanged: (int? value) {
+                                        selectedReport = value ?? 0;
+                                        setState(() {});
+                                      }),
+                                  RadioListTile<int?>(
+                                      value: 6,
+                                      title: Text('Other'),
+                                      groupValue: selectedReport,
+                                      onChanged: (int? value) {
+                                        selectedReport = value ?? 0;
+                                        setState(() {});
+                                      }),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20.0, vertical: 10),
+                                    child: AppTextField(
+                                      animation: false,
+                                      lines: 3,
+                                      title: 'Comment',
+                                      hint: 'Write here...',
+                                    ),
+                                  ),
+                                  Gap(10),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20.0, vertical: 0),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                            child: AppOutlineButton(
+                                          onTap: () {
+                                            context.pop();
+                                          },
+                                          title: 'Cancel',
+                                        )),
+                                        Gap(20),
+                                        Expanded(
+                                            child: AppElevatedButton(
+                                          onTap: () {
+                                            context.pop();
+                                          },
+                                          height: 40,
+                                          title: 'Send',
+                                        ))
+                                      ],
+                                    ),
+                                  ),
+                                  Gap(20),
+                                ],
+                              );
+                            }),
+                          );
+                        });
+
+                    return;
+                  case 3:
+
+                    ///Block User
+                    showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        builder: (context) {
+                          int selectedReport = 0;
+                          return Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child:
+                                StatefulBuilder(builder: (context, setState) {
+                              return Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  SizedBox(
+                                    height: 25,
+                                  ),
+                                  Text(
+                                    'Block User',
+                                    style: context.textTheme.titleMedium,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20.0, vertical: 10),
+                                    child: Text(
+                                        'Block John Marker? Blocked contacts will no longer be able to send you messages.'),
+                                  ),
+                                  Gap(10),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20.0, vertical: 0),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                            child: AppOutlineButton(
+                                          onTap: () {
+                                            context.pop();
+                                          },
+                                          title: 'Cancel',
+                                        )),
+                                        Gap(20),
+                                        Expanded(
+                                            child: AppElevatedButton(
+                                          onTap: () {
+                                            context.pop();
+                                            context.pop();
+                                          },
+                                          height: 40,
+                                          title: 'Block',
+                                        ))
+                                      ],
+                                    ),
+                                  ),
+                                  Gap(20),
+                                ],
+                              );
+                            }),
+                          );
+                        });
+                    return;
+                }
+              },
+              itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
+                    const PopupMenuItem(
+                      value: 1,
+                      child: Text('Share Profile'),
+                    ),
+                    const PopupMenuItem(
+                      value: 2,
+                      child: Text('Report User'),
+                    ),
+                    const PopupMenuItem(
+                      value: 3,
+                      child: Text('Block User'),
+                    ),
+                  ]),
         ],
       ),
       body: Padding(

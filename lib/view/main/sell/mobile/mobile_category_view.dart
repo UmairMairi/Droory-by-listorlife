@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/view/main/sell/mobile/include_mobile_detail_view.dart';
 
+import '../../../../view_model/sell_v_m.dart';
+
 class MobileCategoryView extends StatefulWidget {
   const MobileCategoryView({super.key});
 
@@ -57,7 +59,7 @@ class _MobileCategoryViewState extends State<MobileCategoryView> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset(
-                      data[index].image,
+                      data[index].image ?? '',
                       height: 38,
                       width: 46,
                     ),
@@ -65,7 +67,7 @@ class _MobileCategoryViewState extends State<MobileCategoryView> {
                       height: 13,
                     ),
                     Text(
-                      data[index].title,
+                      data[index].title ?? '',
                       style: const TextStyle(fontSize: 14),
                     ),
                   ],
@@ -75,14 +77,4 @@ class _MobileCategoryViewState extends State<MobileCategoryView> {
           }),
     );
   }
-}
-
-class Item {
-  String title = "";
-  String image = "";
-
-  Item({
-    required this.title,
-    required this.image,
-  });
 }

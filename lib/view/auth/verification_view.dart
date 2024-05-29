@@ -33,8 +33,8 @@ class VerificationView extends BaseView<AuthVM> {
             ),
             const Flexible(child: Gap(100)),
             Text(
-              'Enter the 4-digit code sent to you at +1 123 456 7890',
-              style: context.textTheme.bodySmall,
+              'Enter the 4-digit code sent to you at\n+1 123 456 7890',
+              style: context.textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
             const Gap(20),
@@ -47,7 +47,6 @@ class VerificationView extends BaseView<AuthVM> {
                 print("Entered OTP: $otp");
               },
             ),
-            const Flexible(child: Gap(50)),
             AppElevatedButton(
               width: context.width,
               onTap: () {

@@ -12,6 +12,8 @@ class AppElevatedButton extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
 
   final Color? backgroundColor;
+
+  final Color? tittleColor;
   const AppElevatedButton(
       {super.key,
       this.title,
@@ -19,6 +21,7 @@ class AppElevatedButton extends StatelessWidget {
       this.backgroundColor,
       this.width,
       this.padding,
+      this.tittleColor,
       this.height});
 
   @override
@@ -36,10 +39,11 @@ class AppElevatedButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(30),
               ),
               minimumSize: Size(width ?? 150, height ?? 50),
-              foregroundColor: context.theme.cardColor),
+              foregroundColor: Colors.white),
           child: Text(
             title ?? '',
-            style: const TextStyle(fontWeight: FontWeight.bold),
+            style: context.textTheme.titleSmall
+                ?.copyWith(color: tittleColor ?? Colors.white),
           ),
         ),
       ),
@@ -56,6 +60,7 @@ class AppElevatedButtonWithIcon extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
 
   final Color? backgroundColor;
+  final Color? tittleColor;
 
   final Widget icon;
   const AppElevatedButtonWithIcon(
@@ -66,6 +71,7 @@ class AppElevatedButtonWithIcon extends StatelessWidget {
       this.backgroundColor,
       this.width,
       this.padding,
+      this.tittleColor,
       this.height});
 
   @override
@@ -87,7 +93,8 @@ class AppElevatedButtonWithIcon extends StatelessWidget {
               foregroundColor: context.theme.cardColor),
           label: Text(
             title ?? '',
-            style: const TextStyle(fontWeight: FontWeight.bold),
+            style: context.textTheme.titleSmall
+                ?.copyWith(color: tittleColor ?? Colors.white),
           ),
         ),
       ),
@@ -130,7 +137,8 @@ class AppElevatedButtonWithoutAnimation extends StatelessWidget {
             foregroundColor: context.theme.cardColor),
         child: Text(
           title ?? '',
-          style: TextStyle(fontWeight: FontWeight.bold, color: titleColor),
+          style: context.textTheme.titleSmall
+              ?.copyWith(color: titleColor ?? Colors.white),
         ),
       ),
     );

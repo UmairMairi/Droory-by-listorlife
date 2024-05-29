@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:list_and_life/base/base.dart';
 
-import '../../../view_model/sell_v_m.dart';
+import '../../../../view_model/sell_v_m.dart';
 
-class SellView extends BaseView<SellVM> {
-  const SellView({super.key});
+class SellCategoryView extends BaseView<SellVM> {
+  const SellCategoryView({super.key});
 
   @override
   Widget build(BuildContext context, SellVM viewModel) {
@@ -14,7 +14,6 @@ class SellView extends BaseView<SellVM> {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        physics: const ClampingScrollPhysics(),
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
         child: Column(
           children: [
@@ -27,7 +26,9 @@ class SellView extends BaseView<SellVM> {
             ),
             GridView.builder(
                 shrinkWrap: true,
-                itemCount: viewModel.data.length,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: viewModel.categoryData.length,
+                padding: const EdgeInsets.only(bottom: 50),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     crossAxisSpacing: 15.0,
@@ -36,29 +37,34 @@ class SellView extends BaseView<SellVM> {
                 itemBuilder: (buildContext, index) {
                   return GestureDetector(
                     onTap: () {
-                      viewModel.handelSellCat(index: index);
+                      viewModel.handelSellCat(
+                          item: viewModel.categoryData[index]);
                     },
                     child: Card(
                       color: const Color(0xffFCFCFD),
                       elevation: 0.3,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            viewModel.data[index].image,
-                            height: 38,
-                            width: 46,
-                          ),
-                          const SizedBox(
-                            height: 13,
-                          ),
-                          Text(
-                            viewModel.data[index].title,
-                            style: const TextStyle(fontSize: 14),
-                          ),
-                        ],
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              viewModel.categoryData[index].image ?? '',
+                              height: 38,
+                              width: 46,
+                            ),
+                            const SizedBox(
+                              height: 13,
+                            ),
+                            Text(
+                              viewModel.categoryData[index].title ?? '',
+                              textAlign: TextAlign.center,
+                              style: context.textTheme.titleSmall,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );

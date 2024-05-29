@@ -72,6 +72,12 @@ dependencies:
   avatar_glow: ^3.0.1
   syncfusion_flutter_sliders: ^25.2.5
   rename: ^3.0.2
+  share_plus: ^9.0.0
+  keyboard_actions: ^4.2.0
+  map_picker: ^0.0.3
+  google_places_flutter: ^2.0.8
+  google_maps_flutter: any
+  location: ^6.0.2
 
 dev_dependencies:
   flutter_test:
@@ -95,6 +101,18 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
+    - assets/category/ic_bussiness_icon.png
+    - assets/category/ic_electronics_icons.png
+    - assets/category/ic_fashion.png
+    - assets/category/ic_hobby_icons.png
+    - assets/category/ic_home_and_living_icon.png
+    - assets/category/ic_home_appliances.png
+    - assets/category/ic_home_decor_garden.png
+    - assets/category/ic_jobs_icon.png
+    - assets/category/ic_pets_icon.png
+    - assets/category/ic_phone_icon.png
+    - assets/category/ic_service_icon.png
+    - assets/category/ic_vehicle_icons.png
     - assets/dummy/dummy_car_image1.jpg
     - assets/dummy/dummy_car_image2.jpg
     - assets/dummy/dummy_car_image3.jpg
@@ -136,6 +154,7 @@ flutter:
     - assets/icons/ic_item_location.png
     - assets/icons/ic_laptop_cat_imge.png
     - assets/icons/ic_loaction_icon.png
+    - assets/icons/ic_location_pin.png
     - assets/icons/ic_logout.png
     - assets/icons/ic_logout_icon.png
     - assets/icons/ic_mobile_cat_imge.png
@@ -144,6 +163,7 @@ flutter:
     - assets/icons/ic_petrol_icon.png
     - assets/icons/ic_privcy_policy.png
     - assets/icons/ic_profile.png
+    - assets/icons/ic_report_user.png
     - assets/icons/ic_speed_icon.png
     - assets/icons/ic_t_and_c.png
     - assets/icons/ic_tablet_image.png

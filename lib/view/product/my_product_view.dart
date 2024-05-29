@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../models/setting_item_model.dart';
 import '../../res/assets_res.dart';
@@ -49,29 +50,41 @@ class MyProductView extends StatelessWidget {
                     child: SafeArea(
                       child: Row(
                         children: [
-                          const Icon(Icons.share_outlined, color: Colors.white,),
-                          PopupMenuButton<int>(
-                            icon: const Icon(Icons.more_vert_outlined, color: Colors.white,),
-                            offset: const Offset(0, 40),
-                            shape: const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(15.0))),
-                            onSelected: (int item) {},
-                            itemBuilder: (BuildContext context) =>
-                                <PopupMenuEntry<int>>[
-                              const PopupMenuItem(
-                                value: 1,
-                                child: Text('Edit'),
+                          InkWell(
+                              onTap: () => Share.share(
+                                  'Check my this product on List or lift app url: www.google.com'),
+                              child: const Icon(
+                                Icons.share_outlined,
+                                color: Colors.white,
+                              )),
+                          Container(
+                            decoration: BoxDecoration(shape: BoxShape.circle),
+                            child: PopupMenuButton<int>(
+                              icon: const Icon(
+                                Icons.more_vert_outlined,
+                                color: Colors.white,
                               ),
-                              const PopupMenuItem(
-                                value: 2,
-                                child: Text('Deactivate'),
-                              ),
-                              const PopupMenuItem(
-                                value: 3,
-                                child: Text('Remove'),
-                              ),
-                            ],
+                              offset: const Offset(0, 40),
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15.0))),
+                              onSelected: (int item) {},
+                              itemBuilder: (BuildContext context) =>
+                                  <PopupMenuEntry<int>>[
+                                const PopupMenuItem(
+                                  value: 1,
+                                  child: Text('Edit'),
+                                ),
+                                const PopupMenuItem(
+                                  value: 2,
+                                  child: Text('Deactivate'),
+                                ),
+                                const PopupMenuItem(
+                                  value: 3,
+                                  child: Text('Remove'),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -103,9 +116,10 @@ class MyProductView extends StatelessWidget {
                     width: double.infinity,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
-                      color:  Colors.grey.withOpacity(0.2),
+                      color: Colors.grey.withOpacity(0.2),
                     ),
-                    padding: const EdgeInsets.only(top: 20,bottom:20, left: 15,right: 10),
+                    padding: const EdgeInsets.only(
+                        top: 20, bottom: 20, left: 15, right: 10),
                     child: Table(
                       children: [
                         TableRow(children: [
@@ -118,7 +132,10 @@ class MyProductView extends StatelessWidget {
                               const SizedBox(
                                 width: 5,
                               ),
-                              Text('Petrol', style: context.textTheme.titleSmall,),
+                              Text(
+                                'Petrol',
+                                style: context.textTheme.titleSmall,
+                              ),
                             ],
                           ),
                           Row(
@@ -130,7 +147,10 @@ class MyProductView extends StatelessWidget {
                               const SizedBox(
                                 width: 5,
                               ),
-                              Text('7000 KM', style: context.textTheme.titleSmall,),
+                              Text(
+                                '7000 KM',
+                                style: context.textTheme.titleSmall,
+                              ),
                             ],
                           ),
                           Row(
@@ -142,7 +162,10 @@ class MyProductView extends StatelessWidget {
                               const SizedBox(
                                 width: 5,
                               ),
-                              Text('Automatic',style: context.textTheme.titleSmall,),
+                              Text(
+                                'Automatic',
+                                style: context.textTheme.titleSmall,
+                              ),
                             ],
                           ),
                         ]),
@@ -158,7 +181,10 @@ class MyProductView extends StatelessWidget {
                                 const SizedBox(
                                   width: 5,
                                 ),
-                                Text('Owner',style: context.textTheme.titleSmall,),
+                                Text(
+                                  'Owner',
+                                  style: context.textTheme.titleSmall,
+                                ),
                               ],
                             ),
                           ),
@@ -173,7 +199,10 @@ class MyProductView extends StatelessWidget {
                                 const SizedBox(
                                   width: 5,
                                 ),
-                                Text('New York', style: context.textTheme.titleSmall,),
+                                Text(
+                                  'New York',
+                                  style: context.textTheme.titleSmall,
+                                ),
                               ],
                             ),
                           ),
@@ -188,15 +217,17 @@ class MyProductView extends StatelessWidget {
                                 const SizedBox(
                                   width: 5,
                                 ),
-                                Text('Posting Date', style: context.textTheme.titleSmall,),
+                                Text(
+                                  'Posting Date',
+                                  style: context.textTheme.titleSmall,
+                                ),
                               ],
                             ),
                           ),
                         ]),
-
                         const TableRow(children: [
                           Padding(
-                            padding: EdgeInsets.only(left:18,top: 5),
+                            padding: EdgeInsets.only(left: 18, top: 5),
                             child: Text(
                               '2nd',
                               style: TextStyle(
@@ -204,7 +235,7 @@ class MyProductView extends StatelessWidget {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(left:18,top: 5),
+                            padding: EdgeInsets.only(left: 18, top: 5),
                             child: Text(
                               'City',
                               style: TextStyle(
@@ -212,7 +243,7 @@ class MyProductView extends StatelessWidget {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(left:18,top: 5),
+                            padding: EdgeInsets.only(left: 18, top: 5),
                             child: Text(
                               '30-Mar-24',
                               style: TextStyle(

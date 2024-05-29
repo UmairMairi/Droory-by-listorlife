@@ -11,8 +11,11 @@ class Routes {
   static const String productDetails = '/product_details';
 
   static const String main = '/main';
+  static const String guestLogin = '/guest_login';
   static const String noInternet = '/no_internet';
   static const String sell = '/sell';
+  static const String sellSubCategoryView = '/sell_sub_category_view';
+
   static const String termsOfUse = '/termsOfUse';
   static const String permission = '/permission';
   static const String planList = '/plan_list';
