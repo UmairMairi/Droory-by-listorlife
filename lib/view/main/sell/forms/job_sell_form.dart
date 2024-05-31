@@ -15,7 +15,12 @@ class JobSellForm extends BaseView<SellFormsVM> {
   final Item? category;
   final Item? subCategory;
   final List<String>? brands;
-  const JobSellForm({required this.type, required this.category, required this.subCategory, required this.brands, super.key});
+  const JobSellForm(
+      {required this.type,
+      required this.category,
+      required this.subCategory,
+      required this.brands,
+      super.key});
 
   @override
   Widget build(BuildContext context, SellFormsVM viewModel) {
@@ -31,47 +36,43 @@ class JobSellForm extends BaseView<SellFormsVM> {
           ),
           GestureDetector(
             onTap: () async {
-              viewModel.mainImagePath =
-                  await ImagePickerHelper.openImagePicker(
+              viewModel.mainImagePath = await ImagePickerHelper.openImagePicker(
                       context: context, isCropping: true) ??
-                      '';
+                  '';
             },
             child: Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
               width: double.infinity,
               height: 138,
-              decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      offset: const Offset(0, 1),
-                      blurRadius: 6,
-                    ),
-                  ],
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10)),
+              decoration: BoxDecoration(boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  offset: const Offset(0, 1),
+                  blurRadius: 6,
+                ),
+              ], color: Colors.white, borderRadius: BorderRadius.circular(10)),
               child: viewModel.mainImagePath.isNotEmpty
                   ? ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.file(
-                    File(viewModel.mainImagePath),
-                    fit: BoxFit.fill,
-                  ))
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.file(
+                        File(viewModel.mainImagePath),
+                        fit: BoxFit.fill,
+                      ))
                   : const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.camera_alt_outlined),
-                  SizedBox(
-                    height: 2,
-                  ),
-                  Text(
-                    "Upload",
-                    style: TextStyle(
-                      fontSize: 14,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.camera_alt_outlined),
+                        SizedBox(
+                          height: 2,
+                        ),
+                        Text(
+                          "Upload",
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
             ),
           ),
           Wrap(
@@ -104,7 +105,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
                 return GestureDetector(
                   onTap: () async {
                     var image = await ImagePickerHelper.openImagePicker(
-                        context: context) ??
+                            context: context) ??
                         '';
                     if (image.isNotEmpty) {
                       viewModel.addImage(image);
@@ -148,14 +149,14 @@ class JobSellForm extends BaseView<SellFormsVM> {
           if (brands?.isNotEmpty ?? false) ...{
             RichText(
                 text: const TextSpan(children: [
-                  TextSpan(
-                    text: "Brand",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
-                        color: Colors.black),
-                  ),
-                ])),
+              TextSpan(
+                text: "Brand",
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                    color: Colors.black),
+              ),
+            ])),
             Container(
               margin: const EdgeInsets.only(top: 10, bottom: 15),
               decoration: BoxDecoration(
@@ -179,7 +180,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
                   ),
                   hintText: "Select",
                   hintStyle:
-                  const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                      const TextStyle(color: Color(0xffACACAC), fontSize: 14),
                   border: const OutlineInputBorder(
                     borderSide: BorderSide.none,
                   ),
@@ -208,21 +209,20 @@ class JobSellForm extends BaseView<SellFormsVM> {
                       RegExp(viewModel.regexToRemoveEmoji)),
                 ],
                 keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.next,
+                textInputAction: TextInputAction.done,
               ),
             ),
           },
-
           RichText(
               text: const TextSpan(children: [
-                TextSpan(
-                  text: "Position Type",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      color: Colors.black),
-                ),
-              ])),
+            TextSpan(
+              text: "Position Type",
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                  color: Colors.black),
+            ),
+          ])),
           Container(
             margin: const EdgeInsets.only(top: 10, bottom: 15),
             decoration: BoxDecoration(
@@ -246,7 +246,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
                 ),
                 hintText: "Select",
                 hintStyle:
-                const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                    const TextStyle(color: Color(0xffACACAC), fontSize: 14),
                 border: const OutlineInputBorder(
                   borderSide: BorderSide.none,
                 ),
@@ -275,20 +275,19 @@ class JobSellForm extends BaseView<SellFormsVM> {
                     RegExp(viewModel.regexToRemoveEmoji)),
               ],
               keyboardType: TextInputType.text,
-              textInputAction: TextInputAction.next,
+              textInputAction: TextInputAction.done,
             ),
           ),
-
           RichText(
               text: const TextSpan(children: [
-                TextSpan(
-                  text: "Salary Period",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      color: Colors.black),
-                ),
-              ])),
+            TextSpan(
+              text: "Salary Period",
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                  color: Colors.black),
+            ),
+          ])),
           Container(
             margin: const EdgeInsets.only(top: 10, bottom: 15),
             decoration: BoxDecoration(
@@ -312,7 +311,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
                 ),
                 hintText: "Select",
                 hintStyle:
-                const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                    const TextStyle(color: Color(0xffACACAC), fontSize: 14),
                 border: const OutlineInputBorder(
                   borderSide: BorderSide.none,
                 ),
@@ -341,21 +340,19 @@ class JobSellForm extends BaseView<SellFormsVM> {
                     RegExp(viewModel.regexToRemoveEmoji)),
               ],
               keyboardType: TextInputType.text,
-              textInputAction: TextInputAction.next,
+              textInputAction: TextInputAction.done,
             ),
           ),
-
-
           RichText(
               text: const TextSpan(children: [
-                TextSpan(
-                  text: "Salary from",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      color: Colors.black),
-                ),
-              ])),
+            TextSpan(
+              text: "Salary from",
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                  color: Colors.black),
+            ),
+          ])),
           Container(
             margin: const EdgeInsets.only(top: 10, bottom: 15),
             decoration: BoxDecoration(
@@ -371,18 +368,13 @@ class JobSellForm extends BaseView<SellFormsVM> {
             ),
             child: TextFormField(
               controller: viewModel.jobSalaryFromController,
-
               cursorColor: Colors.black,
-
-
               decoration: const InputDecoration(
                 contentPadding: EdgeInsets.only(
                   left: 20,
                 ),
-
                 hintText: "Enter",
-                hintStyle:
-                TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
                 border: OutlineInputBorder(
                   borderSide: BorderSide.none,
                 ),
@@ -395,20 +387,19 @@ class JobSellForm extends BaseView<SellFormsVM> {
                     RegExp(viewModel.regexToRemoveEmoji)),
               ],
               keyboardType: TextInputType.text,
-              textInputAction: TextInputAction.next,
+              textInputAction: TextInputAction.done,
             ),
           ),
-
           RichText(
               text: const TextSpan(children: [
-                TextSpan(
-                  text: "Salary to",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      color: Colors.black),
-                ),
-              ])),
+            TextSpan(
+              text: "Salary to",
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                  color: Colors.black),
+            ),
+          ])),
           Container(
             margin: const EdgeInsets.only(top: 10, bottom: 15),
             decoration: BoxDecoration(
@@ -424,15 +415,13 @@ class JobSellForm extends BaseView<SellFormsVM> {
             ),
             child: TextFormField(
               controller: viewModel.jobSalaryToController,
-
               cursorColor: Colors.black,
               decoration: const InputDecoration(
                 contentPadding: EdgeInsets.only(
                   left: 20,
                 ),
                 hintText: "Enter",
-                hintStyle:
-                TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
                 border: OutlineInputBorder(
                   borderSide: BorderSide.none,
                 ),
@@ -445,20 +434,19 @@ class JobSellForm extends BaseView<SellFormsVM> {
                     RegExp(viewModel.regexToRemoveEmoji)),
               ],
               keyboardType: TextInputType.text,
-              textInputAction: TextInputAction.next,
+              textInputAction: TextInputAction.done,
             ),
           ),
-
           RichText(
               text: const TextSpan(children: [
-                TextSpan(
-                  text: "Ad Title",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      color: Colors.black),
-                ),
-              ])),
+            TextSpan(
+              text: "Ad Title",
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                  color: Colors.black),
+            ),
+          ])),
           Container(
             margin: const EdgeInsets.only(top: 10, bottom: 20),
             decoration: BoxDecoration(
@@ -478,10 +466,9 @@ class JobSellForm extends BaseView<SellFormsVM> {
               cursorColor: Colors.black,
               decoration: const InputDecoration(
                   contentPadding:
-                  EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+                      EdgeInsets.symmetric(horizontal: 25, vertical: 18),
                   hintText: "Enter",
-                  hintStyle:
-                  TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                   )),
@@ -491,19 +478,19 @@ class JobSellForm extends BaseView<SellFormsVM> {
                     RegExp(viewModel.regexToRemoveEmoji)),
               ],
               keyboardType: TextInputType.text,
-              textInputAction: TextInputAction.next,
+              textInputAction: TextInputAction.done,
             ),
           ),
           RichText(
               text: const TextSpan(children: [
-                TextSpan(
-                  text: "Describe what you are selling",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      color: Colors.black),
-                ),
-              ])),
+            TextSpan(
+              text: "Describe what you are selling",
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                  color: Colors.black),
+            ),
+          ])),
           Container(
             margin: const EdgeInsets.only(top: 10, bottom: 20),
             decoration: BoxDecoration(
@@ -523,10 +510,9 @@ class JobSellForm extends BaseView<SellFormsVM> {
               cursorColor: Colors.black,
               decoration: const InputDecoration(
                   contentPadding:
-                  EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+                      EdgeInsets.symmetric(horizontal: 25, vertical: 18),
                   hintText: "Enter",
-                  hintStyle:
-                  TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                   )),
@@ -536,19 +522,19 @@ class JobSellForm extends BaseView<SellFormsVM> {
                     RegExp(viewModel.regexToRemoveEmoji)),
               ],
               keyboardType: TextInputType.text,
-              textInputAction: TextInputAction.next,
+              textInputAction: TextInputAction.done,
             ),
           ),
           RichText(
               text: const TextSpan(children: [
-                TextSpan(
-                  text: "Location",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      color: Colors.black),
-                ),
-              ])),
+            TextSpan(
+              text: "Location",
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                  color: Colors.black),
+            ),
+          ])),
           Container(
             margin: const EdgeInsets.only(top: 10, bottom: 20),
             decoration: BoxDecoration(
@@ -568,22 +554,23 @@ class JobSellForm extends BaseView<SellFormsVM> {
               minLines: 1,
               readOnly: true,
               onTap: () async {
-                Map<String, dynamic>? value = await Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const AppMapWidget()));
+                Map<String, dynamic>? value = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AppMapWidget()));
                 print(value);
                 if (value != null && value.isNotEmpty) {
                   viewModel.addressTextController.text =
-                  "${value['location']}, ${value['city']}, ${value['state']}";
+                      "${value['location']}, ${value['city']}, ${value['state']}";
                 }
               },
               cursorColor: Colors.black,
               decoration: const InputDecoration(
                   contentPadding:
-                  EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+                      EdgeInsets.symmetric(horizontal: 25, vertical: 18),
                   hintText: "Select",
                   suffixIcon: Icon(Icons.location_on),
-                  hintStyle:
-                  TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                   )),
@@ -593,19 +580,19 @@ class JobSellForm extends BaseView<SellFormsVM> {
                     RegExp(viewModel.regexToRemoveEmoji)),
               ],
               keyboardType: TextInputType.text,
-              textInputAction: TextInputAction.next,
+              textInputAction: TextInputAction.done,
             ),
           ),
           RichText(
               text: const TextSpan(children: [
-                TextSpan(
-                  text: "Price (in EGP)",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      color: Colors.black),
-                ),
-              ])),
+            TextSpan(
+              text: "Price (in EGP)",
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                  color: Colors.black),
+            ),
+          ])),
           Container(
             margin: const EdgeInsets.only(top: 10, bottom: 20),
             decoration: BoxDecoration(
@@ -624,10 +611,9 @@ class JobSellForm extends BaseView<SellFormsVM> {
               cursorColor: Colors.black,
               decoration: const InputDecoration(
                   contentPadding:
-                  EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+                      EdgeInsets.symmetric(horizontal: 25, vertical: 18),
                   hintText: "Enter Price",
-                  hintStyle:
-                  TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                   )),

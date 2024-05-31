@@ -288,7 +288,7 @@ class IncludeCarDetailView extends BaseView<CarSellVM> {
                       RegExp(viewModel.regexToRemoveEmoji)),
                 ],
                 keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.next,
+                textInputAction: TextInputAction.done,
               ),
             ),
             RichText(
@@ -341,7 +341,7 @@ class IncludeCarDetailView extends BaseView<CarSellVM> {
                   LengthLimitingTextInputFormatter(4)
                 ],
                 keyboardType: TextInputType.number,
-                textInputAction: TextInputAction.next,
+                textInputAction: TextInputAction.done,
               ),
             ),
             RichText(
@@ -393,7 +393,7 @@ class IncludeCarDetailView extends BaseView<CarSellVM> {
                   FilteringTextInputFormatter.digitsOnly,
                 ],
                 keyboardType: TextInputType.number,
-                textInputAction: TextInputAction.next,
+                textInputAction: TextInputAction.done,
               ),
             ),
             RichText(
@@ -524,7 +524,7 @@ class IncludeCarDetailView extends BaseView<CarSellVM> {
                   FilteringTextInputFormatter.digitsOnly,
                 ],
                 keyboardType: TextInputType.number,
-                textInputAction: TextInputAction.next,
+                textInputAction: TextInputAction.done,
               ),
             ),
             RichText(
@@ -569,7 +569,7 @@ class IncludeCarDetailView extends BaseView<CarSellVM> {
                   FilteringTextInputFormatter.digitsOnly,
                 ],
                 keyboardType: TextInputType.number,
-                textInputAction: TextInputAction.next,
+                textInputAction: TextInputAction.done,
               ),
             ),
             RichText(
@@ -620,7 +620,7 @@ class IncludeCarDetailView extends BaseView<CarSellVM> {
                       RegExp(viewModel.regexToRemoveEmoji)),
                 ],
                 keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.next,
+                textInputAction: TextInputAction.done,
               ),
             ),
             RichText(
@@ -665,7 +665,7 @@ class IncludeCarDetailView extends BaseView<CarSellVM> {
                       RegExp(viewModel.regexToRemoveEmoji)),
                 ],
                 keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.next,
+                textInputAction: TextInputAction.done,
               ),
             ),
             RichText(

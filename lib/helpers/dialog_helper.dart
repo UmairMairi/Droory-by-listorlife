@@ -184,7 +184,7 @@ class AppAlertDialogWithLottie extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                        child: AppElevatedButtonWithoutAnimation(
+                        child: AppElevatedButton(
                           width: context.width,
                           onTap: onTap,
                           title: buttonText ?? ' Ok',
@@ -195,14 +195,14 @@ class AppAlertDialogWithLottie extends StatelessWidget {
                           width: 10,
                         ),
                         Expanded(
-                            child: AppElevatedButtonWithoutAnimation(
+                            child: AppElevatedButton(
                           width: context.width,
                           backgroundColor: const Color(0xffeeeeee),
                           onTap: onCancelTap ??
                               () {
                                 context.pop();
                               },
-                          titleColor: Colors.black,
+                          tittleColor: Colors.black,
                           title: cancelButtonText ?? ' Cencel',
                         )),
                       }
@@ -310,7 +310,7 @@ class AppAlertDialogWithWidget extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                        child: AppElevatedButtonWithoutAnimation(
+                        child: AppElevatedButton(
                           width: context.width,
                           onTap: onTap,
                           title: buttonText ?? ' Ok',
@@ -321,14 +321,14 @@ class AppAlertDialogWithWidget extends StatelessWidget {
                           width: 10,
                         ),
                         Expanded(
-                            child: AppElevatedButtonWithoutAnimation(
+                            child: AppElevatedButton(
                           width: context.width,
                           backgroundColor: const Color(0xffeeeeee),
                           onTap: onCancelTap ??
                               () {
                                 context.pop();
                               },
-                          titleColor: Colors.black,
+                          tittleColor: Colors.black,
                           title: cancelButtonText ?? ' Cencel',
                         )),
                       }

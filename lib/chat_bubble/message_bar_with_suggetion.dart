@@ -256,7 +256,7 @@ class _MessageBarWithSuggetionsState extends State<MessageBarWithSuggestions> {
             ),
             Padding(
               padding: const EdgeInsets.only(right: 50.0, left: 50),
-              child: AppElevatedButtonWithoutAnimation(
+              child: AppElevatedButton(
                 height: 45,
                 width: context.width,
                 onTap: () {

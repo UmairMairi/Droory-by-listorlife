@@ -113,10 +113,13 @@ flutter:
     - assets/category/ic_phone_icon.png
     - assets/category/ic_service_icon.png
     - assets/category/ic_vehicle_icons.png
+    - assets/dummy/dummy_car_first.png
     - assets/dummy/dummy_car_image1.jpg
     - assets/dummy/dummy_car_image2.jpg
     - assets/dummy/dummy_car_image3.jpg
     - assets/dummy/dummy_car_image4.jpg
+    - assets/dummy/dummy_car_secound.png
+    - assets/dummy/dummy_car_third.png
     - assets/dummy/dummy_chat_image1.png
     - assets/dummy/dummy_chat_image2.png
     - assets/dummy/dummy_chat_image3.png
