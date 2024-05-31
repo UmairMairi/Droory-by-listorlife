@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
-import 'package:list_and_life/animations/fade_animation.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/res/font_res.dart';
 
@@ -60,62 +59,59 @@ class _AppOtpWidgetState extends State<AppOtpWidget> {
             const SizedBox(
               height: 05,
             ),
-            FadeAnimation(
-              delay: 0.3,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: List.generate(
-                  widget.size,
-                  (index) => Container(
-                    width: 60, // Customize the size as needed
-                    height: 60,
-                    padding: const EdgeInsets.all(08),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5), // Shadow color
-                          spreadRadius: 2, // Spread radius
-                          blurRadius: 5, // Blur radius
-                          offset: const Offset(0, 5), // Offset from the top
-                        ),
-                      ],
-                    ),
-                    child: TextField(
-                      controller: _controllers[index],
-                      keyboardType: TextInputType.number,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                          color: Colors.black,
-                          fontFamily: FontRes.MONTSERRAT_SEMIBOLD),
-                      maxLength: 1,
-                      autofocus: index == 0, // Autofocus on the first field
-                      focusNode: _focusNodes[index],
-                      onChanged: (value) {
-                        if (value.length == 1 && index < widget.size - 1) {
-                          _focusNodes[index].unfocus();
-                          FocusScope.of(context)
-                              .requestFocus(_focusNodes[index + 1]);
-                        }
-                        String otp = _controllers.fold<String>(
-                            '',
-                            (prev, controller) =>
-                                prev +
-                                (controller.text.isNotEmpty
-                                    ? controller.text
-                                    : ''));
-                        if (otp.length == widget.size) {
-                          widget.onOtpEntered(otp);
-                          FocusScope.of(context).unfocus();
-                        }
-                      },
-                      decoration: const InputDecoration(
-                        counterText: '',
-                        hintText: '-',
-                        border: InputBorder.none,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: List.generate(
+                widget.size,
+                (index) => Container(
+                  width: 60, // Customize the size as needed
+                  height: 60,
+                  padding: const EdgeInsets.all(08),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5), // Shadow color
+                        spreadRadius: 2, // Spread radius
+                        blurRadius: 5, // Blur radius
+                        offset: const Offset(0, 5), // Offset from the top
                       ),
+                    ],
+                  ),
+                  child: TextField(
+                    controller: _controllers[index],
+                    keyboardType: TextInputType.number,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        color: Colors.black,
+                        fontFamily: FontRes.MONTSERRAT_SEMIBOLD),
+                    maxLength: 1,
+                    autofocus: true, // Autofocus on the first field
+                    focusNode: _focusNodes[index],
+                    onChanged: (value) {
+                      if (value.length == 1 && index < widget.size - 1) {
+                        _focusNodes[index].unfocus();
+                        FocusScope.of(context)
+                            .requestFocus(_focusNodes[index + 1]);
+                      }
+                      String otp = _controllers.fold<String>(
+                          '',
+                          (prev, controller) =>
+                              prev +
+                              (controller.text.isNotEmpty
+                                  ? controller.text
+                                  : ''));
+                      if (otp.length == widget.size) {
+                        widget.onOtpEntered(otp);
+                        FocusScope.of(context).unfocus();
+                      }
+                    },
+                    decoration: const InputDecoration(
+                      counterText: '',
+                      hintText: '-',
+                      border: InputBorder.none,
                     ),
                   ),
                 ),

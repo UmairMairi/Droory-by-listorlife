@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/view/main/sell/forms/post_added_final_view.dart';
-import 'package:list_and_life/view_model/car_sell_v_m.dart';
 
 import '../../../../helpers/image_picker_helper.dart';
 import '../../../../view_model/mobile_sell_v_m.dart';

@@ -4,12 +4,11 @@ import 'package:list_and_life/models/setting_item_model.dart';
 import 'package:list_and_life/view/main/chat/message_view.dart';
 import 'package:list_and_life/view/main/filtter/Filter_view.dart';
 import 'package:list_and_life/view/main/permission/location_permission_view.dart';
-import 'package:list_and_life/view/main/sell/forms/sell_form_view.dart';
 import 'package:list_and_life/view/main/sell/mobile/mobile_category_view.dart';
 import 'package:list_and_life/view/main/sell/sub_category/sell_sub_category_view.dart';
-import 'package:list_and_life/view/main/sell/sub_sub_category/sell_sub_sub_category_view.dart';
 
 import 'package:list_and_life/view/main/settings/TermsOfUseView.dart';
+import 'package:list_and_life/view/product/my_product_view.dart';
 import 'package:list_and_life/view/product/product_detail_view.dart';
 import 'package:list_and_life/view/profile/complete_profile.dart';
 import 'package:list_and_life/view/profile/edit_profile.dart';
@@ -94,6 +93,16 @@ class AppPages {
         pageBuilder: (context, state) {
           return getPage(
               child: ProductDetailView(
+                data: state.extra as SettingItemModel,
+              ),
+              state: state);
+        },
+      ),
+      GoRoute(
+        path: Routes.myProduct,
+        pageBuilder: (context, state) {
+          return getPage(
+              child: MyProductView(
                 data: state.extra as SettingItemModel,
               ),
               state: state);

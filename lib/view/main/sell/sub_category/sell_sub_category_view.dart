@@ -1,13 +1,11 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/view/main/sell/forms/sell_form_view.dart';
-import 'package:list_and_life/view/main/sell/mobile/mobile_category_view.dart';
 import 'package:list_and_life/view/main/sell/sub_sub_category/sell_sub_sub_category_view.dart';
+import 'package:provider/provider.dart';
 
+import '../../../../view_model/mobile_sell_v_m.dart';
 import '../../../../view_model/sell_v_m.dart';
 
 class SellSubCategoryView extends StatelessWidget {
@@ -28,7 +26,6 @@ class SellSubCategoryView extends StatelessWidget {
           itemBuilder: (context, index) {
             return ListTile(
               onTap: () {
-
                 if (category?.subCategories?[index].subCategories?.isNotEmpty ??
                     false) {
                   Navigator.push(
@@ -40,15 +37,16 @@ class SellSubCategoryView extends StatelessWidget {
                               subCategory: category?.subCategories?[index])));
                   return;
                 }
+                context.read<SellFormsVM>().resetTextFields();
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => SellFormView(
                               category: category,
-                              brands: category?.subCategories?[index].brands ?? [],
+                              brands:
+                                  category?.subCategories?[index].brands ?? [],
                               subCategory: category?.subCategories?[index],
                               type: type,
-
                             )));
               },
               title: Text(

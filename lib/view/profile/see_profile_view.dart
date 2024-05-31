@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -28,6 +29,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
         centerTitle: true,
         actions: [
           PopupMenuButton<int>(
+              offset: const Offset(0, 40),
               icon: const Icon(Icons.more_vert),
               onSelected: (int value) {
                 switch (value) {
@@ -45,8 +47,13 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                         isScrollControlled: true,
                         builder: (context) {
                           int selectedReport = 0;
-                          return Padding(
-                            padding: const EdgeInsets.all(10.0),
+                          return SingleChildScrollView(
+                            padding: EdgeInsets.only(
+                              top: 10.0,
+                              right: 10,
+                              left: 10,
+                              bottom: context.viewInsets.bottom,
+                            ),
                             child:
                                 StatefulBuilder(builder: (context, setState) {
                               return Column(
@@ -96,7 +103,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                                       }),
                                   RadioListTile<int?>(
                                       value: 5,
-                                      title: Text('Fraud'),
+                                      title: const Text('Fraud'),
                                       groupValue: selectedReport,
                                       onChanged: (int? value) {
                                         selectedReport = value ?? 0;
@@ -104,14 +111,14 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                                       }),
                                   RadioListTile<int?>(
                                       value: 6,
-                                      title: Text('Other'),
+                                      title: const Text('Other'),
                                       groupValue: selectedReport,
                                       onChanged: (int? value) {
                                         selectedReport = value ?? 0;
                                         setState(() {});
                                       }),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
+                                  const Padding(
+                                    padding: EdgeInsets.symmetric(
                                         horizontal: 20.0, vertical: 10),
                                     child: AppTextField(
                                       animation: false,
@@ -120,7 +127,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                                       hint: 'Write here...',
                                     ),
                                   ),
-                                  Gap(10),
+                                  const Gap(10),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 20.0, vertical: 0),
@@ -133,19 +140,18 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                                           },
                                           title: 'Cancel',
                                         )),
-                                        Gap(20),
+                                        const Gap(20),
                                         Expanded(
                                             child: AppElevatedButton(
                                           onTap: () {
                                             context.pop();
                                           },
-                                          height: 40,
                                           title: 'Send',
                                         ))
                                       ],
                                     ),
                                   ),
-                                  Gap(20),
+                                  const Gap(20),
                                 ],
                               );
                             }),
@@ -168,20 +174,20 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                               return Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 25,
                                   ),
                                   Text(
                                     'Block User',
                                     style: context.textTheme.titleMedium,
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
+                                  const Padding(
+                                    padding: EdgeInsets.symmetric(
                                         horizontal: 20.0, vertical: 10),
                                     child: Text(
                                         'Block John Marker? Blocked contacts will no longer be able to send you messages.'),
                                   ),
-                                  Gap(10),
+                                  const Gap(10),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 20.0, vertical: 0),
@@ -194,7 +200,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                                           },
                                           title: 'Cancel',
                                         )),
-                                        Gap(20),
+                                        const Gap(20),
                                         Expanded(
                                             child: AppElevatedButton(
                                           onTap: () {
@@ -207,7 +213,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                                       ],
                                     ),
                                   ),
-                                  Gap(20),
+                                  const Gap(20),
                                 ],
                               );
                             }),
@@ -336,14 +342,18 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            ClipRRect(
+                            const Image(
+                                image: CachedNetworkImageProvider(
+                                    "https://img.freepik.com/free-psd/silver-sedan-car_53876-84522.jpg?w=740&t=st=1716212531~exp=1716213131~hmac=4b00f0679340aa976396da9aa7199a5d976904dbc084a3a227c3096c8732bd33",
+                                    scale: 7)),
+                            /*  ClipRRect(
                                 borderRadius: BorderRadius.circular(15),
                                 child: Image.network(
                                   "https://img.freepik.com/free-psd/silver-sedan-car_53876-84522.jpg?w=740&t=st=1716212531~exp=1716213131~hmac=4b00f0679340aa976396da9aa7199a5d976904dbc084a3a227c3096c8732bd33",
                                   height: 100,
                                   width: 120,
                                   fit: BoxFit.cover,
-                                )),
+                                )),*/
                             const SizedBox(
                               width: 15,
                             ),
@@ -367,23 +377,32 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                                   ),
                                   const Text(
                                     "Hyundai i20 N Line 1.0 N8 Tu...",
-                                    style: TextStyle(
-                                        color: Color(0xff7E8392), fontSize: 12),
                                   ),
                                   const Text(
                                     "2022 - 17000 KM",
-                                    style: TextStyle(
-                                        color: Color(0xff7E8392), fontSize: 12),
                                   ),
-                                  const Row(
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
-                                        "New York City",
-                                        style: TextStyle(fontSize: 12),
+                                      Row(
+                                        children: [
+                                          Image.asset(
+                                            AssetsRes.IC_LOACTION_ICON,
+                                            height: 14,
+                                            width: 14,
+                                          ),
+                                          const Gap(8),
+                                          const Text(
+                                            "New York City",
+                                            style: TextStyle(fontSize: 12),
+                                          ),
+                                        ],
                                       ),
-                                      Text(
+                                      const Text(
                                         "Today",
                                         style: TextStyle(fontSize: 12),
                                       )

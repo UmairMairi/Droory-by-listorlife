@@ -120,7 +120,7 @@ class AppProductItemWidget extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 08),
                             decoration: BoxDecoration(
-                              color: Colors.black54,
+                              color: const Color(0xff5A5B55),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Row(
@@ -164,7 +164,7 @@ class AppProductItemWidget extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 08),
                             decoration: BoxDecoration(
-                              color: Colors.black54,
+                              color: const Color(0xff5A5B55),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Row(
@@ -200,7 +200,7 @@ class AppProductItemWidget extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 08),
                             decoration: BoxDecoration(
-                              color: Colors.black54,
+                              color: const Color(0xff5A5B55),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Row(

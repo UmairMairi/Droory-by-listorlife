@@ -8,21 +8,21 @@ class ActivePlanVM extends BaseViewModel {
   List<SettingItemModel> plansList = [
     SettingItemModel(
         title: 'Featured Ad\nfor 30 Days',
-        subTitle: 'EGP55.00',
+        subTitle: 'EGP 55.00',
         description: 'Reach up to 10 times\nmore buyers'),
     SettingItemModel(
         title: 'Featured Ad\nfor 07 Days',
-        subTitle: 'EGP150.00',
+        subTitle: 'EGP 150.00',
         description: 'Reach up to 4 times\nmore buyers'),
   ];
   List<SettingItemModel> boosterList = [
     SettingItemModel(
         title: 'Boost to top\n50 ads',
-        subTitle: 'EGP55.00',
+        subTitle: 'EGP 55.00',
         description: 'Reach up to 2 times\nmore buyers'),
     SettingItemModel(
         title: 'Boost to top\n10 ads',
-        subTitle: 'EGP55.00',
+        subTitle: 'EGP 55.00',
         description: 'Reach up to 2 times\nmore buyers'),
   ];
 

@@ -33,7 +33,7 @@ class OnBoardingView extends BaseView<OnBoardingVM> {
                             Flexible(
                                 child: Image.asset(
                                     viewModel.itemsList[index].image)),
-                            Gap(50),
+                            const Gap(50),
                             Text(
                               viewModel.itemsList[index].title,
                               style: context.textTheme.titleLarge,

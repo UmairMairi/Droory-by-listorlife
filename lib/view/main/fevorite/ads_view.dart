@@ -14,7 +14,7 @@ class AdsView extends BaseView<MyAdsVM> {
     return Scaffold(
       body: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
           SafeArea(

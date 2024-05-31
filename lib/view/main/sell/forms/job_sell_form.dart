@@ -569,7 +569,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
               readOnly: true,
               onTap: () async {
                 Map<String, dynamic>? value = await Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => AppMapWidget()));
+                    MaterialPageRoute(builder: (context) => const AppMapWidget()));
                 print(value);
                 if (value != null && value.isNotEmpty) {
                   viewModel.addressTextController.text =

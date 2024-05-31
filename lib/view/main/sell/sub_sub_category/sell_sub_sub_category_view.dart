@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/view/main/sell/car/choose_location_view.dart';
+import 'package:provider/provider.dart';
 
+import '../../../../view_model/mobile_sell_v_m.dart';
 import '../../../../view_model/sell_v_m.dart';
 import '../forms/sell_form_view.dart';
 
@@ -10,7 +12,10 @@ class SellSubSubCategoryView extends StatelessWidget {
   final String? type;
   final Item? subCategory;
   const SellSubSubCategoryView(
-      {super.key, this.subCategory, required this.category, required this.type});
+      {super.key,
+      this.subCategory,
+      required this.category,
+      required this.type});
 
   @override
   Widget build(BuildContext context) {
@@ -22,17 +27,16 @@ class SellSubSubCategoryView extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           itemBuilder: (context, index) {
             return ListTile(
-              onTap: ()
-              {
+              onTap: () {
                 print(subCategory?.title);
-                if(subCategory?.title == 'Cars'){
+                if (subCategory?.title == 'Cars') {
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>const ChooseLocationView()));
+                          builder: (context) => const ChooseLocationView()));
                   return;
                 }
-
+                context.read<SellFormsVM>().resetTextFields();
                 Navigator.push(
                     context,
                     MaterialPageRoute(

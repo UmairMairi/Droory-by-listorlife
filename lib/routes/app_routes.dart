@@ -9,11 +9,13 @@ class Routes {
   static const String editProfile = '/edit_profile';
   static const String message = '/message';
   static const String productDetails = '/product_details';
+  static const String myProduct = '/my_product';
 
   static const String main = '/main';
   static const String guestLogin = '/guest_login';
   static const String noInternet = '/no_internet';
   static const String sell = '/sell';
+
   static const String sellSubCategoryView = '/sell_sub_category_view';
 
   static const String termsOfUse = '/termsOfUse';

@@ -435,7 +435,7 @@ class IncludeCarDetailView extends BaseView<CarSellVM> {
                     ),
                     child: Center(
                         child: Text(
-                      "New",
+                      "Automatic",
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 16,
@@ -466,7 +466,7 @@ class IncludeCarDetailView extends BaseView<CarSellVM> {
                     ),
                     child: Center(
                         child: Text(
-                      "Used",
+                      "Manual",
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 16,

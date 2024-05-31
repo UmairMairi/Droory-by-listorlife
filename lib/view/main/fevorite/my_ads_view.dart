@@ -5,7 +5,6 @@ import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
-import 'package:list_and_life/view/product/my_product_view.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 
 import '../../../view_model/my_ads_v_m.dart';
@@ -22,11 +21,8 @@ class MyAdsView extends BaseView<MyAdsVM> {
       itemBuilder: (context, index) {
         return InkWell(
           onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        MyProductView(data: viewModel.favItemList[index + 1])));
+            context.push(Routes.myProduct,
+                extra: viewModel.favItemList[index + 1]);
           },
           child: Card(
             shape: RoundedRectangleBorder(
@@ -141,13 +137,14 @@ class MyAdsView extends BaseView<MyAdsVM> {
                 const Gap(20),
                 Container(
                   width: context.width,
-
                   padding:
                       const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                  decoration: BoxDecoration(color: Colors.grey.shade300, borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
-                  )),
+                  decoration: BoxDecoration(
+                      color: Colors.grey.shade300,
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20),
+                      )),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,

@@ -49,17 +49,24 @@ class ChatVM extends BaseViewModel {
     ),
   ];
 
+  ///Message types 1 => Text 2=> offer
   List<MessageModel> chatItems = [
-    MessageModel(message: 'Ok!', isSender: false, timeStamp: 1716099522),
-    MessageModel(message: 'I am Fine.', isSender: false, timeStamp: 1716099522),
-    MessageModel(message: 'Oh! Cool', isSender: true, timeStamp: 1716099720),
+    MessageModel(
+        message: '1000.0', isSender: false, timeStamp: 1716099720, type: 2),
+    MessageModel(
+        message: 'Ok!', isSender: false, timeStamp: 1716099522, type: 1),
+    MessageModel(
+        message: 'I am Fine.', isSender: false, timeStamp: 1716099522, type: 1),
+    MessageModel(
+        message: 'Oh! Cool', isSender: true, timeStamp: 1716099720, type: 1),
     MessageModel(
         message: 'Hi, son, how are you doing?',
         isSender: true,
-        timeStamp: 1716099720),
+        timeStamp: 1716099720,
+        type: 1),
   ];
 
-  void sendMessage(String? message) {
+  void sendMessage({String? message, int? type}) {
     if (message == null) {
       return;
     }
@@ -69,6 +76,7 @@ class ChatVM extends BaseViewModel {
         MessageModel(
             message: message,
             isSender: true,
+            type: type,
             timeStamp: DateTime.now().millisecondsSinceEpoch));
     notifyListeners();
   }
@@ -80,8 +88,11 @@ class ChatVM extends BaseViewModel {
 class MessageModel {
   final String? message;
   final bool? isSender;
-
   final int? timeStamp;
+  final int? type;
   MessageModel(
-      {required this.message, required this.isSender, required this.timeStamp});
+      {required this.message,
+      required this.isSender,
+      required this.timeStamp,
+      required this.type});
 }

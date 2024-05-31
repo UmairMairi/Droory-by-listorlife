@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:list_and_life/animations/bouncing_animation.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/helpers/db_helper.dart';
 import 'package:list_and_life/helpers/dialog_helper.dart';
@@ -8,7 +7,6 @@ import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
 
 import '../models/setting_item_model.dart';
-import '../widgets/app_elevated_button.dart';
 
 class SettingVM extends BaseViewModel {
   bool _isActiveNotification = true;
@@ -45,7 +43,11 @@ class SettingVM extends BaseViewModel {
                   lottieIcon: AssetsRes.DELETE_LOTTIE,
                   title: 'Account Delete',
                   description: 'Are you sure you want to delete this account?',
-                  onTap: () {},
+                  onTap: () {
+                    context.pop();
+                    DbHelper.eraseData();
+                    context.go(Routes.login);
+                  },
                   onCancelTap: () {
                     context.pop();
                   },
@@ -68,6 +70,7 @@ class SettingVM extends BaseViewModel {
                   title: 'Logout',
                   description: 'Are you sure you want to logout this account?',
                   onTap: () {
+                    context.pop();
                     DbHelper.eraseData();
                     context.go(Routes.login);
                   },

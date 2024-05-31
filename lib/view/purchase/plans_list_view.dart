@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/routes/app_routes.dart';
+import 'package:list_and_life/view/payment/payment_options_screen.dart';
 import 'package:list_and_life/view_model/active_plan_v_m.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
+
 
 class PlansListView extends BaseView<ActivePlanVM> {
   const PlansListView({super.key});
@@ -136,8 +136,13 @@ class PlansListView extends BaseView<ActivePlanVM> {
                 itemCount: viewModel.boosterList.length),
             AppElevatedButton(
               width: context.width,
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               onTap: () {
-                context.go(Routes.main);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (builder) => const PaymentOptionsScreen()));
+                //context.go(Routes.main);
               },
               title: 'Buy Now',
             ),

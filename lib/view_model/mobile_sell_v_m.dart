@@ -14,6 +14,13 @@ class SellFormsVM extends BaseViewModel {
   String _mainImagePath = "";
   List<String> imagesList = <String>[];
 
+  List<String> educationList = [
+    'Tutions',
+    'Hobby Classes',
+    'Skill Development',
+    'Others'
+  ];
+
   List<String> jobPositionList = [
     'Contract',
     'Full Time',
@@ -21,12 +28,7 @@ class SellFormsVM extends BaseViewModel {
     'Temporary'
   ];
 
-  List<String> salaryPeriodList = [
-    'Hourly',
-    'Monthly',
-    'Weekly',
-    'Yearly'
-  ];
+  List<String> salaryPeriodList = ['Hourly', 'Monthly', 'Weekly', 'Yearly'];
 
   void addImage(String path) {
     imagesList.add(path);
@@ -53,11 +55,13 @@ class SellFormsVM extends BaseViewModel {
     _transmission = value;
     notifyListeners();
   }
+
   TextEditingController jobPositionTextController = TextEditingController();
   TextEditingController jobSalaryTextController = TextEditingController();
   TextEditingController jobSalaryFromController = TextEditingController();
   TextEditingController jobSalaryToController = TextEditingController();
   TextEditingController brandTextController = TextEditingController();
+  TextEditingController educationTypeTextController = TextEditingController();
   TextEditingController yearTextController = TextEditingController();
   TextEditingController fuelTextController = TextEditingController();
   TextEditingController kmDrivenTextController = TextEditingController();
@@ -66,4 +70,24 @@ class SellFormsVM extends BaseViewModel {
   TextEditingController descriptionTextController = TextEditingController();
   TextEditingController priceTextController = TextEditingController();
   TextEditingController addressTextController = TextEditingController();
+
+  void resetTextFields() {
+    currentIndex = 1;
+    transmission = 0;
+    mainImagePath = "";
+    imagesList = [];
+    jobPositionTextController.clear();
+    jobSalaryTextController.clear();
+    jobSalaryFromController.clear();
+    jobSalaryToController.clear();
+    brandTextController.clear();
+    yearTextController.clear();
+    fuelTextController.clear();
+    kmDrivenTextController.clear();
+    numOfOwnerTextController.clear();
+    adTitleTextController.clear();
+    descriptionTextController.clear();
+    priceTextController.clear();
+    addressTextController.clear();
+  }
 }

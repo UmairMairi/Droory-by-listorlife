@@ -9,8 +9,10 @@ import 'package:list_and_life/view_model/chat_vm.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
 
 import '../../../chat_bubble/bubble_normal_message.dart';
+import '../../../chat_bubble/bubble_offer_message.dart';
 import '../../../chat_bubble/message_bar_with_suggetion.dart';
 import '../../../helpers/date_helper.dart';
+import '../../../res/font_res.dart';
 
 class MessageView extends BaseView<ChatVM> {
   final SettingItemModel? chat;
@@ -72,7 +74,7 @@ class MessageView extends BaseView<ChatVM> {
                             icon: AssetsRes.IC_REPORT_USER,
                             showCancelButton: true,
                             isTextDescription: false,
-                            content: AppTextField(
+                            content: const AppTextField(
                               lines: 4,
                               hint: 'Reason...',
                             ),
@@ -129,19 +131,36 @@ class MessageView extends BaseView<ChatVM> {
                 reverse: true,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  return BubbleNormalMessage(
-                    textStyle: const TextStyle(
-                      color: Colors.white,
-                    ),
-                    timeStamp: true,
-                    createdAt: DateHelper.getChatTime(
-                        viewModel.chatItems[index].timeStamp!),
-                    text: viewModel.chatItems[index].message ?? '',
-                    isSender: viewModel.chatItems[index].isSender ?? false,
-                    color: viewModel.chatItems[index].isSender!
-                        ? Colors.black
-                        : Color(0xff5A5B55),
-                  );
+                  return viewModel.chatItems[index].type == 1
+                      ? BubbleNormalMessage(
+                          textStyle: const TextStyle(
+                            color: Colors.white,
+                          ),
+                          timeStamp: true,
+                          createdAt: DateHelper.getChatTime(
+                              viewModel.chatItems[index].timeStamp!),
+                          text: viewModel.chatItems[index].message ?? '',
+                          isSender:
+                              viewModel.chatItems[index].isSender ?? false,
+                          color: viewModel.chatItems[index].isSender!
+                              ? Colors.black
+                              : const Color(0xff5A5B55),
+                        )
+                      : BubbleOfferMessage(
+                          textStyle: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontFamily: FontRes.MONTSERRAT_SEMIBOLD),
+                          timeStamp: true,
+                          createdAt: DateHelper.getChatTime(
+                              viewModel.chatItems[index].timeStamp!),
+                          text: viewModel.chatItems[index].message ?? '',
+                          isSender:
+                              viewModel.chatItems[index].isSender ?? false,
+                          color: viewModel.chatItems[index].isSender!
+                              ? Colors.black
+                              : const Color(0xff5A5B55),
+                        );
                 }),
           ),
           MessageBarWithSuggestions(
@@ -149,10 +168,12 @@ class MessageView extends BaseView<ChatVM> {
             onSuggestionSelected: (value) {
               viewModel.messageTextController.text = value;
             },
-            onOfferMade: (value) {},
+            onOfferMade: (value) {
+              viewModel.sendMessage(message: '$value', type: 2);
+            },
             textController: viewModel.messageTextController,
             onSubmitted: (value) {
-              viewModel.sendMessage(value);
+              viewModel.sendMessage(message: value, type: 1);
               viewModel.messageTextController.clear();
             },
             onPickImageClick: () {},

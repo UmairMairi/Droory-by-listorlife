@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/res/assets_res.dart';
+import 'package:list_and_life/widgets/app_elevated_button.dart';
+import 'package:list_and_life/widgets/app_outline_button.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../../../models/setting_item_model.dart';
@@ -35,90 +38,71 @@ class PostAddedFinalView extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  const Text(
-                    "Congratulations!",
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black),
-                  ),
+                  Text("Congratulations!", style: context.textTheme.titleLarge),
                   const SizedBox(
                     height: 10,
                   ),
                   Text(
                     "Your Ad will go live shortly...",
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black.withOpacity(0.50)),
+                    style: context.textTheme.titleMedium
+                        ?.copyWith(color: Colors.black.withOpacity(0.5)),
                   ),
                 ],
               ),
             ),
             Container(
-              width: double.infinity,
-              height: 42,
-              color: const Color(0xffFF385C),
-              child: const Center(
-                child: Text(
-                  "List or Lift allows 2 free ads 180 days for cars",
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            const Text(
-              "Reach more buyers and sell faster",
-              style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text(
-              "Upgrading an ad helps you to reach more buyers",
-              style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black.withOpacity(0.50)),
-            ),
+                width: double.infinity,
+                height: 42,
+                color: const Color(0xffFF385C),
+                child: Center(
+                  child: Text(
+                    "List or Lift allows 2 free ads 180 days for cars",
+                    style: context.textTheme.titleMedium
+                        ?.copyWith(color: Colors.white),
+                  ),
+                )),
             const SizedBox(
               height: 20,
             ),
             Image.asset(
               AssetsRes.IC_CONGRATULATION_IMAGE,
-              scale: 3.5,
+              scale: 2.5,
             ),
-            GestureDetector(
+            const SizedBox(
+              height: 20,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Text(
+                "Reach more buyers and sell faster",
+                style: context.textTheme.titleLarge,
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Text(
+                "Upgrading an ad helps you to reach more buyers",
+                textAlign: TextAlign.center,
+                style: context.textTheme.titleMedium
+                    ?.copyWith(color: Colors.black.withOpacity(0.5)),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            AppElevatedButton(
               onTap: () {
                 context.push(Routes.planList);
               },
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                margin: const EdgeInsets.only(
-                    left: 40, right: 40, top: 20, bottom: 20),
-                decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(100)),
-                child: const Text(
-                  "Sell Faster Now",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500),
-                ),
-              ),
+              title: "Sell Faster Now",
+              width: context.width,
+              padding: const EdgeInsets.only(
+                  left: 40, right: 40, top: 20, bottom: 0),
             ),
-            GestureDetector(
+            AppOutlineButton(
               onTap: () {
                 Navigator.push(
                     context,
@@ -144,23 +128,10 @@ class PostAddedFinalView extends StatelessWidget {
                                       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry.'),
                             )));
               },
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                margin: const EdgeInsets.only(left: 40, right: 40, bottom: 20),
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black, width: 2),
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(100)),
-                child: const Text(
-                  "Review Ad",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500),
-                ),
-              ),
+              title: "Review Ad",
+              width: context.width,
+              padding: const EdgeInsets.only(
+                  left: 40, right: 40, top: 20, bottom: 20),
             ),
           ],
         ),

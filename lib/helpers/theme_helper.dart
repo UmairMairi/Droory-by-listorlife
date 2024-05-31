@@ -10,9 +10,11 @@ class ThemeHelper {
       colorScheme: lightColorScheme,
       brightness: Brightness.light,
       fontFamily: 'Montserrat-Medium',
-      popupMenuTheme:  PopupMenuThemeData(
-        textStyle: const TextStyle(fontFamily: FontRes.MONTSERRAT_BOLD, color: Colors.black),
-        labelTextStyle: WidgetStateProperty.all<TextStyle>(const TextStyle(fontFamily: FontRes.MONTSERRAT_SEMIBOLD, color: Colors.black)),
+      popupMenuTheme: PopupMenuThemeData(
+        textStyle: const TextStyle(
+            fontFamily: FontRes.MONTSERRAT_BOLD, color: Colors.black),
+        labelTextStyle: WidgetStateProperty.all<TextStyle>(const TextStyle(
+            fontFamily: FontRes.MONTSERRAT_SEMIBOLD, color: Colors.black)),
       ),
       appBarTheme: const AppBarTheme(
           backgroundColor: Colors.transparent,
@@ -36,18 +38,30 @@ class ThemeHelper {
             TextStyle(fontFamily: FontRes.MONTSERRAT_SEMIBOLD, fontSize: 16),
         titleSmall:
             TextStyle(fontFamily: FontRes.MONTSERRAT_SEMIBOLD, fontSize: 14),
-        bodyLarge:
-            TextStyle(fontFamily: FontRes.MONTSERRAT_REGULAR, fontSize: 16),
-        bodyMedium:
-            TextStyle(fontFamily: FontRes.MONTSERRAT_REGULAR, fontSize: 14),
-        bodySmall:
-            TextStyle(fontFamily: FontRes.MONTSERRAT_REGULAR, fontSize: 12),
-        labelLarge:
-            TextStyle(fontFamily: FontRes.MONTSERRAT_LIGHT, fontSize: 14),
-        labelMedium:
-            TextStyle(fontFamily: FontRes.MONTSERRAT_LIGHT, fontSize: 12),
-        labelSmall:
-            TextStyle(fontFamily: FontRes.MONTSERRAT_LIGHT, fontSize: 10),
+        bodyLarge: TextStyle(
+            fontFamily: FontRes.MONTSERRAT_REGULAR,
+            fontSize: 16,
+            color: Colors.black),
+        bodyMedium: TextStyle(
+            fontFamily: FontRes.MONTSERRAT_REGULAR,
+            fontSize: 14,
+            color: Colors.black),
+        bodySmall: TextStyle(
+            fontFamily: FontRes.MONTSERRAT_REGULAR,
+            fontSize: 12,
+            color: Colors.black),
+        labelLarge: TextStyle(
+            fontFamily: FontRes.MONTSERRAT_LIGHT,
+            fontSize: 14,
+            color: Colors.black54),
+        labelMedium: TextStyle(
+            fontFamily: FontRes.MONTSERRAT_LIGHT,
+            fontSize: 12,
+            color: Colors.black54),
+        labelSmall: TextStyle(
+            fontFamily: FontRes.MONTSERRAT_LIGHT,
+            fontSize: 10,
+            color: Colors.black54),
       ),
     );
   }

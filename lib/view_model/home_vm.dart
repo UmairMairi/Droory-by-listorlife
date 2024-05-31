@@ -64,17 +64,17 @@ class HomeVM extends BaseViewModel {
     ];
   }
 
-  Future<void> updateLocation() async {
+  Future<String> updateLocation() async {
     Position position = await LocationHelper.getCurrentLocation();
     currentLocation = await LocationHelper.getAddressFromCoordinates(
         position.latitude, position.longitude);
+    return currentLocation;
   }
 
   @override
   void onInit() {
     // TODO: implement onInit
     initCategories();
-    updateLocation();
     super.onInit();
   }
 }

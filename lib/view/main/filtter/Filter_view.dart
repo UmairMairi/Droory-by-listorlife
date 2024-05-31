@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/widgets/app_elevated_button.dart';
+import 'package:list_and_life/widgets/app_outline_button.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
+
+import '../../../widgets/app_map_widget.dart';
 
 class FilterView extends StatefulWidget {
   const FilterView({super.key});
@@ -12,6 +17,9 @@ class FilterView extends StatefulWidget {
 
 class _FilterViewState extends State<FilterView> {
   SfRangeValues _values = const SfRangeValues(00, 20000);
+
+  int selectedIndex = 0;
+  String? address;
 
   @override
   Widget build(BuildContext context) {
@@ -28,20 +36,23 @@ class _FilterViewState extends State<FilterView> {
             Row(
               children: [
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    setState(() {
+                      selectedIndex = 0;
+                    });
+                  },
                   child: Container(
                     padding:
                         const EdgeInsets.symmetric(vertical: 8, horizontal: 32),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
-                      color: Colors.black,
+                      color: selectedIndex == 0 ? Colors.black : Colors.white,
                     ),
-                    child: const Text(
+                    child: Text(
                       "New",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500),
+                      style: context.textTheme.titleMedium?.copyWith(
+                        color: selectedIndex == 0 ? Colors.white : Colors.black,
+                      ),
                     ),
                   ),
                 ),
@@ -49,19 +60,24 @@ class _FilterViewState extends State<FilterView> {
                   width: 10,
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    setState(() {
+                      selectedIndex = 1;
+                    });
+                  },
                   child: Container(
                     padding:
                         const EdgeInsets.symmetric(vertical: 8, horizontal: 32),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
                       border: Border.all(color: Colors.grey),
-                      color: Colors.white,
+                      color: selectedIndex == 0 ? Colors.white : Colors.black,
                     ),
-                    child: const Text(
+                    child: Text(
                       "Used",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                      style: context.textTheme.titleMedium?.copyWith(
+                          color:
+                              selectedIndex == 1 ? Colors.white : Colors.black),
                     ),
                   ),
                 ),
@@ -74,10 +90,11 @@ class _FilterViewState extends State<FilterView> {
             const SizedBox(
               height: 15,
             ),
-            const Text(
+            Text(
               "Price",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+              style: context.textTheme.titleSmall,
             ),
+            const Gap(10),
             Row(
               children: [
                 Expanded(
@@ -97,15 +114,19 @@ class _FilterViewState extends State<FilterView> {
                                   const BorderSide(color: Color(0xffEFEFEF)),
                             ),
                             focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                    color: Color(0xffEFEFEF))))),
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide:
+                                  const BorderSide(color: Color(0xffEFEFEF)),
+                            ))),
                   ),
                 ),
                 const SizedBox(
                   width: 5,
                 ),
-                const Text("to"),
+                Text(
+                  "to",
+                  style: context.textTheme.titleSmall,
+                ),
                 const SizedBox(
                   width: 5,
                 ),
@@ -166,19 +187,34 @@ class _FilterViewState extends State<FilterView> {
             const SizedBox(
               height: 10,
             ),
-            const Text(
+            Text(
               "Location",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+              style: context.textTheme.titleSmall,
             ),
-            Container(
-                width: context.width,
-                padding:
-                    const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                color: const Color(0xffEAEEF1),
-                child: const Text(
-                  "New York City. USA",
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-                )),
+            const SizedBox(
+              height: 10,
+            ),
+            InkWell(
+              onTap: () async {
+                Map<String, dynamic>? value = await Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const AppMapWidget()));
+                print(value);
+                if (value != null && value.isNotEmpty) {
+                  address =
+                      "${value['location']}, ${value['city']}, ${value['state']}";
+                  setState(() {});
+                }
+              },
+              child: Container(
+                  width: context.width,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                  color: const Color(0xffEAEEF1),
+                  child: Text(
+                    address ?? "New York City. USA",
+                    style: context.textTheme.titleSmall,
+                  )),
+            ),
             const SizedBox(
               height: 20,
             ),
@@ -187,12 +223,15 @@ class _FilterViewState extends State<FilterView> {
               child: Theme(
                 data: Theme.of(context)
                     .copyWith(dividerColor: Colors.transparent),
-                child: const ExpansionTile(
+                child: ExpansionTile(
                   childrenPadding: EdgeInsets.zero,
                   initiallyExpanded: false,
-                  title: Text("Sort By"),
+                  title: Text(
+                    "Sort By",
+                    style: context.textTheme.titleSmall,
+                  ),
                   backgroundColor: Colors.white,
-                  children: [
+                  children: const [
                     ListTile(
                       title: Text(
                         "High to Low",
@@ -220,11 +259,14 @@ class _FilterViewState extends State<FilterView> {
               child: Theme(
                 data: Theme.of(context)
                     .copyWith(dividerColor: Colors.transparent),
-                child: const ExpansionTile(
+                child: ExpansionTile(
                   childrenPadding: EdgeInsets.zero,
-                  title: Text("Posted Within"),
+                  title: Text(
+                    "Posted Within",
+                    style: context.textTheme.titleSmall,
+                  ),
                   backgroundColor: Colors.white,
-                  children: [
+                  children: const [
                     ListTile(
                       title: Text(
                         "Today",
@@ -251,44 +293,21 @@ class _FilterViewState extends State<FilterView> {
             const SizedBox(
               height: 10,
             ),
-            GestureDetector(
+            AppElevatedButton(
+              width: context.width,
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               onTap: () {
                 context.pop();
               },
-              child: Container(
-                alignment: Alignment.center,
-                width: context.width,
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                child: const Text(
-                  "Apply",
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-              ),
+              title: 'Apply',
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            GestureDetector(
+            const Gap(10),
+            AppOutlineButton(
+              title: 'Reset',
+              width: context.width,
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               onTap: () {},
-              child: Container(
-                alignment: Alignment.center,
-                width: context.width,
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    border: Border.all(color: Colors.black, width: 2)),
-                child: const Text(
-                  "Reset",
-                  style: TextStyle(color: Colors.black, fontSize: 16),
-                ),
-              ),
-            )
+            ),
           ],
         ),
       ),

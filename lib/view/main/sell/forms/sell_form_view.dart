@@ -1,16 +1,13 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/view/main/sell/forms/common_sell_form.dart';
+import 'package:list_and_life/view/main/sell/forms/pets_sell_form.dart';
 import 'package:list_and_life/view_model/sell_v_m.dart';
 
-import '../../../../helpers/image_picker_helper.dart';
 import '../../../../view_model/mobile_sell_v_m.dart';
-import '../../../../widgets/app_map_widget.dart';
+import 'education_sell_form.dart';
 import 'job_sell_form.dart';
-import 'post_added_final_view.dart';
 
 class SellFormView extends BaseView<SellFormsVM> {
   final String? type;
@@ -21,7 +18,7 @@ class SellFormView extends BaseView<SellFormsVM> {
       {super.key,
       required this.category,
       required this.subCategory,
-        required this.brands,
+      required this.brands,
       required this.type});
 
   @override
@@ -35,11 +32,44 @@ class SellFormView extends BaseView<SellFormsVM> {
   }
 
   Widget _buildBody(BuildContext context) {
-    switch(type){
+    switch (type) {
       case 'jobs':
-        return JobSellForm(type: type, category: category, brands: brands, subCategory: subCategory,);
+        return JobSellForm(
+          type: type,
+          category: category,
+          brands: brands,
+          subCategory: subCategory,
+        );
+      case 'services':
+        print(subCategory?.title);
+        if (subCategory?.title == 'Education') {
+          return EducationSellForm(
+            type: type,
+            category: category,
+            brands: brands,
+            subCategory: subCategory,
+          );
+        }
+        return PetsSellForm(
+          type: type,
+          category: category,
+          brands: brands,
+          subCategory: subCategory,
+        );
+      case 'pets':
+        return PetsSellForm(
+          type: type,
+          category: category,
+          brands: brands,
+          subCategory: subCategory,
+        );
       default:
-        return CommonSellForm(type: type, category: category, brands: brands, subCategory: subCategory,);
+        return CommonSellForm(
+          type: type,
+          category: category,
+          brands: brands,
+          subCategory: subCategory,
+        );
     }
   }
 }

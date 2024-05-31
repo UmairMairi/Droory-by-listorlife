@@ -36,12 +36,12 @@ class CompleteProfileView extends BaseView<ProfileVM> {
             Center(
               child: ImagePickerHelper.isLoading
                   ? Container(
-                      height: 160,
-                      width: 160,
+                      height: 120,
+                      width: 120,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.white70,
+                        color: const Color(0xfff5f5f5),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.grey.withOpacity(0.5), // Shadow color
@@ -59,11 +59,11 @@ class CompleteProfileView extends BaseView<ProfileVM> {
                         viewModel.imagePath.isEmpty
                             ? const ImageView.circle(
                                 image: '',
-                                height: 160,
-                                width: 160,
+                                height: 140,
+                                width: 140,
                               )
                             : CircleAvatar(
-                                radius: 80,
+                                radius: 70,
                                 backgroundImage:
                                     FileImage(File(viewModel.imagePath)),
                               ),

@@ -137,6 +137,7 @@ flutter:
     - assets/icons/ic_calender_icon.png
     - assets/icons/ic_call_icon.png
     - assets/icons/ic_car_cat_image.png
+    - assets/icons/ic_cards_icon.png
     - assets/icons/ic_cat_car.png
     - assets/icons/ic_cat_cloths.png
     - assets/icons/ic_cat_furniture.png
@@ -168,6 +169,7 @@ flutter:
     - assets/icons/ic_t_and_c.png
     - assets/icons/ic_tablet_image.png
     - assets/icons/ic_user_icon.png
+    - assets/icons/ic_wallet_icon.png
     - assets/icons/ic_whatsapp_icon.png
     - assets/images/app_logo.png
     - assets/images/location_permission_illustrations.png

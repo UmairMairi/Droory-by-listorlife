@@ -10,15 +10,16 @@ import '../../../../view_model/mobile_sell_v_m.dart';
 import '../../../../view_model/sell_v_m.dart';
 import '../../../../widgets/app_map_widget.dart';
 
-class CommonSellForm extends BaseView<SellFormsVM> {
+class PetsSellForm extends BaseView<SellFormsVM> {
   final String? type;
   final Item? category;
   final Item? subCategory;
   final List<String>? brands;
-  const CommonSellForm({super.key, required this.type, required this.category, required this.subCategory, required this.brands});
+  const PetsSellForm(
+      {super.key, this.type, this.category, this.subCategory, this.brands});
 
   @override
-  Widget build(BuildContext context,  SellFormsVM viewModel) {
+  Widget build(BuildContext context, SellFormsVM viewModel) {
     return SingleChildScrollView(
       physics: const ClampingScrollPhysics(),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -31,47 +32,43 @@ class CommonSellForm extends BaseView<SellFormsVM> {
           ),
           GestureDetector(
             onTap: () async {
-              viewModel.mainImagePath =
-                  await ImagePickerHelper.openImagePicker(
+              viewModel.mainImagePath = await ImagePickerHelper.openImagePicker(
                       context: context, isCropping: true) ??
-                      '';
+                  '';
             },
             child: Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
               width: double.infinity,
               height: 138,
-              decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      offset: const Offset(0, 1),
-                      blurRadius: 6,
-                    ),
-                  ],
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10)),
+              decoration: BoxDecoration(boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  offset: const Offset(0, 1),
+                  blurRadius: 6,
+                ),
+              ], color: Colors.white, borderRadius: BorderRadius.circular(10)),
               child: viewModel.mainImagePath.isNotEmpty
                   ? ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.file(
-                    File(viewModel.mainImagePath),
-                    fit: BoxFit.fill,
-                  ))
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.file(
+                        File(viewModel.mainImagePath),
+                        fit: BoxFit.fill,
+                      ))
                   : const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.camera_alt_outlined),
-                  SizedBox(
-                    height: 2,
-                  ),
-                  Text(
-                    "Upload",
-                    style: TextStyle(
-                      fontSize: 14,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.camera_alt_outlined),
+                        SizedBox(
+                          height: 2,
+                        ),
+                        Text(
+                          "Upload",
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
             ),
           ),
           Wrap(
@@ -104,7 +101,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                 return GestureDetector(
                   onTap: () async {
                     var image = await ImagePickerHelper.openImagePicker(
-                        context: context) ??
+                            context: context) ??
                         '';
                     if (image.isNotEmpty) {
                       viewModel.addImage(image);
@@ -148,14 +145,14 @@ class CommonSellForm extends BaseView<SellFormsVM> {
           if (brands?.isNotEmpty ?? false) ...{
             RichText(
                 text: const TextSpan(children: [
-                  TextSpan(
-                    text: "Brand",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
-                        color: Colors.black),
-                  ),
-                ])),
+              TextSpan(
+                text: "Brand",
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                    color: Colors.black),
+              ),
+            ])),
             Container(
               margin: const EdgeInsets.only(top: 10, bottom: 15),
               decoration: BoxDecoration(
@@ -179,13 +176,13 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                   ),
                   hintText: "Select",
                   hintStyle:
-                  const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                      const TextStyle(color: Color(0xffACACAC), fontSize: 14),
                   border: const OutlineInputBorder(
                     borderSide: BorderSide.none,
                   ),
                   suffixIcon: PopupMenuButton(
                     constraints:
-                    const BoxConstraints.expand(width: 200, height: 500),
+                        const BoxConstraints.expand(width: 200, height: 500),
                     clipBehavior: Clip.hardEdge,
                     icon: const Icon(
                       Icons.arrow_drop_down,
@@ -214,89 +211,19 @@ class CommonSellForm extends BaseView<SellFormsVM> {
               ),
             ),
           },
-          Text(
-            "Item Condition",
-            style: context.textTheme.titleMedium,
-          ),
-          Row(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  viewModel.currentIndex = 1;
-                },
-                child: Container(
-                  width: 105,
-                  height: 42,
-                  margin: const EdgeInsets.only(top: 10, right: 10),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                        color: viewModel.currentIndex == 1
-                            ? Colors.transparent
-                            : Colors.grey.withOpacity(0.5)),
-                    color: viewModel.currentIndex == 1
-                        ? Colors.black
-                        : const Color(0xffFCFCFD),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Center(
-                      child: Text(
-                        "New",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                          color: viewModel.currentIndex == 1
-                              ? Colors.white
-                              : Colors.black,
-                        ),
-                      )),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  viewModel.currentIndex = 2;
-                },
-                child: Container(
-                  width: 105,
-                  height: 42,
-                  margin: const EdgeInsets.only(top: 10, left: 10),
-                  decoration: BoxDecoration(
-                    color: viewModel.currentIndex == 2
-                        ? Colors.black
-                        : const Color(0xffFCFCFD),
-                    border: Border.all(
-                        color: viewModel.currentIndex == 2
-                            ? Colors.transparent
-                            : Colors.grey.withOpacity(0.5)),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Center(
-                      child: Text(
-                        "Used",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                          color: viewModel.currentIndex == 2
-                              ? Colors.white
-                              : Colors.black,
-                        ),
-                      )),
-                ),
-              ),
-            ],
-          ),
           const SizedBox(
             height: 25,
           ),
           RichText(
               text: const TextSpan(children: [
-                TextSpan(
-                  text: "Ad Title",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      color: Colors.black),
-                ),
-              ])),
+            TextSpan(
+              text: "Ad Title",
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                  color: Colors.black),
+            ),
+          ])),
           Container(
             margin: const EdgeInsets.only(top: 10, bottom: 20),
             decoration: BoxDecoration(
@@ -316,10 +243,9 @@ class CommonSellForm extends BaseView<SellFormsVM> {
               cursorColor: Colors.black,
               decoration: const InputDecoration(
                   contentPadding:
-                  EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+                      EdgeInsets.symmetric(horizontal: 25, vertical: 18),
                   hintText: "Enter",
-                  hintStyle:
-                  TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                   )),
@@ -334,14 +260,14 @@ class CommonSellForm extends BaseView<SellFormsVM> {
           ),
           RichText(
               text: const TextSpan(children: [
-                TextSpan(
-                  text: "Describe what you are selling",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      color: Colors.black),
-                ),
-              ])),
+            TextSpan(
+              text: "Describe what you are selling",
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                  color: Colors.black),
+            ),
+          ])),
           Container(
             margin: const EdgeInsets.only(top: 10, bottom: 20),
             decoration: BoxDecoration(
@@ -361,10 +287,9 @@ class CommonSellForm extends BaseView<SellFormsVM> {
               cursorColor: Colors.black,
               decoration: const InputDecoration(
                   contentPadding:
-                  EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+                      EdgeInsets.symmetric(horizontal: 25, vertical: 18),
                   hintText: "Enter",
-                  hintStyle:
-                  TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                   )),
@@ -379,14 +304,14 @@ class CommonSellForm extends BaseView<SellFormsVM> {
           ),
           RichText(
               text: const TextSpan(children: [
-                TextSpan(
-                  text: "Location",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      color: Colors.black),
-                ),
-              ])),
+            TextSpan(
+              text: "Location",
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                  color: Colors.black),
+            ),
+          ])),
           Container(
             margin: const EdgeInsets.only(top: 10, bottom: 20),
             decoration: BoxDecoration(
@@ -411,17 +336,16 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                 print(value);
                 if (value != null && value.isNotEmpty) {
                   viewModel.addressTextController.text =
-                  "${value['location']}, ${value['city']}, ${value['state']}";
+                      "${value['location']}, ${value['city']}, ${value['state']}";
                 }
               },
               cursorColor: Colors.black,
               decoration: const InputDecoration(
                   contentPadding:
-                  EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+                      EdgeInsets.symmetric(horizontal: 25, vertical: 18),
                   hintText: "Select",
                   suffixIcon: Icon(Icons.location_on),
-                  hintStyle:
-                  TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                   )),
@@ -436,14 +360,14 @@ class CommonSellForm extends BaseView<SellFormsVM> {
           ),
           RichText(
               text: const TextSpan(children: [
-                TextSpan(
-                  text: "Price (in EGP)",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      color: Colors.black),
-                ),
-              ])),
+            TextSpan(
+              text: "Price (in EGP)",
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                  color: Colors.black),
+            ),
+          ])),
           Container(
             margin: const EdgeInsets.only(top: 10, bottom: 20),
             decoration: BoxDecoration(
@@ -462,10 +386,9 @@ class CommonSellForm extends BaseView<SellFormsVM> {
               cursorColor: Colors.black,
               decoration: const InputDecoration(
                   contentPadding:
-                  EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+                      EdgeInsets.symmetric(horizontal: 25, vertical: 18),
                   hintText: "Enter Price",
-                  hintStyle:
-                  TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                   )),
