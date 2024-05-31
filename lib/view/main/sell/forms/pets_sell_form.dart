@@ -207,7 +207,7 @@ class PetsSellForm extends BaseView<SellFormsVM> {
                       RegExp(viewModel.regexToRemoveEmoji)),
                 ],
                 keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.next,
+                textInputAction: TextInputAction.done,
               ),
             ),
           },
@@ -255,7 +255,7 @@ class PetsSellForm extends BaseView<SellFormsVM> {
                     RegExp(viewModel.regexToRemoveEmoji)),
               ],
               keyboardType: TextInputType.text,
-              textInputAction: TextInputAction.next,
+              textInputAction: TextInputAction.done,
             ),
           ),
           RichText(
@@ -299,7 +299,7 @@ class PetsSellForm extends BaseView<SellFormsVM> {
                     RegExp(viewModel.regexToRemoveEmoji)),
               ],
               keyboardType: TextInputType.text,
-              textInputAction: TextInputAction.next,
+              textInputAction: TextInputAction.done,
             ),
           ),
           RichText(
@@ -331,8 +331,10 @@ class PetsSellForm extends BaseView<SellFormsVM> {
               minLines: 1,
               readOnly: true,
               onTap: () async {
-                Map<String, dynamic>? value = await Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const AppMapWidget()));
+                Map<String, dynamic>? value = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AppMapWidget()));
                 print(value);
                 if (value != null && value.isNotEmpty) {
                   viewModel.addressTextController.text =
@@ -355,7 +357,7 @@ class PetsSellForm extends BaseView<SellFormsVM> {
                     RegExp(viewModel.regexToRemoveEmoji)),
               ],
               keyboardType: TextInputType.text,
-              textInputAction: TextInputAction.next,
+              textInputAction: TextInputAction.done,
             ),
           ),
           RichText(

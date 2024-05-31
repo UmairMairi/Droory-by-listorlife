@@ -52,7 +52,32 @@ class MyAdsView extends BaseView<MyAdsVM> {
                         'From:25 APR 2024 TO 25 MAY 2024',
                         style: context.textTheme.titleSmall,
                       ),
-                      const Icon(Icons.more_horiz),
+                      PopupMenuButton<int>(
+                        icon: const Icon(
+                          Icons.more_horiz,
+                          color: Colors.black,
+                        ),
+                        offset: const Offset(0, 40),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(15.0))),
+                        onSelected: (int item) {},
+                        itemBuilder: (BuildContext context) =>
+                            <PopupMenuEntry<int>>[
+                          const PopupMenuItem(
+                            value: 1,
+                            child: Text('Edit'),
+                          ),
+                          const PopupMenuItem(
+                            value: 2,
+                            child: Text('Deactivate'),
+                          ),
+                          const PopupMenuItem(
+                            value: 3,
+                            child: Text('Remove'),
+                          ),
+                        ],
+                      )
                     ],
                   ),
                 ),
@@ -149,7 +174,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      AppElevatedButtonWithoutAnimation(
+                      AppElevatedButton(
                         onTap: () {},
                         title: 'Active',
                         height: 30,

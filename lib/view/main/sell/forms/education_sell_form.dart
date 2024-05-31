@@ -205,7 +205,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                     RegExp(viewModel.regexToRemoveEmoji)),
               ],
               keyboardType: TextInputType.text,
-              textInputAction: TextInputAction.next,
+              textInputAction: TextInputAction.done,
             ),
           ),
           if (brands?.isNotEmpty ?? false) ...{
@@ -273,7 +273,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                       RegExp(viewModel.regexToRemoveEmoji)),
                 ],
                 keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.next,
+                textInputAction: TextInputAction.done,
               ),
             ),
           },
@@ -321,7 +321,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                     RegExp(viewModel.regexToRemoveEmoji)),
               ],
               keyboardType: TextInputType.text,
-              textInputAction: TextInputAction.next,
+              textInputAction: TextInputAction.done,
             ),
           ),
           RichText(
@@ -365,7 +365,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                     RegExp(viewModel.regexToRemoveEmoji)),
               ],
               keyboardType: TextInputType.text,
-              textInputAction: TextInputAction.next,
+              textInputAction: TextInputAction.done,
             ),
           ),
           RichText(
@@ -397,8 +397,10 @@ class EducationSellForm extends BaseView<SellFormsVM> {
               minLines: 1,
               readOnly: true,
               onTap: () async {
-                Map<String, dynamic>? value = await Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const AppMapWidget()));
+                Map<String, dynamic>? value = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AppMapWidget()));
                 print(value);
                 if (value != null && value.isNotEmpty) {
                   viewModel.addressTextController.text =
@@ -421,7 +423,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                     RegExp(viewModel.regexToRemoveEmoji)),
               ],
               keyboardType: TextInputType.text,
-              textInputAction: TextInputAction.next,
+              textInputAction: TextInputAction.done,
             ),
           ),
           RichText(

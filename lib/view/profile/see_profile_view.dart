@@ -21,6 +21,12 @@ class SeeProfileView extends StatefulWidget {
 }
 
 class _SeeProfileViewState extends State<SeeProfileView> {
+  List<String> imageList = [
+    AssetsRes.DUMMY_CAR_FIRST,
+    AssetsRes.DUMMY_CAR_SECOUND,
+    AssetsRes.DUMMY_CAR_FIRST,
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -195,6 +201,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                                       children: [
                                         Expanded(
                                             child: AppOutlineButton(
+                                          height: 40,
                                           onTap: () {
                                             context.pop();
                                           },
@@ -342,18 +349,13 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Image(
-                                image: CachedNetworkImageProvider(
-                                    "https://img.freepik.com/free-psd/silver-sedan-car_53876-84522.jpg?w=740&t=st=1716212531~exp=1716213131~hmac=4b00f0679340aa976396da9aa7199a5d976904dbc084a3a227c3096c8732bd33",
-                                    scale: 7)),
-                            /*  ClipRRect(
+                            ClipRRect(
                                 borderRadius: BorderRadius.circular(15),
-                                child: Image.network(
-                                  "https://img.freepik.com/free-psd/silver-sedan-car_53876-84522.jpg?w=740&t=st=1716212531~exp=1716213131~hmac=4b00f0679340aa976396da9aa7199a5d976904dbc084a3a227c3096c8732bd33",
-                                  height: 100,
-                                  width: 120,
+                                child: Image.asset(
+                                  imageList[index],
                                   fit: BoxFit.cover,
-                                )),*/
+                                  scale: 1,
+                                )),
                             const SizedBox(
                               width: 15,
                             ),

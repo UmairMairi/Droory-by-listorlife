@@ -22,10 +22,10 @@ class AdsView extends BaseView<MyAdsVM> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                AppElevatedButtonWithoutAnimation(
+                AppElevatedButton(
                   title: 'Ads',
                   height: 40,
-                  titleColor:
+                  tittleColor:
                       viewModel.selectIndex == 0 ? Colors.white : Colors.black,
                   backgroundColor:
                       viewModel.selectIndex == 1 ? Colors.grey : Colors.black,
@@ -35,10 +35,10 @@ class AdsView extends BaseView<MyAdsVM> {
                   },
                 ),
                 const Gap(10),
-                AppElevatedButtonWithoutAnimation(
+                AppElevatedButton(
                   title: 'Favourites',
                   height: 40,
-                  titleColor:
+                  tittleColor:
                       viewModel.selectIndex == 1 ? Colors.white : Colors.black,
                   backgroundColor:
                       viewModel.selectIndex == 0 ? Colors.grey : Colors.black,
