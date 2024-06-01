@@ -12,8 +12,7 @@ class SellVM extends BaseViewModel {
       image: AssetsRes.IC_ELECTRONICS_ICONS,
       subCategories: [
         Item(title: 'Computers', subCategories: [
-          Item(title: 'Laptops',
-              brands: [
+          Item(title: 'Laptops', brands: [
             "HP",
             "Dell",
             "Lenovo",
@@ -166,35 +165,36 @@ class SellVM extends BaseViewModel {
             Item(title: 'Other'),
           ]),
         ]),
-    Item(id: 3,
+    Item(
+        id: 3,
         title: "Fashion",
         type: 'fashion',
         image: AssetsRes.IC_FASHION,
         subCategories: [
-      Item(title: 'Men’s Fashion', subCategories: [
-        Item(title: 'Clothing'),
-        Item(title: 'Shoes'),
-        Item(title: 'Accessories & Watches'),
-        Item(title: 'Other', subCategories: []),
-      ]),
-      Item(title: 'Women’s Fashion', subCategories: [
-        Item(title: 'Clothing'),
-        Item(title: 'Shoes'),
-        Item(title: 'Handbags & Accessories'),
-        Item(title: 'Jewelry & Watches'),
-        Item(title: 'Other'),
-      ]),
-      Item(title: 'Kids & Baby', subCategories: [
-        Item(title: 'Boys\' Clothing'),
-        Item(title: 'Girls\' Clothing'),
-        Item(title: 'Baby Clothing'),
-        Item(title: 'Kids Feeding Tools'),
-        Item(title: 'Toys'),
-        Item(title: 'Kids Equipment & Strollers'),
-        Item(title: 'Shoes'),
-        Item(title: 'Other'),
-      ]),
-    ]),
+          Item(title: 'Men’s Fashion', subCategories: [
+            Item(title: 'Clothing'),
+            Item(title: 'Shoes'),
+            Item(title: 'Accessories & Watches'),
+            Item(title: 'Other', subCategories: []),
+          ]),
+          Item(title: 'Women’s Fashion', subCategories: [
+            Item(title: 'Clothing'),
+            Item(title: 'Shoes'),
+            Item(title: 'Handbags & Accessories'),
+            Item(title: 'Jewelry & Watches'),
+            Item(title: 'Other'),
+          ]),
+          Item(title: 'Kids & Baby', subCategories: [
+            Item(title: 'Boys\' Clothing'),
+            Item(title: 'Girls\' Clothing'),
+            Item(title: 'Baby Clothing'),
+            Item(title: 'Kids Feeding Tools'),
+            Item(title: 'Toys'),
+            Item(title: 'Kids Equipment & Strollers'),
+            Item(title: 'Shoes'),
+            Item(title: 'Other'),
+          ]),
+        ]),
     Item(
       id: 4,
       type: 'vehicles',
@@ -289,10 +289,79 @@ class SellVM extends BaseViewModel {
             "SsangYong"
           ]),
         ]),
-        Item(title: 'MotorCycle & ATVs', subCategories: []),
+        Item(title: 'MotorCycle & ATVs', subCategories: [], brands: [
+          "Hero MotoCorp",
+          "Bajaj Auto",
+          "TVS Motor Company",
+          "Royal Enfield",
+          "Honda Motorcycle and Scooter India",
+          "Yamaha Motor India",
+          "Suzuki Motorcycle India",
+          "Kawasaki India",
+          "KTM India",
+          "Harley-Davidson India",
+          "Triumph Motorcycles India",
+          "BMW Motorrad India",
+          "Ducati India",
+          "Aprilia India",
+          "Mahindra Two Wheelers",
+          "Jawa Motorcycles",
+          "Benelli India",
+          "MV Agusta India",
+          "Indian Motorcycle",
+          "Moto Guzzi India",
+          "CFMoto India",
+          "UM Motorcycles",
+          "SWM Motorcycles India",
+          "Hyosung India",
+          "LML (Lohia Machinery Limited)",
+          "Ather Energy",
+          "Revolt Motors",
+          "Ultraviolette Automotive",
+          "Okinawa Autotech",
+          "Tork Motors",
+          "YObykes",
+          "Evolet India",
+          "PURE EV",
+          "Hero Electric",
+          "Ampere Vehicles",
+          "Ola Electric",
+          "Simple Energy"
+        ]),
         Item(title: 'Heavy or Big Vehicles', subCategories: [
-          Item(title: 'Trucks & Buses'),
-          Item(title: 'Heavy Equipment'),
+          Item(title: 'Trucks & Buses', brands: [
+            "Tata Motors",
+            "Ashok Leyland",
+            "Mahindra & Mahindra",
+            "Eicher Motors",
+            "BharatBenz",
+            "Volvo Trucks",
+            "Swaraj Mazda (SML Isuzu)",
+            "AMW Motors",
+            "Force Motors",
+            "MAN Trucks India",
+            "Scania India",
+            "Daimler India Commercial Vehicles",
+            "Hindustan Motors",
+            "Hino Motors",
+            "Piaggio Vehicles",
+            "Isuzu Motors",
+            "JBM Auto",
+            "VDL Bus & Coach",
+            "BYD Auto",
+            "Maruti Suzuki Commercial",
+            "Atul Auto",
+            "Mahindra Electric",
+            "Electra EV",
+            "Omega Seiki Mobility",
+            "Triton Electric Vehicle",
+            "Olectra Greentech",
+            "Infraprime Logistics",
+            "Switch Mobility"
+          ]),
+          Item(
+            title: 'Heavy Equipment',
+          ),
           Item(title: 'Parts & Accessories'),
         ]),
         Item(title: 'Boats', subCategories: [
@@ -327,7 +396,7 @@ class SellVM extends BaseViewModel {
     ),
     Item(
       id: 6,
-      type:'pets',
+      type: 'pets',
       title: "Pets",
       image: AssetsRes.IC_PETS_ICON,
       subCategories: [
@@ -437,7 +506,8 @@ class SellVM extends BaseViewModel {
   ];
 
   void handelSellCat({required Item item}) async {
-    context.push(Routes.sellSubCategoryView, extra: {'category':item, 'type': item.type});
+    context.push(Routes.sellSubCategoryView,
+        extra: {'category': item, 'type': item.type});
   }
 }
 

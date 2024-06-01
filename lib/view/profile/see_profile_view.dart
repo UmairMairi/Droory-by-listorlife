@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/res/assets_res.dart';
+import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/app_outline_button.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
@@ -245,7 +246,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                   ]),
         ],
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Column(
           children: [
@@ -317,6 +318,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
             ListView.builder(
                 itemCount: 3,
                 shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
@@ -367,12 +369,12 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      const Text(
+                                      Text(
                                         "EGP300",
-                                        style: TextStyle(
-                                            color: Color(0xffFF385C),
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w600),
+                                        style: context.textTheme.titleMedium
+                                            ?.copyWith(
+                                                fontFamily:
+                                                    FontRes.MONTSERRAT_BOLD),
                                       ),
                                       FavoriteButton(onTap: () {})
                                     ],
