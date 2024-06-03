@@ -37,6 +37,23 @@ class SellSubSubCategoryView extends StatelessWidget {
                   return;
                 }
                 context.read<SellFormsVM>().resetTextFields();
+
+                if (subCategory?.subCategories?[index].title
+                        ?.contains('Parts') ??
+                    false) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SellFormView(
+                                category: category,
+                                brands:
+                                    subCategory?.subCategories?[index].brands ??
+                                        [],
+                                subCategory: subCategory,
+                                type: 'abcd',
+                              )));
+                  return;
+                }
                 Navigator.push(
                     context,
                     MaterialPageRoute(

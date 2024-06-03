@@ -12,7 +12,6 @@ import '../../../product/my_product_view.dart';
 
 class PostAddedFinalView extends StatelessWidget {
   const PostAddedFinalView({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
