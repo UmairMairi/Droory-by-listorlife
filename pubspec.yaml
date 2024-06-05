@@ -71,7 +71,6 @@ dependencies:
   firebase_auth: ^4.20.0
   avatar_glow: ^3.0.1
   syncfusion_flutter_sliders: ^25.2.6
-  rename: ^3.0.2
   share_plus: ^9.0.0
   keyboard_actions: ^4.2.0
   map_picker: ^0.0.3
