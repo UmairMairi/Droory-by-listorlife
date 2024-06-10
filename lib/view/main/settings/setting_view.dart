@@ -73,7 +73,7 @@ class SettingView extends BaseView<SettingVM> {
                           ),
                           AppElevatedButton(
                             onTap: () {
-                              context.push(Routes.login);
+                              context.push(Routes.guestLogin);
                             },
                             height: 30,
                             width: 100,

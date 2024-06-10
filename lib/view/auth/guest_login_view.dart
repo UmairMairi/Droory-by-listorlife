@@ -1,7 +1,9 @@
 import 'package:ccp_dialog/country_picker/flutter_country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/helpers/db_helper.dart';
+import 'package:list_and_life/res/font_res.dart';
 
 import '../../base/base_view.dart';
 import '../../base/text_formatters/text_formatters.dart';
@@ -15,7 +17,16 @@ class GuestLoginView extends BaseView<AuthVM> {
   Widget build(BuildContext context, AuthVM viewModel) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Log In"),
+        leading: IconButton(
+          onPressed: () {
+            DbHelper.saveIsGuest(true);
+            context.pop();
+          },
+          icon: Icon(
+            Icons.close,
+            weight: 20,
+          ),
+        ),
         titleTextStyle: const TextStyle(
             fontWeight: FontWeight.w600, fontSize: 20, color: Colors.black),
         centerTitle: true,
@@ -25,16 +36,19 @@ class GuestLoginView extends BaseView<AuthVM> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Text(
+              'Log In now',
+              style: context.titleLarge,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
             const Text(
               "Please log in to continue",
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
             ),
             const SizedBox(
-              height: 25,
-            ),
-            const Text(
-              "Phone Number",
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
+              height: 20,
             ),
             const SizedBox(
               height: 10,
@@ -93,53 +107,23 @@ class GuestLoginView extends BaseView<AuthVM> {
                 child: Container(
                     margin: const EdgeInsets.only(left: 10.0, right: 20.0),
                     child: Divider(
-                      color: Colors.grey.shade300,
+                      color: Colors.black,
                       height: 36,
                     )),
               ),
-              const Text("Or Connect With"),
+              Text(
+                "Or Connect With",
+                style: context.titleSmall,
+              ),
               Expanded(
                 child: Container(
                     margin: const EdgeInsets.only(left: 20.0, right: 10.0),
                     child: Divider(
-                      color: Colors.grey.shade300,
+                      color: Colors.black,
                       height: 36,
                     )),
               ),
             ]),
-            const SizedBox(
-              height: 30,
-            ),
-            GestureDetector(
-                onTap: () {
-                  DbHelper.saveIsGuest(false);
-                  context.pop();
-                },
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  decoration: BoxDecoration(
-                      color: const Color(0xff6C5AE3),
-                      borderRadius: BorderRadius.circular(100)),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Icon(
-                        Icons.email_outlined,
-                        color: Colors.white,
-                      ),
-                      Text(
-                        "Log In With Email",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      SizedBox(
-                        width: 15,
-                      )
-                    ],
-                  ),
-                )),
             const SizedBox(
               height: 30,
             ),
@@ -172,6 +156,7 @@ class GuestLoginView extends BaseView<AuthVM> {
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 14,
+                            fontFamily: FontRes.MONTSERRAT_BOLD,
                             fontWeight: FontWeight.w500),
                       ),
                       const SizedBox(
@@ -186,6 +171,7 @@ class GuestLoginView extends BaseView<AuthVM> {
             GestureDetector(
                 onTap: () {
                   DbHelper.saveIsGuest(false);
+
                   context.pop();
                 },
                 child: Container(
@@ -211,6 +197,7 @@ class GuestLoginView extends BaseView<AuthVM> {
                         "Log In With IOS",
                         style: TextStyle(
                             color: Colors.white,
+                            fontFamily: FontRes.MONTSERRAT_BOLD,
                             fontSize: 14,
                             fontWeight: FontWeight.w500),
                       ),

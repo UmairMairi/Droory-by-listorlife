@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base_view.dart';
+import 'package:list_and_life/helpers/db_helper.dart';
+import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/view/main/fevorite/my_ads_view.dart';
 import 'package:list_and_life/view/main/fevorite/my_favourites_view.dart';
 import 'package:list_and_life/view_model/my_ads_v_m.dart';
@@ -11,6 +14,11 @@ class AdsView extends BaseView<MyAdsVM> {
 
   @override
   Widget build(BuildContext context, MyAdsVM viewModel) {
+    if (DbHelper.getIsGuest()) {
+      WidgetsBinding.instance
+          .addPostFrameCallback((t) => context.push(Routes.guestLogin));
+    }
+
     return Scaffold(
       body: Column(
         children: [

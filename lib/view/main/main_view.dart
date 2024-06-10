@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:list_and_life/helpers/db_helper.dart';
 import 'package:list_and_life/view/main/chat/inbox_view.dart';
 import 'package:list_and_life/view/main/fevorite/ads_view.dart';
@@ -8,6 +9,8 @@ import 'package:list_and_life/view/main/sell/category/sell_category_view.dart';
 import 'package:list_and_life/view/main/settings/setting_view.dart';
 import 'package:list_and_life/widgets/unauthorised_view.dart';
 import 'package:persistent_bottom_nav_bar_plus/persistent_bottom_nav_bar_plus.dart';
+
+import '../../routes/app_routes.dart';
 
 class MainView extends StatefulWidget {
   const MainView({super.key});
@@ -26,6 +29,23 @@ class _MainViewState extends State<MainView> {
         extendBody: true,
         body: PersistentTabView(
           context,
+
+          onItemSelected: (index) {
+            switch (index) {
+              case 0:
+                return;
+              case 1:
+              case 2:
+              case 3:
+                if (DbHelper.getIsGuest()) {
+                  context.push(Routes.guestLogin);
+                  _controller.jumpToTab(0);
+                }
+                return;
+              case 4:
+                return;
+            }
+          },
           controller: _controller,
           screens: const [
             HomeView(),
