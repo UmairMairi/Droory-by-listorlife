@@ -10,6 +10,7 @@ import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/view_model/profile_vm.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
+import 'package:list_and_life/widgets/image_view.dart';
 
 class EditProfile extends BaseView<ProfileVM> {
   const EditProfile({super.key});
@@ -40,19 +41,13 @@ class EditProfile extends BaseView<ProfileVM> {
                     borderRadius: BorderRadius.circular(10),
                     child: Stack(
                       children: [
-                        viewModel.imagePath.isEmpty
-                            ? Image.asset(
-                                AssetsRes.DUMMY_PROFILE,
-                                fit: BoxFit.fill,
-                                height: 250,
-                                width: context.width,
-                              )
-                            : Image.file(
-                                File(viewModel.imagePath),
-                                fit: BoxFit.fill,
-                                height: 250,
-                                width: context.width,
-                              ),
+                        ImageView.rect(
+                          image: viewModel.imagePath.isNotEmpty
+                              ? viewModel.imagePath
+                              : AssetsRes.DUMMY_PROFILE,
+                          width: context.width,
+                          height: 250,
+                        ),
                         Positioned(
                           bottom: 10,
                           right: 10,

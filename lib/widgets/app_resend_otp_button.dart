@@ -12,7 +12,7 @@ class AppResendOtpButton extends StatefulWidget {
   });
 
   @override
-  _AppResendOtpButtonState createState() => _AppResendOtpButtonState();
+  State<AppResendOtpButton> createState() => _AppResendOtpButtonState();
 }
 
 class _AppResendOtpButtonState extends State<AppResendOtpButton> {
@@ -46,7 +46,7 @@ class _AppResendOtpButtonState extends State<AppResendOtpButton> {
 
   void _cancelTimer() {
     _timer.cancel();
-    }
+  }
 
   void _handleResend() {
     widget.onResend();

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:cool_alert/cool_alert.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
@@ -117,6 +118,20 @@ class DialogHelper {
     DbHelper.eraseData();
     AppPages.rootNavigatorKey.currentContext?.go(Routes.root);
     showToast(message: message);
+  }
+
+  static void showLoginDialog({required BuildContext context}) {
+    showDialog(
+        context: context,
+        builder: (context) => AppAlertDialogWithWidget(
+              title: 'Login Required',
+              description: 'You need to log in to perform this action.',
+              buttonText: 'Login',
+              icon: AssetsRes.IC_LOCK_LOGIN,
+              onTap: () {
+                context.push(Routes.login);
+              },
+            ));
   }
 }
 

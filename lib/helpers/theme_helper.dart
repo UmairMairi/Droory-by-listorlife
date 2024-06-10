@@ -20,6 +20,7 @@ class ThemeHelper {
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
           centerTitle: true,
+          scrolledUnderElevation: 0,
           titleTextStyle: TextStyle(
               fontSize: 18,
               fontFamily: FontRes.MONTSERRAT_BOLD,

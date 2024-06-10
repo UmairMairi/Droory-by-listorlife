@@ -2,10 +2,13 @@ import 'package:geolocator/geolocator.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/helpers/location_helper.dart';
 import 'package:list_and_life/res/assets_res.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../models/setting_item_model.dart';
 
 class HomeVM extends BaseViewModel {
+  RefreshController refreshController =
+      RefreshController(initialRefresh: false);
   String _currentLocation = "";
 
   String get currentLocation => _currentLocation;
@@ -17,6 +20,30 @@ class HomeVM extends BaseViewModel {
   set currentLocation(String value) {
     _currentLocation = value;
     notifyListeners();
+  }
+
+  int _limit = 10;
+
+  int get limit => _limit;
+
+  set limit(int value) {
+    _limit = value;
+    notifyListeners();
+  }
+
+  int _page = 0;
+
+  int get page => _page;
+  set page(int value) {
+    _page = value;
+    notifyListeners();
+  }
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    initCategories();
+    super.onInit();
   }
 
   void initCategories() {
@@ -71,10 +98,21 @@ class HomeVM extends BaseViewModel {
     return currentLocation;
   }
 
-  @override
-  void onInit() {
-    // TODO: implement onInit
-    initCategories();
-    super.onInit();
+  Future<void> onRefresh() async {
+    // monitor network fetch
+    page = 0;
+
+    ///products.clear();
+    ///await fetchProducts();
+    /// if failed,use refreshFailed()
+    refreshController.refreshCompleted();
+  }
+
+  Future<void> onLoading() async {
+    // monitor network fetch
+    ++page;
+
+    ///await fetchProducts();
+    refreshController.loadComplete();
   }
 }
