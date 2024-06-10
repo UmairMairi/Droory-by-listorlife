@@ -1,5 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:photo_view/photo_view.dart';
 
 class ImageZoomScreen extends StatelessWidget {
   final String imageUrl;
@@ -9,42 +9,21 @@ class ImageZoomScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GestureDetector(
-        onTap: () {
-          Navigator.pop(context);
-        },
-        child: Stack(
-          children: [
-            Container(
-              color: Colors.white70,
-              child: Center(
-                child: PhotoView(
-                  backgroundDecoration: const BoxDecoration(
-                    color: Colors.white70,
-                  ),
-                  imageProvider: NetworkImage(imageUrl),
-                  minScale: PhotoViewComputedScale.contained,
-                  maxScale: PhotoViewComputedScale.covered * 2,
-                ),
-              ),
-            ),
-            Positioned(
-                top: 0,
-                right: 0,
-                child: SafeArea(
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.cancel,
-                      color: Colors.red,
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ))
-          ],
+        appBar: AppBar(
+          title: const Text('Image Explorer'),
+          centerTitle: true,
         ),
-      ),
-    );
+        body: InteractiveViewer(
+            minScale: 0.2,
+            maxScale: 5.0,
+            child: Center(
+              child: CachedNetworkImage(
+                imageUrl: imageUrl,
+                placeholder: (context, url) =>
+                    const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+              ),
+            )));
   }
 }
+//'https://fastly.picsum.photos/id/1/200/300.jpg?hmac=jH5bDkLr6Tgy3oAg5khKCHeunZMHq0ehBZr6vGifPLY'

@@ -9,6 +9,7 @@ import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/app_outline_button.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:list_and_life/widgets/favorite_button.dart';
+import 'package:list_and_life/widgets/image_view.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../models/setting_item_model.dart';
@@ -252,9 +253,11 @@ class _SeeProfileViewState extends State<SeeProfileView> {
           children: [
             const Row(
               children: [
-                CircleAvatar(
-                    radius: 40,
-                    backgroundImage: AssetImage(AssetsRes.DUMMY_PROFILE)),
+                ImageView.circle(
+                  image: AssetsRes.DUMMY_PROFILE,
+                  height: 60,
+                  width: 60,
+                ),
                 SizedBox(
                   width: 15,
                 ),

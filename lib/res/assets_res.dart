@@ -74,12 +74,14 @@ class AssetsRes {
       'assets/icons/ic_furniture_cat_imge.png';
   static const String IC_GEAR_ICON = 'assets/icons/ic_gear_icon.png';
   static const String IC_GOOGLE_ICON = 'assets/icons/ic_google_icon.png';
-  static const String IC_IMAGE = 'assets/icons/ic_image.png';
+  static const String IC_IMAGE_PLACEHOLDER =
+      'assets/icons/ic_image_placeholder.png';
   static const String IC_ITEM_LOCATION = 'assets/icons/ic_item_location.png';
   static const String IC_LAPTOP_CAT_IMGE =
       'assets/icons/ic_laptop_cat_imge.png';
   static const String IC_LOACTION_ICON = 'assets/icons/ic_loaction_icon.png';
   static const String IC_LOCATION_PIN = 'assets/icons/ic_location_pin.png';
+  static const String IC_LOCK_LOGIN = 'assets/icons/ic_lock_login.png';
   static const String IC_LOGOUT = 'assets/icons/ic_logout.png';
   static const String IC_LOGOUT_ICON = 'assets/icons/ic_logout_icon.png';
   static const String IC_MOBILE_CAT_IMGE =
@@ -103,6 +105,8 @@ class AssetsRes {
   static const String ON_BOARD_SECOND = 'assets/images/on_board_second.png';
   static const String ON_BOARD_THIRD = 'assets/images/on_board_third.png';
   static const String SPLASH = 'assets/images/splash.png';
+  static const String AUTH_REQUIRED_LOTTIE =
+      'assets/lottie_jsons/auth_required_lottie.json';
   static const String DELETE_LOTTIE = 'assets/lottie_jsons/delete_lottie.json';
   static const String EMPTY_LOTTIE = 'assets/lottie_jsons/empty_lottie.json';
   static const String ERROR_LOTTIE = 'assets/lottie_jsons/error_lottie.json';

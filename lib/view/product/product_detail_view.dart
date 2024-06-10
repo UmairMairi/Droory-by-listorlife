@@ -7,7 +7,9 @@ import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/view_model/product_v_m.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:maps_launcher/maps_launcher.dart';
 
+import '../../helpers/db_helper.dart';
 import '../../helpers/dialog_helper.dart';
 import '../../routes/app_routes.dart';
 import '../../widgets/card_swipe_widget.dart';
@@ -387,6 +389,12 @@ class ProductDetailView extends BaseView<ProductVM> {
                                   const Gap(10),
                                   InkWell(
                                     onTap: () {
+                                      if (DbHelper.getIsGuest()) {
+                                        DialogHelper.showLoginDialog(
+                                            context: context);
+
+                                        return;
+                                      }
                                       context.push(Routes.seeProfile);
                                     },
                                     child: Text(
@@ -434,7 +442,15 @@ class ProductDetailView extends BaseView<ProductVM> {
                               ),
                               const Gap(25),
                               InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  if (DbHelper.getIsGuest()) {
+                                    DialogHelper.showLoginDialog(
+                                        context: context);
+                                    return;
+                                  }
+                                  MapsLauncher.launchQuery(
+                                      '1600 Amphitheatre Pkwy, Mountain View, CA 94043, USA');
+                                },
                                 child: Text(
                                   'Get Direction',
                                   style: context.textTheme.titleSmall?.copyWith(
@@ -459,134 +475,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                           )),
                         ],
                       ),
-                      const Gap(20),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: InkWell(
-                                onTap: () => DialogHelper.goToUrl(
-                                    uri: Uri.parse("tel://+919876543210")),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 08),
-                                  decoration: BoxDecoration(
-                                    color: Colors.black54,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Image.asset(
-                                        AssetsRes.IC_CALL_ICON,
-                                        height: 16,
-                                      ),
-                                      const Gap(05),
-                                      Text(
-                                        'Call',
-                                        style: context.textTheme.labelLarge
-                                            ?.copyWith(
-                                                color: Colors.white,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w600),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const Gap(08),
-                            Expanded(
-                              child: InkWell(
-                                onTap: () {
-                                  context.push(
-                                    Routes.message,
-                                    extra: SettingItemModel(
-                                      icon: AssetsRes.DUMMY_CHAT_IMAGE2,
-                                      title: 'John Marker',
-                                      subTitle:
-                                          'Lorem Ipsum is simply dummy text.',
-                                      timeStamp: '1 min ago',
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 08),
-                                  decoration: BoxDecoration(
-                                    color: Colors.black54,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Image.asset(
-                                        AssetsRes.IC_CHAT_ICON,
-                                        height: 16,
-                                      ),
-                                      const Gap(05),
-                                      Text(
-                                        'Chat',
-                                        style: context.textTheme.labelLarge
-                                            ?.copyWith(
-                                                color: Colors.white,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w600),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const Gap(08),
-                            Expanded(
-                              child: InkWell(
-                                onTap: () => DialogHelper.goToUrl(
-                                    uri: Uri.parse(
-                                        'https://wa.me/+919876543210?text=Hii, I am from List & Live app and interested in your ad.')),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 08),
-                                  decoration: BoxDecoration(
-                                    color: Colors.black54,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Image.asset(
-                                        AssetsRes.IC_WHATSAPP_ICON,
-                                        height: 18,
-                                      ),
-                                      const Gap(05),
-                                      Text(
-                                        'Whatsapp',
-                                        style: context.textTheme.labelLarge
-                                            ?.copyWith(
-                                          color: Colors.white,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ]),
-                      const Gap(20),
+                      const Gap(30),
                     ],
                   ),
                 )
@@ -643,6 +532,153 @@ class ProductDetailView extends BaseView<ProductVM> {
                   ],
                 ),
               )),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              alignment: Alignment.center,
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              height: 30,
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          if (DbHelper.getIsGuest()) {
+                            DialogHelper.showLoginDialog(context: context);
+
+                            return;
+                          }
+
+                          DialogHelper.goToUrl(
+                              uri: Uri.parse("tel://+919876543210"));
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 08),
+                          decoration: BoxDecoration(
+                            color: Colors.black54,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Image.asset(
+                                AssetsRes.IC_CALL_ICON,
+                                height: 16,
+                              ),
+                              const Gap(05),
+                              Text(
+                                'Call',
+                                style: context.textTheme.labelLarge?.copyWith(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Gap(08),
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          if (DbHelper.getIsGuest()) {
+                            DialogHelper.showLoginDialog(context: context);
+
+                            return;
+                          }
+                          context.push(
+                            Routes.message,
+                            extra: SettingItemModel(
+                              icon: AssetsRes.DUMMY_CHAT_IMAGE2,
+                              title: 'John Marker',
+                              subTitle: 'Lorem Ipsum is simply dummy text.',
+                              timeStamp: '1 min ago',
+                            ),
+                          );
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 08),
+                          decoration: BoxDecoration(
+                            color: Colors.black54,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Image.asset(
+                                AssetsRes.IC_CHAT_ICON,
+                                height: 16,
+                              ),
+                              const Gap(05),
+                              Text(
+                                'Chat',
+                                style: context.textTheme.labelLarge?.copyWith(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Gap(08),
+                    Expanded(
+                      child: InkWell(
+                        onTap: () {
+                          if (DbHelper.getIsGuest()) {
+                            DialogHelper.showLoginDialog(context: context);
+
+                            return;
+                          }
+                          DialogHelper.goToUrl(
+                              uri: Uri.parse(
+                                  'https://wa.me/+919876543210?text=Hii, I am from List & Live app and interested in your ad.'));
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 08),
+                          decoration: BoxDecoration(
+                            color: Colors.black54,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Image.asset(
+                                AssetsRes.IC_WHATSAPP_ICON,
+                                height: 18,
+                              ),
+                              const Gap(05),
+                              Text(
+                                'Whatsapp',
+                                style: context.textTheme.labelLarge?.copyWith(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ]),
+            ),
+          )
         ],
       ),
     );

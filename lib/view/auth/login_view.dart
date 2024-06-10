@@ -90,6 +90,7 @@ class LoginView extends BaseView<AuthVM> {
                 AppElevatedButton(
                   width: context.width,
                   onTap: () {
+                    DbHelper.saveIsGuest(false);
                     context.push(Routes.verify);
                   },
                   title: 'Continue',

@@ -9,6 +9,7 @@ import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/widgets/card_swipe_widget.dart';
 import 'package:list_and_life/widgets/favorite_button.dart';
 
+import '../helpers/db_helper.dart';
 import '../routes/app_routes.dart';
 
 class AppProductItemWidget extends StatelessWidget {
@@ -39,6 +40,7 @@ class AppProductItemWidget extends StatelessWidget {
             children: [
               CardSwipeWidget(
                 imagesList: data?.imageList,
+                height: 160,
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(20),
                   topRight: Radius.circular(20),
@@ -68,19 +70,31 @@ class AppProductItemWidget extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const Gap(10),
-                Text(
-                  data?.title ?? '',
-                  style: context.textTheme.titleLarge
-                      ?.copyWith(color: context.theme.colorScheme.error),
-                ),
-                const Gap(10),
-                Text(
-                  data?.subTitle ?? '',
-                  style: context.textTheme.titleMedium,
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        data?.subTitle ?? '',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: context.textTheme.titleSmall,
+                      ),
+                    ),
+                    Text(
+                      data?.title ?? '',
+                      style: context.textTheme.titleMedium
+                          ?.copyWith(color: context.theme.colorScheme.error),
+                    ),
+                  ],
                 ),
                 const Gap(5),
-                Text(data?.description ?? ''),
-                const Gap(10),
+                Text(
+                  data?.description ?? '',
+                  maxLines: 1,
+                  style: context.bodySmall,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const Gap(5),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -95,26 +109,33 @@ class AppProductItemWidget extends StatelessWidget {
                         const Gap(05),
                         Text(
                           data?.location ?? '',
-                          style: context.textTheme.labelLarge?.copyWith(
+                          style: context.textTheme.labelMedium?.copyWith(
                               fontFamily: FontRes.MONTSERRAT_REGULAR),
                         ),
                       ],
                     ),
                     Text(
                       data?.timeStamp ?? 'Today',
-                      style: context.textTheme.labelLarge
+                      style: context.textTheme.labelMedium
                           ?.copyWith(fontFamily: FontRes.MONTSERRAT_REGULAR),
                     )
                   ],
                 ),
-                const Gap(20),
+                const Gap(10),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
                         child: InkWell(
-                          onTap: () => DialogHelper.goToUrl(
-                              uri: Uri.parse("tel://+919876543210")),
+                          onTap: () {
+                            if (DbHelper.getIsGuest()) {
+                              DialogHelper.showLoginDialog(context: context);
+                              return;
+                            }
+
+                            DialogHelper.goToUrl(
+                                uri: Uri.parse("tel://+919876543210"));
+                          },
                           child: Container(
                             alignment: Alignment.center,
                             padding: const EdgeInsets.symmetric(
@@ -149,6 +170,10 @@ class AppProductItemWidget extends StatelessWidget {
                       Expanded(
                         child: InkWell(
                           onTap: () {
+                            if (DbHelper.getIsGuest()) {
+                              DialogHelper.showLoginDialog(context: context);
+                              return;
+                            }
                             context.push(
                               Routes.message,
                               extra: SettingItemModel(
@@ -192,9 +217,15 @@ class AppProductItemWidget extends StatelessWidget {
                       const Gap(7.8),
                       Expanded(
                         child: InkWell(
-                          onTap: () => DialogHelper.goToUrl(
-                              uri: Uri.parse(
-                                  'https://wa.me/+919876543210?text=Hii, I am from List & Live app and interested in your ad.')),
+                          onTap: () {
+                            if (DbHelper.getIsGuest()) {
+                              DialogHelper.showLoginDialog(context: context);
+                              return;
+                            }
+                            DialogHelper.goToUrl(
+                                uri: Uri.parse(
+                                    'https://wa.me/+919876543210?text=Hii, I am from List & Live app and interested in your ad.'));
+                          },
                           child: Container(
                             alignment: Alignment.center,
                             padding: const EdgeInsets.symmetric(

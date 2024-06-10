@@ -7,6 +7,8 @@ import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/view_model/on_boarding_vm.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 
+import '../../helpers/db_helper.dart';
+
 class OnBoardingView extends BaseView<OnBoardingVM> {
   const OnBoardingView({super.key});
 
@@ -76,7 +78,9 @@ class OnBoardingView extends BaseView<OnBoardingVM> {
                           curve: Curves.ease,
                         );
                       } else {
-                        context.go(Routes.login);
+                        DbHelper.saveIsGuest(true);
+                        context.go(Routes.main);
+                        // context.go(Routes.login);
                       }
                     },
                     title: viewModel.currentIndexPage != 2
