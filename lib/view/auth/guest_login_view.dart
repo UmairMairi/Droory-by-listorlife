@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/helpers/db_helper.dart';
+import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/res/font_res.dart';
+import 'package:list_and_life/widgets/image_view.dart';
 
-import '../../base/base_view.dart';
-import '../../base/text_formatters/text_formatters.dart';
 import '../../view_model/auth_vm.dart';
 import '../../widgets/app_text_field.dart';
 
@@ -22,7 +22,7 @@ class GuestLoginView extends BaseView<AuthVM> {
             DbHelper.saveIsGuest(true);
             context.pop();
           },
-          icon: Icon(
+          icon: const Icon(
             Icons.close,
             weight: 20,
           ),
@@ -95,7 +95,11 @@ class GuestLoginView extends BaseView<AuthVM> {
                 child: const Text(
                   "Click to verify Phone number",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16, color: Colors.white),
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                    fontFamily: FontRes.MONTSERRAT_BOLD,
+                  ),
                 ),
               ),
             ),
@@ -106,7 +110,7 @@ class GuestLoginView extends BaseView<AuthVM> {
               Expanded(
                 child: Container(
                     margin: const EdgeInsets.only(left: 10.0, right: 20.0),
-                    child: Divider(
+                    child: const Divider(
                       color: Colors.black,
                       height: 36,
                     )),
@@ -118,7 +122,7 @@ class GuestLoginView extends BaseView<AuthVM> {
               Expanded(
                 child: Container(
                     margin: const EdgeInsets.only(left: 20.0, right: 10.0),
-                    child: Divider(
+                    child: const Divider(
                       color: Colors.black,
                       height: 36,
                     )),
@@ -147,10 +151,15 @@ class GuestLoginView extends BaseView<AuthVM> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Image.network(
+                      ImageView.circle(
+                        image: AssetsRes.IC_GOOGLE_ICON,
+                        height: 30,
+                        width: 30,
+                      ),
+                      /* Image.network(
                         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlB3CZ5R6UsCPYh-Wa0R1N-6pV5_GQQiNaTDAgtC5j1A&s",
                         height: 25,
-                      ),
+                      ),*/
                       const Text(
                         "Log In With Google",
                         style: TextStyle(
@@ -189,9 +198,10 @@ class GuestLoginView extends BaseView<AuthVM> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Image.network(
-                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZngsd1bv9bgL4S44Ub44cpvL33LOTf0rYgkFTKTZFzw&s",
-                        height: 25,
+                      ImageView.circle(
+                        image: AssetsRes.IC_APPLE_LOGO,
+                        height: 30,
+                        width: 30,
                       ),
                       const Text(
                         "Log In With IOS",

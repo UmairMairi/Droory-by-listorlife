@@ -78,7 +78,6 @@ dependencies:
   google_maps_flutter: any
   location: ^6.0.2
   pull_to_refresh: ^2.0.0
-  maps_launcher: ^2.2.1
 
 dev_dependencies:
   flutter_test:
@@ -136,6 +135,7 @@ flutter:
     - assets/dummy/dummy_profile.png
     - assets/icons/ic_accessories_image.png
     - assets/icons/ic_apple_icon.png
+    - assets/icons/ic_apple_logo.png
     - assets/icons/ic_bell_icon.png
     - assets/icons/ic_block_user.png
     - assets/icons/ic_calender_icon.png
@@ -155,6 +155,7 @@ flutter:
     - assets/icons/ic_furniture_cat_imge.png
     - assets/icons/ic_gear_icon.png
     - assets/icons/ic_google_icon.png
+    - assets/icons/ic_google_logo.png
     - assets/icons/ic_image_placeholder.png
     - assets/icons/ic_item_location.png
     - assets/icons/ic_laptop_cat_imge.png

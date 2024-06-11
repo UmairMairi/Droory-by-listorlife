@@ -52,6 +52,7 @@ class AssetsRes {
   static const String IC_ACCESSORIES_IMAGE =
       'assets/icons/ic_accessories_image.png';
   static const String IC_APPLE_ICON = 'assets/icons/ic_apple_icon.png';
+  static const String IC_APPLE_LOGO = 'assets/icons/ic_apple_logo.png';
   static const String IC_BELL_ICON = 'assets/icons/ic_bell_icon.png';
   static const String IC_BLOCK_USER = 'assets/icons/ic_block_user.png';
   static const String IC_CALENDER_ICON = 'assets/icons/ic_calender_icon.png';
@@ -74,6 +75,7 @@ class AssetsRes {
       'assets/icons/ic_furniture_cat_imge.png';
   static const String IC_GEAR_ICON = 'assets/icons/ic_gear_icon.png';
   static const String IC_GOOGLE_ICON = 'assets/icons/ic_google_icon.png';
+  static const String IC_GOOGLE_LOGO = 'assets/icons/ic_google_logo.png';
   static const String IC_IMAGE_PLACEHOLDER =
       'assets/icons/ic_image_placeholder.png';
   static const String IC_ITEM_LOCATION = 'assets/icons/ic_item_location.png';

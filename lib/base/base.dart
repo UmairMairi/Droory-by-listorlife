@@ -7,3 +7,4 @@ export 'extensions/map_extension.dart';
 export 'extensions/list_extension.dart';
 export 'text_formatters/form_field_errors.dart';
 export 'text_formatters/text_formatters.dart';
+export 'maps_launcher.dart';

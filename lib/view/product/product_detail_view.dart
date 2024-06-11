@@ -7,7 +7,6 @@ import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/view_model/product_v_m.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:maps_launcher/maps_launcher.dart';
 
 import '../../helpers/db_helper.dart';
 import '../../helpers/dialog_helper.dart';

@@ -20,16 +20,16 @@ class ImageView extends StatelessWidget {
   const ImageView.circle({
     super.key,
     required this.image,
+    required this.width,
+    required this.height,
     this.progressSize,
     this.placeholder,
     this.borderWidth,
     this.borderColor,
-    this.width,
     this.color,
     this.fit,
     this.isCircle = true,
     this.borderRadius,
-    this.height,
   });
 
   const ImageView.rect({
