@@ -254,9 +254,6 @@ class ImagePickerHelper {
     croppedFile = await ImageCropper().cropImage(
       sourcePath: imageFile,
       compressQuality: 60,
-      aspectRatioPresets: [
-        cropAspectRatioPreset ?? CropAspectRatioPreset.ratio16x9,
-      ],
       uiSettings: [
         AndroidUiSettings(
           toolbarTitle: 'Cropper',
@@ -264,9 +261,15 @@ class ImagePickerHelper {
           toolbarWidgetColor: Colors.white,
           initAspectRatio: CropAspectRatioPreset.original,
           lockAspectRatio: true,
+          aspectRatioPresets: [
+            cropAspectRatioPreset ?? CropAspectRatioPreset.ratio16x9,
+          ],
         ),
         IOSUiSettings(
           minimumAspectRatio: 1.0,
+          aspectRatioPresets: [
+            cropAspectRatioPreset ?? CropAspectRatioPreset.ratio16x9,
+          ],
         ),
       ],
     );
@@ -279,9 +282,6 @@ class ImagePickerHelper {
     croppedFile = await ImageCropper().cropImage(
       sourcePath: imageFile,
       compressQuality: 60,
-      aspectRatioPresets: [
-        cropAspectRatioPreset ?? CropAspectRatioPreset.square,
-      ],
       uiSettings: [
         AndroidUiSettings(
           toolbarTitle: 'Cropper',
@@ -289,9 +289,15 @@ class ImagePickerHelper {
           toolbarWidgetColor: Colors.white,
           initAspectRatio: CropAspectRatioPreset.original,
           lockAspectRatio: true,
+          aspectRatioPresets: [
+            cropAspectRatioPreset ?? CropAspectRatioPreset.square,
+          ],
         ),
         IOSUiSettings(
           minimumAspectRatio: 1.0,
+          aspectRatioPresets: [
+            cropAspectRatioPreset ?? CropAspectRatioPreset.square,
+          ],
         ),
       ],
     );

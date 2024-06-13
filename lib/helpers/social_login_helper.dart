@@ -109,11 +109,9 @@ class SocialLoginHelper {
         final AccessToken accessToken = result.accessToken!;
         // You can now use the `accessToken` to sign in or register the user.
         // For example, send the user's access token to your server for validation.
-        debugPrint('User ID: ${accessToken.userId}');
-        debugPrint('Token: ${accessToken.token}');
-        debugPrint('Expires: ${accessToken.expires}');
+
         final OAuthCredential facebookAuthCredential =
-            FacebookAuthProvider.credential(accessToken.token);
+            FacebookAuthProvider.credential(accessToken.tokenString);
         return await FirebaseAuth.instance
             .signInWithCredential(facebookAuthCredential);
       } else {
