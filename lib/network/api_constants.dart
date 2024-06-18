@@ -1,10 +1,11 @@
 class ApiConstants {
   static const String _baseUrl = "https://app.listorlift.com/api";
-  static const String imageUrl = "https://app.listorlift.com";
+  static const String imageUrl = "https://app.listorlift.com/uploads/img/users";
 
   /*----------------------------------------------- End Point Urls ---------------------------------------*/
 
   static String loginUrl() => "$_baseUrl/login";
+  static String verifyOtpUrl() => "$_baseUrl/verify/otp";
   static String signupUrl() => "$_baseUrl/signup";
   static String editProfileUrl() => "$_baseUrl/edit/profile";
   static String deleteAccountUrl() => "$_baseUrl/delete/account";

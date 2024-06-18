@@ -38,9 +38,9 @@ class DialogHelper {
     Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.TOP_RIGHT,
+        gravity: ToastGravity.TOP,
         timeInSecForIosWeb: 2,
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.black87,
         textColor: Colors.white,
         fontSize: 16.0,
         webBgColor: 'linear-gradient(to right, #206D00, #3FC200)');

@@ -3,8 +3,13 @@ class FormFieldErrors {
   static const String requiredField = 'This field is required';
   static const String invalidFormat = 'Invalid format';
 
+  static const String profilePicRequired = 'Profile Image is required';
+
   // Name field errors
   static const String nameRequired = 'Name field is required';
+  static const String firstNameRequired = 'First Name field is required';
+  static const String lastNameRequired = 'Last Name field is required';
+
   static const String nameTooShort = 'Name must be at least 2 characters long';
   static const String nameTooLong = 'Name cannot exceed 50 characters';
   static const String invalidName = 'Name must only contain letters and spaces';
@@ -62,6 +67,10 @@ class FormFieldErrors {
   static const String phoneNumberRequired = 'Phone number field is required';
   static const String invalidPhoneNumber = 'Enter a valid phone number';
 
+  // OTP field errors
+  static const String otpRequired = 'OTP is required';
+  static const String invalidOtp = 'Enter a valid OTP';
+
   // Date field errors
   static const String dateRequired = 'Date field is required';
   static const String invalidDate = 'Enter a valid date';
@@ -86,6 +95,10 @@ class FormFieldErrors {
   // Address field errors
   static const String addressRequired = 'Address field is required';
   static const String invalidAddress = 'Enter a valid address';
+
+  // Accept terms and condition field errors
+  static const String acceptTermsRequired =
+      'You must accept the Terms and Conditions to continue.';
 
 // ... Add more errors as needed for other field types
 }

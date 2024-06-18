@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:list_and_life/helpers/db_helper.dart';
 import 'package:list_and_life/models/setting_item_model.dart';
 import 'package:list_and_life/view/main/chat/message_view.dart';
 import 'package:list_and_life/view/main/filtter/Filter_view.dart';
@@ -10,8 +11,8 @@ import 'package:list_and_life/view/main/sell/sub_category/sell_sub_category_view
 import 'package:list_and_life/view/main/settings/TermsOfUseView.dart';
 import 'package:list_and_life/view/product/my_product_view.dart';
 import 'package:list_and_life/view/product/product_detail_view.dart';
-import 'package:list_and_life/view/profile/complete_profile.dart';
-import 'package:list_and_life/view/profile/edit_profile.dart';
+import 'package:list_and_life/view/profile/complete_profile_view.dart';
+import 'package:list_and_life/view/profile/edit_profile_view.dart';
 import 'package:list_and_life/view/purchase/plans_list_view.dart';
 
 import '../view/auth/guest_login_view.dart';
@@ -45,6 +46,9 @@ class AppPages {
       GoRoute(
         path: Routes.root,
         pageBuilder: (context, state) {
+          if (DbHelper.getIsGuest() || DbHelper.getIsLoggedIn()) {
+            return getPage(child: const MainView(), state: state);
+          }
           return getPage(child: const OnBoardingView(), state: state);
         },
       ),
@@ -69,7 +73,7 @@ class AppPages {
       GoRoute(
         path: Routes.editProfile,
         pageBuilder: (context, state) {
-          return getPage(child: const EditProfile(), state: state);
+          return getPage(child: const EditProfileView(), state: state);
         },
       ),
       GoRoute(
@@ -152,12 +156,6 @@ class AppPages {
         path: Routes.mobileSubcategoryView,
         pageBuilder: (context, state) {
           return getPage(child: const MobileCategoryView(), state: state);
-        },
-      ),
-      GoRoute(
-        path: Routes.completeProfile,
-        pageBuilder: (context, state) {
-          return getPage(child: const CompleteProfileView(), state: state);
         },
       ),
       GoRoute(

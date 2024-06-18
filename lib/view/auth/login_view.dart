@@ -9,6 +9,7 @@ import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
 
+import '../../helpers/dialog_helper.dart';
 import '../../view_model/auth_vm.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 
@@ -90,8 +91,13 @@ class LoginView extends BaseView<AuthVM> {
                 AppElevatedButton(
                   width: context.width,
                   onTap: () {
-                    DbHelper.saveIsGuest(false);
-                    context.push(Routes.verify);
+                    if (viewModel.phoneTextController.text.trim().isEmpty) {
+                      DialogHelper.showToast(
+                          message: FormFieldErrors.phoneNumberRequired);
+                      return;
+                    }
+                    DialogHelper.showLoading();
+                    viewModel.loginApi();
                   },
                   title: 'Continue',
                 ),

@@ -4,6 +4,11 @@ extension StringExtensions on String {
     return emailRegExp.hasMatch(this);
   }
 
+  bool isNotEmail() {
+    final emailRegExp = RegExp(r'^[\w- \.]+@([\w-]+\.)+[\w-]{2,4}$');
+    return !emailRegExp.hasMatch(this);
+  }
+
   bool isPassword() {
     // Add your password validation logic here
     return length >= 8;

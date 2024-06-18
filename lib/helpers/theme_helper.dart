@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../res/font_res.dart';
 import 'color_schemes.dart';
@@ -21,6 +22,10 @@ class ThemeHelper {
           shadowColor: Colors.transparent,
           centerTitle: true,
           scrolledUnderElevation: 0,
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: Colors.transparent,
+            statusBarBrightness: Brightness.light,
+          ),
           titleTextStyle: TextStyle(
               fontSize: 18,
               fontFamily: FontRes.MONTSERRAT_BOLD,

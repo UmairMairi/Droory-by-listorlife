@@ -1,25 +1,24 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/base/extensions/bool_extension.dart';
 import 'package:list_and_life/helpers/dialog_helper.dart';
 import 'package:list_and_life/helpers/image_picker_helper.dart';
+import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
-import 'package:list_and_life/view_model/profile_vm.dart';
+import 'package:list_and_life/view_model/auth_vm.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:list_and_life/widgets/image_view.dart';
-import 'package:permission_handler/permission_handler.dart';
 
-class CompleteProfileView extends BaseView<ProfileVM> {
+class CompleteProfileView extends BaseView<AuthVM> {
   const CompleteProfileView({super.key});
 
   @override
-  Widget build(BuildContext context, ProfileVM viewModel) {
+  Widget build(BuildContext context, AuthVM viewModel) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -36,11 +35,12 @@ class CompleteProfileView extends BaseView<ProfileVM> {
             Center(
               child: ImagePickerHelper.isLoading
                   ? Container(
-                      height: 120,
-                      width: 120,
+                      height: 140,
+                      width: 140,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
+                        border: Border.all(color: Colors.black, width: 1),
                         color: const Color(0xfff5f5f5),
                         boxShadow: [
                           BoxShadow(
@@ -56,17 +56,14 @@ class CompleteProfileView extends BaseView<ProfileVM> {
                   : Stack(
                       clipBehavior: Clip.none,
                       children: [
-                        viewModel.imagePath.isEmpty
-                            ? const ImageView.circle(
-                                image: '',
-                                height: 140,
-                                width: 140,
-                              )
-                            : CircleAvatar(
-                                radius: 70,
-                                backgroundImage:
-                                    FileImage(File(viewModel.imagePath)),
-                              ),
+                        ImageView.circle(
+                          image: viewModel.imagePath,
+                          height: 140,
+                          width: 140,
+                          borderColor: Colors.black,
+                          borderWidth: 2,
+                          placeholder: AssetsRes.IC_PROFILE,
+                        ),
                         Positioned(
                             bottom: 0,
                             right: 0,
@@ -92,6 +89,7 @@ class CompleteProfileView extends BaseView<ProfileVM> {
               title: 'First Name',
               hint: 'Enter',
               inputType: TextInputType.name,
+              controller: viewModel.nameTextController,
               inputFormatters: AppTextInputFormatters.withNameFormatter(),
             ),
             const Gap(10),
@@ -99,6 +97,7 @@ class CompleteProfileView extends BaseView<ProfileVM> {
               title: 'Last Name',
               hint: 'Enter',
               inputType: TextInputType.name,
+              controller: viewModel.lNameTextController,
               inputFormatters: AppTextInputFormatters.withNameFormatter(),
             ),
             const Gap(10),
@@ -106,6 +105,7 @@ class CompleteProfileView extends BaseView<ProfileVM> {
               title: 'Email',
               hint: 'Enter',
               inputType: TextInputType.emailAddress,
+              controller: viewModel.emailTextController,
               inputFormatters: AppTextInputFormatters.withEmailFormatter(),
             ),
             const Gap(10),
@@ -127,7 +127,7 @@ class CompleteProfileView extends BaseView<ProfileVM> {
                               text: 'Terms & Conditions.',
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  context.push(Routes.termsOfUse);
+                                  context.push(Routes.termsOfUse, extra: 2);
                                 },
                               style: const TextStyle(
                                 fontWeight: FontWeight.w600,
@@ -143,23 +143,38 @@ class CompleteProfileView extends BaseView<ProfileVM> {
             AppElevatedButton(
               width: context.width,
               onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AppAlertDialogWithLottie(
-                        title: 'Complete Profile',
-                        onTap: () async {
-                          context.pop();
-                          if (await Permission.location.isGranted) {
-                            if (context.mounted) context.go(Routes.main);
-                          } else {
-                            if (context.mounted) context.go(Routes.permission);
-                          }
-                        },
-                        description:
-                            'Your Profile has been created successfully!',
-                      );
-                    });
+                if (viewModel.imagePath.isEmpty) {
+                  DialogHelper.showToast(
+                      message: FormFieldErrors.profilePicRequired);
+                  return;
+                }
+                if (viewModel.nameTextController.text.trim().isEmpty) {
+                  DialogHelper.showToast(
+                      message: FormFieldErrors.firstNameRequired);
+                  return;
+                }
+                if (viewModel.lNameTextController.text.trim().isEmpty) {
+                  DialogHelper.showToast(
+                      message: FormFieldErrors.lastNameRequired);
+                  return;
+                }
+                if (viewModel.emailTextController.text.trim().isEmpty) {
+                  DialogHelper.showToast(
+                      message: FormFieldErrors.emailRequired);
+                  return;
+                }
+                if (viewModel.emailTextController.text.trim().isNotEmail()) {
+                  DialogHelper.showToast(message: FormFieldErrors.invalidEmail);
+                  return;
+                }
+                if (viewModel.agreedToTerms.isFalse) {
+                  DialogHelper.showToast(
+                      message: FormFieldErrors.acceptTermsRequired);
+                  return;
+                }
+
+                DialogHelper.showLoading();
+                viewModel.completeProfileApi();
               },
               title: 'Continue',
             )

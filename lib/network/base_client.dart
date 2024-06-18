@@ -55,7 +55,7 @@ class BaseClient {
     switch (apiRequest.requestType) {
       case RequestType.POST:
         var res = await _dio.post(apiRequest.url,
-            data: apiRequest.body,
+            data: FormData.fromMap(apiRequest.body),
             options: Options(
               headers: headers,
             ));
@@ -77,7 +77,7 @@ class BaseClient {
 
       case RequestType.PUT:
         var response = await _dio.put(apiRequest.url,
-            data: apiRequest.body,
+            data: FormData.fromMap(apiRequest.body),
             options: Options(
               headers: headers,
             ));

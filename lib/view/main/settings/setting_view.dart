@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/helpers/db_helper.dart';
+import 'package:list_and_life/network/api_constants.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
@@ -32,7 +33,7 @@ class SettingView extends BaseView<SettingVM> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            DbHelper?.getIsGuest()
+            DbHelper.getIsGuest()
                 ? Flexible(
                     child: Container(
                       width: context.width,
@@ -56,6 +57,7 @@ class SettingView extends BaseView<SettingVM> {
                         children: [
                           const ImageView.circle(
                             image: AssetsRes.IC_USER_ICON,
+                            placeholder: AssetsRes.IC_USER_ICON,
                             borderColor: Colors.black,
                             borderWidth: 4,
                             height: 120,
@@ -104,8 +106,11 @@ class SettingView extends BaseView<SettingVM> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const ImageView.circle(
-                            image: AssetsRes.DUMMY_PROFILE,
+                          ImageView.circle(
+                            image:
+                                "${ApiConstants.imageUrl}/${DbHelper.getUserModel()?.profilePic}",
+                            borderWidth: 1,
+                            borderColor: Colors.black,
                             height: 120,
                             width: 120,
                           ),
@@ -116,10 +121,17 @@ class SettingView extends BaseView<SettingVM> {
                               },
                               icon: const Icon(CupertinoIcons.square_pencil)),
                           Text(
-                            'john@gmail.com',
+                            "${DbHelper.getUserModel()?.name} ${DbHelper.getUserModel()?.lastName}",
+                            style: context.textTheme.bodyMedium?.copyWith(
+                              fontFamily: FontRes.POPPINS_SEMIBOLD,
+                              fontSize: 18,
+                            ),
+                          ),
+                          Text(
+                            DbHelper.getUserModel()?.email ?? '',
                             style: context.textTheme.bodyMedium?.copyWith(
                               fontFamily: FontRes.POPPINS_REGULAR,
-                              fontSize: 18,
+                              fontSize: 16,
                             ),
                           )
                         ],

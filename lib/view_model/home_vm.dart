@@ -7,8 +7,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../models/setting_item_model.dart';
 
 class HomeVM extends BaseViewModel {
-  RefreshController refreshController =
-      RefreshController(initialRefresh: false);
+  late RefreshController refreshController;
   String _currentLocation = "";
 
   String get currentLocation => _currentLocation;
@@ -42,8 +41,16 @@ class HomeVM extends BaseViewModel {
   @override
   void onInit() {
     // TODO: implement onInit
+    refreshController = RefreshController(initialRefresh: true);
     initCategories();
     super.onInit();
+  }
+
+  @override
+  void onClose() {
+    // TODO: implement onClose
+    refreshController?.dispose();
+    super.onClose();
   }
 
   void initCategories() {
@@ -105,7 +112,7 @@ class HomeVM extends BaseViewModel {
     ///products.clear();
     ///await fetchProducts();
     /// if failed,use refreshFailed()
-    refreshController.refreshCompleted();
+    refreshController?.refreshCompleted();
   }
 
   Future<void> onLoading() async {
@@ -113,6 +120,6 @@ class HomeVM extends BaseViewModel {
     ++page;
 
     ///await fetchProducts();
-    refreshController.loadComplete();
+    refreshController?.loadComplete();
   }
 }

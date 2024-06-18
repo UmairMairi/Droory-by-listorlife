@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:list_and_life/res/assets_res.dart';
-import 'package:shimmer/shimmer.dart';
 
 class ImageView extends StatelessWidget {
   final String image;
@@ -99,7 +99,7 @@ class ImageView extends StatelessWidget {
         return _buildDecorationImage(imageProvider);
       },
       placeholder: (context, url) {
-        return _buildShimmerPlaceholder();
+        return _buildLoadingPlaceholder();
       },
       errorWidget: (context, url, error) {
         return _buildPlaceholder();
@@ -134,15 +134,9 @@ class ImageView extends StatelessWidget {
   }
 
   /// Builds a shimmer effect placeholder.
-  Widget _buildShimmerPlaceholder() {
-    return Shimmer.fromColors(
-      baseColor: Colors.grey[300]!,
-      highlightColor: Colors.white,
-      child: Container(
-        height: height,
-        width: width,
-        color: Colors.grey,
-      ),
+  Widget _buildLoadingPlaceholder() {
+    return const Center(
+      child: CupertinoActivityIndicator(),
     );
   }
 

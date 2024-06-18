@@ -3,19 +3,26 @@ import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/helpers/db_helper.dart';
 import 'package:list_and_life/helpers/dialog_helper.dart';
+import 'package:list_and_life/models/cms_model.dart';
+import 'package:list_and_life/models/common/map_response.dart';
+import 'package:list_and_life/models/user_model.dart';
+import 'package:list_and_life/network/api_constants.dart';
+import 'package:list_and_life/network/api_request.dart';
+import 'package:list_and_life/network/base_client.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
 
 import '../models/setting_item_model.dart';
 
 class SettingVM extends BaseViewModel {
-  bool _isActiveNotification = true;
+  bool _isActiveNotification = DbHelper.getUserModel()?.notificationStatus == 1;
 
   bool get isActiveNotification => _isActiveNotification;
   List<SettingItemModel> settingList = [];
 
   @override
   void onInit() {
+    getProfile();
     settingList = DbHelper.getIsGuest()
         ? [
             SettingItemModel(
@@ -36,7 +43,7 @@ class SettingVM extends BaseViewModel {
                 icon: AssetsRes.IC_LOGOUT,
                 title: 'Login',
                 onTap: () {
-                  context.push(Routes.login);
+                  context.push(Routes.guestLogin);
                 }),
           ]
         : [
@@ -69,8 +76,8 @@ class SettingVM extends BaseViewModel {
                             'Are you sure you want to delete this account?',
                         onTap: () {
                           context.pop();
-                          DbHelper.eraseData();
-                          context.go(Routes.login);
+                          DialogHelper.showLoading();
+                          deleteAccount();
                         },
                         onCancelTap: () {
                           context.pop();
@@ -96,8 +103,8 @@ class SettingVM extends BaseViewModel {
                             'Are you sure you want to logout this account?',
                         onTap: () {
                           context.pop();
-                          DbHelper.eraseData();
-                          context.go(Routes.login);
+                          DialogHelper.showLoading();
+                          logoutUser();
                         },
                         icon: AssetsRes.IC_LOGOUT_ICON,
                         onCancelTap: () {
@@ -121,5 +128,39 @@ class SettingVM extends BaseViewModel {
 
   void onSwitchChanged(bool? value) {
     isActiveNotification = value ?? true;
+  }
+
+  Future<void> logoutUser() async {
+    ApiRequest apiRequest =
+        ApiRequest(url: ApiConstants.logoutUrl(), requestType: RequestType.GET);
+    var response = await BaseClient.handleRequest(apiRequest);
+    MapResponse model = MapResponse.fromJson(response, (json) => null);
+    DialogHelper.hideLoading();
+    if (model.success ?? false) {
+      DbHelper.eraseData();
+      if (context.mounted) context.go(Routes.login);
+    }
+  }
+
+  Future<void> deleteAccount() async {
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.deleteAccountUrl(), requestType: RequestType.DELETE);
+    var response = await BaseClient.handleRequest(apiRequest);
+    MapResponse model = MapResponse.fromJson(response, (json) => null);
+    DialogHelper.hideLoading();
+    if (model.success ?? false) {
+      DbHelper.eraseData();
+      if (context.mounted) context.go(Routes.login);
+    }
+  }
+
+  Future<void> getProfile() async {
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.getProfileUrl(), requestType: RequestType.GET);
+    var response = await BaseClient.handleRequest(apiRequest);
+    MapResponse<UserModel> model = MapResponse<UserModel>.fromJson(
+        response, (json) => UserModel.fromJson(json));
+    DbHelper.saveUserModel(model.body);
+    notifyListeners();
   }
 }

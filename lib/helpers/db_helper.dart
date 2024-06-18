@@ -3,6 +3,8 @@ import 'dart:typed_data';
 
 import 'package:get_storage/get_storage.dart';
 
+import '../models/user_model.dart';
+
 class DbHelper {
   static const JsonDecoder _decoder = JsonDecoder();
   static const JsonEncoder _encoder = JsonEncoder.withIndent('  ');
@@ -58,7 +60,7 @@ class DbHelper {
     writeData(_isVerified, value);
   }
 
-/*  static void saveUserModel(UserModel? model) {
+  static void saveUserModel(UserModel? model) {
     if (model != null) {
       String value = _encoder.convert(model);
       writeData(_userModel, value);
@@ -75,7 +77,7 @@ class DbHelper {
     } else {
       return null;
     }
-  }*/
+  }
 
   static void saveToken(String? token) {
     writeData(_token, token);

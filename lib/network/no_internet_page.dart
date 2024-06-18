@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:list_and_life/base/base.dart';
 import '../res/assets_res.dart';
 import 'api_request.dart';
 
@@ -40,17 +41,16 @@ class NoInternetPage extends StatelessWidget {
               const SizedBox(
                 height: 15,
               ),
-              SizedBox(
+              Container(
                 width: MediaQuery.of(context).size.width * 0.6,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    Navigator.pop(context);
-                    await callBack(apiRequest);
-                  },
-                  child: const Text(
-                    'Refresh',
-                    style: TextStyle(color: Colors.white),
-                  ),
+                padding: const EdgeInsets.all(10),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    color: context.theme.primaryColor,
+                    borderRadius: BorderRadius.circular(20)),
+                child: Text(
+                  'Refresh',
+                  style: context.titleMedium?.copyWith(color: Colors.white),
                 ),
               )
             ],

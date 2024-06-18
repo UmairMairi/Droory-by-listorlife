@@ -1,0 +1,149 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
+import 'package:keyboard_actions/keyboard_actions.dart';
+import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/helpers/db_helper.dart';
+import 'package:list_and_life/helpers/dialog_helper.dart';
+import 'package:list_and_life/helpers/image_picker_helper.dart';
+import 'package:list_and_life/res/assets_res.dart';
+import 'package:list_and_life/view_model/profile_vm.dart';
+import 'package:list_and_life/widgets/app_elevated_button.dart';
+import 'package:list_and_life/widgets/app_text_field.dart';
+import 'package:list_and_life/widgets/image_view.dart';
+
+import '../../network/api_constants.dart';
+
+class EditProfileView extends BaseView<ProfileVM> {
+  const EditProfileView({super.key});
+
+  @override
+  Widget build(BuildContext context, ProfileVM viewModel) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Edit Profile'),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        child: Column(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Stack(
+                children: [
+                  ImageView.rect(
+                    image: viewModel.imagePath.isNotEmpty
+                        ? viewModel.imagePath
+                        : "${ApiConstants.imageUrl}/${DbHelper.getUserModel()?.profilePic}",
+                    placeholder: AssetsRes.DUMMY_PROFILE,
+                    width: context.width,
+                    height: 250,
+                  ),
+                  Positioned(
+                    bottom: 10,
+                    right: 10,
+                    child: InkWell(
+                      onTap: () async {
+                        viewModel.imagePath =
+                            await ImagePickerHelper.openImagePicker(
+                                    context: context) ??
+                                '';
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: const BoxDecoration(
+                            color: Colors.black, shape: BoxShape.circle),
+                        child: const Icon(
+                          Icons.camera_alt_outlined,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            const Gap(20),
+            AppTextField(
+              title: 'First Name',
+              hint: 'First Name',
+              inputType: TextInputType.name,
+              inputFormatters: AppTextInputFormatters.withNameFormatter(),
+              controller: viewModel.nameTextController,
+            ),
+            const Gap(20),
+            AppTextField(
+              title: 'Last Name',
+              hint: 'Last Name',
+              inputType: TextInputType.name,
+              inputFormatters: AppTextInputFormatters.withNameFormatter(),
+              controller: viewModel.lastNameController,
+            ),
+            const Gap(20),
+            AppTextField(
+              title: 'Email',
+              hint: 'Email',
+              inputType: TextInputType.emailAddress,
+              inputFormatters: AppTextInputFormatters.withEmailFormatter(),
+              controller: viewModel.emailTextController,
+            ),
+            const Gap(20),
+            AppTextField(
+              title: 'Phone Number',
+              hint: 'Phone Number',
+              onTap: () {
+                DialogHelper.showToast(message: "This field is not editable");
+              },
+              readOnly: true,
+              focusNode: viewModel.nodeText,
+              inputType: TextInputType.phone,
+              inputFormatters:
+                  AppTextInputFormatters.withPhoneNumberFormatter(),
+              controller: viewModel.phoneTextController,
+            ),
+            const Gap(20),
+            AppTextField(
+              title: 'Bio',
+              hint: 'Write here...',
+              inputType: TextInputType.multiline,
+              controller: viewModel.bioTextController,
+              lines: 5,
+            ),
+            const Gap(30),
+            AppElevatedButton(
+              width: context.width,
+              onTap: () {
+                if (viewModel.nameTextController.text.trim().isEmpty) {
+                  DialogHelper.showToast(
+                      message: FormFieldErrors.firstNameRequired);
+                  return;
+                }
+                if (viewModel.lastNameController.text.trim().isEmpty) {
+                  DialogHelper.showToast(
+                      message: FormFieldErrors.lastNameRequired);
+                  return;
+                }
+                if (viewModel.emailTextController.text.trim().isEmpty) {
+                  DialogHelper.showToast(
+                      message: FormFieldErrors.emailRequired);
+                  return;
+                }
+                if (viewModel.emailTextController.text.trim().isNotEmail()) {
+                  DialogHelper.showToast(message: FormFieldErrors.invalidEmail);
+                  return;
+                }
+                DialogHelper.showLoading();
+                viewModel.updateProfileApi();
+              },
+              title: 'Update',
+            ),
+            const Gap(20),
+          ],
+        ),
+      ),
+    );
+  }
+}

@@ -84,6 +84,7 @@ class _AppOtpWidgetState extends State<AppOtpWidget> {
                     controller: _controllers[index],
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
+
                     style: const TextStyle(
                         color: Colors.black,
                         fontFamily: FontRes.MONTSERRAT_SEMIBOLD),
@@ -92,9 +93,13 @@ class _AppOtpWidgetState extends State<AppOtpWidget> {
                     focusNode: _focusNodes[index],
                     onChanged: (value) {
                       if (value.length == 1 && index < widget.size - 1) {
-                        _focusNodes[index].unfocus();
-                        FocusScope.of(context)
-                            .requestFocus(_focusNodes[index + 1]);
+                        FocusScope.of(context).nextFocus();
+                      } else {
+                        if (index == 0) {
+                          return;
+                        }
+
+                        FocusScope.of(context).previousFocus();
                       }
                       String otp = _controllers.fold<String>(
                           '',

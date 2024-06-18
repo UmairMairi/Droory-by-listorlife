@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/helpers/dialog_helper.dart';
 import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/view_model/auth_vm.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
@@ -31,9 +32,9 @@ class VerificationView extends BaseView<AuthVM> {
               AssetsRes.APP_LOGO,
               height: 90,
             ),
-            const Flexible(child: Gap(100)),
+            const Flexible(child: Gap(80)),
             Text(
-              'Enter the 4-digit code sent to you at\n+1 123 456 7890',
+              'Enter the 4-digit code sent to you at\n${viewModel.countryCode}-${viewModel.phoneTextController.text.trim()}',
               style: context.textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
@@ -50,7 +51,18 @@ class VerificationView extends BaseView<AuthVM> {
             AppElevatedButton(
               width: context.width,
               onTap: () {
-                context.go(Routes.completeProfile);
+                if (viewModel.otpTextController.text.trim().isEmpty) {
+                  DialogHelper.showToast(message: FormFieldErrors.otpRequired);
+                  return;
+                }
+                if (viewModel.otpTextController.text.trim().length < 4) {
+                  DialogHelper.showToast(message: FormFieldErrors.invalidOtp);
+                  return;
+                }
+                DialogHelper.showLoading();
+                viewModel.verifyOtpApi();
+
+                /*context.go(Routes.completeProfile);*/
               },
               title: 'Verify',
             ),

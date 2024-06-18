@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/helpers/db_helper.dart';
+import 'package:list_and_life/helpers/dialog_helper.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/res/font_res.dart';
+import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 
 import '../../view_model/auth_vm.dart';
@@ -81,27 +83,18 @@ class GuestLoginView extends BaseView<AuthVM> {
             const SizedBox(
               height: 25,
             ),
-            InkWell(
+            AppElevatedButton(
+              title: 'Click to verify Phone number',
               onTap: () {
-                DbHelper.saveIsGuest(false);
-                context.pop();
+                if (viewModel.phoneTextController.text.trim().isEmpty) {
+                  DialogHelper.showToast(
+                      message: FormFieldErrors.phoneNumberRequired);
+                  return;
+                }
+                DialogHelper.showLoading();
+                viewModel.loginApi();
               },
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                decoration: BoxDecoration(
-                    color: const Color(0xff7F7F7F),
-                    borderRadius: BorderRadius.circular(100)),
-                child: const Text(
-                  "Click to verify Phone number",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.white,
-                    fontFamily: FontRes.MONTSERRAT_BOLD,
-                  ),
-                ),
-              ),
+              width: context.width,
             ),
             const SizedBox(
               height: 20,
