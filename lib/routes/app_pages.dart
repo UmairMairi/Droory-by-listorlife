@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/helpers/db_helper.dart';
+import 'package:list_and_life/models/category_model.dart';
 import 'package:list_and_life/models/setting_item_model.dart';
 import 'package:list_and_life/view/main/chat/message_view.dart';
 import 'package:list_and_life/view/main/filtter/Filter_view.dart';
@@ -173,12 +174,9 @@ class AppPages {
       GoRoute(
         path: Routes.sellSubCategoryView,
         pageBuilder: (context, state) {
-          Map<String, dynamic>? data = state.extra as Map<String, dynamic>;
           return getPage(
-              child: SellSubCategoryView(
-                category: data['category'] as Item?,
-                type: data['type'] as String?,
-              ),
+              child:
+                  SellSubCategoryView(category: state.extra as CategoryModel?),
               state: state);
         },
       ),

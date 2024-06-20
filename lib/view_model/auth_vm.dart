@@ -80,9 +80,7 @@ class AuthVM extends BaseViewModel {
     } else {
       AppPages.rootNavigatorKey.currentContext?.push(Routes.verify);
     }
-
-    /*  DbHelper.saveIsGuest(false);
-    context.pop();*/
+    DialogHelper.showToast(message: "Your verification code is 1111");
   }
 
   Future<void> verifyOtpApi() async {
@@ -121,8 +119,8 @@ class AuthVM extends BaseViewModel {
       } else {
         AppPages.rootNavigatorKey.currentContext?.go(Routes.completeProfile);
       }
-      DialogHelper.showToast(
-          message: 'Welcome to List & Lift, Complete your profile.');
+      /*DialogHelper.showToast(
+          message: 'Welcome to List & Lift, Complete your profile.');*/
     }
   }
 
@@ -155,9 +153,9 @@ class AuthVM extends BaseViewModel {
     DbHelper.saveIsGuest(false);
     DbHelper.saveIsLoggedIn(true);
     if (context.mounted) {
-      context.push(Routes.main);
+      context.go(Routes.main);
     } else {
-      AppPages.rootNavigatorKey.currentContext?.push(Routes.main);
+      AppPages.rootNavigatorKey.currentContext?.go(Routes.main);
     }
   }
 }

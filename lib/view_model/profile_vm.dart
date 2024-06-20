@@ -79,7 +79,7 @@ class ProfileVM extends BaseViewModel {
           model.body?.notificationStatus == 1;
     }
     DialogHelper.hideLoading();
-    DialogHelper.showToast(message: model.message);
+    DialogHelper.showToast(message: "Profile updated successfully");
     if (context.mounted) context.pop();
   }
 }
