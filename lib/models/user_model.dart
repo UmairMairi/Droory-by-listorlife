@@ -90,35 +90,35 @@ class UserModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['phone_no'] = this.phoneNo;
-    data['latitude'] = this.latitude;
-    data['notification_status'] = this.notificationStatus;
-    data['bio'] = this.bio;
-    data['device_type'] = this.deviceType;
-    data['type'] = this.type;
-    data['createdAt'] = this.createdAt;
-    data['password'] = this.password;
-    data['social_type'] = this.socialType;
-    data['refer_by'] = this.referBy;
-    data['id'] = this.id;
-    data['email'] = this.email;
-    data['is_approve'] = this.isApprove;
-    data['longitude'] = this.longitude;
-    data['updatedAt'] = this.updatedAt;
-    data['address'] = this.address;
-    data['device_id'] = this.deviceId;
-    data['profile_pic'] = this.profilePic;
-    data['last_name'] = this.lastName;
-    data['otp'] = this.otp;
-    data['deleted_at'] = this.deletedAt;
-    data['token'] = this.token;
-    data['country_code'] = this.countryCode;
-    data['social_id'] = this.socialId;
-    data['referral_code'] = this.referralCode;
-    data['device_token'] = this.deviceToken;
-    data['name'] = this.name;
-    data['status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['phone_no'] = phoneNo;
+    data['latitude'] = latitude;
+    data['notification_status'] = notificationStatus;
+    data['bio'] = bio;
+    data['device_type'] = deviceType;
+    data['type'] = type;
+    data['createdAt'] = createdAt;
+    data['password'] = password;
+    data['social_type'] = socialType;
+    data['refer_by'] = referBy;
+    data['id'] = id;
+    data['email'] = email;
+    data['is_approve'] = isApprove;
+    data['longitude'] = longitude;
+    data['updatedAt'] = updatedAt;
+    data['address'] = address;
+    data['device_id'] = deviceId;
+    data['profile_pic'] = profilePic;
+    data['last_name'] = lastName;
+    data['otp'] = otp;
+    data['deleted_at'] = deletedAt;
+    data['token'] = token;
+    data['country_code'] = countryCode;
+    data['social_id'] = socialId;
+    data['referral_code'] = referralCode;
+    data['device_token'] = deviceToken;
+    data['name'] = name;
+    data['status'] = status;
     return data;
   }
 }

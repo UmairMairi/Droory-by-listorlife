@@ -1,55 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/view/main/sell/car/choose_location_view.dart';
-import 'package:provider/provider.dart';
+import 'package:list_and_life/models/category_model.dart';
 
-import '../../../../view_model/mobile_sell_v_m.dart';
-import '../../../../view_model/sell_v_m.dart';
+import '../car/choose_location_view.dart';
 import '../forms/sell_form_view.dart';
 
 class SellSubSubCategoryView extends StatelessWidget {
-  final Item? category;
-  final String? type;
-  final Item? subCategory;
-  const SellSubSubCategoryView(
-      {super.key,
-      this.subCategory,
-      required this.category,
-      required this.type});
+  final CategoryModel? category;
+  final CategoryModel? subCategory;
+  final List<CategoryModel>? subSubCategory;
+  const SellSubSubCategoryView({
+    super.key,
+    required this.category,
+    this.subSubCategory,
+    this.subCategory,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(subCategory?.title ?? ''),
+        title: Text(subCategory?.name ?? ''),
       ),
       body: ListView.separated(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           itemBuilder: (context, index) {
             return ListTile(
               onTap: () {
-                print(subCategory?.title);
-                if (subCategory?.title == 'Cars') {
+                if (subCategory?.name == 'Cars') {
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const ChooseLocationView()));
                   return;
                 }
-                context.read<SellFormsVM>().resetTextFields();
-
-                if (subCategory?.subCategories?[index].title
-                        ?.contains('Parts') ??
-                    false) {
+                if (subSubCategory?[index].name?.contains('Parts') ?? false) {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => SellFormView(
                                 category: category,
-                                brands:
-                                    subCategory?.subCategories?[index].brands ??
-                                        [],
                                 subCategory: subCategory,
+                                subSubCategory: subSubCategory?[index],
                                 type: 'abcd',
                               )));
                   return;
@@ -59,23 +51,22 @@ class SellSubSubCategoryView extends StatelessWidget {
                     MaterialPageRoute(
                         builder: (context) => SellFormView(
                               category: category,
-                              brands:
-                                  subCategory?.subCategories?[index].brands ??
-                                      [],
+                              subSubCategory: subSubCategory?[index],
                               subCategory: subCategory,
-                              type: type,
+                              type: category?.name?.toLowerCase(),
                             )));
               },
               title: Text(
-                subCategory?.subCategories?[index].title ?? '',
+                subSubCategory?[index].name ?? '',
                 style: context.textTheme.titleSmall,
               ),
+              trailing: const Icon(Icons.arrow_forward_ios),
             );
           },
           separatorBuilder: (context, index) {
             return const Divider();
           },
-          itemCount: subCategory?.subCategories?.length ?? 0),
+          itemCount: subSubCategory?.length ?? 0),
     );
   }
 }

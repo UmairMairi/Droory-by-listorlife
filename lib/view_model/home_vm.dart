@@ -41,6 +41,7 @@ class HomeVM extends BaseViewModel {
   @override
   void onInit() {
     // TODO: implement onInit
+    updateLocation();
     refreshController = RefreshController(initialRefresh: true);
     initCategories();
     super.onInit();
@@ -49,7 +50,7 @@ class HomeVM extends BaseViewModel {
   @override
   void onClose() {
     // TODO: implement onClose
-    refreshController?.dispose();
+    refreshController.dispose();
     super.onClose();
   }
 
@@ -98,11 +99,10 @@ class HomeVM extends BaseViewModel {
     ];
   }
 
-  Future<String> updateLocation() async {
+  Future<void> updateLocation() async {
     Position position = await LocationHelper.getCurrentLocation();
     currentLocation = await LocationHelper.getAddressFromCoordinates(
         position.latitude, position.longitude);
-    return currentLocation;
   }
 
   Future<void> onRefresh() async {
@@ -112,7 +112,7 @@ class HomeVM extends BaseViewModel {
     ///products.clear();
     ///await fetchProducts();
     /// if failed,use refreshFailed()
-    refreshController?.refreshCompleted();
+    refreshController.refreshCompleted();
   }
 
   Future<void> onLoading() async {
@@ -120,6 +120,6 @@ class HomeVM extends BaseViewModel {
     ++page;
 
     ///await fetchProducts();
-    refreshController?.loadComplete();
+    refreshController.loadComplete();
   }
 }

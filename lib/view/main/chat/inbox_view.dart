@@ -7,10 +7,8 @@ import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/view_model/chat_vm.dart';
-import 'package:list_and_life/view_model/main_vm.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:list_and_life/widgets/unauthorised_view.dart';
-import 'package:provider/provider.dart';
 
 class InboxView extends BaseView<ChatVM> {
   const InboxView({super.key});

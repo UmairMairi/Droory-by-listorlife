@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/html_text.dart';
-import 'package:list_and_life/view_model/setting_v_m.dart';
 import 'package:list_and_life/widgets/app_error_widget.dart';
 import 'package:list_and_life/widgets/app_loading_widget.dart';
 

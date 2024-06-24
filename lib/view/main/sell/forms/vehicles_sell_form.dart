@@ -3,20 +3,25 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/view/main/sell/forms/post_added_final_view.dart';
-
+import '../../../../helpers/dialog_helper.dart';
 import '../../../../helpers/image_picker_helper.dart';
+import '../../../../models/category_model.dart';
 import '../../../../view_model/mobile_sell_v_m.dart';
-import '../../../../view_model/sell_v_m.dart';
 import '../../../../widgets/app_map_widget.dart';
 
 class VehiclesSellForm extends BaseView<SellFormsVM> {
   final String? type;
-  final Item? category;
-  final Item? subCategory;
-  final List<String>? brands;
+  final CategoryModel? category;
+  final CategoryModel? subCategory;
+  final CategoryModel? subSubCategory;
+  final List<CategoryModel>? brands;
   const VehiclesSellForm(
-      {super.key, this.type, this.category, this.subCategory, this.brands});
+      {super.key,
+      this.type,
+      this.category,
+      this.subSubCategory,
+      this.subCategory,
+      this.brands});
 
   @override
   Widget build(BuildContext context, SellFormsVM viewModel) {
@@ -188,14 +193,15 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                       Icons.arrow_drop_down,
                       color: Colors.black,
                     ),
-                    onSelected: (String value) {
-                      viewModel.brandTextController.text = value;
+                    onSelected: (CategoryModel value) {
+                      viewModel.selectedBrand = value;
+                      viewModel.brandTextController.text = value.name ?? '';
                     },
                     itemBuilder: (BuildContext context) {
                       return brands!.map((option) {
                         return PopupMenuItem(
                           value: option,
-                          child: Text(option),
+                          child: Text(option.name ?? ''),
                         );
                       }).toList();
                     },
@@ -238,14 +244,13 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
               controller: viewModel.yearTextController,
               readOnly: false,
               cursorColor: Colors.black,
-              decoration: InputDecoration(
-                contentPadding: const EdgeInsets.only(
+              decoration: const InputDecoration(
+                contentPadding: EdgeInsets.only(
                   left: 20,
                 ),
                 hintText: "Enter",
-                hintStyle:
-                    const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                border: const OutlineInputBorder(
+                hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                border: OutlineInputBorder(
                   borderSide: BorderSide.none,
                 ),
               ),
@@ -287,14 +292,13 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
               controller: viewModel.kmDrivenTextController,
               readOnly: false,
               cursorColor: Colors.black,
-              decoration: InputDecoration(
-                contentPadding: const EdgeInsets.only(
+              decoration: const InputDecoration(
+                contentPadding: EdgeInsets.only(
                   left: 20,
                 ),
                 hintText: "Enter",
-                hintStyle:
-                    const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                border: const OutlineInputBorder(
+                hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                border: OutlineInputBorder(
                   borderSide: BorderSide.none,
                 ),
               ),
@@ -503,7 +507,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => const AppMapWidget()));
-                print(value);
+
                 if (value != null && value.isNotEmpty) {
                   viewModel.addressTextController.text =
                       "${value['location']}, ${value['city']}, ${value['state']}";
@@ -574,10 +578,48 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const PostAddedFinalView()),
+              if (viewModel.mainImagePath.isEmpty) {
+                DialogHelper.showToast(message: "Please upload main image");
+                return;
+              }
+              if (viewModel.imagesList.isEmpty) {
+                DialogHelper.showToast(
+                    message: "Please upload add at least one image");
+                return;
+              }
+
+              if (viewModel.yearTextController.text.trim().isEmpty) {
+                DialogHelper.showToast(message: "Year is required");
+                return;
+              }
+
+              if (viewModel.kmDrivenTextController.text.trim().isEmpty) {
+                DialogHelper.showToast(message: "KM Driven is required");
+                return;
+              }
+
+              if (viewModel.adTitleTextController.text.trim().isEmpty) {
+                DialogHelper.showToast(message: "Ad title is required");
+                return;
+              }
+              if (viewModel.descriptionTextController.text.trim().isEmpty) {
+                DialogHelper.showToast(message: "Description is required");
+                return;
+              }
+              if (viewModel.addressTextController.text.trim().isEmpty) {
+                DialogHelper.showToast(message: "Location is required");
+                return;
+              }
+              if (viewModel.priceTextController.text.trim().isEmpty) {
+                DialogHelper.showToast(message: "Price is required");
+                return;
+              }
+              DialogHelper.showLoading();
+              viewModel.addProduct(
+                category: category,
+                subCategory: subCategory,
+                subSubCategory: subSubCategory,
+                brands: viewModel.selectedBrand,
               );
             },
             child: Container(

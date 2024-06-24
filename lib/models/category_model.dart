@@ -1,5 +1,6 @@
 class CategoryModel {
   int? id;
+  int? subCategoryId;
   String? name;
   String? image;
   int? status;
@@ -8,6 +9,7 @@ class CategoryModel {
 
   CategoryModel(
       {this.id,
+      this.subCategoryId,
       this.name,
       this.image,
       this.status,
@@ -16,6 +18,7 @@ class CategoryModel {
 
   CategoryModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    subCategoryId = json['sub_category_id'];
     name = json['name'];
     image = json['image'];
     status = json['status'];
@@ -24,13 +27,14 @@ class CategoryModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['image'] = this.image;
-    data['status'] = this.status;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['sub_category_id'] = subCategoryId;
+    data['name'] = name;
+    data['image'] = image;
+    data['status'] = status;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
     return data;
   }
 }

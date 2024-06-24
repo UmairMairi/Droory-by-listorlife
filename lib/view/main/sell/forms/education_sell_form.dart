@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../../../view_model/sell_v_m.dart';
+import '../../../../helpers/dialog_helper.dart';
+import '../../../../models/category_model.dart';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/view/main/sell/forms/post_added_final_view.dart';
 
 import '../../../../helpers/image_picker_helper.dart';
 import '../../../../view_model/mobile_sell_v_m.dart';
@@ -13,11 +13,17 @@ import '../../../../widgets/app_map_widget.dart';
 
 class EducationSellForm extends BaseView<SellFormsVM> {
   final String? type;
-  final Item? category;
-  final Item? subCategory;
-  final List<String>? brands;
+  final CategoryModel? category;
+  final CategoryModel? subCategory;
+  final CategoryModel? subSubCategory;
+  final List<CategoryModel>? brands;
   const EducationSellForm(
-      {super.key, this.type, this.category, this.subCategory, this.brands});
+      {super.key,
+      this.type,
+      this.category,
+      this.subCategory,
+      this.subSubCategory,
+      this.brands});
 
   @override
   Widget build(BuildContext context, SellFormsVM viewModel) {
@@ -254,14 +260,15 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                       Icons.arrow_drop_down,
                       color: Colors.black,
                     ),
-                    onSelected: (String value) {
-                      viewModel.brandTextController.text = value;
+                    onSelected: (CategoryModel? value) {
+                      viewModel.selectedBrand = value;
+                      viewModel.brandTextController.text = value?.name ?? '';
                     },
                     itemBuilder: (BuildContext context) {
                       return brands!.map((option) {
                         return PopupMenuItem(
                           value: option,
-                          child: Text(option),
+                          child: Text(option.name ?? ''),
                         );
                       }).toList();
                     },
@@ -316,7 +323,6 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                     borderSide: BorderSide.none,
                   )),
               inputFormatters: [
-                FilteringTextInputFormatter.deny(RegExp(r"\s+")),
                 FilteringTextInputFormatter.deny(
                     RegExp(viewModel.regexToRemoveEmoji)),
               ],
@@ -472,10 +478,42 @@ class EducationSellForm extends BaseView<SellFormsVM> {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const PostAddedFinalView()),
+              if (viewModel.mainImagePath.isEmpty) {
+                DialogHelper.showToast(message: "Please upload main image");
+                return;
+              }
+              if (viewModel.imagesList.isEmpty) {
+                DialogHelper.showToast(
+                    message: "Please upload add at least one image");
+                return;
+              }
+              if (viewModel.educationTypeTextController.text.trim().isEmpty) {
+                DialogHelper.showToast(message: "Please select education type");
+                return;
+              }
+
+              if (viewModel.adTitleTextController.text.trim().isEmpty) {
+                DialogHelper.showToast(message: "Ad title is required");
+                return;
+              }
+              if (viewModel.descriptionTextController.text.trim().isEmpty) {
+                DialogHelper.showToast(message: "Description is required");
+                return;
+              }
+              if (viewModel.addressTextController.text.trim().isEmpty) {
+                DialogHelper.showToast(message: "Location is required");
+                return;
+              }
+              if (viewModel.priceTextController.text.trim().isEmpty) {
+                DialogHelper.showToast(message: "Price is required");
+                return;
+              }
+              DialogHelper.showLoading();
+              viewModel.addProduct(
+                category: category,
+                subCategory: subCategory,
+                subSubCategory: subSubCategory,
+                brands: viewModel.selectedBrand,
               );
             },
             child: Container(

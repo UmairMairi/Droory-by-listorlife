@@ -141,7 +141,7 @@ class GuestLoginView extends BaseView<AuthVM> {
                         ),
                       ],
                       borderRadius: BorderRadius.circular(100)),
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       ImageView.circle(
@@ -153,7 +153,7 @@ class GuestLoginView extends BaseView<AuthVM> {
                         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlB3CZ5R6UsCPYh-Wa0R1N-6pV5_GQQiNaTDAgtC5j1A&s",
                         height: 25,
                       ),*/
-                      const Text(
+                      Text(
                         "Log In With Google",
                         style: TextStyle(
                             color: Colors.black,
@@ -161,7 +161,7 @@ class GuestLoginView extends BaseView<AuthVM> {
                             fontFamily: FontRes.MONTSERRAT_BOLD,
                             fontWeight: FontWeight.w500),
                       ),
-                      const SizedBox(
+                      SizedBox(
                         width: 15,
                       )
                     ],
@@ -188,7 +188,7 @@ class GuestLoginView extends BaseView<AuthVM> {
                         ),
                       ],
                       borderRadius: BorderRadius.circular(100)),
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       ImageView.circle(
@@ -196,7 +196,7 @@ class GuestLoginView extends BaseView<AuthVM> {
                         height: 30,
                         width: 30,
                       ),
-                      const Text(
+                      Text(
                         "Log In With IOS",
                         style: TextStyle(
                             color: Colors.white,
@@ -204,7 +204,7 @@ class GuestLoginView extends BaseView<AuthVM> {
                             fontSize: 14,
                             fontWeight: FontWeight.w500),
                       ),
-                      const SizedBox(
+                      SizedBox(
                         width: 15,
                       )
                     ],

@@ -26,7 +26,6 @@ import '../view/main/sell/forms/post_added_final_view.dart';
 import '../view/notifications/notification_view.dart';
 import '../view/on_boarding/on_boarding_view.dart';
 import '../view/profile/see_profile_view.dart';
-import '../view_model/sell_v_m.dart';
 import 'app_routes.dart';
 
 class AppPages {

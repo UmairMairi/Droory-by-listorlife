@@ -5,6 +5,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
+import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:map_picker/map_picker.dart';
 import 'package:location/location.dart' as loc;
 
@@ -158,6 +160,9 @@ class _AppMapWidgetState extends State<AppMapWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Select Location"),
+      ),
       body: Stack(
         children: [
           MapPicker(
@@ -323,9 +328,11 @@ class _AppMapWidgetState extends State<AppMapWidget> {
                 ),
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 20),
-                  child: ElevatedButton(
-                    child: const Text("Continue"),
-                    onPressed: () {
+                  child: AppElevatedButton(
+                    width: context.width,
+                    height: 50,
+                    title: 'Continue',
+                    onTap: () {
                       if (_currentAddress.isEmpty) {
                         DialogHelper.showToast(
                             message: "Please select valid location.");

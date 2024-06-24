@@ -4,6 +4,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:list_and_life/models/common/map_response.dart';
+import 'package:list_and_life/models/media_model.dart';
+import 'package:list_and_life/network/api_constants.dart';
 import 'package:mime/mime.dart';
 
 import '../helpers/db_helper.dart';
@@ -103,5 +106,22 @@ class BaseClient {
         filename: path.split('/').last,
         contentType: MediaType(
             mimeType?.split('/').first ?? '', mimeType?.split('/').last ?? ''));
+  }
+
+  static Future<String> uploadImage({required String imagePath}) async {
+    Map<String, dynamic> body = {
+      'media': await getMultipartImage(path: imagePath),
+    };
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.uploadMediaUrl(),
+        requestType: RequestType.POST,
+        body: body);
+
+    var response = await handleRequest(apiRequest);
+
+    MapResponse<MediaModel> model =
+        MapResponse.fromJson(response, (json) => MediaModel.fromJson(json));
+
+    return model.body?.media ?? '';
   }
 }

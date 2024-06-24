@@ -17,6 +17,7 @@ class Routes {
   static const String sell = '/sell';
 
   static const String sellSubCategoryView = '/sell_sub_category_view';
+  static const String sellSubSubCategoryView = '/sell_sub_sub_category_view';
 
   static const String termsOfUse = '/termsOfUse';
   static const String permission = '/permission';

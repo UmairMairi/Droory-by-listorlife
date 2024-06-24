@@ -3,22 +3,24 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/view/main/sell/forms/post_added_final_view.dart';
+import 'package:list_and_life/models/category_model.dart';
 
+import '../../../../helpers/dialog_helper.dart';
 import '../../../../helpers/image_picker_helper.dart';
 import '../../../../view_model/mobile_sell_v_m.dart';
-import '../../../../view_model/sell_v_m.dart';
 import '../../../../widgets/app_map_widget.dart';
 
 class JobSellForm extends BaseView<SellFormsVM> {
   final String? type;
-  final Item? category;
-  final Item? subCategory;
-  final List<String>? brands;
+  final CategoryModel? category;
+  final CategoryModel? subCategory;
+  final CategoryModel? subSubCategory;
+  final List<CategoryModel>? brands;
   const JobSellForm(
       {required this.type,
       required this.category,
       required this.subCategory,
+      this.subSubCategory,
       required this.brands,
       super.key});
 
@@ -190,14 +192,15 @@ class JobSellForm extends BaseView<SellFormsVM> {
                       Icons.arrow_drop_down,
                       color: Colors.black,
                     ),
-                    onSelected: (String value) {
-                      viewModel.brandTextController.text = value;
+                    onSelected: (CategoryModel? value) {
+                      viewModel.selectedBrand = value;
+                      viewModel.brandTextController.text = value?.name ?? '';
                     },
                     itemBuilder: (BuildContext context) {
                       return brands!.map((option) {
                         return PopupMenuItem(
                           value: option,
-                          child: Text(option),
+                          child: Text(option.name ?? ''),
                         );
                       }).toList();
                     },
@@ -583,57 +586,54 @@ class JobSellForm extends BaseView<SellFormsVM> {
               textInputAction: TextInputAction.done,
             ),
           ),
-          RichText(
-              text: const TextSpan(children: [
-            TextSpan(
-              text: "Price (in EGP)",
-              style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14,
-                  color: Colors.black),
-            ),
-          ])),
-          Container(
-            margin: const EdgeInsets.only(top: 10, bottom: 20),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(100),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  offset: const Offset(0, 1),
-                  blurRadius: 6,
-                ),
-              ],
-            ),
-            child: TextFormField(
-              controller: viewModel.priceTextController,
-              cursorColor: Colors.black,
-              decoration: const InputDecoration(
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                  hintText: "Enter Price",
-                  hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                  )),
-              inputFormatters: [
-                FilteringTextInputFormatter.deny(RegExp(r"\s+")),
-                FilteringTextInputFormatter.deny(
-                    RegExp(viewModel.regexToRemoveEmoji)),
-                FilteringTextInputFormatter.digitsOnly,
-                LengthLimitingTextInputFormatter(8),
-              ],
-              keyboardType: TextInputType.number,
-              textInputAction: TextInputAction.done,
-            ),
-          ),
           GestureDetector(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const PostAddedFinalView()),
+              if (viewModel.mainImagePath.isEmpty) {
+                DialogHelper.showToast(message: "Please upload main image");
+                return;
+              }
+              if (viewModel.imagesList.isEmpty) {
+                DialogHelper.showToast(
+                    message: "Please upload add at least one image");
+                return;
+              }
+              if (viewModel.jobPositionTextController.text.trim().isEmpty) {
+                DialogHelper.showToast(message: "Please select position type");
+                return;
+              }
+              if (viewModel.jobSalaryTextController.text.trim().isEmpty) {
+                DialogHelper.showToast(message: "Please select salary period");
+                return;
+              }
+              if (viewModel.jobSalaryFromController.text.trim().isEmpty) {
+                DialogHelper.showToast(message: "Please select salary form");
+                return;
+              }
+
+              if (viewModel.jobSalaryToController.text.trim().isEmpty) {
+                DialogHelper.showToast(message: "Please select salary to");
+                return;
+              }
+
+              if (viewModel.adTitleTextController.text.trim().isEmpty) {
+                DialogHelper.showToast(message: "Ad title is required");
+                return;
+              }
+              if (viewModel.descriptionTextController.text.trim().isEmpty) {
+                DialogHelper.showToast(message: "Description is required");
+                return;
+              }
+              if (viewModel.addressTextController.text.trim().isEmpty) {
+                DialogHelper.showToast(message: "Location is required");
+                return;
+              }
+
+              DialogHelper.showLoading();
+              viewModel.addProduct(
+                category: category,
+                subCategory: subCategory,
+                subSubCategory: subSubCategory,
+                brands: viewModel.selectedBrand,
               );
             },
             child: Container(

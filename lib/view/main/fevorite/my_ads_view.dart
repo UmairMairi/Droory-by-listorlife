@@ -17,7 +17,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
   @override
   Widget build(BuildContext context, MyAdsVM viewModel) {
     return DbHelper.getIsGuest()
-        ? UnauthorisedView()
+        ? const UnauthorisedView()
         : ListView.separated(
             shrinkWrap: true,
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),

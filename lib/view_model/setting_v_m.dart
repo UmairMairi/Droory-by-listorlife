@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/helpers/db_helper.dart';
 import 'package:list_and_life/helpers/dialog_helper.dart';
-import 'package:list_and_life/models/cms_model.dart';
 import 'package:list_and_life/models/common/map_response.dart';
 import 'package:list_and_life/models/user_model.dart';
 import 'package:list_and_life/network/api_constants.dart';

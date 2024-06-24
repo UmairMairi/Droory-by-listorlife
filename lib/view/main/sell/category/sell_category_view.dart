@@ -3,9 +3,7 @@ import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/models/category_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/widgets/app_error_widget.dart';
-import 'package:list_and_life/widgets/app_loading_widget.dart';
 import 'package:list_and_life/widgets/image_view.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../../helpers/db_helper.dart';
 import '../../../../network/api_constants.dart';
@@ -71,13 +69,13 @@ class SellCategoryView extends BaseView<SellVM> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          ImageView.circle(
+                                          ImageView.rect(
                                             image:
                                                 "${ApiConstants.imageUrl}/${categoryData[index].image}",
-                                            height: 38,
+                                            height: 50,
                                             placeholder:
                                                 AssetsRes.IC_IMAGE_PLACEHOLDER,
-                                            width: 46,
+                                            width: 50,
                                           ),
                                           const SizedBox(
                                             height: 13,
@@ -101,7 +99,6 @@ class SellCategoryView extends BaseView<SellVM> {
                           isLoading: snapshot.connectionState ==
                               ConnectionState.waiting,
                         );
-                        ;
                       })
                 ],
               ),

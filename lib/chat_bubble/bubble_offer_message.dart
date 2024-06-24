@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/widgets/app_elevated_button.dart';
 
 import 'bubble_normal_message.dart';
 
@@ -146,13 +145,13 @@ class BubbleOfferMessage extends StatelessWidget {
                       children: [
                         Text(
                           'OFFER',
-                          style: context.textTheme?.titleSmall
+                          style: context.textTheme.titleSmall
                               ?.copyWith(color: Colors.white),
                         ),
-                        Gap(05),
+                        const Gap(05),
                         SelectableText(
                           "EGP $text",
-                          style: context.textTheme?.titleLarge
+                          style: context.textTheme.titleLarge
                               ?.copyWith(color: Colors.white),
                           textAlign: TextAlign.left,
                         ),
@@ -201,7 +200,7 @@ class BubbleOfferMessage extends StatelessWidget {
                                       )),
                                 ],
                               )
-                            : SizedBox.shrink()
+                            : const SizedBox.shrink()
                       ],
                     ),
                   ),

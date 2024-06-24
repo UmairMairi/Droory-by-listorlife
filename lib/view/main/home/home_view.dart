@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/helpers/db_helper.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/view_model/home_vm.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import '../../../helpers/dialog_helper.dart';
 import '../../../widgets/app_product_item_widget.dart';
 
 class HomeView extends BaseView<HomeVM> {
@@ -29,33 +26,10 @@ class HomeView extends BaseView<HomeVM> {
               style: context.textTheme.titleMedium,
             ),
             const Gap(01),
-            FutureBuilder<String>(
-                future: viewModel.updateLocation(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Text(
-                      viewModel.currentLocation,
-                      style: context.textTheme.bodySmall,
-                    );
-                  }
-                  if (snapshot.hasError) {
-                    return InkWell(
-                      onTap: () {
-                        DialogHelper.showLocationServiceEnable(
-                            message:
-                                "List or Life would like to access your location",
-                            onTap: () async {
-                              await Geolocator.openLocationSettings();
-                            });
-                      },
-                      child: Text(
-                        "Permission Required!!",
-                        style: context.textTheme.bodySmall,
-                      ),
-                    );
-                  }
-                  return const Text("- - -");
-                }),
+            Text(
+              viewModel.currentLocation,
+              style: context.textTheme.bodySmall,
+            )
           ],
         ),
         actions: [

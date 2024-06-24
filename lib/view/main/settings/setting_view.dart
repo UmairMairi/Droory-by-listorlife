@@ -63,7 +63,7 @@ class SettingView extends BaseView<SettingVM> {
                             height: 120,
                             width: 120,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           Text(

@@ -7,7 +7,6 @@ import 'package:list_and_life/view/main/fevorite/ads_view.dart';
 import 'package:list_and_life/view/main/home/home_view.dart';
 import 'package:list_and_life/view/main/sell/category/sell_category_view.dart';
 import 'package:list_and_life/view/main/settings/setting_view.dart';
-import 'package:list_and_life/widgets/unauthorised_view.dart';
 import 'package:persistent_bottom_nav_bar_plus/persistent_bottom_nav_bar_plus.dart';
 
 import '../../routes/app_routes.dart';
