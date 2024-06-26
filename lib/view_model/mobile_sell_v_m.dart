@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:list_and_life/helpers/dialog_helper.dart';
 import 'package:list_and_life/models/category_model.dart';
@@ -11,9 +13,6 @@ import '../base/base_view_model.dart';
 import '../view/main/sell/forms/post_added_final_view.dart';
 
 class SellFormsVM extends BaseViewModel {
-  Pattern pattern =
-      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-
   var regexToRemoveEmoji =
       r'(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])';
   int _currentIndex = 1;
@@ -48,6 +47,7 @@ class SellFormsVM extends BaseViewModel {
   String? country = '';
   String? city = '';
   String? state = '';
+  String? latitude = '0.0', longitude = '0.0';
 
   void addImage(String path) {
     imagesList.add(path);
@@ -156,9 +156,12 @@ class SellFormsVM extends BaseViewModel {
       "transmission": transmission == 1 ? 'automatic' : 'manual',
       "km_driven": kmDrivenTextController.text.trim(),
       "number_of_owner": numOfOwnerTextController.text.trim(),
+      "education_type": educationTypeTextController.text.trim(),
       "country": country,
       "state": state,
       "city": city,
+      "latitude": latitude,
+      "longitude": longitude,
       "nearby": addressTextController.text.trim(),
       "position_type":
           getPositionType(type: jobPositionTextController.text.trim()),
@@ -174,7 +177,7 @@ class SellFormsVM extends BaseViewModel {
         body: body);
 
     var response = await BaseClient.handleRequest(apiRequest);
-
+    log("${response}", name: "BASEX");
     MapResponse model = MapResponse.fromJson(response, (json) => null);
     DialogHelper.hideLoading();
     DialogHelper.showToast(message: model.message);

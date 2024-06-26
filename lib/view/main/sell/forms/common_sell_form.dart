@@ -413,6 +413,8 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                         builder: (context) => const AppMapWidget()));
                 print(value);
                 if (value != null && value.isNotEmpty) {
+                  viewModel.latitude = value['latitude'];
+                  viewModel.longitude = value['longitude'];
                   viewModel.state = value['state'];
                   viewModel.city = value['city'];
                   viewModel.country = value['country'];
