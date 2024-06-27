@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/models/prodect_detail_model.dart';
+import 'package:list_and_life/network/api_constants.dart';
+import 'package:list_and_life/widgets/image_view.dart';
 
 import '../res/assets_res.dart';
 
 class CardSwipeWidget extends StatefulWidget {
   final double? height;
-  final List<String>? imagesList;
+  final List<ProductMedias>? imagesList;
   final BorderRadiusGeometry? borderRadius;
   const CardSwipeWidget(
       {super.key, this.height, this.imagesList, this.borderRadius});
@@ -14,8 +17,9 @@ class CardSwipeWidget extends StatefulWidget {
   State<CardSwipeWidget> createState() => _CardSwipeWidgetState();
 }
 
-class _CardSwipeWidgetState extends State<CardSwipeWidget> with AutomaticKeepAliveClientMixin<CardSwipeWidget>{
-  List<String> bannerImages = [];
+class _CardSwipeWidgetState extends State<CardSwipeWidget>
+    with AutomaticKeepAliveClientMixin<CardSwipeWidget> {
+  List<String?> bannerImages = [];
 
   int _currentPage = 0;
   late PageController _pageController;
@@ -23,13 +27,8 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget> with AutomaticKeepAli
   @override
   void initState() {
     // TODO: implement initState
-    bannerImages = widget.imagesList ??
-        [
-          AssetsRes.DUMMY_IPHONE_IMAGE1,
-          AssetsRes.DUMMY_IPHONE_IMAGE2,
-          AssetsRes.DUMMY_IPHONE_IMAGE3,
-          AssetsRes.DUMMY_IPHONE_IMAGE4,
-        ];
+    bannerImages =
+        widget.imagesList?.map((_element) => _element.media).toList() ?? [];
     _pageController = PageController(initialPage: _currentPage);
     super.initState();
   }
@@ -59,12 +58,15 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget> with AutomaticKeepAli
             },
             children: List.generate(bannerImages.length, (index) {
               return ClipRRect(
-                borderRadius: widget.borderRadius ?? BorderRadius.circular(20),
-                child: Image.asset(
-                  bannerImages[index],
-                  fit: BoxFit.fill,
-                ),
-              );
+                  borderRadius:
+                      widget.borderRadius ?? BorderRadius.circular(20),
+                  child: ImageView.rect(
+                    image: "${ApiConstants.imageUrl}/${bannerImages[index]}",
+                    placeholder: AssetsRes.IC_IMAGE_PLACEHOLDER,
+                    width: context.width,
+                    height: widget.height ?? 220,
+                    fit: BoxFit.fill,
+                  ));
             }),
           ),
           _buildDots(),

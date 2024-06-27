@@ -4,9 +4,12 @@ import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
+import 'package:list_and_life/skeletons/product_list_skeleton.dart';
 import 'package:list_and_life/view_model/home_vm.dart';
+import 'package:list_and_life/widgets/app_error_widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../../../models/prodect_detail_model.dart';
 import '../../../widgets/app_product_item_widget.dart';
 
 class HomeView extends BaseView<HomeVM> {
@@ -138,25 +141,37 @@ class HomeView extends BaseView<HomeVM> {
                 style: context.textTheme.titleMedium,
               ),
               const Gap(20),
-              ListView.separated(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: viewModel.homeItemList.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      context.push(Routes.productDetails,
-                          extra: viewModel.homeItemList[index]);
-                    },
-                    child: AppProductItemWidget(
-                      data: viewModel.homeItemList[index],
-                    ),
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return const Gap(20);
-                },
-              ),
+              FutureBuilder<List<ProductDetailModel?>>(
+                  future: viewModel.getProductsApi(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: viewModel.productsList.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              context.push(Routes.productDetails,
+                                  extra: viewModel.homeItemList[index]);
+                            },
+                            child: AppProductItemWidget(
+                              data: ProductDetailModel(),
+                            ),
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return const Gap(20);
+                        },
+                      );
+                    }
+                    if (snapshot.hasError) {
+                      return AppErrorWidget();
+                    }
+                    return ProductListSkeleton(
+                        isLoading: snapshot.connectionState ==
+                            ConnectionState.waiting);
+                  }),
               const Gap(40),
             ],
           ),

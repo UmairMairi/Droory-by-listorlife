@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/helpers/db_helper.dart';
 import 'package:list_and_life/models/category_model.dart';
+import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/models/setting_item_model.dart';
 import 'package:list_and_life/view/main/chat/message_view.dart';
 import 'package:list_and_life/view/main/filtter/Filter_view.dart';
 import 'package:list_and_life/view/main/permission/location_permission_view.dart';
-import 'package:list_and_life/view/main/sell/mobile/mobile_category_view.dart';
 import 'package:list_and_life/view/main/sell/sub_category/sell_sub_category_view.dart';
 
 import 'package:list_and_life/view/main/settings/TermsOfUseView.dart';
@@ -97,7 +97,7 @@ class AppPages {
         pageBuilder: (context, state) {
           return getPage(
               child: ProductDetailView(
-                data: state.extra as SettingItemModel,
+                data: state.extra as ProductDetailModel,
               ),
               state: state);
         },
@@ -107,7 +107,7 @@ class AppPages {
         pageBuilder: (context, state) {
           return getPage(
               child: MyProductView(
-                data: state.extra as SettingItemModel,
+                data: state.extra as ProductDetailModel,
               ),
               state: state);
         },
@@ -141,21 +141,13 @@ class AppPages {
         },
       ),
       GoRoute(
-        path: Routes.chooseLocationView,
-        pageBuilder: (context, state) {
-          return getPage(child: const ChooseLocationView(), state: state);
-        },
-      ),
-      GoRoute(
         path: Routes.postAddedFinalView,
         pageBuilder: (context, state) {
-          return getPage(child: const PostAddedFinalView(), state: state);
-        },
-      ),
-      GoRoute(
-        path: Routes.mobileSubcategoryView,
-        pageBuilder: (context, state) {
-          return getPage(child: const MobileCategoryView(), state: state);
+          return getPage(
+              child: PostAddedFinalView(
+                data: state.extra as ProductDetailModel,
+              ),
+              state: state);
         },
       ),
       GoRoute(

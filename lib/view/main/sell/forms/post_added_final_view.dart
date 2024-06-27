@@ -6,12 +6,13 @@ import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/app_outline_button.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../../../models/setting_item_model.dart';
+import '../../../../models/prodect_detail_model.dart';
 import '../../../../routes/app_routes.dart';
 import '../../../product/my_product_view.dart';
 
 class PostAddedFinalView extends StatelessWidget {
-  const PostAddedFinalView({super.key});
+  final ProductDetailModel? data;
+  const PostAddedFinalView({super.key, required this.data});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,28 +104,11 @@ class PostAddedFinalView extends StatelessWidget {
             ),
             AppOutlineButton(
               onTap: () {
-                Navigator.push(
+                Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                         builder: (context) => MyProductView(
-                              data: SettingItemModel(
-                                  imageList: [
-                                    AssetsRes.DUMMY_CAR_IMAGE1,
-                                    AssetsRes.DUMMY_CAR_IMAGE2,
-                                    AssetsRes.DUMMY_CAR_IMAGE3,
-                                    AssetsRes.DUMMY_CAR_IMAGE4,
-                                  ],
-                                  title: 'EGP300',
-                                  subTitle:
-                                      'Maruti Suzuki Swift 1.2 VXI (O), 2015, Petrol',
-                                  description: '2015 - 48000 km',
-                                  location: 'New York City',
-                                  likes: '5',
-                                  views: '10',
-                                  timeStamp: 'Today',
-                                  isFav: true,
-                                  longDescription:
-                                      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry.'),
+                              data: data,
                             )));
               },
               title: "Review Ad",

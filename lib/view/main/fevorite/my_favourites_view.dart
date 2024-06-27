@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/view_model/my_ads_v_m.dart';
 
 import '../../../helpers/db_helper.dart';
@@ -29,7 +30,7 @@ class MyFavouritesView extends BaseView<MyAdsVM> {
                         extra: viewModel.favItemList[index]);
                   },
                   child: AppProductItemWidget(
-                    data: viewModel.favItemList[index],
+                    data: ProductDetailModel(),
                   ),
                 );
               },

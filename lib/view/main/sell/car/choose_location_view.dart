@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
 
+import '../../../../models/category_model.dart';
 import 'include_car_detail_view.dart';
 
 class ChooseLocationView extends StatelessWidget {
-  const ChooseLocationView({super.key});
+  final String? type;
+  final CategoryModel? category;
+  final CategoryModel? subCategory;
+  final CategoryModel? subSubCategory;
+  const ChooseLocationView({super.key,
+    required this.category,
+    required this.subCategory,
+    this.subSubCategory,
+    required this.type});
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +109,7 @@ class ChooseLocationView extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const IncludeCarDetailView()),
+                      builder: (context) =>  IncludeCarDetailView(category: category, subCategory: subCategory, subSubCategory: subSubCategory, type: type,)),
                 );
               },
               child: Container(

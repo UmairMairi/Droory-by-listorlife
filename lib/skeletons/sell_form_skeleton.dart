@@ -20,36 +20,31 @@ class SellFormSkeleton extends StatelessWidget {
               "Upload Images",
               style: context.textTheme.titleMedium,
             ),
-            GestureDetector(
-              child: Container(
-                margin: const EdgeInsets.symmetric(vertical: 10),
-                width: double.infinity,
-                height: 138,
-                decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        offset: const Offset(0, 1),
-                        blurRadius: 6,
-                      ),
-                    ],
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10)),
-                child: const Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.camera_alt_outlined),
-                    SizedBox(
-                      height: 2,
-                    ),
-                    Text(
-                      "Upload",
-                      style: TextStyle(
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              width: double.infinity,
+              height: 250,
+              decoration: BoxDecoration(boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  offset: const Offset(0, 1),
+                  blurRadius: 6,
                 ),
+              ], color: Colors.white, borderRadius: BorderRadius.circular(10)),
+              child: const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.camera_alt_outlined),
+                  SizedBox(
+                    height: 2,
+                  ),
+                  Text(
+                    "Upload",
+                    style: TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
               ),
             ),
             Wrap(
@@ -118,8 +113,7 @@ class SellFormSkeleton extends StatelessWidget {
                     left: 20,
                   ),
                   hintText: "Select",
-                  hintStyle:
-                      TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                   ),
@@ -159,8 +153,7 @@ class SellFormSkeleton extends StatelessWidget {
                     left: 20,
                   ),
                   hintText: "Select",
-                  hintStyle:
-                      TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                   ),

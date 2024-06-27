@@ -47,6 +47,7 @@ class SellFormView extends BaseView<SellFormsVM> {
   }
 
   Widget _buildBody(BuildContext context, List<CategoryModel>? brands) {
+    print(type);
     switch (type) {
       case 'jobs':
         return JobSellForm(

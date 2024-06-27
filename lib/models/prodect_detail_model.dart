@@ -1,4 +1,4 @@
-class ProdectDetailModel {
+class ProductDetailModel {
   int? id;
   int? userId;
   int? categoryId;
@@ -9,7 +9,7 @@ class ProdectDetailModel {
   String? itemCondition;
   String? positionType;
   String? salleryPeriod;
-  Null? educationType;
+  String? educationType;
   String? salleryFrom;
   String? salleryTo;
   String? price;
@@ -23,66 +23,68 @@ class ProdectDetailModel {
   String? state;
   String? city;
   String? nearby;
-  Null? latitude;
-  Null? longitude;
+  String? latitude;
+  String? longitude;
   int? status;
   String? sellStatus;
   Null? deletedAt;
   String? createdAt;
   String? updatedAt;
   int? countViews;
-  Null? distance;
+  int? distance;
   int? isFavourite;
   Null? isFeaturedOrBoosted;
+  List<ProductMedias>? productMedias;
   Category? category;
   Category? subCategory;
   Category? subSubCategory;
-  Null? brand;
+  Category? brand;
   User? user;
 
-  ProdectDetailModel(
+  ProductDetailModel(
       {this.id,
-      this.userId,
-      this.categoryId,
-      this.subCategoryId,
-      this.subSubCategoryId,
-      this.brandId,
-      this.name,
-      this.itemCondition,
-      this.positionType,
-      this.salleryPeriod,
-      this.educationType,
-      this.salleryFrom,
-      this.salleryTo,
-      this.price,
-      this.description,
-      this.year,
-      this.fuel,
-      this.transmission,
-      this.kmDriven,
-      this.numberOfOwner,
-      this.country,
-      this.state,
-      this.city,
-      this.nearby,
-      this.latitude,
-      this.longitude,
-      this.status,
-      this.sellStatus,
-      this.deletedAt,
-      this.createdAt,
-      this.updatedAt,
-      this.countViews,
-      this.distance,
-      this.isFavourite,
-      this.isFeaturedOrBoosted,
-      this.category,
-      this.subCategory,
-      this.subSubCategory,
-      this.brand,
-      this.user});
+        this.userId,
+        this.categoryId,
+        this.subCategoryId,
+        this.subSubCategoryId,
+        this.brandId,
+        this.name,
+        this.itemCondition,
+        this.positionType,
+        this.salleryPeriod,
+        this.educationType,
+        this.salleryFrom,
+        this.salleryTo,
+        this.price,
+        this.description,
+        this.year,
+        this.fuel,
+        this.transmission,
+        this.kmDriven,
+        this.numberOfOwner,
+        this.country,
+        this.state,
+        this.city,
+        this.nearby,
+        this.latitude,
+        this.longitude,
+        this.status,
+        this.sellStatus,
+        this.deletedAt,
+        this.createdAt,
+        this.updatedAt,
+        this.countViews,
+        this.distance,
+        this.isFavourite,
+        this.isFeaturedOrBoosted,
+        this.productMedias,
+        this.category,
+        this.subCategory,
+        this.subSubCategory,
+        this.brand,
+        this.user});
 
-  ProdectDetailModel.fromJson(Map<String, dynamic> json) {
+  ProductDetailModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userId = json['user_id'];
     categoryId = json['category_id'];
@@ -118,6 +120,12 @@ class ProdectDetailModel {
     distance = json['distance'];
     isFavourite = json['is_favourite'];
     isFeaturedOrBoosted = json['is_featured_or_boosted'];
+    if (json['product_medias'] != null) {
+      productMedias = <ProductMedias>[];
+      json['product_medias'].forEach((v) {
+        productMedias!.add(new ProductMedias.fromJson(v));
+      });
+    }
     category = json['category'] != null
         ? new Category.fromJson(json['category'])
         : null;
@@ -127,7 +135,7 @@ class ProdectDetailModel {
     subSubCategory = json['sub_sub_category'] != null
         ? new Category.fromJson(json['sub_sub_category'])
         : null;
-    brand = json['brand'];
+    brand = json['brand'] != null ? new Category.fromJson(json['brand']) : null;
     user = json['user'] != null ? new User.fromJson(json['user']) : null;
   }
 
@@ -168,6 +176,10 @@ class ProdectDetailModel {
     data['distance'] = this.distance;
     data['is_favourite'] = this.isFavourite;
     data['is_featured_or_boosted'] = this.isFeaturedOrBoosted;
+    if (this.productMedias != null) {
+      data['product_medias'] =
+          this.productMedias!.map((v) => v.toJson()).toList();
+    }
     if (this.category != null) {
       data['category'] = this.category!.toJson();
     }
@@ -177,10 +189,28 @@ class ProdectDetailModel {
     if (this.subSubCategory != null) {
       data['sub_sub_category'] = this.subSubCategory!.toJson();
     }
-    data['brand'] = this.brand;
+    if (this.brand != null) {
+      data['brand'] = this.brand!.toJson();
+    }
     if (this.user != null) {
       data['user'] = this.user!.toJson();
     }
+    return data;
+  }
+}
+
+class ProductMedias {
+  String? media;
+
+  ProductMedias({this.media});
+
+  ProductMedias.fromJson(Map<String, dynamic> json) {
+    media = json['media'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['media'] = this.media;
     return data;
   }
 }

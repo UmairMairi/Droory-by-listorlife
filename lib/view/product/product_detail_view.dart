@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/models/setting_item_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/res/font_res.dart';
@@ -15,7 +16,7 @@ import '../../widgets/card_swipe_widget.dart';
 import '../../widgets/favorite_button.dart';
 
 class ProductDetailView extends BaseView<ProductVM> {
-  final SettingItemModel? data;
+  final ProductDetailModel? data;
   const ProductDetailView({super.key, required this.data});
 
   @override
@@ -30,7 +31,7 @@ class ProductDetailView extends BaseView<ProductVM> {
               children: [
                 CardSwipeWidget(
                   height: 400,
-                  imagesList: data?.imageList,
+                  imagesList: data?.productMedias,
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20),
@@ -45,14 +46,14 @@ class ProductDetailView extends BaseView<ProductVM> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        data?.subTitle ?? '',
+                        data?.subSubCategory?.name ?? '',
                         style: context.textTheme.titleMedium,
                       ),
                       const Gap(5),
                       Text(data?.description ?? ''),
                       const Gap(10),
                       Text(
-                        data?.title ?? '',
+                        data?.category?.name ?? '',
                         style: context.textTheme.titleLarge
                             ?.copyWith(color: Colors.red),
                       ),
@@ -347,7 +348,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                         style: context.textTheme.titleMedium,
                       ),
                       const Gap(05),
-                      Text(data?.longDescription ?? ''),
+                      Text(data?.description ?? ''),
                       const Gap(10),
                       Card(
                         color: const Color(0xfff5f5f5),
@@ -512,7 +513,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                       decoration: const BoxDecoration(
                           color: Colors.white, shape: BoxShape.circle),
                       child: FavoriteButton(
-                        isFav: data?.isFav ?? false,
+                        isFav: data?.isFavourite == 1,
                         onTap: () {},
                       ),
                     ),

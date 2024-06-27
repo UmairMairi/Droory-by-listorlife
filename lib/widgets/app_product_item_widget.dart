@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/helpers/date_helper.dart';
 import 'package:list_and_life/helpers/dialog_helper.dart';
+import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/models/setting_item_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/res/font_res.dart';
@@ -13,7 +15,7 @@ import '../helpers/db_helper.dart';
 import '../routes/app_routes.dart';
 
 class AppProductItemWidget extends StatelessWidget {
-  final SettingItemModel? data;
+  final ProductDetailModel? data;
   const AppProductItemWidget({super.key, this.data});
 
   @override
@@ -39,7 +41,7 @@ class AppProductItemWidget extends StatelessWidget {
           Stack(
             children: [
               CardSwipeWidget(
-                imagesList: data?.imageList,
+                imagesList: data?.productMedias,
                 height: 160,
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(20),
@@ -56,7 +58,7 @@ class AppProductItemWidget extends StatelessWidget {
                     decoration: const BoxDecoration(
                         color: Colors.white, shape: BoxShape.circle),
                     child: FavoriteButton(
-                      isFav: data?.isFav ?? false,
+                      isFav: data?.isFavourite == 1,
                       onTap: () {},
                     ),
                   )),
@@ -74,14 +76,14 @@ class AppProductItemWidget extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        data?.subTitle ?? '',
+                        data?.subSubCategory?.name ?? '',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: context.textTheme.titleSmall,
                       ),
                     ),
                     Text(
-                      data?.title ?? '',
+                      data?.category?.name ?? '',
                       style: context.textTheme.titleMedium
                           ?.copyWith(color: context.theme.colorScheme.error),
                     ),
@@ -108,14 +110,14 @@ class AppProductItemWidget extends StatelessWidget {
                         ),
                         const Gap(05),
                         Text(
-                          data?.location ?? '',
+                          data?.nearby ?? '',
                           style: context.textTheme.labelMedium?.copyWith(
                               fontFamily: FontRes.MONTSERRAT_REGULAR),
                         ),
                       ],
                     ),
                     Text(
-                      data?.timeStamp ?? 'Today',
+                      getCreatedAt(time: data?.createdAt),
                       style: context.textTheme.labelMedium
                           ?.copyWith(fontFamily: FontRes.MONTSERRAT_REGULAR),
                     )
@@ -265,5 +267,13 @@ class AppProductItemWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String getCreatedAt({String? time}) {
+    String dateTimeString = "2024-06-25T01:01:47.000Z";
+    DateTime dateTime = DateTime.parse(dateTimeString);
+    int timestamp = dateTime.millisecondsSinceEpoch ~/ 1000;
+    print("Timestamp: $timestamp");
+    return DateHelper.getChatTime(timestamp);
   }
 }

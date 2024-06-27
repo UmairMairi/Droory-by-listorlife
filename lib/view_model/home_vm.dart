@@ -1,6 +1,13 @@
+import 'dart:convert';
+
 import 'package:geolocator/geolocator.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/helpers/location_helper.dart';
+import 'package:list_and_life/models/common/list_response.dart';
+import 'package:list_and_life/models/prodect_detail_model.dart';
+import 'package:list_and_life/network/api_constants.dart';
+import 'package:list_and_life/network/api_request.dart';
+import 'package:list_and_life/network/base_client.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -108,18 +115,67 @@ class HomeVM extends BaseViewModel {
   Future<void> onRefresh() async {
     // monitor network fetch
     page = 0;
+    productsList.clear();
+    Position? position = await LocationHelper.getCurrentLocation();
 
-    ///products.clear();
-    ///await fetchProducts();
-    /// if failed,use refreshFailed()
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.getProductsUrl(
+            limit: limit,
+            page: page,
+            latitude: position.latitude,
+            longitude: position.longitude),
+        requestType: RequestType.GET);
+
+    var response = await BaseClient.handleRequest(apiRequest);
+
+    ListResponse<ProductDetailModel> model = ListResponse.fromJson(
+        response, (json) => ProductDetailModel.fromJson(json));
+    productsList.addAll(model.body ?? []);
     refreshController.refreshCompleted();
   }
 
   Future<void> onLoading() async {
     // monitor network fetch
     ++page;
+    Position? position = await LocationHelper.getCurrentLocation();
+
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.getProductsUrl(
+            limit: limit,
+            page: page,
+            latitude: position.latitude,
+            longitude: position.longitude),
+        requestType: RequestType.GET);
+
+    var response = await BaseClient.handleRequest(apiRequest);
+
+    ListResponse<ProductDetailModel> model = ListResponse.fromJson(
+        response, (json) => ProductDetailModel.fromJson(json));
+    productsList.addAll(model.body ?? []);
+    notifyListeners();
 
     ///await fetchProducts();
     refreshController.loadComplete();
+  }
+
+  List<ProductDetailModel> productsList = [];
+
+  Future<List<ProductDetailModel>> getProductsApi() async {
+    Position? position = await LocationHelper.getCurrentLocation();
+
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.getProductsUrl(
+            limit: limit,
+            page: page,
+            latitude: position.latitude,
+            longitude: position.longitude),
+        requestType: RequestType.GET);
+
+    var response = await BaseClient.handleRequest(apiRequest);
+
+    ListResponse<ProductDetailModel> model = ListResponse.fromJson(
+        response, (json) => ProductDetailModel.fromJson(json));
+    productsList.addAll(model.body ?? []);
+    return productsList;
   }
 }

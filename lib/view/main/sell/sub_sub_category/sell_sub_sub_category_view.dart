@@ -31,7 +31,12 @@ class SellSubSubCategoryView extends StatelessWidget {
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const ChooseLocationView()));
+                          builder: (context) =>  ChooseLocationView(
+                            category: category,
+                            subSubCategory: subSubCategory?[index],
+                            subCategory: subCategory,
+                            type: category?.name?.toLowerCase(),
+                          )));
                   return;
                 }
                 if (subSubCategory?[index].name?.contains('Parts') ?? false) {

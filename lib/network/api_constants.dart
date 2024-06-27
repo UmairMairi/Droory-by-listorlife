@@ -20,6 +20,7 @@ class ApiConstants {
       "$_baseUrl/get/sub/sub/categories?sub_category_id=$id";
   static String getBrandsUrl({String? id}) =>
       "$_baseUrl/get/brands?sub_category_id=$id";
+  static String getProductUrl({String? id}) => "$_baseUrl/get/product/$id";
   static String addProductsUrl() => "$_baseUrl/add/products";
   static String getProductsUrl(
           {int? limit = 10,

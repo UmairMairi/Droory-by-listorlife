@@ -5,14 +5,26 @@ import 'package:flutter/services.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/helpers/image_picker_helper.dart';
 import 'package:list_and_life/view/main/sell/forms/post_added_final_view.dart';
+import 'package:list_and_life/view_model/sell_v_m.dart';
 
+import '../../../../helpers/dialog_helper.dart';
+import '../../../../models/category_model.dart';
 import '../../../../view_model/car_sell_v_m.dart';
+import '../../../../view_model/mobile_sell_v_m.dart';
 
-class IncludeCarDetailView extends BaseView<CarSellVM> {
-  const IncludeCarDetailView({super.key});
+class IncludeCarDetailView extends BaseView<SellFormsVM> {
+  final String? type;
+  final CategoryModel? category;
+  final CategoryModel? subCategory;
+  final CategoryModel? subSubCategory;
+  const IncludeCarDetailView({super.key,
+    required this.category,
+    required this.subCategory,
+    this.subSubCategory,
+    required this.type});
 
   @override
-  Widget build(BuildContext context, CarSellVM viewModel) {
+  Widget build(BuildContext context, SellFormsVM viewModel) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -715,10 +727,12 @@ class IncludeCarDetailView extends BaseView<CarSellVM> {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const PostAddedFinalView()),
+                DialogHelper.showLoading();
+                viewModel.addProduct(
+                  category: category,
+                  subCategory: subCategory,
+                  subSubCategory: subSubCategory,
+                  brands: viewModel.selectedBrand,
                 );
               },
               child: Container(

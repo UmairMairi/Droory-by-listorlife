@@ -5,6 +5,7 @@ import 'package:list_and_life/helpers/dialog_helper.dart';
 import 'package:list_and_life/models/category_model.dart';
 import 'package:list_and_life/models/common/list_response.dart';
 import 'package:list_and_life/models/common/map_response.dart';
+import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/network/api_constants.dart';
 import 'package:list_and_life/network/api_request.dart';
 import 'package:list_and_life/network/base_client.dart';
@@ -51,6 +52,11 @@ class SellFormsVM extends BaseViewModel {
 
   void addImage(String path) {
     imagesList.add(path);
+    notifyListeners();
+  }
+
+  void removeImage(int index) {
+    imagesList.removeAt(index);
     notifyListeners();
   }
 
@@ -178,12 +184,12 @@ class SellFormsVM extends BaseViewModel {
 
     var response = await BaseClient.handleRequest(apiRequest);
     log("${response}", name: "BASEX");
-    MapResponse model = MapResponse.fromJson(response, (json) => null);
+    MapResponse<ProductDetailModel> model = MapResponse.fromJson(response, (json) => ProductDetailModel.fromJson(json));
     DialogHelper.hideLoading();
     DialogHelper.showToast(message: model.message);
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const PostAddedFinalView()),
+      MaterialPageRoute(builder: (context) =>  PostAddedFinalView(data: model.body,)),
     );
   }
 

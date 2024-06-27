@@ -46,7 +46,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
             child: Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
               width: double.infinity,
-              height: 138,
+              height: 250,
               decoration: BoxDecoration(boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.5),
@@ -81,34 +81,52 @@ class EducationSellForm extends BaseView<SellFormsVM> {
           Wrap(
             children: List.generate(viewModel.imagesList.length + 1, (index) {
               if (index < viewModel.imagesList.length) {
-                return Container(
-                  margin: const EdgeInsets.all(10),
-                  width: 90,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        offset: const Offset(0, 1),
-                        blurRadius: 6,
+                return Stack(
+                  alignment: Alignment.topRight,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.all(10),
+                      width: 120,
+                      height: 80,
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            offset: const Offset(0, 1),
+                            blurRadius: 6,
+                          ),
+                        ],
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                    ],
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.file(
-                      File(viewModel.imagesList[index]),
-                      fit: BoxFit.fill,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.file(
+                          File(viewModel.imagesList[index]),
+                          fit: BoxFit.fill,
+                        ),
+                      ),
                     ),
-                  ),
+                    Container(
+                      decoration: const BoxDecoration(
+                          color: Colors.white, shape: BoxShape.circle),
+                      child: InkWell(
+                        onTap: () {
+                          viewModel.removeImage(index);
+                        },
+                        child: Icon(
+                          Icons.cancel,
+                          color: Colors.red,
+                        ),
+                      ),
+                    )
+                  ],
                 );
               } else {
                 return GestureDetector(
                   onTap: () async {
                     var image = await ImagePickerHelper.openImagePicker(
-                            context: context) ??
+                            context: context, isCropping: true) ??
                         '';
                     if (image.isNotEmpty) {
                       viewModel.addImage(image);
@@ -116,7 +134,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                   },
                   child: Container(
                     margin: const EdgeInsets.all(10),
-                    width: 90,
+                    width: 120,
                     height: 80,
                     decoration: BoxDecoration(
                       boxShadow: [
@@ -468,6 +486,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                   )),
               inputFormatters: [
                 FilteringTextInputFormatter.deny(RegExp(r"\s+")),
+                LengthLimitingTextInputFormatter(20),
                 FilteringTextInputFormatter.deny(
                     RegExp(viewModel.regexToRemoveEmoji)),
                 FilteringTextInputFormatter.digitsOnly,
