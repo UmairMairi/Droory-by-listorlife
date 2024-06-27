@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/helpers/date_helper.dart';
 import 'package:list_and_life/models/prodect_detail_model.dart';
+import 'package:list_and_life/skeletons/my_product_skeleton.dart';
 import 'package:list_and_life/skeletons/product_detail_skeleton.dart';
 import 'package:list_and_life/view_model/product_v_m.dart';
 import 'package:list_and_life/widgets/app_error_widget.dart';
@@ -226,10 +227,10 @@ class MyProductView extends BaseView<ProductVM> {
                                         ),
                                         Padding(
                                           padding:
-                                              EdgeInsets.only(left: 18, top: 5),
+                                              const EdgeInsets.only(left: 18, top: 5),
                                           child: Text(
-                                            "${DateHelper.joiningDate(DateTime.parse('${data?.createdAt}'))}",
-                                            style: TextStyle(
+                                            DateHelper.joiningDate(DateTime.parse('${data?.createdAt}')),
+                                            style: const TextStyle(
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.w600),
                                           ),
@@ -301,7 +302,7 @@ class MyProductView extends BaseView<ProductVM> {
                 if (snapshot.hasError) {
                   return const AppErrorWidget();
                 }
-                return ProductDetailSkeleton(
+                return MyProductSkeleton(
                   isLoading:
                       snapshot.connectionState == ConnectionState.waiting,
                 );

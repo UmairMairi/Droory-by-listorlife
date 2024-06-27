@@ -76,14 +76,14 @@ class AppProductItemWidget extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        data?.subSubCategory?.name ?? '',
+                        data?.name ?? '',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: context.textTheme.titleSmall,
                       ),
                     ),
                     Text(
-                      data?.category?.name ?? '',
+                      "EGP ${data?.price}",
                       style: context.textTheme.titleMedium
                           ?.copyWith(color: context.theme.colorScheme.error),
                     ),
@@ -134,9 +134,9 @@ class AppProductItemWidget extends StatelessWidget {
                               DialogHelper.showLoginDialog(context: context);
                               return;
                             }
-
+                            String phone = "${data?.user?.countryCode}${data?.user?.phoneNo}";
                             DialogHelper.goToUrl(
-                                uri: Uri.parse("tel://+919876543210"));
+                                uri: Uri.parse("tel://$phone"));
                           },
                           child: Container(
                             alignment: Alignment.center,
@@ -224,9 +224,10 @@ class AppProductItemWidget extends StatelessWidget {
                               DialogHelper.showLoginDialog(context: context);
                               return;
                             }
+                            String phone = "${data?.user?.countryCode}${data?.user?.phoneNo}";
                             DialogHelper.goToUrl(
                                 uri: Uri.parse(
-                                    'https://wa.me/+919876543210?text=Hii, I am from List & Live app and interested in your ad.'));
+                                    'https://wa.me/$phone?text=Hii, I am from List & Live app and interested in your ad.'));
                           },
                           child: Container(
                             alignment: Alignment.center,
@@ -271,9 +272,9 @@ class AppProductItemWidget extends StatelessWidget {
 
   String getCreatedAt({String? time}) {
     String dateTimeString = "2024-06-25T01:01:47.000Z";
-    DateTime dateTime = DateTime.parse(dateTimeString);
+    DateTime dateTime = DateTime.parse(time ?? dateTimeString);
     int timestamp = dateTime.millisecondsSinceEpoch ~/ 1000;
     print("Timestamp: $timestamp");
-    return DateHelper.getChatTime(timestamp);
+    return DateHelper.getTimeAgo(timestamp);
   }
 }

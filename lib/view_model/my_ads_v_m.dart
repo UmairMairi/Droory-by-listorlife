@@ -1,47 +1,21 @@
+import 'package:geolocator/geolocator.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../helpers/date_helper.dart';
+import '../helpers/db_helper.dart';
+import '../helpers/location_helper.dart';
+import '../models/common/map_response.dart';
+import '../models/home_list_model.dart';
+import '../models/prodect_detail_model.dart';
 import '../models/setting_item_model.dart';
+import '../network/api_constants.dart';
+import '../network/api_request.dart';
+import '../network/base_client.dart';
 import '../res/assets_res.dart';
 
 class MyAdsVM extends BaseViewModel {
-  List<SettingItemModel> favItemList = [
-    SettingItemModel(
-        imageList: [
-          AssetsRes.DUMMY_IPHONE_IMAGE1,
-          AssetsRes.DUMMY_IPHONE_IMAGE2,
-          AssetsRes.DUMMY_IPHONE_IMAGE3,
-          AssetsRes.DUMMY_IPHONE_IMAGE4,
-        ],
-        title: 'EGP300',
-        subTitle: 'Apple iPhone 15 Pro',
-        likes: '5',
-        views: '10',
-        description:
-            'Open Box iPhone 15 & 14 Plus Pro Max 128GB 256GB 512GB 1TB Warranty 76',
-        location: 'New York City',
-        timeStamp: 'Today',
-        isFav: true,
-        longDescription:
-            'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry.'),
-    SettingItemModel(
-        imageList: [
-          AssetsRes.DUMMY_CAR_IMAGE1,
-          AssetsRes.DUMMY_CAR_IMAGE2,
-          AssetsRes.DUMMY_CAR_IMAGE3,
-          AssetsRes.DUMMY_CAR_IMAGE4,
-        ],
-        title: 'EGP300',
-        subTitle: 'Maruti Suzuki Swift 1.2 VXI (O), 2015, Petrol',
-        description: '2015 - 48000 km',
-        location: 'New York City',
-        likes: '5',
-        views: '10',
-        timeStamp: 'Today',
-        isFav: true,
-        longDescription:
-            'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry.'),
-  ];
-
+  late RefreshController refreshController;
   int _selectIndex = 0;
 
   int get selectIndex => _selectIndex;
@@ -50,4 +24,82 @@ class MyAdsVM extends BaseViewModel {
     _selectIndex = index;
     notifyListeners();
   }
+
+
+  int _limit = 30;
+
+  int get limit => _limit;
+
+  set limit(int value) {
+    _limit = value;
+    notifyListeners();
+  }
+
+  int _page = 1;
+
+  int get page => _page;
+  set page(int value) {
+    _page = value;
+    notifyListeners();
+  }
+  bool _loading = true;
+
+  set isLoading(bool value){
+    _loading = value;
+    notifyListeners();
+  }
+  bool get isLoading => _loading;
+
+  List<ProductDetailModel> productsList = [];
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    refreshController = RefreshController(initialRefresh: true);
+    getProductsApi(loading: true);
+    super.onInit();
+  }
+
+
+  Future<void> onRefresh() async {
+    // monitor network fetch
+    page = 1;
+    productsList.clear();
+    getProductsApi(loading: true);
+    refreshController.refreshCompleted();
+  }
+
+  Future<void> onLoading() async {
+    // monitor network fetch
+    ++page;
+    getProductsApi(loading: false);
+    ///await fetchProducts();
+    refreshController.loadComplete();
+  }
+
+  Future<void> getProductsApi({bool loading = false}) async {
+    if(loading) isLoading = loading;
+
+    Position? position = await LocationHelper.getCurrentLocation();
+
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.getUsersProductsUrl(
+            limit: limit,
+            page: page,
+            userId: "${DbHelper.getUserModel()?.id}"),
+        requestType: RequestType.GET);
+    var response = await BaseClient.handleRequest(apiRequest);
+    MapResponse<HomeListModel> model = MapResponse.fromJson(response, (json) => HomeListModel.fromJson(json));
+    productsList.addAll(model.body?.data ?? []);
+
+    if(loading) isLoading = false;
+    notifyListeners();
+  }
+  String getCreatedAt({String? time}) {
+    String dateTimeString = "2024-06-25T01:01:47.000Z";
+    DateTime dateTime = DateTime.parse(time?? dateTimeString);
+    int timestamp = dateTime.millisecondsSinceEpoch ~/ 1000;
+    print("Timestamp: $timestamp");
+    return DateHelper.getTimeAgo(timestamp);
+  }
+
 }

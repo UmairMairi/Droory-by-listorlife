@@ -6,7 +6,7 @@ import 'package:list_and_life/network/api_request.dart';
 import 'package:list_and_life/network/base_client.dart';
 
 class ProductVM extends BaseViewModel {
-  Future<ProductDetailModel?> getProductDetails({int? id}) async {
+  Future<ProductDetailModel?> getProductDetails({num? id}) async {
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.getProductUrl(id: '$id'),
         requestType: RequestType.GET);

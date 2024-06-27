@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -141,37 +143,31 @@ class HomeView extends BaseView<HomeVM> {
                 style: context.textTheme.titleMedium,
               ),
               const Gap(20),
-              FutureBuilder<List<ProductDetailModel?>>(
-                  future: viewModel.getProductsApi(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return ListView.separated(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: viewModel.productsList.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              context.push(Routes.productDetails,
-                                  extra: viewModel.homeItemList[index]);
-                            },
-                            child: AppProductItemWidget(
-                              data: ProductDetailModel(),
-                            ),
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) {
-                          return const Gap(20);
-                        },
-                      );
-                    }
-                    if (snapshot.hasError) {
-                      return AppErrorWidget();
-                    }
-                    return ProductListSkeleton(
-                        isLoading: snapshot.connectionState ==
-                            ConnectionState.waiting);
-                  }),
+              if(viewModel.isLoading)...{
+                ProductListSkeleton(
+                    isLoading: viewModel.isLoading)
+              }else...{
+                 ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: viewModel.productsList.length,
+                itemBuilder: (context, index) {
+                return GestureDetector(
+                onTap: () {
+                context.push(Routes.productDetails,
+                extra: viewModel.productsList[index]);
+                },
+                child: AppProductItemWidget(
+                data: viewModel.productsList[index],
+                ),
+                );
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                return const Gap(20);
+                },
+                )
+              },
+
               const Gap(40),
             ],
           ),

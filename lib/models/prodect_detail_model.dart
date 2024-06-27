@@ -1,10 +1,11 @@
+
 class ProductDetailModel {
-  int? id;
-  int? userId;
-  int? categoryId;
-  int? subCategoryId;
-  int? subSubCategoryId;
-  int? brandId;
+  num? id;
+  num? userId;
+  num? categoryId;
+  num? subCategoryId;
+  num? subSubCategoryId;
+  num? brandId;
   String? name;
   String? itemCondition;
   String? positionType;
@@ -14,26 +15,26 @@ class ProductDetailModel {
   String? salleryTo;
   String? price;
   String? description;
-  int? year;
+  num? year;
   String? fuel;
   String? transmission;
-  int? kmDriven;
-  int? numberOfOwner;
+  num? kmDriven;
+  num? numberOfOwner;
   String? country;
   String? state;
   String? city;
   String? nearby;
   String? latitude;
   String? longitude;
-  int? status;
+  num? status;
   String? sellStatus;
-  Null? deletedAt;
+  String? deletedAt;
   String? createdAt;
   String? updatedAt;
-  int? countViews;
-  int? distance;
-  int? isFavourite;
-  Null? isFeaturedOrBoosted;
+  num? countViews;
+  num? distance;
+  num? isFavourite;
+  dynamic isFeaturedOrBoosted;
   List<ProductMedias>? productMedias;
   Category? category;
   Category? subCategory;
@@ -122,9 +123,11 @@ class ProductDetailModel {
     isFeaturedOrBoosted = json['is_featured_or_boosted'];
     if (json['product_medias'] != null) {
       productMedias = <ProductMedias>[];
+      if(json['product_medias'].isNotEmpty){
       json['product_medias'].forEach((v) {
-        productMedias!.add(new ProductMedias.fromJson(v));
+        productMedias!.add( ProductMedias.fromJson(v));
       });
+      }
     }
     category = json['category'] != null
         ? new Category.fromJson(json['category'])
@@ -176,9 +179,9 @@ class ProductDetailModel {
     data['distance'] = this.distance;
     data['is_favourite'] = this.isFavourite;
     data['is_featured_or_boosted'] = this.isFeaturedOrBoosted;
-    if (this.productMedias != null) {
+    if (productMedias != null) {
       data['product_medias'] =
-          this.productMedias!.map((v) => v.toJson()).toList();
+          productMedias?.map((v) => v.toJson()).toList();
     }
     if (this.category != null) {
       data['category'] = this.category!.toJson();

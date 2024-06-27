@@ -1,17 +1,17 @@
 class UserModel {
   String? phoneNo;
   dynamic latitude;
-  int? notificationStatus;
+  num? notificationStatus;
   dynamic bio;
-  int? deviceType;
-  int? type;
+  num? deviceType;
+  num? type;
   String? createdAt;
   dynamic password;
-  int? socialType;
+  num? socialType;
   dynamic referBy;
-  int? id;
+  num? id;
   dynamic email;
-  int? isApprove;
+  num? isApprove;
   dynamic longitude;
   String? updatedAt;
   dynamic address;
@@ -26,7 +26,7 @@ class UserModel {
   dynamic referralCode;
   String? deviceToken;
   String? name;
-  int? status;
+  num? status;
 
   UserModel(
       {this.phoneNo,

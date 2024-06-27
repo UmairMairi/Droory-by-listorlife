@@ -27,7 +27,15 @@ class ApiConstants {
           int? page = 1,
           double? latitude,
           double? longitude}) =>
-      "$_baseUrl/{{live}}get/products?limit=$limit&page=$page&latitude=$latitude&longitude=$longitude";
+      "$_baseUrl/get/products?limit=$limit&page=$page&latitude=$latitude&longitude=$longitude";
+
+  static String getUsersProductsUrl(
+      {int? limit = 10,
+        int? page = 1,
+      String? userId}) =>
+      "$_baseUrl/get/products?limit=$limit&page=$page&user_id=$userId";
+
+
   static String addFavouriteUrl() => "$_baseUrl/add/favourite";
   static String getNotificationUrl({
     int? limit = 10,
