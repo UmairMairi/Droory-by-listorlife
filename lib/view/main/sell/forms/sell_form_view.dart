@@ -7,7 +7,7 @@ import 'package:list_and_life/view/main/sell/forms/vehicles_sell_form.dart';
 import 'package:list_and_life/widgets/app_error_widget.dart';
 
 import '../../../../skeletons/sell_form_skeleton.dart';
-import '../../../../view_model/mobile_sell_v_m.dart';
+import '../../../../view_model/sell_forms_vm.dart';
 import 'education_sell_form.dart';
 import 'job_sell_form.dart';
 

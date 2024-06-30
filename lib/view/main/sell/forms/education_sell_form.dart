@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:list_and_life/base/base.dart';
 
 import '../../../../helpers/image_picker_helper.dart';
-import '../../../../view_model/mobile_sell_v_m.dart';
+import '../../../../view_model/sell_forms_vm.dart';
 import '../../../../widgets/app_map_widget.dart';
 
 class EducationSellForm extends BaseView<SellFormsVM> {

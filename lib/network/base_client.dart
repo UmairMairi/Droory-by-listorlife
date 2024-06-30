@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -57,12 +58,7 @@ class BaseClient {
 
     switch (apiRequest.requestType) {
       case RequestType.POST:
-        var res = await _dio.post(apiRequest.url,
-            data: FormData.fromMap(apiRequest.body),
-            options: Options(
-              headers: headers,
-            ));
-        return res.data;
+        return await _handlePostRequest(apiRequest, headers);
       case RequestType.GET:
         var response = await _dio.get(apiRequest.url,
             options: Options(
@@ -79,16 +75,71 @@ class BaseClient {
         return response.data;
 
       case RequestType.PUT:
-        var response = await _dio.put(apiRequest.url,
-            data: FormData.fromMap(apiRequest.body),
-            options: Options(
-              headers: headers,
-            ));
-        if (kDebugMode) {
-          print(response.data);
-        }
-        return response.data;
+        return await _handlePutRequest(apiRequest, headers);
     }
+  }
+
+  static Future<dynamic> _handlePutRequest(
+      ApiRequest apiRequest, Map<String, dynamic> headers) async {
+    var data;
+    switch (apiRequest.bodyType) {
+      case BodyType.raw:
+        data = apiRequest.body;
+        headers['Content-Type'] = 'text/plain';
+        break;
+      case BodyType.json:
+        data = apiRequest.body;
+        headers['Content-Type'] = 'application/json';
+        break;
+      case BodyType.multipart:
+        headers['Content-Type'] = 'multipart/form-data';
+        data = apiRequest.body;
+        break;
+      case BodyType.formData:
+      default:
+        data = FormData.fromMap(apiRequest.body);
+        break;
+    }
+
+    var response = await _dio.put(apiRequest.url,
+        data: data,
+        options: Options(
+          headers: headers,
+        ));
+    if (kDebugMode) {
+      print(response.data);
+    }
+    return response.data;
+  }
+
+  static Future<dynamic> _handlePostRequest(
+      ApiRequest apiRequest, Map<String, dynamic> headers) async {
+    var data;
+    switch (apiRequest.bodyType) {
+      case BodyType.raw:
+        data = apiRequest.body;
+        headers['Content-Type'] = 'text/plain';
+        break;
+      case BodyType.json:
+        data = apiRequest.body;
+        headers['Content-Type'] = 'application/json';
+        break;
+      case BodyType.multipart:
+        headers['Content-Type'] = 'multipart/form-data';
+        data = apiRequest.body;
+        break;
+      case BodyType.formData:
+      default:
+        data = FormData.fromMap(apiRequest.body);
+        break;
+    }
+
+    var res = await _dio.post(apiRequest.url,
+        data: data,
+        options: Options(
+          headers: headers,
+        ));
+    return res.data;
   }
 
   static Future<bool> hasNetwork() async {
@@ -115,6 +166,7 @@ class BaseClient {
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.uploadMediaUrl(),
         requestType: RequestType.POST,
+        bodyType: BodyType.formData,
         body: body);
 
     var response = await handleRequest(apiRequest);

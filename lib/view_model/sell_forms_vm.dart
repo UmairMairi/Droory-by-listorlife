@@ -143,8 +143,13 @@ class SellFormsVM extends BaseViewModel {
       CategoryModel? subSubCategory,
       CategoryModel? brands}) async {
     final List<String> images = [];
-    images.add(await BaseClient.uploadImage(imagePath: mainImagePath));
+    String mainImage = await BaseClient.uploadImage(imagePath: mainImagePath);
+    images.add(mainImage);
+
+    var count = 0;
+
     for (var element in imagesList) {
+      print("count => ${++count}");
       images.add(await BaseClient.uploadImage(imagePath: element));
     }
     Map<String, dynamic> body = {
@@ -155,7 +160,8 @@ class SellFormsVM extends BaseViewModel {
       "name": adTitleTextController.text.trim(),
       "item_condition": currentIndex == 1 ? "new" : "used",
       "description": descriptionTextController.text.trim(),
-      "medias": images,
+      "image": mainImage,
+      "medias": images.reversed.toList(),
       "price": priceTextController.text.trim(),
       "year": yearTextController.text.trim(),
       "fuel": fuelTextController.text.trim(),
@@ -180,16 +186,21 @@ class SellFormsVM extends BaseViewModel {
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.addProductsUrl(),
         requestType: RequestType.POST,
+        bodyType: BodyType.formData,
         body: body);
 
     var response = await BaseClient.handleRequest(apiRequest);
     log("${response}", name: "BASEX");
-    MapResponse<ProductDetailModel> model = MapResponse.fromJson(response, (json) => ProductDetailModel.fromJson(json));
+    MapResponse<ProductDetailModel> model = MapResponse.fromJson(
+        response, (json) => ProductDetailModel.fromJson(json));
     DialogHelper.hideLoading();
     DialogHelper.showToast(message: model.message);
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) =>  PostAddedFinalView(data: model.body,)),
+      MaterialPageRoute(
+          builder: (context) => PostAddedFinalView(
+                data: model.body,
+              )),
     );
   }
 

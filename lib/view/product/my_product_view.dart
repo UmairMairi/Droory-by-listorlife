@@ -35,7 +35,7 @@ class MyProductView extends BaseView<ProductVM> {
                       children: [
                         CardSwipeWidget(
                           height: 300,
-                          imagesList: data?.productMedias,
+                          imagesList: data?.productMedias?.reversed.toList(),
                           borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(20),
                             topRight: Radius.circular(20),
@@ -226,10 +226,12 @@ class MyProductView extends BaseView<ProductVM> {
                                           ),
                                         ),
                                         Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 18, top: 5),
+                                          padding: const EdgeInsets.only(
+                                              left: 18, top: 5),
                                           child: Text(
-                                            DateHelper.joiningDate(DateTime.parse('${data?.createdAt}')),
+                                            DateHelper.joiningDate(
+                                                DateTime.parse(
+                                                    '${data?.createdAt}')),
                                             style: const TextStyle(
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.w600),

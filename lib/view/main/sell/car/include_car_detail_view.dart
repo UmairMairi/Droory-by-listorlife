@@ -10,7 +10,7 @@ import 'package:list_and_life/view_model/sell_v_m.dart';
 import '../../../../helpers/dialog_helper.dart';
 import '../../../../models/category_model.dart';
 import '../../../../view_model/car_sell_v_m.dart';
-import '../../../../view_model/mobile_sell_v_m.dart';
+import '../../../../view_model/sell_forms_vm.dart';
 
 class IncludeCarDetailView extends BaseView<SellFormsVM> {
   final String? type;

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:dio/dio.dart';
-
+import 'package:list_and_life/helpers/dialog_helper.dart';
 
 class AppExceptions extends Interceptor {
   static const divider =
@@ -54,7 +54,7 @@ class AppExceptions extends Interceptor {
     );
     log("❌ End error");
     log("$divider\n");
-
+    DialogHelper.hideLoading();
     // ... (error handling logic)
 
     return super.onError(err, handler);

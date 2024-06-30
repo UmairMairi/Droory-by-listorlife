@@ -26,16 +26,16 @@ class ApiConstants {
           {int? limit = 10,
           int? page = 1,
           double? latitude,
-          double? longitude}) =>
-      "$_baseUrl/get/products?limit=$limit&page=$page&latitude=$latitude&longitude=$longitude";
+          double? longitude,
+          required String? sellStatus}) =>
+      "$_baseUrl/get/products?limit=$limit&page=$page&latitude=$latitude&longitude=$longitude&sell_status=$sellStatus";
 
   static String getUsersProductsUrl(
           {int? limit = 10, int? page = 1, String? userId}) =>
       "$_baseUrl/get/products?limit=$limit&page=$page&user_id=$userId";
 
-  static String getFavouritesUrl(
-          {int? limit = 10, int? page = 1, String? userId}) =>
-      "$_baseUrl/get/products?limit=$limit&page=$page&user_id=$userId&favourite=true";
+  static String getFavouritesUrl({int? limit = 10, int? page = 1}) =>
+      "$_baseUrl/get/products?limit=$limit&page=$page&favourite=true";
 
   static String addFavouriteUrl() => "$_baseUrl/add/favourite";
   static String getNotificationUrl({

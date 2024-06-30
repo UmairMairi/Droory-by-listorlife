@@ -9,7 +9,7 @@ import '../view_model/car_sell_v_m.dart';
 import '../view_model/chat_vm.dart';
 import '../view_model/home_vm.dart';
 import '../view_model/main_vm.dart';
-import '../view_model/mobile_sell_v_m.dart';
+import '../view_model/sell_forms_vm.dart';
 import '../view_model/my_ads_v_m.dart';
 import '../view_model/notification_v_m.dart';
 import '../view_model/product_v_m.dart';

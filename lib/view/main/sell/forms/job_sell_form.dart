@@ -7,7 +7,7 @@ import 'package:list_and_life/models/category_model.dart';
 
 import '../../../../helpers/dialog_helper.dart';
 import '../../../../helpers/image_picker_helper.dart';
-import '../../../../view_model/mobile_sell_v_m.dart';
+import '../../../../view_model/sell_forms_vm.dart';
 import '../../../../widgets/app_map_widget.dart';
 
 class JobSellForm extends BaseView<SellFormsVM> {

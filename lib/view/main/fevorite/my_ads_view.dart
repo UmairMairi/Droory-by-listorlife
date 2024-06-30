@@ -119,7 +119,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                             flex: 6,
                                             child: ImageView.rect(
                                               image:
-                                                  "${ApiConstants.imageUrl}/${viewModel.productsList[index].productMedias?.last.media}",
+                                                  "${ApiConstants.imageUrl}/${viewModel.productsList[index].productMedias?.first.media}",
                                               width: 250,
                                               height: 100,
                                               borderRadius: 10,

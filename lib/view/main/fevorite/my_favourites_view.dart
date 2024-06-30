@@ -29,7 +29,7 @@ class MyFavouritesView extends StatefulWidget {
 class _MyFavouritesViewState extends State<MyFavouritesView> {
   List<ProductDetailModel> _productsList = [];
   late RefreshController refreshController;
-  int _limit = 30;
+  final int _limit = 30;
   int _page = 1;
   bool _isLoading = true;
 
@@ -54,10 +54,7 @@ class _MyFavouritesViewState extends State<MyFavouritesView> {
     if (loading) _isLoading = loading;
     setState(() {});
     ApiRequest apiRequest = ApiRequest(
-        url: ApiConstants.getFavouritesUrl(
-            limit: _limit,
-            page: _page,
-            userId: "${DbHelper.getUserModel()?.id}"),
+        url: ApiConstants.getFavouritesUrl(limit: _limit, page: _page),
         requestType: RequestType.GET);
     var response = await BaseClient.handleRequest(apiRequest);
     MapResponse<HomeListModel> model =
