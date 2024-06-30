@@ -45,7 +45,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
             child: Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
               width: double.infinity,
-              height: 250,
+              height: 220,
               decoration: BoxDecoration(boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.5),
@@ -58,7 +58,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
                       borderRadius: BorderRadius.circular(10),
                       child: Image.file(
                         File(viewModel.mainImagePath),
-                        fit: BoxFit.fill,
+                        fit: BoxFit.contain,
                       ))
                   : const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -102,7 +102,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
                         borderRadius: BorderRadius.circular(10),
                         child: Image.file(
                           File(viewModel.imagesList[index]),
-                          fit: BoxFit.fill,
+                          fit: BoxFit.contain,
                         ),
                       ),
                     ),
@@ -225,7 +225,6 @@ class JobSellForm extends BaseView<SellFormsVM> {
                   ),
                 ),
                 inputFormatters: [
-                  FilteringTextInputFormatter.deny(RegExp(r"\s+")),
                   FilteringTextInputFormatter.deny(
                       RegExp(viewModel.regexToRemoveEmoji)),
                 ],
@@ -291,7 +290,6 @@ class JobSellForm extends BaseView<SellFormsVM> {
                 ),
               ),
               inputFormatters: [
-                FilteringTextInputFormatter.deny(RegExp(r"\s+")),
                 FilteringTextInputFormatter.deny(
                     RegExp(viewModel.regexToRemoveEmoji)),
               ],
@@ -356,7 +354,6 @@ class JobSellForm extends BaseView<SellFormsVM> {
                 ),
               ),
               inputFormatters: [
-                FilteringTextInputFormatter.deny(RegExp(r"\s+")),
                 FilteringTextInputFormatter.deny(
                     RegExp(viewModel.regexToRemoveEmoji)),
               ],
@@ -403,7 +400,6 @@ class JobSellForm extends BaseView<SellFormsVM> {
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
                 LengthLimitingTextInputFormatter(8),
-                FilteringTextInputFormatter.deny(RegExp(r"\s+")),
                 FilteringTextInputFormatter.deny(
                     RegExp(viewModel.regexToRemoveEmoji)),
               ],
@@ -448,7 +444,6 @@ class JobSellForm extends BaseView<SellFormsVM> {
                 ),
               ),
               inputFormatters: [
-                FilteringTextInputFormatter.deny(RegExp(r"\s+")),
                 FilteringTextInputFormatter.digitsOnly,
                 LengthLimitingTextInputFormatter(8),
                 FilteringTextInputFormatter.deny(
@@ -494,7 +489,6 @@ class JobSellForm extends BaseView<SellFormsVM> {
                     borderSide: BorderSide.none,
                   )),
               inputFormatters: [
-                FilteringTextInputFormatter.deny(RegExp(r"\s+")),
                 FilteringTextInputFormatter.deny(
                     RegExp(viewModel.regexToRemoveEmoji)),
               ],
@@ -538,7 +532,6 @@ class JobSellForm extends BaseView<SellFormsVM> {
                     borderSide: BorderSide.none,
                   )),
               inputFormatters: [
-                FilteringTextInputFormatter.deny(RegExp(r"\s+")),
                 FilteringTextInputFormatter.deny(
                     RegExp(viewModel.regexToRemoveEmoji)),
               ],
@@ -596,7 +589,6 @@ class JobSellForm extends BaseView<SellFormsVM> {
                     borderSide: BorderSide.none,
                   )),
               inputFormatters: [
-                FilteringTextInputFormatter.deny(RegExp(r"\s+")),
                 FilteringTextInputFormatter.deny(
                     RegExp(viewModel.regexToRemoveEmoji)),
               ],

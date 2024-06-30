@@ -17,11 +17,12 @@ class IncludeCarDetailView extends BaseView<SellFormsVM> {
   final CategoryModel? category;
   final CategoryModel? subCategory;
   final CategoryModel? subSubCategory;
-  const IncludeCarDetailView({super.key,
-    required this.category,
-    required this.subCategory,
-    this.subSubCategory,
-    required this.type});
+  const IncludeCarDetailView(
+      {super.key,
+      required this.category,
+      required this.subCategory,
+      this.subSubCategory,
+      required this.type});
 
   @override
   Widget build(BuildContext context, SellFormsVM viewModel) {
@@ -69,7 +70,7 @@ class IncludeCarDetailView extends BaseView<SellFormsVM> {
                         borderRadius: BorderRadius.circular(10),
                         child: Image.file(
                           File(viewModel.mainImagePath),
-                          fit: BoxFit.fitWidth,
+                          fit: BoxFit.contain,
                         ))
                     : const Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -110,7 +111,7 @@ class IncludeCarDetailView extends BaseView<SellFormsVM> {
                       borderRadius: BorderRadius.circular(10),
                       child: Image.file(
                         File(viewModel.imagesList[index]),
-                        fit: BoxFit.fill,
+                        fit: BoxFit.contain,
                       ),
                     ),
                   );
@@ -295,7 +296,6 @@ class IncludeCarDetailView extends BaseView<SellFormsVM> {
                   ),
                 ),
                 inputFormatters: [
-                  FilteringTextInputFormatter.deny(RegExp(r"\s+")),
                   FilteringTextInputFormatter.deny(
                       RegExp(viewModel.regexToRemoveEmoji)),
                 ],
@@ -346,7 +346,6 @@ class IncludeCarDetailView extends BaseView<SellFormsVM> {
                       borderSide: BorderSide.none,
                     )),
                 inputFormatters: [
-                  FilteringTextInputFormatter.deny(RegExp(r"\s+")),
                   FilteringTextInputFormatter.deny(
                       RegExp(viewModel.regexToRemoveEmoji)),
                   FilteringTextInputFormatter.digitsOnly,
@@ -399,7 +398,6 @@ class IncludeCarDetailView extends BaseView<SellFormsVM> {
                       borderSide: BorderSide.none,
                     )),
                 inputFormatters: [
-                  FilteringTextInputFormatter.deny(RegExp(r"\s+")),
                   FilteringTextInputFormatter.deny(
                       RegExp(viewModel.regexToRemoveEmoji)),
                   FilteringTextInputFormatter.digitsOnly,
@@ -530,7 +528,6 @@ class IncludeCarDetailView extends BaseView<SellFormsVM> {
                       borderSide: BorderSide.none,
                     )),
                 inputFormatters: [
-                  FilteringTextInputFormatter.deny(RegExp(r"\s+")),
                   FilteringTextInputFormatter.deny(
                       RegExp(viewModel.regexToRemoveEmoji)),
                   FilteringTextInputFormatter.digitsOnly,
@@ -575,7 +572,6 @@ class IncludeCarDetailView extends BaseView<SellFormsVM> {
                       borderSide: BorderSide.none,
                     )),
                 inputFormatters: [
-                  FilteringTextInputFormatter.deny(RegExp(r"\s+")),
                   FilteringTextInputFormatter.deny(
                       RegExp(viewModel.regexToRemoveEmoji)),
                   FilteringTextInputFormatter.digitsOnly,
@@ -627,7 +623,6 @@ class IncludeCarDetailView extends BaseView<SellFormsVM> {
                       borderSide: BorderSide.none,
                     )),
                 inputFormatters: [
-                  FilteringTextInputFormatter.deny(RegExp(r"\s+")),
                   FilteringTextInputFormatter.deny(
                       RegExp(viewModel.regexToRemoveEmoji)),
                 ],
@@ -672,7 +667,6 @@ class IncludeCarDetailView extends BaseView<SellFormsVM> {
                       borderSide: BorderSide.none,
                     )),
                 inputFormatters: [
-                  FilteringTextInputFormatter.deny(RegExp(r"\s+")),
                   FilteringTextInputFormatter.deny(
                       RegExp(viewModel.regexToRemoveEmoji)),
                 ],
@@ -716,10 +710,10 @@ class IncludeCarDetailView extends BaseView<SellFormsVM> {
                       borderSide: BorderSide.none,
                     )),
                 inputFormatters: [
-                  FilteringTextInputFormatter.deny(RegExp(r"\s+")),
                   FilteringTextInputFormatter.deny(
                       RegExp(viewModel.regexToRemoveEmoji)),
                   FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(8),
                 ],
                 keyboardType: TextInputType.number,
                 textInputAction: TextInputAction.done,

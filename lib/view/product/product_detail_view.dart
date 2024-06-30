@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/models/setting_item_model.dart';
@@ -19,7 +20,7 @@ import '../../routes/app_routes.dart';
 import '../../skeletons/product_detail_skeleton.dart';
 import '../../widgets/app_error_widget.dart';
 import '../../widgets/card_swipe_widget.dart';
-import '../../widgets/favorite_button.dart';
+import '../../widgets/like_button.dart';
 
 class ProductDetailView extends BaseView<ProductVM> {
   final ProductDetailModel? data;
@@ -32,373 +33,392 @@ class ProductDetailView extends BaseView<ProductVM> {
         children: [
           FutureBuilder<ProductDetailModel?>(
               future: viewModel.getProductDetails(id: data?.id),
-            builder: (context, snapshot) {
-              if(snapshot.hasData){
-                return SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      CardSwipeWidget(
-                        height: 300,
-                        imagesList: data?.productMedias,
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(20),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        CardSwipeWidget(
+                          height: 300,
+                          imagesList: data?.productMedias,
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(20),
+                          ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          top: 10,
-                          right: 20,
-                          left: 20,
-                          bottom: 40,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              data?.name ?? '',
-                              style: context.textTheme.titleMedium,
-                            ),
-                            const Gap(5),
-                            Row(
-                              children: [
-                                const Icon(
-                                  Icons.location_on,
-                                  size: 16,
-                                ),
-                                Gap(05),
-                                Text(data?.nearby ?? ''),
-                              ],
-                            ),
-                            const Gap(10),
-                            Text(
-                              "EGP ${data?.price}",
-                              style: context.textTheme.titleLarge
-                                  ?.copyWith(color: Colors.red),
-                            ),
-                            const Gap(10),
-                            if (data?.category?.name?.contains('Cars') ??
-                                false) ...{
-                              Container(
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Colors.grey.withOpacity(0.2),
-                                ),
-                                padding: const EdgeInsets.only(
-                                    top: 20, bottom: 20, left: 15, right: 10),
-                                child: Table(
-                                  columnWidths: const {
-                                    0: FlexColumnWidth(3),
-                                    1: FlexColumnWidth(4),
-                                    2: FlexColumnWidth(4),
-                                  },
-                                  children: [
-                                    TableRow(children: [
-                                      Row(
-                                        children: [
-                                          Image.asset(
-                                            AssetsRes.IC_PETROL_ICON,
-                                            height: 15,
-                                          ),
-                                          const SizedBox(
-                                            width: 3,
-                                          ),
-                                          Text(
-                                            data?.fuel ?? '',
-                                            style:
-                                            context.textTheme.titleSmall,
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          Image.asset(
-                                            AssetsRes.IC_SPEED_ICON,
-                                            width: 17,
-                                          ),
-                                          const SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text(
-                                            "${data?.kmDriven}",
-                                            style:
-                                            context.textTheme.titleSmall,
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          Image.asset(
-                                            AssetsRes.IC_GEAR_ICON,
-                                            height: 13,
-                                          ),
-                                          const SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text(
-                                            '${data?.transmission}',
-                                            style:
-                                            context.textTheme.titleSmall,
-                                          ),
-                                        ],
-                                      ),
-                                    ]),
-                                    TableRow(children: [
-                                      Padding(
-                                        padding:
-                                        const EdgeInsets.only(top: 20),
-                                        child: Row(
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            top: 10,
+                            right: 20,
+                            left: 20,
+                            bottom: 40,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                "${data?.name}",
+                                style: context.textTheme.titleMedium,
+                              ),
+                              const Gap(5),
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.location_on,
+                                    size: 16,
+                                  ),
+                                  Gap(05),
+                                  Text(data?.nearby ?? ''),
+                                ],
+                              ),
+                              const Gap(10),
+                              Text(
+                                "EGP ${data?.price}",
+                                style: context.textTheme.titleLarge
+                                    ?.copyWith(color: Colors.red),
+                              ),
+                              const Gap(10),
+                              if (data?.category?.name?.contains('Cars') ??
+                                  false) ...{
+                                Container(
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.grey.withOpacity(0.2),
+                                  ),
+                                  padding: const EdgeInsets.only(
+                                      top: 20, bottom: 20, left: 15, right: 10),
+                                  child: Table(
+                                    columnWidths: const {
+                                      0: FlexColumnWidth(3),
+                                      1: FlexColumnWidth(4),
+                                      2: FlexColumnWidth(4),
+                                    },
+                                    children: [
+                                      TableRow(children: [
+                                        Row(
                                           children: [
                                             Image.asset(
-                                              AssetsRes.IC_USER_ICON,
+                                              AssetsRes.IC_PETROL_ICON,
                                               height: 15,
+                                            ),
+                                            const SizedBox(
+                                              width: 3,
+                                            ),
+                                            Text(
+                                              data?.fuel ?? '',
+                                              style:
+                                                  context.textTheme.titleSmall,
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Image.asset(
+                                              AssetsRes.IC_SPEED_ICON,
+                                              width: 17,
                                             ),
                                             const SizedBox(
                                               width: 5,
                                             ),
                                             Text(
-                                              'Owner',
-                                              style: context
-                                                  .textTheme.titleSmall,
+                                              "${data?.kmDriven}",
+                                              style:
+                                                  context.textTheme.titleSmall,
                                             ),
                                           ],
                                         ),
-                                      ),
-                                      Padding(
-                                        padding:
-                                        const EdgeInsets.only(top: 20),
-                                        child: Row(
+                                        Row(
                                           children: [
                                             Image.asset(
-                                              AssetsRes.IC_LOACTION_ICON,
-                                              height: 15,
-                                            ),
-                                            const SizedBox(
-                                              width: 5,
-                                            ),
-                                            Text(
-                                              'City',
-                                              style: context
-                                                  .textTheme.titleSmall,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding:
-                                        const EdgeInsets.only(top: 20),
-                                        child: Row(
-                                          children: [
-                                            Image.asset(
-                                              AssetsRes.IC_CALENDER_ICON,
+                                              AssetsRes.IC_GEAR_ICON,
                                               height: 13,
                                             ),
                                             const SizedBox(
                                               width: 5,
                                             ),
                                             Text(
-                                              'Posting Date',
-                                              style: context
-                                                  .textTheme.titleSmall,
+                                              '${data?.transmission}',
+                                              style:
+                                                  context.textTheme.titleSmall,
                                             ),
                                           ],
                                         ),
-                                      ),
-                                    ]),
-                                    TableRow(children: [
-                                      Padding(
-                                        padding:
-                                        EdgeInsets.only(left: 18, top: 5),
-                                        child: Text(
-                                          '${data?.numberOfOwner}',
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w600),
+                                      ]),
+                                      TableRow(children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 20),
+                                          child: Row(
+                                            children: [
+                                              Image.asset(
+                                                AssetsRes.IC_USER_ICON,
+                                                height: 15,
+                                              ),
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
+                                              Text(
+                                                'Owner',
+                                                style: context
+                                                    .textTheme.titleSmall,
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      Padding(
-                                        padding:
-                                        EdgeInsets.only(left: 18, top: 5),
-                                        child: Text(
-                                          '${data?.city}',
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w600),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 20),
+                                          child: Row(
+                                            children: [
+                                              Image.asset(
+                                                AssetsRes.IC_LOACTION_ICON,
+                                                height: 15,
+                                              ),
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
+                                              Text(
+                                                'City',
+                                                style: context
+                                                    .textTheme.titleSmall,
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      Padding(
-                                        padding:
-                                        EdgeInsets.only(left: 18, top: 5),
-                                        child: Text(
-                                          "${DateHelper.joiningDate(DateTime.parse('${data?.createdAt}'))}",
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w600),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 20),
+                                          child: Row(
+                                            children: [
+                                              Image.asset(
+                                                AssetsRes.IC_CALENDER_ICON,
+                                                height: 13,
+                                              ),
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
+                                              Text(
+                                                'Posting Date',
+                                                style: context
+                                                    .textTheme.titleSmall,
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ]),
-                                  ],
+                                      ]),
+                                      TableRow(children: [
+                                        Padding(
+                                          padding:
+                                              EdgeInsets.only(left: 18, top: 5),
+                                          child: Text(
+                                            '${data?.numberOfOwner}',
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              EdgeInsets.only(left: 18, top: 5),
+                                          child: Text(
+                                            '${data?.city}',
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              EdgeInsets.only(left: 18, top: 5),
+                                          child: Text(
+                                            "${DateHelper.joiningDate(DateTime.parse('${data?.createdAt}'))}",
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                        ),
+                                      ]),
+                                    ],
+                                  ),
                                 ),
+                                const Gap(10),
+                              },
+                              Text(
+                                'Description',
+                                style: context.textTheme.titleMedium,
                               ),
+                              const Gap(05),
+                              Text(data?.description ?? ''),
                               const Gap(10),
-                            },
-                            Text(
-                              'Description',
-                              style: context.textTheme.titleMedium,
-                            ),
-                            const Gap(05),
-                            Text(data?.description ?? ''),
-                            const Gap(10),
-                            Card(
-                              color: const Color(0xfff5f5f5),
-                              elevation: 0,
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    ImageView.circle(image: "${ApiConstants.imageUrl}/${data?.user?.profilePic}", width: 80, height: 80),
-                                    /*const CircleAvatar(
+                              Card(
+                                color: const Color(0xfff5f5f5),
+                                elevation: 0,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      ImageView.circle(
+                                          image:
+                                              "${ApiConstants.imageUrl}/${data?.user?.profilePic}",
+                                          width: 80,
+                                          height: 80),
+                                      /*const CircleAvatar(
                                       radius: 40,
                                       backgroundImage:
                                       AssetImage(AssetsRes.DUMMY_PROFILE),
                                     ),*/
-                                    const Gap(20),
-                                    Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Posted by',
-                                          style: context.textTheme.titleSmall
-                                              ?.copyWith(color: Colors.grey),
-                                        ),
-                                        Text(
-                                          data?.user?.name ?? '',
-                                          style: context.textTheme.titleLarge
-                                              ?.copyWith(
-                                              fontFamily:
-                                              FontRes.MONTSERRAT_SEMIBOLD),
-                                        ),
-                                        Text(
-                                          'Posted On: ${DateHelper.joiningDate(DateTime.parse('${data?.createdAt}'))}',
-                                          style: context.textTheme.titleSmall
-                                              ?.copyWith(color: Colors.grey),
-                                        ),
-                                        const Gap(10),
-                                        InkWell(
-                                          onTap: () {
-                                            if (DbHelper.getIsGuest()) {
-                                              DialogHelper.showLoginDialog(
-                                                  context: context);
-
-                                              return;
-                                            }
-                                            context.push(Routes.seeProfile);
-                                          },
-                                          child: Text(
-                                            'See Profile',
+                                      const Gap(20),
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Posted by',
                                             style: context.textTheme.titleSmall
-                                                ?.copyWith(
-                                                color: Colors.red,
-                                                decorationColor: Colors.red,
-                                                decoration:
-                                                TextDecoration.underline),
+                                                ?.copyWith(color: Colors.grey),
                                           ),
-                                        )
-                                      ],
-                                    )
-                                  ],
+                                          Text(
+                                            "${data?.user?.name} ${data?.user?.lastName}",
+                                            style: context.textTheme.titleLarge
+                                                ?.copyWith(
+                                                    fontFamily: FontRes
+                                                        .MONTSERRAT_SEMIBOLD),
+                                          ),
+                                          Text(
+                                            'Posted On: ${DateHelper.joiningDate(DateTime.parse('${data?.createdAt}'))}',
+                                            style: context.textTheme.titleSmall
+                                                ?.copyWith(color: Colors.grey),
+                                          ),
+                                          const Gap(10),
+                                          InkWell(
+                                            onTap: () {
+                                              if (DbHelper.getIsGuest()) {
+                                                DialogHelper.showLoginDialog(
+                                                    context: context);
+
+                                                return;
+                                              }
+
+                                              data?.user?.id = data?.userId;
+
+                                              context.push(Routes.seeProfile,
+                                                  extra: data?.user);
+                                            },
+                                            child: Text(
+                                              'See Profile',
+                                              style: context
+                                                  .textTheme.titleSmall
+                                                  ?.copyWith(
+                                                      color: Colors.red,
+                                                      decorationColor:
+                                                          Colors.red,
+                                                      decoration: TextDecoration
+                                                          .underline),
+                                            ),
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            const Gap(20),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Image.asset(
-                                          AssetsRes.IC_LOACTION_ICON,
-                                          height: 24,
-                                        ),
-                                        const Gap(05),
-                                        Text(
-                                          data?.city ?? '',
-                                          style: context.textTheme.titleLarge,
-                                        ),
-                                      ],
-                                    ),
-                                    const Gap(05),
-                                    Text(
-                                      'City',
-                                      style: context.textTheme.titleLarge,
-                                    ),
-                                    const Gap(25),
-                                    InkWell(
-                                      onTap: () {
-                                        if (DbHelper.getIsGuest()) {
-                                          DialogHelper.showLoginDialog(
-                                              context: context);
-                                          return;
-                                        }
-                                        print(data?.toJson());
-                                        MapsLauncher.launchCoordinates(
-                                          double.parse("${data?.latitude}"), double.parse("${data?.longitude}")
-                                            );
-                                      },
-                                      child: Text(
-                                        'Get Direction',
-                                        style: context.textTheme.titleSmall?.copyWith(
-                                            color: Colors.red,
-                                            decorationColor: Colors.red,
-                                            decoration: TextDecoration.underline),
+                              const Gap(20),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Image.asset(
+                                            AssetsRes.IC_LOACTION_ICON,
+                                            height: 24,
+                                          ),
+                                          const Gap(05),
+                                          Text(
+                                            data?.city ?? '',
+                                            style: context.textTheme.titleLarge,
+                                          ),
+                                        ],
                                       ),
-                                    )
-                                  ],
-                                ),
-                                const Gap(10),
-                                Expanded(
-                                    child: Stack(
-                                      alignment: Alignment.center,
-                                      children: [
-                                        Image.asset(AssetsRes.DUMMY_MAP_IMAGE),
-                                        Image.asset(
-                                          AssetsRes.DUMMY_CIRCLE_MAP,
-                                          height: 60,
+                                      const Gap(05),
+                                      Text(
+                                        'City',
+                                        style: context.textTheme.titleLarge,
+                                      ),
+                                      const Gap(25),
+                                      InkWell(
+                                        onTap: () {
+                                          if (DbHelper.getIsGuest()) {
+                                            DialogHelper.showLoginDialog(
+                                                context: context);
+                                            return;
+                                          }
+                                          print(data?.toJson());
+                                          MapsLauncher.launchQuery(
+                                              data?.nearby ?? '');
+                                        },
+                                        child: Text(
+                                          'Get Direction',
+                                          style: context.textTheme.titleSmall
+                                              ?.copyWith(
+                                                  color: Colors.red,
+                                                  decorationColor: Colors.red,
+                                                  decoration:
+                                                      TextDecoration.underline),
                                         ),
-                                      ],
-                                    )),
-                              ],
-                            ),
-                            const Gap(30),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
+                                      )
+                                    ],
+                                  ),
+                                  const Gap(20),
+                                  Expanded(
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: SizedBox(
+                                        height: 150,
+                                        width: 150,
+                                        child: AddressMapWidget(
+                                          latLng: LatLng(
+                                            double.parse(data?.latitude ?? '0'),
+                                            double.parse(
+                                                data?.longitude ?? '0'),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const Gap(30),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                }
+                if (snapshot.hasError) {
+                  return const AppErrorWidget();
+                }
+                return ProductDetailSkeleton(
+                  isLoading:
+                      snapshot.connectionState == ConnectionState.waiting,
                 );
-              }
-              if (snapshot.hasError) {
-                return const AppErrorWidget();
-              }
-              return ProductDetailSkeleton(
-                isLoading:
-                snapshot.connectionState == ConnectionState.waiting,
-              );
-            }
-          ),
+              }),
           Positioned(
               top: 10,
               left: 10,
@@ -429,9 +449,11 @@ class ProductDetailView extends BaseView<ProductVM> {
                       alignment: Alignment.center,
                       decoration: const BoxDecoration(
                           color: Colors.white, shape: BoxShape.circle),
-                      child: FavoriteButton(
+                      child: LikeButton(
                         isFav: data?.isFavourite == 1,
-                        onTap: () {},
+                        onTap: () async {
+                          await viewModel.onLikeButtonTapped(id: data?.id);
+                        },
                       ),
                     ),
                     InkWell(
@@ -598,6 +620,51 @@ class ProductDetailView extends BaseView<ProductVM> {
           )
         ],
       ),
+    );
+  }
+}
+
+class AddressMapWidget extends StatelessWidget {
+  final LatLng latLng;
+  const AddressMapWidget({super.key, required this.latLng});
+
+  @override
+  Widget build(BuildContext context) {
+    return GoogleMap(
+      zoomControlsEnabled: false,
+      zoomGesturesEnabled: false,
+      scrollGesturesEnabled: false,
+      mapToolbarEnabled: false,
+      liteModeEnabled: false,
+      onMapCreated: (gController) {
+        gController.animateCamera(
+          CameraUpdate.newCameraPosition(
+              CameraPosition(zoom: 15, target: latLng)),
+        );
+      },
+      initialCameraPosition: CameraPosition(
+        zoom: 15,
+        target: latLng,
+      ),
+      myLocationButtonEnabled: false,
+      markers: {
+        Marker(
+            markerId: const MarkerId("1"),
+            position: latLng,
+            onTap: () {
+              MapsLauncher.launchCoordinates(latLng.latitude, latLng.longitude);
+            })
+      },
+      circles: {
+        Circle(
+          circleId: CircleId("1"),
+          center: latLng,
+          radius: 120,
+          strokeWidth: 5,
+          strokeColor: const Color(0xff6468E3),
+          fillColor: const Color(0xFF6468E3).withOpacity(0.5),
+        ),
+      },
     );
   }
 }

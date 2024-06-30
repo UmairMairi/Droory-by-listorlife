@@ -7,7 +7,7 @@ import '../helpers/db_helper.dart';
 import '../res/assets_res.dart';
 import '../res/font_res.dart';
 import '../widgets/card_swipe_widget.dart';
-import '../widgets/favorite_button.dart';
+import '../widgets/like_button.dart';
 
 class ProductListSkeleton extends StatelessWidget {
   final bool isLoading;
@@ -56,7 +56,7 @@ class ProductListSkeleton extends StatelessWidget {
                           alignment: Alignment.center,
                           decoration: const BoxDecoration(
                               color: Colors.white, shape: BoxShape.circle),
-                          child: FavoriteButton(
+                          child: LikeButton(
                             isFav: true,
                             onTap: () {},
                           ),

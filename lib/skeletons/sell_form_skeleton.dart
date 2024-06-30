@@ -23,7 +23,7 @@ class SellFormSkeleton extends StatelessWidget {
             Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
               width: double.infinity,
-              height: 250,
+              height: 220,
               decoration: BoxDecoration(boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.5),

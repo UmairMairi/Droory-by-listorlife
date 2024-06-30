@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/models/common/map_response.dart';
 import 'package:list_and_life/models/prodect_detail_model.dart';
@@ -18,5 +20,17 @@ class ProductVM extends BaseViewModel {
             response, (json) => ProductDetailModel.fromJson(json));
 
     return model.body;
+  }
+
+  Future<void> onLikeButtonTapped({required num? id}) async {
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.addFavouriteUrl(),
+        requestType: RequestType.POST,
+        body: {'product_id': id});
+
+    var response = await BaseClient.handleRequest(apiRequest);
+    MapResponse model = MapResponse.fromJson(response, (json) => null);
+
+    log("Fav Message => ${model.message}");
   }
 }

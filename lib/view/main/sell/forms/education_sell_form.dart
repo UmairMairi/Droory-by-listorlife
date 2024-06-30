@@ -46,7 +46,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
             child: Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
               width: double.infinity,
-              height: 250,
+              height: 220,
               decoration: BoxDecoration(boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.5),
@@ -59,7 +59,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                       borderRadius: BorderRadius.circular(10),
                       child: Image.file(
                         File(viewModel.mainImagePath),
-                        fit: BoxFit.fill,
+                        fit: BoxFit.contain,
                       ))
                   : const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -103,7 +103,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                         borderRadius: BorderRadius.circular(10),
                         child: Image.file(
                           File(viewModel.imagesList[index]),
-                          fit: BoxFit.fill,
+                          fit: BoxFit.contain,
                         ),
                       ),
                     ),
@@ -224,7 +224,6 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                 ),
               ),
               inputFormatters: [
-                FilteringTextInputFormatter.deny(RegExp(r"\s+")),
                 FilteringTextInputFormatter.deny(
                     RegExp(viewModel.regexToRemoveEmoji)),
               ],
@@ -293,7 +292,6 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                   ),
                 ),
                 inputFormatters: [
-                  FilteringTextInputFormatter.deny(RegExp(r"\s+")),
                   FilteringTextInputFormatter.deny(
                       RegExp(viewModel.regexToRemoveEmoji)),
                 ],
@@ -384,7 +382,6 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                     borderSide: BorderSide.none,
                   )),
               inputFormatters: [
-                FilteringTextInputFormatter.deny(RegExp(r"\s+")),
                 FilteringTextInputFormatter.deny(
                     RegExp(viewModel.regexToRemoveEmoji)),
               ],
@@ -442,7 +439,6 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                     borderSide: BorderSide.none,
                   )),
               inputFormatters: [
-                FilteringTextInputFormatter.deny(RegExp(r"\s+")),
                 FilteringTextInputFormatter.deny(
                     RegExp(viewModel.regexToRemoveEmoji)),
               ],
@@ -485,8 +481,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                     borderSide: BorderSide.none,
                   )),
               inputFormatters: [
-                FilteringTextInputFormatter.deny(RegExp(r"\s+")),
-                LengthLimitingTextInputFormatter(20),
+                LengthLimitingTextInputFormatter(8),
                 FilteringTextInputFormatter.deny(
                     RegExp(viewModel.regexToRemoveEmoji)),
                 FilteringTextInputFormatter.digitsOnly,

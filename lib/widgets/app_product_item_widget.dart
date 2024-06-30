@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -9,9 +11,13 @@ import 'package:list_and_life/models/setting_item_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/widgets/card_swipe_widget.dart';
-import 'package:list_and_life/widgets/favorite_button.dart';
+import 'package:list_and_life/widgets/like_button.dart';
 
 import '../helpers/db_helper.dart';
+import '../models/common/map_response.dart';
+import '../network/api_constants.dart';
+import '../network/api_request.dart';
+import '../network/base_client.dart';
 import '../routes/app_routes.dart';
 
 class AppProductItemWidget extends StatelessWidget {
@@ -57,9 +63,9 @@ class AppProductItemWidget extends StatelessWidget {
                     alignment: Alignment.center,
                     decoration: const BoxDecoration(
                         color: Colors.white, shape: BoxShape.circle),
-                    child: FavoriteButton(
+                    child: LikeButton(
                       isFav: data?.isFavourite == 1,
-                      onTap: () {},
+                      onTap: () async => await onLikeButtonTapped(id: data?.id),
                     ),
                   )),
             ],
@@ -134,7 +140,8 @@ class AppProductItemWidget extends StatelessWidget {
                               DialogHelper.showLoginDialog(context: context);
                               return;
                             }
-                            String phone = "${data?.user?.countryCode}${data?.user?.phoneNo}";
+                            String phone =
+                                "${data?.user?.countryCode}${data?.user?.phoneNo}";
                             DialogHelper.goToUrl(
                                 uri: Uri.parse("tel://$phone"));
                           },
@@ -224,7 +231,8 @@ class AppProductItemWidget extends StatelessWidget {
                               DialogHelper.showLoginDialog(context: context);
                               return;
                             }
-                            String phone = "${data?.user?.countryCode}${data?.user?.phoneNo}";
+                            String phone =
+                                "${data?.user?.countryCode}${data?.user?.phoneNo}";
                             DialogHelper.goToUrl(
                                 uri: Uri.parse(
                                     'https://wa.me/$phone?text=Hii, I am from List & Live app and interested in your ad.'));
@@ -276,5 +284,17 @@ class AppProductItemWidget extends StatelessWidget {
     int timestamp = dateTime.millisecondsSinceEpoch ~/ 1000;
     print("Timestamp: $timestamp");
     return DateHelper.getTimeAgo(timestamp);
+  }
+
+  Future<void> onLikeButtonTapped({required num? id}) async {
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.addFavouriteUrl(),
+        requestType: RequestType.POST,
+        body: {'product_id': id});
+
+    var response = await BaseClient.handleRequest(apiRequest);
+    MapResponse model = MapResponse.fromJson(response, (json) => null);
+
+    log("Fav Message => ${model.message}");
   }
 }

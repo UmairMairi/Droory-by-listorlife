@@ -30,11 +30,12 @@ class ApiConstants {
       "$_baseUrl/get/products?limit=$limit&page=$page&latitude=$latitude&longitude=$longitude";
 
   static String getUsersProductsUrl(
-      {int? limit = 10,
-        int? page = 1,
-      String? userId}) =>
+          {int? limit = 10, int? page = 1, String? userId}) =>
       "$_baseUrl/get/products?limit=$limit&page=$page&user_id=$userId";
 
+  static String getFavouritesUrl(
+          {int? limit = 10, int? page = 1, String? userId}) =>
+      "$_baseUrl/get/products?limit=$limit&page=$page&user_id=$userId&favourite=true";
 
   static String addFavouriteUrl() => "$_baseUrl/add/favourite";
   static String getNotificationUrl({

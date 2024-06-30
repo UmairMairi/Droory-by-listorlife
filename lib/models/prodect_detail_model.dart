@@ -1,3 +1,4 @@
+import 'package:list_and_life/models/user_model.dart';
 
 class ProductDetailModel {
   num? id;
@@ -32,6 +33,7 @@ class ProductDetailModel {
   String? createdAt;
   String? updatedAt;
   num? countViews;
+  num? favouritesCount;
   num? distance;
   num? isFavourite;
   dynamic isFeaturedOrBoosted;
@@ -40,50 +42,51 @@ class ProductDetailModel {
   Category? subCategory;
   Category? subSubCategory;
   Category? brand;
-  User? user;
+  UserModel? user;
 
   ProductDetailModel(
       {this.id,
-        this.userId,
-        this.categoryId,
-        this.subCategoryId,
-        this.subSubCategoryId,
-        this.brandId,
-        this.name,
-        this.itemCondition,
-        this.positionType,
-        this.salleryPeriod,
-        this.educationType,
-        this.salleryFrom,
-        this.salleryTo,
-        this.price,
-        this.description,
-        this.year,
-        this.fuel,
-        this.transmission,
-        this.kmDriven,
-        this.numberOfOwner,
-        this.country,
-        this.state,
-        this.city,
-        this.nearby,
-        this.latitude,
-        this.longitude,
-        this.status,
-        this.sellStatus,
-        this.deletedAt,
-        this.createdAt,
-        this.updatedAt,
-        this.countViews,
-        this.distance,
-        this.isFavourite,
-        this.isFeaturedOrBoosted,
-        this.productMedias,
-        this.category,
-        this.subCategory,
-        this.subSubCategory,
-        this.brand,
-        this.user});
+      this.userId,
+      this.categoryId,
+      this.subCategoryId,
+      this.subSubCategoryId,
+      this.brandId,
+      this.name,
+      this.itemCondition,
+      this.positionType,
+      this.salleryPeriod,
+      this.educationType,
+      this.salleryFrom,
+      this.salleryTo,
+      this.price,
+      this.description,
+      this.year,
+      this.fuel,
+      this.transmission,
+      this.kmDriven,
+      this.numberOfOwner,
+      this.country,
+      this.state,
+      this.city,
+      this.nearby,
+      this.latitude,
+      this.longitude,
+      this.status,
+      this.sellStatus,
+      this.deletedAt,
+      this.createdAt,
+      this.updatedAt,
+      this.countViews,
+      this.favouritesCount,
+      this.distance,
+      this.isFavourite,
+      this.isFeaturedOrBoosted,
+      this.productMedias,
+      this.category,
+      this.subCategory,
+      this.subSubCategory,
+      this.brand,
+      this.user});
 
   ProductDetailModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -118,15 +121,16 @@ class ProductDetailModel {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     countViews = json['count_views'];
+    favouritesCount = json['favourites_count'];
     distance = json['distance'];
     isFavourite = json['is_favourite'];
     isFeaturedOrBoosted = json['is_featured_or_boosted'];
     if (json['product_medias'] != null) {
       productMedias = <ProductMedias>[];
-      if(json['product_medias'].isNotEmpty){
-      json['product_medias'].forEach((v) {
-        productMedias!.add( ProductMedias.fromJson(v));
-      });
+      if (json['product_medias'].isNotEmpty) {
+        json['product_medias'].forEach((v) {
+          productMedias!.add(ProductMedias.fromJson(v));
+        });
       }
     }
     category = json['category'] != null
@@ -139,7 +143,7 @@ class ProductDetailModel {
         ? new Category.fromJson(json['sub_sub_category'])
         : null;
     brand = json['brand'] != null ? new Category.fromJson(json['brand']) : null;
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    user = json['user'] != null ? new UserModel.fromJson(json['user']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -150,6 +154,7 @@ class ProductDetailModel {
     data['sub_category_id'] = this.subCategoryId;
     data['sub_sub_category_id'] = this.subSubCategoryId;
     data['brand_id'] = this.brandId;
+    data['favourites_count'] = this.favouritesCount;
     data['name'] = this.name;
     data['item_condition'] = this.itemCondition;
     data['position_type'] = this.positionType;
@@ -180,8 +185,7 @@ class ProductDetailModel {
     data['is_favourite'] = this.isFavourite;
     data['is_featured_or_boosted'] = this.isFeaturedOrBoosted;
     if (productMedias != null) {
-      data['product_medias'] =
-          productMedias?.map((v) => v.toJson()).toList();
+      data['product_medias'] = productMedias?.map((v) => v.toJson()).toList();
     }
     if (this.category != null) {
       data['category'] = this.category!.toJson();
@@ -230,35 +234,6 @@ class Category {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['name'] = this.name;
-    return data;
-  }
-}
-
-class User {
-  String? name;
-  String? profilePic;
-  String? phoneNo;
-  String? countryCode;
-  String? email;
-
-  User(
-      {this.name, this.profilePic, this.phoneNo, this.countryCode, this.email});
-
-  User.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    profilePic = json['profile_pic'];
-    phoneNo = json['phone_no'];
-    countryCode = json['country_code'];
-    email = json['email'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['profile_pic'] = this.profilePic;
-    data['phone_no'] = this.phoneNo;
-    data['country_code'] = this.countryCode;
-    data['email'] = this.email;
     return data;
   }
 }

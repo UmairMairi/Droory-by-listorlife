@@ -15,8 +15,11 @@ class ImagePickerHelper {
   static bool get isLoading => _isLoading;
 
   ///for picking image from camera and gallery
-  static Future<String?> openImagePicker(
-      {required BuildContext context, bool isCropping = false}) async {
+  static Future<String?> openImagePicker({
+    required BuildContext context,
+    bool isCropping = true,
+    bool isCircle = false,
+  }) async {
     _imagePickerCompleter = Completer<String?>();
 
     showModalBottomSheet(
@@ -82,8 +85,8 @@ class ImagePickerHelper {
                       Navigator.pop(context);
                       _isLoading = true;
                       try {
-                        String? selectedImage =
-                            await pickImageFromCamera(isCropping: isCropping);
+                        String? selectedImage = await pickImageFromCamera(
+                            isCropping: isCropping, isCircle: isCircle);
                         if (selectedImage != null) {
                           _completeImagePicker(
                               selectedImage); // Complete the Future with the selected image path
@@ -140,8 +143,8 @@ class ImagePickerHelper {
                       Navigator.pop(context);
                       _isLoading = true;
                       try {
-                        String? selectedImage =
-                            await pickImageFromGallery(isCropping: isCropping);
+                        String? selectedImage = await pickImageFromGallery(
+                            isCropping: isCropping, isCircle: isCircle);
                         if (selectedImage != null) {
                           _completeImagePicker(
                               selectedImage); // Complete the Future with the selected image path
@@ -209,13 +212,11 @@ class ImagePickerHelper {
   }
 
   static Future<String?> pickImageFromGallery(
-      {bool isCropping = false,
-      CropAspectRatioPreset? cropAspectRatioPreset}) async {
+      {bool isCropping = false, bool isCircle = false}) async {
     XFile? path = await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (path != null && isCropping) {
-      String? croppedPath =
-          await cropSelectedImage(path.path, cropAspectRatioPreset);
+      String? croppedPath = await cropSelectedImage(path.path, isCircle);
       return croppedPath;
     }
     return path?.path;
@@ -236,12 +237,10 @@ class ImagePickerHelper {
 
   /// Pick image from Camera and return cropped image
   static Future<String?> pickImageFromCamera(
-      {bool isCropping = false,
-      CropAspectRatioPreset? cropAspectRatioPreset}) async {
+      {bool isCropping = false, bool isCircle = false}) async {
     XFile? path = await ImagePicker().pickImage(source: ImageSource.camera);
     if (path != null && isCropping) {
-      String? croppedPath =
-          await cropSelectedImage(path.path, cropAspectRatioPreset);
+      String? croppedPath = await cropSelectedImage(path.path, isCircle);
       return croppedPath;
     }
     return path?.path;
@@ -249,18 +248,19 @@ class ImagePickerHelper {
 
   /// Takes image input
   static Future<String?> cropSelectedImage(
-      String imageFile, CropAspectRatioPreset? cropAspectRatioPreset) async {
+      String imageFile, bool isCircle) async {
     CroppedFile? croppedFile;
     croppedFile = await ImageCropper().cropImage(
       sourcePath: imageFile,
       compressQuality: 60,
       uiSettings: [
         AndroidUiSettings(
-          toolbarTitle: 'Cropper',
+          toolbarTitle: 'Crop Image',
           toolbarColor: Colors.black,
           toolbarWidgetColor: Colors.white,
           initAspectRatio: CropAspectRatioPreset.ratio16x9,
           lockAspectRatio: true,
+          cropStyle: isCircle ? CropStyle.circle : CropStyle.rectangle,
           aspectRatioPresets: [
             CropAspectRatioPreset.ratio16x9,
             CropAspectRatioPreset.square,
@@ -277,7 +277,7 @@ class ImagePickerHelper {
           rotateButtonsHidden: true,
           aspectRatioLockEnabled: true,
           aspectRatioLockDimensionSwapEnabled: true,
-          cropStyle: CropStyle.rectangle,
+          cropStyle: isCircle ? CropStyle.circle : CropStyle.rectangle,
           showCancelConfirmationDialog: true,
           aspectRatioPresets: [
             CropAspectRatioPreset.ratio16x9,

@@ -171,7 +171,7 @@ class _AppMapWidgetState extends State<AppMapWidget> {
               AssetsRes.IC_LOCATION_PIN,
               height: 35,
               width: 35,
-              fit: BoxFit.cover,
+              fit: BoxFit.contain,
             ),
             child: GoogleMap(
               markers: Set<Marker>.from(markers),

@@ -25,7 +25,6 @@ class MyAdsVM extends BaseViewModel {
     notifyListeners();
   }
 
-
   int _limit = 30;
 
   int get limit => _limit;
@@ -42,12 +41,14 @@ class MyAdsVM extends BaseViewModel {
     _page = value;
     notifyListeners();
   }
+
   bool _loading = true;
 
-  set isLoading(bool value){
+  set isLoading(bool value) {
     _loading = value;
     notifyListeners();
   }
+
   bool get isLoading => _loading;
 
   List<ProductDetailModel> productsList = [];
@@ -55,51 +56,52 @@ class MyAdsVM extends BaseViewModel {
   void onInit() {
     // TODO: implement onInit
     refreshController = RefreshController(initialRefresh: true);
-    getProductsApi(loading: true);
     super.onInit();
   }
 
+  @override
+  void onClose() {
+    refreshController.dispose();
+    super.onClose();
+  }
 
   Future<void> onRefresh() async {
     // monitor network fetch
     page = 1;
     productsList.clear();
-    getProductsApi(loading: true);
+    await getProductsApi(loading: true);
     refreshController.refreshCompleted();
   }
 
   Future<void> onLoading() async {
     // monitor network fetch
     ++page;
-    getProductsApi(loading: false);
+    await getProductsApi(loading: false);
+
     ///await fetchProducts();
     refreshController.loadComplete();
   }
 
   Future<void> getProductsApi({bool loading = false}) async {
-    if(loading) isLoading = loading;
-
-    Position? position = await LocationHelper.getCurrentLocation();
-
+    if (loading) isLoading = loading;
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.getUsersProductsUrl(
-            limit: limit,
-            page: page,
-            userId: "${DbHelper.getUserModel()?.id}"),
+            limit: limit, page: page, userId: "${DbHelper.getUserModel()?.id}"),
         requestType: RequestType.GET);
     var response = await BaseClient.handleRequest(apiRequest);
-    MapResponse<HomeListModel> model = MapResponse.fromJson(response, (json) => HomeListModel.fromJson(json));
+    MapResponse<HomeListModel> model =
+        MapResponse.fromJson(response, (json) => HomeListModel.fromJson(json));
     productsList.addAll(model.body?.data ?? []);
 
-    if(loading) isLoading = false;
+    if (loading) isLoading = false;
     notifyListeners();
   }
+
   String getCreatedAt({String? time}) {
     String dateTimeString = "2024-06-25T01:01:47.000Z";
-    DateTime dateTime = DateTime.parse(time?? dateTimeString);
+    DateTime dateTime = DateTime.parse(time ?? dateTimeString);
     int timestamp = dateTime.millisecondsSinceEpoch ~/ 1000;
     print("Timestamp: $timestamp");
     return DateHelper.getTimeAgo(timestamp);
   }
-
 }

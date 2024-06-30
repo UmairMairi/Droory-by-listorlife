@@ -26,7 +26,6 @@ class HomeVM extends BaseViewModel {
 
   List<ProductDetailModel> productsList = [];
 
-
   set currentLocation(String value) {
     _currentLocation = value;
     notifyListeners();
@@ -48,12 +47,14 @@ class HomeVM extends BaseViewModel {
     _page = value;
     notifyListeners();
   }
+
   bool _loading = true;
 
-  set isLoading(bool value){
+  set isLoading(bool value) {
     _loading = value;
     notifyListeners();
   }
+
   bool get isLoading => _loading;
 
   @override
@@ -84,7 +85,6 @@ class HomeVM extends BaseViewModel {
       SettingItemModel(
           icon: AssetsRes.IC_CAT_CLOTHS, title: 'Clothes', onTap: () {}),
     ];
-    getProductsApi(loading: true);
   }
 
   Future<void> updateLocation() async {
@@ -97,22 +97,21 @@ class HomeVM extends BaseViewModel {
     // monitor network fetch
     page = 1;
     productsList.clear();
-    getProductsApi(loading: true);
+    await getProductsApi(loading: true);
     refreshController.refreshCompleted();
   }
 
   Future<void> onLoading() async {
     // monitor network fetch
     ++page;
-    getProductsApi(loading: false);
+    await getProductsApi(loading: false);
+
     ///await fetchProducts();
     refreshController.loadComplete();
   }
 
-
-
   Future<void> getProductsApi({bool loading = false}) async {
-    if(loading) isLoading = loading;
+    if (loading) isLoading = loading;
 
     Position? position = await LocationHelper.getCurrentLocation();
 
@@ -124,10 +123,16 @@ class HomeVM extends BaseViewModel {
             longitude: position.longitude),
         requestType: RequestType.GET);
     var response = await BaseClient.handleRequest(apiRequest);
-    MapResponse<HomeListModel> model = MapResponse.fromJson(response, (json) => HomeListModel.fromJson(json));
-    productsList.addAll(model.body?.data?.where((element)=> element.userId != DbHelper?.getUserModel()?.id).toList() ?? []);
+    MapResponse<HomeListModel> model =
+        MapResponse.fromJson(response, (json) => HomeListModel.fromJson(json));
 
-    if(loading) isLoading = false;
+    productsList.addAll(model.body?.data
+            ?.where((element) => element.userId != DbHelper?.getUserModel()?.id)
+            .toList() ??
+        []);
+
+    /// productsList.addAll(model.body?.data ?? []);
+    if (loading) isLoading = false;
     notifyListeners();
   }
 }

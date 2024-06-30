@@ -1,32 +1,113 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/models/prodect_detail_model.dart';
+import 'package:list_and_life/network/api_constants.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
+import 'package:list_and_life/widgets/app_empty_widget.dart';
+import 'package:list_and_life/widgets/app_error_widget.dart';
+import 'package:list_and_life/widgets/app_loading_widget.dart';
 import 'package:list_and_life/widgets/app_outline_button.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
-import 'package:list_and_life/widgets/favorite_button.dart';
+import 'package:list_and_life/widgets/like_button.dart';
 import 'package:list_and_life/widgets/image_view.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../helpers/date_helper.dart';
+import '../../helpers/db_helper.dart';
+import '../../models/common/map_response.dart';
+import '../../models/home_list_model.dart';
 import '../../models/setting_item_model.dart';
+import '../../models/user_model.dart';
+import '../../network/api_request.dart';
+import '../../network/base_client.dart';
 import '../../routes/app_routes.dart';
+import '../../skeletons/other_product_skeleton.dart';
 
 class SeeProfileView extends StatefulWidget {
-  const SeeProfileView({super.key});
+  final UserModel? user;
+  const SeeProfileView({super.key, required this.user});
 
   @override
   State<SeeProfileView> createState() => _SeeProfileViewState();
 }
 
 class _SeeProfileViewState extends State<SeeProfileView> {
-  List<String> imageList = [
-    AssetsRes.DUMMY_CAR_FIRST,
-    AssetsRes.DUMMY_CAR_SECOUND,
-    AssetsRes.DUMMY_CAR_FIRST,
-  ];
+  late RefreshController _refreshController;
+
+  bool _isLoading = true;
+  List<ProductDetailModel> _productsList = [];
+  final int _limit = 30;
+  int _page = 1;
+
+  @override
+  void initState() {
+    _refreshController = RefreshController(initialRefresh: true);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _refreshController.dispose();
+    super.dispose();
+  }
+
+  Future<void> onLikeButtonTapped({required num? id}) async {
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.addFavouriteUrl(),
+        requestType: RequestType.POST,
+        body: {'product_id': id});
+
+    var response = await BaseClient.handleRequest(apiRequest);
+    MapResponse model = MapResponse.fromJson(response, (json) => null);
+
+    log("Fav Message => ${model.message}");
+  }
+
+  Future<void> _getProductsApi({bool loading = false}) async {
+    if (loading) _isLoading = loading;
+    setState(() {});
+
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.getUsersProductsUrl(
+            limit: _limit, page: _page, userId: "${widget.user?.id}"),
+        requestType: RequestType.GET);
+    var response = await BaseClient.handleRequest(apiRequest);
+    MapResponse<HomeListModel> model =
+        MapResponse.fromJson(response, (json) => HomeListModel.fromJson(json));
+    _productsList.addAll(model.body?.data ?? []);
+    if (loading) _isLoading = false;
+    setState(() {});
+  }
+
+  Future<void> _onRefresh() async {
+    _page = 1;
+    _productsList.clear();
+    await _getProductsApi(loading: true);
+    _refreshController.refreshCompleted();
+  }
+
+  Future<void> _onLoading() async {
+    ++_page;
+    await _getProductsApi(loading: false);
+
+    _refreshController.loadComplete();
+  }
+
+  String getCreatedAt({String? time}) {
+    String dateTimeString = "2024-06-25T01:01:47.000Z";
+    DateTime dateTime = DateTime.parse(time ?? dateTimeString);
+    int timestamp = dateTime.millisecondsSinceEpoch ~/ 1000;
+    print("Timestamp: $timestamp");
+    return DateHelper.getTimeAgo(timestamp);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,14 +122,10 @@ class _SeeProfileViewState extends State<SeeProfileView> {
               onSelected: (int value) {
                 switch (value) {
                   case 1:
-
-                    ///Share Profile
                     Share.share(
                         "Check this user profile in List or Lift app url: www.google.com");
                     return;
                   case 2:
-
-                    ///Report User
                     showModalBottomSheet(
                         context: context,
                         isScrollControlled: true,
@@ -167,8 +244,6 @@ class _SeeProfileViewState extends State<SeeProfileView> {
 
                     return;
                   case 3:
-
-                    ///Block User
                     showModalBottomSheet(
                         context: context,
                         isScrollControlled: true,
@@ -246,14 +321,16 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                   ]),
         ],
       ),
-      body: SingleChildScrollView(
+      body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Column(
           children: [
-            const Row(
+            Row(
               children: [
                 ImageView.circle(
-                  image: AssetsRes.DUMMY_PROFILE,
+                  image:
+                      "${ApiConstants.imageUrl}/${widget.user?.profilePic}" ??
+                          AssetsRes.DUMMY_PROFILE,
                   height: 60,
                   width: 60,
                 ),
@@ -266,7 +343,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "John Marker",
+                        "${widget.user?.name} ${widget.user?.lastName}",
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 14,
@@ -283,7 +360,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                           ),
                           Gap(05),
                           Text(
-                            "Member since Mar 2018",
+                            "Member since ${DateFormat('MMM yyyy').format(DateTime.parse("${widget.user?.createdAt}"))}",
                             style: TextStyle(
                                 color: Color(0xff7E8392), fontSize: 12),
                           ),
@@ -297,132 +374,141 @@ class _SeeProfileViewState extends State<SeeProfileView> {
             const SizedBox(
               height: 20,
             ),
-            const Row(
-              children: [
-                Icon(
-                  Icons.help_outline,
-                  size: 15,
-                ),
-                SizedBox(width: 5),
-                Text(
-                  "Deals in sale and purchase of used certified cars",
-                  style: TextStyle(color: Color(0xff7E8392), fontSize: 12),
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 20,
-            ),
             const Divider(),
             const SizedBox(
               height: 10,
             ),
-            ListView.builder(
-                itemCount: 3,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return InkWell(
-                    onTap: () {
-                      context.push(
-                        Routes.productDetails,
-                        extra: SettingItemModel(
-                            imageList: [
-                              AssetsRes.DUMMY_CAR_IMAGE1,
-                              AssetsRes.DUMMY_CAR_IMAGE2,
-                              AssetsRes.DUMMY_CAR_IMAGE3,
-                              AssetsRes.DUMMY_CAR_IMAGE4,
-                            ],
-                            title: 'EGP300',
-                            subTitle:
-                                'Maruti Suzuki Swift 1.2 VXI (O), 2015, Petrol',
-                            description: '2015 - 48000 km',
-                            location: 'New York City',
-                            timeStamp: 'Today',
-                            longDescription:
-                                'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry.'),
-                      );
-                    },
-                    child: Card(
-                      elevation: 4,
-                      color: Colors.white,
-                      margin: const EdgeInsets.symmetric(vertical: 8),
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: 5, bottom: 10, left: 5, right: 5),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            ClipRRect(
-                                borderRadius: BorderRadius.circular(15),
-                                child: Image.asset(
-                                  imageList[index],
-                                  fit: BoxFit.cover,
-                                  scale: 1,
-                                )),
-                            const SizedBox(
-                              width: 15,
-                            ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "EGP300",
-                                        style: context.textTheme.titleMedium
-                                            ?.copyWith(
-                                                fontFamily:
-                                                    FontRes.MONTSERRAT_BOLD),
-                                      ),
-                                      FavoriteButton(onTap: () {})
-                                    ],
-                                  ),
-                                  const Text(
-                                    "Hyundai i20 N Line 1.0 N8 Tu...",
-                                  ),
-                                  const Text(
-                                    "2022 - 17000 KM",
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Image.asset(
-                                            AssetsRes.IC_LOACTION_ICON,
-                                            height: 14,
-                                            width: 14,
+            Expanded(
+              child: SmartRefresher(
+                controller: _refreshController,
+                enablePullDown: true,
+                enablePullUp: true,
+                header: const WaterDropHeader(),
+                onRefresh: _onRefresh,
+                onLoading: _onLoading,
+                child: _isLoading
+                    ? OtherProductSkeleton(isLoading: _isLoading)
+                    : _productsList.isNotEmpty
+                        ? ListView.builder(
+                            itemCount: _productsList.length,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: () {
+                                  context.push(
+                                    Routes.productDetails,
+                                    extra: _productsList[index],
+                                  );
+                                },
+                                child: Card(
+                                  elevation: 4,
+                                  color: Colors.white,
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 8),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 5, bottom: 10, left: 5, right: 5),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        ImageView.rect(
+                                            image:
+                                                "${ApiConstants.imageUrl}/${_productsList[index].productMedias?.first.media}",
+                                            borderRadius: 15,
+                                            width: 90,
+                                            height: 100),
+                                        const SizedBox(
+                                          width: 15,
+                                        ),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    "EGP${_productsList[index].price}",
+                                                    style: context
+                                                        .textTheme.titleMedium
+                                                        ?.copyWith(
+                                                            fontFamily: FontRes
+                                                                .MONTSERRAT_BOLD),
+                                                  ),
+                                                  LikeButton(
+                                                    onTap: () async =>
+                                                        onLikeButtonTapped(
+                                                            id: _productsList[
+                                                                    index]
+                                                                .id),
+                                                    isFav: _productsList[index]
+                                                            .isFavourite ==
+                                                        1,
+                                                  )
+                                                ],
+                                              ),
+                                              Text(
+                                                "${_productsList[index].description}",
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Expanded(
+                                                    child: Row(
+                                                      children: [
+                                                        Image.asset(
+                                                          AssetsRes
+                                                              .IC_LOACTION_ICON,
+                                                          height: 14,
+                                                          width: 14,
+                                                        ),
+                                                        const Gap(8),
+                                                        Expanded(
+                                                          child: Text(
+                                                            "${_productsList[index].nearby}",
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            style: TextStyle(
+                                                                fontSize: 12),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Gap(05),
+                                                  Text(
+                                                    getCreatedAt(
+                                                        time:
+                                                            _productsList[index]
+                                                                .createdAt),
+                                                    style:
+                                                        TextStyle(fontSize: 12),
+                                                  )
+                                                ],
+                                              )
+                                            ],
                                           ),
-                                          const Gap(8),
-                                          const Text(
-                                            "New York City",
-                                            style: TextStyle(fontSize: 12),
-                                          ),
-                                        ],
-                                      ),
-                                      const Text(
-                                        "Today",
-                                        style: TextStyle(fontSize: 12),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                })
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            })
+                        : const AppEmptyWidget(),
+              ),
+            )
           ],
         ),
       ),

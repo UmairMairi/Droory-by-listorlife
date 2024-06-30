@@ -4,6 +4,7 @@ import 'package:list_and_life/helpers/db_helper.dart';
 import 'package:list_and_life/models/category_model.dart';
 import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/models/setting_item_model.dart';
+import 'package:list_and_life/models/user_model.dart';
 import 'package:list_and_life/view/main/chat/message_view.dart';
 import 'package:list_and_life/view/main/filtter/Filter_view.dart';
 import 'package:list_and_life/view/main/permission/location_permission_view.dart';
@@ -125,7 +126,11 @@ class AppPages {
       GoRoute(
         path: Routes.seeProfile,
         pageBuilder: (context, state) {
-          return getPage(child: const SeeProfileView(), state: state);
+          return getPage(
+              child: SeeProfileView(
+                user: state.extra as UserModel,
+              ),
+              state: state);
         },
       ),
       GoRoute(

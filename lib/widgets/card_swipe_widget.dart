@@ -65,7 +65,7 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget>
                     placeholder: AssetsRes.IC_IMAGE_PLACEHOLDER,
                     width: context.width,
                     height: widget.height ?? 220,
-                    fit: BoxFit.fill,
+                    fit: BoxFit.contain,
                   ));
             }),
           ),

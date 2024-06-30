@@ -67,7 +67,8 @@ dependencies:
   sign_in_with_apple: ^6.1.1
   google_sign_in: ^6.2.1
   flutter_facebook_auth: ^7.0.0
-  firebase_auth: ^5.1.0
+  firebase_auth: 5.1.1
+  like_button: ^2.0.5
   avatar_glow: ^3.0.1
   syncfusion_flutter_sliders: ^26.1.35
   share_plus: ^9.0.0
