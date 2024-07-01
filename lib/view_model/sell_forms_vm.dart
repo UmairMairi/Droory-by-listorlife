@@ -128,7 +128,7 @@ class SellFormsVM extends BaseViewModel {
   Future<List<CategoryModel>> getBrands({CategoryModel? data}) async {
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.getBrandsUrl(id: "${data?.id}"),
-        requestType: RequestType.GET);
+        requestType: RequestType.get);
     var response = await BaseClient.handleRequest(apiRequest);
 
     ListResponse<CategoryModel> model =
@@ -185,7 +185,7 @@ class SellFormsVM extends BaseViewModel {
 
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.addProductsUrl(),
-        requestType: RequestType.POST,
+        requestType: RequestType.post,
         bodyType: BodyType.formData,
         body: body);
 

@@ -55,7 +55,7 @@ class _MyFavouritesViewState extends State<MyFavouritesView> {
     setState(() {});
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.getFavouritesUrl(limit: _limit, page: _page),
-        requestType: RequestType.GET);
+        requestType: RequestType.get);
     var response = await BaseClient.handleRequest(apiRequest);
     MapResponse<HomeListModel> model =
         MapResponse.fromJson(response, (json) => HomeListModel.fromJson(json));

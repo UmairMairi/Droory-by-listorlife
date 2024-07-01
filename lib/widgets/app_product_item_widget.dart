@@ -289,7 +289,7 @@ class AppProductItemWidget extends StatelessWidget {
   Future<void> onLikeButtonTapped({required num? id}) async {
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.addFavouriteUrl(),
-        requestType: RequestType.POST,
+        requestType: RequestType.post,
         body: {'product_id': id});
 
     var response = await BaseClient.handleRequest(apiRequest);

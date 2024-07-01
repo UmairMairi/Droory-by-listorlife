@@ -62,7 +62,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
   Future<void> onLikeButtonTapped({required num? id}) async {
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.addFavouriteUrl(),
-        requestType: RequestType.POST,
+        requestType: RequestType.post,
         body: {'product_id': id});
 
     var response = await BaseClient.handleRequest(apiRequest);
@@ -78,7 +78,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.getUsersProductsUrl(
             limit: _limit, page: _page, userId: "${widget.user?.id}"),
-        requestType: RequestType.GET);
+        requestType: RequestType.get);
     var response = await BaseClient.handleRequest(apiRequest);
     MapResponse<HomeListModel> model =
         MapResponse.fromJson(response, (json) => HomeListModel.fromJson(json));

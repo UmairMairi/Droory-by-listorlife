@@ -25,7 +25,7 @@ class SellVM extends BaseViewModel {
 
   Future<List<CategoryModel>> getCategoryListApi() async {
     ApiRequest apiRequest = ApiRequest(
-        url: ApiConstants.getCategoriesUrl(), requestType: RequestType.GET);
+        url: ApiConstants.getCategoriesUrl(), requestType: RequestType.get);
     var response = await BaseClient.handleRequest(apiRequest);
 
     ListResponse<CategoryModel> model = ListResponse<CategoryModel>.fromJson(
@@ -38,7 +38,7 @@ class SellVM extends BaseViewModel {
       {CategoryModel? category}) async {
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.getSubCategoriesUrl(id: "${category?.id}"),
-        requestType: RequestType.GET);
+        requestType: RequestType.get);
 
     var response = await BaseClient.handleRequest(apiRequest);
 
@@ -52,7 +52,7 @@ class SellVM extends BaseViewModel {
       required CategoryModel subCategory}) async {
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.getSubSubCategoriesUrl(id: "${subCategory.id}"),
-        requestType: RequestType.GET);
+        requestType: RequestType.get);
 
     var response = await BaseClient.handleRequest(apiRequest);
 

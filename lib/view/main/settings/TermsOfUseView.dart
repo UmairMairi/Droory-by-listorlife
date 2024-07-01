@@ -20,7 +20,7 @@ class TermsOfUseView extends StatefulWidget {
 class _TermsOfUseViewState extends State<TermsOfUseView> {
   Future<CmsModel?> getCms({int? type}) async {
     ApiRequest apiRequest = ApiRequest(
-        url: ApiConstants.getCmsUrl(id: '$type'), requestType: RequestType.GET);
+        url: ApiConstants.getCmsUrl(id: '$type'), requestType: RequestType.get);
     var response = await BaseClient.handleRequest(apiRequest);
     MapResponse<CmsModel> model =
         MapResponse.fromJson(response, (json) => CmsModel.fromJson(json));

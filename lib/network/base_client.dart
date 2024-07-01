@@ -57,16 +57,16 @@ class BaseClient {
     }
 
     switch (apiRequest.requestType) {
-      case RequestType.POST:
+      case RequestType.post:
         return await _handlePostRequest(apiRequest, headers);
-      case RequestType.GET:
+      case RequestType.get:
         var response = await _dio.get(apiRequest.url,
             options: Options(
               headers: headers,
             ));
 
         return response.data;
-      case RequestType.DELETE:
+      case RequestType.delete:
         var response = await _dio.delete(apiRequest.url,
             data: apiRequest.body,
             options: Options(
@@ -74,7 +74,7 @@ class BaseClient {
             ));
         return response.data;
 
-      case RequestType.PUT:
+      case RequestType.put:
         return await _handlePutRequest(apiRequest, headers);
     }
   }
@@ -165,7 +165,7 @@ class BaseClient {
     };
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.uploadMediaUrl(),
-        requestType: RequestType.POST,
+        requestType: RequestType.post,
         bodyType: BodyType.formData,
         body: body);
 

@@ -65,7 +65,7 @@ class ProfileVM extends BaseViewModel {
 
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.editProfileUrl(),
-        requestType: RequestType.PUT,
+        requestType: RequestType.put,
         body: body);
 
     var response = await BaseClient.handleRequest(apiRequest);

@@ -131,7 +131,7 @@ class SettingVM extends BaseViewModel {
 
   Future<void> logoutUser() async {
     ApiRequest apiRequest =
-        ApiRequest(url: ApiConstants.logoutUrl(), requestType: RequestType.GET);
+        ApiRequest(url: ApiConstants.logoutUrl(), requestType: RequestType.get);
     var response = await BaseClient.handleRequest(apiRequest);
     MapResponse model = MapResponse.fromJson(response, (json) => null);
     DialogHelper.hideLoading();
@@ -143,7 +143,7 @@ class SettingVM extends BaseViewModel {
 
   Future<void> deleteAccount() async {
     ApiRequest apiRequest = ApiRequest(
-        url: ApiConstants.deleteAccountUrl(), requestType: RequestType.DELETE);
+        url: ApiConstants.deleteAccountUrl(), requestType: RequestType.delete);
     var response = await BaseClient.handleRequest(apiRequest);
     MapResponse model = MapResponse.fromJson(response, (json) => null);
     DialogHelper.hideLoading();
@@ -155,7 +155,7 @@ class SettingVM extends BaseViewModel {
 
   Future<void> getProfile() async {
     ApiRequest apiRequest = ApiRequest(
-        url: ApiConstants.getProfileUrl(), requestType: RequestType.GET);
+        url: ApiConstants.getProfileUrl(), requestType: RequestType.get);
     var response = await BaseClient.handleRequest(apiRequest);
     MapResponse<UserModel> model = MapResponse<UserModel>.fromJson(
         response, (json) => UserModel.fromJson(json));

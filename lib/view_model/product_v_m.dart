@@ -11,7 +11,7 @@ class ProductVM extends BaseViewModel {
   Future<ProductDetailModel?> getProductDetails({num? id}) async {
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.getProductUrl(id: '$id'),
-        requestType: RequestType.GET);
+        requestType: RequestType.get);
 
     var response = await BaseClient.handleRequest(apiRequest);
 
@@ -25,7 +25,7 @@ class ProductVM extends BaseViewModel {
   Future<void> onLikeButtonTapped({required num? id}) async {
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.addFavouriteUrl(),
-        requestType: RequestType.POST,
+        requestType: RequestType.post,
         body: {'product_id': id});
 
     var response = await BaseClient.handleRequest(apiRequest);

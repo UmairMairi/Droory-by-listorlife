@@ -66,7 +66,7 @@ class AuthVM extends BaseViewModel {
     };
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.loginUrl(),
-        requestType: RequestType.POST,
+        requestType: RequestType.post,
         body: body);
 
     var response = await BaseClient.handleRequest(apiRequest);
@@ -93,7 +93,7 @@ class AuthVM extends BaseViewModel {
     };
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.verifyOtpUrl(),
-        requestType: RequestType.POST,
+        requestType: RequestType.post,
         body: body);
 
     var response = await BaseClient.handleRequest(apiRequest);
@@ -138,7 +138,7 @@ class AuthVM extends BaseViewModel {
     };
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.signupUrl(),
-        requestType: RequestType.POST,
+        requestType: RequestType.post,
         body: body);
 
     var response = await BaseClient.handleRequest(apiRequest);

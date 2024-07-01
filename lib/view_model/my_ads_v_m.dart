@@ -87,7 +87,7 @@ class MyAdsVM extends BaseViewModel {
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.getUsersProductsUrl(
             limit: limit, page: page, userId: "${DbHelper.getUserModel()?.id}"),
-        requestType: RequestType.GET);
+        requestType: RequestType.get);
     var response = await BaseClient.handleRequest(apiRequest);
     MapResponse<HomeListModel> model =
         MapResponse.fromJson(response, (json) => HomeListModel.fromJson(json));

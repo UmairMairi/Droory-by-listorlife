@@ -122,7 +122,7 @@ class HomeVM extends BaseViewModel {
             latitude: position.latitude,
             longitude: position.longitude,
             sellStatus: 'ongoing'),
-        requestType: RequestType.GET);
+        requestType: RequestType.get);
     var response = await BaseClient.handleRequest(apiRequest);
     MapResponse<HomeListModel> model =
         MapResponse.fromJson(response, (json) => HomeListModel.fromJson(json));

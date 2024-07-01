@@ -1,4 +1,4 @@
-enum RequestType { POST, GET, DELETE, PUT }
+enum RequestType { post, get, delete, put }
 
 enum BodyType { formData, raw, json, multipart }
 
