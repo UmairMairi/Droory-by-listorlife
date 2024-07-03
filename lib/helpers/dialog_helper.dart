@@ -187,8 +187,7 @@ class AppAlertDialogWithLottie extends StatelessWidget {
                     height: 10,
                   ),
                   Text(
-                    description ??
-                        'Your Profile has been created successfully!',
+                    description,
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(
