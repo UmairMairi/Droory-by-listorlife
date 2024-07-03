@@ -3,13 +3,13 @@ import 'dart:developer';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/routes/app_pages.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:lottie/lottie.dart';
+import 'package:toastification/toastification.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
@@ -29,20 +29,19 @@ class DialogHelper {
   }
 
   /// Show Toast
-  static showToast({required String? message}) {
+  static showToast({required String? message, bool error = false}) {
     if (message == null) {
       return;
     }
     log("Toast message => $message");
-    Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.TOP,
-        timeInSecForIosWeb: 2,
-        backgroundColor: Colors.black87,
-        textColor: Colors.white,
-        fontSize: 16.0,
-        webBgColor: 'linear-gradient(to right, #206D00, #3FC200)');
+    toastification.show(
+      title: const Text('List & Lift'),
+      description: Text(message),
+      icon: const Icon(Icons.notifications),
+      style: ToastificationStyle.minimal,
+      type: error ? ToastificationType.error : ToastificationType.success,
+      autoCloseDuration: const Duration(seconds: 5),
+    );
   }
 
   /// Hide the soft keyboard.

@@ -9,6 +9,7 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'package:provider/provider.dart';
 
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:toastification/toastification.dart';
 
 import 'helpers/theme_helper.dart';
 
@@ -50,22 +51,24 @@ class _MyAppState extends State<MyApp> {
           //ignored progress for the moment
           return const AppLoadingWidget();
         },
-        child: MaterialApp.router(
-          scrollBehavior: const MaterialScrollBehavior().copyWith(
-            dragDevices: {
-              PointerDeviceKind.mouse,
-              PointerDeviceKind.touch,
-              PointerDeviceKind.stylus,
-              PointerDeviceKind.unknown
-            },
+        child: ToastificationWrapper(
+          child: MaterialApp.router(
+            scrollBehavior: const MaterialScrollBehavior().copyWith(
+              dragDevices: {
+                PointerDeviceKind.mouse,
+                PointerDeviceKind.touch,
+                PointerDeviceKind.stylus,
+                PointerDeviceKind.unknown
+              },
+            ),
+            title: 'List & Lift',
+            theme: ThemeHelper.lightTheme(),
+            darkTheme: ThemeHelper.lightTheme(),
+            debugShowCheckedModeBanner: false,
+            routeInformationProvider: AppPages.router.routeInformationProvider,
+            routeInformationParser: AppPages.router.routeInformationParser,
+            routerDelegate: AppPages.router.routerDelegate,
           ),
-          title: 'List & Lift',
-          theme: ThemeHelper.lightTheme(),
-          darkTheme: ThemeHelper.lightTheme(),
-          debugShowCheckedModeBanner: false,
-          routeInformationProvider: AppPages.router.routeInformationProvider,
-          routeInformationParser: AppPages.router.routeInformationParser,
-          routerDelegate: AppPages.router.routerDelegate,
         ),
       ),
     );

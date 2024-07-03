@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -56,26 +55,31 @@ class BaseClient {
           'Authorization', () => 'Bearer ${DbHelper.getToken()}');
     }
 
-    switch (apiRequest.requestType) {
-      case RequestType.post:
-        return await _handlePostRequest(apiRequest, headers);
-      case RequestType.get:
-        var response = await _dio.get(apiRequest.url,
-            options: Options(
-              headers: headers,
-            ));
+    try {
+      switch (apiRequest.requestType) {
+        case RequestType.post:
+          return await _handlePostRequest(apiRequest, headers);
+        case RequestType.get:
+          var response = await _dio.get(apiRequest.url,
+              options: Options(
+                headers: headers,
+              ));
 
-        return response.data;
-      case RequestType.delete:
-        var response = await _dio.delete(apiRequest.url,
-            data: apiRequest.body,
-            options: Options(
-              headers: headers,
-            ));
-        return response.data;
+          return response.data;
+        case RequestType.delete:
+          var response = await _dio.delete(apiRequest.url,
+              data: apiRequest.body,
+              options: Options(
+                headers: headers,
+              ));
+          return response.data;
 
-      case RequestType.put:
-        return await _handlePutRequest(apiRequest, headers);
+        case RequestType.put:
+          return await _handlePutRequest(apiRequest, headers);
+      }
+    } catch (e) {
+      DialogHelper.hideLoading();
+      return _handleError(e);
     }
   }
 
@@ -140,6 +144,19 @@ class BaseClient {
           headers: headers,
         ));
     return res.data;
+  }
+
+  static Response _handleError(dynamic error) {
+    // You can customize error handling here
+    if (error is DioError) {
+      return error.response!;
+    } else {
+      return Response(
+        requestOptions: RequestOptions(path: ''),
+        statusCode: 500,
+        statusMessage: error.toString(),
+      );
+    }
   }
 
   static Future<bool> hasNetwork() async {
