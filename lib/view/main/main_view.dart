@@ -19,8 +19,14 @@ class MainView extends StatefulWidget {
 }
 
 class _MainViewState extends State<MainView> {
-  final PersistentTabController _controller =
-      PersistentTabController(initialIndex: 0);
+  final PersistentTabController _controller = PersistentTabController(initialIndex: 0);
+
+
+  @override
+  void initState() {
+    _controller.jumpToTab(0);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +34,6 @@ class _MainViewState extends State<MainView> {
         extendBody: true,
         body: PersistentTabView(
           context,
-
           onItemSelected: (index) {
             switch (index) {
               case 0:

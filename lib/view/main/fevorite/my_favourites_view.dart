@@ -27,7 +27,7 @@ class MyFavouritesView extends StatefulWidget {
 }
 
 class _MyFavouritesViewState extends State<MyFavouritesView> {
-  List<ProductDetailModel> _productsList = [];
+   List<ProductDetailModel> _productsList = [];
   late RefreshController refreshController;
   final int _limit = 30;
   int _page = 1;
@@ -112,6 +112,10 @@ class _MyFavouritesViewState extends State<MyFavouritesView> {
                               },
                               child: AppProductItemWidget(
                                 data: _productsList[index],
+                                onLikeTapped: (){
+                                  _productsList.removeAt(index);
+                                  setState(() {});
+                                },
                               ),
                             );
                           },

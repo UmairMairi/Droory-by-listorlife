@@ -35,8 +35,8 @@ class DialogHelper {
     }
     log("Toast message => $message");
     toastification.show(
-      title: const Text('List & Lift'),
       description: Text(message),
+      alignment: Alignment.bottomCenter,
       icon: const Icon(Icons.notifications),
       style: ToastificationStyle.minimal,
       type: error ? ToastificationType.error : ToastificationType.success,

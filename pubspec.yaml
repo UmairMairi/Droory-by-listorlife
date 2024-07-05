@@ -64,6 +64,7 @@ dependencies:
   ccp_dialog:
     path: ccp_dialog-1.0.3
   crypto: ^3.0.3
+  preload_page_view: ^0.2.0
   sign_in_with_apple: ^6.1.1
   google_sign_in: ^6.2.1
   flutter_facebook_auth: ^7.0.1

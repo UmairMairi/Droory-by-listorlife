@@ -127,10 +127,12 @@ class HomeVM extends BaseViewModel {
     MapResponse<HomeListModel> model =
         MapResponse.fromJson(response, (json) => HomeListModel.fromJson(json));
 
-    productsList.addAll(model.body?.data
+   /* productsList.addAll(model.body?.data
             ?.where((element) => element.userId != DbHelper?.getUserModel()?.id)
             .toList() ??
-        []);
+        []);*/
+
+    productsList.addAll(model.body?.data ?? []);
 
     /// productsList.addAll(model.body?.data ?? []);
     if (loading) isLoading = false;

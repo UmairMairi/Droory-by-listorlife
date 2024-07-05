@@ -22,7 +22,8 @@ import '../routes/app_routes.dart';
 
 class AppProductItemWidget extends StatelessWidget {
   final ProductDetailModel? data;
-  const AppProductItemWidget({super.key, this.data});
+  final Function()? onLikeTapped;
+  const AppProductItemWidget({super.key, this.data, this.onLikeTapped});
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +71,9 @@ class AppProductItemWidget extends StatelessWidget {
                   )),
             ],
           ),
+
+
+
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: Column(
@@ -294,6 +298,10 @@ class AppProductItemWidget extends StatelessWidget {
 
     var response = await BaseClient.handleRequest(apiRequest);
     MapResponse model = MapResponse.fromJson(response, (json) => null);
+
+    if(onLikeTapped != null){
+      onLikeTapped!();
+    }
 
     log("Fav Message => ${model.message}");
   }
