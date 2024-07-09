@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/helpers/dialog_helper.dart';
 import 'package:list_and_life/network/api_constants.dart';
 import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
@@ -39,9 +40,10 @@ class MyAdsView extends BaseView<MyAdsVM> {
                         itemCount: viewModel.productsList.length,
                         itemBuilder: (context, index) {
                           return InkWell(
-                            onTap: () {
-                              context.push(Routes.myProduct,
+                            onTap: () async {
+                              await context.push(Routes.myProduct,
                                   extra: viewModel.productsList[index]);
+                              viewModel.onRefresh();
                             },
                             child: Card(
                               shape: RoundedRectangleBorder(
@@ -229,81 +231,119 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        AppElevatedButton(
-                                          onTap: () {},
-                                          title: 'Active',
-                                          height: 30,
-                                          width: 100,
-                                          backgroundColor: Colors.red,
-                                        ),
+                                        viewModel.productsList[index]
+                                                    .sellStatus !=
+                                                'sold'
+                                            ? AppElevatedButton(
+                                                onTap: () {},
+                                                title: 'Active',
+                                                height: 30,
+                                                width: 100,
+                                                backgroundColor: Colors.red,
+                                              )
+                                            : AppElevatedButton(
+                                                title: 'Sold',
+                                                height: 30,
+                                                width: 100,
+                                                backgroundColor: Colors.grey,
+                                              ),
                                         const Gap(10),
-                                        Text(
-                                          'This ad is currently live',
-                                          style: context.textTheme.labelMedium
-                                              ?.copyWith(
-                                                  fontFamily: FontRes
-                                                      .MONTSERRAT_MEDIUM),
-                                        ),
-                                        const Gap(10),
-                                        Row(
-                                          children: [
-                                            Expanded(
-                                              child: Container(
-                                                alignment: Alignment.center,
-                                                padding:
-                                                    const EdgeInsets.symmetric(
+                                        viewModel.productsList[index]
+                                                    .sellStatus !=
+                                                'sold'
+                                            ? Text(
+                                                'This ad is currently live',
+                                                style: context
+                                                    .textTheme.labelMedium
+                                                    ?.copyWith(
+                                                        fontFamily: FontRes
+                                                            .MONTSERRAT_MEDIUM),
+                                              )
+                                            : Text(
+                                                'This ad is sold',
+                                                style: context
+                                                    .textTheme.labelMedium
+                                                    ?.copyWith(
+                                                        fontFamily: FontRes
+                                                            .MONTSERRAT_MEDIUM),
+                                              ),
+                                        if (viewModel.productsList[index]
+                                                .sellStatus !=
+                                            'sold') ...{
+                                          const Gap(10),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: InkWell(
+                                                  onTap: () async {
+                                                    DialogHelper.showLoading();
+                                                    await viewModel.markAsSoldApi(
+                                                        product: viewModel
+                                                                .productsList[
+                                                            index]);
+                                                  },
+                                                  child: Container(
+                                                    alignment: Alignment.center,
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
                                                         horizontal: 10,
                                                         vertical: 08),
-                                                decoration: BoxDecoration(
-                                                  color: Colors.black54,
-                                                  borderRadius:
-                                                      BorderRadius.circular(08),
-                                                ),
-                                                child: Text(
-                                                  'Mark as Sold',
-                                                  style: context
-                                                      .textTheme.labelLarge
-                                                      ?.copyWith(
-                                                          color: Colors.white,
-                                                          fontSize: 12,
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                ),
-                                              ),
-                                            ),
-                                            const Gap(15),
-                                            Expanded(
-                                              child: InkWell(
-                                                onTap: () => context
-                                                    .push(Routes.planList),
-                                                child: Container(
-                                                  alignment: Alignment.center,
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 10,
-                                                      vertical: 08),
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.black54,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            08),
-                                                  ),
-                                                  child: Text(
-                                                    'Sell Faster Now',
-                                                    style: context
-                                                        .textTheme.labelLarge
-                                                        ?.copyWith(
-                                                            color: Colors.white,
-                                                            fontSize: 12,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w600),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.black54,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              08),
+                                                    ),
+                                                    child: Text(
+                                                      'Mark as Sold',
+                                                      style: context
+                                                          .textTheme.labelLarge
+                                                          ?.copyWith(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600),
+                                                    ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                          ],
-                                        )
+                                              const Gap(15),
+                                              Expanded(
+                                                child: InkWell(
+                                                  onTap: () => context
+                                                      .push(Routes.planList),
+                                                  child: Container(
+                                                    alignment: Alignment.center,
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 10,
+                                                        vertical: 08),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.black54,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              08),
+                                                    ),
+                                                    child: Text(
+                                                      'Sell Faster Now',
+                                                      style: context
+                                                          .textTheme.labelLarge
+                                                          ?.copyWith(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        }
                                       ],
                                     ),
                                   )

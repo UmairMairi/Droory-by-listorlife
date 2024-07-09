@@ -332,6 +332,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
             ),
             child: TextFormField(
               maxLines: 4,
+              minLines: 1,
               controller: viewModel.adTitleTextController,
               cursorColor: Colors.black,
               decoration: const InputDecoration(

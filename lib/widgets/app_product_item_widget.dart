@@ -22,262 +22,269 @@ import '../routes/app_routes.dart';
 
 class AppProductItemWidget extends StatelessWidget {
   final ProductDetailModel? data;
-  final Function()? onLikeTapped;
-  const AppProductItemWidget({super.key, this.data, this.onLikeTapped});
+  final VoidCallback? onLikeTapped;
+  final VoidCallback? onItemTapped;
+
+  const AppProductItemWidget(
+      {super.key, this.data, this.onLikeTapped, this.onItemTapped});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5), // Shadow color
-            spreadRadius: 2, // Spread radius
-            blurRadius: 5, // Blur radius
-            offset: const Offset(0, 5), // Offset from the top
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Stack(
-            children: [
-              CardSwipeWidget(
-                imagesList: data?.productMedias,
-                height: 160,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
-              ),
-              Positioned(
-                  top: 10,
-                  right: 10,
-                  child: Container(
-                    padding: const EdgeInsets.all(08),
-                    margin: const EdgeInsets.all(08),
-                    alignment: Alignment.center,
-                    decoration: const BoxDecoration(
-                        color: Colors.white, shape: BoxShape.circle),
-                    child: LikeButton(
-                      isFav: data?.isFavourite == 1,
-                      onTap: () async => await onLikeButtonTapped(id: data?.id),
-                    ),
-                  )),
-            ],
-          ),
-
-
-
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
+    return InkWell(
+      onTap: onItemTapped,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5), // Shadow color
+              spreadRadius: 2, // Spread radius
+              blurRadius: 5, // Blur radius
+              offset: const Offset(0, 5), // Offset from the top
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
               children: [
-                const Gap(10),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        data?.name ?? '',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: context.textTheme.titleSmall,
-                      ),
-                    ),
-                    Text(
-                      "EGP ${data?.price}",
-                      style: context.textTheme.titleMedium
-                          ?.copyWith(color: context.theme.colorScheme.error),
-                    ),
-                  ],
+                CardSwipeWidget(
+                  imagesList: data?.productMedias,
+                  height: 160,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
                 ),
-                const Gap(5),
-                Text(
-                  data?.description ?? '',
-                  maxLines: 1,
-                  style: context.bodySmall,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const Gap(5),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Image.asset(
-                          AssetsRes.IC_ITEM_LOCATION,
-                          scale: 2.5,
-                        ),
-                        const Gap(05),
-                        Text(
-                          data?.nearby ?? '',
-                          style: context.textTheme.labelMedium?.copyWith(
-                              fontFamily: FontRes.MONTSERRAT_REGULAR),
-                        ),
-                      ],
-                    ),
-                    Text(
-                      getCreatedAt(time: data?.createdAt),
-                      style: context.textTheme.labelMedium
-                          ?.copyWith(fontFamily: FontRes.MONTSERRAT_REGULAR),
-                    )
-                  ],
-                ),
-                const Gap(10),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {
-                            if (DbHelper.getIsGuest()) {
-                              DialogHelper.showLoginDialog(context: context);
-                              return;
-                            }
-                            String phone =
-                                "${data?.user?.countryCode}${data?.user?.phoneNo}";
-                            DialogHelper.goToUrl(
-                                uri: Uri.parse("tel://$phone"));
-                          },
-                          child: Container(
-                            alignment: Alignment.center,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 08),
-                            decoration: BoxDecoration(
-                              color: const Color(0xff5A5B55),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Image.asset(
-                                  AssetsRes.IC_CALL_ICON,
-                                  height: 16,
-                                ),
-                                const Gap(05),
-                                Text(
-                                  'Call',
-                                  style: context.textTheme.labelLarge?.copyWith(
-                                      color: Colors.white,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
+                Positioned(
+                    top: 10,
+                    right: 10,
+                    child: Container(
+                      padding: const EdgeInsets.all(08),
+                      margin: const EdgeInsets.all(08),
+                      alignment: Alignment.center,
+                      decoration: const BoxDecoration(
+                          color: Colors.white, shape: BoxShape.circle),
+                      child: LikeButton(
+                        isFav: data?.isFavourite == 1,
+                        onTap: () async =>
+                            await onLikeButtonTapped(id: data?.id),
                       ),
-                      const Gap(7.8),
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {
-                            if (DbHelper.getIsGuest()) {
-                              DialogHelper.showLoginDialog(context: context);
-                              return;
-                            }
-                            context.push(
-                              Routes.message,
-                              extra: SettingItemModel(
-                                icon: AssetsRes.DUMMY_CHAT_IMAGE2,
-                                title: 'John Marker',
-                                subTitle: 'Lorem Ipsum is simply dummy text.',
-                                timeStamp: '1 min ago',
-                              ),
-                            );
-                          },
-                          child: Container(
-                            alignment: Alignment.center,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 08),
-                            decoration: BoxDecoration(
-                              color: const Color(0xff5A5B55),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Image.asset(
-                                  AssetsRes.IC_CHAT_ICON,
-                                  height: 16,
-                                ),
-                                const Gap(05),
-                                Text(
-                                  'Chat',
-                                  style: context.textTheme.labelLarge?.copyWith(
-                                      color: Colors.white,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      const Gap(7.8),
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {
-                            if (DbHelper.getIsGuest()) {
-                              DialogHelper.showLoginDialog(context: context);
-                              return;
-                            }
-                            String phone =
-                                "${data?.user?.countryCode}${data?.user?.phoneNo}";
-                            DialogHelper.goToUrl(
-                                uri: Uri.parse(
-                                    'https://wa.me/$phone?text=Hii, I am from List & Live app and interested in your ad.'));
-                          },
-                          child: Container(
-                            alignment: Alignment.center,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 08),
-                            decoration: BoxDecoration(
-                              color: const Color(0xff5A5B55),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Image.asset(
-                                  AssetsRes.IC_WHATSAPP_ICON,
-                                  height: 18,
-                                ),
-                                const Gap(05),
-                                Text(
-                                  'Whatsapp',
-                                  style: context.textTheme.labelLarge?.copyWith(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ]),
-                const Gap(10),
+                    )),
               ],
             ),
-          )
-        ],
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Gap(10),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          data?.name ?? '',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: context.textTheme.titleSmall,
+                        ),
+                      ),
+                      Text(
+                        "EGP ${data?.price}",
+                        style: context.textTheme.titleMedium
+                            ?.copyWith(color: context.theme.colorScheme.error),
+                      ),
+                    ],
+                  ),
+                  const Gap(5),
+                  Text(
+                    data?.description ?? '',
+                    maxLines: 1,
+                    style: context.bodySmall,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const Gap(5),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Image.asset(
+                            AssetsRes.IC_ITEM_LOCATION,
+                            scale: 2.5,
+                          ),
+                          const Gap(05),
+                          Text(
+                            data?.nearby ?? '',
+                            style: context.textTheme.labelMedium?.copyWith(
+                                fontFamily: FontRes.MONTSERRAT_REGULAR),
+                          ),
+                        ],
+                      ),
+                      Text(
+                        getCreatedAt(time: data?.createdAt),
+                        style: context.textTheme.labelMedium
+                            ?.copyWith(fontFamily: FontRes.MONTSERRAT_REGULAR),
+                      )
+                    ],
+                  ),
+                  const Gap(10),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              if (DbHelper.getIsGuest()) {
+                                DialogHelper.showLoginDialog(context: context);
+                                return;
+                              }
+                              String phone =
+                                  "${data?.user?.countryCode}${data?.user?.phoneNo}";
+                              DialogHelper.goToUrl(
+                                  uri: Uri.parse("tel://$phone"));
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 08),
+                              decoration: BoxDecoration(
+                                color: const Color(0xff5A5B55),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Image.asset(
+                                    AssetsRes.IC_CALL_ICON,
+                                    height: 16,
+                                  ),
+                                  const Gap(05),
+                                  Text(
+                                    'Call',
+                                    style: context.textTheme.labelLarge
+                                        ?.copyWith(
+                                            color: Colors.white,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        const Gap(7.8),
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              if (DbHelper.getIsGuest()) {
+                                DialogHelper.showLoginDialog(context: context);
+                                return;
+                              }
+                              context.push(
+                                Routes.message,
+                                extra: SettingItemModel(
+                                  icon: AssetsRes.DUMMY_CHAT_IMAGE2,
+                                  title: 'John Marker',
+                                  subTitle: 'Lorem Ipsum is simply dummy text.',
+                                  timeStamp: '1 min ago',
+                                ),
+                              );
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 08),
+                              decoration: BoxDecoration(
+                                color: const Color(0xff5A5B55),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Image.asset(
+                                    AssetsRes.IC_CHAT_ICON,
+                                    height: 16,
+                                  ),
+                                  const Gap(05),
+                                  Text(
+                                    'Chat',
+                                    style: context.textTheme.labelLarge
+                                        ?.copyWith(
+                                            color: Colors.white,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        const Gap(7.8),
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              if (DbHelper.getIsGuest()) {
+                                DialogHelper.showLoginDialog(context: context);
+                                return;
+                              }
+                              String phone =
+                                  "${data?.user?.countryCode}${data?.user?.phoneNo}";
+                              DialogHelper.goToUrl(
+                                  uri: Uri.parse(
+                                      'https://wa.me/$phone?text=Hii, I am from List & Live app and interested in your ad.'));
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 08),
+                              decoration: BoxDecoration(
+                                color: const Color(0xff5A5B55),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Image.asset(
+                                    AssetsRes.IC_WHATSAPP_ICON,
+                                    height: 18,
+                                  ),
+                                  const Gap(05),
+                                  Text(
+                                    'Whatsapp',
+                                    style:
+                                        context.textTheme.labelLarge?.copyWith(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ]),
+                  const Gap(10),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -299,8 +306,8 @@ class AppProductItemWidget extends StatelessWidget {
     var response = await BaseClient.handleRequest(apiRequest);
     MapResponse model = MapResponse.fromJson(response, (json) => null);
 
-    if(onLikeTapped != null){
-      onLikeTapped!();
+    if (onLikeTapped != null) {
+      Future.delayed(const Duration(milliseconds: 25), () => onLikeTapped!());
     }
 
     log("Fav Message => ${model.message}");

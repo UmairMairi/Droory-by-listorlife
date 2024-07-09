@@ -47,4 +47,5 @@ class ApiConstants {
   static String buyPackageUrl() => "$_baseUrl/buy/package";
   static String productAddFeatureBoostUrl() =>
       "$_baseUrl/product/add/feature/boost";
+  static String markAsSoldUrl() => "$_baseUrl/mark/as/sold";
 }

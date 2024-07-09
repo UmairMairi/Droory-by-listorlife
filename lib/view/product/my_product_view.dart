@@ -9,8 +9,10 @@ import 'package:list_and_life/view_model/product_v_m.dart';
 import 'package:list_and_life/widgets/app_error_widget.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../helpers/dialog_helper.dart';
 import '../../models/setting_item_model.dart';
 import '../../res/assets_res.dart';
+import '../../widgets/app_elevated_button.dart';
 import '../../widgets/card_swipe_widget.dart';
 
 class MyProductView extends BaseView<ProductVM> {
@@ -243,49 +245,71 @@ class MyProductView extends BaseView<ProductVM> {
                                 ),
                                 const Gap(10),
                               },
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 08),
-                                      decoration: BoxDecoration(
-                                        color: Colors.black54,
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Text(
-                                        'Mark as Sold',
-                                        style: context.textTheme.labelLarge
-                                            ?.copyWith(
-                                                color: Colors.white,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w600),
-                                      ),
+                              data?.sellStatus != 'sold'
+                                  ? Row(
+                                      children: [
+                                        Expanded(
+                                          child: InkWell(
+                                            onTap: () async {
+                                              DialogHelper.showLoading();
+                                              await viewModel.markAsSoldApi(
+                                                  product: data!);
+                                            },
+                                            child: Container(
+                                              alignment: Alignment.center,
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 10,
+                                                      vertical: 08),
+                                              decoration: BoxDecoration(
+                                                color: Colors.black54,
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              child: Text(
+                                                'Mark as Sold',
+                                                style: context
+                                                    .textTheme.labelLarge
+                                                    ?.copyWith(
+                                                        color: Colors.white,
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        const Gap(10),
+                                        Expanded(
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10, vertical: 08),
+                                            decoration: BoxDecoration(
+                                              color: Colors.black54,
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            child: Text(
+                                              'Sell Faster Now',
+                                              style: context
+                                                  .textTheme.labelLarge
+                                                  ?.copyWith(
+                                                      color: Colors.white,
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  : AppElevatedButton(
+                                      title: 'Sold',
+                                      height: 30,
+                                      width: 100,
+                                      backgroundColor: Colors.grey,
                                     ),
-                                  ),
-                                  const Gap(10),
-                                  Expanded(
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 08),
-                                      decoration: BoxDecoration(
-                                        color: Colors.black54,
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Text(
-                                        'Sell Faster Now',
-                                        style: context.textTheme.labelLarge
-                                            ?.copyWith(
-                                                color: Colors.white,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w600),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
                               const Gap(10),
                               Text(
                                 'Description',

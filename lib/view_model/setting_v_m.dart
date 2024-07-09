@@ -21,7 +21,7 @@ class SettingVM extends BaseViewModel {
 
   @override
   void onInit() {
-    getProfile();
+    if (!DbHelper.getIsGuest()) getProfile();
     settingList = DbHelper.getIsGuest()
         ? [
             SettingItemModel(

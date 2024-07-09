@@ -11,6 +11,7 @@ import '../../../../helpers/dialog_helper.dart';
 import '../../../../models/category_model.dart';
 import '../../../../view_model/car_sell_v_m.dart';
 import '../../../../view_model/sell_forms_vm.dart';
+import '../../../../widgets/app_map_widget.dart';
 
 class IncludeCarDetailView extends BaseView<SellFormsVM> {
   final String? type;
@@ -661,6 +662,69 @@ class IncludeCarDetailView extends BaseView<SellFormsVM> {
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 25, vertical: 18),
                     hintText: "Enter",
+                    hintStyle:
+                        TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                    )),
+                inputFormatters: [
+                  FilteringTextInputFormatter.deny(
+                      RegExp(viewModel.regexToRemoveEmoji)),
+                ],
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.done,
+              ),
+            ),
+            RichText(
+                text: const TextSpan(children: [
+              TextSpan(
+                text: "Location",
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                    color: Colors.black),
+              ),
+            ])),
+            Container(
+              margin: const EdgeInsets.only(top: 10, bottom: 20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    offset: const Offset(0, 1),
+                    blurRadius: 6,
+                  ),
+                ],
+              ),
+              child: TextFormField(
+                controller: viewModel.addressTextController,
+                maxLines: 2,
+                minLines: 1,
+                readOnly: true,
+                onTap: () async {
+                  Map<String, dynamic>? value = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const AppMapWidget()));
+                  print(value);
+                  if (value != null && value.isNotEmpty) {
+                    viewModel.latitude = value['latitude'];
+                    viewModel.longitude = value['longitude'];
+                    viewModel.state = value['state'];
+                    viewModel.city = value['city'];
+                    viewModel.country = value['country'];
+                    viewModel.addressTextController.text =
+                        "${value['location']}, ${value['city']}, ${value['state']}";
+                  }
+                },
+                cursorColor: Colors.black,
+                decoration: const InputDecoration(
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+                    hintText: "Select",
+                    suffixIcon: Icon(Icons.location_on),
                     hintStyle:
                         TextStyle(color: Color(0xffACACAC), fontSize: 14),
                     border: OutlineInputBorder(

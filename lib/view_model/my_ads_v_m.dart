@@ -1,5 +1,6 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/helpers/dialog_helper.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../helpers/date_helper.dart';
@@ -103,5 +104,23 @@ class MyAdsVM extends BaseViewModel {
     int timestamp = dateTime.millisecondsSinceEpoch ~/ 1000;
     print("Timestamp: $timestamp");
     return DateHelper.getTimeAgo(timestamp);
+  }
+
+  Future<void> markAsSoldApi({required ProductDetailModel product}) async {
+    Map<String, dynamic> body = {
+      'product_id': product.id,
+      'sell_status': 'sold'
+    };
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.markAsSoldUrl(),
+        requestType: RequestType.put,
+        body: body);
+
+    var response = await BaseClient.handleRequest(apiRequest);
+    print(response);
+    MapResponse model = MapResponse.fromJson(response, (json) => null);
+    DialogHelper.showToast(message: model.message);
+    DialogHelper.hideLoading();
+    onRefresh();
   }
 }

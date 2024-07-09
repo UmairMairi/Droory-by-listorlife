@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/models/category_model.dart';
+import 'package:list_and_life/view/main/sell/car/include_car_detail_view.dart';
+import 'package:list_and_life/view/main/sell/forms/cars_sell_form.dart';
 
 import '../car/choose_location_view.dart';
 import '../forms/sell_form_view.dart';
@@ -27,18 +29,6 @@ class SellSubSubCategoryView extends StatelessWidget {
           itemBuilder: (context, index) {
             return ListTile(
               onTap: () {
-                if (subCategory?.name == 'Cars') {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>  ChooseLocationView(
-                            category: category,
-                            subSubCategory: subSubCategory?[index],
-                            subCategory: subCategory,
-                            type: category?.name?.toLowerCase(),
-                          )));
-                  return;
-                }
                 if (subSubCategory?[index].name?.contains('Parts') ?? false) {
                   Navigator.push(
                       context,

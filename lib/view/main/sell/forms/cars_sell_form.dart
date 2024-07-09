@@ -9,22 +9,22 @@ import '../../../../models/category_model.dart';
 import '../../../../view_model/sell_forms_vm.dart';
 import '../../../../widgets/app_map_widget.dart';
 
-class VehiclesSellForm extends BaseView<SellFormsVM> {
+class CarsSellForm extends BaseView<SellFormsVM> {
   final String? type;
   final CategoryModel? category;
   final CategoryModel? subCategory;
   final CategoryModel? subSubCategory;
   final List<CategoryModel>? brands;
-  const VehiclesSellForm(
+  const CarsSellForm(
       {super.key,
       this.type,
       this.category,
       this.subSubCategory,
       this.subCategory,
       this.brands});
-
   @override
   Widget build(BuildContext context, SellFormsVM viewModel) {
+    print("brands => ${brands?.length}");
     return SingleChildScrollView(
       physics: const ClampingScrollPhysics(),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -165,6 +165,79 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
               }
             }),
           ),
+          Text(
+            "Item Condition",
+            style: context.textTheme.titleMedium,
+          ),
+          Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  viewModel.currentIndex = 1;
+                },
+                child: Container(
+                  width: 105,
+                  height: 42,
+                  margin: const EdgeInsets.only(top: 10, right: 10),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: viewModel.currentIndex == 1
+                            ? Colors.transparent
+                            : Colors.grey.withOpacity(0.5)),
+                    color: viewModel.currentIndex == 1
+                        ? Colors.black
+                        : const Color(0xffFCFCFD),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Center(
+                      child: Text(
+                    "New",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      color: viewModel.currentIndex == 1
+                          ? Colors.white
+                          : Colors.black,
+                    ),
+                  )),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  viewModel.currentIndex = 2;
+                },
+                child: Container(
+                  width: 105,
+                  height: 42,
+                  margin: const EdgeInsets.only(top: 10, left: 10),
+                  decoration: BoxDecoration(
+                    color: viewModel.currentIndex == 2
+                        ? Colors.black
+                        : const Color(0xffFCFCFD),
+                    border: Border.all(
+                        color: viewModel.currentIndex == 2
+                            ? Colors.transparent
+                            : Colors.grey.withOpacity(0.5)),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Center(
+                      child: Text(
+                    "Used",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      color: viewModel.currentIndex == 2
+                          ? Colors.white
+                          : Colors.black,
+                    ),
+                  )),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 25,
+          ),
           if (brands?.isNotEmpty ?? false) ...{
             RichText(
                 text: const TextSpan(children: [
@@ -204,8 +277,6 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                     borderSide: BorderSide.none,
                   ),
                   suffixIcon: PopupMenuButton(
-                    constraints:
-                        const BoxConstraints.expand(width: 200, height: 500),
                     clipBehavior: Clip.hardEdge,
                     icon: const Icon(
                       Icons.arrow_drop_down,
@@ -284,6 +355,126 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
           RichText(
               text: const TextSpan(children: [
             TextSpan(
+              text: "Fuel",
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                  color: Colors.black),
+            ),
+          ])),
+          Container(
+            margin: const EdgeInsets.only(top: 10, bottom: 20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(100),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  offset: const Offset(0, 1),
+                  blurRadius: 6,
+                ),
+              ],
+            ),
+            child: TextFormField(
+              controller: viewModel.fuelTextController,
+              cursorColor: Colors.black,
+              decoration: const InputDecoration(
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+                  hintText: "Enter",
+                  hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                  )),
+              inputFormatters: [
+                FilteringTextInputFormatter.deny(
+                    RegExp(viewModel.regexToRemoveEmoji)),
+              ],
+              textInputAction: TextInputAction.done,
+            ),
+          ),
+          RichText(
+              text: const TextSpan(children: [
+            TextSpan(
+              text: "Transmission",
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                  color: Colors.black),
+            ),
+          ])),
+          Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  viewModel.transmission = 1;
+                },
+                child: Container(
+                  width: 130,
+                  height: 50,
+                  margin: const EdgeInsets.only(top: 10, right: 10),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: viewModel.transmission == 1
+                            ? Colors.transparent
+                            : Colors.grey.withOpacity(0.5)),
+                    color: viewModel.transmission == 1
+                        ? Colors.black
+                        : Colors.white,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Center(
+                      child: Text(
+                    "Automatic",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      color: viewModel.transmission == 1
+                          ? Colors.white
+                          : Colors.black,
+                    ),
+                  )),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  viewModel.transmission = 2;
+                },
+                child: Container(
+                  width: 130,
+                  height: 50,
+                  margin: const EdgeInsets.only(top: 10, left: 10),
+                  decoration: BoxDecoration(
+                    color: viewModel.transmission == 2
+                        ? Colors.black
+                        : Colors.white,
+                    border: Border.all(
+                        color: viewModel.transmission == 2
+                            ? Colors.transparent
+                            : Colors.grey.withOpacity(0.5)),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Center(
+                      child: Text(
+                    "Manual",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      color: viewModel.transmission == 2
+                          ? Colors.white
+                          : Colors.black,
+                    ),
+                  )),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          RichText(
+              text: const TextSpan(children: [
+            TextSpan(
               text: "Km Driven",
               style: TextStyle(
                   fontWeight: FontWeight.w600,
@@ -328,78 +519,48 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
               textInputAction: TextInputAction.done,
             ),
           ),
-          Text(
-            "Item Condition",
-            style: context.textTheme.titleMedium,
-          ),
-          Row(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  viewModel.currentIndex = 1;
-                },
-                child: Container(
-                  width: 105,
-                  height: 42,
-                  margin: const EdgeInsets.only(top: 10, right: 10),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                        color: viewModel.currentIndex == 1
-                            ? Colors.transparent
-                            : Colors.grey.withOpacity(0.5)),
-                    color: viewModel.currentIndex == 1
-                        ? Colors.black
-                        : const Color(0xffFCFCFD),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Center(
-                      child: Text(
-                    "New",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                      color: viewModel.currentIndex == 1
-                          ? Colors.white
-                          : Colors.black,
-                    ),
-                  )),
+          RichText(
+              text: const TextSpan(children: [
+            TextSpan(
+              text: "No. of Onwers",
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                  color: Colors.black),
+            ),
+          ])),
+          Container(
+            margin: const EdgeInsets.only(top: 10, bottom: 20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(100),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  offset: const Offset(0, 1),
+                  blurRadius: 6,
                 ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  viewModel.currentIndex = 2;
-                },
-                child: Container(
-                  width: 105,
-                  height: 42,
-                  margin: const EdgeInsets.only(top: 10, left: 10),
-                  decoration: BoxDecoration(
-                    color: viewModel.currentIndex == 2
-                        ? Colors.black
-                        : const Color(0xffFCFCFD),
-                    border: Border.all(
-                        color: viewModel.currentIndex == 2
-                            ? Colors.transparent
-                            : Colors.grey.withOpacity(0.5)),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Center(
-                      child: Text(
-                    "Used",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                      color: viewModel.currentIndex == 2
-                          ? Colors.white
-                          : Colors.black,
-                    ),
+              ],
+            ),
+            child: TextFormField(
+              controller: viewModel.numOfOwnerTextController,
+              cursorColor: Colors.black,
+              decoration: const InputDecoration(
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+                  hintText: "Enter",
+                  hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
                   )),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 25,
+              inputFormatters: [
+                FilteringTextInputFormatter.deny(
+                    RegExp(viewModel.regexToRemoveEmoji)),
+                FilteringTextInputFormatter.digitsOnly,
+              ],
+              keyboardType: TextInputType.number,
+              textInputAction: TextInputAction.done,
+            ),
           ),
           RichText(
               text: const TextSpan(children: [

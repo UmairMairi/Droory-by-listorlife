@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/models/category_model.dart';
+import 'package:list_and_life/view/main/sell/forms/cars_sell_form.dart';
 import 'package:list_and_life/view/main/sell/forms/common_sell_form.dart';
 import 'package:list_and_life/view/main/sell/forms/pets_sell_form.dart';
 import 'package:list_and_life/view/main/sell/forms/vehicles_sell_form.dart';
@@ -84,8 +85,17 @@ class SellFormView extends BaseView<SellFormsVM> {
         );
 
       case 'vehicles':
-        if (subCategory?.name?.contains('Parts') ?? false) {
+        if (subCategory?.name?.toLowerCase().contains('parts') ?? false) {
           return CommonSellForm(
+            type: type,
+            category: category,
+            subSubCategory: subSubCategory,
+            brands: brands,
+            subCategory: subCategory,
+          );
+        }
+        if (subCategory?.name?.toLowerCase().contains('cars') ?? false) {
+          return CarsSellForm(
             type: type,
             category: category,
             subSubCategory: subSubCategory,

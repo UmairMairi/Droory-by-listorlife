@@ -27,7 +27,7 @@ class MyFavouritesView extends StatefulWidget {
 }
 
 class _MyFavouritesViewState extends State<MyFavouritesView> {
-   List<ProductDetailModel> _productsList = [];
+  List<ProductDetailModel> _productsList = [];
   late RefreshController refreshController;
   final int _limit = 30;
   int _page = 1;
@@ -105,16 +105,18 @@ class _MyFavouritesViewState extends State<MyFavouritesView> {
                           shrinkWrap: true,
                           itemCount: _productsList.length,
                           itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                context.push(Routes.productDetails,
-                                    extra: _productsList[index]);
-                              },
+                            return Padding(
+                              padding:
+                                  EdgeInsets.only(top: index == 0 ? 25.0 : 0),
                               child: AppProductItemWidget(
                                 data: _productsList[index],
-                                onLikeTapped: (){
-                                  _productsList.removeAt(index);
-                                  setState(() {});
+                                onItemTapped: () async {
+                                  await context.push(Routes.productDetails,
+                                      extra: _productsList[index]);
+                                  _onRefresh();
+                                },
+                                onLikeTapped: () {
+                                  _onRefresh();
                                 },
                               ),
                             );
