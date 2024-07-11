@@ -19,6 +19,13 @@ class SellFormsVM extends BaseViewModel {
   int _currentIndex = 1;
   int _transmission = 0;
 
+  final FocusNode priceText = FocusNode();
+  final FocusNode yearText = FocusNode();
+
+  final FocusNode kmDrivenText = FocusNode();
+
+  final FocusNode ownerText = FocusNode();
+
   String _mainImagePath = "";
   List<String> imagesList = <String>[];
 

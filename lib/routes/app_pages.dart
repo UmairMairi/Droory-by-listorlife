@@ -22,7 +22,6 @@ import '../view/auth/login_view.dart';
 import '../view/auth/verification_view.dart';
 import '../view/error/not_found_view.dart';
 import '../view/main/main_view.dart';
-import '../view/main/sell/car/choose_location_view.dart';
 import '../view/main/sell/forms/post_added_final_view.dart';
 import '../view/notifications/notification_view.dart';
 import '../view/on_boarding/on_boarding_view.dart';

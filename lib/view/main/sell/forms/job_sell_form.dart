@@ -27,6 +27,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
   @override
   Widget build(BuildContext context, SellFormsVM viewModel) {
     return SingleChildScrollView(
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       physics: const ClampingScrollPhysics(),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       child: Column(

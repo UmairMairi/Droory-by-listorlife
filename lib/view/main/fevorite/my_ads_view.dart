@@ -166,10 +166,10 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                               Container(
                                                 margin:
                                                     const EdgeInsets.symmetric(
-                                                        horizontal: 05),
+                                                        horizontal: 5),
                                                 padding:
                                                     const EdgeInsets.symmetric(
-                                                        horizontal: 10,
+                                                        horizontal: 05,
                                                         vertical: 03),
                                                 decoration: BoxDecoration(
                                                     color: Colors.grey.shade400,
@@ -177,33 +177,51 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                         BorderRadius.circular(
                                                             05)),
                                                 child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceAround,
                                                   children: [
-                                                    const Icon(
-                                                      Icons.favorite,
-                                                      size: 12,
+                                                    Expanded(
+                                                      child: Row(
+                                                        children: [
+                                                          const Icon(
+                                                            Icons.favorite,
+                                                            size: 12,
+                                                          ),
+                                                          const Gap(02),
+                                                          Text(
+                                                            'Likes: ${viewModel.productsList[index].favouritesCount}',
+                                                            style: context
+                                                                .textTheme
+                                                                .labelMedium
+                                                                ?.copyWith(
+                                                                    fontFamily:
+                                                                        FontRes
+                                                                            .MONTSERRAT_MEDIUM),
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
-                                                    const Gap(02),
-                                                    Text(
-                                                      'Likes: ${viewModel.productsList[index].favouritesCount}',
-                                                      style: context
-                                                          .textTheme.labelMedium
-                                                          ?.copyWith(
-                                                              fontFamily: FontRes
-                                                                  .MONTSERRAT_MEDIUM),
-                                                    ),
-                                                    const Gap(10),
-                                                    const Icon(
-                                                      Icons.visibility,
-                                                      size: 12,
-                                                    ),
-                                                    const Gap(02),
-                                                    Text(
-                                                      'Views: ${viewModel.productsList[index].countViews}',
-                                                      style: context
-                                                          .textTheme.labelMedium
-                                                          ?.copyWith(
-                                                              fontFamily: FontRes
-                                                                  .MONTSERRAT_MEDIUM),
+                                                    Expanded(
+                                                      child: Row(
+                                                        children: [
+                                                          const Icon(
+                                                            Icons.visibility,
+                                                            size: 12,
+                                                          ),
+                                                          const Gap(02),
+                                                          Text(
+                                                            'Views: ${viewModel.productsList[index].countViews}',
+                                                            style: context
+                                                                .textTheme
+                                                                .labelMedium
+                                                                ?.copyWith(
+                                                                    fontFamily:
+                                                                        FontRes
+                                                                            .MONTSERRAT_MEDIUM),
+                                                          ),
+                                                        ],
+                                                      ),
                                                     )
                                                   ],
                                                 ),
