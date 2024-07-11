@@ -26,25 +26,25 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
 
   @override
   Widget build(BuildContext context, SellFormsVM viewModel) {
-    return SingleChildScrollView(
-      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-      physics: const ClampingScrollPhysics(),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      child: KeyboardActions(
-        config: KeyboardActionsConfig(
-            keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
-            keyboardBarColor: Colors.grey[200],
-            actions: [
-              KeyboardActionsItem(
-                focusNode: viewModel.priceText,
-              ),
-              KeyboardActionsItem(
-                focusNode: viewModel.yearText,
-              ),
-              KeyboardActionsItem(
-                focusNode: viewModel.kmDrivenText,
-              ),
-            ]),
+    return KeyboardActions(
+      config: KeyboardActionsConfig(
+          keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
+          keyboardBarColor: Colors.grey[200],
+          actions: [
+            KeyboardActionsItem(
+              focusNode: viewModel.priceText,
+            ),
+            KeyboardActionsItem(
+              focusNode: viewModel.yearText,
+            ),
+            KeyboardActionsItem(
+              focusNode: viewModel.kmDrivenText,
+            ),
+          ]),
+      child: SingleChildScrollView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        physics: const ClampingScrollPhysics(),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

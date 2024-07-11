@@ -88,9 +88,16 @@ class HomeVM extends BaseViewModel {
   }
 
   Future<void> updateLocation() async {
-    Position position = await LocationHelper.getCurrentLocation();
-    currentLocation = await LocationHelper.getAddressFromCoordinates(
-        position.latitude, position.longitude);
+    try{
+      Position position = await LocationHelper.getCurrentLocation();
+      currentLocation = await LocationHelper.getAddressFromCoordinates(
+          position.latitude, position.longitude);
+    }catch(e){
+      Position position = await LocationHelper.getCurrentLocation();
+      currentLocation = await LocationHelper.getAddressFromCoordinates(
+          position.latitude, position.longitude);
+    }
+
   }
 
   Future<void> onRefresh() async {
@@ -112,8 +119,12 @@ class HomeVM extends BaseViewModel {
 
   Future<void> getProductsApi({bool loading = false}) async {
     if (loading) isLoading = loading;
-
-    Position? position = await LocationHelper.getCurrentLocation();
+    Position? position;
+    try{
+      position = await LocationHelper.getCurrentLocation();
+    }catch(e){
+      position = await LocationHelper.getCurrentLocation();
+    }
 
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.getProductsUrl(
