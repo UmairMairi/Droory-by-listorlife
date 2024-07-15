@@ -1,19 +1,15 @@
-import 'package:geolocator/geolocator.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/helpers/dialog_helper.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../helpers/date_helper.dart';
 import '../helpers/db_helper.dart';
-import '../helpers/location_helper.dart';
 import '../models/common/map_response.dart';
 import '../models/home_list_model.dart';
 import '../models/prodect_detail_model.dart';
-import '../models/setting_item_model.dart';
 import '../network/api_constants.dart';
 import '../network/api_request.dart';
 import '../network/base_client.dart';
-import '../res/assets_res.dart';
 
 class MyAdsVM extends BaseViewModel {
   late RefreshController refreshController;

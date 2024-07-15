@@ -11,8 +11,6 @@ import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/app_empty_widget.dart';
-import 'package:list_and_life/widgets/app_error_widget.dart';
-import 'package:list_and_life/widgets/app_loading_widget.dart';
 import 'package:list_and_life/widgets/app_outline_button.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:list_and_life/widgets/like_button.dart';
@@ -21,10 +19,8 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../helpers/date_helper.dart';
-import '../../helpers/db_helper.dart';
 import '../../models/common/map_response.dart';
 import '../../models/home_list_model.dart';
-import '../../models/setting_item_model.dart';
 import '../../models/user_model.dart';
 import '../../network/api_request.dart';
 import '../../network/base_client.dart';
@@ -43,7 +39,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
   late RefreshController _refreshController;
 
   bool _isLoading = true;
-  List<ProductDetailModel> _productsList = [];
+  final List<ProductDetailModel> _productsList = [];
   final int _limit = 30;
   int _page = 1;
 
@@ -334,7 +330,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                   height: 60,
                   width: 60,
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 15,
                 ),
                 Expanded(
@@ -344,24 +340,24 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                     children: [
                       Text(
                         "${widget.user?.name} ${widget.user?.lastName}",
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Colors.black,
                             fontSize: 14,
                             fontWeight: FontWeight.w600),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 2,
                       ),
                       Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.calendar_month,
                             size: 15,
                           ),
-                          Gap(05),
+                          const Gap(05),
                           Text(
                             "Member since ${DateFormat('MMM yyyy').format(DateTime.parse("${widget.user?.createdAt}"))}",
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: Color(0xff7E8392), fontSize: 12),
                           ),
                         ],
@@ -479,21 +475,21 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                                                             overflow:
                                                                 TextOverflow
                                                                     .ellipsis,
-                                                            style: TextStyle(
+                                                            style: const TextStyle(
                                                                 fontSize: 12),
                                                           ),
                                                         ),
                                                       ],
                                                     ),
                                                   ),
-                                                  Gap(05),
+                                                  const Gap(05),
                                                   Text(
                                                     getCreatedAt(
                                                         time:
                                                             _productsList[index]
                                                                 .createdAt),
                                                     style:
-                                                        TextStyle(fontSize: 12),
+                                                        const TextStyle(fontSize: 12),
                                                   )
                                                 ],
                                               )

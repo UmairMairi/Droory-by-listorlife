@@ -17,6 +17,7 @@ class EditProfileView extends BaseView<ProfileVM> {
 
   @override
   Widget build(BuildContext context, ProfileVM viewModel) {
+    debugPrint('${DbHelper.getUserModel()?.id}');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit Profile'),

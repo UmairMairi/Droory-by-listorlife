@@ -8,7 +8,6 @@ import 'package:list_and_life/models/setting_item_model.dart';
 import 'package:list_and_life/network/api_constants.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/res/font_res.dart';
-import 'package:list_and_life/skeletons/my_product_skeleton.dart';
 import 'package:list_and_life/view_model/product_v_m.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 import 'package:share_plus/share_plus.dart';
@@ -71,7 +70,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                     Icons.location_on,
                                     size: 16,
                                   ),
-                                  Gap(05),
+                                  const Gap(05),
                                   Text(data?.nearby ?? ''),
                                 ],
                               ),
@@ -213,31 +212,33 @@ class ProductDetailView extends BaseView<ProductVM> {
                                       ]),
                                       TableRow(children: [
                                         Padding(
-                                          padding:
-                                              EdgeInsets.only(left: 18, top: 5),
+                                          padding: const EdgeInsets.only(
+                                              left: 18, top: 5),
                                           child: Text(
                                             '${data?.numberOfOwner}',
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.w600),
                                           ),
                                         ),
                                         Padding(
-                                          padding:
-                                              EdgeInsets.only(left: 18, top: 5),
+                                          padding: const EdgeInsets.only(
+                                              left: 18, top: 5),
                                           child: Text(
                                             '${data?.city}',
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.w600),
                                           ),
                                         ),
                                         Padding(
-                                          padding:
-                                              EdgeInsets.only(left: 18, top: 5),
+                                          padding: const EdgeInsets.only(
+                                              left: 18, top: 5),
                                           child: Text(
-                                            "${DateHelper.joiningDate(DateTime.parse('${data?.createdAt}'))}",
-                                            style: TextStyle(
+                                            DateHelper.joiningDate(
+                                                DateTime.parse(
+                                                    '${data?.createdAt}')),
+                                            style: const TextStyle(
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.w600),
                                           ),
@@ -305,7 +306,6 @@ class ProductDetailView extends BaseView<ProductVM> {
                                               if (DbHelper.getIsGuest()) {
                                                 DialogHelper.showLoginDialog(
                                                     context: context);
-
                                                 return;
                                               }
 
@@ -657,7 +657,7 @@ class AddressMapWidget extends StatelessWidget {
       },
       circles: {
         Circle(
-          circleId: CircleId("1"),
+          circleId: const CircleId("1"),
           center: latLng,
           radius: 120,
           strokeWidth: 5,

@@ -197,7 +197,7 @@ class SellFormsVM extends BaseViewModel {
         body: body);
 
     var response = await BaseClient.handleRequest(apiRequest);
-    log("${response}", name: "BASEX");
+    log("$response", name: "BASEX");
     MapResponse<ProductDetailModel> model = MapResponse.fromJson(
         response, (json) => ProductDetailModel.fromJson(json));
     DialogHelper.hideLoading();

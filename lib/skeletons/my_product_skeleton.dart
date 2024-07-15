@@ -48,7 +48,7 @@ class MyProductSkeleton extends StatelessWidget {
                     style: context.textTheme.titleMedium,
                   ),
                   const Gap(5),
-                  Text('2015 - 48000 km'),
+                  const Text('2015 - 48000 km'),
                   const Gap(10),
                   Text(
                     'EGP300',
@@ -251,7 +251,7 @@ class MyProductSkeleton extends StatelessWidget {
                     style: context.textTheme.titleMedium,
                   ),
                   const Gap(05),
-                  Text(
+                  const Text(
                       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry.'),
                   const Gap(20),
                 ],

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 class SocketConstants {
   static const String socketUrl = "https://app.listorlift.com/";

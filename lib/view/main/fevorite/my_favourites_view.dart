@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/skeletons/product_list_skeleton.dart';
-import 'package:list_and_life/view_model/my_ads_v_m.dart';
 import 'package:list_and_life/widgets/app_empty_widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -27,7 +25,7 @@ class MyFavouritesView extends StatefulWidget {
 }
 
 class _MyFavouritesViewState extends State<MyFavouritesView> {
-  List<ProductDetailModel> _productsList = [];
+  final List<ProductDetailModel> _productsList = [];
   late RefreshController refreshController;
   final int _limit = 30;
   int _page = 1;

@@ -157,6 +157,17 @@ class _AppMapWidgetState extends State<AppMapWidget> {
     }
   }
 
+  // Create LatLngBounds for India and Egypt
+  final LatLngBounds indiaBounds = LatLngBounds(
+    southwest: const LatLng(8.4, 68.7), // Southwestern point of India
+    northeast: const LatLng(37.6, 97.25), // Northeastern point of India
+  );
+
+  final LatLngBounds egyptBounds = LatLngBounds(
+    southwest: const LatLng(22.0, 25.0), // Southwestern point of Egypt
+    northeast: const LatLng(31.6, 37.0), // Northeastern point of Egypt
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -178,10 +189,13 @@ class _AppMapWidgetState extends State<AppMapWidget> {
               myLocationEnabled: true,
               myLocationButtonEnabled: false,
               initialCameraPosition: _kGooglePlex,
+              cameraTargetBounds: CameraTargetBounds(egyptBounds),
               zoomControlsEnabled: false,
               onMapCreated: (GoogleMapController controller) {
                 _controller.complete(controller);
                 _googleMapController = controller;
+                _googleMapController!
+                    .moveCamera(CameraUpdate.newLatLngBounds(egyptBounds, 0));
               },
               onCameraMove: (cameraPosition) {
                 debugPrint("onCameraMove called");
@@ -244,6 +258,7 @@ class _AppMapWidgetState extends State<AppMapWidget> {
               ),
               child: GooglePlaceAutoCompleteTextField(
                   textEditingController: searchController,
+                  countries: const ['eg'],
                   googleAPIKey: "AIzaSyBDLT4xDcywIynEnoHJn6GdPisZLr4G5TU",
                   inputDecoration: const InputDecoration(
                     border: InputBorder.none,

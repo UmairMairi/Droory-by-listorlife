@@ -3,7 +3,6 @@ import 'package:list_and_life/sockets/socket_constants.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import '../helpers/db_helper.dart';
-import '../network/api_constants.dart';
 
 class SocketHelper {
   static final SocketHelper _singleton = SocketHelper._internal();
@@ -62,6 +61,9 @@ class SocketHelper {
   //--------------------------------Connect User Emitter -------------------------//
 
   connectUser() {
+    if (DbHelper.getUserModel()?.id == null) {
+      return;
+    }
     _socketIO.off(SocketConstants.connectUser);
     Map<String, dynamic> map = {};
     map['user_id'] = DbHelper.getUserModel()?.id;

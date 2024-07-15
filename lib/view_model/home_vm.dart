@@ -1,11 +1,6 @@
-import 'dart:convert';
-
 import 'package:geolocator/geolocator.dart';
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/helpers/db_helper.dart';
-import 'package:list_and_life/helpers/dialog_helper.dart';
 import 'package:list_and_life/helpers/location_helper.dart';
-import 'package:list_and_life/models/common/list_response.dart';
 import 'package:list_and_life/models/common/map_response.dart';
 import 'package:list_and_life/models/home_list_model.dart';
 import 'package:list_and_life/models/prodect_detail_model.dart';
@@ -60,7 +55,6 @@ class HomeVM extends BaseViewModel {
   @override
   void onInit() {
     // TODO: implement onInit
-    updateLocation();
     refreshController = RefreshController(initialRefresh: true);
     initCategories();
     super.onInit();
@@ -87,19 +81,6 @@ class HomeVM extends BaseViewModel {
     ];
   }
 
-  Future<void> updateLocation() async {
-    try{
-      Position position = await LocationHelper.getCurrentLocation();
-      currentLocation = await LocationHelper.getAddressFromCoordinates(
-          position.latitude, position.longitude);
-    }catch(e){
-      Position position = await LocationHelper.getCurrentLocation();
-      currentLocation = await LocationHelper.getAddressFromCoordinates(
-          position.latitude, position.longitude);
-    }
-
-  }
-
   Future<void> onRefresh() async {
     // monitor network fetch
     page = 1;
@@ -119,12 +100,15 @@ class HomeVM extends BaseViewModel {
 
   Future<void> getProductsApi({bool loading = false}) async {
     if (loading) isLoading = loading;
+
     Position? position;
-    try{
+    try {
       position = await LocationHelper.getCurrentLocation();
-    }catch(e){
+    } catch (e) {
       position = await LocationHelper.getCurrentLocation();
     }
+    currentLocation = await LocationHelper.getAddressFromCoordinates(
+        position.latitude, position.longitude);
 
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.getProductsUrl(
@@ -138,7 +122,7 @@ class HomeVM extends BaseViewModel {
     MapResponse<HomeListModel> model =
         MapResponse.fromJson(response, (json) => HomeListModel.fromJson(json));
 
-   /* productsList.addAll(model.body?.data
+    /* productsList.addAll(model.body?.data
             ?.where((element) => element.userId != DbHelper?.getUserModel()?.id)
             .toList() ??
         []);*/

@@ -259,7 +259,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                 width: 100,
                                                 backgroundColor: Colors.red,
                                               )
-                                            : AppElevatedButton(
+                                            : const AppElevatedButton(
                                                 title: 'Sold',
                                                 height: 30,
                                                 width: 100,

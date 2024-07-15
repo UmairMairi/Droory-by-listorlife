@@ -134,73 +134,73 @@ class ProductDetailModel {
       }
     }
     category = json['category'] != null
-        ? new Category.fromJson(json['category'])
+        ? Category.fromJson(json['category'])
         : null;
     subCategory = json['sub_category'] != null
-        ? new Category.fromJson(json['sub_category'])
+        ? Category.fromJson(json['sub_category'])
         : null;
     subSubCategory = json['sub_sub_category'] != null
-        ? new Category.fromJson(json['sub_sub_category'])
+        ? Category.fromJson(json['sub_sub_category'])
         : null;
-    brand = json['brand'] != null ? new Category.fromJson(json['brand']) : null;
-    user = json['user'] != null ? new UserModel.fromJson(json['user']) : null;
+    brand = json['brand'] != null ? Category.fromJson(json['brand']) : null;
+    user = json['user'] != null ? UserModel.fromJson(json['user']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['user_id'] = this.userId;
-    data['category_id'] = this.categoryId;
-    data['sub_category_id'] = this.subCategoryId;
-    data['sub_sub_category_id'] = this.subSubCategoryId;
-    data['brand_id'] = this.brandId;
-    data['favourites_count'] = this.favouritesCount;
-    data['name'] = this.name;
-    data['item_condition'] = this.itemCondition;
-    data['position_type'] = this.positionType;
-    data['sallery_period'] = this.salleryPeriod;
-    data['education_type'] = this.educationType;
-    data['sallery_from'] = this.salleryFrom;
-    data['sallery_to'] = this.salleryTo;
-    data['price'] = this.price;
-    data['description'] = this.description;
-    data['year'] = this.year;
-    data['fuel'] = this.fuel;
-    data['transmission'] = this.transmission;
-    data['km_driven'] = this.kmDriven;
-    data['number_of_owner'] = this.numberOfOwner;
-    data['country'] = this.country;
-    data['state'] = this.state;
-    data['city'] = this.city;
-    data['nearby'] = this.nearby;
-    data['latitude'] = this.latitude;
-    data['longitude'] = this.longitude;
-    data['status'] = this.status;
-    data['sell_status'] = this.sellStatus;
-    data['deleted_at'] = this.deletedAt;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['count_views'] = this.countViews;
-    data['distance'] = this.distance;
-    data['is_favourite'] = this.isFavourite;
-    data['is_featured_or_boosted'] = this.isFeaturedOrBoosted;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['user_id'] = userId;
+    data['category_id'] = categoryId;
+    data['sub_category_id'] = subCategoryId;
+    data['sub_sub_category_id'] = subSubCategoryId;
+    data['brand_id'] = brandId;
+    data['favourites_count'] = favouritesCount;
+    data['name'] = name;
+    data['item_condition'] = itemCondition;
+    data['position_type'] = positionType;
+    data['sallery_period'] = salleryPeriod;
+    data['education_type'] = educationType;
+    data['sallery_from'] = salleryFrom;
+    data['sallery_to'] = salleryTo;
+    data['price'] = price;
+    data['description'] = description;
+    data['year'] = year;
+    data['fuel'] = fuel;
+    data['transmission'] = transmission;
+    data['km_driven'] = kmDriven;
+    data['number_of_owner'] = numberOfOwner;
+    data['country'] = country;
+    data['state'] = state;
+    data['city'] = city;
+    data['nearby'] = nearby;
+    data['latitude'] = latitude;
+    data['longitude'] = longitude;
+    data['status'] = status;
+    data['sell_status'] = sellStatus;
+    data['deleted_at'] = deletedAt;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['count_views'] = countViews;
+    data['distance'] = distance;
+    data['is_favourite'] = isFavourite;
+    data['is_featured_or_boosted'] = isFeaturedOrBoosted;
     if (productMedias != null) {
       data['product_medias'] = productMedias?.map((v) => v.toJson()).toList();
     }
-    if (this.category != null) {
-      data['category'] = this.category!.toJson();
+    if (category != null) {
+      data['category'] = category!.toJson();
     }
-    if (this.subCategory != null) {
-      data['sub_category'] = this.subCategory!.toJson();
+    if (subCategory != null) {
+      data['sub_category'] = subCategory!.toJson();
     }
-    if (this.subSubCategory != null) {
-      data['sub_sub_category'] = this.subSubCategory!.toJson();
+    if (subSubCategory != null) {
+      data['sub_sub_category'] = subSubCategory!.toJson();
     }
-    if (this.brand != null) {
-      data['brand'] = this.brand!.toJson();
+    if (brand != null) {
+      data['brand'] = brand!.toJson();
     }
-    if (this.user != null) {
-      data['user'] = this.user!.toJson();
+    if (user != null) {
+      data['user'] = user!.toJson();
     }
     return data;
   }
@@ -216,8 +216,8 @@ class ProductMedias {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['media'] = this.media;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['media'] = media;
     return data;
   }
 }
@@ -232,8 +232,8 @@ class Category {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
     return data;
   }
 }

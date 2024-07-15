@@ -148,7 +148,7 @@ class BaseClient {
 
   static Response _handleError(dynamic error) {
     // You can customize error handling here
-    if (error is DioError) {
+    if (error is DioException) {
       return error.response!;
     } else {
       return Response(

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/helpers/db_helper.dart';
+import 'package:list_and_life/sockets/socket_helper.dart';
 import 'package:list_and_life/view/main/chat/inbox_view.dart';
 import 'package:list_and_life/view/main/fevorite/ads_view.dart';
 import 'package:list_and_life/view/main/home/home_view.dart';
@@ -19,11 +20,14 @@ class MainView extends StatefulWidget {
 }
 
 class _MainViewState extends State<MainView> {
-  final PersistentTabController _controller = PersistentTabController(initialIndex: 0);
-
+  final PersistentTabController _controller =
+      PersistentTabController(initialIndex: 0);
 
   @override
   void initState() {
+    if (!DbHelper.getIsGuest()) {
+      SocketHelper().connectUser();
+    }
     _controller.jumpToTab(0);
     super.initState();
   }

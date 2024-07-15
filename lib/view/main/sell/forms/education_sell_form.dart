@@ -129,7 +129,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                             onTap: () {
                               viewModel.removeImage(index);
                             },
-                            child: Icon(
+                            child: const Icon(
                               Icons.cancel,
                               color: Colors.red,
                             ),

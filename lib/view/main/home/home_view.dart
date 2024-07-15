@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -9,10 +8,8 @@ import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/skeletons/product_list_skeleton.dart';
 import 'package:list_and_life/view_model/home_vm.dart';
-import 'package:list_and_life/widgets/app_error_widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import '../../../models/prodect_detail_model.dart';
 import '../../../widgets/app_product_item_widget.dart';
 
 class HomeView extends BaseView<HomeVM> {

@@ -5,7 +5,6 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 import '../res/assets_res.dart';
 import '../res/font_res.dart';
-import '../widgets/card_swipe_widget.dart';
 
 class ProductDetailSkeleton extends StatelessWidget {
   final bool isLoading;
@@ -50,7 +49,7 @@ class ProductDetailSkeleton extends StatelessWidget {
                     style: context.textTheme.titleMedium,
                   ),
                   const Gap(5),
-                  Text('2015 - 48000 km'),
+                  const Text('2015 - 48000 km'),
                   const Gap(10),
                   Text(
                     'EGP300',
@@ -212,7 +211,7 @@ class ProductDetailSkeleton extends StatelessWidget {
                     style: context.textTheme.titleMedium,
                   ),
                   const Gap(05),
-                  Text(
+                  const Text(
                       'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry.'),
                   Card(
                     color: const Color(0xfff5f5f5),

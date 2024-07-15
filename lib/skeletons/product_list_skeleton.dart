@@ -3,10 +3,8 @@ import 'package:gap/gap.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-import '../helpers/db_helper.dart';
 import '../res/assets_res.dart';
 import '../res/font_res.dart';
-import '../widgets/card_swipe_widget.dart';
 import '../widgets/like_button.dart';
 
 class ProductListSkeleton extends StatelessWidget {
@@ -232,7 +230,7 @@ class ProductListSkeleton extends StatelessWidget {
           );
         },
         separatorBuilder: (BuildContext context, int index) {
-          return Gap(20);
+          return const Gap(20);
         },
       ),
     );
