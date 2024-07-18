@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/helpers/db_helper.dart';
 import 'package:list_and_life/models/category_model.dart';
+import 'package:list_and_life/models/inbox_model.dart';
 import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/models/setting_item_model.dart';
 import 'package:list_and_life/models/user_model.dart';
@@ -87,7 +88,7 @@ class AppPages {
         pageBuilder: (context, state) {
           return getPage(
               child: MessageView(
-                chat: state.extra as SettingItemModel,
+                chat: state.extra as InboxModel,
               ),
               state: state);
         },

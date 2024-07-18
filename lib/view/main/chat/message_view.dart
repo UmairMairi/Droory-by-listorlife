@@ -2,20 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/helpers/db_helper.dart';
 import 'package:list_and_life/helpers/dialog_helper.dart';
+import 'package:list_and_life/models/inbox_model.dart';
 import 'package:list_and_life/models/setting_item_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/view_model/chat_vm.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
+import 'package:list_and_life/widgets/image_view.dart';
 
 import '../../../chat_bubble/bubble_normal_message.dart';
 import '../../../chat_bubble/bubble_offer_message.dart';
 import '../../../chat_bubble/message_bar_with_suggetion.dart';
 import '../../../helpers/date_helper.dart';
+import '../../../network/api_constants.dart';
 import '../../../res/font_res.dart';
 
 class MessageView extends BaseView<ChatVM> {
-  final SettingItemModel? chat;
+  final InboxModel? chat;
   const MessageView({super.key, this.chat});
 
   @override
@@ -27,11 +31,16 @@ class MessageView extends BaseView<ChatVM> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            CircleAvatar(
-              foregroundImage: AssetImage(chat?.icon ?? ''),
+            ImageView.circle(
+              height: 50,
+              width: 50,
+              image:
+                  "${ApiConstants.imageUrl}/${chat?.senderId == DbHelper.getUserModel()?.id ? chat?.receiverDetail?.profilePic ?? '' : chat?.senderDetail?.profilePic ?? ''}",
             ),
             const Gap(5),
-            Text(chat?.title ?? ''),
+            Text(chat?.senderId == DbHelper.getUserModel()?.id
+                ? chat?.receiverDetail?.name ?? ''
+                : chat?.senderDetail?.name ?? ''),
           ],
         ),
         actions: [
@@ -131,18 +140,21 @@ class MessageView extends BaseView<ChatVM> {
                 reverse: true,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  return viewModel.chatItems[index].type == 1
+                  return viewModel.chatItems[index].messageType == 1
                       ? BubbleNormalMessage(
                           textStyle: const TextStyle(
                             color: Colors.white,
                           ),
                           timeStamp: true,
-                          createdAt: DateHelper.getChatTime(
-                              viewModel.chatItems[index].timeStamp!),
+                          createdAt: DateHelper.getChatTime(DateTime.parse(
+                                  viewModel.chatItems[index].createdAt ??
+                                      '2021-01-01 00:00:00')
+                              .microsecondsSinceEpoch),
                           text: viewModel.chatItems[index].message ?? '',
-                          isSender:
-                              viewModel.chatItems[index].isSender ?? false,
-                          color: viewModel.chatItems[index].isSender!
+                          isSender: viewModel.chatItems[index].senderId ==
+                              DbHelper.getUserModel()?.id,
+                          color: viewModel.chatItems[index].senderId ==
+                                  DbHelper.getUserModel()?.id
                               ? Colors.black
                               : const Color(0xff5A5B55),
                         )
@@ -152,12 +164,15 @@ class MessageView extends BaseView<ChatVM> {
                               fontSize: 20,
                               fontFamily: FontRes.MONTSERRAT_SEMIBOLD),
                           timeStamp: true,
-                          createdAt: DateHelper.getChatTime(
-                              viewModel.chatItems[index].timeStamp!),
+                          createdAt: DateHelper.getChatTime(DateTime.parse(
+                                  viewModel.chatItems[index].createdAt ??
+                                      '2021-01-01 00:00:00')
+                              .microsecondsSinceEpoch),
                           text: viewModel.chatItems[index].message ?? '',
-                          isSender:
-                              viewModel.chatItems[index].isSender ?? false,
-                          color: viewModel.chatItems[index].isSender!
+                          isSender: viewModel.chatItems[index].senderId ==
+                              DbHelper.getUserModel()?.id,
+                          color: viewModel.chatItems[index].senderId ==
+                                  DbHelper.getUserModel()?.id
                               ? Colors.black
                               : const Color(0xff5A5B55),
                         );

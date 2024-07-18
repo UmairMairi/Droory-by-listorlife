@@ -1,70 +1,26 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/models/setting_item_model.dart';
-import 'package:list_and_life/res/assets_res.dart';
+import 'package:list_and_life/helpers/db_helper.dart';
+import 'package:list_and_life/models/inbox_model.dart';
+import 'package:list_and_life/sockets/socket_constants.dart';
+import 'package:socket_io_client/socket_io_client.dart';
+
+import '../helpers/date_helper.dart';
+import '../models/message_model.dart';
+import '../sockets/socket_helper.dart';
 
 class ChatVM extends BaseViewModel {
-  List<SettingItemModel> inboxItems = [
-    SettingItemModel(
-      icon: AssetsRes.DUMMY_CHAT_IMAGE1,
-      title: 'Stells Stefword',
-      subTitle: 'Lorem Ipsum is simply dummy text.',
-      timeStamp: '1 min ago',
-    ),
-    SettingItemModel(
-      icon: AssetsRes.DUMMY_CHAT_IMAGE2,
-      title: 'John Marker',
-      subTitle: 'Lorem Ipsum is simply dummy text.',
-      timeStamp: '1 min ago',
-    ),
-    SettingItemModel(
-      icon: AssetsRes.DUMMY_CHAT_IMAGE3,
-      title: 'Jolly Deo',
-      subTitle: 'Lorem Ipsum is simply dummy text.',
-      timeStamp: '1 min ago',
-    ),
-    SettingItemModel(
-      icon: AssetsRes.DUMMY_CHAT_IMAGE4,
-      title: 'Hick G',
-      subTitle: 'Lorem Ipsum is simply dummy text.',
-      timeStamp: '1 min ago',
-    ),
-    SettingItemModel(
-      icon: AssetsRes.DUMMY_CHAT_IMAGE5,
-      title: 'Jack Dick',
-      subTitle: 'Lorem Ipsum is simply dummy text.',
-      timeStamp: '1 min ago',
-    ),
-    SettingItemModel(
-      icon: AssetsRes.DUMMY_CHAT_IMAGE6,
-      title: 'Micky Geo',
-      subTitle: 'Lorem Ipsum is simply dummy text.',
-      timeStamp: '1 min ago',
-    ),
-    SettingItemModel(
-      icon: AssetsRes.DUMMY_CHAT_IMAGE3,
-      title: 'Jolly Deo',
-      subTitle: 'Lorem Ipsum is simply dummy text.',
-      timeStamp: '1 min ago',
-    ),
-  ];
+  final Socket? _socketIO = SocketHelper().getSocket();
+
+  final TextEditingController messageTextController = TextEditingController();
+
+  List<InboxModel> inboxList = [];
 
   ///Message types 1 => Text 2=> offer
-  List<MessageModel> chatItems = [
-    MessageModel(
-        message: '1000.0', isSender: false, timeStamp: 1716099720, type: 2),
-    MessageModel(
-        message: 'Ok!', isSender: false, timeStamp: 1716099522, type: 1),
-    MessageModel(
-        message: 'I am Fine.', isSender: false, timeStamp: 1716099522, type: 1),
-    MessageModel(
-        message: 'Oh! Cool', isSender: true, timeStamp: 1716099720, type: 1),
-    MessageModel(
-        message: 'Hi, son, how are you doing?',
-        isSender: true,
-        timeStamp: 1716099720,
-        type: 1),
-  ];
+  List<MessageModel> chatItems = [];
 
   void sendMessage({String? message, int? type}) {
     if (message == null) {
@@ -75,24 +31,61 @@ class ChatVM extends BaseViewModel {
         0,
         MessageModel(
             message: message,
-            isSender: true,
-            type: type,
-            timeStamp: DateTime.now().millisecondsSinceEpoch));
+            senderId: DbHelper.getUserModel()?.id?.toInt(),
+            messageType: type,
+            createdAt: "${DateTime.now()}"));
     notifyListeners();
   }
 
-  final TextEditingController _messageTextController = TextEditingController();
-  TextEditingController get messageTextController => _messageTextController;
-}
+  StreamController<List<InboxModel>> inboxStreamController =
+      StreamController<List<InboxModel>>();
 
-class MessageModel {
-  final String? message;
-  final bool? isSender;
-  final int? timeStamp;
-  final int? type;
-  MessageModel(
-      {required this.message,
-      required this.isSender,
-      required this.timeStamp,
-      required this.type});
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    getInboxList();
+    super.onInit();
+  }
+
+  void getInboxList() {
+    _socketIO?.off(SocketConstants.getUserLists);
+    _socketIO?.on(SocketConstants.getUserLists, (data) {
+      log("Users List: $data");
+      inboxList.clear();
+
+      InboxDataModel model = InboxDataModel.fromJson(data);
+
+      if (data.isNotEmpty) {
+        for (var item in model.list ?? []) {
+          inboxList.add(item);
+        }
+        /* inboxList.sort((a, b) {
+          return a.updatedAt != null && b.updatedAt != null
+              ? b.updatedAt!.compareTo(a.updatedAt!)
+              : 1;
+        });*/
+      }
+
+      /// UI Update
+      print("UI updated");
+      inboxStreamController.add(inboxList);
+      // notifyListeners();
+    });
+    Map<String, dynamic> map = {
+      "sender_id": DbHelper.getUserModel()?.id,
+      "limit": 10000,
+      "page": 1
+    };
+
+    log("Get Users Resq: $map");
+    _socketIO?.emit(SocketConstants.getUserLists, map);
+  }
+
+  String getCreatedAt({String? time}) {
+    String dateTimeString = "2024-06-25T01:01:47.000Z";
+    DateTime dateTime = DateTime.parse(time ?? dateTimeString);
+    int timestamp = dateTime.millisecondsSinceEpoch ~/ 1000;
+    print("Timestamp: $timestamp");
+    return DateHelper.getChatTime(timestamp);
+  }
 }
