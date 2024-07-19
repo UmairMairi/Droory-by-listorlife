@@ -5,9 +5,11 @@ import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/helpers/db_helper.dart';
 import 'package:list_and_life/helpers/dialog_helper.dart';
 import 'package:list_and_life/models/inbox_model.dart';
-import 'package:list_and_life/models/setting_item_model.dart';
+import 'package:list_and_life/models/message_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/view_model/chat_vm.dart';
+import 'package:list_and_life/widgets/app_error_widget.dart';
+import 'package:list_and_life/widgets/app_loading_widget.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 
@@ -24,6 +26,12 @@ class MessageView extends BaseView<ChatVM> {
 
   @override
   Widget build(BuildContext context, ChatVM viewModel) {
+    WidgetsBinding.instance.addPostFrameCallback((d) =>
+        viewModel.getMessageList(
+            receiverId: chat?.senderId == DbHelper.getUserModel()?.id
+                ? chat?.receiverDetail?.id
+                : chat?.senderDetail?.id,
+            productId: chat?.productId));
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -39,8 +47,8 @@ class MessageView extends BaseView<ChatVM> {
             ),
             const Gap(5),
             Text(chat?.senderId == DbHelper.getUserModel()?.id
-                ? chat?.receiverDetail?.name ?? ''
-                : chat?.senderDetail?.name ?? ''),
+                ? "${chat?.receiverDetail?.name} ${chat?.receiverDetail?.lastName}"
+                : "${chat?.senderDetail?.name} ${chat?.senderDetail?.lastName}"),
           ],
         ),
         actions: [
@@ -133,49 +141,60 @@ class MessageView extends BaseView<ChatVM> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Expanded(
-            child: ListView.builder(
-                keyboardDismissBehavior:
-                    ScrollViewKeyboardDismissBehavior.onDrag,
-                itemCount: viewModel.chatItems.length,
-                reverse: true,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return viewModel.chatItems[index].messageType == 1
-                      ? BubbleNormalMessage(
-                          textStyle: const TextStyle(
-                            color: Colors.white,
-                          ),
-                          timeStamp: true,
-                          createdAt: DateHelper.getChatTime(DateTime.parse(
-                                  viewModel.chatItems[index].createdAt ??
-                                      '2021-01-01 00:00:00')
-                              .microsecondsSinceEpoch),
-                          text: viewModel.chatItems[index].message ?? '',
-                          isSender: viewModel.chatItems[index].senderId ==
-                              DbHelper.getUserModel()?.id,
-                          color: viewModel.chatItems[index].senderId ==
-                                  DbHelper.getUserModel()?.id
-                              ? Colors.black
-                              : const Color(0xff5A5B55),
-                        )
-                      : BubbleOfferMessage(
-                          textStyle: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontFamily: FontRes.MONTSERRAT_SEMIBOLD),
-                          timeStamp: true,
-                          createdAt: DateHelper.getChatTime(DateTime.parse(
-                                  viewModel.chatItems[index].createdAt ??
-                                      '2021-01-01 00:00:00')
-                              .microsecondsSinceEpoch),
-                          text: viewModel.chatItems[index].message ?? '',
-                          isSender: viewModel.chatItems[index].senderId ==
-                              DbHelper.getUserModel()?.id,
-                          color: viewModel.chatItems[index].senderId ==
-                                  DbHelper.getUserModel()?.id
-                              ? Colors.black
-                              : const Color(0xff5A5B55),
-                        );
+            child: StreamBuilder<List<MessageModel>>(
+                stream: viewModel.messageStreamController.stream,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    List<MessageModel> data = snapshot.data ?? [];
+                    return ListView.builder(
+                        keyboardDismissBehavior:
+                            ScrollViewKeyboardDismissBehavior.onDrag,
+                        itemCount: data.length,
+                        reverse: true,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return data[index].messageType == 1
+                              ? BubbleNormalMessage(
+                                  textStyle: const TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                  timeStamp: true,
+                                  createdAt: DateHelper.getTimeAgo(
+                                      DateTime.parse(data[index].updatedAt ??
+                                              '2021-01-01 00:00:00')
+                                          .millisecondsSinceEpoch),
+                                  text: data[index].message ?? '',
+                                  isSender: data[index].senderId ==
+                                      DbHelper.getUserModel()?.id,
+                                  color: data[index].senderId ==
+                                          DbHelper.getUserModel()?.id
+                                      ? Colors.black
+                                      : const Color(0xff5A5B55),
+                                )
+                              : BubbleOfferMessage(
+                                  textStyle: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontFamily: FontRes.MONTSERRAT_SEMIBOLD),
+                                  timeStamp: true,
+                                  createdAt: DateHelper.getChatTime(
+                                      DateTime.parse(data[index].createdAt ??
+                                              '2021-01-01 00:00:00')
+                                          .microsecondsSinceEpoch),
+                                  text: data[index].message ?? '',
+                                  isSender: data[index].senderId ==
+                                      DbHelper.getUserModel()?.id,
+                                  color: data[index].senderId ==
+                                          DbHelper.getUserModel()?.id
+                                      ? Colors.black
+                                      : const Color(0xff5A5B55),
+                                );
+                        });
+                  }
+                  if (snapshot.hasError) {
+                    return const AppErrorWidget();
+                  }
+                  return const AppLoadingWidget();
                 }),
           ),
           MessageBarWithSuggestions(
@@ -184,11 +203,23 @@ class MessageView extends BaseView<ChatVM> {
               viewModel.messageTextController.text = value;
             },
             onOfferMade: (value) {
-              viewModel.sendMessage(message: '$value', type: 2);
+              viewModel.sendMessage(
+                  message: '$value',
+                  type: 2,
+                  receiverId: chat?.senderId == DbHelper.getUserModel()?.id
+                      ? chat?.receiverDetail?.id
+                      : chat?.senderDetail?.id,
+                  productId: chat?.productId);
             },
             textController: viewModel.messageTextController,
             onSubmitted: (value) {
-              viewModel.sendMessage(message: value, type: 1);
+              viewModel.sendMessage(
+                  message: value,
+                  type: 1,
+                  receiverId: chat?.senderId == DbHelper.getUserModel()?.id
+                      ? chat?.receiverDetail?.id
+                      : chat?.senderDetail?.id,
+                  productId: chat?.productId);
               viewModel.messageTextController.clear();
             },
             onPickImageClick: () {},

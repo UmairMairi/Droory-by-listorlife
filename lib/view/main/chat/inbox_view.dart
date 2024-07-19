@@ -20,6 +20,8 @@ class InboxView extends BaseView<ChatVM> {
 
   @override
   Widget build(BuildContext context, ChatVM viewModel) {
+    WidgetsBinding.instance
+        .addPostFrameCallback((d) => viewModel.getInboxList());
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Chats'),

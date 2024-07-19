@@ -20,25 +20,13 @@ class ChatVM extends BaseViewModel {
   List<InboxModel> inboxList = [];
 
   ///Message types 1 => Text 2=> offer
-  List<MessageModel> chatItems = [];
-
-  void sendMessage({String? message, int? type}) {
-    if (message == null) {
-      return;
-    }
-
-    chatItems.insert(
-        0,
-        MessageModel(
-            message: message,
-            senderId: DbHelper.getUserModel()?.id?.toInt(),
-            messageType: type,
-            createdAt: "${DateTime.now()}"));
-    notifyListeners();
-  }
 
   StreamController<List<InboxModel>> inboxStreamController =
       StreamController<List<InboxModel>>();
+  StreamController<List<MessageModel>> messageStreamController =
+      StreamController<List<MessageModel>>.broadcast();
+
+  List<MessageModel> chatItems = [];
 
   @override
   void onInit() {
@@ -59,15 +47,7 @@ class ChatVM extends BaseViewModel {
         for (var item in model.list ?? []) {
           inboxList.add(item);
         }
-        /* inboxList.sort((a, b) {
-          return a.updatedAt != null && b.updatedAt != null
-              ? b.updatedAt!.compareTo(a.updatedAt!)
-              : 1;
-        });*/
       }
-
-      /// UI Update
-      print("UI updated");
       inboxStreamController.add(inboxList);
       // notifyListeners();
     });
@@ -79,6 +59,72 @@ class ChatVM extends BaseViewModel {
 
     log("Get Users Resq: $map");
     _socketIO?.emit(SocketConstants.getUserLists, map);
+  }
+
+  void getMessageList({required num? receiverId, required num? productId}) {
+    _socketIO?.off(SocketConstants.getMessageList);
+    _socketIO?.on(SocketConstants.getMessageList, (data) {
+      log("Users List: $data");
+      chatItems.clear();
+      for (var element in data) {
+        log("${element}");
+        chatItems.add(MessageModel.fromJson(element));
+      }
+      messageStreamController.add(chatItems);
+      // notifyListeners();
+    });
+
+    Map<String, dynamic> map = {
+      "sender_id": DbHelper.getUserModel()?.id,
+      "receiver_id": receiverId,
+      "product_id": productId,
+      "limit": 10000,
+      "page": 1
+    };
+    print("Send message => $map");
+    _socketIO?.emit(SocketConstants.getMessageList, map);
+  }
+
+  void sendMessage(
+      {String? message,
+      int? type,
+      required num? receiverId,
+      required num? productId}) {
+    if (message == null) {
+      return;
+    }
+
+    _socketIO?.off(SocketConstants.sendMessage);
+    _socketIO?.on(SocketConstants.sendMessage, (data) {
+      getInboxList();
+      MessageModel message = MessageModel.fromJson(data);
+
+      if (message.senderId != DbHelper.getUserModel()?.id) {
+        chatItems.insert(0, message);
+        messageStreamController.add(chatItems);
+      }
+    });
+    chatItems.insert(
+      0,
+      MessageModel(
+          message: message,
+          senderId: DbHelper.getUserModel()?.id?.toInt(),
+          receiverId: receiverId?.toInt(),
+          messageType: type,
+          createdAt: "${DateTime.now()}",
+          updatedAt: "${DateTime.now()}"),
+    );
+    messageStreamController.add(chatItems);
+
+    Map<String, dynamic> map = {
+      "sender_id": DbHelper.getUserModel()?.id,
+      "receiver_id": receiverId,
+      "product_id": productId,
+      "message": message,
+      "message_type": 1
+    };
+    print("Send message => $map");
+    _socketIO?.emit(SocketConstants.sendMessage, map);
   }
 
   String getCreatedAt({String? time}) {

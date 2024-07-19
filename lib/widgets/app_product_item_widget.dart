@@ -15,6 +15,7 @@ import 'package:list_and_life/widgets/like_button.dart';
 
 import '../helpers/db_helper.dart';
 import '../models/common/map_response.dart';
+import '../models/inbox_model.dart';
 import '../network/api_constants.dart';
 import '../network/api_request.dart';
 import '../network/base_client.dart';
@@ -193,12 +194,22 @@ class AppProductItemWidget extends StatelessWidget {
                               }
                               context.push(
                                 Routes.message,
-                                extra: SettingItemModel(
-                                  icon: AssetsRes.DUMMY_CHAT_IMAGE2,
-                                  title: 'John Marker',
-                                  subTitle: 'Lorem Ipsum is simply dummy text.',
-                                  timeStamp: '1 min ago',
-                                ),
+                                extra: InboxModel(
+                                    senderId: DbHelper.getUserModel()?.id,
+                                    receiverId: data?.userId,
+                                    productId: data?.id,
+                                    receiverDetail: SenderDetail(
+                                        id: data?.userId,
+                                        lastName: data?.user?.lastName,
+                                        profilePic: data?.user?.profilePic,
+                                        name: data?.user?.name),
+                                    senderDetail: SenderDetail(
+                                        id: DbHelper.getUserModel()?.id,
+                                        profilePic:
+                                            DbHelper.getUserModel()?.profilePic,
+                                        lastName:
+                                            DbHelper.getUserModel()?.lastName,
+                                        name: DbHelper.getUserModel()?.name)),
                               );
                             },
                             child: Container(
@@ -206,7 +217,7 @@ class AppProductItemWidget extends StatelessWidget {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 08),
                               decoration: BoxDecoration(
-                                color: const Color(0xff5A5B55),
+                                color: Color(0xff5A5B55),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Row(
