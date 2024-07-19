@@ -66,11 +66,24 @@ class InboxView extends BaseView<ChatVM> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: [
-                                          ImageView.circle(
-                                            height: 50,
-                                            width: 50,
-                                            image:
-                                                "${ApiConstants.imageUrl}/${data.senderId == DbHelper.getUserModel()?.id ? receiver?.profilePic ?? '' : sender?.profilePic ?? ''}",
+                                          Stack(
+                                            alignment: Alignment.bottomRight,
+                                            children: [
+                                              ImageView.rect(
+                                                height: 60,
+                                                width: 60,
+                                                image:
+                                                    "${ApiConstants.imageUrl}/${data.productDetail?.image}",
+                                              ),
+                                              ImageView.circle(
+                                                height: 25,
+                                                width: 25,
+                                                borderColor:
+                                                    context.theme.primaryColor,
+                                                image:
+                                                    "${ApiConstants.imageUrl}/${data.senderId == DbHelper.getUserModel()?.id ? receiver?.profilePic ?? '' : sender?.profilePic ?? ''}",
+                                              ),
+                                            ],
                                           ),
                                           const Gap(10),
                                           Expanded(
@@ -85,10 +98,21 @@ class InboxView extends BaseView<ChatVM> {
                                                   data.senderId ==
                                                           DbHelper.getUserModel()
                                                               ?.id
-                                                      ? receiver?.name ?? ''
-                                                      : sender?.name ?? '',
+                                                      ? "${receiver?.name} ${receiver?.lastName}"
+                                                      : "${sender?.name} ${sender?.lastName}",
                                                   style: context
                                                       .textTheme.titleMedium,
+                                                ),
+                                                const Gap(02),
+                                                Text(
+                                                  data.productDetail?.name ??
+                                                      '',
+                                                  style: context
+                                                      .textTheme.labelLarge
+                                                      ?.copyWith(
+                                                          fontFamily: FontRes
+                                                              .MONTSERRAT_MEDIUM,
+                                                          color: Colors.black),
                                                 ),
                                                 const Gap(02),
                                                 Text(

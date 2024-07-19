@@ -8,6 +8,7 @@ class ProductDetailModel {
   num? subSubCategoryId;
   num? brandId;
   String? name;
+  String? image;
   String? itemCondition;
   String? positionType;
   String? salleryPeriod;
@@ -51,6 +52,7 @@ class ProductDetailModel {
       this.subCategoryId,
       this.subSubCategoryId,
       this.brandId,
+      this.image,
       this.name,
       this.itemCondition,
       this.positionType,
@@ -96,6 +98,7 @@ class ProductDetailModel {
     subSubCategoryId = json['sub_sub_category_id'];
     brandId = json['brand_id'];
     name = json['name'];
+    image = json['image'];
     itemCondition = json['item_condition'];
     positionType = json['position_type'];
     salleryPeriod = json['sallery_period'];
@@ -133,9 +136,8 @@ class ProductDetailModel {
         });
       }
     }
-    category = json['category'] != null
-        ? Category.fromJson(json['category'])
-        : null;
+    category =
+        json['category'] != null ? Category.fromJson(json['category']) : null;
     subCategory = json['sub_category'] != null
         ? Category.fromJson(json['sub_category'])
         : null;
@@ -176,6 +178,7 @@ class ProductDetailModel {
     data['latitude'] = latitude;
     data['longitude'] = longitude;
     data['status'] = status;
+    data['image'] = image;
     data['sell_status'] = sellStatus;
     data['deleted_at'] = deletedAt;
     data['created_at'] = createdAt;

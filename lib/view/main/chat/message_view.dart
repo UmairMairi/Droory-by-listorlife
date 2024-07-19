@@ -39,11 +39,23 @@ class MessageView extends BaseView<ChatVM> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            ImageView.circle(
-              height: 50,
-              width: 50,
-              image:
-                  "${ApiConstants.imageUrl}/${chat?.senderId == DbHelper.getUserModel()?.id ? chat?.receiverDetail?.profilePic ?? '' : chat?.senderDetail?.profilePic ?? ''}",
+            Stack(
+              alignment: Alignment.bottomRight,
+              children: [
+                ImageView.rect(
+                  height: 60,
+                  width: 60,
+                  image:
+                      "${ApiConstants.imageUrl}/${chat?.productDetail?.image}",
+                ),
+                ImageView.circle(
+                  height: 25,
+                  width: 25,
+                  borderColor: context.theme.primaryColor,
+                  image:
+                      "${ApiConstants.imageUrl}/${chat?.senderId == DbHelper.getUserModel()?.id ? chat?.receiverDetail?.profilePic ?? '' : chat?.senderDetail?.profilePic ?? ''}",
+                ),
+              ],
             ),
             const Gap(5),
             Text(chat?.senderId == DbHelper.getUserModel()?.id
@@ -86,12 +98,25 @@ class MessageView extends BaseView<ChatVM> {
                       builder: (context) => AppAlertDialogWithWidget(
                             description: '',
                             onTap: () {
+                              if (viewModel.reportTextController.text
+                                  .trim()
+                                  .isEmpty) {
+                                DialogHelper.showToast(
+                                    message: "Please enter reason of report.");
+                                return;
+                              }
                               context.pop();
+                              viewModel.reportBlockUser(
+                                  report: true,
+                                  reason: viewModel.reportTextController.text,
+                                  userId:
+                                      "${chat?.senderId == DbHelper.getUserModel()?.id ? chat?.receiverDetail?.id : chat?.senderDetail?.id}");
                             },
                             icon: AssetsRes.IC_REPORT_USER,
                             showCancelButton: true,
                             isTextDescription: false,
-                            content: const AppTextField(
+                            content: AppTextField(
+                              controller: viewModel.reportTextController,
                               lines: 4,
                               hint: 'Reason...',
                             ),
@@ -108,6 +133,9 @@ class MessageView extends BaseView<ChatVM> {
                                 'Are you sure want to block this user?',
                             onTap: () {
                               context.pop();
+                              viewModel.reportBlockUser(
+                                  userId:
+                                      "${chat?.senderId == DbHelper.getUserModel()?.id ? chat?.receiverDetail?.id : chat?.senderDetail?.id}");
                               context.pop();
                             },
                             icon: AssetsRes.IC_BLOCK_USER,

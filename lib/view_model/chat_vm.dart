@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/helpers/db_helper.dart';
+import 'package:list_and_life/helpers/dialog_helper.dart';
 import 'package:list_and_life/models/inbox_model.dart';
 import 'package:list_and_life/sockets/socket_constants.dart';
 import 'package:socket_io_client/socket_io_client.dart';
@@ -16,6 +17,7 @@ class ChatVM extends BaseViewModel {
   final Socket? _socketIO = SocketHelper().getSocket();
 
   final TextEditingController messageTextController = TextEditingController();
+  final TextEditingController reportTextController = TextEditingController();
 
   List<InboxModel> inboxList = [];
 
@@ -121,7 +123,7 @@ class ChatVM extends BaseViewModel {
       "receiver_id": receiverId,
       "product_id": productId,
       "message": message,
-      "message_type": 1
+      "message_type": type
     };
     print("Send message => $map");
     _socketIO?.emit(SocketConstants.sendMessage, map);
@@ -133,5 +135,30 @@ class ChatVM extends BaseViewModel {
     int timestamp = dateTime.millisecondsSinceEpoch ~/ 1000;
     print("Timestamp: $timestamp");
     return DateHelper.getChatTime(timestamp);
+  }
+
+  void reportBlockUser(
+      {String? reason, required String? userId, bool report = false}) {
+    if (report) {
+      if (reason?.isEmpty ?? false) {
+        return;
+      }
+    }
+    _socketIO?.off(SocketConstants.blockOrReportUser);
+    _socketIO?.on(SocketConstants.blockOrReportUser, (data) {
+      if (report) {
+        DialogHelper.showToast(message: "Your report submitted successfully");
+      } else {
+        DialogHelper.showToast(message: "You blocked this user successfully");
+      }
+    });
+
+    Map<String, dynamic> map = {
+      "user_id": DbHelper.getUserModel()?.id,
+      "other_user_id": userId,
+      "type": report ? "report" : "block",
+      "reason": reason
+    };
+    _socketIO?.emit(SocketConstants.blockOrReportUser, map);
   }
 }
