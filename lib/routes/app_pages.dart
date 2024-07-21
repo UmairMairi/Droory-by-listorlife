@@ -18,6 +18,7 @@ import 'package:list_and_life/view/profile/complete_profile_view.dart';
 import 'package:list_and_life/view/profile/edit_profile_view.dart';
 import 'package:list_and_life/view/purchase/plans_list_view.dart';
 
+import '../base/route_observer.dart';
 import '../view/auth/guest_login_view.dart';
 import '../view/auth/login_view.dart';
 import '../view/auth/verification_view.dart';
@@ -43,6 +44,7 @@ class AppPages {
     debugLogDiagnostics: true,
     initialLocation: '/',
     navigatorKey: rootNavigatorKey,
+    /*observers: [AppRouteObserver()],*/
     routes: [
       GoRoute(
         path: Routes.root,

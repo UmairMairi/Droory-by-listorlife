@@ -7,6 +7,7 @@ import 'package:list_and_life/models/inbox_model.dart';
 import 'package:list_and_life/network/api_constants.dart';
 import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
+import 'package:list_and_life/skeletons/inbox_skeleton.dart';
 import 'package:list_and_life/view_model/chat_vm.dart';
 import 'package:list_and_life/widgets/app_empty_widget.dart';
 import 'package:list_and_life/widgets/app_error_widget.dart';
@@ -33,92 +34,119 @@ class InboxView extends BaseView<ChatVM> {
               stream: viewModel.inboxStreamController.stream,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return SingleChildScrollView(
+                  return Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
                     child: Column(
                       children: [
-                        const AppTextField(
+                        AppTextField(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          controller: viewModel.inboxSearchTextController,
                           hint: 'Search...',
-                          suffix: Icon(Icons.search),
+                          onChanged: (String text) {
+                            viewModel.searchInbox(text);
+                          },
+                          suffix: const Icon(Icons.search),
                         ),
                         const Gap(20),
-                        viewModel.inboxList.isEmpty
-                            ? const AppEmptyWidget()
-                            : ListView.separated(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  InboxModel data = viewModel.inboxList[index];
-                                  SenderDetail? sender = data.senderDetail;
-                                  SenderDetail? receiver = data.receiverDetail;
-                                  return InkWell(
-                                    onTap: () {
-                                      context.push(Routes.message,
-                                          extra: viewModel.inboxList[index]);
-                                    },
-                                    child: Card(
-                                        child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Stack(
-                                            alignment: Alignment.bottomRight,
-                                            children: [
-                                              ImageView.rect(
-                                                height: 60,
-                                                width: 60,
-                                                image:
-                                                    "${ApiConstants.imageUrl}/${data.productDetail?.image}",
-                                              ),
-                                              ImageView.circle(
-                                                height: 25,
-                                                width: 25,
-                                                borderColor:
-                                                    context.theme.primaryColor,
-                                                image:
-                                                    "${ApiConstants.imageUrl}/${data.senderId == DbHelper.getUserModel()?.id ? receiver?.profilePic ?? '' : sender?.profilePic ?? ''}",
-                                              ),
-                                            ],
-                                          ),
-                                          const Gap(10),
-                                          Expanded(
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
+                        Expanded(
+                          child: viewModel.filteredInboxList.isEmpty
+                              ? const AppEmptyWidget()
+                              : ListView.separated(
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    InboxModel data =
+                                        viewModel.filteredInboxList[index];
+                                    SenderDetail? sender = data.senderDetail;
+                                    SenderDetail? receiver =
+                                        data.receiverDetail;
+                                    return InkWell(
+                                      onTap: () {
+                                        context.push(Routes.message,
+                                            extra: viewModel
+                                                .filteredInboxList[index]);
+                                      },
+                                      child: Card(
+                                          child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Stack(
+                                              alignment: Alignment.bottomRight,
                                               children: [
-                                                Text(
-                                                  data.senderId ==
-                                                          DbHelper.getUserModel()
-                                                              ?.id
-                                                      ? "${receiver?.name} ${receiver?.lastName}"
-                                                      : "${sender?.name} ${sender?.lastName}",
-                                                  style: context
-                                                      .textTheme.titleMedium,
+                                                ImageView.rect(
+                                                  height: 60,
+                                                  width: 60,
+                                                  image:
+                                                      "${ApiConstants.imageUrl}/${data.productDetail?.image}",
+                                                ),
+                                                ImageView.circle(
+                                                  height: 25,
+                                                  width: 25,
+                                                  borderColor: context
+                                                      .theme.primaryColor,
+                                                  image:
+                                                      "${ApiConstants.imageUrl}/${data.senderId == DbHelper.getUserModel()?.id ? receiver?.profilePic ?? '' : sender?.profilePic ?? ''}",
+                                                ),
+                                              ],
+                                            ),
+                                            const Gap(10),
+                                            Expanded(
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    data.senderId ==
+                                                            DbHelper.getUserModel()
+                                                                ?.id
+                                                        ? "${receiver?.name} ${receiver?.lastName}"
+                                                        : "${sender?.name} ${sender?.lastName}",
+                                                    style: context
+                                                        .textTheme.titleMedium,
+                                                  ),
+                                                  const Gap(02),
+                                                  Text(
+                                                    data.productDetail?.name ??
+                                                        '',
+                                                    style: context
+                                                        .textTheme.labelLarge
+                                                        ?.copyWith(
+                                                            fontFamily: FontRes
+                                                                .MONTSERRAT_MEDIUM,
+                                                            color:
+                                                                Colors.black),
+                                                  ),
+                                                  const Gap(02),
+                                                  Text(
+                                                    "${viewModel.getLastMessage(message: data.lastMessageDetail)}",
+                                                    style: context
+                                                        .textTheme.labelMedium
+                                                        ?.copyWith(
+                                                            fontFamily: FontRes
+                                                                .MONTSERRAT_MEDIUM),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                const Icon(
+                                                  Icons.remove_red_eye_outlined,
+                                                  size: 12,
                                                 ),
                                                 const Gap(02),
                                                 Text(
-                                                  data.productDetail?.name ??
-                                                      '',
-                                                  style: context
-                                                      .textTheme.labelLarge
-                                                      ?.copyWith(
-                                                          fontFamily: FontRes
-                                                              .MONTSERRAT_MEDIUM,
-                                                          color: Colors.black),
-                                                ),
-                                                const Gap(02),
-                                                Text(
-                                                  data.lastMessageDetail
-                                                          ?.message ??
-                                                      '',
+                                                  viewModel.getCreatedAt(
+                                                      time: data.updatedAt),
                                                   style: context
                                                       .textTheme.labelMedium
                                                       ?.copyWith(
@@ -126,46 +154,31 @@ class InboxView extends BaseView<ChatVM> {
                                                               .MONTSERRAT_MEDIUM),
                                                 ),
                                               ],
-                                            ),
-                                          ),
-                                          Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              const Icon(
-                                                Icons.remove_red_eye_outlined,
-                                                size: 12,
-                                              ),
-                                              const Gap(02),
-                                              Text(
-                                                viewModel.getCreatedAt(
-                                                    time: data.updatedAt),
-                                                style: context
-                                                    .textTheme.labelMedium
-                                                    ?.copyWith(
-                                                        fontFamily: FontRes
-                                                            .MONTSERRAT_MEDIUM),
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    )),
-                                  );
-                                },
-                                separatorBuilder: (context, index) {
-                                  return const Gap(10);
-                                },
-                                itemCount: viewModel.inboxList.length),
+                                            )
+                                          ],
+                                        ),
+                                      )),
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) {
+                                    return const Gap(10);
+                                  },
+                                  itemCount:
+                                      viewModel.filteredInboxList.length),
+                        ),
                         const Gap(40),
                       ],
                     ),
                   );
                 }
                 if (snapshot.hasError) {
-                  return AppErrorWidget();
+                  return const AppErrorWidget();
                 }
 
-                return AppLoadingWidget();
+                return InboxSkeleton(
+                  isLoading:
+                      snapshot.connectionState == ConnectionState.waiting,
+                );
               }),
     );
   }

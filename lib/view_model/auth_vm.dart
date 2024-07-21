@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:ccp_dialog/country_picker/flutter_country_picker.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
@@ -13,8 +14,10 @@ import 'package:list_and_life/network/api_request.dart';
 import 'package:list_and_life/network/base_client.dart';
 import 'package:list_and_life/routes/app_pages.dart';
 import 'package:list_and_life/routes/app_routes.dart';
+import 'package:provider/provider.dart';
 
 import '../helpers/image_picker_helper.dart';
+import 'main_vm.dart';
 
 class AuthVM extends BaseViewModel {
   TextEditingController phoneTextController = TextEditingController();
@@ -23,6 +26,8 @@ class AuthVM extends BaseViewModel {
   TextEditingController nameTextController = TextEditingController();
   TextEditingController lNameTextController = TextEditingController();
   TextEditingController emailTextController = TextEditingController();
+
+  FirebaseMessaging _fcm = FirebaseMessaging.instance;
 
   String countryCode = "+91";
   Country selectedCountry = Country.IN;
@@ -61,7 +66,7 @@ class AuthVM extends BaseViewModel {
     Map<String, dynamic> body = {
       'country_code': countryCode,
       'phone_no': phoneTextController.text.trim(),
-      'device_token': 'dds',
+      'device_token': await _fcm.getToken(),
       'device_type': Platform.isAndroid ? '1' : '2'
     };
     ApiRequest apiRequest = ApiRequest(
@@ -87,7 +92,7 @@ class AuthVM extends BaseViewModel {
     Map<String, dynamic> body = {
       'country_code': countryCode,
       'phone_no': phoneTextController.text.trim(),
-      'device_token': 'dds',
+      'device_token': await _fcm.getToken(),
       'device_type': Platform.isAndroid ? '1' : '2',
       'otp': otpTextController.text.trim()
     };
@@ -108,8 +113,13 @@ class AuthVM extends BaseViewModel {
       DbHelper.saveIsGuest(false);
       DbHelper.saveIsLoggedIn(true);
       if (context.mounted) {
+        context.read<MainVM>().navController.jumpToTab(0);
         context.go(Routes.main);
       } else {
+        AppPages.rootNavigatorKey.currentContext
+            ?.read<MainVM>()
+            .navController
+            .jumpToTab(0);
         AppPages.rootNavigatorKey.currentContext?.go(Routes.main);
       }
       DialogHelper.showToast(message: model.message);
@@ -128,7 +138,7 @@ class AuthVM extends BaseViewModel {
     Map<String, dynamic> body = {
       'country_code': countryCode,
       'phone_no': phoneTextController.text.trim(),
-      'device_token': 'dds',
+      'device_token': await _fcm.getToken(),
       'device_type': Platform.isAndroid ? '1' : '2',
       'name': nameTextController.text.trim(),
       'type': '2',
@@ -153,8 +163,13 @@ class AuthVM extends BaseViewModel {
     DbHelper.saveIsGuest(false);
     DbHelper.saveIsLoggedIn(true);
     if (context.mounted) {
+      context.read<MainVM>().navController.jumpToTab(0);
       context.go(Routes.main);
     } else {
+      AppPages.rootNavigatorKey.currentContext
+          ?.read<MainVM>()
+          .navController
+          .jumpToTab(0);
       AppPages.rootNavigatorKey.currentContext?.go(Routes.main);
     }
   }

@@ -2,24 +2,35 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/chat_bubble/bubble_normal_image.dart';
 import 'package:list_and_life/helpers/db_helper.dart';
+import 'package:list_and_life/helpers/debouncer_helper.dart';
 import 'package:list_and_life/helpers/dialog_helper.dart';
 import 'package:list_and_life/models/inbox_model.dart';
+import 'package:list_and_life/network/api_constants.dart';
 import 'package:list_and_life/sockets/socket_constants.dart';
+import 'package:list_and_life/widgets/image_view.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
+import '../chat_bubble/bubble_normal_message.dart';
+import '../chat_bubble/bubble_offer_message.dart';
 import '../helpers/date_helper.dart';
 import '../models/message_model.dart';
+import '../res/font_res.dart';
 import '../sockets/socket_helper.dart';
 
 class ChatVM extends BaseViewModel {
   final Socket? _socketIO = SocketHelper().getSocket();
 
+  final TextEditingController inboxSearchTextController =
+      TextEditingController();
   final TextEditingController messageTextController = TextEditingController();
   final TextEditingController reportTextController = TextEditingController();
 
   List<InboxModel> inboxList = [];
+  List<InboxModel> filteredInboxList = [];
 
   ///Message types 1 => Text 2=> offer
 
@@ -29,6 +40,7 @@ class ChatVM extends BaseViewModel {
       StreamController<List<MessageModel>>.broadcast();
 
   List<MessageModel> chatItems = [];
+  DebounceHelper _debounce = DebounceHelper(milliseconds: 500);
 
   @override
   void onInit() {
@@ -37,8 +49,10 @@ class ChatVM extends BaseViewModel {
     super.onInit();
   }
 
-  void getInboxList() {
-    _socketIO?.off(SocketConstants.getUserLists);
+  void initListeners() {
+    if (SocketHelper().isUserConnected == false) {
+      SocketHelper().connectUser();
+    }
     _socketIO?.on(SocketConstants.getUserLists, (data) {
       log("Users List: $data");
       inboxList.clear();
@@ -50,9 +64,35 @@ class ChatVM extends BaseViewModel {
           inboxList.add(item);
         }
       }
-      inboxStreamController.add(inboxList);
-      // notifyListeners();
+      filteredInboxList = inboxList;
+      inboxStreamController.add(filteredInboxList);
     });
+    _socketIO?.on(SocketConstants.getMessageList, (data) {
+      log("Users List: $data");
+      chatItems.clear();
+      for (var element in data) {
+        log("${element}");
+        chatItems.add(MessageModel.fromJson(element));
+      }
+      messageStreamController.add(chatItems);
+    });
+    _socketIO?.on(SocketConstants.sendMessage, (data) {
+      getInboxList();
+      MessageModel message = MessageModel.fromJson(data);
+
+      if (message.senderId != DbHelper.getUserModel()?.id) {
+        chatItems.insert(0, message);
+        messageStreamController.add(chatItems);
+      }
+    });
+    _socketIO?.on(SocketConstants.blockOrReportUser, (data) {
+      DialogHelper.showToast(
+          message: "Your report/Block submitted successfully");
+      //DialogHelper.showToast(message: "You blocked this user successfully");
+    });
+  }
+
+  void getInboxList() {
     Map<String, dynamic> map = {
       "sender_id": DbHelper.getUserModel()?.id,
       "limit": 10000,
@@ -63,19 +103,28 @@ class ChatVM extends BaseViewModel {
     _socketIO?.emit(SocketConstants.getUserLists, map);
   }
 
-  void getMessageList({required num? receiverId, required num? productId}) {
-    _socketIO?.off(SocketConstants.getMessageList);
-    _socketIO?.on(SocketConstants.getMessageList, (data) {
-      log("Users List: $data");
-      chatItems.clear();
-      for (var element in data) {
-        log("${element}");
-        chatItems.add(MessageModel.fromJson(element));
+  void searchInbox(String query) {
+    _debounce.run(() {
+      if (query.isEmpty) {
+        filteredInboxList = inboxList;
+      } else {
+        filteredInboxList = inboxList.where((inbox) {
+          String senderName = inbox.senderDetail?.name?.toLowerCase() ?? '';
+          String receiverName = inbox.receiverDetail?.name?.toLowerCase() ?? '';
+          String productName = inbox.productDetail?.name?.toLowerCase() ?? '';
+          String lastMessage =
+              inbox.lastMessageDetail?.message?.toLowerCase() ?? '';
+          return senderName.contains(query.toLowerCase()) ||
+              receiverName.contains(query.toLowerCase()) ||
+              productName.contains(query.toLowerCase()) ||
+              lastMessage.contains(query.toLowerCase());
+        }).toList();
       }
-      messageStreamController.add(chatItems);
-      // notifyListeners();
+      inboxStreamController.add(filteredInboxList);
     });
+  }
 
+  void getMessageList({num? receiverId, required num? productId}) {
     Map<String, dynamic> map = {
       "sender_id": DbHelper.getUserModel()?.id,
       "receiver_id": receiverId,
@@ -96,16 +145,16 @@ class ChatVM extends BaseViewModel {
       return;
     }
 
-    _socketIO?.off(SocketConstants.sendMessage);
-    _socketIO?.on(SocketConstants.sendMessage, (data) {
-      getInboxList();
-      MessageModel message = MessageModel.fromJson(data);
+    Map<String, dynamic> map = {
+      "sender_id": DbHelper.getUserModel()?.id,
+      "receiver_id": receiverId,
+      "product_id": productId,
+      "message": message,
+      "message_type": type
+    };
+    print("Send message => $map");
+    _socketIO?.emit(SocketConstants.sendMessage, map);
 
-      if (message.senderId != DbHelper.getUserModel()?.id) {
-        chatItems.insert(0, message);
-        messageStreamController.add(chatItems);
-      }
-    });
     chatItems.insert(
       0,
       MessageModel(
@@ -117,23 +166,14 @@ class ChatVM extends BaseViewModel {
           updatedAt: "${DateTime.now()}"),
     );
     messageStreamController.add(chatItems);
-
-    Map<String, dynamic> map = {
-      "sender_id": DbHelper.getUserModel()?.id,
-      "receiver_id": receiverId,
-      "product_id": productId,
-      "message": message,
-      "message_type": type
-    };
-    print("Send message => $map");
-    _socketIO?.emit(SocketConstants.sendMessage, map);
+    DialogHelper.hideLoading();
   }
 
   String getCreatedAt({String? time}) {
     String dateTimeString = "2024-06-25T01:01:47.000Z";
     DateTime dateTime = DateTime.parse(time ?? dateTimeString);
     int timestamp = dateTime.millisecondsSinceEpoch ~/ 1000;
-    print("Timestamp: $timestamp");
+
     return DateHelper.getChatTime(timestamp);
   }
 
@@ -144,15 +184,6 @@ class ChatVM extends BaseViewModel {
         return;
       }
     }
-    _socketIO?.off(SocketConstants.blockOrReportUser);
-    _socketIO?.on(SocketConstants.blockOrReportUser, (data) {
-      if (report) {
-        DialogHelper.showToast(message: "Your report submitted successfully");
-      } else {
-        DialogHelper.showToast(message: "You blocked this user successfully");
-      }
-    });
-
     Map<String, dynamic> map = {
       "user_id": DbHelper.getUserModel()?.id,
       "other_user_id": userId,
@@ -160,5 +191,71 @@ class ChatVM extends BaseViewModel {
       "reason": reason
     };
     _socketIO?.emit(SocketConstants.blockOrReportUser, map);
+  }
+
+  void sendImage() {}
+
+  Widget getBubble({int? type, required MessageModel data}) {
+    switch (type) {
+      case 1:
+        return BubbleNormalMessage(
+          textStyle: const TextStyle(
+            color: Colors.white,
+          ),
+          timeStamp: true,
+          createdAt: DateHelper.getTimeAgo(
+              DateTime.parse(data.updatedAt ?? '2021-01-01 00:00:00')
+                  .millisecondsSinceEpoch),
+          text: data.message ?? '',
+          isSender: data.senderId == DbHelper.getUserModel()?.id,
+          color: data.senderId == DbHelper.getUserModel()?.id
+              ? Colors.black
+              : const Color(0xff5A5B55),
+        );
+      case 2:
+        return BubbleOfferMessage(
+          textStyle: const TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontFamily: FontRes.MONTSERRAT_SEMIBOLD),
+          timeStamp: true,
+          createdAt: DateHelper.getChatTime(
+              DateTime.parse(data.updatedAt ?? '2021-01-01 00:00:00')
+                  .microsecondsSinceEpoch),
+          text: data.message ?? '',
+          isSender: data.senderId == DbHelper.getUserModel()?.id,
+          color: data.senderId == DbHelper.getUserModel()?.id
+              ? Colors.black
+              : const Color(0xff5A5B55),
+        );
+      case 3:
+        return BubbleNormalImage(
+            id: "${data.id}",
+            imageUrl: "${ApiConstants.imageUrl}/${data.message}",
+            timeStamp: true,
+            createdAt: DateHelper.getTimeAgo(
+                DateTime.parse(data.updatedAt ?? '2021-01-01 00:00:00')
+                    .millisecondsSinceEpoch),
+            isSender: data.senderId == DbHelper.getUserModel()?.id,
+            image: ImageView.rect(
+                image: "${ApiConstants.imageUrl}/${data.message}",
+                width: 120,
+                height: 150));
+      default:
+        return const SizedBox.shrink();
+    }
+  }
+
+  getIconSymble({int? type}) {}
+
+  getLastMessage({MessageModel? message}) {
+    switch (message?.messageType) {
+      case 2:
+        return '🎁EGP ${message?.message}';
+      case 3:
+        return '🌄Image';
+      default:
+        return '${message?.message}';
+    }
   }
 }

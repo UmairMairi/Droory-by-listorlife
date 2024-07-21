@@ -4,8 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/helpers/db_helper.dart';
 import 'package:list_and_life/helpers/dialog_helper.dart';
+import 'package:list_and_life/helpers/image_picker_helper.dart';
 import 'package:list_and_life/models/inbox_model.dart';
 import 'package:list_and_life/models/message_model.dart';
+import 'package:list_and_life/network/base_client.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/view_model/chat_vm.dart';
 import 'package:list_and_life/widgets/app_error_widget.dart';
@@ -43,14 +45,14 @@ class MessageView extends BaseView<ChatVM> {
               alignment: Alignment.bottomRight,
               children: [
                 ImageView.rect(
-                  height: 60,
-                  width: 60,
+                  height: 50,
+                  width: 50,
                   image:
                       "${ApiConstants.imageUrl}/${chat?.productDetail?.image}",
                 ),
                 ImageView.circle(
-                  height: 25,
-                  width: 25,
+                  height: 20,
+                  width: 20,
                   borderColor: context.theme.primaryColor,
                   image:
                       "${ApiConstants.imageUrl}/${chat?.senderId == DbHelper.getUserModel()?.id ? chat?.receiverDetail?.profilePic ?? '' : chat?.senderDetail?.profilePic ?? ''}",
@@ -181,42 +183,8 @@ class MessageView extends BaseView<ChatVM> {
                         reverse: true,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
-                          return data[index].messageType == 1
-                              ? BubbleNormalMessage(
-                                  textStyle: const TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                  timeStamp: true,
-                                  createdAt: DateHelper.getTimeAgo(
-                                      DateTime.parse(data[index].updatedAt ??
-                                              '2021-01-01 00:00:00')
-                                          .millisecondsSinceEpoch),
-                                  text: data[index].message ?? '',
-                                  isSender: data[index].senderId ==
-                                      DbHelper.getUserModel()?.id,
-                                  color: data[index].senderId ==
-                                          DbHelper.getUserModel()?.id
-                                      ? Colors.black
-                                      : const Color(0xff5A5B55),
-                                )
-                              : BubbleOfferMessage(
-                                  textStyle: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontFamily: FontRes.MONTSERRAT_SEMIBOLD),
-                                  timeStamp: true,
-                                  createdAt: DateHelper.getChatTime(
-                                      DateTime.parse(data[index].createdAt ??
-                                              '2021-01-01 00:00:00')
-                                          .microsecondsSinceEpoch),
-                                  text: data[index].message ?? '',
-                                  isSender: data[index].senderId ==
-                                      DbHelper.getUserModel()?.id,
-                                  color: data[index].senderId ==
-                                          DbHelper.getUserModel()?.id
-                                      ? Colors.black
-                                      : const Color(0xff5A5B55),
-                                );
+                          return viewModel.getBubble(
+                              data: data[index], type: data[index].messageType);
                         });
                   }
                   if (snapshot.hasError) {
@@ -225,6 +193,7 @@ class MessageView extends BaseView<ChatVM> {
                   return const AppLoadingWidget();
                 }),
           ),
+          const Gap(10),
           MessageBarWithSuggestions(
             suggestions: const ['Hello', 'How are you?'],
             onSuggestionSelected: (value) {
@@ -250,7 +219,22 @@ class MessageView extends BaseView<ChatVM> {
                   productId: chat?.productId);
               viewModel.messageTextController.clear();
             },
-            onPickImageClick: () {},
+            onPickImageClick: () async {
+              var image = await ImagePickerHelper.openImagePicker(
+                  context: context, isCropping: false);
+
+              if (image != null) {
+                DialogHelper.showLoading();
+                String value = await BaseClient.uploadImage(imagePath: image);
+                viewModel.sendMessage(
+                    message: value,
+                    type: 3,
+                    receiverId: chat?.senderId == DbHelper.getUserModel()?.id
+                        ? chat?.receiverDetail?.id
+                        : chat?.senderDetail?.id,
+                    productId: chat?.productId);
+              }
+            },
             onRecordingClick: () {},
           ),
         ],

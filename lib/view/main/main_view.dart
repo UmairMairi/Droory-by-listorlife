@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/helpers/db_helper.dart';
 import 'package:list_and_life/sockets/socket_helper.dart';
 import 'package:list_and_life/view/main/chat/inbox_view.dart';
@@ -11,34 +12,18 @@ import 'package:list_and_life/view/main/settings/setting_view.dart';
 import 'package:persistent_bottom_nav_bar_plus/persistent_bottom_nav_bar_plus.dart';
 
 import '../../routes/app_routes.dart';
+import '../../view_model/main_vm.dart';
 
-class MainView extends StatefulWidget {
+class MainView extends BaseView<MainVM> {
   const MainView({super.key});
 
   @override
-  State<MainView> createState() => _MainViewState();
-}
-
-class _MainViewState extends State<MainView> {
-  final PersistentTabController _controller =
-      PersistentTabController(initialIndex: 0);
-
-  @override
-  void initState() {
-    if (!DbHelper.getIsGuest()) {
-      SocketHelper().connectUser();
-    }
-    _controller.jumpToTab(0);
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, MainVM viewModel) {
     return Scaffold(
         extendBody: true,
         body: PersistentTabView(
           context,
-          onItemSelected: (index) {
+          onItemSelected: (index) async {
             switch (index) {
               case 0:
                 return;
@@ -46,15 +31,15 @@ class _MainViewState extends State<MainView> {
               case 2:
               case 3:
                 if (DbHelper.getIsGuest()) {
-                  context.push(Routes.guestLogin);
-                  _controller.jumpToTab(0);
+                  await context.push(Routes.guestLogin);
+                  viewModel.navController.jumpToTab(0);
                 }
                 return;
               case 4:
                 return;
             }
           },
-          controller: _controller,
+          controller: viewModel.navController,
           screens: const [
             HomeView(),
             InboxView(),

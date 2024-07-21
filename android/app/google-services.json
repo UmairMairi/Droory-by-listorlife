@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "349423978681",
+    "project_id": "list-and-life",
+    "storage_bucket": "list-and-life.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:349423978681:android:d4dc7090156f838cf33368",
+        "android_client_info": {
+          "package_name": "com.dev.listorlife"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFB1JQ1oOHV2CVJI35EZNK_IdGtGOu0NA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

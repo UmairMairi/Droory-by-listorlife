@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:get_storage/get_storage.dart';
+import 'package:list_and_life/notification/notification_entity.dart';
 
 import '../models/user_model.dart';
 
@@ -103,5 +104,19 @@ class DbHelper {
 
   static String imageToBase64String(Uint8List image) {
     return base64Encode(image);
+  }
+
+  static NotificationEntity? convertStringToNotificationEntity(String? value) {
+    if (value == null) {
+      return null;
+    }
+    Map<String, dynamic> map = _decoder.convert(value);
+    return NotificationEntity.fromJson(map);
+  }
+
+  static String convertNotificationEntityToString(
+      NotificationEntity? notificationEntity) {
+    String value = _encoder.convert(notificationEntity);
+    return value;
   }
 }

@@ -101,7 +101,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
     String dateTimeString = "2024-06-25T01:01:47.000Z";
     DateTime dateTime = DateTime.parse(time ?? dateTimeString);
     int timestamp = dateTime.millisecondsSinceEpoch ~/ 1000;
-    print("Timestamp: $timestamp");
+
     return DateHelper.getTimeAgo(timestamp);
   }
 
@@ -475,8 +475,10 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                                                             overflow:
                                                                 TextOverflow
                                                                     .ellipsis,
-                                                            style: const TextStyle(
-                                                                fontSize: 12),
+                                                            style:
+                                                                const TextStyle(
+                                                                    fontSize:
+                                                                        12),
                                                           ),
                                                         ),
                                                       ],
@@ -488,8 +490,8 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                                                         time:
                                                             _productsList[index]
                                                                 .createdAt),
-                                                    style:
-                                                        const TextStyle(fontSize: 12),
+                                                    style: const TextStyle(
+                                                        fontSize: 12),
                                                   )
                                                 ],
                                               )

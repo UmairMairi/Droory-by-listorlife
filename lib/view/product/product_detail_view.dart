@@ -537,6 +537,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                 senderId: DbHelper.getUserModel()?.id,
                                 receiverId: data?.userId,
                                 productId: data?.id,
+                                productDetail: data,
                                 receiverDetail: SenderDetail(
                                     id: data?.userId,
                                     lastName: data?.user?.lastName,

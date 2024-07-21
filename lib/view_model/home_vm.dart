@@ -1,5 +1,6 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/helpers/debouncer_helper.dart';
 import 'package:list_and_life/helpers/location_helper.dart';
 import 'package:list_and_life/models/common/map_response.dart';
 import 'package:list_and_life/models/home_list_model.dart';
@@ -16,7 +17,8 @@ class HomeVM extends BaseViewModel {
   late RefreshController refreshController;
   String _currentLocation = "";
   String get currentLocation => _currentLocation;
-
+  final DebounceHelper _debounce = DebounceHelper(milliseconds: 500);
+  String searchQuery = '';
   List<SettingItemModel> categoryItems = [];
 
   List<ProductDetailModel> productsList = [];
@@ -98,7 +100,7 @@ class HomeVM extends BaseViewModel {
     refreshController.loadComplete();
   }
 
-  Future<void> getProductsApi({bool loading = false}) async {
+  Future<void> getProductsApi({bool loading = false, String? search}) async {
     if (loading) isLoading = loading;
 
     Position? position;
@@ -116,21 +118,24 @@ class HomeVM extends BaseViewModel {
             page: page,
             latitude: position.latitude,
             longitude: position.longitude,
-            sellStatus: 'ongoing'),
+            sellStatus: 'ongoing',
+            search: searchQuery), // Add search parameter
         requestType: RequestType.get);
     var response = await BaseClient.handleRequest(apiRequest);
     MapResponse<HomeListModel> model =
         MapResponse.fromJson(response, (json) => HomeListModel.fromJson(json));
 
-    /* productsList.addAll(model.body?.data
-            ?.where((element) => element.userId != DbHelper?.getUserModel()?.id)
-            .toList() ??
-        []);*/
-
+    productsList.clear();
     productsList.addAll(model.body?.data ?? []);
 
-    /// productsList.addAll(model.body?.data ?? []);
     if (loading) isLoading = false;
     notifyListeners();
+  }
+
+  void onSearchChanged(String query) {
+    searchQuery = query;
+    _debounce.run(() {
+      getProductsApi(search: searchQuery, loading: true);
+    });
   }
 }

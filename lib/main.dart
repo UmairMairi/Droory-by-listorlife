@@ -11,16 +11,24 @@ import 'package:provider/provider.dart';
 
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:toastification/toastification.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 import 'helpers/theme_helper.dart';
+import 'notification/notification_service.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   SocketHelper().init();
+  await NotificationService().init();
   await initializeDateFormatting('en', null);
   await initializeDateFormatting('en_US,', null);
+
   await GetStorage.init();
 
   runApp(const MyApp());

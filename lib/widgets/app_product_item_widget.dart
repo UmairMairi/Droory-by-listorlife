@@ -198,6 +198,7 @@ class AppProductItemWidget extends StatelessWidget {
                                     senderId: DbHelper.getUserModel()?.id,
                                     receiverId: data?.userId,
                                     productId: data?.id,
+                                    productDetail: data,
                                     receiverDetail: SenderDetail(
                                         id: data?.userId,
                                         lastName: data?.user?.lastName,
@@ -304,7 +305,7 @@ class AppProductItemWidget extends StatelessWidget {
     String dateTimeString = "2024-06-25T01:01:47.000Z";
     DateTime dateTime = DateTime.parse(time ?? dateTimeString);
     int timestamp = dateTime.millisecondsSinceEpoch ~/ 1000;
-    print("Timestamp: $timestamp");
+
     return DateHelper.getTimeAgo(timestamp);
   }
 

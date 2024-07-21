@@ -1,4 +1,8 @@
+import 'dart:developer';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:list_and_life/network/api_constants.dart';
 
 const double BUBBLE_RADIUS_IMAGE = 16;
 
@@ -9,6 +13,7 @@ class BubbleNormalImage extends StatelessWidget {
 
   final String id;
   final Widget image;
+  final String imageUrl;
   final double bubbleRadius;
   final bool isSender;
   final Color color;
@@ -29,6 +34,7 @@ class BubbleNormalImage extends StatelessWidget {
     super.key,
     required this.id,
     required this.image,
+    required this.imageUrl,
     this.timeStamp = false,
     this.createdAt,
     this.bubbleRadius = BUBBLE_RADIUS_IMAGE,
@@ -110,7 +116,7 @@ class BubbleNormalImage extends StatelessWidget {
                     Navigator.push(context, MaterialPageRoute(builder: (_) {
                       return _DetailScreen(
                         tag: id,
-                        image: image,
+                        imageUrl: imageUrl,
                       );
                     }));
                   },
@@ -166,9 +172,9 @@ class BubbleNormalImage extends StatelessWidget {
 /// detail screen of the image, display when tap on the image bubble
 class _DetailScreen extends StatefulWidget {
   final String tag;
-  final Widget image;
+  final String imageUrl;
 
-  const _DetailScreen({required this.tag, required this.image});
+  const _DetailScreen({required this.tag, required this.imageUrl});
 
   @override
   _DetailScreenState createState() => _DetailScreenState();
@@ -178,6 +184,7 @@ class _DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<_DetailScreen> {
   @override
   initState() {
+    log(widget.imageUrl, name: "Image Url => ");
     super.initState();
   }
 
@@ -193,7 +200,18 @@ class _DetailScreenState extends State<_DetailScreen> {
         body: Center(
           child: Hero(
             tag: widget.tag,
-            child: widget.image,
+            child: InteractiveViewer(
+                minScale: 0.2,
+                maxScale: 5.0,
+                child: Center(
+                  child: CachedNetworkImage(
+                    imageUrl: widget.imageUrl,
+                    placeholder: (context, url) =>
+                        const CircularProgressIndicator(),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
+                  ),
+                )),
           ),
         ),
       ),

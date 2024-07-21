@@ -27,8 +27,9 @@ class ApiConstants {
           int? page = 1,
           double? latitude,
           double? longitude,
+          String? search,
           required String? sellStatus}) =>
-      "$_baseUrl/get/products?limit=$limit&page=$page&latitude=$latitude&longitude=$longitude&sell_status=$sellStatus";
+      "$_baseUrl/get/products?limit=$limit&page=$page&latitude=$latitude&longitude=$longitude&sell_status=$sellStatus&search=$search";
 
   static String getUsersProductsUrl(
           {int? limit = 10, int? page = 1, String? userId}) =>

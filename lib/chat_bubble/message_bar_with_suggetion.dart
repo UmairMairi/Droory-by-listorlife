@@ -145,13 +145,13 @@ class _MessageBarWithSuggetionsState extends State<MessageBarWithSuggestions> {
                           widget.onPickImageClick();
                         },
                       ),
-                      const Gap(03),
+                      /* const Gap(03),
                       InkWell(
                         child: const Icon(Icons.mic),
                         onTap: () {
                           widget.onRecordingClick();
                         },
-                      ),
+                      ),*/
                       const SizedBox(
                         width: 10,
                       ),

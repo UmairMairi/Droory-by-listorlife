@@ -27,7 +27,8 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget>
   @override
   void initState() {
     // TODO: implement initState
-    bannerImages = widget.imagesList?.map((element) => element.media).toList() ?? [];
+    bannerImages =
+        widget.imagesList?.map((element) => element.media).toList() ?? [];
 
     _pageController = PageController(initialPage: _currentPage);
     super.initState();

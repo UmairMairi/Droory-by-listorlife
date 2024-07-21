@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -8,6 +7,7 @@ import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/skeletons/product_list_skeleton.dart';
 import 'package:list_and_life/view_model/home_vm.dart';
+import 'package:list_and_life/widgets/app_empty_widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../widgets/app_product_item_widget.dart';
@@ -52,6 +52,46 @@ class HomeView extends BaseView<HomeVM> {
                 )),
           )
         ],
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(60.0),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
+            child: Row(
+              children: [
+                Expanded(
+                    child: TextField(
+                  autofocus: false,
+                  onChanged: viewModel.onSearchChanged,
+                  decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.search),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide:
+                              const BorderSide(color: Color(0xffd5d5d5))),
+                      hintStyle: context.textTheme.labelSmall,
+                      hintText: 'Find Cars, Mobile Phones and more...'),
+                )),
+                const Gap(10),
+                InkWell(
+                  onTap: () {
+                    context.push(Routes.filter);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                        color: const Color(0xffd5d5d5),
+                        borderRadius: BorderRadius.circular(8)),
+                    child: Image.asset(
+                      AssetsRes.IC_FILTER_ICON,
+                      height: 25,
+                    ),
+                  ),
+                ),
+                const Gap(10),
+              ],
+            ),
+          ),
+        ),
       ),
       body: SmartRefresher(
         controller: viewModel.refreshController,
@@ -66,40 +106,6 @@ class HomeView extends BaseView<HomeVM> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Gap(10),
-              Row(
-                children: [
-                  Expanded(
-                      child: TextField(
-                    autofocus: false,
-                    decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.search),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide:
-                                const BorderSide(color: Color(0xffd5d5d5))),
-                        hintStyle: context.textTheme.labelSmall,
-                        hintText: 'Find Cars, Mobile Phones and more...'),
-                  )),
-                  const Gap(10),
-                  InkWell(
-                    onTap: () {
-                      context.push(Routes.filter);
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(15),
-                      decoration: BoxDecoration(
-                          color: const Color(0xffd5d5d5),
-                          borderRadius: BorderRadius.circular(8)),
-                      child: Image.asset(
-                        AssetsRes.IC_FILTER_ICON,
-                        height: 25,
-                      ),
-                    ),
-                  ),
-                  const Gap(10),
-                ],
-              ),
               const Gap(20),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -144,32 +150,34 @@ class HomeView extends BaseView<HomeVM> {
               if (viewModel.isLoading) ...{
                 ProductListSkeleton(isLoading: viewModel.isLoading)
               } else ...{
-                ListView.separated(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: viewModel.productsList.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        if (viewModel.productsList[index].userId ==
-                            DbHelper.getUserModel()?.id) {
-                          context.push(Routes.myProduct,
-                              extra: viewModel.productsList[index]);
-                          return;
-                        }
+                viewModel.productsList.isEmpty
+                    ? const AppEmptyWidget()
+                    : ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: viewModel.productsList.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              if (viewModel.productsList[index].userId ==
+                                  DbHelper.getUserModel()?.id) {
+                                context.push(Routes.myProduct,
+                                    extra: viewModel.productsList[index]);
+                                return;
+                              }
 
-                        context.push(Routes.productDetails,
-                            extra: viewModel.productsList[index]);
-                      },
-                      child: AppProductItemWidget(
-                        data: viewModel.productsList[index],
-                      ),
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return const Gap(20);
-                  },
-                )
+                              context.push(Routes.productDetails,
+                                  extra: viewModel.productsList[index]);
+                            },
+                            child: AppProductItemWidget(
+                              data: viewModel.productsList[index],
+                            ),
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return const Gap(20);
+                        },
+                      )
               },
               const Gap(40),
             ],

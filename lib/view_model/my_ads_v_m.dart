@@ -98,7 +98,7 @@ class MyAdsVM extends BaseViewModel {
     String dateTimeString = "2024-06-25T01:01:47.000Z";
     DateTime dateTime = DateTime.parse(time ?? dateTimeString);
     int timestamp = dateTime.millisecondsSinceEpoch ~/ 1000;
-    print("Timestamp: $timestamp");
+
     return DateHelper.getTimeAgo(timestamp);
   }
 
