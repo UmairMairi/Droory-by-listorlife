@@ -338,55 +338,68 @@ class ProductDetailView extends BaseView<ProductVM> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Image.asset(
-                                            AssetsRes.IC_LOACTION_ICON,
-                                            height: 24,
-                                          ),
-                                          const Gap(05),
-                                          Text(
-                                            data?.city ?? '',
-                                            style: context.textTheme.titleLarge,
-                                          ),
-                                        ],
-                                      ),
-                                      const Gap(05),
-                                      Text(
-                                        'City',
-                                        style: context.textTheme.titleLarge,
-                                      ),
-                                      const Gap(25),
-                                      InkWell(
-                                        onTap: () {
-                                          if (DbHelper.getIsGuest()) {
-                                            DialogHelper.showLoginDialog(
-                                                context: context);
-                                            return;
-                                          }
-                                          print(data?.toJson());
-                                          MapsLauncher.launchQuery(
-                                              data?.nearby ?? '');
-                                        },
-                                        child: Text(
-                                          'Get Direction',
-                                          style: context.textTheme.titleSmall
-                                              ?.copyWith(
-                                                  color: Colors.red,
-                                                  decorationColor: Colors.red,
-                                                  decoration:
-                                                      TextDecoration.underline),
+                                  Flexible(
+                                    flex: 2,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Image.asset(
+                                              AssetsRes.IC_LOACTION_ICON,
+                                              height: 20,
+                                            ),
+                                            const Gap(05),
+                                            Expanded(
+                                              child: Text(
+                                                data?.city ?? '',
+                                                overflow: TextOverflow.ellipsis,
+                                                style: context
+                                                    .textTheme.titleLarge,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      )
-                                    ],
+                                        const Gap(05),
+                                        Text(
+                                          'City',
+                                          style: context.textTheme.titleMedium,
+                                        ),
+                                        const Gap(25),
+                                        InkWell(
+                                          onTap: () {
+                                            if (DbHelper.getIsGuest()) {
+                                              DialogHelper.showLoginDialog(
+                                                  context: context);
+                                              return;
+                                            }
+                                            print(data?.toJson());
+                                            MapsLauncher.launchQuery(
+                                                data?.nearby ?? '');
+                                          },
+                                          child: Text(
+                                            'Get Direction',
+                                            style: context.textTheme.titleSmall
+                                                ?.copyWith(
+                                                    color: Colors.red,
+                                                    decorationColor: Colors.red,
+                                                    decoration: TextDecoration
+                                                        .underline),
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
                                   const Gap(20),
                                   Expanded(
+                                    flex: 4,
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(20),
                                       child: SizedBox(

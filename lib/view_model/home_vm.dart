@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/helpers/debouncer_helper.dart';
@@ -22,6 +23,8 @@ class HomeVM extends BaseViewModel {
   List<SettingItemModel> categoryItems = [];
 
   List<ProductDetailModel> productsList = [];
+
+  FocusNode searchFocusNode = FocusNode();
 
   set currentLocation(String value) {
     _currentLocation = value;
@@ -124,8 +127,10 @@ class HomeVM extends BaseViewModel {
     var response = await BaseClient.handleRequest(apiRequest);
     MapResponse<HomeListModel> model =
         MapResponse.fromJson(response, (json) => HomeListModel.fromJson(json));
+    if (search?.isNotEmpty ?? false) {
+      productsList.clear();
+    }
 
-    productsList.clear();
     productsList.addAll(model.body?.data ?? []);
 
     if (loading) isLoading = false;
@@ -135,6 +140,7 @@ class HomeVM extends BaseViewModel {
   void onSearchChanged(String query) {
     searchQuery = query;
     _debounce.run(() {
+      page = 1;
       getProductsApi(search: searchQuery, loading: true);
     });
   }

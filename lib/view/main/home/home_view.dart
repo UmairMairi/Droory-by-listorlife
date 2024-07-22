@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/helpers/db_helper.dart';
+import 'package:list_and_life/helpers/dialog_helper.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/skeletons/product_list_skeleton.dart';
@@ -61,6 +62,7 @@ class HomeView extends BaseView<HomeVM> {
                 Expanded(
                     child: TextField(
                   autofocus: false,
+                  focusNode: viewModel.searchFocusNode,
                   onChanged: viewModel.onSearchChanged,
                   decoration: InputDecoration(
                       prefixIcon: const Icon(Icons.search),
@@ -93,94 +95,97 @@ class HomeView extends BaseView<HomeVM> {
           ),
         ),
       ),
-      body: SmartRefresher(
-        controller: viewModel.refreshController,
-        enablePullDown: true,
-        enablePullUp: true,
-        header: const WaterDropHeader(),
-        onRefresh: viewModel.onRefresh,
-        onLoading: viewModel.onLoading,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Gap(20),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children:
-                      List.generate(viewModel.categoryItems.length, (index) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
-                              child: Image.asset(
-                                viewModel.categoryItems[index].icon ?? '',
-                                height: 70,
+      body: InkWell(
+        onTap: () => viewModel.searchFocusNode.unfocus,
+        child: SmartRefresher(
+          controller: viewModel.refreshController,
+          enablePullDown: true,
+          enablePullUp: true,
+          header: const WaterDropHeader(),
+          onRefresh: viewModel.onRefresh,
+          onLoading: viewModel.onLoading,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Gap(20),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children:
+                        List.generate(viewModel.categoryItems.length, (index) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: Image.asset(
+                                  viewModel.categoryItems[index].icon ?? '',
+                                  height: 70,
+                                ),
                               ),
-                            ),
-                            const Gap(10),
-                            Text(
-                              viewModel.categoryItems[index].title ?? '',
-                              style: context.textTheme.titleSmall,
-                            ),
-                          ],
-                        ),
-                        const Gap(18),
-                      ],
-                    );
-                  }),
+                              const Gap(10),
+                              Text(
+                                viewModel.categoryItems[index].title ?? '',
+                                style: context.textTheme.titleSmall,
+                              ),
+                            ],
+                          ),
+                          const Gap(18),
+                        ],
+                      );
+                    }),
+                  ),
                 ),
-              ),
-              const Gap(20),
-              Text(
-                'Fresh recommendations',
-                style: context.textTheme.titleMedium,
-              ),
-              const Gap(20),
-              if (viewModel.isLoading) ...{
-                ProductListSkeleton(isLoading: viewModel.isLoading)
-              } else ...{
-                viewModel.productsList.isEmpty
-                    ? const AppEmptyWidget()
-                    : ListView.separated(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: viewModel.productsList.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              if (viewModel.productsList[index].userId ==
-                                  DbHelper.getUserModel()?.id) {
-                                context.push(Routes.myProduct,
-                                    extra: viewModel.productsList[index]);
-                                return;
-                              }
+                const Gap(20),
+                Text(
+                  'Fresh recommendations',
+                  style: context.textTheme.titleMedium,
+                ),
+                const Gap(20),
+                if (viewModel.isLoading) ...{
+                  ProductListSkeleton(isLoading: viewModel.isLoading)
+                } else ...{
+                  viewModel.productsList.isEmpty
+                      ? const AppEmptyWidget()
+                      : ListView.separated(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: viewModel.productsList.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                if (viewModel.productsList[index].userId ==
+                                    DbHelper.getUserModel()?.id) {
+                                  context.push(Routes.myProduct,
+                                      extra: viewModel.productsList[index]);
+                                  return;
+                                }
 
-                              context.push(Routes.productDetails,
-                                  extra: viewModel.productsList[index]);
-                            },
-                            child: AppProductItemWidget(
-                              data: viewModel.productsList[index],
-                            ),
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) {
-                          return const Gap(20);
-                        },
-                      )
-              },
-              const Gap(40),
-            ],
+                                context.push(Routes.productDetails,
+                                    extra: viewModel.productsList[index]);
+                              },
+                              child: AppProductItemWidget(
+                                data: viewModel.productsList[index],
+                              ),
+                            );
+                          },
+                          separatorBuilder: (BuildContext context, int index) {
+                            return const Gap(20);
+                          },
+                        )
+                },
+                const Gap(40),
+              ],
+            ),
           ),
         ),
       ),
