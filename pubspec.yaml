@@ -49,8 +49,8 @@ dependencies:
   mime: ^1.0.5
   intl: ^0.19.0
   get_storage: ^2.1.1
-  toastification: ^2.0.0
-  loader_overlay: ^4.0.0
+  toastification: ^2.1.0
+  loader_overlay: ^4.0.1
   permission_handler: ^11.3.1
   cool_alert:
     git: https://github.com/alok2811/flutter_cool_alert.git
@@ -66,7 +66,7 @@ dependencies:
   preload_page_view: ^0.2.0
   like_button: ^2.0.5
   avatar_glow: ^3.0.1
-  syncfusion_flutter_sliders: ^26.1.42
+  syncfusion_flutter_sliders: 26.2.4
   share_plus: ^9.0.0
   keyboard_actions: ^4.2.0
   map_picker: ^0.0.3
@@ -85,11 +85,9 @@ dependencies:
   sign_in_with_apple: ^6.1.1
   crypto: ^3.0.3
   google_sign_in: ^6.2.1
-
-
-
   firebase_messaging: ^15.0.3
   flutter_local_notifications: ^17.2.1+2
+  googleapis_auth: ^1.6.0
 
 dev_dependencies:
   flutter_test:

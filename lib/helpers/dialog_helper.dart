@@ -127,7 +127,8 @@ class DialogHelper {
               buttonText: 'Login',
               icon: AssetsRes.IC_LOCK_LOGIN,
               onTap: () {
-                context.push(Routes.login);
+                context.pop();
+                context.push(Routes.guestLogin);
               },
             ));
   }

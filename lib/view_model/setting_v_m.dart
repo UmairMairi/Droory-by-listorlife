@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
@@ -19,10 +21,116 @@ class SettingVM extends BaseViewModel {
   bool get isActiveNotification => _isActiveNotification;
   List<SettingItemModel> settingList = [];
 
+  bool _isGuest = DbHelper.getIsGuest();
+
+  bool get isGuest => _isGuest;
+  set isGuest(bool value) {
+    _isGuest = value;
+    notifyListeners();
+  }
+
   @override
   void onInit() {
-    if (!DbHelper.getIsGuest()) getProfile();
-    settingList = DbHelper.getIsGuest()
+    DbHelper.box.listenKey('isGuest', (value) {
+      isGuest = DbHelper.getIsGuest();
+      settingList = isGuest
+          ? [
+              SettingItemModel(
+                  isArrow: true,
+                  icon: AssetsRes.IC_PRIVCY_POLICY,
+                  title: 'Privacy Policy',
+                  onTap: () {
+                    context.push(Routes.termsOfUse, extra: 1);
+                  }),
+              SettingItemModel(
+                  isArrow: true,
+                  icon: AssetsRes.IC_T_AND_C,
+                  title: 'Terms & Conditions',
+                  onTap: () {
+                    context.push(Routes.termsOfUse, extra: 2);
+                  }),
+              SettingItemModel(
+                  icon: AssetsRes.IC_LOGOUT,
+                  title: 'Login',
+                  onTap: () {
+                    context.push(Routes.guestLogin);
+                  }),
+            ]
+          : [
+              SettingItemModel(
+                  isArrow: true,
+                  icon: AssetsRes.IC_PRIVCY_POLICY,
+                  title: 'Privacy Policy',
+                  onTap: () {
+                    context.push(Routes.termsOfUse, extra: 1);
+                  }),
+              SettingItemModel(
+                  isArrow: true,
+                  icon: AssetsRes.IC_T_AND_C,
+                  title: 'Terms & Conditions',
+                  onTap: () {
+                    context.push(Routes.termsOfUse, extra: 2);
+                  }),
+              SettingItemModel(
+                  icon: AssetsRes.IC_DELETE_ACCOUNT,
+                  title: 'Delete Account',
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext dialogContext) {
+                        return AppAlertDialogWithLottie(
+                          lottieIcon: AssetsRes.DELETE_LOTTIE,
+                          title: 'Account Delete',
+                          description:
+                              'Are you sure you want to delete this account?',
+                          onTap: () {
+                            context.pop();
+                            DialogHelper.showLoading();
+                            deleteAccount();
+                          },
+                          onCancelTap: () {
+                            context.pop();
+                          },
+                          buttonText: 'Yes',
+                          cancelButtonText: 'No',
+                          showCancelButton: true,
+                        );
+                      },
+                    );
+                  }),
+              SettingItemModel(
+                  icon: AssetsRes.IC_LOGOUT,
+                  title: 'Logout',
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext dialogContext) {
+                        return AppAlertDialogWithWidget(
+                          title: 'Logout',
+                          description:
+                              'Are you sure you want to logout this account?',
+                          onTap: () {
+                            context.pop();
+                            DialogHelper.showLoading();
+                            logoutUser();
+                          },
+                          icon: AssetsRes.IC_LOGOUT_ICON,
+                          onCancelTap: () {
+                            context.pop();
+                          },
+                          buttonText: 'Yes',
+                          cancelButtonText: 'No',
+                          showCancelButton: true,
+                        );
+                      },
+                    );
+                  }),
+            ];
+    });
+    if (!isGuest) getProfile();
+    settingList = isGuest
         ? [
             SettingItemModel(
                 isArrow: true,

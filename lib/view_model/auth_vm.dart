@@ -108,18 +108,14 @@ class AuthVM extends BaseViewModel {
     DialogHelper.hideLoading();
 
     if (model.body?.id != null) {
+      DbHelper.saveIsGuest(false);
       DbHelper.saveUserModel(model.body);
       DbHelper.saveToken(model.body?.token);
       DbHelper.saveIsGuest(false);
       DbHelper.saveIsLoggedIn(true);
       if (context.mounted) {
-        context.read<MainVM>().navController.jumpToTab(0);
         context.go(Routes.main);
       } else {
-        AppPages.rootNavigatorKey.currentContext
-            ?.read<MainVM>()
-            .navController
-            .jumpToTab(0);
         AppPages.rootNavigatorKey.currentContext?.go(Routes.main);
       }
       DialogHelper.showToast(message: model.message);
@@ -163,13 +159,8 @@ class AuthVM extends BaseViewModel {
     DbHelper.saveIsGuest(false);
     DbHelper.saveIsLoggedIn(true);
     if (context.mounted) {
-      context.read<MainVM>().navController.jumpToTab(0);
       context.go(Routes.main);
     } else {
-      AppPages.rootNavigatorKey.currentContext
-          ?.read<MainVM>()
-          .navController
-          .jumpToTab(0);
       AppPages.rootNavigatorKey.currentContext?.go(Routes.main);
     }
   }

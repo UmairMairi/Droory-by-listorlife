@@ -21,15 +21,15 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   SocketHelper().init();
   await NotificationService().init();
+
   await initializeDateFormatting('en', null);
   await initializeDateFormatting('en_US,', null);
-
-  await GetStorage.init();
 
   runApp(const MyApp());
 }

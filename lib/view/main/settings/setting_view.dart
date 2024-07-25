@@ -9,7 +9,6 @@ import 'package:list_and_life/network/api_constants.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
-import 'package:list_and_life/view_model/main_vm.dart';
 import 'package:list_and_life/view_model/profile_vm.dart';
 import 'package:list_and_life/view_model/setting_v_m.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
@@ -34,7 +33,7 @@ class SettingView extends BaseView<SettingVM> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            DbHelper.getIsGuest()
+            viewModel.isGuest
                 ? Flexible(
                     child: Container(
                       width: context.width,
@@ -140,7 +139,7 @@ class SettingView extends BaseView<SettingVM> {
                     ),
                   ),
             const Gap(20),
-            if (!DbHelper.getIsGuest()) ...{
+            if (!viewModel.isGuest) ...{
               Container(
                 width: context.width,
                 padding: const EdgeInsets.all(10),

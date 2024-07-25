@@ -10,8 +10,10 @@ import 'package:list_and_life/view/main/home/home_view.dart';
 import 'package:list_and_life/view/main/sell/category/sell_category_view.dart';
 import 'package:list_and_life/view/main/settings/setting_view.dart';
 import 'package:persistent_bottom_nav_bar_plus/persistent_bottom_nav_bar_plus.dart';
+import 'package:provider/provider.dart';
 
 import '../../routes/app_routes.dart';
+import '../../view_model/chat_vm.dart';
 import '../../view_model/main_vm.dart';
 
 class MainView extends BaseView<MainVM> {
@@ -23,30 +25,9 @@ class MainView extends BaseView<MainVM> {
         extendBody: true,
         body: PersistentTabView(
           context,
-          onItemSelected: (index) async {
-            switch (index) {
-              case 0:
-                return;
-              case 1:
-              case 2:
-              case 3:
-                if (DbHelper.getIsGuest()) {
-                  await context.push(Routes.guestLogin);
-                  viewModel.navController.jumpToTab(0);
-                }
-                return;
-              case 4:
-                return;
-            }
-          },
+          onItemSelected: (index) => viewModel.onIndexSelected(index: index),
           controller: viewModel.navController,
-          screens: const [
-            HomeView(),
-            InboxView(),
-            SellCategoryView(),
-            AdsView(),
-            SettingView()
-          ],
+          screens: viewModel.screensView,
           items: [
             PersistentBottomNavBarItem(
               icon: const Icon(Icons.home_outlined),

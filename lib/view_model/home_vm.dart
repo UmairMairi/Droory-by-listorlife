@@ -88,10 +88,14 @@ class HomeVM extends BaseViewModel {
 
   Future<void> onRefresh() async {
     // monitor network fetch
-    page = 1;
-    productsList.clear();
-    await getProductsApi(loading: true);
-    refreshController.refreshCompleted();
+    try {
+      page = 1;
+      productsList.clear();
+      await getProductsApi(loading: true);
+      refreshController.refreshCompleted();
+    } catch (e) {
+      refreshController.refreshFailed();
+    }
   }
 
   Future<void> onLoading() async {

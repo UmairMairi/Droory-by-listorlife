@@ -6,8 +6,10 @@ import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/helpers/db_helper.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
+import 'package:list_and_life/view_model/main_vm.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
+import 'package:provider/provider.dart';
 
 import '../../helpers/dialog_helper.dart';
 import '../../view_model/auth_vm.dart';

@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -63,6 +60,18 @@ class DefaultFirebaseOptions {
     messagingSenderId: '349423978681',
     projectId: 'list-and-life',
     storageBucket: 'list-and-life.appspot.com',
+    androidClientId: '349423978681-n43e63b2n0mn6vmv4mo7469bvlg08f0j.apps.googleusercontent.com',
+    iosClientId: '349423978681-3mv3ihrm2mjgh5sdti60us3093h2ksjh.apps.googleusercontent.com',
     iosBundleId: 'com.dev.listorlife',
   );
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyC8LyUM4IHrPfy3h6Lie_PiA-S8j_lGYfo',
+    appId: '1:349423978681:web:99209918ae303372f33368',
+    messagingSenderId: '349423978681',
+    projectId: 'list-and-life',
+    authDomain: 'list-and-life.firebaseapp.com',
+    storageBucket: 'list-and-life.appspot.com',
+  );
+
 }

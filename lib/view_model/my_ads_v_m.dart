@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/helpers/dialog_helper.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -117,6 +119,55 @@ class MyAdsVM extends BaseViewModel {
     MapResponse model = MapResponse.fromJson(response, (json) => null);
     DialogHelper.showToast(message: model.message);
     DialogHelper.hideLoading();
+    onRefresh();
+  }
+
+  void handelPopupMenuItemClick(
+      {required int index, required ProductDetailModel item}) {
+    switch (index) {
+      case 1:
+        return;
+      case 2:
+        deactivateProductApi(id: item.id);
+        return;
+      case 3:
+        removeProductApi(id: item.id);
+      default:
+        return;
+    }
+  }
+
+  void removeProductApi({num? id}) async {
+    DialogHelper.showLoading();
+
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.deleteProductUrl(),
+        requestType: RequestType.delete,
+        body: {'product_id': id});
+
+    var response = await BaseClient.handleRequest(apiRequest);
+
+    MapResponse model = MapResponse.fromJson(response, (json) => null);
+    DialogHelper.hideLoading();
+    DialogHelper.showToast(message: model.message);
+    onRefresh();
+  }
+
+  void deactivateProductApi({num? id}) async {
+    DialogHelper.showLoading();
+
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.deactivateProductUrl(),
+        requestType: RequestType.put,
+        body: {'product_id': id, 'status': '0'});
+
+    var response = await BaseClient.handleRequest(apiRequest);
+
+    log("response => $response");
+
+    MapResponse model = MapResponse.fromJson(response, (json) => null);
+    DialogHelper.hideLoading();
+    DialogHelper.showToast(message: model.message);
     onRefresh();
   }
 }

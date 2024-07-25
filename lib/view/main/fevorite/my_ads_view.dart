@@ -87,7 +87,12 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                           shape: const RoundedRectangleBorder(
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(15.0))),
-                                          onSelected: (int item) {},
+                                          onSelected: (int value) {
+                                            viewModel.handelPopupMenuItemClick(
+                                                index: value,
+                                                item: viewModel
+                                                    .productsList[index]);
+                                          },
                                           itemBuilder: (BuildContext context) =>
                                               <PopupMenuEntry<int>>[
                                             const PopupMenuItem(

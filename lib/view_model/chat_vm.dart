@@ -35,7 +35,7 @@ class ChatVM extends BaseViewModel {
   ///Message types 1 => Text 2=> offer
 
   StreamController<List<InboxModel>> inboxStreamController =
-      StreamController<List<InboxModel>>();
+      StreamController<List<InboxModel>>.broadcast();
   StreamController<List<MessageModel>> messageStreamController =
       StreamController<List<MessageModel>>.broadcast();
 
@@ -174,7 +174,7 @@ class ChatVM extends BaseViewModel {
     DateTime dateTime = DateTime.parse(time ?? dateTimeString);
     int timestamp = dateTime.millisecondsSinceEpoch ~/ 1000;
 
-    return DateHelper.getChatTime(timestamp);
+    return DateHelper.getTimeAgo(timestamp);
   }
 
   void reportBlockUser(

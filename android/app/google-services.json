@@ -12,7 +12,20 @@
           "package_name": "com.dev.listorlife"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "349423978681-n43e63b2n0mn6vmv4mo7469bvlg08f0j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dev.listorlife",
+            "certificate_hash": "1560f1ec99a5dfa9ad7f30f9bbac6ccaba43c89b"
+          }
+        },
+        {
+          "client_id": "349423978681-sidqd01pfqbiidqne0r2pv51g9djnqft.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDFB1JQ1oOHV2CVJI35EZNK_IdGtGOu0NA"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "349423978681-sidqd01pfqbiidqne0r2pv51g9djnqft.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "349423978681-3mv3ihrm2mjgh5sdti60us3093h2ksjh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dev.listorlife"
+              }
+            }
+          ]
         }
       }
     }

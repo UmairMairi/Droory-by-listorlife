@@ -18,7 +18,7 @@ class FilterView extends StatefulWidget {
 class _FilterViewState extends State<FilterView> {
   SfRangeValues _values = const SfRangeValues(00, 20000);
 
-  int selectedIndex = 0;
+  int selectedIndex = -1;
   String? address;
 
   @override
@@ -196,8 +196,10 @@ class _FilterViewState extends State<FilterView> {
             ),
             InkWell(
               onTap: () async {
-                Map<String, dynamic>? value = await Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const AppMapWidget()));
+                Map<String, dynamic>? value = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AppMapWidget()));
                 print(value);
                 if (value != null && value.isNotEmpty) {
                   address =
