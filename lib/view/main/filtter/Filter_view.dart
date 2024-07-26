@@ -2,27 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/view_model/home_vm.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/app_outline_button.dart';
+import 'package:list_and_life/widgets/app_text_field.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 import '../../../widgets/app_map_widget.dart';
 
-class FilterView extends StatefulWidget {
+class FilterView extends StatelessWidget {
   const FilterView({super.key});
 
   @override
-  State<FilterView> createState() => _FilterViewState();
-}
-
-class _FilterViewState extends State<FilterView> {
-  SfRangeValues _values = const SfRangeValues(00, 20000);
-
-  int selectedIndex = -1;
-  String? address;
-
-  @override
   Widget build(BuildContext context) {
+    var  viewModel = context.read<HomeVM>();
     return Scaffold(
       appBar: AppBar(
         title: const Text("Filter"),
@@ -37,21 +31,21 @@ class _FilterViewState extends State<FilterView> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    setState(() {
-                      selectedIndex = 0;
-                    });
+
+                      viewModel.selectedIndex = 0;
+
                   },
                   child: Container(
                     padding:
                         const EdgeInsets.symmetric(vertical: 8, horizontal: 32),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
-                      color: selectedIndex == 0 ? Colors.black : Colors.white,
+                      color: viewModel.selectedIndex == 0 ? Colors.black : Colors.white,
                     ),
                     child: Text(
                       "New",
                       style: context.textTheme.titleMedium?.copyWith(
-                        color: selectedIndex == 0 ? Colors.white : Colors.black,
+                        color: viewModel.selectedIndex == 0 ? Colors.white : Colors.black,
                       ),
                     ),
                   ),
@@ -61,9 +55,9 @@ class _FilterViewState extends State<FilterView> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    setState(() {
-                      selectedIndex = 1;
-                    });
+
+                      viewModel.selectedIndex = 1;
+
                   },
                   child: Container(
                     padding:
@@ -71,13 +65,13 @@ class _FilterViewState extends State<FilterView> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
                       border: Border.all(color: Colors.grey),
-                      color: selectedIndex == 0 ? Colors.white : Colors.black,
+                      color: viewModel.selectedIndex == 0 ? Colors.white : Colors.black,
                     ),
                     child: Text(
                       "Used",
                       style: context.textTheme.titleMedium?.copyWith(
                           color:
-                              selectedIndex == 1 ? Colors.white : Colors.black),
+                              viewModel.selectedIndex == 1 ? Colors.white : Colors.black),
                     ),
                   ),
                 ),
@@ -103,6 +97,7 @@ class _FilterViewState extends State<FilterView> {
                     height: 50,
                     child: TextFormField(
                         textAlign: TextAlign.center,
+                        controller: viewModel.startPriceTextController,
                         keyboardType: TextInputType.text,
                         cursorColor: Colors.black,
                         decoration: InputDecoration(
@@ -137,6 +132,7 @@ class _FilterViewState extends State<FilterView> {
                     child: TextFormField(
                       keyboardType: TextInputType.text,
                       textAlign: TextAlign.center,
+                      controller: viewModel.endPriceTextController,
                       cursorColor: Colors.black,
                       decoration: InputDecoration(
                           fillColor: const Color(0xffFCFCFD),
@@ -157,28 +153,31 @@ class _FilterViewState extends State<FilterView> {
             const SizedBox(
               height: 15,
             ),
-            SfRangeSlider(
-              min: 0,
-              max: 20000.0,
-              values: _values,
-              inactiveColor: Colors.grey,
-              activeColor: const Color(0xffFF385C),
-              showLabels: true,
-              interval: 20000,
-              labelFormatterCallback:
-                  (dynamic actualValue, String formattedText) {
-                return actualValue == 19999
-                    ? ' $formattedText+'
-                    : ' $formattedText';
-              },
-              onChanged: (SfRangeValues newValues) {
-                setState(() {
-                  _values = newValues;
-                });
-                const SizedBox(
-                  height: 5,
+            StatefulBuilder(
+              builder: (context, setState) {
+                SfRangeValues _values = const SfRangeValues(00, 20000);
+                return SfRangeSlider(
+                  min: 0,
+                  max: 20000.0,
+                  values: viewModel.values,
+                  inactiveColor: Colors.grey,
+                  activeColor: const Color(0xffFF385C),
+                  showLabels: true,
+                  interval: 20000,
+                  labelFormatterCallback:
+                      (dynamic actualValue, String formattedText) {
+                    return actualValue == 19999
+                        ? ' $formattedText+'
+                        : ' $formattedText';
+                  },
+                  onChanged: (SfRangeValues newValues) {
+
+
+
+
+                  },
                 );
-              },
+              }
             ),
             const SizedBox(
               height: 10,
@@ -187,35 +186,24 @@ class _FilterViewState extends State<FilterView> {
             const SizedBox(
               height: 10,
             ),
-            Text(
-              "Location",
-              style: context.textTheme.titleSmall,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            InkWell(
-              onTap: () async {
+
+
+
+            AppTextField(
+              title: 'Location',
+              hint: 'Select Location',
+              readOnly: true,
+              onTap: ()async{
                 Map<String, dynamic>? value = await Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => const AppMapWidget()));
                 print(value);
                 if (value != null && value.isNotEmpty) {
-                  address =
-                      "${value['location']}, ${value['city']}, ${value['state']}";
-                  setState(() {});
+                  viewModel.locationTextController.text =
+                  "${value['location']}, ${value['city']}, ${value['state']}";
                 }
               },
-              child: Container(
-                  width: context.width,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                  color: const Color(0xffEAEEF1),
-                  child: Text(
-                    address ?? "New York City. USA",
-                    style: context.textTheme.titleSmall,
-                  )),
             ),
             const SizedBox(
               height: 20,

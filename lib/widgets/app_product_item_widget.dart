@@ -114,21 +114,26 @@ class AppProductItemWidget extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Image.asset(
-                            AssetsRes.IC_ITEM_LOCATION,
-                            scale: 2.5,
-                          ),
-                          const Gap(05),
-                          Text(
-                            data?.nearby ?? '',
-                            style: context.textTheme.labelMedium?.copyWith(
-                                fontFamily: FontRes.MONTSERRAT_REGULAR),
-                          ),
-                        ],
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Image.asset(
+                              AssetsRes.IC_ITEM_LOCATION,
+                              scale: 2.5,
+                            ),
+                            const Gap(10),
+                            Expanded(
+                              child: Text(
+                                data?.nearby ?? '',
+                                overflow: TextOverflow.ellipsis,
+                                style: context.textTheme.labelMedium?.copyWith(
+                                    fontFamily: FontRes.MONTSERRAT_REGULAR),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       Text(
                         getCreatedAt(time: data?.createdAt),

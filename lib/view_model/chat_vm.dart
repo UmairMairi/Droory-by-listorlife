@@ -40,7 +40,7 @@ class ChatVM extends BaseViewModel {
       StreamController<List<MessageModel>>.broadcast();
 
   List<MessageModel> chatItems = [];
-  DebounceHelper _debounce = DebounceHelper(milliseconds: 500);
+  final DebounceHelper _debounce = DebounceHelper(milliseconds: 500);
 
   @override
   void onInit() {

@@ -1,3 +1,4 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:list_and_life/base/base.dart';
@@ -11,6 +12,8 @@ import 'package:list_and_life/network/api_request.dart';
 import 'package:list_and_life/network/base_client.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:syncfusion_flutter_sliders/sliders.dart';
+import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 import '../models/setting_item_model.dart';
 
@@ -56,6 +59,24 @@ class HomeVM extends BaseViewModel {
   }
 
   bool get isLoading => _loading;
+
+
+
+
+  int _selectedIndex = 0;
+
+   int get selectedIndex => _selectedIndex;
+   set selectedIndex(int value) {
+     _selectedIndex = value;
+     notifyListeners();
+   }
+
+   double filterLatitude = 0.0;
+
+  TextEditingController startPriceTextController = TextEditingController(text: '00');
+  TextEditingController endPriceTextController = TextEditingController(text: '20000');
+  TextEditingController locationTextController = TextEditingController();
+
 
   @override
   void onInit() {

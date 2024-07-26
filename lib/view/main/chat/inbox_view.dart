@@ -98,14 +98,39 @@ class InboxView extends BaseView<ChatVM> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
                                             children: [
-                                              Text(
-                                                data.senderId ==
-                                                        DbHelper.getUserModel()
-                                                            ?.id
-                                                    ? "${receiver?.name} ${receiver?.lastName}"
-                                                    : "${sender?.name} ${sender?.lastName}",
-                                                style: context
-                                                    .textTheme.titleMedium,
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    data.senderId ==
+                                                            DbHelper.getUserModel()
+                                                                ?.id
+                                                        ? "${receiver?.name} ${receiver?.lastName}"
+                                                        : "${sender?.name} ${sender?.lastName}",
+                                                    style: context
+                                                        .textTheme.titleMedium,
+                                                  ),
+                                                  Row(
+                                                    mainAxisSize: MainAxisSize.min,
+                                                    children: [
+                                                      const Icon(
+                                                        Icons.remove_red_eye_outlined,
+                                                        size: 12,
+                                                      ),
+                                                      const Gap(02),
+                                                      Text(
+                                                        viewModel.getCreatedAt(
+                                                            time: data.updatedAt),
+                                                        style: context
+                                                            .textTheme.labelMedium
+                                                            ?.copyWith(
+                                                            fontFamily: FontRes
+                                                                .MONTSERRAT_MEDIUM, fontSize: 10),
+                                                      ),
+                                                    ],
+                                                  )
+                                                ],
                                               ),
                                               const Gap(02),
                                               Text(
@@ -120,6 +145,8 @@ class InboxView extends BaseView<ChatVM> {
                                               const Gap(02),
                                               Text(
                                                 "${viewModel.getLastMessage(message: data.lastMessageDetail)}",
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
                                                 style: context
                                                     .textTheme.labelMedium
                                                     ?.copyWith(
@@ -129,25 +156,7 @@ class InboxView extends BaseView<ChatVM> {
                                             ],
                                           ),
                                         ),
-                                        Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            const Icon(
-                                              Icons.remove_red_eye_outlined,
-                                              size: 12,
-                                            ),
-                                            const Gap(02),
-                                            Text(
-                                              viewModel.getCreatedAt(
-                                                  time: data.updatedAt),
-                                              style: context
-                                                  .textTheme.labelMedium
-                                                  ?.copyWith(
-                                                      fontFamily: FontRes
-                                                          .MONTSERRAT_MEDIUM),
-                                            ),
-                                          ],
-                                        )
+
                                       ],
                                     ),
                                   )),
