@@ -169,7 +169,7 @@ class BubbleOfferMessage extends StatelessWidget {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 10, vertical: 2),
                                       child: InkWell(
-                                        onTap: () {},
+                                        onTap: onAccept,
                                         child: const Text(
                                           'Accept',
                                           style: TextStyle(
@@ -190,7 +190,7 @@ class BubbleOfferMessage extends StatelessWidget {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 10, vertical: 2),
                                       child: InkWell(
-                                        onTap: () {},
+                                        onTap: onReject,
                                         child: const Text(
                                           'Reject',
                                           style: TextStyle(

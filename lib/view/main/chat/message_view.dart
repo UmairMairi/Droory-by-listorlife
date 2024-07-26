@@ -184,7 +184,9 @@ class MessageView extends BaseView<ChatVM> {
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           return viewModel.getBubble(
-                              data: data[index], type: data[index].messageType);
+                              chat: chat,
+                              data: data[index],
+                              type: data[index].messageType);
                         });
                   }
                   if (snapshot.hasError) {

@@ -195,7 +195,8 @@ class ChatVM extends BaseViewModel {
 
   void sendImage() {}
 
-  Widget getBubble({int? type, required MessageModel data}) {
+  Widget getBubble(
+      {int? type, required MessageModel data, required InboxModel? chat}) {
     switch (type) {
       case 1:
         return BubbleNormalMessage(
@@ -218,6 +219,26 @@ class ChatVM extends BaseViewModel {
               color: Colors.white,
               fontSize: 20,
               fontFamily: FontRes.MONTSERRAT_SEMIBOLD),
+          onAccept: () {
+            sendMessage(
+                type: 1,
+                receiverId: chat?.senderId == DbHelper.getUserModel()?.id
+                    ? chat?.receiverDetail?.id
+                    : chat?.senderDetail?.id,
+                productId: chat?.productId,
+                message:
+                    "I am pleased to accept your offer of EGP ${data.message}. Let's close this deal fast");
+          },
+          onReject: () {
+            sendMessage(
+                type: 1,
+                receiverId: chat?.senderId == DbHelper.getUserModel()?.id
+                    ? chat?.receiverDetail?.id
+                    : chat?.senderDetail?.id,
+                productId: chat?.productId,
+                message:
+                    "Thank you for your offer of EGP ${data.message}  was hoping for a slightly higher amount. Would you be willing to increase your offer, so, I would be happy to close the deal promptly");
+          },
           timeStamp: true,
           createdAt: DateHelper.getChatTime(
               DateTime.parse(data.updatedAt ?? '2021-01-01 00:00:00')
