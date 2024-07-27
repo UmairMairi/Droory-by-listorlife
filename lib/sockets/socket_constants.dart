@@ -1,4 +1,3 @@
-
 class SocketConstants {
   static const String socketUrl = "https://app.listorlift.com/";
 
@@ -9,7 +8,8 @@ class SocketConstants {
   static const String blockOrReportUser = 'block_or_report_user';
   static const String clearChat = 'clear_chat';
   static const String getUserLists = 'get_user_lists';
-  static const String getMessageList = 'get_message_list';
+  static const String getMessageList = 'get_message_lists';
+  static const String readChatStatus = 'read_chat';
 
   /// Listeners Name =>
 

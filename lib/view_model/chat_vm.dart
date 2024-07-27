@@ -32,6 +32,8 @@ class ChatVM extends BaseViewModel {
   List<InboxModel> inboxList = [];
   List<InboxModel> filteredInboxList = [];
 
+  bool blockedUser = false;
+
   ///Message types 1 => Text 2=> offer
 
   StreamController<List<InboxModel>> inboxStreamController =
@@ -68,13 +70,15 @@ class ChatVM extends BaseViewModel {
       inboxStreamController.add(filteredInboxList);
     });
     _socketIO?.on(SocketConstants.getMessageList, (data) {
-      log("Users List: $data");
+      MessageDataModel model = MessageDataModel.fromJson(data);
       chatItems.clear();
-      for (var element in data) {
-        log("${element}");
-        chatItems.add(MessageModel.fromJson(element));
+      for (var element in model.list ?? []) {
+        chatItems.add(element);
       }
       messageStreamController.add(chatItems);
+      blockedUser =
+          model.checkBlock?.blockByMe != 0 || model.checkBlock?.blockMe != 0;
+      log("message => $blockedUser");
     });
     _socketIO?.on(SocketConstants.sendMessage, (data) {
       getInboxList();
@@ -86,10 +90,12 @@ class ChatVM extends BaseViewModel {
       }
     });
     _socketIO?.on(SocketConstants.blockOrReportUser, (data) {
+      log("data => $data");
       DialogHelper.showToast(
           message: "Your report/Block submitted successfully");
       //DialogHelper.showToast(message: "You blocked this user successfully");
     });
+    _socketIO?.on(SocketConstants.readChatStatus, (data) {});
   }
 
   void getInboxList() {
@@ -185,15 +191,15 @@ class ChatVM extends BaseViewModel {
       }
     }
     Map<String, dynamic> map = {
-      "user_id": DbHelper.getUserModel()?.id,
-      "other_user_id": userId,
+      "block_by": DbHelper.getUserModel()?.id,
+      "block_to": userId,
       "type": report ? "report" : "block",
-      "reason": reason
+      "reason": reason ?? ''
     };
+    log("Socket call => ${SocketConstants.blockOrReportUser} with $map",
+        name: "SOCKET");
     _socketIO?.emit(SocketConstants.blockOrReportUser, map);
   }
-
-  void sendImage() {}
 
   Widget getBubble(
       {int? type, required MessageModel data, required InboxModel? chat}) {
@@ -266,8 +272,6 @@ class ChatVM extends BaseViewModel {
         return const SizedBox.shrink();
     }
   }
-
-  getIconSymble({int? type}) {}
 
   getLastMessage({MessageModel? message}) {
     switch (message?.messageType) {

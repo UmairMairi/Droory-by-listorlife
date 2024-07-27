@@ -138,7 +138,6 @@ class MessageView extends BaseView<ChatVM> {
                               viewModel.reportBlockUser(
                                   userId:
                                       "${chat?.senderId == DbHelper.getUserModel()?.id ? chat?.receiverDetail?.id : chat?.senderDetail?.id}");
-                              context.pop();
                             },
                             icon: AssetsRes.IC_BLOCK_USER,
                             showCancelButton: true,

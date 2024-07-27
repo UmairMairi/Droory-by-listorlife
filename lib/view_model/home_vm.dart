@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:list_and_life/base/base.dart';
@@ -12,9 +11,6 @@ import 'package:list_and_life/network/api_request.dart';
 import 'package:list_and_life/network/base_client.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:syncfusion_flutter_sliders/sliders.dart';
-import 'package:syncfusion_flutter_sliders/sliders.dart';
-
 import '../models/setting_item_model.dart';
 
 class HomeVM extends BaseViewModel {
@@ -28,6 +24,19 @@ class HomeVM extends BaseViewModel {
   List<ProductDetailModel> productsList = [];
 
   FocusNode searchFocusNode = FocusNode();
+  String _sortBy = 'Sort By';
+  String get sortBy => _sortBy;
+  set sortBy(String value) {
+    _sortBy = value;
+    notifyListeners();
+  }
+
+  String _publishedBy = 'Pos';
+  String get publishedBy => _publishedBy;
+  set publishedBy(String value) {
+    _publishedBy = value;
+    notifyListeners();
+  }
 
   set currentLocation(String value) {
     _currentLocation = value;
@@ -60,28 +69,50 @@ class HomeVM extends BaseViewModel {
 
   bool get isLoading => _loading;
 
-
-
-
   int _selectedIndex = 0;
 
-   int get selectedIndex => _selectedIndex;
-   set selectedIndex(int value) {
-     _selectedIndex = value;
-     notifyListeners();
-   }
+  int get selectedIndex => _selectedIndex;
+  set selectedIndex(int value) {
+    _selectedIndex = value;
+    notifyListeners();
+  }
 
-   double filterLatitude = 0.0;
+  double latitude = 0.0;
+  double longitude = 0.0;
 
-  TextEditingController startPriceTextController = TextEditingController(text: '00');
-  TextEditingController endPriceTextController = TextEditingController(text: '20000');
+  void updateLatLong({required double lat, required double long}) {
+    latitude = lat;
+    longitude = long;
+    onRefresh();
+    notifyListeners();
+  }
+
+  Future<void> updateLocation() async {
+    Position? position;
+    try {
+      position = await LocationHelper.getCurrentLocation();
+    } catch (e) {
+      position = await LocationHelper.getCurrentLocation();
+    }
+    latitude = position.latitude;
+    longitude = position.longitude;
+    currentLocation = await LocationHelper.getAddressFromCoordinates(
+        position.latitude, position.longitude);
+
+    notifyListeners();
+  }
+
+  TextEditingController startPriceTextController =
+      TextEditingController(text: '00');
+  TextEditingController endPriceTextController =
+      TextEditingController(text: '00');
   TextEditingController locationTextController = TextEditingController();
-
 
   @override
   void onInit() {
     // TODO: implement onInit
     refreshController = RefreshController(initialRefresh: true);
+    updateLocation();
     initCategories();
     super.onInit();
   }
@@ -131,21 +162,12 @@ class HomeVM extends BaseViewModel {
   Future<void> getProductsApi({bool loading = false, String? search}) async {
     if (loading) isLoading = loading;
 
-    Position? position;
-    try {
-      position = await LocationHelper.getCurrentLocation();
-    } catch (e) {
-      position = await LocationHelper.getCurrentLocation();
-    }
-    currentLocation = await LocationHelper.getAddressFromCoordinates(
-        position.latitude, position.longitude);
-
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.getProductsUrl(
             limit: limit,
             page: page,
-            latitude: position.latitude,
-            longitude: position.longitude,
+            latitude: latitude,
+            longitude: longitude,
             sellStatus: 'ongoing',
             search: searchQuery), // Add search parameter
         requestType: RequestType.get);
