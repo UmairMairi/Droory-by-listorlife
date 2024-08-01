@@ -6,12 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:list_and_life/models/common/map_response.dart';
 import 'package:list_and_life/models/media_model.dart';
-import 'package:list_and_life/network/api_constants.dart';
+import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:mime/mime.dart';
 
+import '../../routes/app_pages.dart';
 import '../helpers/db_helper.dart';
 import '../helpers/dialog_helper.dart';
-import '../routes/app_pages.dart';
 import 'api_request.dart';
 import 'app_exceptions.dart';
 import 'no_internet_page.dart';

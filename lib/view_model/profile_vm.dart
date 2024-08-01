@@ -2,17 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/helpers/db_helper.dart';
-import 'package:list_and_life/helpers/image_picker_helper.dart';
-import 'package:list_and_life/network/api_request.dart';
+import 'package:list_and_life/base/helpers/db_helper.dart';
+import 'package:list_and_life/base/helpers/image_picker_helper.dart';
+import 'package:list_and_life/base/network/api_request.dart';
 import 'package:list_and_life/view_model/setting_v_m.dart';
 import 'package:provider/provider.dart';
 
-import '../helpers/dialog_helper.dart';
+import '../base/helpers/dialog_helper.dart';
 import '../models/common/map_response.dart';
 import '../models/user_model.dart';
-import '../network/api_constants.dart';
-import '../network/base_client.dart';
+import '../base/network/api_constants.dart';
+import '../base/network/base_client.dart';
 
 class ProfileVM extends BaseViewModel {
   TextEditingController nameTextController =

@@ -9,23 +9,23 @@ class InboxDataModel {
 
   InboxDataModel.fromJson(Map<String, dynamic> json) {
     pagination = json['pagination'] != null
-        ? new Pagination.fromJson(json['pagination'])
+        ? Pagination.fromJson(json['pagination'])
         : null;
     if (json['list'] != null) {
       list = <InboxModel>[];
       json['list'].forEach((v) {
-        list!.add(new InboxModel.fromJson(v));
+        list!.add(InboxModel.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.pagination != null) {
-      data['pagination'] = this.pagination!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (pagination != null) {
+      data['pagination'] = pagination!.toJson();
     }
-    if (this.list != null) {
-      data['list'] = this.list!.map((v) => v.toJson()).toList();
+    if (list != null) {
+      data['list'] = list!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -47,11 +47,11 @@ class Pagination {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['limit'] = this.limit;
-    data['offset'] = this.offset;
-    data['totalPages'] = this.totalPages;
-    data['page'] = this.page;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['limit'] = limit;
+    data['offset'] = offset;
+    data['totalPages'] = totalPages;
+    data['page'] = page;
     return data;
   }
 }
@@ -94,38 +94,38 @@ class InboxModel {
     updatedAt = json['updatedAt'];
     receiverName = json['receiver_name'];
     senderDetail = json['sender_detail'] != null
-        ? new SenderDetail.fromJson(json['sender_detail'])
+        ? SenderDetail.fromJson(json['sender_detail'])
         : null;
     receiverDetail = json['receiver_detail'] != null
-        ? new SenderDetail.fromJson(json['receiver_detail'])
+        ? SenderDetail.fromJson(json['receiver_detail'])
         : null;
     productDetail = json['product_detail'] != null
         ? ProductDetailModel.fromJson(json['product_detail'])
         : null;
     lastMessageDetail = json['last_message_detail'] != null
-        ? new MessageModel.fromJson(json['last_message_detail'])
+        ? MessageModel.fromJson(json['last_message_detail'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['sender_id'] = this.senderId;
-    data['receiver_id'] = this.receiverId;
-    data['product_id'] = this.productId;
-    data['last_message_id'] = this.lastMessageId;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    data['receiver_name'] = this.receiverName;
-    if (this.senderDetail != null) {
-      data['sender_detail'] = this.senderDetail!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['sender_id'] = senderId;
+    data['receiver_id'] = receiverId;
+    data['product_id'] = productId;
+    data['last_message_id'] = lastMessageId;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['receiver_name'] = receiverName;
+    if (senderDetail != null) {
+      data['sender_detail'] = senderDetail!.toJson();
     }
-    if (this.receiverDetail != null) {
-      data['receiver_detail'] = this.receiverDetail!.toJson();
+    if (receiverDetail != null) {
+      data['receiver_detail'] = receiverDetail!.toJson();
     }
-    data['product_detail'] = this.productDetail;
-    if (this.lastMessageDetail != null) {
-      data['last_message_detail'] = this.lastMessageDetail!.toJson();
+    data['product_detail'] = productDetail;
+    if (lastMessageDetail != null) {
+      data['last_message_detail'] = lastMessageDetail!.toJson();
     }
     return data;
   }
@@ -147,11 +147,11 @@ class SenderDetail {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['last_name'] = this.lastName;
-    data['profile_pic'] = this.profilePic;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['last_name'] = lastName;
+    data['profile_pic'] = profilePic;
     return data;
   }
 }
@@ -188,15 +188,15 @@ class LastMessageDetail {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['sender_id'] = this.senderId;
-    data['receiver_id'] = this.receiverId;
-    data['room_id'] = this.roomId;
-    data['message'] = this.message;
-    data['message_type'] = this.messageType;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['sender_id'] = senderId;
+    data['receiver_id'] = receiverId;
+    data['room_id'] = roomId;
+    data['message'] = message;
+    data['message_type'] = messageType;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
     return data;
   }
 }

@@ -11,7 +11,7 @@ import 'package:map_picker/map_picker.dart';
 import 'package:location/location.dart' as loc;
 
 import '../../res/assets_res.dart';
-import '../helpers/dialog_helper.dart';
+import '../base/helpers/dialog_helper.dart';
 
 class AppMapWidget extends StatefulWidget {
   const AppMapWidget({super.key});

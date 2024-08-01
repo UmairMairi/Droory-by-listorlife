@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:list_and_life/helpers/db_helper.dart';
+import 'package:list_and_life/base/helpers/db_helper.dart';
 import 'package:list_and_life/models/category_model.dart';
 import 'package:list_and_life/models/inbox_model.dart';
 import 'package:list_and_life/models/prodect_detail_model.dart';
-import 'package:list_and_life/models/setting_item_model.dart';
 import 'package:list_and_life/models/user_model.dart';
 import 'package:list_and_life/view/main/chat/message_view.dart';
 import 'package:list_and_life/view/main/filtter/Filter_view.dart';
@@ -18,7 +17,6 @@ import 'package:list_and_life/view/profile/complete_profile_view.dart';
 import 'package:list_and_life/view/profile/edit_profile_view.dart';
 import 'package:list_and_life/view/purchase/plans_list_view.dart';
 
-import '../base/route_observer.dart';
 import '../view/auth/guest_login_view.dart';
 import '../view/auth/login_view.dart';
 import '../view/auth/verification_view.dart';

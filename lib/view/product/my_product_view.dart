@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/helpers/date_helper.dart';
+import 'package:list_and_life/base/helpers/date_helper.dart';
 import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/skeletons/my_product_skeleton.dart';
 import 'package:list_and_life/view_model/product_v_m.dart';
 import 'package:list_and_life/widgets/app_error_widget.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../helpers/dialog_helper.dart';
+import '../../base/helpers/dialog_helper.dart';
 import '../../res/assets_res.dart';
 import '../../widgets/app_elevated_button.dart';
 import '../../widgets/card_swipe_widget.dart';
@@ -206,8 +206,8 @@ class MyProductView extends BaseView<ProductVM> {
                                       ]),
                                       TableRow(children: [
                                         Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 18, top: 5),
+                                          padding: const EdgeInsets.only(
+                                              left: 18, top: 5),
                                           child: Text(
                                             '${data?.numberOfOwner}',
                                             style: const TextStyle(
@@ -216,8 +216,8 @@ class MyProductView extends BaseView<ProductVM> {
                                           ),
                                         ),
                                         Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 18, top: 5),
+                                          padding: const EdgeInsets.only(
+                                              left: 18, top: 5),
                                           child: Text(
                                             '${data?.city}',
                                             style: const TextStyle(

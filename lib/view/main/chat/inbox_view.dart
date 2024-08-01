@@ -2,19 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/helpers/db_helper.dart';
+import 'package:list_and_life/base/helpers/db_helper.dart';
 import 'package:list_and_life/models/inbox_model.dart';
-import 'package:list_and_life/network/api_constants.dart';
+import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/skeletons/inbox_skeleton.dart';
 import 'package:list_and_life/view_model/chat_vm.dart';
 import 'package:list_and_life/widgets/app_empty_widget.dart';
 import 'package:list_and_life/widgets/app_error_widget.dart';
-import 'package:list_and_life/widgets/app_loading_widget.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:list_and_life/widgets/image_view.dart';
-import 'package:list_and_life/widgets/unauthorised_view.dart';
 
 class InboxView extends BaseView<ChatVM> {
   const InboxView({super.key});
@@ -99,8 +97,11 @@ class InboxView extends BaseView<ChatVM> {
                                                 MainAxisAlignment.start,
                                             children: [
                                               Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
                                                 children: [
                                                   Text(
                                                     data.senderId ==
@@ -112,21 +113,25 @@ class InboxView extends BaseView<ChatVM> {
                                                         .textTheme.titleMedium,
                                                   ),
                                                   Row(
-                                                    mainAxisSize: MainAxisSize.min,
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
                                                     children: [
                                                       const Icon(
-                                                        Icons.remove_red_eye_outlined,
+                                                        Icons
+                                                            .remove_red_eye_outlined,
                                                         size: 12,
                                                       ),
                                                       const Gap(02),
                                                       Text(
                                                         viewModel.getCreatedAt(
-                                                            time: data.updatedAt),
-                                                        style: context
-                                                            .textTheme.labelMedium
+                                                            time:
+                                                                data.updatedAt),
+                                                        style: context.textTheme
+                                                            .labelMedium
                                                             ?.copyWith(
-                                                            fontFamily: FontRes
-                                                                .MONTSERRAT_MEDIUM, fontSize: 10),
+                                                                fontFamily: FontRes
+                                                                    .MONTSERRAT_MEDIUM,
+                                                                fontSize: 10),
                                                       ),
                                                     ],
                                                   )
@@ -156,7 +161,6 @@ class InboxView extends BaseView<ChatVM> {
                                             ],
                                           ),
                                         ),
-
                                       ],
                                     ),
                                   )),

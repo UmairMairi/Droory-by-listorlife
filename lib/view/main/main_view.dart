@@ -1,19 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/helpers/db_helper.dart';
-import 'package:list_and_life/sockets/socket_helper.dart';
-import 'package:list_and_life/view/main/chat/inbox_view.dart';
-import 'package:list_and_life/view/main/fevorite/ads_view.dart';
-import 'package:list_and_life/view/main/home/home_view.dart';
-import 'package:list_and_life/view/main/sell/category/sell_category_view.dart';
-import 'package:list_and_life/view/main/settings/setting_view.dart';
 import 'package:persistent_bottom_nav_bar_plus/persistent_bottom_nav_bar_plus.dart';
-import 'package:provider/provider.dart';
 
-import '../../routes/app_routes.dart';
-import '../../view_model/chat_vm.dart';
 import '../../view_model/main_vm.dart';
 
 class MainView extends BaseView<MainVM> {

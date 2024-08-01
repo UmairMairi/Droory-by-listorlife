@@ -4,7 +4,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:list_and_life/providers/providers.dart';
 import 'package:list_and_life/routes/app_pages.dart';
-import 'package:list_and_life/sockets/socket_helper.dart';
+import 'package:list_and_life/base/sockets/socket_helper.dart';
 import 'package:list_and_life/widgets/app_loading_widget.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:provider/provider.dart';
@@ -12,15 +12,16 @@ import 'package:provider/provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:toastification/toastification.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'base/helpers/theme_helper.dart';
 import 'firebase_options.dart';
 
-import 'helpers/theme_helper.dart';
-import 'notification/notification_service.dart';
+import '/base/notification/notification_service.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   WidgetsFlutterBinding.ensureInitialized();
+
   await GetStorage.init();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

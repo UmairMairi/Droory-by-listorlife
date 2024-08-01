@@ -5,19 +5,17 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/helpers/db_helper.dart';
-import 'package:list_and_life/helpers/dialog_helper.dart';
+import 'package:list_and_life/base/helpers/db_helper.dart';
+import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/models/common/map_response.dart';
 import 'package:list_and_life/models/user_model.dart';
-import 'package:list_and_life/network/api_constants.dart';
-import 'package:list_and_life/network/api_request.dart';
-import 'package:list_and_life/network/base_client.dart';
+import 'package:list_and_life/base/network/api_constants.dart';
+import 'package:list_and_life/base/network/api_request.dart';
+import 'package:list_and_life/base/network/base_client.dart';
 import 'package:list_and_life/routes/app_pages.dart';
 import 'package:list_and_life/routes/app_routes.dart';
-import 'package:provider/provider.dart';
 
-import '../helpers/image_picker_helper.dart';
-import 'main_vm.dart';
+import '../base/helpers/image_picker_helper.dart';
 
 class AuthVM extends BaseViewModel {
   TextEditingController phoneTextController = TextEditingController();
@@ -27,7 +25,7 @@ class AuthVM extends BaseViewModel {
   TextEditingController lNameTextController = TextEditingController();
   TextEditingController emailTextController = TextEditingController();
 
-  FirebaseMessaging _fcm = FirebaseMessaging.instance;
+  final FirebaseMessaging _fcm = FirebaseMessaging.instance;
 
   String countryCode = "+91";
   Country selectedCountry = Country.IN;

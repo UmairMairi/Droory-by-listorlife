@@ -5,8 +5,8 @@ import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/widgets/app_error_widget.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 
-import '../../../../helpers/db_helper.dart';
-import '../../../../network/api_constants.dart';
+import '../../../../base/helpers/db_helper.dart';
+import '../../../../base/network/api_constants.dart';
 import '../../../../skeletons/sell_loading_widget.dart';
 import '../../../../view_model/sell_v_m.dart';
 import '../../../../widgets/unauthorised_view.dart';

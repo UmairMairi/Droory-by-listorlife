@@ -4,11 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/models/common/map_response.dart';
 import 'package:list_and_life/models/prodect_detail_model.dart';
-import 'package:list_and_life/network/api_constants.dart';
-import 'package:list_and_life/network/api_request.dart';
-import 'package:list_and_life/network/base_client.dart';
+import 'package:list_and_life/base/network/api_constants.dart';
+import 'package:list_and_life/base/network/api_request.dart';
+import 'package:list_and_life/base/network/base_client.dart';
 
-import '../helpers/dialog_helper.dart';
+import '../base/helpers/dialog_helper.dart';
 
 class ProductVM extends BaseViewModel {
   Future<ProductDetailModel?> getProductDetails({num? id}) async {

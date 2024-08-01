@@ -4,21 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/helpers/date_helper.dart';
-import 'package:list_and_life/helpers/dialog_helper.dart';
+import 'package:list_and_life/base/helpers/date_helper.dart';
+import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/models/prodect_detail_model.dart';
-import 'package:list_and_life/models/setting_item_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/widgets/card_swipe_widget.dart';
 import 'package:list_and_life/widgets/like_button.dart';
 
-import '../helpers/db_helper.dart';
+import '../base/helpers/db_helper.dart';
 import '../models/common/map_response.dart';
 import '../models/inbox_model.dart';
-import '../network/api_constants.dart';
-import '../network/api_request.dart';
-import '../network/base_client.dart';
+import '../base/network/api_constants.dart';
+import '../base/network/api_request.dart';
+import '../base/network/base_client.dart';
 import '../routes/app_routes.dart';
 
 class AppProductItemWidget extends StatelessWidget {
@@ -223,7 +222,7 @@ class AppProductItemWidget extends StatelessWidget {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 08),
                               decoration: BoxDecoration(
-                                color: Color(0xff5A5B55),
+                                color: const Color(0xff5A5B55),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Row(

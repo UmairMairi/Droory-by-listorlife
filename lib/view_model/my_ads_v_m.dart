@@ -1,17 +1,17 @@
 import 'dart:developer';
 
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/helpers/dialog_helper.dart';
+import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import '../helpers/date_helper.dart';
-import '../helpers/db_helper.dart';
+import '../base/helpers/date_helper.dart';
+import '../base/helpers/db_helper.dart';
 import '../models/common/map_response.dart';
 import '../models/home_list_model.dart';
 import '../models/prodect_detail_model.dart';
-import '../network/api_constants.dart';
-import '../network/api_request.dart';
-import '../network/base_client.dart';
+import '../base/network/api_constants.dart';
+import '../base/network/api_request.dart';
+import '../base/network/base_client.dart';
 
 class MyAdsVM extends BaseViewModel {
   late RefreshController refreshController;

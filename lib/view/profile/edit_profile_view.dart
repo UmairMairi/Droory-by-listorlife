@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/helpers/db_helper.dart';
-import 'package:list_and_life/helpers/dialog_helper.dart';
-import 'package:list_and_life/helpers/image_picker_helper.dart';
+import 'package:list_and_life/base/helpers/db_helper.dart';
+import 'package:list_and_life/base/helpers/dialog_helper.dart';
+import 'package:list_and_life/base/helpers/image_picker_helper.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/view_model/profile_vm.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 
-import '../../network/api_constants.dart';
+import '../../base/network/api_constants.dart';
 
 class EditProfileView extends BaseView<ProfileVM> {
   const EditProfileView({super.key});

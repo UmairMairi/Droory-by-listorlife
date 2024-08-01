@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../res/font_res.dart';
+import '../../res/font_res.dart';
 import 'color_schemes.dart';
 
 class ThemeHelper {

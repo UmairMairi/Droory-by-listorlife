@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/helpers/db_helper.dart';
-import 'package:list_and_life/helpers/dialog_helper.dart';
-import 'package:list_and_life/helpers/image_picker_helper.dart';
+import 'package:list_and_life/base/helpers/db_helper.dart';
+import 'package:list_and_life/base/helpers/dialog_helper.dart';
+import 'package:list_and_life/base/helpers/image_picker_helper.dart';
 import 'package:list_and_life/models/inbox_model.dart';
 import 'package:list_and_life/models/message_model.dart';
-import 'package:list_and_life/network/base_client.dart';
+import 'package:list_and_life/base/network/base_client.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/view_model/chat_vm.dart';
 import 'package:list_and_life/widgets/app_error_widget.dart';
@@ -15,12 +15,8 @@ import 'package:list_and_life/widgets/app_loading_widget.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 
-import '../../../chat_bubble/bubble_normal_message.dart';
-import '../../../chat_bubble/bubble_offer_message.dart';
 import '../../../chat_bubble/message_bar_with_suggetion.dart';
-import '../../../helpers/date_helper.dart';
-import '../../../network/api_constants.dart';
-import '../../../res/font_res.dart';
+import '../../../base/network/api_constants.dart';
 
 class MessageView extends BaseView<ChatVM> {
   final InboxModel? chat;

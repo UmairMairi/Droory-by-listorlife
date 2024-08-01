@@ -13,7 +13,7 @@ import 'package:toastification/toastification.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
-import '../routes/app_routes.dart';
+import '../../routes/app_routes.dart';
 import 'db_helper.dart';
 
 class DialogHelper {

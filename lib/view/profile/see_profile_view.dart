@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/models/prodect_detail_model.dart';
-import 'package:list_and_life/network/api_constants.dart';
+import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
@@ -18,12 +18,12 @@ import 'package:list_and_life/widgets/image_view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../helpers/date_helper.dart';
+import '../../base/helpers/date_helper.dart';
 import '../../models/common/map_response.dart';
 import '../../models/home_list_model.dart';
 import '../../models/user_model.dart';
-import '../../network/api_request.dart';
-import '../../network/base_client.dart';
+import '../../base/network/api_request.dart';
+import '../../base/network/base_client.dart';
 import '../../routes/app_routes.dart';
 import '../../skeletons/other_product_skeleton.dart';
 

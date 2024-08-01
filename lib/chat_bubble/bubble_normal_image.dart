@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:list_and_life/network/api_constants.dart';
 
 const double BUBBLE_RADIUS_IMAGE = 16;
 

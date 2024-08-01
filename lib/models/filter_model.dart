@@ -1,0 +1,136 @@
+class FilterModel {
+  String? limit;
+  String? page;
+  String? categoryId;
+  String? subcategoryId;
+  String? brandId;
+  String? userId;
+  String? favourite;
+  String? latitude;
+  String? longitude;
+  String? minPrice;
+  String? maxPrice;
+  String? minKmDriven;
+  String? maxKmDriven;
+  String? fuel;
+  String? numberOfOwner;
+  String? year;
+  String? sellStatus;
+  String? search;
+  String? datePublished;
+  String? sortByPrice;
+  String? distance;
+  String? itemCondition;
+  String? startDate;
+  String? endDate;
+
+  FilterModel({
+    this.limit,
+    this.page,
+    this.categoryId,
+    this.subcategoryId,
+    this.brandId,
+    this.userId,
+    this.favourite,
+    this.latitude,
+    this.longitude,
+    this.minPrice,
+    this.maxPrice,
+    this.minKmDriven,
+    this.maxKmDriven,
+    this.fuel,
+    this.numberOfOwner,
+    this.year,
+    this.sellStatus,
+    this.search,
+    this.datePublished,
+    this.sortByPrice,
+    this.distance,
+    this.itemCondition,
+    this.startDate,
+    this.endDate,
+  });
+
+  Map<String, String?> toMap() {
+    return {
+      'limit': limit,
+      'page': page,
+      'category_id': categoryId,
+      'subcategory_id': subcategoryId,
+      'brand_id': brandId,
+      'user_id': userId,
+      'favourite': favourite,
+      'latitude': latitude,
+      'longitude': longitude,
+      'min_price': minPrice,
+      'max_price': maxPrice,
+      'min_km_driven': minKmDriven,
+      'max_km_driven': maxKmDriven,
+      'fuel': fuel,
+      'number_of_owner': numberOfOwner,
+      'year': year,
+      'sell_status': sellStatus,
+      'search': search,
+      'date_published': datePublished,
+      'sort_by_price': sortByPrice,
+      'distance': distance,
+      'item_condition': itemCondition,
+      'start_date': startDate,
+      'end_date': endDate,
+    };
+  }
+
+  FilterModel copyWith({
+    String? limit,
+    String? page,
+    String? categoryId,
+    String? subcategoryId,
+    String? brandId,
+    String? userId,
+    String? favourite,
+    String? latitude,
+    String? longitude,
+    String? minPrice,
+    String? maxPrice,
+    String? minKmDriven,
+    String? maxKmDriven,
+    String? fuel,
+    String? numberOfOwner,
+    String? year,
+    String? sellStatus,
+    String? search,
+    String? datePublished,
+    String? sortByPrice,
+    String? distance,
+    String? itemCondition,
+    String? startDate,
+    String? endDate,
+  }) {
+    return FilterModel(
+      limit: limit ?? this.limit,
+      page: page ?? this.page,
+      categoryId: categoryId ?? this.categoryId,
+      subcategoryId: subcategoryId ?? this.subcategoryId,
+      brandId: brandId ?? this.brandId,
+      userId: userId ?? this.userId,
+      favourite: favourite ?? this.favourite,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
+      minPrice: minPrice ?? this.minPrice,
+      maxPrice: maxPrice ?? this.maxPrice,
+      minKmDriven: minKmDriven ?? this.minKmDriven,
+      maxKmDriven: maxKmDriven ?? this.maxKmDriven,
+      fuel: fuel ?? this.fuel,
+      numberOfOwner: numberOfOwner ?? this.numberOfOwner,
+      year: year ?? this.year,
+      sellStatus: sellStatus ?? this.sellStatus,
+      search: search ?? this.search,
+      datePublished: datePublished ?? this.datePublished,
+      sortByPrice: sortByPrice ?? this.sortByPrice,
+      distance: distance ?? this.distance,
+      itemCondition: itemCondition ?? this.itemCondition,
+      startDate: startDate ?? this.startDate,
+      endDate: endDate ?? this.endDate,
+    );
+  }
+}

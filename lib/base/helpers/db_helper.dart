@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:get_storage/get_storage.dart';
-import 'package:list_and_life/notification/notification_entity.dart';
+import 'package:list_and_life/base/notification/notification_entity.dart';
 
-import '../models/user_model.dart';
+import '../../models/user_model.dart';
 
 class DbHelper {
   static const JsonDecoder _decoder = JsonDecoder();

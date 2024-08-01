@@ -3,7 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../helpers/dialog_helper.dart';
+import '../../base/helpers/dialog_helper.dart';
 import '../../res/assets_res.dart';
 import '../../widgets/app_elevated_button.dart';
 

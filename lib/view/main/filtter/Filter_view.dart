@@ -9,7 +9,9 @@ import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
+import '../../../models/filter_model.dart';
 import '../../../widgets/app_map_widget.dart';
+import 'filter_item_view.dart';
 
 class FilterView extends StatefulWidget {
   const FilterView({super.key});
@@ -19,6 +21,23 @@ class FilterView extends StatefulWidget {
 }
 
 class _FilterViewState extends State<FilterView> {
+  SfRangeValues values = const SfRangeValues(00, 00);
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    var vm = context.read<HomeVM>();
+    values = SfRangeValues(
+        int.parse(vm.startPriceTextController.text.isEmpty
+            ? '0'
+            : vm.startPriceTextController.text),
+        int.parse(vm.endPriceTextController.text.isEmpty
+            ? '0'
+            : vm.endPriceTextController.text));
+    vm.locationTextController.text = vm.currentLocation;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,9 +127,26 @@ class _FilterViewState extends State<FilterView> {
                           controller: viewModel.startPriceTextController,
                           keyboardType: TextInputType.text,
                           cursorColor: Colors.black,
+                          onChanged: (value) {
+                            setState(() {
+                              if (value.isEmpty) {
+                                values = SfRangeValues(
+                                    0,
+                                    int.parse(
+                                        viewModel.endPriceTextController.text));
+                                return;
+                              }
+
+                              values = SfRangeValues(
+                                  int.parse(
+                                      viewModel.startPriceTextController.text),
+                                  int.parse(
+                                      viewModel.endPriceTextController.text));
+                            });
+                          },
                           decoration: InputDecoration(
                               fillColor: const Color(0xffFCFCFD),
-                              hintText: "EGP0",
+                              hintText: "EGP 0",
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide:
@@ -142,6 +178,23 @@ class _FilterViewState extends State<FilterView> {
                         textAlign: TextAlign.center,
                         controller: viewModel.endPriceTextController,
                         cursorColor: Colors.black,
+                        onChanged: (value) {
+                          setState(() {
+                            if (value.isEmpty) {
+                              values = SfRangeValues(
+                                  int.parse(
+                                      viewModel.startPriceTextController.text),
+                                  20000);
+                              return;
+                            }
+
+                            values = SfRangeValues(
+                                int.parse(
+                                    viewModel.startPriceTextController.text),
+                                int.parse(
+                                    viewModel.endPriceTextController.text));
+                          });
+                        },
                         decoration: InputDecoration(
                             fillColor: const Color(0xffFCFCFD),
                             hintText: "EGP0",
@@ -158,29 +211,35 @@ class _FilterViewState extends State<FilterView> {
                   ),
                 ],
               ),
-              /* const SizedBox(
-                  height: 15,
-                ),
-                StatefulBuilder(builder: (context, setState) {
-                  SfRangeValues values = const SfRangeValues(00, 20000);
-                  return SfRangeSlider(
-                    min: 0,
-                    max: 20000.0,
-                    values: values,
-                    inactiveColor: Colors.grey,
-                    activeColor: const Color(0xffFF385C),
-                    showLabels: true,
-                    interval: 20000,
-                    labelFormatterCallback:
-                        (dynamic actualValue, String formattedText) {
-                      return actualValue == 19999
-                          ? ' $formattedText+'
-                          : ' $formattedText';
-                    },
-                    onChanged: (SfRangeValues newValues) {},
-                  );
-                }),
-                */
+              const SizedBox(
+                height: 15,
+              ),
+              StatefulBuilder(builder: (context, setState) {
+                return SfRangeSlider(
+                  min: 0,
+                  max: 20000,
+                  values: values,
+                  inactiveColor: Colors.grey,
+                  activeColor: const Color(0xffFF385C),
+                  showLabels: true,
+                  interval: 20000,
+                  labelFormatterCallback:
+                      (dynamic actualValue, String formattedText) {
+                    return actualValue == 19999
+                        ? ' $formattedText+'
+                        : ' $formattedText';
+                  },
+                  onChanged: (SfRangeValues newValues) {
+                    viewModel.startPriceTextController.text =
+                        "${newValues.start.round()}";
+                    viewModel.endPriceTextController.text =
+                        "${newValues.end.round()}";
+                    setState(() {
+                      values = newValues;
+                    });
+                  },
+                );
+              }),
               const SizedBox(
                 height: 10,
               ),
@@ -225,22 +284,22 @@ class _FilterViewState extends State<FilterView> {
                     backgroundColor: Colors.white,
                     children: [
                       ListTile(
-                        title: Text(
+                        title: const Text(
                           "Price: High to Low",
                           selectionColor: Colors.white,
                         ),
                         onTap: () => viewModel.sortBy = "Price: High to Low",
                       ),
                       ListTile(
-                        title: Text("Price: Low to High"),
+                        title: const Text("Price: Low to High"),
                         onTap: () => viewModel.sortBy = "Price: Low to High",
                       ),
                       ListTile(
-                        title: Text("Date Published"),
+                        title: const Text("Date Published"),
                         onTap: () => viewModel.sortBy = "Price: Low to High",
                       ),
                       ListTile(
-                        title: Text("Distance"),
+                        title: const Text("Distance"),
                         onTap: () => viewModel.sortBy = "Distance",
                       )
                     ],
@@ -264,22 +323,22 @@ class _FilterViewState extends State<FilterView> {
                     backgroundColor: Colors.white,
                     children: [
                       ListTile(
-                        title: Text(
+                        title: const Text(
                           "Today",
                           selectionColor: Colors.white,
                         ),
                         onTap: () => viewModel.publishedBy = "Today",
                       ),
                       ListTile(
-                        title: Text("Yesterday"),
+                        title: const Text("Yesterday"),
                         onTap: () => viewModel.publishedBy = "Yesterday",
                       ),
                       ListTile(
-                        title: Text("Last Week"),
+                        title: const Text("Last Week"),
                         onTap: () => viewModel.publishedBy = "Last Week",
                       ),
                       ListTile(
-                        title: Text("Last Month"),
+                        title: const Text("Last Month"),
                         onTap: () => viewModel.publishedBy = "Last Month",
                       )
                     ],
@@ -297,7 +356,22 @@ class _FilterViewState extends State<FilterView> {
                 width: context.width,
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 onTap: () {
-                  context.pop();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => FilterItemView(
+                                  model: FilterModel(
+                                itemCondition: viewModel.selectedIndex == 0
+                                    ? 'new'
+                                    : 'used',
+                                minPrice: viewModel
+                                    .startPriceTextController.text
+                                    .trim(),
+                                maxPrice: viewModel.endPriceTextController.text
+                                    .trim(),
+                                latitude: viewModel.latitude.toString(),
+                                longitude: viewModel.longitude.toString(),
+                              ))));
                 },
                 title: 'Apply',
               ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base_view.dart';
-import 'package:list_and_life/helpers/db_helper.dart';
+import 'package:list_and_life/base/helpers/db_helper.dart';
 import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/view/main/fevorite/my_ads_view.dart';
 import 'package:list_and_life/view/main/fevorite/my_favourites_view.dart';

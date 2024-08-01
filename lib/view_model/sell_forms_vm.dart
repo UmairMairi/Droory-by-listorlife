@@ -1,14 +1,14 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:list_and_life/helpers/dialog_helper.dart';
+import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/models/category_model.dart';
 import 'package:list_and_life/models/common/list_response.dart';
 import 'package:list_and_life/models/common/map_response.dart';
 import 'package:list_and_life/models/prodect_detail_model.dart';
-import 'package:list_and_life/network/api_constants.dart';
-import 'package:list_and_life/network/api_request.dart';
-import 'package:list_and_life/network/base_client.dart';
+import 'package:list_and_life/base/network/api_constants.dart';
+import 'package:list_and_life/base/network/api_request.dart';
+import 'package:list_and_life/base/network/base_client.dart';
 
 import '../base/base_view_model.dart';
 import '../view/main/sell/forms/post_added_final_view.dart';

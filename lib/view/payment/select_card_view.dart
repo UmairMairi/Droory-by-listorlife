@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 
-import '../../helpers/dialog_helper.dart';
+import '../../base/helpers/dialog_helper.dart';
 import '../../routes/app_routes.dart';
 import '../../widgets/app_elevated_button.dart';
 import 'add_card_screen.dart';

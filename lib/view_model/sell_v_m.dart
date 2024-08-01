@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/helpers/dialog_helper.dart';
+import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/models/category_model.dart';
 import 'package:list_and_life/models/common/list_response.dart';
-import 'package:list_and_life/network/api_constants.dart';
-import 'package:list_and_life/network/api_request.dart';
-import 'package:list_and_life/network/base_client.dart';
+import 'package:list_and_life/base/network/api_constants.dart';
+import 'package:list_and_life/base/network/api_request.dart';
+import 'package:list_and_life/base/network/base_client.dart';
 import 'package:list_and_life/routes/app_pages.dart';
 import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/view/main/sell/sub_sub_category/sell_sub_sub_category_view.dart';

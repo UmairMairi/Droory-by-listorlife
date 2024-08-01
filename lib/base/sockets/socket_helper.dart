@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:list_and_life/sockets/socket_constants.dart';
+import 'package:list_and_life/base/sockets/socket_constants.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import '../helpers/db_helper.dart';

@@ -1,28 +1,27 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/chat_bubble/bubble_normal_image.dart';
-import 'package:list_and_life/helpers/db_helper.dart';
-import 'package:list_and_life/helpers/debouncer_helper.dart';
-import 'package:list_and_life/helpers/dialog_helper.dart';
+import 'package:list_and_life/base/helpers/db_helper.dart';
+import 'package:list_and_life/base/helpers/debouncer_helper.dart';
+import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/models/inbox_model.dart';
-import 'package:list_and_life/network/api_constants.dart';
-import 'package:list_and_life/sockets/socket_constants.dart';
+import 'package:list_and_life/base/network/api_constants.dart';
+import 'package:list_and_life/base/sockets/socket_constants.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
 import '../chat_bubble/bubble_normal_message.dart';
 import '../chat_bubble/bubble_offer_message.dart';
-import '../helpers/date_helper.dart';
+import '../base/helpers/date_helper.dart';
 import '../models/message_model.dart';
 import '../res/font_res.dart';
-import '../sockets/socket_helper.dart';
+import '../base/sockets/socket_helper.dart';
 
 class ChatVM extends BaseViewModel {
-  final Socket? _socketIO = SocketHelper().getSocket();
+  final Socket _socketIO = SocketHelper().getSocket();
 
   final TextEditingController inboxSearchTextController =
       TextEditingController();
@@ -55,7 +54,7 @@ class ChatVM extends BaseViewModel {
     if (SocketHelper().isUserConnected == false) {
       SocketHelper().connectUser();
     }
-    _socketIO?.on(SocketConstants.getUserLists, (data) {
+    _socketIO.on(SocketConstants.getUserLists, (data) {
       log("Users List: $data");
       inboxList.clear();
 
@@ -69,7 +68,7 @@ class ChatVM extends BaseViewModel {
       filteredInboxList = inboxList;
       inboxStreamController.add(filteredInboxList);
     });
-    _socketIO?.on(SocketConstants.getMessageList, (data) {
+    _socketIO.on(SocketConstants.getMessageList, (data) {
       MessageDataModel model = MessageDataModel.fromJson(data);
       chatItems.clear();
       for (var element in model.list ?? []) {
@@ -80,7 +79,7 @@ class ChatVM extends BaseViewModel {
           model.checkBlock?.blockByMe != 0 || model.checkBlock?.blockMe != 0;
       log("message => $blockedUser");
     });
-    _socketIO?.on(SocketConstants.sendMessage, (data) {
+    _socketIO.on(SocketConstants.sendMessage, (data) {
       getInboxList();
       MessageModel message = MessageModel.fromJson(data);
 
@@ -89,13 +88,13 @@ class ChatVM extends BaseViewModel {
         messageStreamController.add(chatItems);
       }
     });
-    _socketIO?.on(SocketConstants.blockOrReportUser, (data) {
+    _socketIO.on(SocketConstants.blockOrReportUser, (data) {
       log("data => $data");
       DialogHelper.showToast(
           message: "Your report/Block submitted successfully");
       //DialogHelper.showToast(message: "You blocked this user successfully");
     });
-    _socketIO?.on(SocketConstants.readChatStatus, (data) {});
+    _socketIO.on(SocketConstants.readChatStatus, (data) {});
   }
 
   void getInboxList() {
@@ -106,7 +105,7 @@ class ChatVM extends BaseViewModel {
     };
 
     log("Get Users Resq: $map");
-    _socketIO?.emit(SocketConstants.getUserLists, map);
+    _socketIO.emit(SocketConstants.getUserLists, map);
   }
 
   void searchInbox(String query) {
@@ -139,7 +138,7 @@ class ChatVM extends BaseViewModel {
       "page": 1
     };
     print("Send message => $map");
-    _socketIO?.emit(SocketConstants.getMessageList, map);
+    _socketIO.emit(SocketConstants.getMessageList, map);
   }
 
   void sendMessage(
@@ -159,7 +158,7 @@ class ChatVM extends BaseViewModel {
       "message_type": type
     };
     print("Send message => $map");
-    _socketIO?.emit(SocketConstants.sendMessage, map);
+    _socketIO.emit(SocketConstants.sendMessage, map);
 
     chatItems.insert(
       0,
@@ -198,7 +197,7 @@ class ChatVM extends BaseViewModel {
     };
     log("Socket call => ${SocketConstants.blockOrReportUser} with $map",
         name: "SOCKET");
-    _socketIO?.emit(SocketConstants.blockOrReportUser, map);
+    _socketIO.emit(SocketConstants.blockOrReportUser, map);
   }
 
   Widget getBubble(

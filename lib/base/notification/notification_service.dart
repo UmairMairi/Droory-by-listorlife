@@ -66,7 +66,7 @@ class NotificationService {
           DbHelper.convertStringToNotificationEntity(
               notificationResponse.payload);
 
-      pushNextScreenFromForeground(notificationEntity!);
+      pushNextScreenFromForeground(notificationEntity);
 
       if (notificationResponse.payload != null) {
         debugPrint('notification payload: ${notificationResponse.payload}');
@@ -121,9 +121,7 @@ class NotificationService {
           DbHelper.convertStringToNotificationEntity(payload);
       debugPrint(
           "notification _configureSelectNotificationSubject ${entity.toString()}");
-      if (entity != null) {
-        pushNextScreenFromForeground(entity);
-      }
+      pushNextScreenFromForeground(entity);
     });
   }
 
@@ -138,9 +136,7 @@ class NotificationService {
         DbHelper.convertStringToNotificationEntity(payload);
     debugPrint(
         "notification onDidReceiveLocalNotification ${entity.toString()}");
-    if (entity != null) {
-      pushNextScreenFromForeground(entity);
-    }
+    pushNextScreenFromForeground(entity);
     return null;
   }
 
@@ -206,9 +202,9 @@ class NotificationService {
   }
 
   void pushNextScreenFromForeground(
-      NotificationEntity notificationEntity) async {
+      NotificationEntity? notificationEntity) async {
     // Utils.showLoader();
-    print("Notificaion data => ${notificationEntity.toJson()}");
+    print("Notificaion data => ${notificationEntity?.toJson()}");
 
     /*  switch ("${notificationEntity.entityName}") {
       case 'MESSAGE':
@@ -265,7 +261,7 @@ class NotificationService {
 
   static Future<void> sendNotification(
       {required String title, required String body}) async {
-    Dio _dio = Dio();
+    Dio dio = Dio();
     final String serverAccessTokenKey =
         await getAccessToken(); // Your FCM server access token key
     log("Api Key => $serverAccessTokenKey");
@@ -283,7 +279,7 @@ class NotificationService {
     };
 
     try {
-      final response = await _dio.post(
+      final response = await dio.post(
         endpointFirebaseCloudMessaging,
         data: jsonEncode(message),
         options: Options(

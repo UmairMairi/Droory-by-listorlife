@@ -1,16 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/helpers/debouncer_helper.dart';
-import 'package:list_and_life/helpers/location_helper.dart';
+import 'package:list_and_life/base/helpers/debouncer_helper.dart';
+import 'package:list_and_life/base/helpers/location_helper.dart';
 import 'package:list_and_life/models/common/map_response.dart';
 import 'package:list_and_life/models/home_list_model.dart';
 import 'package:list_and_life/models/prodect_detail_model.dart';
-import 'package:list_and_life/network/api_constants.dart';
-import 'package:list_and_life/network/api_request.dart';
-import 'package:list_and_life/network/base_client.dart';
+import 'package:list_and_life/base/network/api_constants.dart';
+import 'package:list_and_life/base/network/api_request.dart';
+import 'package:list_and_life/base/network/base_client.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import '../models/category_model.dart';
+import '../models/common/list_response.dart';
 import '../models/setting_item_model.dart';
 
 class HomeVM extends BaseViewModel {
@@ -19,7 +21,6 @@ class HomeVM extends BaseViewModel {
   String get currentLocation => _currentLocation;
   final DebounceHelper _debounce = DebounceHelper(milliseconds: 500);
   String searchQuery = '';
-  List<SettingItemModel> categoryItems = [];
 
   List<ProductDetailModel> productsList = [];
 
@@ -31,7 +32,7 @@ class HomeVM extends BaseViewModel {
     notifyListeners();
   }
 
-  String _publishedBy = 'Pos';
+  String _publishedBy = 'Posted Within';
   String get publishedBy => _publishedBy;
   set publishedBy(String value) {
     _publishedBy = value;
@@ -80,11 +81,12 @@ class HomeVM extends BaseViewModel {
   double latitude = 0.0;
   double longitude = 0.0;
 
-  void updateLatLong({required double lat, required double long}) {
+  void updateLatLong({required double lat, required double long}) async {
     latitude = lat;
     longitude = long;
-    onRefresh();
+    currentLocation = await LocationHelper.getAddressFromCoordinates(lat, long);
     notifyListeners();
+    onRefresh();
   }
 
   Future<void> updateLocation() async {
@@ -103,9 +105,9 @@ class HomeVM extends BaseViewModel {
   }
 
   TextEditingController startPriceTextController =
-      TextEditingController(text: '00');
+      TextEditingController(text: '0');
   TextEditingController endPriceTextController =
-      TextEditingController(text: '00');
+      TextEditingController(text: '20000');
   TextEditingController locationTextController = TextEditingController();
 
   @override
@@ -113,7 +115,6 @@ class HomeVM extends BaseViewModel {
     // TODO: implement onInit
     refreshController = RefreshController(initialRefresh: true);
     updateLocation();
-    initCategories();
     super.onInit();
   }
 
@@ -122,20 +123,6 @@ class HomeVM extends BaseViewModel {
     // TODO: implement onClose
     refreshController.dispose();
     super.onClose();
-  }
-
-  void initCategories() {
-    categoryItems = [
-      SettingItemModel(icon: AssetsRes.IC_CAT_CAR, title: 'Cars', onTap: () {}),
-      SettingItemModel(
-          icon: AssetsRes.IC_CAT_MOBILE, title: 'Mobile', onTap: () {}),
-      SettingItemModel(
-          icon: AssetsRes.IC_CAT_LAPTOP, title: 'Laptops', onTap: () {}),
-      SettingItemModel(
-          icon: AssetsRes.IC_CAT_FURNITURE, title: 'Furniture', onTap: () {}),
-      SettingItemModel(
-          icon: AssetsRes.IC_CAT_CLOTHS, title: 'Clothes', onTap: () {}),
-    ];
   }
 
   Future<void> onRefresh() async {
@@ -188,7 +175,19 @@ class HomeVM extends BaseViewModel {
     searchQuery = query;
     _debounce.run(() {
       page = 1;
+      productsList.clear();
       getProductsApi(search: searchQuery, loading: true);
     });
+  }
+
+  Future<List<CategoryModel>> getCategoryListApi() async {
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.getCategoriesUrl(), requestType: RequestType.get);
+    var response = await BaseClient.handleRequest(apiRequest);
+
+    ListResponse<CategoryModel> model = ListResponse<CategoryModel>.fromJson(
+        response, (json) => CategoryModel.fromJson(json));
+
+    return model.body ?? [];
   }
 }

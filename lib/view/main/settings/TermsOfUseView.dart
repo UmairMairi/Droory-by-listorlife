@@ -5,9 +5,9 @@ import 'package:list_and_life/widgets/app_loading_widget.dart';
 
 import '../../../models/cms_model.dart';
 import '../../../models/common/map_response.dart';
-import '../../../network/api_constants.dart';
-import '../../../network/api_request.dart';
-import '../../../network/base_client.dart';
+import '../../../base/network/api_constants.dart';
+import '../../../base/network/api_request.dart';
+import '../../../base/network/base_client.dart';
 
 class TermsOfUseView extends StatefulWidget {
   final int? type;

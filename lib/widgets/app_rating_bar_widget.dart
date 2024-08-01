@@ -67,7 +67,7 @@ class AppRatingBarWidget extends StatelessWidget {
           ),
         );
       },
-      onRatingUpdate: isInteractive ? onRatingUpdate ?? (rating) => print(rating) : (value) => null,
+      onRatingUpdate: isInteractive ? onRatingUpdate ?? (rating) => print(rating) : (value) {},
     );
 
     if (!isInteractive) {

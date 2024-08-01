@@ -6,13 +6,13 @@ import 'package:list_and_life/skeletons/product_list_skeleton.dart';
 import 'package:list_and_life/widgets/app_empty_widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import '../../../helpers/date_helper.dart';
-import '../../../helpers/db_helper.dart';
+import '../../../base/helpers/date_helper.dart';
+import '../../../base/helpers/db_helper.dart';
 import '../../../models/common/map_response.dart';
 import '../../../models/home_list_model.dart';
-import '../../../network/api_constants.dart';
-import '../../../network/api_request.dart';
-import '../../../network/base_client.dart';
+import '../../../base/network/api_constants.dart';
+import '../../../base/network/api_request.dart';
+import '../../../base/network/base_client.dart';
 import '../../../routes/app_routes.dart';
 import '../../../widgets/app_product_item_widget.dart';
 import '../../../widgets/unauthorised_view.dart';

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/helpers/dialog_helper.dart';
-import 'package:list_and_life/network/api_constants.dart';
+import 'package:list_and_life/base/helpers/dialog_helper.dart';
+import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/skeletons/my_ads_skeleton.dart';
@@ -12,7 +12,7 @@ import 'package:list_and_life/widgets/app_empty_widget.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import '../../../helpers/db_helper.dart';
+import '../../../base/helpers/db_helper.dart';
 import '../../../view_model/my_ads_v_m.dart';
 import '../../../widgets/unauthorised_view.dart';
 

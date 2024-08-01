@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:list_and_life/base/base.dart';
-import '../res/assets_res.dart';
+
+import '../../res/assets_res.dart';
 import 'api_request.dart';
 
 class NoInternetPage extends StatelessWidget {

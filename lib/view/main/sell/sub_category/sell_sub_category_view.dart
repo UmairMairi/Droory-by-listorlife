@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/helpers/dialog_helper.dart';
+import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/models/category_model.dart';
 import 'package:list_and_life/skeletons/sub_category_loading_widget.dart';
 import 'package:list_and_life/widgets/app_error_widget.dart';

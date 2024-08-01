@@ -9,7 +9,7 @@ class MessageDataModel {
 
   MessageDataModel.fromJson(Map<String, dynamic> json) {
     pagination = json['pagination'] != null
-        ? new Pagination.fromJson(json['pagination'])
+        ? Pagination.fromJson(json['pagination'])
         : null;
     if (json['list'] != null) {
       list = <MessageModel>[];
@@ -18,20 +18,20 @@ class MessageDataModel {
       });
     }
     checkBlock = json['checkBlock'] != null
-        ? new CheckBlock.fromJson(json['checkBlock'])
+        ? CheckBlock.fromJson(json['checkBlock'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.pagination != null) {
-      data['pagination'] = this.pagination!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (pagination != null) {
+      data['pagination'] = pagination!.toJson();
     }
-    if (this.list != null) {
-      data['list'] = this.list!.map((v) => v.toJson()).toList();
+    if (list != null) {
+      data['list'] = list!.map((v) => v.toJson()).toList();
     }
-    if (this.checkBlock != null) {
-      data['checkBlock'] = this.checkBlock!.toJson();
+    if (checkBlock != null) {
+      data['checkBlock'] = checkBlock!.toJson();
     }
     return data;
   }
@@ -72,16 +72,16 @@ class MessageModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['sender_id'] = this.senderId;
-    data['receiver_id'] = this.receiverId;
-    data['room_id'] = this.roomId;
-    data['message'] = this.message;
-    data['message_type'] = this.messageType;
-    data['is_read'] = this.isRead;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['sender_id'] = senderId;
+    data['receiver_id'] = receiverId;
+    data['room_id'] = roomId;
+    data['message'] = message;
+    data['message_type'] = messageType;
+    data['is_read'] = isRead;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
     return data;
   }
 }
@@ -98,9 +98,9 @@ class CheckBlock {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['block_me'] = this.blockMe;
-    data['block_by_me'] = this.blockByMe;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['block_me'] = blockMe;
+    data['block_by_me'] = blockByMe;
     return data;
   }
 }

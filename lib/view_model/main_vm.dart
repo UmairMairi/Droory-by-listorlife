@@ -5,9 +5,9 @@ import 'package:list_and_life/view_model/chat_vm.dart';
 import 'package:persistent_bottom_nav_bar_plus/persistent_bottom_nav_bar_plus.dart';
 import 'package:provider/provider.dart';
 
-import '../helpers/db_helper.dart';
+import '../base/helpers/db_helper.dart';
 import '../routes/app_routes.dart';
-import '../sockets/socket_helper.dart';
+import '../base/sockets/socket_helper.dart';
 import '../view/main/chat/inbox_view.dart';
 import '../view/main/fevorite/ads_view.dart';
 import '../view/main/home/home_view.dart';
