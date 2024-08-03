@@ -9,14 +9,13 @@ import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/base/network/api_request.dart';
 import 'package:list_and_life/base/network/base_client.dart';
-import 'package:list_and_life/res/assets_res.dart';
+import 'package:list_and_life/routes/app_pages.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../models/category_model.dart';
 import '../models/common/list_response.dart';
-import '../models/setting_item_model.dart';
 
 class HomeVM extends BaseViewModel {
-  late RefreshController refreshController;
+  RefreshController refreshController = RefreshController(initialRefresh: true);
   String _currentLocation = "";
   String get currentLocation => _currentLocation;
   final DebounceHelper _debounce = DebounceHelper(milliseconds: 500);
@@ -91,16 +90,37 @@ class HomeVM extends BaseViewModel {
 
   Future<void> updateLocation() async {
     Position? position;
+
     try {
       position = await LocationHelper.getCurrentLocation();
     } catch (e) {
       position = await LocationHelper.getCurrentLocation();
     }
-    latitude = position.latitude;
-    longitude = position.longitude;
-    currentLocation = await LocationHelper.getAddressFromCoordinates(
-        position.latitude, position.longitude);
+    bool isEgypt = await LocationHelper.checkLocationIsEgypt(
+        latitude: position.latitude, longitude: position.longitude);
 
+    if (isEgypt) {
+      latitude = position.latitude;
+      longitude = position.longitude;
+      currentLocation =
+          await LocationHelper.getAddressFromCoordinates(longitude, longitude);
+    } else {
+      if (context.mounted) {
+        await LocationHelper.showPopupIsEgypt(context, () {
+          latitude = LocationHelper.cairoLatitude;
+          longitude = LocationHelper.cairoLongitude;
+          currentLocation = "Cairo, Egypt";
+        });
+      } else {
+        await LocationHelper.showPopupIsEgypt(
+            AppPages.rootNavigatorKey.currentState!.context!, () {
+          latitude = LocationHelper.cairoLatitude;
+          longitude = LocationHelper.cairoLongitude;
+          currentLocation = "Cairo, Egypt";
+        });
+      }
+    }
+    onRefresh();
     notifyListeners();
   }
 
@@ -113,6 +133,7 @@ class HomeVM extends BaseViewModel {
   @override
   void onInit() {
     // TODO: implement onInit
+
     refreshController = RefreshController(initialRefresh: true);
     updateLocation();
     super.onInit();

@@ -1,9 +1,12 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
-
+import 'package:flutter/material.dart';
 import 'dialog_helper.dart';
 
 class LocationHelper {
+  static const double cairoLatitude = 30.0444;
+  static const double cairoLongitude = 31.2357;
+
   static Future<Position> getCurrentLocation() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -46,7 +49,7 @@ class LocationHelper {
       }
     }
 
-    /// Get current position
+    // Get current position
     return await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
   }
@@ -63,27 +66,66 @@ class LocationHelper {
     }
   }
 
-  /*
-  *  SearchAddressField(
-                  keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.done,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.deny(RegExp(regexToRemoveEmoji))
-                  ],
-                  hintText: 'Enter Location',
-                  textEditingController:
-                      swipeController.groupLocationController,
-                  itmClick: (prediction) {
-                    swipeController.groupLocationController.text =
-                        prediction.description ?? "";
-                    swipeController.groupLocationController.selection =
-                        TextSelection.fromPosition(TextPosition(
-                            offset: prediction.description?.length ?? 0));
-                  },
-                  getPlaceDetailWithLatLng: (prediction) {
-                    swipeController.latitude.value = prediction.lat.toString();
-                    swipeController.longitude.value = prediction.lng.toString();
-                  },
-                )
-*/
+  static Future<bool> checkLocationIsEgypt(
+      {required double latitude, required double longitude}) async {
+    try {
+      String address = await getAddressFromCoordinates(latitude, longitude);
+      if (address.contains("Egypt")) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print("Error: $e");
+    }
+    return false;
+  }
+
+  static Future<void> showPopupIsEgypt(
+      BuildContext context, VoidCallback onTap) async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Location Alert"),
+          content: const Text(
+              "Please note that our app is currently only available for users in Egypt. To get started, please allow us to set your current location to Egypt."),
+          actions: [
+            TextButton(
+              child: Text("OK"),
+              onPressed: () {
+                Navigator.pop(context);
+                onTap(); // Call the callback function
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  static Future<void> showPopupAddProduct(
+      BuildContext context, VoidCallback onTap) async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Location Alert"),
+          content: const Text(
+              "Please note that our app is currently only available for users in Egypt. Please select Egypt location for add product."),
+          actions: [
+            TextButton(
+              child: Text("OK"),
+              onPressed: () {
+                Navigator.pop(context);
+                onTap(); // Call the callback function
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }

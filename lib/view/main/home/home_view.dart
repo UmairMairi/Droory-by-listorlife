@@ -24,8 +24,6 @@ class HomeView extends BaseView<HomeVM> {
 
   @override
   Widget build(BuildContext context, HomeVM viewModel) {
-    viewModel.refreshController = RefreshController(initialRefresh: true);
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,

@@ -6,6 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/base/helpers/location_helper.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:map_picker/map_picker.dart';
 import 'package:location/location.dart' as loc;
@@ -106,8 +107,25 @@ class _AppMapWidgetState extends State<AppMapWidget> {
     if (await hasLocationPermission() == false) {
       return null;
     }
-    Position position = await Geolocator.getCurrentPosition();
-    _animateCameraAndFindAddress(position);
+    Position position = await LocationHelper.getCurrentLocation();
+
+    bool isEgypt = await LocationHelper.checkLocationIsEgypt(
+        latitude: position.latitude, longitude: position.longitude);
+    if (isEgypt) {
+      _animateCameraAndFindAddress(position);
+    } else {
+      _animateCameraAndFindAddress(Position(
+          longitude: 30.0444,
+          latitude: 31.2357,
+          timestamp: DateTime.now(),
+          accuracy: 0.0,
+          altitude: 0.0,
+          altitudeAccuracy: 0.0,
+          heading: 0.0,
+          headingAccuracy: 0.0,
+          speed: 0.0,
+          speedAccuracy: 0.0));
+    }
   }
 
   Future<void> _animateCameraAndFindAddress(Position position) async {

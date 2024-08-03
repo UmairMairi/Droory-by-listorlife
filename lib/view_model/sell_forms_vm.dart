@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
+import 'package:list_and_life/base/helpers/location_helper.dart';
 import 'package:list_and_life/models/category_model.dart';
 import 'package:list_and_life/models/common/list_response.dart';
 import 'package:list_and_life/models/common/map_response.dart';
@@ -149,6 +150,16 @@ class SellFormsVM extends BaseViewModel {
       required CategoryModel? subCategory,
       CategoryModel? subSubCategory,
       CategoryModel? brands}) async {
+    bool isEgypt = await LocationHelper.checkLocationIsEgypt(
+        latitude: double.parse(latitude ?? '0'),
+        longitude: double.parse(longitude ?? '0'));
+
+    if (!isEgypt) {
+      DialogHelper.hideLoading();
+      LocationHelper.showPopupIsEgypt(context, () {});
+      return;
+    }
+
     final List<String> images = [];
     String mainImage = await BaseClient.uploadImage(imagePath: mainImagePath);
     images.add(mainImage);

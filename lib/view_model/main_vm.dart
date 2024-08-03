@@ -6,6 +6,7 @@ import 'package:persistent_bottom_nav_bar_plus/persistent_bottom_nav_bar_plus.da
 import 'package:provider/provider.dart';
 
 import '../base/helpers/db_helper.dart';
+import '../base/helpers/location_helper.dart';
 import '../routes/app_routes.dart';
 import '../base/sockets/socket_helper.dart';
 import '../view/main/chat/inbox_view.dart';
@@ -18,12 +19,12 @@ class MainVM extends BaseViewModel {
   final PersistentTabController navController =
       PersistentTabController(initialIndex: 0);
 
-  List<Widget> screensView = const [
+  List<Widget> screensView = [
     HomeView(),
-    InboxView(),
-    SellCategoryView(),
-    AdsView(),
-    SettingView()
+    const InboxView(),
+    const SellCategoryView(),
+    const AdsView(),
+    const SettingView()
   ];
 
   @override
@@ -33,6 +34,7 @@ class MainVM extends BaseViewModel {
     if (!DbHelper.getIsGuest()) {
       SocketHelper().connectUser();
     }
+
     super.onInit();
   }
 
