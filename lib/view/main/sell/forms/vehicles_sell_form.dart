@@ -41,9 +41,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
               focusNode: viewModel.kmDrivenText,
             ),
           ]),
-      child: SingleChildScrollView(
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        physics: const ClampingScrollPhysics(),
+      child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -225,22 +223,88 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                       borderSide: BorderSide.none,
                     ),
                     suffixIcon: PopupMenuButton(
-                      constraints:
-                          const BoxConstraints.expand(width: 200, height: 500),
                       clipBehavior: Clip.hardEdge,
                       icon: const Icon(
                         Icons.arrow_drop_down,
                         color: Colors.black,
                       ),
                       onSelected: (CategoryModel value) {
+                        DialogHelper.showLoading();
+                        viewModel.getModels(brandId: value.id);
                         viewModel.selectedBrand = value;
                         viewModel.brandTextController.text = value.name ?? '';
+                        viewModel.getModels(brandId: value.id);
                       },
                       itemBuilder: (BuildContext context) {
                         return brands!.map((option) {
                           return PopupMenuItem(
                             value: option,
                             child: Text(option.name ?? ''),
+                          );
+                        }).toList();
+                      },
+                    ),
+                  ),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.deny(
+                        RegExp(viewModel.regexToRemoveEmoji)),
+                  ],
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.done,
+                ),
+              ),
+              RichText(
+                  text: const TextSpan(children: [
+                TextSpan(
+                  text: "Models",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                      color: Colors.black),
+                ),
+              ])),
+              Container(
+                margin: const EdgeInsets.only(top: 10, bottom: 15),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(100),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      offset: const Offset(0, 1),
+                      blurRadius: 6,
+                    ),
+                  ],
+                ),
+                child: TextFormField(
+                  controller: viewModel.modelTextController,
+                  readOnly: true,
+                  cursorColor: Colors.black,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.only(
+                      left: 20,
+                    ),
+                    hintText: "Select",
+                    hintStyle:
+                        const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                    border: const OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                    ),
+                    suffixIcon: PopupMenuButton<CategoryModel>(
+                      clipBehavior: Clip.hardEdge,
+                      icon: const Icon(
+                        Icons.arrow_drop_down,
+                        color: Colors.black,
+                      ),
+                      onSelected: (value) {
+                        viewModel.selectedModel = value;
+                        viewModel.modelTextController.text = value.name ?? '';
+                      },
+                      itemBuilder: (BuildContext context) {
+                        return viewModel.allModels.map((option) {
+                          return PopupMenuItem(
+                            value: option,
+                            child: Text(option?.name ?? ''),
                           );
                         }).toList();
                       },
@@ -660,7 +724,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                   category: category,
                   subCategory: subCategory,
                   subSubCategory: subSubCategory,
-                  brands: viewModel.selectedBrand,
+                  brand: viewModel.selectedBrand,
                 );
               },
               child: Container(

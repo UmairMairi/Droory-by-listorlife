@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/base/network/api_constants.dart';
+import 'package:list_and_life/base/network/api_request.dart';
+import 'package:list_and_life/base/network/base_client.dart';
 import '../../../../base/helpers/dialog_helper.dart';
 import '../../../../base/helpers/image_picker_helper.dart';
 import '../../../../models/category_model.dart';
@@ -44,9 +47,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
               focusNode: viewModel.kmDrivenText,
             ),
           ]),
-      child: SingleChildScrollView(
-        physics: const FixedExtentScrollPhysics(),
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+      child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -328,6 +329,71 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                   textInputAction: TextInputAction.done,
                 ),
               ),
+              RichText(
+                  text: const TextSpan(children: [
+                TextSpan(
+                  text: "Models",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                      color: Colors.black),
+                ),
+              ])),
+              Container(
+                margin: const EdgeInsets.only(top: 10, bottom: 15),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(100),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      offset: const Offset(0, 1),
+                      blurRadius: 6,
+                    ),
+                  ],
+                ),
+                child: TextFormField(
+                  controller: viewModel.modelTextController,
+                  readOnly: true,
+                  cursorColor: Colors.black,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.only(
+                      left: 20,
+                    ),
+                    hintText: "Select",
+                    hintStyle:
+                        const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                    border: const OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                    ),
+                    suffixIcon: PopupMenuButton<CategoryModel>(
+                      clipBehavior: Clip.hardEdge,
+                      icon: const Icon(
+                        Icons.arrow_drop_down,
+                        color: Colors.black,
+                      ),
+                      onSelected: (value) {
+                        viewModel.selectedModel = value;
+                        viewModel.modelTextController.text = value.name ?? '';
+                      },
+                      itemBuilder: (BuildContext context) {
+                        return viewModel.allModels.map((option) {
+                          return PopupMenuItem(
+                            value: option,
+                            child: Text(option?.name ?? ''),
+                          );
+                        }).toList();
+                      },
+                    ),
+                  ),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.deny(
+                        RegExp(viewModel.regexToRemoveEmoji)),
+                  ],
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.done,
+                ),
+              ),
             },
             RichText(
                 text: const TextSpan(children: [
@@ -416,6 +482,71 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                   FilteringTextInputFormatter.deny(
                       RegExp(viewModel.regexToRemoveEmoji)),
                 ],
+                textInputAction: TextInputAction.done,
+              ),
+            ),
+            RichText(
+                text: const TextSpan(children: [
+              TextSpan(
+                text: "Mileage",
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                    color: Colors.black),
+              ),
+            ])),
+            Container(
+              margin: const EdgeInsets.only(top: 10, bottom: 20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(100),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    offset: const Offset(0, 1),
+                    blurRadius: 6,
+                  ),
+                ],
+              ),
+              child: TextFormField(
+                controller: viewModel.mileageTextController,
+                readOnly: true,
+                cursorColor: Colors.black,
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.only(
+                    left: 20,
+                  ),
+                  hintText: "Enter",
+                  hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                  ),
+                  suffixIcon: PopupMenuButton<String>(
+                    clipBehavior: Clip.hardEdge,
+                    icon: const Icon(
+                      Icons.arrow_drop_down,
+                      color: Colors.black,
+                    ),
+                    onSelected: (value) {
+                      viewModel.mileageTextController.text = value;
+                    },
+                    itemBuilder: (BuildContext context) {
+                      return viewModel.mileageRanges.map((option) {
+                        return PopupMenuItem(
+                          value: option,
+                          child: Text(option ?? ''),
+                        );
+                      }).toList();
+                    },
+                  ),
+                ),
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(4),
+                  FilteringTextInputFormatter.digitsOnly,
+                  FilteringTextInputFormatter.deny(
+                      RegExp(viewModel.regexToRemoveEmoji)),
+                ],
+                keyboardType: TextInputType.number,
                 textInputAction: TextInputAction.done,
               ),
             ),
@@ -824,11 +955,11 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                 }
                 DialogHelper.showLoading();
                 viewModel.addProduct(
-                  category: category,
-                  subCategory: subCategory,
-                  subSubCategory: subSubCategory,
-                  brands: viewModel.selectedBrand,
-                );
+                    category: category,
+                    subCategory: subCategory,
+                    subSubCategory: subSubCategory,
+                    brand: viewModel.selectedBrand,
+                    models: viewModel.selectedModel);
               },
               child: Container(
                 width: double.infinity,

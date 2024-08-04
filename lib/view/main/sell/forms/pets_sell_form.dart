@@ -36,9 +36,7 @@ class PetsSellForm extends BaseView<SellFormsVM> {
               focusNode: viewModel.priceText,
             ),
           ]),
-      child: SingleChildScrollView(
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        physics: const ClampingScrollPhysics(),
+      child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -185,7 +183,7 @@ class PetsSellForm extends BaseView<SellFormsVM> {
               RichText(
                   text: const TextSpan(children: [
                 TextSpan(
-                  text: "Brand",
+                  text: "Breed",
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 14,
@@ -479,7 +477,7 @@ class PetsSellForm extends BaseView<SellFormsVM> {
                   category: category,
                   subCategory: subCategory,
                   subSubCategory: subSubCategory,
-                  brands: viewModel.selectedBrand,
+                  brand: viewModel.selectedBrand,
                 );
               },
               child: Container(

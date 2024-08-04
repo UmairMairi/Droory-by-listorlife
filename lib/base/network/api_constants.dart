@@ -39,6 +39,8 @@ class ApiConstants {
       "$_baseUrl/get/products?limit=$limit&page=$page&favourite=true";
 
   static String addFavouriteUrl() => "$_baseUrl/add/favourite";
+  static String getModelsUrl({String? brandId}) =>
+      "$_baseUrl/get/models?brand_id=$brandId";
   static String getNotificationUrl({
     int? limit = 10,
     int? page = 1,

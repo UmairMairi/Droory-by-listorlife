@@ -51,6 +51,47 @@ class SellFormsVM extends BaseViewModel {
     'Temporary'
   ];
 
+  // List of mileage ranges
+  final List<String> mileageRanges = [
+    '0-5 km',
+    '5-10 km',
+    '10-15 km',
+    '15-20 km',
+    '20-25 km',
+    '25-30 km',
+    '30-35 km',
+    '35-40 km',
+    '40-45 km',
+    '45-50 km',
+  ];
+  final List<String> ramOptions = [
+    '2 GB',
+    '4 GB',
+    '6 GB',
+    '8 GB',
+    '12 GB',
+    '16 GB'
+  ];
+  final List<String> storageOptions = [
+    '1 GB',
+    '2 GB',
+    '4 GB',
+    '8 GB',
+    '64 GB',
+    '128 GB',
+    '256 GB',
+    '512 GB',
+    '1 TB'
+  ];
+  final List<String> screenSizeOptions = [
+    '5.5"',
+    '6.1"',
+    '6.5"',
+    '6.7"',
+    '7.0"'
+  ];
+  final List<String> materialOptions = ['Wood', 'Metal', 'Fabric'];
+
   List<String> salaryPeriodList = ['Hourly', 'Monthly', 'Weekly', 'Yearly'];
 
   String? country = '';
@@ -65,6 +106,15 @@ class SellFormsVM extends BaseViewModel {
 
   void removeImage(int index) {
     imagesList.removeAt(index);
+    notifyListeners();
+  }
+
+  List<CategoryModel?> _allModels = [];
+
+  List<CategoryModel?> get allModels => _allModels;
+
+  set allModels(List<CategoryModel?> values) {
+    _allModels = values;
     notifyListeners();
   }
 
@@ -90,6 +140,7 @@ class SellFormsVM extends BaseViewModel {
   }
 
   CategoryModel? _selectedBrand;
+  CategoryModel? _selectedModel;
 
   CategoryModel? get selectedBrand => _selectedBrand;
 
@@ -98,11 +149,20 @@ class SellFormsVM extends BaseViewModel {
     notifyListeners();
   }
 
+  CategoryModel? get selectedModel => _selectedModel;
+
+  set selectedModel(CategoryModel? value) {
+    _selectedModel = value;
+    notifyListeners();
+  }
+
   TextEditingController jobPositionTextController = TextEditingController();
   TextEditingController jobSalaryTextController = TextEditingController();
   TextEditingController jobSalaryFromController = TextEditingController();
   TextEditingController jobSalaryToController = TextEditingController();
   TextEditingController brandTextController = TextEditingController();
+  TextEditingController modelTextController = TextEditingController();
+  TextEditingController mileageTextController = TextEditingController();
   TextEditingController educationTypeTextController = TextEditingController();
   TextEditingController yearTextController = TextEditingController();
   TextEditingController fuelTextController = TextEditingController();
@@ -112,6 +172,10 @@ class SellFormsVM extends BaseViewModel {
   TextEditingController descriptionTextController = TextEditingController();
   TextEditingController priceTextController = TextEditingController();
   TextEditingController addressTextController = TextEditingController();
+  TextEditingController ramTextController = TextEditingController();
+  TextEditingController storageTextController = TextEditingController();
+  TextEditingController screenSizeTextController = TextEditingController();
+  TextEditingController materialTextController = TextEditingController();
 
   void resetTextFields() {
     currentIndex = 1;
@@ -145,18 +209,20 @@ class SellFormsVM extends BaseViewModel {
     return model.body ?? [];
   }
 
-  Future<void> addProduct(
-      {required CategoryModel? category,
-      required CategoryModel? subCategory,
-      CategoryModel? subSubCategory,
-      CategoryModel? brands}) async {
+  Future<void> addProduct({
+    required CategoryModel? category,
+    required CategoryModel? subCategory,
+    CategoryModel? subSubCategory,
+    CategoryModel? brand,
+    CategoryModel? models,
+  }) async {
     bool isEgypt = await LocationHelper.checkLocationIsEgypt(
         latitude: double.parse(latitude ?? '0'),
         longitude: double.parse(longitude ?? '0'));
 
     if (!isEgypt) {
       DialogHelper.hideLoading();
-      LocationHelper.showPopupIsEgypt(context, () {});
+      LocationHelper.showPopupAddProduct(context, () {});
       return;
     }
 
@@ -174,7 +240,8 @@ class SellFormsVM extends BaseViewModel {
       "category_id": category?.id,
       "sub_category_id": subCategory?.id,
       "sub_sub_category_id": subSubCategory?.id,
-      "brand_id": brands?.id,
+      "brand_id": brand?.id,
+      "model_id": models?.id,
       "name": adTitleTextController.text.trim(),
       "item_condition": currentIndex == 1 ? "new" : "used",
       "description": descriptionTextController.text.trim(),
@@ -251,5 +318,17 @@ class SellFormsVM extends BaseViewModel {
       default:
         return 'hourly';
     }
+  }
+
+  Future<void> getModels({required int? brandId}) async {
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.getModelsUrl(brandId: "$brandId"),
+        requestType: RequestType.get);
+    var response = await BaseClient.handleRequest(apiRequest);
+    ListResponse<CategoryModel> model =
+        ListResponse.fromJson(response, (json) => CategoryModel.fromJson(json));
+    DialogHelper.hideLoading();
+    allModels = model.body ?? [];
+    print("response ~--> $response");
   }
 }

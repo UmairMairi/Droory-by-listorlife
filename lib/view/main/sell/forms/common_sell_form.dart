@@ -37,8 +37,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
               focusNode: viewModel.priceText,
             ),
           ]),
-      child: SingleChildScrollView(
-        physics: const FixedExtentScrollPhysics(),
+      child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -226,14 +225,82 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                         color: Colors.black,
                       ),
                       onSelected: (CategoryModel value) {
+                        DialogHelper.showLoading();
+                        viewModel.getModels(brandId: value.id);
                         viewModel.selectedBrand = value;
                         viewModel.brandTextController.text = value.name ?? '';
+                        viewModel.getModels(brandId: value.id);
                       },
                       itemBuilder: (BuildContext context) {
                         return brands!.map((option) {
                           return PopupMenuItem(
                             value: option,
                             child: Text(option.name ?? ''),
+                          );
+                        }).toList();
+                      },
+                    ),
+                  ),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.deny(
+                        RegExp(viewModel.regexToRemoveEmoji)),
+                  ],
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.done,
+                ),
+              ),
+              RichText(
+                  text: const TextSpan(children: [
+                TextSpan(
+                  text: "Models",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                      color: Colors.black),
+                ),
+              ])),
+              Container(
+                margin: const EdgeInsets.only(top: 10, bottom: 15),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(100),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      offset: const Offset(0, 1),
+                      blurRadius: 6,
+                    ),
+                  ],
+                ),
+                child: TextFormField(
+                  controller: viewModel.modelTextController,
+                  readOnly: true,
+                  cursorColor: Colors.black,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.only(
+                      left: 20,
+                    ),
+                    hintText: "Select",
+                    hintStyle:
+                        const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                    border: const OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                    ),
+                    suffixIcon: PopupMenuButton<CategoryModel>(
+                      clipBehavior: Clip.hardEdge,
+                      icon: const Icon(
+                        Icons.arrow_drop_down,
+                        color: Colors.black,
+                      ),
+                      onSelected: (value) {
+                        viewModel.selectedModel = value;
+                        viewModel.modelTextController.text = value.name ?? '';
+                      },
+                      itemBuilder: (BuildContext context) {
+                        return viewModel.allModels.map((option) {
+                          return PopupMenuItem(
+                            value: option,
+                            child: Text(option?.name ?? ''),
                           );
                         }).toList();
                       },
@@ -321,6 +388,271 @@ class CommonSellForm extends BaseView<SellFormsVM> {
             const SizedBox(
               height: 25,
             ),
+            if (category?.id == 1) ...{
+              /// RAM SPECIFICATION
+              RichText(
+                  text: const TextSpan(children: [
+                TextSpan(
+                  text: "RAM",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                      color: Colors.black),
+                ),
+              ])),
+              Container(
+                margin: const EdgeInsets.only(top: 10, bottom: 15),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(100),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      offset: const Offset(0, 1),
+                      blurRadius: 6,
+                    ),
+                  ],
+                ),
+                child: TextFormField(
+                  controller: viewModel.ramTextController,
+                  readOnly: true,
+                  cursorColor: Colors.black,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.only(
+                      left: 20,
+                    ),
+                    hintText: "Select",
+                    hintStyle:
+                        const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                    border: const OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                    ),
+                    suffixIcon: PopupMenuButton<String>(
+                      clipBehavior: Clip.hardEdge,
+                      icon: const Icon(
+                        Icons.arrow_drop_down,
+                        color: Colors.black,
+                      ),
+                      onSelected: (value) {
+                        viewModel.ramTextController.text = value ?? '';
+                      },
+                      itemBuilder: (BuildContext context) {
+                        return viewModel.ramOptions.map((option) {
+                          return PopupMenuItem(
+                            value: option,
+                            child: Text(option ?? ''),
+                          );
+                        }).toList();
+                      },
+                    ),
+                  ),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.deny(
+                        RegExp(viewModel.regexToRemoveEmoji)),
+                  ],
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.done,
+                ),
+              ),
+
+              /// STORAGE SPECIFICATION
+              RichText(
+                  text: const TextSpan(children: [
+                TextSpan(
+                  text: "Storage",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                      color: Colors.black),
+                ),
+              ])),
+              Container(
+                margin: const EdgeInsets.only(top: 10, bottom: 15),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(100),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      offset: const Offset(0, 1),
+                      blurRadius: 6,
+                    ),
+                  ],
+                ),
+                child: TextFormField(
+                  controller: viewModel.storageTextController,
+                  readOnly: true,
+                  cursorColor: Colors.black,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.only(
+                      left: 20,
+                    ),
+                    hintText: "Select",
+                    hintStyle:
+                        const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                    border: const OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                    ),
+                    suffixIcon: PopupMenuButton<String>(
+                      clipBehavior: Clip.hardEdge,
+                      icon: const Icon(
+                        Icons.arrow_drop_down,
+                        color: Colors.black,
+                      ),
+                      onSelected: (value) {
+                        viewModel.storageTextController.text = value ?? '';
+                      },
+                      itemBuilder: (BuildContext context) {
+                        return viewModel.storageOptions.map((option) {
+                          return PopupMenuItem(
+                            value: option,
+                            child: Text(option ?? ''),
+                          );
+                        }).toList();
+                      },
+                    ),
+                  ),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.deny(
+                        RegExp(viewModel.regexToRemoveEmoji)),
+                  ],
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.done,
+                ),
+              ),
+
+              /// SCREEN SIZE SPECIFICATION
+              RichText(
+                  text: const TextSpan(children: [
+                TextSpan(
+                  text: "Screen Size",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                      color: Colors.black),
+                ),
+              ])),
+              Container(
+                margin: const EdgeInsets.only(top: 10, bottom: 15),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(100),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      offset: const Offset(0, 1),
+                      blurRadius: 6,
+                    ),
+                  ],
+                ),
+                child: TextFormField(
+                  controller: viewModel.screenSizeTextController,
+                  readOnly: true,
+                  cursorColor: Colors.black,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.only(
+                      left: 20,
+                    ),
+                    hintText: "Select",
+                    hintStyle:
+                        const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                    border: const OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                    ),
+                    suffixIcon: PopupMenuButton<String>(
+                      clipBehavior: Clip.hardEdge,
+                      icon: const Icon(
+                        Icons.arrow_drop_down,
+                        color: Colors.black,
+                      ),
+                      onSelected: (value) {
+                        viewModel.screenSizeTextController.text = value ?? '';
+                      },
+                      itemBuilder: (BuildContext context) {
+                        return viewModel.screenSizeOptions.map((option) {
+                          return PopupMenuItem(
+                            value: option,
+                            child: Text(option ?? ''),
+                          );
+                        }).toList();
+                      },
+                    ),
+                  ),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.deny(
+                        RegExp(viewModel.regexToRemoveEmoji)),
+                  ],
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.done,
+                ),
+              ),
+            },
+            if (category?.id == 2 || subCategory?.subCategoryId == 4) ...{
+              RichText(
+                  text: const TextSpan(children: [
+                TextSpan(
+                  text: "Material",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                      color: Colors.black),
+                ),
+              ])),
+              Container(
+                margin: const EdgeInsets.only(top: 10, bottom: 20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      offset: const Offset(0, 1),
+                      blurRadius: 6,
+                    ),
+                  ],
+                ),
+                child: TextFormField(
+                  controller: viewModel.materialTextController,
+                  readOnly: true,
+                  cursorColor: Colors.black,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.only(
+                      left: 20,
+                    ),
+                    hintText: "Select",
+                    hintStyle:
+                        const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                    border: const OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                    ),
+                    suffixIcon: PopupMenuButton<String>(
+                      clipBehavior: Clip.hardEdge,
+                      icon: const Icon(
+                        Icons.arrow_drop_down,
+                        color: Colors.black,
+                      ),
+                      onSelected: (value) {
+                        viewModel.materialTextController.text = value ?? '';
+                      },
+                      itemBuilder: (BuildContext context) {
+                        return viewModel.materialOptions.map((option) {
+                          return PopupMenuItem(
+                            value: option,
+                            child: Text(option ?? ''),
+                          );
+                        }).toList();
+                      },
+                    ),
+                  ),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.deny(
+                        RegExp(viewModel.regexToRemoveEmoji)),
+                  ],
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.done,
+                ),
+              ),
+            },
             RichText(
                 text: const TextSpan(children: [
               TextSpan(
@@ -552,7 +884,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                   category: category,
                   subCategory: subCategory,
                   subSubCategory: subSubCategory,
-                  brands: viewModel.selectedBrand,
+                  brand: viewModel.selectedBrand,
                 );
               },
               child: Container(
