@@ -45,8 +45,8 @@ class HomeView extends BaseView<HomeVM> {
         actions: [
           InkWell(
             onTap: () async {
-              await NotificationService.sendNotification(
-                  title: "Test Notification", body: "Test Body");
+              /*     await NotificationService.sendNotification(
+                  title: "Test Notification", body: "Test Body");*/
               context.push(Routes.notifications);
             },
             child: Container(

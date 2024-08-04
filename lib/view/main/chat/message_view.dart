@@ -127,8 +127,9 @@ class MessageView extends BaseView<ChatVM> {
                   showDialog(
                       context: context,
                       builder: (context) => AppAlertDialogWithWidget(
-                            description:
-                                'Are you sure want to block this user?',
+                            description: viewModel.blockedUser
+                                ? 'Are you sure want to unblock this user?'
+                                : 'Are you sure want to block this user?',
                             onTap: () {
                               context.pop();
                               viewModel.reportBlockUser(
@@ -138,7 +139,9 @@ class MessageView extends BaseView<ChatVM> {
                             icon: AssetsRes.IC_BLOCK_USER,
                             showCancelButton: true,
                             cancelButtonText: 'No',
-                            title: 'Block User',
+                            title: viewModel.blockedUser
+                                ? 'Unblock User'
+                                : 'Block User',
                             buttonText: 'Yes',
                           ));
                   return;
@@ -153,25 +156,26 @@ class MessageView extends BaseView<ChatVM> {
                 value: 2,
                 child: Text('Report User'),
               ),
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 3,
-                child: Text('Block User'),
+                child:
+                    Text(viewModel.blockedUser ? 'Unblock User' : 'Block User'),
               ),
             ],
           ),
         ],
         centerTitle: false,
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Expanded(
-            child: StreamBuilder<List<MessageModel>>(
-                stream: viewModel.messageStreamController.stream,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    List<MessageModel> data = snapshot.data ?? [];
-                    return ListView.builder(
+      body: StreamBuilder<List<MessageModel>>(
+          stream: viewModel.messageStreamController.stream,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              List<MessageModel> data = snapshot.data ?? [];
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: ListView.builder(
                         keyboardDismissBehavior:
                             ScrollViewKeyboardDismissBehavior.onDrag,
                         itemCount: data.length,
@@ -182,60 +186,72 @@ class MessageView extends BaseView<ChatVM> {
                               chat: chat,
                               data: data[index],
                               type: data[index].messageType);
-                        });
-                  }
-                  if (snapshot.hasError) {
-                    return const AppErrorWidget();
-                  }
-                  return const AppLoadingWidget();
-                }),
-          ),
-          const Gap(10),
-          MessageBarWithSuggestions(
-            suggestions: const ['Hello', 'How are you?'],
-            onSuggestionSelected: (value) {
-              viewModel.messageTextController.text = value;
-            },
-            onOfferMade: (value) {
-              viewModel.sendMessage(
-                  message: '$value',
-                  type: 2,
-                  receiverId: chat?.senderId == DbHelper.getUserModel()?.id
-                      ? chat?.receiverDetail?.id
-                      : chat?.senderDetail?.id,
-                  productId: chat?.productId);
-            },
-            textController: viewModel.messageTextController,
-            onSubmitted: (value) {
-              viewModel.sendMessage(
-                  message: value,
-                  type: 1,
-                  receiverId: chat?.senderId == DbHelper.getUserModel()?.id
-                      ? chat?.receiverDetail?.id
-                      : chat?.senderDetail?.id,
-                  productId: chat?.productId);
-              viewModel.messageTextController.clear();
-            },
-            onPickImageClick: () async {
-              var image = await ImagePickerHelper.openImagePicker(
-                  context: context, isCropping: false);
+                        }),
+                  ),
+                  const Gap(10),
+                  viewModel.blockedUser
+                      ? SafeArea(
+                          child: Text(
+                            viewModel.blockText,
+                            style:
+                                context.titleLarge?.copyWith(color: Colors.red),
+                          ),
+                        )
+                      : MessageBarWithSuggestions(
+                          suggestions: const ['Hello', 'How are you?'],
+                          onSuggestionSelected: (value) {
+                            viewModel.messageTextController.text = value;
+                          },
+                          onOfferMade: (value) {
+                            viewModel.sendMessage(
+                                message: '$value',
+                                type: 2,
+                                receiverId: chat?.senderId ==
+                                        DbHelper.getUserModel()?.id
+                                    ? chat?.receiverDetail?.id
+                                    : chat?.senderDetail?.id,
+                                productId: chat?.productId);
+                          },
+                          textController: viewModel.messageTextController,
+                          onSubmitted: (value) {
+                            viewModel.sendMessage(
+                                message: value,
+                                type: 1,
+                                receiverId: chat?.senderId ==
+                                        DbHelper.getUserModel()?.id
+                                    ? chat?.receiverDetail?.id
+                                    : chat?.senderDetail?.id,
+                                productId: chat?.productId);
+                            viewModel.messageTextController.clear();
+                          },
+                          onPickImageClick: () async {
+                            var image = await ImagePickerHelper.openImagePicker(
+                                context: context, isCropping: false);
 
-              if (image != null) {
-                DialogHelper.showLoading();
-                String value = await BaseClient.uploadImage(imagePath: image);
-                viewModel.sendMessage(
-                    message: value,
-                    type: 3,
-                    receiverId: chat?.senderId == DbHelper.getUserModel()?.id
-                        ? chat?.receiverDetail?.id
-                        : chat?.senderDetail?.id,
-                    productId: chat?.productId);
-              }
-            },
-            onRecordingClick: () {},
-          ),
-        ],
-      ),
+                            if (image != null) {
+                              DialogHelper.showLoading();
+                              String value = await BaseClient.uploadImage(
+                                  imagePath: image);
+                              viewModel.sendMessage(
+                                  message: value,
+                                  type: 3,
+                                  receiverId: chat?.senderId ==
+                                          DbHelper.getUserModel()?.id
+                                      ? chat?.receiverDetail?.id
+                                      : chat?.senderDetail?.id,
+                                  productId: chat?.productId);
+                            }
+                          },
+                          onRecordingClick: () {},
+                        ),
+                ],
+              );
+            }
+            if (snapshot.hasError) {
+              return const AppErrorWidget();
+            }
+            return const AppLoadingWidget();
+          }),
     );
   }
 }

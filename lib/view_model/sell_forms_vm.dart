@@ -91,6 +91,7 @@ class SellFormsVM extends BaseViewModel {
     '7.0"'
   ];
   final List<String> materialOptions = ['Wood', 'Metal', 'Fabric'];
+  final List<CategoryModel> sizeOptions = [];
 
   List<String> salaryPeriodList = ['Hourly', 'Monthly', 'Weekly', 'Yearly'];
 
@@ -141,6 +142,7 @@ class SellFormsVM extends BaseViewModel {
 
   CategoryModel? _selectedBrand;
   CategoryModel? _selectedModel;
+  CategoryModel? _selectedSize;
 
   CategoryModel? get selectedBrand => _selectedBrand;
 
@@ -153,6 +155,13 @@ class SellFormsVM extends BaseViewModel {
 
   set selectedModel(CategoryModel? value) {
     _selectedModel = value;
+    notifyListeners();
+  }
+
+  CategoryModel? get selectedSize => _selectedSize;
+
+  set selectedSize(CategoryModel? value) {
+    _selectedSize = value;
     notifyListeners();
   }
 
@@ -176,6 +185,7 @@ class SellFormsVM extends BaseViewModel {
   TextEditingController storageTextController = TextEditingController();
   TextEditingController screenSizeTextController = TextEditingController();
   TextEditingController materialTextController = TextEditingController();
+  TextEditingController sizeTextController = TextEditingController();
 
   void resetTextFields() {
     currentIndex = 1;
@@ -187,6 +197,9 @@ class SellFormsVM extends BaseViewModel {
     jobSalaryFromController.clear();
     jobSalaryToController.clear();
     brandTextController.clear();
+    modelTextController.clear();
+    mileageTextController.clear();
+    educationTypeTextController.clear();
     yearTextController.clear();
     fuelTextController.clear();
     kmDrivenTextController.clear();
@@ -195,6 +208,11 @@ class SellFormsVM extends BaseViewModel {
     descriptionTextController.clear();
     priceTextController.clear();
     addressTextController.clear();
+    ramTextController.clear();
+    storageTextController.clear();
+    screenSizeTextController.clear();
+    materialTextController.clear();
+    sizeTextController.clear();
   }
 
   Future<List<CategoryModel>> getBrands({CategoryModel? data}) async {
@@ -233,7 +251,6 @@ class SellFormsVM extends BaseViewModel {
     var count = 0;
 
     for (var element in imagesList) {
-      print("count => ${++count}");
       images.add(await BaseClient.uploadImage(imagePath: element));
     }
     Map<String, dynamic> body = {
@@ -265,7 +282,12 @@ class SellFormsVM extends BaseViewModel {
       "sallery_period":
           getSallaryPeriod(type: jobSalaryTextController.text.trim()),
       "sallery_from": jobSalaryFromController.text.trim(),
-      "sallery_to": jobSalaryToController.text.trim()
+      "sallery_to": jobSalaryToController.text.trim(),
+      "material": materialTextController.text.trim(),
+      "ram": ramTextController.text.trim(),
+      "storage": storageTextController.text.trim(),
+      "screen_size": screenSizeTextController.text.trim(),
+      "size_id": selectedSize?.id,
     };
 
     ApiRequest apiRequest = ApiRequest(
@@ -330,5 +352,15 @@ class SellFormsVM extends BaseViewModel {
     DialogHelper.hideLoading();
     allModels = model.body ?? [];
     print("response ~--> $response");
+  }
+
+  Future<List<CategoryModel>> getSizeOptions(String id) async {
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.getFashionSizeUrl(id: id),
+        requestType: RequestType.get);
+    var response = await BaseClient.handleRequest(apiRequest);
+    ListResponse<CategoryModel> model =
+        ListResponse.fromJson(response, (json) => CategoryModel.fromJson(json));
+    return model.body ?? [];
   }
 }

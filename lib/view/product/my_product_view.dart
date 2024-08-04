@@ -6,10 +6,12 @@ import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/skeletons/my_product_skeleton.dart';
 import 'package:list_and_life/view_model/product_v_m.dart';
 import 'package:list_and_life/widgets/app_error_widget.dart';
+import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../base/helpers/dialog_helper.dart';
 import '../../res/assets_res.dart';
+import '../../view_model/my_ads_v_m.dart';
 import '../../widgets/app_elevated_button.dart';
 import '../../widgets/card_swipe_widget.dart';
 
@@ -379,7 +381,11 @@ class MyProductView extends BaseView<ProductVM> {
                         shape: const RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(15.0))),
-                        onSelected: (int item) {},
+                        onSelected: (int value) {
+                          var vm = context.read<MyAdsVM>();
+
+                          vm.handelPopupMenuItemClick(index: value, item: data);
+                        },
                         itemBuilder: (BuildContext context) =>
                             <PopupMenuEntry<int>>[
                           const PopupMenuItem(

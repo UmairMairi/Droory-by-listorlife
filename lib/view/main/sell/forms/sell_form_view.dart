@@ -49,7 +49,8 @@ class SellFormView extends BaseView<SellFormsVM> {
 
   Widget _buildBody(BuildContext context, List<CategoryModel>? brands) {
     print("Alok Category ~--> ${category?.toJson()}");
-    print("Alok subCategory ~--> ${subSubCategory?.toJson()}");
+    print("Alok Sub Category ~--> ${subCategory?.toJson()}");
+    print("Alok Sub Sub Category ~--> ${subSubCategory?.toJson()}");
     print(
         "Alok brands ~--> ${brands?.map((element) => element.toJson()).toList()}");
     switch (type) {

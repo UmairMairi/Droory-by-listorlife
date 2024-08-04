@@ -48,6 +48,8 @@ class ApiConstants {
       "$_baseUrl/notification/list?limit=$limit&page=$page";
   static String productViewUrl() => "$_baseUrl/product/view";
   static String buyPackageUrl() => "$_baseUrl/buy/package";
+  static String getFashionSizeUrl({required String id}) =>
+      "$_baseUrl/get/fashion/sizes?sub_sub_category_id=$id";
   static String productAddFeatureBoostUrl() =>
       "$_baseUrl/product/add/feature/boost";
   static String markAsSoldUrl() => "$_baseUrl/mark/as/sold";

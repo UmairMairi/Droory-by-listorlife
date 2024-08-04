@@ -168,7 +168,8 @@ class _FilterItemViewState extends State<FilterItemView> {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Column(
             children: [
-              Wrap(
+              /*  Wrap(
+                crossAxisAlignment: WrapCrossAlignment.start,
                 spacing: 8.0,
                 runSpacing: 4.0,
                 children: [
@@ -185,7 +186,7 @@ class _FilterItemViewState extends State<FilterItemView> {
                   // Add other filter chips similarly
                 ],
               ),
-              Gap(20),
+              Gap(20),*/
               if (isLoading) ...{
                 ProductListSkeleton(isLoading: isLoading)
               } else ...{

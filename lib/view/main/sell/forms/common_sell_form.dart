@@ -315,6 +315,96 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                 ),
               ),
             },
+            if (category?.name?.toLowerCase() == "fashion") ...{
+              FutureBuilder<List<CategoryModel>>(
+                future: viewModel.getSizeOptions("${subSubCategory?.id}"),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    List<CategoryModel> sizeOptions = snapshot.data ?? [];
+
+                    if (sizeOptions.isNotEmpty) {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          RichText(
+                              text: const TextSpan(children: [
+                            TextSpan(
+                              text: "Size",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 14,
+                                  color: Colors.black),
+                            ),
+                          ])),
+                          Container(
+                            margin: const EdgeInsets.only(top: 10, bottom: 20),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  offset: const Offset(0, 1),
+                                  blurRadius: 6,
+                                ),
+                              ],
+                            ),
+                            child: TextFormField(
+                              controller: viewModel.sizeTextController,
+                              readOnly: true,
+                              cursorColor: Colors.black,
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.only(
+                                  left: 20,
+                                ),
+                                hintText: "Select",
+                                hintStyle: const TextStyle(
+                                    color: Color(0xffACACAC), fontSize: 14),
+                                border: const OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                ),
+                                suffixIcon: PopupMenuButton<CategoryModel>(
+                                  clipBehavior: Clip.hardEdge,
+                                  icon: const Icon(
+                                    Icons.arrow_drop_down,
+                                    color: Colors.black,
+                                  ),
+                                  onSelected: (value) {
+                                    viewModel.selectedModel = value;
+                                    viewModel.sizeTextController.text =
+                                        value.name ?? '';
+                                  },
+                                  itemBuilder: (BuildContext context) {
+                                    return sizeOptions.map((option) {
+                                      return PopupMenuItem(
+                                        value: option,
+                                        child: Text(option.name ?? ''),
+                                      );
+                                    }).toList();
+                                  },
+                                ),
+                              ),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.deny(
+                                    RegExp(viewModel.regexToRemoveEmoji)),
+                              ],
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.done,
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                  }
+                  if (snapshot.hasError) {
+                    return SizedBox.shrink();
+                  }
+
+                  return SizedBox.shrink();
+                },
+              ),
+            },
             Text(
               "Item Condition",
               style: context.textTheme.titleMedium,

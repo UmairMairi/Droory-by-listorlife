@@ -32,6 +32,10 @@ class ChatVM extends BaseViewModel {
   List<InboxModel> filteredInboxList = [];
 
   bool blockedUser = false;
+  int blockByMe = 0;
+  int blockByOther = 0;
+  int blockByBoth = 0;
+  String blockText = "";
 
   ///Message types 1 => Text 2=> offer
 
@@ -75,9 +79,29 @@ class ChatVM extends BaseViewModel {
         chatItems.add(element);
       }
       messageStreamController.add(chatItems);
+
       blockedUser =
           model.checkBlock?.blockByMe != 0 || model.checkBlock?.blockMe != 0;
-      log("message => $blockedUser");
+
+      if (model.checkBlock?.blockByMe != 0 && model.checkBlock?.blockMe != 0) {
+        blockedUser = true;
+        blockByMe = 0;
+        blockByOther = 0;
+        blockByBoth = 1;
+        blockText = "Both you and this user have blocked each other";
+      } else if (model.checkBlock?.blockByMe != 0) {
+        blockedUser = true;
+        blockByMe = 1;
+        blockByOther = 0;
+        blockText = "This user is blocked by you";
+      } else if (model.checkBlock?.blockMe != 0) {
+        blockedUser = true;
+        blockByMe = 0;
+        blockByOther = 1;
+        blockText = "This user has blocked you";
+      } else {
+        blockedUser = false;
+      }
     });
     _socketIO.on(SocketConstants.sendMessage, (data) {
       getInboxList();
@@ -92,6 +116,7 @@ class ChatVM extends BaseViewModel {
       log("data => $data");
       DialogHelper.showToast(
           message: "Your report/Block submitted successfully");
+      notifyListeners();
       //DialogHelper.showToast(message: "You blocked this user successfully");
     });
     _socketIO.on(SocketConstants.readChatStatus, (data) {});
@@ -130,6 +155,7 @@ class ChatVM extends BaseViewModel {
   }
 
   void getMessageList({num? receiverId, required num? productId}) {
+    blockedUser = false;
     Map<String, dynamic> map = {
       "sender_id": DbHelper.getUserModel()?.id,
       "receiver_id": receiverId,

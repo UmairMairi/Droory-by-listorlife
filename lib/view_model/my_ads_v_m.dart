@@ -1,7 +1,9 @@
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
+import 'package:list_and_life/view/main/sell/forms/edit_product_form.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../base/helpers/date_helper.dart';
@@ -123,15 +125,21 @@ class MyAdsVM extends BaseViewModel {
   }
 
   void handelPopupMenuItemClick(
-      {required int index, required ProductDetailModel item}) {
+      {required int index, required ProductDetailModel? item}) {
     switch (index) {
       case 1:
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => EditProductForm(
+                      product: item,
+                    )));
         return;
       case 2:
-        deactivateProductApi(id: item.id);
+        deactivateProductApi(id: item?.id);
         return;
       case 3:
-        removeProductApi(id: item.id);
+        removeProductApi(id: item?.id);
       default:
         return;
     }
