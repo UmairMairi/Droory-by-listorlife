@@ -128,12 +128,12 @@ class MyAdsVM extends BaseViewModel {
       {required int index, required ProductDetailModel? item}) {
     switch (index) {
       case 1:
-        Navigator.push(
+        /*  Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => EditProductForm(
                       product: item,
-                    )));
+                    )));*/
         return;
       case 2:
         deactivateProductApi(id: item?.id);
