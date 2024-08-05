@@ -49,7 +49,7 @@ class ProductVM extends BaseViewModel {
         body: body);
 
     var response = await BaseClient.handleRequest(apiRequest);
-    print(response);
+
     MapResponse model = MapResponse.fromJson(response, (json) => null);
     DialogHelper.showToast(message: model.message);
     DialogHelper.hideLoading();
@@ -60,6 +60,10 @@ class ProductVM extends BaseViewModel {
       {required BuildContext context, ProductDetailModel? data}) {
     List<Widget> specs = [];
 
+    if (data?.modelId != null && data!.modelId != 0) {
+      specs.add(_buildSpecRow(context, 'Model', '${data.model?.name}'));
+    }
+
     if (data?.ram != null) {
       specs.add(_buildSpecRow(context, 'RAM', '${data?.ram} GB'));
     }
@@ -67,15 +71,18 @@ class ProductVM extends BaseViewModel {
       specs.add(_buildSpecRow(context, 'Storage', '${data?.storage} GB'));
     }
     if (data?.screenSize != null && data!.screenSize!.isNotEmpty) {
-      specs.add(_buildSpecRow(context, 'Screen Size', "${data?.screenSize}"));
+      specs.add(_buildSpecRow(context, 'Screen Size', "${data.screenSize}"));
+    }
+    if (data?.material != null && data!.material!.isNotEmpty) {
+      specs.add(_buildSpecRow(context, 'Material', "${data.material}"));
     }
     if (data?.itemCondition != null && data!.itemCondition!.isNotEmpty) {
-      specs.add(_buildSpecRow(context, 'Condition', "${data?.itemCondition}"));
+      specs.add(_buildSpecRow(context, 'Condition', "${data.itemCondition}"));
     }
     if (data?.category?.name?.toLowerCase().contains('cars') ?? false) {
       if (data?.transmission != null && data!.transmission!.isNotEmpty) {
         specs.add(
-            _buildSpecRow(context, 'Transmission', "${data?.transmission}"));
+            _buildSpecRow(context, 'Transmission', "${data.transmission}"));
       }
       if (data?.kmDriven != null) {
         specs.add(_buildSpecRow(context, 'KM Driven', '${data?.kmDriven} km'));

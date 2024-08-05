@@ -101,7 +101,7 @@ class _MyFavouritesViewState extends State<MyFavouritesView> {
                   : _productsList.isNotEmpty
                       ? ListView.separated(
                           shrinkWrap: true,
-                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
                           itemCount: _productsList.length,
                           itemBuilder: (context, index) {
                             return Padding(
