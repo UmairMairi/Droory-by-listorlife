@@ -8,11 +8,11 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../base/helpers/date_helper.dart';
 import '../../../base/helpers/db_helper.dart';
-import '../../../models/common/map_response.dart';
-import '../../../models/home_list_model.dart';
 import '../../../base/network/api_constants.dart';
 import '../../../base/network/api_request.dart';
 import '../../../base/network/base_client.dart';
+import '../../../models/common/map_response.dart';
+import '../../../models/home_list_model.dart';
 import '../../../routes/app_routes.dart';
 import '../../../widgets/app_product_item_widget.dart';
 import '../../../widgets/unauthorised_view.dart';
@@ -101,6 +101,7 @@ class _MyFavouritesViewState extends State<MyFavouritesView> {
                   : _productsList.isNotEmpty
                       ? ListView.separated(
                           shrinkWrap: true,
+                          padding: EdgeInsets.symmetric(horizontal: 20),
                           itemCount: _productsList.length,
                           itemBuilder: (context, index) {
                             return Padding(

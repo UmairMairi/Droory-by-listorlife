@@ -1,3 +1,4 @@
+import 'package:list_and_life/models/category_model.dart';
 import 'package:list_and_life/models/user_model.dart';
 
 class ProductDetailModel {
@@ -7,6 +8,7 @@ class ProductDetailModel {
   num? subCategoryId;
   num? subSubCategoryId;
   num? brandId;
+  num? modelId;
   String? name;
   String? image;
   String? itemCondition;
@@ -19,6 +21,12 @@ class ProductDetailModel {
   String? description;
   num? year;
   String? fuel;
+  String? material;
+  num? ram;
+  num? storage;
+  num? sizeId;
+  String? milleage;
+  String? screenSize;
   String? transmission;
   num? kmDriven;
   num? numberOfOwner;
@@ -34,15 +42,15 @@ class ProductDetailModel {
   String? createdAt;
   String? updatedAt;
   num? countViews;
-  num? favouritesCount;
-  num? distance;
   num? isFavourite;
-  dynamic isFeaturedOrBoosted;
+  num? favouritesCount;
   List<ProductMedias>? productMedias;
-  Category? category;
-  Category? subCategory;
-  Category? subSubCategory;
-  Category? brand;
+  CategoryModel? category;
+  CategoryModel? subCategory;
+  CategoryModel? subSubCategory;
+  CategoryModel? model;
+  CategoryModel? fashionSize;
+  CategoryModel? brand;
   UserModel? user;
 
   ProductDetailModel(
@@ -52,8 +60,9 @@ class ProductDetailModel {
       this.subCategoryId,
       this.subSubCategoryId,
       this.brandId,
-      this.image,
+      this.modelId,
       this.name,
+      this.image,
       this.itemCondition,
       this.positionType,
       this.salleryPeriod,
@@ -64,6 +73,12 @@ class ProductDetailModel {
       this.description,
       this.year,
       this.fuel,
+      this.material,
+      this.ram,
+      this.storage,
+      this.sizeId,
+      this.milleage,
+      this.screenSize,
       this.transmission,
       this.kmDriven,
       this.numberOfOwner,
@@ -78,15 +93,15 @@ class ProductDetailModel {
       this.deletedAt,
       this.createdAt,
       this.updatedAt,
-      this.countViews,
-      this.favouritesCount,
-      this.distance,
       this.isFavourite,
-      this.isFeaturedOrBoosted,
+      this.favouritesCount,
+      this.countViews,
       this.productMedias,
       this.category,
       this.subCategory,
       this.subSubCategory,
+      this.model,
+      this.fashionSize,
       this.brand,
       this.user});
 
@@ -97,6 +112,7 @@ class ProductDetailModel {
     subCategoryId = json['sub_category_id'];
     subSubCategoryId = json['sub_sub_category_id'];
     brandId = json['brand_id'];
+    modelId = json['model_id'];
     name = json['name'];
     image = json['image'];
     itemCondition = json['item_condition'];
@@ -109,6 +125,12 @@ class ProductDetailModel {
     description = json['description'];
     year = json['year'];
     fuel = json['fuel'];
+    material = json['material'];
+    ram = json['ram'];
+    storage = json['storage'];
+    sizeId = json['size_id'];
+    milleage = json['milleage'];
+    screenSize = json['screen_size'];
     transmission = json['transmission'];
     kmDriven = json['km_driven'];
     numberOfOwner = json['number_of_owner'];
@@ -123,87 +145,100 @@ class ProductDetailModel {
     deletedAt = json['deleted_at'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    countViews = json['count_views'];
-    favouritesCount = json['favourites_count'];
-    distance = json['distance'];
     isFavourite = json['is_favourite'];
-    isFeaturedOrBoosted = json['is_featured_or_boosted'];
+    favouritesCount = json['favourites_count'];
+    countViews = json['count_views'];
     if (json['product_medias'] != null) {
       productMedias = <ProductMedias>[];
-      if (json['product_medias'].isNotEmpty) {
-        json['product_medias'].forEach((v) {
-          productMedias!.add(ProductMedias.fromJson(v));
-        });
-      }
+      json['product_medias'].forEach((v) {
+        productMedias!.add(new ProductMedias.fromJson(v));
+      });
     }
-    category =
-        json['category'] != null ? Category.fromJson(json['category']) : null;
+    category = json['category'] != null
+        ? new CategoryModel.fromJson(json['category'])
+        : null;
     subCategory = json['sub_category'] != null
-        ? Category.fromJson(json['sub_category'])
+        ? new CategoryModel.fromJson(json['sub_category'])
         : null;
     subSubCategory = json['sub_sub_category'] != null
-        ? Category.fromJson(json['sub_sub_category'])
+        ? new CategoryModel.fromJson(json['sub_sub_category'])
         : null;
-    brand = json['brand'] != null ? Category.fromJson(json['brand']) : null;
-    user = json['user'] != null ? UserModel.fromJson(json['user']) : null;
+    model = json['model'] != null
+        ? new CategoryModel.fromJson(json['model'])
+        : null;
+    fashionSize = json['fashion_size'];
+    brand = json['brand'] != null
+        ? new CategoryModel.fromJson(json['brand'])
+        : null;
+    user = json['user'] != null ? new UserModel.fromJson(json['user']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['user_id'] = userId;
-    data['category_id'] = categoryId;
-    data['sub_category_id'] = subCategoryId;
-    data['sub_sub_category_id'] = subSubCategoryId;
-    data['brand_id'] = brandId;
-    data['favourites_count'] = favouritesCount;
-    data['name'] = name;
-    data['item_condition'] = itemCondition;
-    data['position_type'] = positionType;
-    data['sallery_period'] = salleryPeriod;
-    data['education_type'] = educationType;
-    data['sallery_from'] = salleryFrom;
-    data['sallery_to'] = salleryTo;
-    data['price'] = price;
-    data['description'] = description;
-    data['year'] = year;
-    data['fuel'] = fuel;
-    data['transmission'] = transmission;
-    data['km_driven'] = kmDriven;
-    data['number_of_owner'] = numberOfOwner;
-    data['country'] = country;
-    data['state'] = state;
-    data['city'] = city;
-    data['nearby'] = nearby;
-    data['latitude'] = latitude;
-    data['longitude'] = longitude;
-    data['status'] = status;
-    data['image'] = image;
-    data['sell_status'] = sellStatus;
-    data['deleted_at'] = deletedAt;
-    data['created_at'] = createdAt;
-    data['updated_at'] = updatedAt;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['user_id'] = this.userId;
+    data['category_id'] = this.categoryId;
+    data['sub_category_id'] = this.subCategoryId;
+    data['sub_sub_category_id'] = this.subSubCategoryId;
+    data['brand_id'] = this.brandId;
+    data['model_id'] = this.modelId;
+    data['name'] = this.name;
+    data['image'] = this.image;
+    data['item_condition'] = this.itemCondition;
+    data['position_type'] = this.positionType;
+    data['sallery_period'] = this.salleryPeriod;
+    data['education_type'] = this.educationType;
+    data['sallery_from'] = this.salleryFrom;
+    data['sallery_to'] = this.salleryTo;
+    data['price'] = this.price;
+    data['description'] = this.description;
+    data['year'] = this.year;
+    data['fuel'] = this.fuel;
+    data['material'] = this.material;
+    data['ram'] = this.ram;
+    data['storage'] = this.storage;
+    data['size_id'] = this.sizeId;
+    data['milleage'] = this.milleage;
+    data['screen_size'] = this.screenSize;
+    data['transmission'] = this.transmission;
+    data['km_driven'] = this.kmDriven;
+    data['number_of_owner'] = this.numberOfOwner;
+    data['country'] = this.country;
+    data['state'] = this.state;
+    data['city'] = this.city;
+    data['nearby'] = this.nearby;
+    data['latitude'] = this.latitude;
+    data['longitude'] = this.longitude;
+    data['status'] = this.status;
+    data['sell_status'] = this.sellStatus;
+    data['deleted_at'] = this.deletedAt;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    data['is_favourite'] = this.isFavourite;
+    data['favourites_count'] = this.favouritesCount;
     data['count_views'] = countViews;
-    data['distance'] = distance;
-    data['is_favourite'] = isFavourite;
-    data['is_featured_or_boosted'] = isFeaturedOrBoosted;
-    if (productMedias != null) {
-      data['product_medias'] = productMedias?.map((v) => v.toJson()).toList();
+    if (this.productMedias != null) {
+      data['product_medias'] =
+          this.productMedias!.map((v) => v.toJson()).toList();
     }
-    if (category != null) {
-      data['category'] = category!.toJson();
+    if (this.category != null) {
+      data['category'] = this.category!.toJson();
     }
-    if (subCategory != null) {
-      data['sub_category'] = subCategory!.toJson();
+    if (this.subCategory != null) {
+      data['sub_category'] = this.subCategory!.toJson();
     }
-    if (subSubCategory != null) {
-      data['sub_sub_category'] = subSubCategory!.toJson();
+    if (this.subSubCategory != null) {
+      data['sub_sub_category'] = this.subSubCategory!.toJson();
     }
-    if (brand != null) {
-      data['brand'] = brand!.toJson();
+    if (this.model != null) {
+      data['model'] = this.model!.toJson();
     }
-    if (user != null) {
-      data['user'] = user!.toJson();
+    data['fashion_size'] = this.fashionSize;
+    if (this.brand != null) {
+      data['brand'] = this.brand!.toJson();
+    }
+    if (this.user != null) {
+      data['user'] = this.user!.toJson();
     }
     return data;
   }
@@ -221,22 +256,6 @@ class ProductMedias {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['media'] = media;
-    return data;
-  }
-}
-
-class Category {
-  String? name;
-
-  Category({this.name});
-
-  Category.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['name'] = name;
     return data;
   }
 }

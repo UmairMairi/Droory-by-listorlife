@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/base/network/api_request.dart';
 import 'package:list_and_life/base/network/base_client.dart';
@@ -13,6 +12,7 @@ import '../../../models/common/map_response.dart';
 import '../../../models/filter_model.dart';
 import '../../../models/home_list_model.dart';
 import '../../../models/prodect_detail_model.dart';
+import '../../../res/assets_res.dart';
 import '../../../routes/app_routes.dart';
 import '../../../skeletons/product_list_skeleton.dart';
 import '../../../widgets/app_empty_widget.dart';
@@ -143,17 +143,41 @@ class _FilterItemViewState extends State<FilterItemView> {
       appBar: AppBar(
         title: PreferredSize(
           preferredSize: const Size.fromHeight(60.0),
-          child: TextField(
-            autofocus: false,
-            focusNode: searchFocusNode,
-            onChanged: onSearchChanged,
-            decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: Color(0xffd5d5d5))),
-                hintStyle: Theme.of(context).textTheme.labelSmall,
-                hintText: 'Find Cars, Mobile Phones and more...'),
+          child: Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  autofocus: false,
+                  focusNode: searchFocusNode,
+                  onChanged: onSearchChanged,
+                  decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.search),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide:
+                              const BorderSide(color: Color(0xffd5d5d5))),
+                      hintStyle: Theme.of(context).textTheme.labelSmall,
+                      hintText: 'Find Cars, Mobile Phones and more...'),
+                ),
+              ),
+              const Gap(10),
+              InkWell(
+                onTap: () {
+                  context.push(Routes.filter);
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                      color: const Color(0xffd5d5d5),
+                      borderRadius: BorderRadius.circular(8)),
+                  child: Image.asset(
+                    AssetsRes.IC_FILTER_ICON,
+                    height: 25,
+                  ),
+                ),
+              ),
+              const Gap(10),
+            ],
           ),
         ),
       ),

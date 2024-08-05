@@ -1,9 +1,7 @@
 import 'dart:developer';
 
-import 'package:flutter/material.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
-import 'package:list_and_life/view/main/sell/forms/edit_product_form.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../base/helpers/date_helper.dart';

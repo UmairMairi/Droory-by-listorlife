@@ -1,14 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:keyboard_actions/keyboard_actions.dart';
-
-import '../../../../base/helpers/dialog_helper.dart';
-import '../../../../models/category_model.dart';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:list_and_life/base/base.dart';
 
+import '../../../../base/helpers/dialog_helper.dart';
 import '../../../../base/helpers/image_picker_helper.dart';
+import '../../../../models/category_model.dart';
 import '../../../../view_model/sell_forms_vm.dart';
 import '../../../../widgets/app_map_widget.dart';
 
@@ -610,11 +609,11 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                 }
                 DialogHelper.showLoading();
                 viewModel.addProduct(
-                  category: category,
-                  subCategory: subCategory,
-                  subSubCategory: subSubCategory,
-                  brand: viewModel.selectedBrand,
-                );
+                    category: category,
+                    subCategory: subCategory,
+                    subSubCategory: subSubCategory,
+                    brand: viewModel.selectedBrand,
+                    models: viewModel.selectedModel);
               },
               child: Container(
                 width: double.infinity,

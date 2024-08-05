@@ -3,9 +3,9 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/models/inbox_model.dart';
 import 'package:list_and_life/models/prodect_detail_model.dart';
-import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/view_model/product_v_m.dart';
@@ -81,7 +81,9 @@ class ProductDetailView extends BaseView<ProductVM> {
                                     ?.copyWith(color: Colors.red),
                               ),
                               const Gap(10),
-                              if (data?.category?.name?.contains('Cars') ??
+                              if (data?.category?.name
+                                      ?.toLowerCase()
+                                      .contains('cars') ??
                                   false) ...{
                                 Container(
                                   width: double.infinity,
@@ -249,6 +251,11 @@ class ProductDetailView extends BaseView<ProductVM> {
                                 ),
                                 const Gap(10),
                               },
+                              Text(
+                                'Specification',
+                                style: context.textTheme.titleMedium,
+                              ),
+                              const Gap(10),
                               Text(
                                 'Description',
                                 style: context.textTheme.titleMedium,

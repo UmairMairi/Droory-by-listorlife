@@ -311,6 +311,13 @@ class MyProductView extends BaseView<ProductVM> {
                                       backgroundColor: Colors.grey,
                                     ),
                               const Gap(10),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: viewModel.getSpecifications(
+                                    context: context, data: data),
+                              ),
+                              const Gap(10),
                               Text(
                                 'Description',
                                 style: context.textTheme.titleMedium,

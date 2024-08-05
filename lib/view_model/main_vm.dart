@@ -6,7 +6,6 @@ import 'package:persistent_bottom_nav_bar_plus/persistent_bottom_nav_bar_plus.da
 import 'package:provider/provider.dart';
 
 import '../base/helpers/db_helper.dart';
-import '../base/helpers/location_helper.dart';
 import '../routes/app_routes.dart';
 import '../base/sockets/socket_helper.dart';
 import '../view/main/chat/inbox_view.dart';
@@ -20,7 +19,7 @@ class MainVM extends BaseViewModel {
       PersistentTabController(initialIndex: 0);
 
   List<Widget> screensView = [
-    HomeView(),
+    const HomeView(),
     const InboxView(),
     const SellCategoryView(),
     const AdsView(),

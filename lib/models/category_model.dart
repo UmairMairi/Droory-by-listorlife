@@ -6,12 +6,13 @@ class CategoryModel {
   int? status;
   String? createdAt;
   String? updatedAt;
-
+  String? media;
   CategoryModel(
       {this.id,
       this.subCategoryId,
       this.name,
       this.image,
+      this.media,
       this.status,
       this.createdAt,
       this.updatedAt});
@@ -21,6 +22,7 @@ class CategoryModel {
     subCategoryId = json['sub_category_id'];
     name = json['name'];
     image = json['image'];
+    media = json['media'];
     status = json['status'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
@@ -32,6 +34,7 @@ class CategoryModel {
     data['sub_category_id'] = subCategoryId;
     data['name'] = name;
     data['image'] = image;
+    data['media'] = media;
     data['status'] = status;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;

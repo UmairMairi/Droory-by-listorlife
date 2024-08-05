@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:list_and_life/base/html_text.dart';
+import 'package:list_and_life/skeletons/cms_skeleton.dart';
 import 'package:list_and_life/widgets/app_error_widget.dart';
-import 'package:list_and_life/widgets/app_loading_widget.dart';
 
-import '../../../models/cms_model.dart';
-import '../../../models/common/map_response.dart';
 import '../../../base/network/api_constants.dart';
 import '../../../base/network/api_request.dart';
 import '../../../base/network/base_client.dart';
+import '../../../models/cms_model.dart';
+import '../../../models/common/map_response.dart';
 
 class TermsOfUseView extends StatefulWidget {
   final int? type;
@@ -46,7 +46,9 @@ class _TermsOfUseViewState extends State<TermsOfUseView> {
               if (snapshot.hasError) {
                 return const AppErrorWidget();
               }
-              return const AppLoadingWidget();
+              return CmsSkeleton(
+                  isLoading:
+                      snapshot.connectionState == ConnectionState.waiting);
             }));
   }
 }

@@ -113,7 +113,7 @@ class HomeVM extends BaseViewModel {
         });
       } else {
         await LocationHelper.showPopupIsEgypt(
-            AppPages.rootNavigatorKey.currentState!.context!, () {
+            AppPages.rootNavigatorKey.currentState!.context, () {
           latitude = LocationHelper.cairoLatitude;
           longitude = LocationHelper.cairoLongitude;
           currentLocation = "Cairo, Egypt";

@@ -4,9 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/base/network/api_constants.dart';
-import 'package:list_and_life/base/network/api_request.dart';
-import 'package:list_and_life/base/network/base_client.dart';
 import '../../../../base/helpers/dialog_helper.dart';
 import '../../../../base/helpers/image_picker_helper.dart';
 import '../../../../models/category_model.dart';
@@ -513,12 +510,12 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                 readOnly: true,
                 cursorColor: Colors.black,
                 decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(
+                  contentPadding: const EdgeInsets.only(
                     left: 20,
                   ),
                   hintText: "Enter",
-                  hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                  border: OutlineInputBorder(
+                  hintStyle: const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  border: const OutlineInputBorder(
                     borderSide: BorderSide.none,
                   ),
                   suffixIcon: PopupMenuButton<String>(

@@ -474,11 +474,11 @@ class PetsSellForm extends BaseView<SellFormsVM> {
                 }
                 DialogHelper.showLoading();
                 viewModel.addProduct(
-                  category: category,
-                  subCategory: subCategory,
-                  subSubCategory: subSubCategory,
-                  brand: viewModel.selectedBrand,
-                );
+                    category: category,
+                    subCategory: subCategory,
+                    subSubCategory: subSubCategory,
+                    brand: viewModel.selectedBrand,
+                    models: viewModel.selectedModel);
               },
               child: Container(
                 width: double.infinity,

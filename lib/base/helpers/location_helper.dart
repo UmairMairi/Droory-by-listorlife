@@ -93,7 +93,7 @@ class LocationHelper {
               "Please note that our app is currently only available for users in Egypt. To get started, please allow us to set your current location to Egypt."),
           actions: [
             TextButton(
-              child: Text("OK"),
+              child: const Text("OK"),
               onPressed: () {
                 Navigator.pop(context);
                 onTap(); // Call the callback function
@@ -117,7 +117,7 @@ class LocationHelper {
               "Please note that our app is currently only available for users in Egypt. Please select Egypt location for add product."),
           actions: [
             TextButton(
-              child: Text("OK"),
+              child: const Text("OK"),
               onPressed: () {
                 Navigator.pop(context);
                 onTap(); // Call the callback function

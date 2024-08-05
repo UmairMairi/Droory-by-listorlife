@@ -3,13 +3,13 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/base/helpers/location_helper.dart';
+import 'package:list_and_life/base/network/api_constants.dart';
+import 'package:list_and_life/base/network/api_request.dart';
+import 'package:list_and_life/base/network/base_client.dart';
 import 'package:list_and_life/models/category_model.dart';
 import 'package:list_and_life/models/common/list_response.dart';
 import 'package:list_and_life/models/common/map_response.dart';
 import 'package:list_and_life/models/prodect_detail_model.dart';
-import 'package:list_and_life/base/network/api_constants.dart';
-import 'package:list_and_life/base/network/api_request.dart';
-import 'package:list_and_life/base/network/base_client.dart';
 
 import '../base/base_view_model.dart';
 import '../view/main/sell/forms/post_added_final_view.dart';
@@ -246,13 +246,12 @@ class SellFormsVM extends BaseViewModel {
 
     final List<String> images = [];
     String mainImage = await BaseClient.uploadImage(imagePath: mainImagePath);
-    images.add(mainImage);
-
-    var count = 0;
-
     for (var element in imagesList) {
       images.add(await BaseClient.uploadImage(imagePath: element));
     }
+    images.insert(0, mainImage);
+    print(models?.id);
+    print(models?.toJson());
     Map<String, dynamic> body = {
       "category_id": category?.id,
       "sub_category_id": subCategory?.id,
