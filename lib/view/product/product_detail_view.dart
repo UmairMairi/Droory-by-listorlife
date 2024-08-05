@@ -251,10 +251,13 @@ class ProductDetailView extends BaseView<ProductVM> {
                                 ),
                                 const Gap(10),
                               },
-                              Text(
-                                'Specification',
-                                style: context.textTheme.titleMedium,
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: viewModel.getSpecifications(
+                                    context: context, data: data),
                               ),
+                              const Gap(10),
                               const Gap(10),
                               Text(
                                 'Description',
