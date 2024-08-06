@@ -9,16 +9,19 @@ import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/res/font_res.dart';
+import 'package:list_and_life/view_model/chat_vm.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/app_empty_widget.dart';
 import 'package:list_and_life/widgets/app_outline_button.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:list_and_life/widgets/like_button.dart';
 import 'package:list_and_life/widgets/image_view.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../base/helpers/date_helper.dart';
+import '../../base/helpers/dialog_helper.dart';
 import '../../models/common/map_response.dart';
 import '../../models/home_list_model.dart';
 import '../../models/user_model.dart';
@@ -115,189 +118,70 @@ class _SeeProfileViewState extends State<SeeProfileView> {
           PopupMenuButton<int>(
               offset: const Offset(0, 40),
               icon: const Icon(Icons.more_vert),
-              onSelected: (int value) {
+              onSelected: (int value) async {
+                var viewModel = context.read<ChatVM>();
                 switch (value) {
                   case 1:
                     Share.share(
                         "Check this user profile in List or Lift app url: www.google.com");
                     return;
                   case 2:
-                    showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        builder: (context) {
-                          int selectedReport = 0;
-                          return SingleChildScrollView(
-                            padding: EdgeInsets.only(
-                              top: 10.0,
-                              right: 10,
-                              left: 10,
-                              bottom: context.viewInsets.bottom,
-                            ),
-                            child:
-                                StatefulBuilder(builder: (context, setState) {
-                              return Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  const SizedBox(
-                                    height: 25,
-                                  ),
-                                  Text(
-                                    'Report User',
-                                    style: context.textTheme.titleMedium,
-                                  ),
-                                  RadioListTile<int?>(
-                                      value: 1,
-                                      title: const Text(
-                                          'Inappropriate profile picture'),
-                                      groupValue: selectedReport,
-                                      onChanged: (int? value) {
-                                        selectedReport = value ?? 0;
-                                        setState(() {});
-                                      }),
-                                  RadioListTile<int?>(
-                                      value: 2,
-                                      title: const Text(
-                                          'This user is threatening me'),
-                                      groupValue: selectedReport,
-                                      onChanged: (int? value) {
-                                        selectedReport = value ?? 0;
-                                        setState(() {});
-                                      }),
-                                  RadioListTile<int?>(
-                                      value: 3,
-                                      title: const Text(
-                                          'This User is insulting me'),
-                                      groupValue: selectedReport,
-                                      onChanged: (int? value) {
-                                        selectedReport = value ?? 0;
-                                        setState(() {});
-                                      }),
-                                  RadioListTile<int?>(
-                                      value: 4,
-                                      title: const Text('Spam'),
-                                      groupValue: selectedReport,
-                                      onChanged: (int? value) {
-                                        selectedReport = value ?? 0;
-                                        setState(() {});
-                                      }),
-                                  RadioListTile<int?>(
-                                      value: 5,
-                                      title: const Text('Fraud'),
-                                      groupValue: selectedReport,
-                                      onChanged: (int? value) {
-                                        selectedReport = value ?? 0;
-                                        setState(() {});
-                                      }),
-                                  RadioListTile<int?>(
-                                      value: 6,
-                                      title: const Text('Other'),
-                                      groupValue: selectedReport,
-                                      onChanged: (int? value) {
-                                        selectedReport = value ?? 0;
-                                        setState(() {});
-                                      }),
-                                  const Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 20.0, vertical: 10),
-                                    child: AppTextField(
-                                      animation: false,
-                                      lines: 3,
-                                      title: 'Comment',
-                                      hint: 'Write here...',
-                                    ),
-                                  ),
-                                  const Gap(10),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20.0, vertical: 0),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                            child: AppOutlineButton(
-                                          onTap: () {
-                                            context.pop();
-                                          },
-                                          title: 'Cancel',
-                                        )),
-                                        const Gap(20),
-                                        Expanded(
-                                            child: AppElevatedButton(
-                                          onTap: () {
-                                            context.pop();
-                                          },
-                                          title: 'Send',
-                                        ))
-                                      ],
-                                    ),
-                                  ),
-                                  const Gap(20),
-                                ],
-                              );
-                            }),
-                          );
-                        });
 
+                    ///Report User
+                    showDialog(
+                        context: context,
+                        builder: (context) => AppAlertDialogWithWidget(
+                              description: '',
+                              onTap: () {
+                                if (viewModel.reportTextController.text
+                                    .trim()
+                                    .isEmpty) {
+                                  DialogHelper.showToast(
+                                      message:
+                                          "Please enter reason of report.");
+                                  return;
+                                }
+                                context.pop();
+                                viewModel.reportBlockUser(
+                                    report: true,
+                                    reason: viewModel.reportTextController.text,
+                                    userId: "${widget.user?.id}");
+                              },
+                              icon: AssetsRes.IC_REPORT_USER,
+                              showCancelButton: true,
+                              isTextDescription: false,
+                              content: AppTextField(
+                                controller: viewModel.reportTextController,
+                                lines: 4,
+                                hint: 'Reason...',
+                              ),
+                              cancelButtonText: 'No',
+                              title: 'Report User',
+                              buttonText: 'Yes',
+                            ));
                     return;
                   case 3:
-                    showModalBottomSheet(
+                    await showDialog(
                         context: context,
-                        isScrollControlled: true,
-                        builder: (context) {
-                          int selectedReport = 0;
-                          return Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child:
-                                StatefulBuilder(builder: (context, setState) {
-                              return Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  const SizedBox(
-                                    height: 25,
-                                  ),
-                                  Text(
-                                    'Block User',
-                                    style: context.textTheme.titleMedium,
-                                  ),
-                                  const Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 20.0, vertical: 10),
-                                    child: Text(
-                                        'Block John Marker? Blocked contacts will no longer be able to send you messages.'),
-                                  ),
-                                  const Gap(10),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20.0, vertical: 0),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                            child: AppOutlineButton(
-                                          height: 40,
-                                          onTap: () {
-                                            context.pop();
-                                          },
-                                          title: 'Cancel',
-                                        )),
-                                        const Gap(20),
-                                        Expanded(
-                                            child: AppElevatedButton(
-                                          onTap: () {
-                                            context.pop();
-                                            context.pop();
-                                          },
-                                          height: 40,
-                                          title: 'Block',
-                                        ))
-                                      ],
-                                    ),
-                                  ),
-                                  const Gap(20),
-                                ],
-                              );
-                            }),
-                          );
-                        });
+                        builder: (context) => AppAlertDialogWithWidget(
+                              description: viewModel.blockedUser
+                                  ? 'Are you sure want to unblock this user?'
+                                  : 'Are you sure want to block this user?',
+                              onTap: () {
+                                context.pop();
+                                viewModel.reportBlockUser(
+                                    userId: "${widget.user?.id}");
+                              },
+                              icon: AssetsRes.IC_BLOCK_USER,
+                              showCancelButton: true,
+                              cancelButtonText: 'No',
+                              title: viewModel.blockedUser
+                                  ? 'Unblock User'
+                                  : 'Block User',
+                              buttonText: 'Yes',
+                            ));
+                    if (context.mounted) context.pop();
+                    if (context.mounted) context.pop();
                     return;
                 }
               },
