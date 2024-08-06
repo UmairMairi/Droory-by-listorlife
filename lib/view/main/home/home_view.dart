@@ -137,10 +137,16 @@ class HomeView extends BaseView<HomeVM> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => FilterItemView(
-                                                model: FilterModel(
-                                                    categoryId:
-                                                        "${categoryItems[index].id}"))));
+                                            builder: (context) =>
+                                                FilterItemView(
+                                                    model: FilterModel(
+                                                  categoryId:
+                                                      "${categoryItems[index].id}",
+                                                  latitude:
+                                                      "${viewModel.latitude}",
+                                                  longitude:
+                                                      "${viewModel.longitude}",
+                                                ))));
                                   },
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,

@@ -3,14 +3,15 @@ import 'package:geolocator/geolocator.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/debouncer_helper.dart';
 import 'package:list_and_life/base/helpers/location_helper.dart';
-import 'package:list_and_life/models/common/map_response.dart';
-import 'package:list_and_life/models/home_list_model.dart';
-import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/base/network/api_request.dart';
 import 'package:list_and_life/base/network/base_client.dart';
+import 'package:list_and_life/models/common/map_response.dart';
+import 'package:list_and_life/models/home_list_model.dart';
+import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/routes/app_pages.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
 import '../models/category_model.dart';
 import '../models/common/list_response.dart';
 
@@ -22,6 +23,7 @@ class HomeVM extends BaseViewModel {
   String searchQuery = '';
 
   List<ProductDetailModel> productsList = [];
+  List<CategoryModel> categories = [];
 
   FocusNode searchFocusNode = FocusNode();
   String _sortBy = 'Sort By';
@@ -129,6 +131,8 @@ class HomeVM extends BaseViewModel {
   TextEditingController endPriceTextController =
       TextEditingController(text: '20000');
   TextEditingController locationTextController = TextEditingController();
+  TextEditingController categoryTextController = TextEditingController();
+  TextEditingController subCategoryTextController = TextEditingController();
 
   @override
   void onInit() {
@@ -208,6 +212,8 @@ class HomeVM extends BaseViewModel {
 
     ListResponse<CategoryModel> model = ListResponse<CategoryModel>.fromJson(
         response, (json) => CategoryModel.fromJson(json));
+
+    categories = model.body ?? [];
 
     return model.body ?? [];
   }

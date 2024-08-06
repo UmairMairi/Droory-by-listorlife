@@ -40,6 +40,7 @@ class _FilterItemViewState extends State<FilterItemView> {
 
   @override
   void initState() {
+    print(widget.model.toMap());
     filterModel = widget.model;
     refreshController = RefreshController(initialRefresh: true);
     getProductsApi();
@@ -163,7 +164,7 @@ class _FilterItemViewState extends State<FilterItemView> {
               const Gap(10),
               InkWell(
                 onTap: () {
-                  context.push(Routes.filter);
+                  context.push(Routes.filter, extra: filterModel);
                 },
                 child: Container(
                   padding: const EdgeInsets.all(15),

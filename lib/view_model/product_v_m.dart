@@ -107,7 +107,10 @@ class ProductVM extends BaseViewModel {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(specName),
+        Text(
+          specName,
+          style: TextStyle(fontWeight: FontWeight.w600),
+        ),
         Text(specValue),
       ],
     );

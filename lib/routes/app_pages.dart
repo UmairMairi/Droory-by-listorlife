@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/helpers/db_helper.dart';
 import 'package:list_and_life/models/category_model.dart';
+import 'package:list_and_life/models/filter_model.dart';
 import 'package:list_and_life/models/inbox_model.dart';
 import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/models/user_model.dart';
@@ -9,7 +10,6 @@ import 'package:list_and_life/view/main/chat/message_view.dart';
 import 'package:list_and_life/view/main/filtter/Filter_view.dart';
 import 'package:list_and_life/view/main/permission/location_permission_view.dart';
 import 'package:list_and_life/view/main/sell/sub_category/sell_sub_category_view.dart';
-
 import 'package:list_and_life/view/main/settings/TermsOfUseView.dart';
 import 'package:list_and_life/view/product/my_product_view.dart';
 import 'package:list_and_life/view/product/product_detail_view.dart';
@@ -142,7 +142,11 @@ class AppPages {
       GoRoute(
         path: Routes.filter,
         pageBuilder: (context, state) {
-          return getPage(child: const FilterView(), state: state);
+          return getPage(
+              child: FilterView(
+                filters: state.extra as FilterModel?,
+              ),
+              state: state);
         },
       ),
       GoRoute(
