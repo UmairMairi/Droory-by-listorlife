@@ -12,6 +12,7 @@ import 'package:list_and_life/view_model/home_vm.dart';
 import 'package:list_and_life/widgets/app_empty_widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../../../base/helpers/app_string.dart';
 import '../../../base/network/api_constants.dart';
 import '../../../models/category_model.dart';
 import '../../../skeletons/home_category_skelton.dart';
@@ -31,7 +32,7 @@ class HomeView extends BaseView<HomeVM> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Location',
+              AppString.location,
               style: context.textTheme.titleMedium,
             ),
             const Gap(01),
@@ -78,7 +79,7 @@ class HomeView extends BaseView<HomeVM> {
                           borderSide:
                               const BorderSide(color: Color(0xffd5d5d5))),
                       hintStyle: context.textTheme.labelSmall,
-                      hintText: 'Find Cars, Mobile Phones and more...'),
+                      hintText: AppString.findCarsMobilePhonesAndMore),
                 )),
                 const Gap(10),
                 InkWell(
@@ -195,7 +196,7 @@ class HomeView extends BaseView<HomeVM> {
                   }),
               const Gap(20),
               Text(
-                'Fresh recommendations',
+                AppString.freshRecommendations,
                 style: context.textTheme.titleMedium,
               ),
               const Gap(20),

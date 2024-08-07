@@ -5,6 +5,7 @@ import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/widgets/app_error_widget.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 
+import '../../../../base/helpers/app_string.dart';
 import '../../../../base/helpers/db_helper.dart';
 import '../../../../base/network/api_constants.dart';
 import '../../../../skeletons/sell_loading_widget.dart';
@@ -18,7 +19,7 @@ class SellCategoryView extends BaseView<SellVM> {
   Widget build(BuildContext context, SellVM viewModel) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sell'),
+        title: const Text(AppString.sell),
         centerTitle: true,
       ),
       body: DbHelper.getIsGuest()
@@ -28,7 +29,7 @@ class SellCategoryView extends BaseView<SellVM> {
               child: Column(
                 children: [
                   Text(
-                    "What are you offering?",
+                    AppString.whatAreYouOffering,
                     style: context.textTheme.titleLarge,
                   ),
                   const SizedBox(

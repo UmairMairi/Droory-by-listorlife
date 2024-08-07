@@ -12,6 +12,7 @@ import 'package:list_and_life/widgets/app_empty_widget.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../../../base/helpers/app_string.dart';
 import '../../../base/helpers/db_helper.dart';
 import '../../../view_model/my_ads_v_m.dart';
 import '../../../widgets/unauthorised_view.dart';
@@ -97,15 +98,15 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                               <PopupMenuEntry<int>>[
                                             const PopupMenuItem(
                                               value: 1,
-                                              child: Text('Edit'),
+                                              child: Text(AppString.edit),
                                             ),
                                             const PopupMenuItem(
                                               value: 2,
-                                              child: Text('Deactivate'),
+                                              child: Text(AppString.deactivate),
                                             ),
                                             const PopupMenuItem(
                                               value: 3,
-                                              child: Text('Remove'),
+                                              child: Text(AppString.remove),
                                             ),
                                           ],
                                         )
@@ -161,7 +162,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                         color: Colors.grey),
                                               ),
                                               Text(
-                                                "EGP ${viewModel.productsList[index].price}",
+                                                "${AppString.egp} ${viewModel.productsList[index].price}",
                                                 style: context
                                                     .textTheme.titleMedium
                                                     ?.copyWith(
@@ -195,7 +196,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                           ),
                                                           const Gap(02),
                                                           Text(
-                                                            'Likes: ${viewModel.productsList[index].favouritesCount}',
+                                                            '${AppString.likes} ${viewModel.productsList[index].favouritesCount}',
                                                             style: context
                                                                 .textTheme
                                                                 .labelMedium
@@ -216,7 +217,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                           ),
                                                           const Gap(02),
                                                           Text(
-                                                            'Views: ${viewModel.productsList[index].countViews}',
+                                                            '${AppString.views} ${viewModel.productsList[index].countViews}',
                                                             style: context
                                                                 .textTheme
                                                                 .labelMedium
@@ -256,16 +257,16 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                       children: [
                                         viewModel.productsList[index]
                                                     .sellStatus !=
-                                                'sold'
+                                                AppString.sold
                                             ? AppElevatedButton(
                                                 onTap: () {},
-                                                title: 'Active',
+                                                title: AppString.active,
                                                 height: 30,
                                                 width: 100,
                                                 backgroundColor: Colors.red,
                                               )
                                             : const AppElevatedButton(
-                                                title: 'Sold',
+                                                title: AppString.sold,
                                                 height: 30,
                                                 width: 100,
                                                 backgroundColor: Colors.grey,
@@ -273,9 +274,9 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                         const Gap(10),
                                         viewModel.productsList[index]
                                                     .sellStatus !=
-                                                'sold'
+                                                AppString.sold
                                             ? Text(
-                                                'This ad is currently live',
+                                                AppString.thisAdisCurrentlyLive,
                                                 style: context
                                                     .textTheme.labelMedium
                                                     ?.copyWith(
@@ -283,7 +284,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                             .MONTSERRAT_MEDIUM),
                                               )
                                             : Text(
-                                                'This ad is sold',
+                                                AppString.thisAdisSold,
                                                 style: context
                                                     .textTheme.labelMedium
                                                     ?.copyWith(
@@ -292,7 +293,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                               ),
                                         if (viewModel.productsList[index]
                                                 .sellStatus !=
-                                            'sold') ...{
+                                            AppString.sold) ...{
                                           const Gap(10),
                                           Row(
                                             children: [
@@ -318,7 +319,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                               08),
                                                     ),
                                                     child: Text(
-                                                      'Mark as Sold',
+                                                      AppString.markAsSold,
                                                       style: context
                                                           .textTheme.labelLarge
                                                           ?.copyWith(
@@ -350,7 +351,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                               08),
                                                     ),
                                                     child: Text(
-                                                      'Sell Faster Now',
+                                                      AppString.sellFasterNow,
                                                       style: context
                                                           .textTheme.labelLarge
                                                           ?.copyWith(

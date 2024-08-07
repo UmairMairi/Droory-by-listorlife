@@ -5,6 +5,7 @@ import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/view_model/auth_vm.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 
+import '../../base/helpers/app_string.dart';
 import '../../res/assets_res.dart';
 import '../../widgets/app_otp_widget.dart';
 import '../../widgets/app_resend_otp_button.dart';
@@ -16,7 +17,7 @@ class VerificationView extends BaseView<AuthVM> {
   Widget build(BuildContext context, AuthVM viewModel) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Verification'),
+        title: const Text(AppString.verification),
         centerTitle: true,
       ),
       body: Padding(
@@ -32,14 +33,14 @@ class VerificationView extends BaseView<AuthVM> {
             ),
             const Flexible(child: Gap(80)),
             Text(
-              'Enter the 4-digit code sent to you at\n${viewModel.countryCode}-${viewModel.phoneTextController.text.trim()}',
+              '${AppString.enterThe4DigitCode} \n${viewModel.countryCode}-${viewModel.phoneTextController.text.trim()}',
               style: context.textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
             const Gap(20),
             AppOtpWidget(
               size: 4,
-              title: "OTP",
+              title: AppString.otp,
               onOtpEntered: (otp) {
                 // Handle OTP entered
                 viewModel.otpTextController.text = otp;
@@ -62,7 +63,7 @@ class VerificationView extends BaseView<AuthVM> {
 
                 /*context.go(Routes.completeProfile);*/
               },
-              title: 'Verify',
+              title: AppString.verifyButton,
             ),
             const Gap(30),
             AppResendOtpButton(

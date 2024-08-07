@@ -9,6 +9,7 @@ import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
 
+import '../../base/helpers/app_string.dart';
 import '../../base/helpers/dialog_helper.dart';
 import '../../view_model/auth_vm.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
@@ -20,7 +21,7 @@ class LoginView extends BaseView<AuthVM> {
   Widget build(BuildContext context, AuthVM viewModel) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Log In"),
+        title: const Text(AppString.login),
         centerTitle: true,
         actions: [
           TextButton(
@@ -29,7 +30,7 @@ class LoginView extends BaseView<AuthVM> {
                 context.go(Routes.main);
               },
               child: Text(
-                'Guest Login',
+                AppString.guestLogin,
                 style: context.textTheme.titleSmall?.copyWith(
                     color: Colors.red,
                     decoration: TextDecoration.underline,
@@ -62,8 +63,8 @@ class LoginView extends BaseView<AuthVM> {
                 ),
                 const Flexible(child: Gap(100)),
                 AppTextField(
-                  title: "Phone Number",
-                  hint: 'Phone Number',
+                  title: AppString.phoneNumber,
+                  hint: AppString.phoneNumber,
                   focusNode: viewModel.nodeText,
                   inputFormatters:
                       AppTextInputFormatters.withPhoneNumberFormatter(),
@@ -99,11 +100,11 @@ class LoginView extends BaseView<AuthVM> {
                     DialogHelper.showLoading();
                     viewModel.loginApi();
                   },
-                  title: 'Continue',
+                  title: AppString.continueButton,
                 ),
                 const Flexible(child: Gap(100)),
                 Text(
-                  'Login with Social',
+                  AppString.loginWithSocial,
                   style: context.textTheme.titleSmall,
                 ),
                 const Gap(30),

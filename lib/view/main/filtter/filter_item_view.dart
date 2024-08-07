@@ -6,6 +6,7 @@ import 'package:list_and_life/base/network/api_request.dart';
 import 'package:list_and_life/base/network/base_client.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../../../base/helpers/app_string.dart';
 import '../../../base/helpers/db_helper.dart';
 import '../../../base/helpers/debouncer_helper.dart';
 import '../../../models/common/map_response.dart';
@@ -158,7 +159,7 @@ class _FilterItemViewState extends State<FilterItemView> {
                           borderSide:
                               const BorderSide(color: Color(0xffd5d5d5))),
                       hintStyle: Theme.of(context).textTheme.labelSmall,
-                      hintText: 'Find Cars, Mobile Phones and more...'),
+                      hintText: AppString.findCarsMobilePhonesAndMore),
                 ),
               ),
               const Gap(10),

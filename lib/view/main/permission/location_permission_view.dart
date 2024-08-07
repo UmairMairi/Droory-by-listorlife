@@ -8,6 +8,7 @@ import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../../base/helpers/app_string.dart';
 import '../../../routes/app_routes.dart';
 
 class LocationPermissionView extends StatelessWidget {
@@ -17,7 +18,7 @@ class LocationPermissionView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Location'),
+        title: const Text(AppString.location),
         centerTitle: true,
       ),
       body: Padding(
@@ -32,13 +33,13 @@ class LocationPermissionView extends StatelessWidget {
             ),
             const Gap(20),
             Text(
-              'Hello! Welcome',
+              AppString.helloWelcome,
               style: context.textTheme.titleLarge,
               textAlign: TextAlign.center,
             ),
             const Gap(20),
             Text(
-              "Lorem ipsum dolor sit amet, consecteturadipiscing elit.",
+              AppString.loremText,
               style: context.textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
@@ -51,7 +52,7 @@ class LocationPermissionView extends StatelessWidget {
                   }
                   if (context.mounted) context.go(Routes.main);
                 },
-                title: 'Use Current Location',
+                title: AppString.useCurrentLocation,
                 icon: const Icon(
                   CupertinoIcons.location_fill,
                   color: Colors.white,
@@ -62,7 +63,7 @@ class LocationPermissionView extends StatelessWidget {
                   context.go(Routes.main);
                 },
                 child: const Text(
-                  'Skip',
+                  AppString.skip,
                   style: TextStyle(
                       decoration: TextDecoration.underline,
                       fontFamily: FontRes.MONTSERRAT_SEMIBOLD),

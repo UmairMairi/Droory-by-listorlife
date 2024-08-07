@@ -15,6 +15,7 @@ import 'package:list_and_life/widgets/app_loading_widget.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 
+import '../../../base/helpers/app_string.dart';
 import '../../../chat_bubble/message_bar_with_suggetion.dart';
 import '../../../base/network/api_constants.dart';
 
@@ -76,16 +77,16 @@ class MessageView extends BaseView<ChatVM> {
                       context: context,
                       builder: (context) => AppAlertDialogWithLottie(
                             description:
-                                'Are you sure want to delete this chat?',
+                                AppString.areYouSureWantToDeleteThisChat,
                             onTap: () {
                               context.pop();
                               context.pop();
                             },
                             lottieIcon: AssetsRes.DELETE_LOTTIE,
                             showCancelButton: true,
-                            cancelButtonText: 'No',
-                            title: 'Delete Chat',
-                            buttonText: 'Yes',
+                            cancelButtonText: AppString.no,
+                            title: AppString.deleteChat,
+                            buttonText: AppString.yes,
                           ));
                   return;
                 case 2:
@@ -100,7 +101,7 @@ class MessageView extends BaseView<ChatVM> {
                                   .trim()
                                   .isEmpty) {
                                 DialogHelper.showToast(
-                                    message: "Please enter reason of report.");
+                                    message: AppString.pleaseEnterReasonOfReport);
                                 return;
                               }
                               context.pop();
@@ -116,11 +117,11 @@ class MessageView extends BaseView<ChatVM> {
                             content: AppTextField(
                               controller: viewModel.reportTextController,
                               lines: 4,
-                              hint: 'Reason...',
+                              hint: AppString.reason,
                             ),
-                            cancelButtonText: 'No',
-                            title: 'Report User',
-                            buttonText: 'Yes',
+                            cancelButtonText: AppString.no,
+                            title: AppString.reportUser,
+                            buttonText: AppString.yes,
                           ));
                   return;
                 case 3:
@@ -128,8 +129,8 @@ class MessageView extends BaseView<ChatVM> {
                       context: context,
                       builder: (context) => AppAlertDialogWithWidget(
                             description: viewModel.blockedUser
-                                ? 'Are you sure want to unblock this user?'
-                                : 'Are you sure want to block this user?',
+                                ? AppString.areYouSureWantToUnblockThisUser
+                                : AppString.areYouSureWantToBlockThisUser,
                             onTap: () {
                               context.pop();
                               viewModel.reportBlockUser(
@@ -138,11 +139,11 @@ class MessageView extends BaseView<ChatVM> {
                             },
                             icon: AssetsRes.IC_BLOCK_USER,
                             showCancelButton: true,
-                            cancelButtonText: 'No',
+                            cancelButtonText: AppString.no,
                             title: viewModel.blockedUser
-                                ? 'Unblock User'
-                                : 'Block User',
-                            buttonText: 'Yes',
+                                ? AppString.unblockUser
+                                : AppString.blockUser,
+                            buttonText: AppString.yes,
                           ));
                   return;
               }
@@ -150,16 +151,16 @@ class MessageView extends BaseView<ChatVM> {
             itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
               const PopupMenuItem(
                 value: 1,
-                child: Text('Delete Chat'),
+                child: Text(AppString.deleteChat),
               ),
               const PopupMenuItem(
                 value: 2,
-                child: Text('Report User'),
+                child: Text(AppString.reportUser),
               ),
               PopupMenuItem(
                 value: 3,
                 child:
-                    Text(viewModel.blockedUser ? 'Unblock User' : 'Block User'),
+                    Text(viewModel.blockedUser ? AppString.unblockUser : AppString.blockUser),
               ),
             ],
           ),
@@ -198,7 +199,7 @@ class MessageView extends BaseView<ChatVM> {
                           ),
                         )
                       : MessageBarWithSuggestions(
-                          suggestions: const ['Hello', 'How are you?'],
+                          suggestions: const [AppString.hello, AppString.howAreYou],
                           onSuggestionSelected: (value) {
                             viewModel.messageTextController.text = value;
                           },

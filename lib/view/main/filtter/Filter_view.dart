@@ -12,6 +12,7 @@ import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
+import '../../../base/helpers/app_string.dart';
 import '../../../base/network/api_constants.dart';
 import '../../../base/network/api_request.dart';
 import '../../../base/network/base_client.dart';
@@ -48,7 +49,7 @@ class _FilterViewState extends State<FilterView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Filter"),
+        title: const Text(AppString.filter),
         centerTitle: true,
       ),
       body: Consumer<HomeVM>(builder: (context, viewModel, child) {
@@ -73,7 +74,7 @@ class _FilterViewState extends State<FilterView> {
                             : Colors.white,
                       ),
                       child: Text(
-                        "New",
+                        AppString.newText,
                         style: context.textTheme.titleMedium?.copyWith(
                           color: viewModel.selectedIndex == 0
                               ? Colors.white
@@ -100,7 +101,7 @@ class _FilterViewState extends State<FilterView> {
                             : Colors.black,
                       ),
                       child: Text(
-                        "Used",
+                        AppString.used,
                         style: context.textTheme.titleMedium?.copyWith(
                             color: viewModel.selectedIndex == 1
                                 ? Colors.white
@@ -118,7 +119,7 @@ class _FilterViewState extends State<FilterView> {
                 height: 15,
               ),
               Text(
-                "Price",
+                AppString.price,
                 style: context.textTheme.titleSmall,
               ),
               const Gap(10),
@@ -152,7 +153,7 @@ class _FilterViewState extends State<FilterView> {
                           },
                           decoration: InputDecoration(
                               fillColor: const Color(0xffFCFCFD),
-                              hintText: "EGP 0",
+                              hintText: AppString.egp0,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide:
@@ -169,7 +170,7 @@ class _FilterViewState extends State<FilterView> {
                     width: 5,
                   ),
                   Text(
-                    "to",
+                    AppString.to,
                     style: context.textTheme.titleSmall,
                   ),
                   const SizedBox(
@@ -254,8 +255,8 @@ class _FilterViewState extends State<FilterView> {
                 height: 10,
               ),
               AppTextField(
-                title: 'Category',
-                hint: 'Select Category',
+                title: AppString.category,
+                hint: AppString.selectCategory,
                 controller: viewModel.categoryTextController,
                 readOnly: true,
                 suffix: PopupMenuButton(
@@ -281,8 +282,8 @@ class _FilterViewState extends State<FilterView> {
               ),
               if (subCategories.isNotEmpty) ...{
                 AppTextField(
-                  title: 'Sub Category',
-                  hint: 'Select Sub Category',
+                  title: AppString.subCategory,
+                  hint: AppString.selectSubCategory,
                   controller: viewModel.subCategoryTextController,
                   readOnly: true,
                   suffix: PopupMenuButton(
@@ -308,8 +309,8 @@ class _FilterViewState extends State<FilterView> {
                 ),
               },
               AppTextField(
-                title: 'Location',
-                hint: 'Select Location',
+                title: AppString.location,
+                hint: AppString.selectLocation,
                 controller: viewModel.locationTextController,
                 readOnly: true,
                 suffix: const Icon(Icons.location_on),
@@ -346,22 +347,22 @@ class _FilterViewState extends State<FilterView> {
                     children: [
                       ListTile(
                         title: const Text(
-                          "Price: High to Low",
+                          AppString.priceHighToLow,
                           selectionColor: Colors.white,
                         ),
-                        onTap: () => viewModel.sortBy = "Price: High to Low",
+                        onTap: () => viewModel.sortBy = AppString.priceHighToLow,
                       ),
                       ListTile(
-                        title: const Text("Price: Low to High"),
-                        onTap: () => viewModel.sortBy = "Price: Low to High",
+                        title: const Text(AppString.priceLowToHigh),
+                        onTap: () => viewModel.sortBy = AppString.priceLowToHigh,
                       ),
                       ListTile(
-                        title: const Text("Date Published"),
-                        onTap: () => viewModel.sortBy = "Price: Low to High",
+                        title: const Text(AppString.datePublished),
+                        onTap: () => viewModel.sortBy = AppString.priceLowToHigh,
                       ),
                       ListTile(
-                        title: const Text("Distance"),
-                        onTap: () => viewModel.sortBy = "Distance",
+                        title: const Text(AppString.distance),
+                        onTap: () => viewModel.sortBy = AppString.distance,
                       )
                     ],
                   ),
@@ -385,22 +386,22 @@ class _FilterViewState extends State<FilterView> {
                     children: [
                       ListTile(
                         title: const Text(
-                          "Today",
+                          AppString.today,
                           selectionColor: Colors.white,
                         ),
-                        onTap: () => viewModel.publishedBy = "Today",
+                        onTap: () => viewModel.publishedBy = AppString.today,
                       ),
                       ListTile(
-                        title: const Text("Yesterday"),
-                        onTap: () => viewModel.publishedBy = "Yesterday",
+                        title: const Text(AppString.yesterday),
+                        onTap: () => viewModel.publishedBy = AppString.yesterday,
                       ),
                       ListTile(
-                        title: const Text("Last Week"),
-                        onTap: () => viewModel.publishedBy = "Last Week",
+                        title: const Text(AppString.lastWeek),
+                        onTap: () => viewModel.publishedBy = AppString.lastWeek,
                       ),
                       ListTile(
-                        title: const Text("Last Month"),
-                        onTap: () => viewModel.publishedBy = "Last Month",
+                        title: const Text(AppString.lastMonth),
+                        onTap: () => viewModel.publishedBy = AppString.lastMonth,
                       )
                     ],
                   ),
@@ -418,7 +419,7 @@ class _FilterViewState extends State<FilterView> {
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 onTap: () {
                   filter.itemCondition =
-                      viewModel.selectedIndex == 0 ? 'new' : 'used';
+                      viewModel.selectedIndex == 0 ? AppString.newText : AppString.used;
                   filter.minPrice =
                       viewModel.startPriceTextController.text.trim();
                   filter.maxPrice =
@@ -431,11 +432,11 @@ class _FilterViewState extends State<FilterView> {
                       MaterialPageRoute(
                           builder: (context) => FilterItemView(model: filter)));
                 },
-                title: 'Apply',
+                title: AppString.apply,
               ),
               const Gap(10),
               AppOutlineButton(
-                title: 'Reset',
+                title: AppString.reset,
                 width: context.width,
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 onTap: () {},
