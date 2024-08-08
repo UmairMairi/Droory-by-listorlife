@@ -209,7 +209,7 @@ class ProductListSkeleton extends StatelessWidget {
                                     ),
                                     const Gap(05),
                                     Text(
-                                      'Whatsapp',
+                                      'Alok',
                                       style: context.textTheme.labelLarge
                                           ?.copyWith(
                                         color: Colors.white,
