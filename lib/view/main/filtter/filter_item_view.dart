@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -186,7 +187,9 @@ class _FilterItemViewState extends State<FilterItemView> {
         controller: refreshController,
         enablePullDown: true,
         enablePullUp: true,
-        header: const WaterDropHeader(),
+        header: const WaterDropHeader(
+          complete: CupertinoActivityIndicator(),
+        ),
         onRefresh: onRefresh,
         onLoading: onLoading,
         child: SingleChildScrollView(

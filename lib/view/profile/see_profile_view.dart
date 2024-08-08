@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -263,7 +264,9 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                 controller: _refreshController,
                 enablePullDown: true,
                 enablePullUp: true,
-                header: const WaterDropHeader(),
+                header: const WaterDropHeader(
+                  complete: CupertinoActivityIndicator(),
+                ),
                 onRefresh: _onRefresh,
                 onLoading: _onLoading,
                 child: _isLoading

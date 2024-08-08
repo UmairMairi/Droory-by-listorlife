@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -106,7 +107,9 @@ class HomeView extends BaseView<HomeVM> {
         controller: viewModel.refreshController,
         enablePullDown: true,
         enablePullUp: true,
-        header: const WaterDropHeader(),
+        header: const WaterDropHeader(
+          complete: CupertinoActivityIndicator(),
+        ),
         onRefresh: viewModel.onRefresh,
         onLoading: viewModel.onLoading,
         child: SingleChildScrollView(

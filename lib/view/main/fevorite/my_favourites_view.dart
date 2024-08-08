@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -93,7 +94,9 @@ class _MyFavouritesViewState extends State<MyFavouritesView> {
               controller: refreshController,
               enablePullDown: true,
               enablePullUp: true,
-              header: const WaterDropHeader(),
+              header: const WaterDropHeader(
+                complete: CupertinoActivityIndicator(),
+              ),
               onRefresh: _onRefresh,
               onLoading: _onLoading,
               child: _isLoading
