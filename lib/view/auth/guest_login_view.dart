@@ -9,6 +9,7 @@ import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 
+import '../../base/helpers/app_string.dart';
 import '../../view_model/auth_vm.dart';
 import '../../widgets/app_text_field.dart';
 
@@ -39,14 +40,14 @@ class GuestLoginView extends BaseView<AuthVM> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Log In now',
+              AppString.loginNow,
               style: context.titleLarge,
             ),
             const SizedBox(
               height: 10,
             ),
             const Text(
-              "Please log in to continue",
+              AppString.pleaseLoginToContinue,
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
             ),
             const SizedBox(
@@ -56,8 +57,8 @@ class GuestLoginView extends BaseView<AuthVM> {
               height: 10,
             ),
             AppTextField(
-              title: "Phone Number",
-              hint: 'Phone Number',
+              title:AppString.phoneNumber,
+              hint: AppString.phoneNumber,
               inputFormatters:
                   AppTextInputFormatters.withPhoneNumberFormatter(),
               controller: viewModel.phoneTextController,
@@ -84,7 +85,7 @@ class GuestLoginView extends BaseView<AuthVM> {
               height: 25,
             ),
             AppElevatedButton(
-              title: 'Click to verify Phone number',
+              title: AppString.clickToVerifyPhoneNumber,
               onTap: () {
                 if (viewModel.phoneTextController.text.trim().isEmpty) {
                   DialogHelper.showToast(
@@ -109,7 +110,7 @@ class GuestLoginView extends BaseView<AuthVM> {
                     )),
               ),
               Text(
-                "Or Connect With",
+                AppString.orConnectWith,
                 style: context.titleSmall,
               ),
               Expanded(
@@ -154,7 +155,7 @@ class GuestLoginView extends BaseView<AuthVM> {
                         height: 25,
                       ),*/
                       Text(
-                        "Log In With Google",
+                        AppString.loginWithGoogle,
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 14,
@@ -197,7 +198,7 @@ class GuestLoginView extends BaseView<AuthVM> {
                         width: 30,
                       ),
                       Text(
-                        "Log In With IOS",
+                        AppString.loginWithIos,
                         style: TextStyle(
                             color: Colors.white,
                             fontFamily: FontRes.MONTSERRAT_BOLD,

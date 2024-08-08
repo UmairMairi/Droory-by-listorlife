@@ -3,6 +3,7 @@ import 'package:list_and_life/base/html_text.dart';
 import 'package:list_and_life/skeletons/cms_skeleton.dart';
 import 'package:list_and_life/widgets/app_error_widget.dart';
 
+import '../../../base/helpers/app_string.dart';
 import '../../../base/network/api_constants.dart';
 import '../../../base/network/api_request.dart';
 import '../../../base/network/base_client.dart';
@@ -32,7 +33,7 @@ class _TermsOfUseViewState extends State<TermsOfUseView> {
     return Scaffold(
         appBar: AppBar(
           title:
-              Text(widget.type == 1 ? 'Privacy Policy' : 'Terms & Conditions'),
+              Text(widget.type == 1 ? AppString.privacyPolicy : AppString.termsConditions),
         ),
         body: FutureBuilder<CmsModel?>(
             future: getCms(type: widget.type),

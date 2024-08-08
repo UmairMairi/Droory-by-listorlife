@@ -6,6 +6,7 @@ import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
 
+import '../../../../base/helpers/app_string.dart';
 import '../../../../base/helpers/image_picker_helper.dart';
 import '../../../../models/category_model.dart';
 import '../../../../view_model/sell_forms_vm.dart';
@@ -42,8 +43,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Upload Images",
+            Text(AppString.uploadImages,
               style: context.textTheme.titleMedium,
             ),
             GestureDetector(
@@ -82,7 +82,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                             height: 2,
                           ),
                           Text(
-                            "Upload",
+                           AppString.upload,
                             style: TextStyle(
                               fontSize: 14,
                             ),
@@ -168,7 +168,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                             height: 2,
                           ),
                           Text(
-                            "Add",
+                            AppString.add,
                             style: TextStyle(
                               fontSize: 14,
                             ),
@@ -184,7 +184,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
               RichText(
                   text: const TextSpan(children: [
                 TextSpan(
-                  text: "Brand",
+                  text: AppString.brand,
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 14,
@@ -212,7 +212,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                     contentPadding: const EdgeInsets.only(
                       left: 20,
                     ),
-                    hintText: "Select",
+                    hintText: AppString.select,
                     hintStyle:
                         const TextStyle(color: Color(0xffACACAC), fontSize: 14),
                     border: const OutlineInputBorder(
@@ -252,7 +252,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
               RichText(
                   text: const TextSpan(children: [
                 TextSpan(
-                  text: "Models",
+                  text: AppString.models,
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 14,
@@ -280,7 +280,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                     contentPadding: const EdgeInsets.only(
                       left: 20,
                     ),
-                    hintText: "Select",
+                    hintText: AppString.select,
                     hintStyle:
                         const TextStyle(color: Color(0xffACACAC), fontSize: 14),
                     border: const OutlineInputBorder(
@@ -330,7 +330,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                           RichText(
                               text: const TextSpan(children: [
                             TextSpan(
-                              text: "Size",
+                              text: AppString.size,
                               style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 14,
@@ -358,7 +358,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                                 contentPadding: const EdgeInsets.only(
                                   left: 20,
                                 ),
-                                hintText: "Select",
+                                hintText: AppString.select,
                                 hintStyle: const TextStyle(
                                     color: Color(0xffACACAC), fontSize: 14),
                                 border: const OutlineInputBorder(
@@ -406,7 +406,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
               ),
             },
             Text(
-              "Item Condition",
+              AppString.itemCondition,
               style: context.textTheme.titleMedium,
             ),
             Row(
@@ -431,7 +431,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                     ),
                     child: Center(
                         child: Text(
-                      "New",
+                      AppString.newText,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 16,
@@ -462,7 +462,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                     ),
                     child: Center(
                         child: Text(
-                      "Used",
+                      AppString.used,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 16,
@@ -483,7 +483,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
               RichText(
                   text: const TextSpan(children: [
                 TextSpan(
-                  text: "RAM",
+                  text: AppString.ram,
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 14,
@@ -511,7 +511,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                     contentPadding: const EdgeInsets.only(
                       left: 20,
                     ),
-                    hintText: "Select",
+                    hintText: AppString.select,
                     hintStyle:
                         const TextStyle(color: Color(0xffACACAC), fontSize: 14),
                     border: const OutlineInputBorder(
@@ -549,7 +549,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
               RichText(
                   text: const TextSpan(children: [
                 TextSpan(
-                  text: "Storage",
+                  text: AppString.strong,
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 14,
@@ -577,7 +577,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                     contentPadding: const EdgeInsets.only(
                       left: 20,
                     ),
-                    hintText: "Select",
+                    hintText: AppString.select,
                     hintStyle:
                         const TextStyle(color: Color(0xffACACAC), fontSize: 14),
                     border: const OutlineInputBorder(
@@ -615,7 +615,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
               RichText(
                   text: const TextSpan(children: [
                 TextSpan(
-                  text: "Screen Size",
+                  text: AppString.screenSize,
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 14,
@@ -643,7 +643,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                     contentPadding: const EdgeInsets.only(
                       left: 20,
                     ),
-                    hintText: "Select",
+                    hintText: AppString.select,
                     hintStyle:
                         const TextStyle(color: Color(0xffACACAC), fontSize: 14),
                     border: const OutlineInputBorder(
@@ -681,7 +681,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
               RichText(
                   text: const TextSpan(children: [
                 TextSpan(
-                  text: "Material",
+                  text: AppString.material,
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 14,
@@ -709,7 +709,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                     contentPadding: const EdgeInsets.only(
                       left: 20,
                     ),
-                    hintText: "Select",
+                    hintText: AppString.select,
                     hintStyle:
                         const TextStyle(color: Color(0xffACACAC), fontSize: 14),
                     border: const OutlineInputBorder(
@@ -746,7 +746,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
             RichText(
                 text: const TextSpan(children: [
               TextSpan(
-                text: "Ad Title",
+                text: AppString.adTitle,
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
@@ -774,7 +774,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                 decoration: const InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                    hintText: "Enter",
+                    hintText: AppString.enter,
                     hintStyle:
                         TextStyle(color: Color(0xffACACAC), fontSize: 14),
                     border: OutlineInputBorder(
@@ -791,7 +791,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
             RichText(
                 text: const TextSpan(children: [
               TextSpan(
-                text: "Describe what you are selling",
+                text: AppString.describeWhatYouAreSelling,
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
@@ -818,7 +818,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                 decoration: const InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                    hintText: "Enter",
+                    hintText: AppString.enter,
                     hintStyle:
                         TextStyle(color: Color(0xffACACAC), fontSize: 14),
                     border: OutlineInputBorder(
@@ -835,7 +835,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
             RichText(
                 text: const TextSpan(children: [
               TextSpan(
-                text: "Location",
+                text: AppString.location,
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
@@ -880,7 +880,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                 decoration: const InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                    hintText: "Select",
+                    hintText: AppString.select,
                     suffixIcon: Icon(Icons.location_on),
                     hintStyle:
                         TextStyle(color: Color(0xffACACAC), fontSize: 14),
@@ -898,7 +898,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
             RichText(
                 text: const TextSpan(children: [
               TextSpan(
-                text: "Price (in EGP)",
+                text: AppString.priceEgp,
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
@@ -925,7 +925,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                 decoration: const InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                    hintText: "Enter Price",
+                    hintText: AppString.enterPrice,
                     hintStyle:
                         TextStyle(color: Color(0xffACACAC), fontSize: 14),
                     border: OutlineInputBorder(
@@ -944,29 +944,29 @@ class CommonSellForm extends BaseView<SellFormsVM> {
             GestureDetector(
               onTap: () {
                 if (viewModel.mainImagePath.isEmpty) {
-                  DialogHelper.showToast(message: "Please upload main image");
+                  DialogHelper.showToast(message: AppString.pleaseUploadMainImage);
                   return;
                 }
                 if (viewModel.imagesList.isEmpty) {
                   DialogHelper.showToast(
-                      message: "Please upload add at least one image");
+                      message: AppString.pleaseUploadAddAtLeastOneImage);
                   return;
                 }
 
                 if (viewModel.adTitleTextController.text.trim().isEmpty) {
-                  DialogHelper.showToast(message: "Ad title is required");
+                  DialogHelper.showToast(message: AppString.adTitleIsRequired);
                   return;
                 }
                 if (viewModel.descriptionTextController.text.trim().isEmpty) {
-                  DialogHelper.showToast(message: "Description is required");
+                  DialogHelper.showToast(message: AppString.descriptionIsRequired);
                   return;
                 }
                 if (viewModel.addressTextController.text.trim().isEmpty) {
-                  DialogHelper.showToast(message: "Location is required");
+                  DialogHelper.showToast(message: AppString.locationIsRequired);
                   return;
                 }
                 if (viewModel.priceTextController.text.trim().isEmpty) {
-                  DialogHelper.showToast(message: "Price is required");
+                  DialogHelper.showToast(message: AppString.priceIsRequired);
                   return;
                 }
                 DialogHelper.showLoading();
@@ -985,7 +985,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                     color: Colors.black,
                     borderRadius: BorderRadius.circular(100)),
                 child: const Text(
-                  "Post Now",
+                  AppString.postNow,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 16,

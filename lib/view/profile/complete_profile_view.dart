@@ -14,6 +14,8 @@ import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 
+import '../../base/helpers/app_string.dart';
+
 class CompleteProfileView extends BaseView<AuthVM> {
   const CompleteProfileView({super.key});
 
@@ -22,7 +24,7 @@ class CompleteProfileView extends BaseView<AuthVM> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Complete your Profile',
+          AppString.completeYourProfile,
         ),
         centerTitle: true,
       ),
@@ -86,24 +88,24 @@ class CompleteProfileView extends BaseView<AuthVM> {
             ),
             const Gap(50),
             AppTextField(
-              title: 'First Name',
-              hint: 'Enter',
+              title: AppString.firstName,
+              hint: AppString.enter,
               inputType: TextInputType.name,
               controller: viewModel.nameTextController,
               inputFormatters: AppTextInputFormatters.withNameFormatter(),
             ),
             const Gap(10),
             AppTextField(
-              title: 'Last Name',
-              hint: 'Enter',
+              title: AppString.lastName,
+              hint: AppString.enter,
               inputType: TextInputType.name,
               controller: viewModel.lNameTextController,
               inputFormatters: AppTextInputFormatters.withNameFormatter(),
             ),
             const Gap(10),
             AppTextField(
-              title: 'Email',
-              hint: 'Enter',
+              title: AppString.email,
+              hint: AppString.enter,
               inputType: TextInputType.emailAddress,
               controller: viewModel.emailTextController,
               inputFormatters: AppTextInputFormatters.withEmailFormatter(),
@@ -120,11 +122,11 @@ class CompleteProfileView extends BaseView<AuthVM> {
                 Expanded(
                   child: RichText(
                     text: TextSpan(
-                        text: 'I agree with the ',
+                        text: AppString.iAgreeWithThe,
                         style: const TextStyle(color: Colors.black),
                         children: [
                           TextSpan(
-                              text: 'Terms & Conditions.',
+                              text: AppString.termsConditions,
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   context.push(Routes.termsOfUse, extra: 2);
@@ -176,7 +178,7 @@ class CompleteProfileView extends BaseView<AuthVM> {
                 DialogHelper.showLoading();
                 viewModel.completeProfileApi();
               },
-              title: 'Continue',
+              title: AppString.continueButton,
             )
           ],
         ),

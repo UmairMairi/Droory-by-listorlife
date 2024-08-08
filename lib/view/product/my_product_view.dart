@@ -9,6 +9,7 @@ import 'package:list_and_life/widgets/app_error_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../base/helpers/app_string.dart';
 import '../../base/helpers/dialog_helper.dart';
 import '../../res/assets_res.dart';
 import '../../view_model/my_ads_v_m.dart';
@@ -72,12 +73,12 @@ class MyProductView extends BaseView<ProductVM> {
                               ),
                               const Gap(10),
                               Text(
-                                "EGP ${data?.price}",
+                                "${AppString.egp} ${data?.price}",
                                 style: context.textTheme.titleLarge
                                     ?.copyWith(color: Colors.red),
                               ),
                               const Gap(10),
-                              if (data?.category?.name?.contains('Cars') ??
+                              if (data?.category?.name?.contains(AppString.cars) ??
                                   false) ...{
                                 Container(
                                   width: double.infinity,
@@ -158,7 +159,7 @@ class MyProductView extends BaseView<ProductVM> {
                                                 width: 5,
                                               ),
                                               Text(
-                                                'Owner',
+                                                AppString.owner,
                                                 style: context
                                                     .textTheme.titleSmall,
                                               ),
@@ -178,7 +179,7 @@ class MyProductView extends BaseView<ProductVM> {
                                                 width: 5,
                                               ),
                                               Text(
-                                                'City',
+                                                AppString.city,
                                                 style: context
                                                     .textTheme.titleSmall,
                                               ),
@@ -198,7 +199,7 @@ class MyProductView extends BaseView<ProductVM> {
                                                 width: 5,
                                               ),
                                               Text(
-                                                'Posting Date',
+                                                AppString.postingDate,
                                                 style: context
                                                     .textTheme.titleSmall,
                                               ),
@@ -245,7 +246,7 @@ class MyProductView extends BaseView<ProductVM> {
                                 ),
                                 const Gap(10),
                               },
-                              data?.sellStatus != 'sold'
+                              data?.sellStatus != AppString.soldText
                                   ? Row(
                                       children: [
                                         Expanded(
@@ -267,7 +268,7 @@ class MyProductView extends BaseView<ProductVM> {
                                                     BorderRadius.circular(10),
                                               ),
                                               child: Text(
-                                                'Mark as Sold',
+                                                AppString.markAsSold,
                                                 style: context
                                                     .textTheme.labelLarge
                                                     ?.copyWith(
@@ -291,7 +292,7 @@ class MyProductView extends BaseView<ProductVM> {
                                                   BorderRadius.circular(10),
                                             ),
                                             child: Text(
-                                              'Sell Faster Now',
+                                              AppString.sellFasterNow,
                                               style: context
                                                   .textTheme.labelLarge
                                                   ?.copyWith(
@@ -305,7 +306,7 @@ class MyProductView extends BaseView<ProductVM> {
                                       ],
                                     )
                                   : const AppElevatedButton(
-                                      title: 'Sold',
+                                      title: AppString.soldText,
                                       height: 30,
                                       width: 100,
                                       backgroundColor: Colors.grey,
@@ -319,7 +320,7 @@ class MyProductView extends BaseView<ProductVM> {
                               ),
                               const Gap(10),
                               Text(
-                                'Description',
+                                AppString.description,
                                 style: context.textTheme.titleMedium,
                               ),
                               const Gap(05),
@@ -369,7 +370,7 @@ class MyProductView extends BaseView<ProductVM> {
                           shape: BoxShape.circle, color: Colors.black26),
                       child: IconButton(
                           onPressed: () => Share.share(
-                              'Check my this product on List or lift app url: www.google.com'),
+                              AppString.checkProductUrl),
                           icon: const Icon(
                             Icons.share_outlined,
                             color: Colors.white,
@@ -397,15 +398,15 @@ class MyProductView extends BaseView<ProductVM> {
                             <PopupMenuEntry<int>>[
                           const PopupMenuItem(
                             value: 1,
-                            child: Text('Edit'),
+                            child: Text(AppString.edit),
                           ),
                           const PopupMenuItem(
                             value: 2,
-                            child: Text('Deactivate'),
+                            child: Text(AppString.deactivate),
                           ),
                           const PopupMenuItem(
                             value: 3,
-                            child: Text('Remove'),
+                            child: Text(AppString.remove),
                           ),
                         ],
                       ),
