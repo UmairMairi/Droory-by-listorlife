@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:toastification/toastification.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'base/helpers/app_string.dart';
 import 'base/helpers/theme_helper.dart';
 import 'firebase_options.dart';
 
@@ -73,7 +74,7 @@ class _MyAppState extends State<MyApp> {
                 PointerDeviceKind.unknown
               },
             ),
-            title: 'List & Lift',
+            title: AppString.listLife,
             theme: ThemeHelper.lightTheme(),
             darkTheme: ThemeHelper.lightTheme(),
             debugShowCheckedModeBanner: false,

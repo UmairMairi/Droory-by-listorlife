@@ -6,6 +6,7 @@ import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/app_outline_button.dart';
 import 'package:lottie/lottie.dart';
 
+import '../../../../base/helpers/app_string.dart';
 import '../../../../models/prodect_detail_model.dart';
 import '../../../../routes/app_routes.dart';
 import '../../../product/my_product_view.dart';
@@ -39,12 +40,12 @@ class PostAddedFinalView extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  Text("Congratulations!", style: context.textTheme.titleLarge),
+                  Text(AppString.congratulations, style: context.textTheme.titleLarge),
                   const SizedBox(
                     height: 10,
                   ),
                   Text(
-                    "Your Ad will go live shortly...",
+                    AppString.yourAdWillGoLiveShortly,
                     style: context.textTheme.titleMedium
                         ?.copyWith(color: Colors.black.withOpacity(0.5)),
                   ),
@@ -57,7 +58,7 @@ class PostAddedFinalView extends StatelessWidget {
                 color: const Color(0xffFF385C),
                 child: Center(
                   child: Text(
-                    "List or Lift allows 2 free ads 180 days for cars",
+                    AppString.listOrLiftAllowsFreeAds,
                     style: context.textTheme.titleMedium
                         ?.copyWith(color: Colors.white),
                   ),
@@ -75,7 +76,7 @@ class PostAddedFinalView extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Text(
-                "Reach more buyers and sell faster",
+                AppString.reachMoreBuyersAndSellFaster,
                 style: context.textTheme.titleLarge,
               ),
             ),
@@ -85,7 +86,7 @@ class PostAddedFinalView extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Text(
-                "Upgrading an ad helps you to reach more buyers",
+                AppString.upgradingAnAdHelpsYouToReachMoreBuyers,
                 textAlign: TextAlign.center,
                 style: context.textTheme.titleMedium
                     ?.copyWith(color: Colors.black.withOpacity(0.5)),
@@ -98,7 +99,7 @@ class PostAddedFinalView extends StatelessWidget {
               onTap: () {
                 context.push(Routes.planList);
               },
-              title: "Sell Faster Now",
+              title: AppString.sellFasterNow,
               width: context.width,
               padding: const EdgeInsets.only(
                   left: 40, right: 40, top: 20, bottom: 0),
@@ -112,7 +113,7 @@ class PostAddedFinalView extends StatelessWidget {
                               data: data,
                             )));
               },
-              title: "Review Ad",
+              title: AppString.reviewAd,
               width: context.width,
               padding: const EdgeInsets.only(
                   left: 40, right: 40, top: 20, bottom: 20),

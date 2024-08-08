@@ -6,6 +6,7 @@ import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/view/payment/select_card_view.dart';
 
+import '../../base/helpers/app_string.dart';
 import '../../widgets/app_elevated_button.dart';
 import 'add_card_screen.dart';
 
@@ -66,14 +67,14 @@ class _PaymentOptionsScreenState extends State<PaymentOptionsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Payment selection'),
+        title: const Text(AppString.paymentSelection),
       ),
       bottomNavigationBar: AppElevatedButton(
         width: context.width,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         onTap: () {
           if (_selectedPaymentMethod < 0) {
-            DialogHelper.showToast(message: "Please Select Payment Method");
+            DialogHelper.showToast(message: AppString.pleaseSelectPaymentMethod);
             return;
           }
           if (_selectedPaymentMethod == 0) {
@@ -84,7 +85,7 @@ class _PaymentOptionsScreenState extends State<PaymentOptionsScreen> {
               MaterialPageRoute(builder: (builder) => const SelectCardView()));
           //context.go(Routes.main);
         },
-        title: 'Pay Now',
+        title: AppString.payNow,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -92,7 +93,7 @@ class _PaymentOptionsScreenState extends State<PaymentOptionsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Payment Methods',
+              AppString.paymentMethods,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
@@ -102,9 +103,9 @@ class _PaymentOptionsScreenState extends State<PaymentOptionsScreen> {
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Single Featured ad for 7 days'),
+                  Text(AppString.singleFeaturedAdFor7Days),
                   Text(
-                    'EGP 260',
+                    AppString.eGP260,
                     style: TextStyle(color: Colors.red),
                   ),
                 ],
@@ -119,9 +120,9 @@ class _PaymentOptionsScreenState extends State<PaymentOptionsScreen> {
                   elevation: 4,
                   child: ListTile(
                     leading:
-                        Image.asset(method['icon']!, width: 40, height: 40),
-                    title: Text(method['name']!),
-                    subtitle: Text(method['description']!),
+                        Image.asset(method[AppString.icon]!, width: 40, height: 40),
+                    title: Text(method[AppString.name]!),
+                    subtitle: Text(method[AppString.description]!),
                     trailing: Radio<int>(
                       value: index,
                       groupValue: _selectedPaymentMethod,

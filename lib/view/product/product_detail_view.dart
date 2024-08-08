@@ -12,6 +12,7 @@ import 'package:list_and_life/view_model/product_v_m.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../base/helpers/app_string.dart';
 import '../../base/helpers/date_helper.dart';
 import '../../base/helpers/db_helper.dart';
 import '../../base/helpers/dialog_helper.dart';
@@ -76,14 +77,14 @@ class ProductDetailView extends BaseView<ProductVM> {
                               ),
                               const Gap(10),
                               Text(
-                                "EGP ${data?.price}",
+                                "${AppString.egp} ${data?.price}",
                                 style: context.textTheme.titleLarge
                                     ?.copyWith(color: Colors.red),
                               ),
                               const Gap(10),
                               if (data?.category?.name
                                       ?.toLowerCase()
-                                      .contains('cars') ??
+                                      .contains(AppString.cars) ??
                                   false) ...{
                                 Container(
                                   width: double.infinity,
@@ -164,7 +165,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                                 width: 5,
                                               ),
                                               Text(
-                                                'Owner',
+                                                AppString.owner,
                                                 style: context
                                                     .textTheme.titleSmall,
                                               ),
@@ -184,7 +185,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                                 width: 5,
                                               ),
                                               Text(
-                                                'City',
+                                                AppString.city,
                                                 style: context
                                                     .textTheme.titleSmall,
                                               ),
@@ -204,7 +205,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                                 width: 5,
                                               ),
                                               Text(
-                                                'Posting Date',
+                                                AppString.postingDate,
                                                 style: context
                                                     .textTheme.titleSmall,
                                               ),
@@ -260,7 +261,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                               const Gap(10),
                               const Gap(10),
                               Text(
-                                'Description',
+                                AppString.description,
                                 style: context.textTheme.titleMedium,
                               ),
                               const Gap(05),
@@ -294,7 +295,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            'Posted by',
+                                            AppString.postedBy,
                                             style: context.textTheme.titleSmall
                                                 ?.copyWith(color: Colors.grey),
                                           ),
@@ -306,7 +307,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                                         .MONTSERRAT_SEMIBOLD),
                                           ),
                                           Text(
-                                            'Posted On: ${DateHelper.joiningDate(DateTime.parse('${data?.createdAt}'))}',
+                                            '${AppString.postedOn} ${DateHelper.joiningDate(DateTime.parse('${data?.createdAt}'))}',
                                             style: context.textTheme.titleSmall
                                                 ?.copyWith(color: Colors.grey),
                                           ),
@@ -325,7 +326,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                                   extra: data?.user);
                                             },
                                             child: Text(
-                                              'See Profile',
+                                              AppString.seeProfile,
                                               style: context
                                                   .textTheme.titleSmall
                                                   ?.copyWith(
@@ -378,7 +379,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                         ),
                                         const Gap(05),
                                         Text(
-                                          'City',
+                                          AppString.city,
                                           style: context.textTheme.titleMedium,
                                         ),
                                         const Gap(25),
@@ -394,7 +395,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                                 data?.nearby ?? '');
                                           },
                                           child: Text(
-                                            'Get Direction',
+                                            AppString.getDirection,
                                             style: context.textTheme.titleSmall
                                                 ?.copyWith(
                                                     color: Colors.red,
@@ -481,7 +482,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                     ),
                     InkWell(
                       onTap: () => Share.share(
-                          'Check my this product on List or lift app url: www.google.com'),
+                          AppString.checkProductUrl),
                       child: Container(
                         padding: const EdgeInsets.all(08),
                         margin: const EdgeInsets.all(08),
@@ -534,7 +535,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                               ),
                               const Gap(05),
                               Text(
-                                'Call',
+                                AppString.call,
                                 style: context.textTheme.labelLarge?.copyWith(
                                     color: Colors.white,
                                     fontSize: 12,
@@ -592,7 +593,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                               ),
                               const Gap(05),
                               Text(
-                                'Chat',
+                                AppString.chat,
                                 style: context.textTheme.labelLarge?.copyWith(
                                     color: Colors.white,
                                     fontSize: 12,
@@ -635,7 +636,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                               ),
                               const Gap(05),
                               Text(
-                                'Whatsapp',
+                                AppString.whatsapp,
                                 style: context.textTheme.labelLarge?.copyWith(
                                   color: Colors.white,
                                   fontSize: 12,

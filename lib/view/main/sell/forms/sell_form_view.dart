@@ -7,6 +7,7 @@ import 'package:list_and_life/view/main/sell/forms/pets_sell_form.dart';
 import 'package:list_and_life/view/main/sell/forms/vehicles_sell_form.dart';
 import 'package:list_and_life/widgets/app_error_widget.dart';
 
+import '../../../../base/helpers/app_string.dart';
 import '../../../../skeletons/sell_form_skeleton.dart';
 import '../../../../view_model/sell_forms_vm.dart';
 import 'education_sell_form.dart';
@@ -29,7 +30,7 @@ class SellFormView extends BaseView<SellFormsVM> {
   Widget build(BuildContext context, SellFormsVM viewModel) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Include some details'),
+        title: const Text(AppString.includeSomeDetails),
       ),
       body: FutureBuilder<List<CategoryModel>>(
           future: viewModel.getBrands(data: subCategory),

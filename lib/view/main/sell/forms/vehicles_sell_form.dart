@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:list_and_life/base/base.dart';
 
+import '../../../../base/helpers/app_string.dart';
 import '../../../../base/helpers/dialog_helper.dart';
 import '../../../../base/helpers/image_picker_helper.dart';
 import '../../../../models/category_model.dart';
@@ -48,7 +49,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Upload Images",
+              AppString.uploadImages,
               style: context.textTheme.titleMedium,
             ),
             GestureDetector(
@@ -87,7 +88,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                             height: 2,
                           ),
                           Text(
-                            "Upload",
+                            AppString.upload,
                             style: TextStyle(
                               fontSize: 14,
                             ),
@@ -173,7 +174,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                             height: 2,
                           ),
                           Text(
-                            "Add",
+                            AppString.add,
                             style: TextStyle(
                               fontSize: 14,
                             ),
@@ -189,7 +190,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
               RichText(
                   text: const TextSpan(children: [
                 TextSpan(
-                  text: "Brand",
+                  text: AppString.brand,
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 14,
@@ -217,7 +218,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                     contentPadding: const EdgeInsets.only(
                       left: 20,
                     ),
-                    hintText: "Select",
+                    hintText: AppString.select,
                     hintStyle:
                         const TextStyle(color: Color(0xffACACAC), fontSize: 14),
                     border: const OutlineInputBorder(
@@ -257,7 +258,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
               RichText(
                   text: const TextSpan(children: [
                 TextSpan(
-                  text: "Models",
+                  text: AppString.models,
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 14,
@@ -285,7 +286,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                     contentPadding: const EdgeInsets.only(
                       left: 20,
                     ),
-                    hintText: "Select",
+                    hintText: AppString.select,
                     hintStyle:
                         const TextStyle(color: Color(0xffACACAC), fontSize: 14),
                     border: const OutlineInputBorder(
@@ -323,7 +324,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
             RichText(
                 text: const TextSpan(children: [
               TextSpan(
-                text: "Year",
+                text: AppString.year,
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
@@ -352,7 +353,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                   contentPadding: EdgeInsets.only(
                     left: 20,
                   ),
-                  hintText: "Enter",
+                  hintText: AppString.enter,
                   hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
@@ -371,7 +372,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
             RichText(
                 text: const TextSpan(children: [
               TextSpan(
-                text: "Km Driven",
+                text: AppString.kmDriven,
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
@@ -400,7 +401,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                   contentPadding: EdgeInsets.only(
                     left: 20,
                   ),
-                  hintText: "Enter",
+                  hintText: AppString.enter,
                   hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
@@ -417,7 +418,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
               ),
             ),
             Text(
-              "Item Condition",
+              AppString.itemCondition,
               style: context.textTheme.titleMedium,
             ),
             Row(
@@ -442,7 +443,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                     ),
                     child: Center(
                         child: Text(
-                      "New",
+                      AppString.newText,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 16,
@@ -473,7 +474,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                     ),
                     child: Center(
                         child: Text(
-                      "Used",
+                      AppString.used,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 16,
@@ -492,7 +493,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
             RichText(
                 text: const TextSpan(children: [
               TextSpan(
-                text: "Ad Title",
+                text: AppString.adTitle,
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
@@ -520,7 +521,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                 decoration: const InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                    hintText: "Enter",
+                    hintText: AppString.enter,
                     hintStyle:
                         TextStyle(color: Color(0xffACACAC), fontSize: 14),
                     border: OutlineInputBorder(
@@ -537,7 +538,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
             RichText(
                 text: const TextSpan(children: [
               TextSpan(
-                text: "Describe what you are selling",
+                text: AppString.describeWhatYouAreSelling,
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
@@ -564,7 +565,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                 decoration: const InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                    hintText: "Enter",
+                    hintText: AppString.enter,
                     hintStyle:
                         TextStyle(color: Color(0xffACACAC), fontSize: 14),
                     border: OutlineInputBorder(
@@ -581,7 +582,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
             RichText(
                 text: const TextSpan(children: [
               TextSpan(
-                text: "Location",
+                text: AppString.location,
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
@@ -621,7 +622,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                 decoration: const InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                    hintText: "Select",
+                    hintText:AppString.select,
                     suffixIcon: Icon(Icons.location_on),
                     hintStyle:
                         TextStyle(color: Color(0xffACACAC), fontSize: 14),
@@ -639,7 +640,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
             RichText(
                 text: const TextSpan(children: [
               TextSpan(
-                text: "Price (in EGP)",
+                text: AppString.priceEgp,
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
@@ -666,7 +667,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                 decoration: const InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                    hintText: "Enter Price",
+                    hintText: AppString.enterPrice,
                     hintStyle:
                         TextStyle(color: Color(0xffACACAC), fontSize: 14),
                     border: OutlineInputBorder(
@@ -685,39 +686,39 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
             GestureDetector(
               onTap: () {
                 if (viewModel.mainImagePath.isEmpty) {
-                  DialogHelper.showToast(message: "Please upload main image");
+                  DialogHelper.showToast(message: AppString.pleaseUploadMainImage);
                   return;
                 }
                 if (viewModel.imagesList.isEmpty) {
                   DialogHelper.showToast(
-                      message: "Please upload add at least one image");
+                      message: AppString.pleaseUploadAddAtLeastOneImage);
                   return;
                 }
 
                 if (viewModel.yearTextController.text.trim().isEmpty) {
-                  DialogHelper.showToast(message: "Year is required");
+                  DialogHelper.showToast(message: AppString.yearIsRequired);
                   return;
                 }
 
                 if (viewModel.kmDrivenTextController.text.trim().isEmpty) {
-                  DialogHelper.showToast(message: "KM Driven is required");
+                  DialogHelper.showToast(message: AppString.kMDrivenIsRequired);
                   return;
                 }
 
                 if (viewModel.adTitleTextController.text.trim().isEmpty) {
-                  DialogHelper.showToast(message: "Ad title is required");
+                  DialogHelper.showToast(message: AppString.adTitleIsRequired);
                   return;
                 }
                 if (viewModel.descriptionTextController.text.trim().isEmpty) {
-                  DialogHelper.showToast(message: "Description is required");
+                  DialogHelper.showToast(message: AppString.descriptionIsRequired);
                   return;
                 }
                 if (viewModel.addressTextController.text.trim().isEmpty) {
-                  DialogHelper.showToast(message: "Location is required");
+                  DialogHelper.showToast(message: AppString.locationIsRequired);
                   return;
                 }
                 if (viewModel.priceTextController.text.trim().isEmpty) {
-                  DialogHelper.showToast(message: "Price is required");
+                  DialogHelper.showToast(message: AppString.priceIsRequired);
                   return;
                 }
                 DialogHelper.showLoading();
@@ -736,7 +737,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                     color: Colors.black,
                     borderRadius: BorderRadius.circular(100)),
                 child: const Text(
-                  "Post Now",
+                  AppString.postNow,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 16,

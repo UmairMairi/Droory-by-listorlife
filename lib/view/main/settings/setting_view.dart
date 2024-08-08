@@ -15,6 +15,7 @@ import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 import 'package:provider/provider.dart';
 
+import '../../../base/helpers/app_string.dart';
 import '../../../models/setting_item_model.dart';
 
 class SettingView extends BaseView<SettingVM> {
@@ -24,7 +25,7 @@ class SettingView extends BaseView<SettingVM> {
   Widget build(BuildContext context, SettingVM viewModel) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Profile'),
+        title: const Text(AppString.myProfile),
         centerTitle: true,
       ),
       body: Padding(
@@ -67,7 +68,7 @@ class SettingView extends BaseView<SettingVM> {
                             height: 5,
                           ),
                           Text(
-                            'Guest User',
+                            AppString.guestUser,
                             style: context.textTheme.bodyMedium?.copyWith(
                               fontFamily: FontRes.POPPINS_REGULAR,
                               fontSize: 18,
@@ -79,7 +80,7 @@ class SettingView extends BaseView<SettingVM> {
                             },
                             height: 30,
                             width: 100,
-                            title: 'Login',
+                            title: AppString.login,
                           )
                         ],
                       ),
@@ -168,7 +169,7 @@ class SettingView extends BaseView<SettingVM> {
                         ),
                         const Gap(10),
                         Text(
-                          'Notifications',
+                          AppString.notifications,
                           style: context.textTheme.titleMedium
                               ?.copyWith(fontFamily: FontRes.POPPINS_MEDIUM),
                         ),

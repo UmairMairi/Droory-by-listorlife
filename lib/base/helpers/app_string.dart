@@ -1,4 +1,9 @@
 class AppString {
+
+  /// Main Screen
+
+  static const String listLife = "List & Lift";
+
   ///onBoarding Screen
   static const String next = "Next";
   static const String getStarted = "Get Started";
@@ -134,8 +139,101 @@ class AppString {
   static const String descriptionIsRequired = 'Description is required';
   static const String locationIsRequired = 'Location is required';
   static const String priceIsRequired = 'Price is required';
+  static const String pleaseSelectEducationType = 'Please select education type';
+  static const String pleasesSelectPositionType = "Please select position type";
+  static const String pleaseSelectSalaryPeriod = "Please select salary period";
+  static const String pleaseSelectSalaryForm = "Please select salary form";
+  static const String pleaseSelectSalaryTo = "Please select salary to";
+  static const String pleaseSelectPaymentMethod = "Please Select Payment Method";
+  static const String pleaseSelectCard = "Please Select Card";
+
+  /// forms Screen
+  static const String add = 'Add';
+  static const String size = "Size";
   static const String postNow = 'Post Now';
+  static const String ram = "Ram";
+  static const String strong = "Storage";
+  static const String screenSize = "Screen Size";
+  static const String material = "Material";
+  static const String editProduct = "Edit Product";
+  static const String type = "Type";
+  static const String positionType = "Position Type";
+  static const String salaryPeriod = "Salary Period";
+  static const String salaryFrom = "Salary from";
+  static const String salaryTo = "Salary to";
+  static const String congratulations = "Congratulations!";
+  static const String yourAdWillGoLiveShortly = "Your Ad will go live shortly...";
+  static const String listOrLiftAllowsFreeAds = "List or Lift allows 2 free ads 180 days for cars";
+  static const String reachMoreBuyersAndSellFaster = "Reach more buyers and sell faster";
+  static const String upgradingAnAdHelpsYouToReachMoreBuyers = "Upgrading an ad helps you to reach more buyers";
+  static const String reviewAd = "Review Ad";
+  static const String includeSomeDetails = "Include some details";
 
 
+/// Setting Screen
+
+  static const String myProfile = "My Profile";
+  static const String guestUser = "Guest User";
+  static const String notifications = "Notifications";
+  static const String privacyPolicy = "Privacy Policy";
+  static const String termsConditions = "Terms & Conditions";
+
+
+  /// payment Screen
+
+  static const String nameOnCard = "Name on card";
+  static const String cardNumber = "Card Number";
+  static const String expDate = "Exp. Date";
+  static const String cvv = "CVV";
+  static const String saveCard = "Save Card";
+  static const String paymentSelection = "Payment selection";
+  static const String payNow = "Pay Now";
+  static const String paymentMethods = "Payment Methods";
+  static const String singleFeaturedAdFor7Days = "Single Featured ad for 7 days";
+  static const String eGP260 = "EGP 260";
+  static const String name = "Name";
+  static const String description = "description";
+  static const String icon = "icon";
+  static const String paymentOptions = "Payment Options";
+  static const String addCard = "Add Card";
+  static const String selectCardAddNewCard = "Select a card or add a new card";
+  static const String expiryDate = "expiryDate";
+  static const String expiry = "Expiry:";
+
+
+  /// Product Screen
+  static const String cars = "Cars";
+  static const String owner = "Owner";
+  static const String city = "City";
+  static const String postingDate = "Posting Date";
+  static const String soldText = "sold";
+  static const String checkProductUrl = "Check my this product on List or lift app url: www.google.com";
+  static const String postedBy = "Posted by";
+  static const String postedOn = "Posted On:";
+  static const String seeProfile = "See Profile";
+  static const String getDirection = "Get Direction";
+  static const String call = "Call";
+  static const String chat = "Chat";
+  static const String whatsapp = "Whatsapp";
+
+  /// Profile Screen
+
+  static const String completeYourProfile = "Complete your Profile";
+  static const String firstName = "First Name";
+  static const String lastName = "Last Name";
+  static const String email = "Email";
+  static const String iAgreeWithThe  = "I agree with the ";
+  static const String editProfile  = "Edit Profile";
+  static const String thisFieldIsNotEditable  = "This field is not editable";
+  static const String bio  = "Bio";
+  static const String writeHere  = "Write here...";
+  static const String update  = "Update";
+  static const String shareProfile  = "Share Profile";
+  static const String memberSince  = "Member since";
+
+  /// Purchase Screen
+  static const String featureAd  = "Feature Ad";
+  static const String boostToTop  = "Boost to Top";
+  static const String buyNow  = "Buy Now";
 
 }

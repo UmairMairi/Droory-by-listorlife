@@ -3,6 +3,8 @@ import 'package:gap/gap.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/view_model/notification_v_m.dart';
 
+import '../../base/helpers/app_string.dart';
+
 class NotificationView extends BaseView<NotificationVM> {
   const NotificationView({super.key});
 
@@ -10,7 +12,7 @@ class NotificationView extends BaseView<NotificationVM> {
   Widget build(BuildContext context, NotificationVM viewModel) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Notifications'),
+        title: const Text(AppString.notifications),
         centerTitle: true,
       ),
       body: ListView.separated(
