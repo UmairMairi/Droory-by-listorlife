@@ -5,9 +5,9 @@ import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/db_helper.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/base/helpers/image_picker_helper.dart';
+import 'package:list_and_life/base/network/base_client.dart';
 import 'package:list_and_life/models/inbox_model.dart';
 import 'package:list_and_life/models/message_model.dart';
-import 'package:list_and_life/base/network/base_client.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/view_model/chat_vm.dart';
 import 'package:list_and_life/widgets/app_error_widget.dart';
@@ -15,9 +15,9 @@ import 'package:list_and_life/widgets/app_loading_widget.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 
-import '../../../base/helpers/app_string.dart';
-import '../../../chat_bubble/message_bar_with_suggetion.dart';
+import '../../../base/helpers/string_helper.dart';
 import '../../../base/network/api_constants.dart';
+import '../../../chat_bubble/message_bar_with_suggetion.dart';
 
 class MessageView extends BaseView<ChatVM> {
   final InboxModel? chat;
@@ -77,16 +77,16 @@ class MessageView extends BaseView<ChatVM> {
                       context: context,
                       builder: (context) => AppAlertDialogWithLottie(
                             description:
-                                AppString.areYouSureWantToDeleteThisChat,
+                                StringHelper.areYouSureWantToDeleteThisChat,
                             onTap: () {
                               context.pop();
                               context.pop();
                             },
                             lottieIcon: AssetsRes.DELETE_LOTTIE,
                             showCancelButton: true,
-                            cancelButtonText: AppString.no,
-                            title: AppString.deleteChat,
-                            buttonText: AppString.yes,
+                            cancelButtonText: StringHelper.no,
+                            title: StringHelper.deleteChat,
+                            buttonText: StringHelper.yes,
                           ));
                   return;
                 case 2:
@@ -101,7 +101,8 @@ class MessageView extends BaseView<ChatVM> {
                                   .trim()
                                   .isEmpty) {
                                 DialogHelper.showToast(
-                                    message: AppString.pleaseEnterReasonOfReport);
+                                    message:
+                                        StringHelper.pleaseEnterReasonOfReport);
                                 return;
                               }
                               context.pop();
@@ -117,11 +118,11 @@ class MessageView extends BaseView<ChatVM> {
                             content: AppTextField(
                               controller: viewModel.reportTextController,
                               lines: 4,
-                              hint: AppString.reason,
+                              hint: StringHelper.reason,
                             ),
-                            cancelButtonText: AppString.no,
-                            title: AppString.reportUser,
-                            buttonText: AppString.yes,
+                            cancelButtonText: StringHelper.no,
+                            title: StringHelper.reportUser,
+                            buttonText: StringHelper.yes,
                           ));
                   return;
                 case 3:
@@ -129,8 +130,8 @@ class MessageView extends BaseView<ChatVM> {
                       context: context,
                       builder: (context) => AppAlertDialogWithWidget(
                             description: viewModel.blockedUser
-                                ? AppString.areYouSureWantToUnblockThisUser
-                                : AppString.areYouSureWantToBlockThisUser,
+                                ? StringHelper.areYouSureWantToUnblockThisUser
+                                : StringHelper.areYouSureWantToBlockThisUser,
                             onTap: () {
                               context.pop();
                               viewModel.reportBlockUser(
@@ -139,11 +140,11 @@ class MessageView extends BaseView<ChatVM> {
                             },
                             icon: AssetsRes.IC_BLOCK_USER,
                             showCancelButton: true,
-                            cancelButtonText: AppString.no,
+                            cancelButtonText: StringHelper.no,
                             title: viewModel.blockedUser
-                                ? AppString.unblockUser
-                                : AppString.blockUser,
-                            buttonText: AppString.yes,
+                                ? StringHelper.unblockUser
+                                : StringHelper.blockUser,
+                            buttonText: StringHelper.yes,
                           ));
                   return;
               }
@@ -151,16 +152,17 @@ class MessageView extends BaseView<ChatVM> {
             itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
               const PopupMenuItem(
                 value: 1,
-                child: Text(AppString.deleteChat),
+                child: Text(StringHelper.deleteChat),
               ),
               const PopupMenuItem(
                 value: 2,
-                child: Text(AppString.reportUser),
+                child: Text(StringHelper.reportUser),
               ),
               PopupMenuItem(
                 value: 3,
-                child:
-                    Text(viewModel.blockedUser ? AppString.unblockUser : AppString.blockUser),
+                child: Text(viewModel.blockedUser
+                    ? StringHelper.unblockUser
+                    : StringHelper.blockUser),
               ),
             ],
           ),
@@ -199,7 +201,10 @@ class MessageView extends BaseView<ChatVM> {
                           ),
                         )
                       : MessageBarWithSuggestions(
-                          suggestions: const [AppString.hello, AppString.howAreYou],
+                          suggestions: const [
+                            StringHelper.hello,
+                            StringHelper.howAreYou
+                          ],
                           onSuggestionSelected: (value) {
                             viewModel.messageTextController.text = value;
                           },

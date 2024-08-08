@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
-import '../../base/helpers/app_string.dart';
+
 import '../../base/helpers/dialog_helper.dart';
+import '../../base/helpers/string_helper.dart';
 import '../../res/assets_res.dart';
 import '../../widgets/app_elevated_button.dart';
 
@@ -34,13 +35,13 @@ class _NotFoundViewState extends State<NotFoundView> {
           children: [
             Lottie.asset(AssetsRes.PAGE_NOT_FOUND),
             const Gap(20),
-            Text(widget.message ?? AppString.somethingWantWrong),
+            Text(widget.message ?? StringHelper.somethingWantWrong),
             const Gap(20),
             AppElevatedButton(
                 onTap: () {
                   context.pop();
                 },
-                title: AppString.goBack)
+                title: StringHelper.goBack)
           ],
         ),
       ),

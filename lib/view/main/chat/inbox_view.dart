@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/base/helpers/app_string.dart';
 import 'package:list_and_life/base/helpers/db_helper.dart';
-import 'package:list_and_life/models/inbox_model.dart';
+import 'package:list_and_life/base/helpers/string_helper.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
+import 'package:list_and_life/models/inbox_model.dart';
 import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/skeletons/inbox_skeleton.dart';
@@ -22,7 +22,7 @@ class InboxView extends BaseView<ChatVM> {
   Widget build(BuildContext context, ChatVM viewModel) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppString.myChats),
+        title: const Text(StringHelper.myChats),
         centerTitle: true,
       ),
       body: StreamBuilder<List<InboxModel>>(
@@ -37,7 +37,7 @@ class InboxView extends BaseView<ChatVM> {
                     AppTextField(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       controller: viewModel.inboxSearchTextController,
-                      hint: AppString.search,
+                      hint: StringHelper.search,
                       onChanged: (String text) {
                         viewModel.searchInbox(text);
                       },

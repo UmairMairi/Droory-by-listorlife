@@ -7,9 +7,9 @@ import 'package:list_and_life/base/network/api_request.dart';
 import 'package:list_and_life/base/network/base_client.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import '../../../base/helpers/app_string.dart';
 import '../../../base/helpers/db_helper.dart';
 import '../../../base/helpers/debouncer_helper.dart';
+import '../../../base/helpers/string_helper.dart';
 import '../../../models/common/map_response.dart';
 import '../../../models/filter_model.dart';
 import '../../../models/home_list_model.dart';
@@ -160,7 +160,7 @@ class _FilterItemViewState extends State<FilterItemView> {
                           borderSide:
                               const BorderSide(color: Color(0xffd5d5d5))),
                       hintStyle: Theme.of(context).textTheme.labelSmall,
-                      hintText: AppString.findCarsMobilePhonesAndMore),
+                      hintText: StringHelper.findCarsMobilePhonesAndMore),
                 ),
               ),
               const Gap(10),

@@ -6,7 +6,7 @@ import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/view/payment/select_card_view.dart';
 
-import '../../base/helpers/app_string.dart';
+import '../../base/helpers/string_helper.dart';
 import '../../widgets/app_elevated_button.dart';
 import 'add_card_screen.dart';
 
@@ -67,14 +67,15 @@ class _PaymentOptionsScreenState extends State<PaymentOptionsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppString.paymentSelection),
+        title: const Text(StringHelper.paymentSelection),
       ),
       bottomNavigationBar: AppElevatedButton(
         width: context.width,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         onTap: () {
           if (_selectedPaymentMethod < 0) {
-            DialogHelper.showToast(message: AppString.pleaseSelectPaymentMethod);
+            DialogHelper.showToast(
+                message: StringHelper.pleaseSelectPaymentMethod);
             return;
           }
           if (_selectedPaymentMethod == 0) {
@@ -85,7 +86,7 @@ class _PaymentOptionsScreenState extends State<PaymentOptionsScreen> {
               MaterialPageRoute(builder: (builder) => const SelectCardView()));
           //context.go(Routes.main);
         },
-        title: AppString.payNow,
+        title: StringHelper.payNow,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -93,7 +94,7 @@ class _PaymentOptionsScreenState extends State<PaymentOptionsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              AppString.paymentMethods,
+              StringHelper.paymentMethods,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
@@ -103,9 +104,9 @@ class _PaymentOptionsScreenState extends State<PaymentOptionsScreen> {
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(AppString.singleFeaturedAdFor7Days),
+                  Text(StringHelper.singleFeaturedAdFor7Days),
                   Text(
-                    AppString.eGP260,
+                    StringHelper.eGP260,
                     style: TextStyle(color: Colors.red),
                   ),
                 ],
@@ -119,10 +120,10 @@ class _PaymentOptionsScreenState extends State<PaymentOptionsScreen> {
                 return Card(
                   elevation: 4,
                   child: ListTile(
-                    leading:
-                        Image.asset(method[AppString.icon]!, width: 40, height: 40),
-                    title: Text(method[AppString.name]!),
-                    subtitle: Text(method[AppString.description]!),
+                    leading: Image.asset(method[StringHelper.icon]!,
+                        width: 40, height: 40),
+                    title: Text(method[StringHelper.name]!),
+                    subtitle: Text(method[StringHelper.description]!),
                     trailing: Radio<int>(
                       value: index,
                       groupValue: _selectedPaymentMethod,

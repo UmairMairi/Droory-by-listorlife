@@ -6,29 +6,27 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
+import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/view_model/chat_vm.dart';
-import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/app_empty_widget.dart';
-import 'package:list_and_life/widgets/app_outline_button.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
-import 'package:list_and_life/widgets/like_button.dart';
 import 'package:list_and_life/widgets/image_view.dart';
+import 'package:list_and_life/widgets/like_button.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../base/helpers/app_string.dart';
 import '../../base/helpers/date_helper.dart';
 import '../../base/helpers/dialog_helper.dart';
+import '../../base/helpers/string_helper.dart';
+import '../../base/network/api_request.dart';
+import '../../base/network/base_client.dart';
 import '../../models/common/map_response.dart';
 import '../../models/home_list_model.dart';
 import '../../models/user_model.dart';
-import '../../base/network/api_request.dart';
-import '../../base/network/base_client.dart';
 import '../../routes/app_routes.dart';
 import '../../skeletons/other_product_skeleton.dart';
 
@@ -114,7 +112,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppString.seeProfile),
+        title: const Text(StringHelper.seeProfile),
         centerTitle: true,
         actions: [
           PopupMenuButton<int>(
@@ -124,8 +122,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                 var viewModel = context.read<ChatVM>();
                 switch (value) {
                   case 1:
-                    Share.share(
-                        AppString.checkProductUrl);
+                    Share.share(StringHelper.checkProductUrl);
                     return;
                   case 2:
 
@@ -139,8 +136,8 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                                     .trim()
                                     .isEmpty) {
                                   DialogHelper.showToast(
-                                      message:
-                                          AppString.pleaseEnterReasonOfReport);
+                                      message: StringHelper
+                                          .pleaseEnterReasonOfReport);
                                   return;
                                 }
                                 context.pop();
@@ -155,7 +152,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                               content: AppTextField(
                                 controller: viewModel.reportTextController,
                                 lines: 4,
-                                hint: AppString.reason,
+                                hint: StringHelper.reason,
                               ),
                               cancelButtonText: 'No',
                               title: 'Report User',
@@ -167,8 +164,8 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                         context: context,
                         builder: (context) => AppAlertDialogWithWidget(
                               description: viewModel.blockedUser
-                                  ? AppString.areYouSureWantToUnblockThisUser
-                                  : AppString.areYouSureWantToBlockThisUser,
+                                  ? StringHelper.areYouSureWantToUnblockThisUser
+                                  : StringHelper.areYouSureWantToBlockThisUser,
                               onTap: () {
                                 context.pop();
                                 viewModel.reportBlockUser(
@@ -178,9 +175,9 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                               showCancelButton: true,
                               cancelButtonText: 'No',
                               title: viewModel.blockedUser
-                                  ? AppString.unblockUser
-                                  : AppString.blockUser,
-                              buttonText:AppString.yes,
+                                  ? StringHelper.unblockUser
+                                  : StringHelper.blockUser,
+                              buttonText: StringHelper.yes,
                             ));
                     if (context.mounted) context.pop();
                     if (context.mounted) context.pop();
@@ -190,15 +187,15 @@ class _SeeProfileViewState extends State<SeeProfileView> {
               itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
                     const PopupMenuItem(
                       value: 1,
-                      child: Text(AppString.shareProfile),
+                      child: Text(StringHelper.shareProfile),
                     ),
                     const PopupMenuItem(
                       value: 2,
-                      child: Text(AppString.reportUser),
+                      child: Text(StringHelper.reportUser),
                     ),
                     const PopupMenuItem(
                       value: 3,
-                      child: Text(AppString.blockUser),
+                      child: Text(StringHelper.blockUser),
                     ),
                   ]),
         ],
@@ -242,7 +239,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                           ),
                           const Gap(05),
                           Text(
-                            "${AppString.memberSince} ${DateFormat('MMM yyyy').format(DateTime.parse("${widget.user?.createdAt}"))}",
+                            "${StringHelper.memberSince} ${DateFormat('MMM yyyy').format(DateTime.parse("${widget.user?.createdAt}"))}",
                             style: const TextStyle(
                                 color: Color(0xff7E8392), fontSize: 12),
                           ),
@@ -315,7 +312,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                                                         .spaceBetween,
                                                 children: [
                                                   Text(
-                                                    "${AppString.egp}${_productsList[index].price}",
+                                                    "${StringHelper.egp}${_productsList[index].price}",
                                                     style: context
                                                         .textTheme.titleMedium
                                                         ?.copyWith(

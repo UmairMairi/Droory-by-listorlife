@@ -12,10 +12,10 @@ import 'package:list_and_life/view_model/product_v_m.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../base/helpers/app_string.dart';
 import '../../base/helpers/date_helper.dart';
 import '../../base/helpers/db_helper.dart';
 import '../../base/helpers/dialog_helper.dart';
+import '../../base/helpers/string_helper.dart';
 import '../../routes/app_routes.dart';
 import '../../skeletons/product_detail_skeleton.dart';
 import '../../widgets/app_error_widget.dart';
@@ -77,14 +77,14 @@ class ProductDetailView extends BaseView<ProductVM> {
                               ),
                               const Gap(10),
                               Text(
-                                "${AppString.egp} ${data?.price}",
+                                "${StringHelper.egp} ${data?.price}",
                                 style: context.textTheme.titleLarge
                                     ?.copyWith(color: Colors.red),
                               ),
                               const Gap(10),
                               if (data?.category?.name
                                       ?.toLowerCase()
-                                      .contains(AppString.cars) ??
+                                      .contains(StringHelper.cars) ??
                                   false) ...{
                                 Container(
                                   width: double.infinity,
@@ -165,7 +165,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                                 width: 5,
                                               ),
                                               Text(
-                                                AppString.owner,
+                                                StringHelper.owner,
                                                 style: context
                                                     .textTheme.titleSmall,
                                               ),
@@ -185,7 +185,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                                 width: 5,
                                               ),
                                               Text(
-                                                AppString.city,
+                                                StringHelper.city,
                                                 style: context
                                                     .textTheme.titleSmall,
                                               ),
@@ -205,7 +205,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                                 width: 5,
                                               ),
                                               Text(
-                                                AppString.postingDate,
+                                                StringHelper.postingDate,
                                                 style: context
                                                     .textTheme.titleSmall,
                                               ),
@@ -261,7 +261,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                               const Gap(10),
                               const Gap(10),
                               Text(
-                                AppString.description,
+                                StringHelper.description,
                                 style: context.textTheme.titleMedium,
                               ),
                               const Gap(05),
@@ -295,7 +295,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            AppString.postedBy,
+                                            StringHelper.postedBy,
                                             style: context.textTheme.titleSmall
                                                 ?.copyWith(color: Colors.grey),
                                           ),
@@ -307,7 +307,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                                         .MONTSERRAT_SEMIBOLD),
                                           ),
                                           Text(
-                                            '${AppString.postedOn} ${DateHelper.joiningDate(DateTime.parse('${data?.createdAt}'))}',
+                                            '${StringHelper.postedOn} ${DateHelper.joiningDate(DateTime.parse('${data?.createdAt}'))}',
                                             style: context.textTheme.titleSmall
                                                 ?.copyWith(color: Colors.grey),
                                           ),
@@ -326,7 +326,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                                   extra: data?.user);
                                             },
                                             child: Text(
-                                              AppString.seeProfile,
+                                              StringHelper.seeProfile,
                                               style: context
                                                   .textTheme.titleSmall
                                                   ?.copyWith(
@@ -379,7 +379,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                         ),
                                         const Gap(05),
                                         Text(
-                                          AppString.city,
+                                          StringHelper.city,
                                           style: context.textTheme.titleMedium,
                                         ),
                                         const Gap(25),
@@ -395,7 +395,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                                 data?.nearby ?? '');
                                           },
                                           child: Text(
-                                            AppString.getDirection,
+                                            StringHelper.getDirection,
                                             style: context.textTheme.titleSmall
                                                 ?.copyWith(
                                                     color: Colors.red,
@@ -481,8 +481,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                       ),
                     ),
                     InkWell(
-                      onTap: () => Share.share(
-                          AppString.checkProductUrl),
+                      onTap: () => Share.share(StringHelper.checkProductUrl),
                       child: Container(
                         padding: const EdgeInsets.all(08),
                         margin: const EdgeInsets.all(08),
@@ -535,7 +534,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                               ),
                               const Gap(05),
                               Text(
-                                AppString.call,
+                                StringHelper.call,
                                 style: context.textTheme.labelLarge?.copyWith(
                                     color: Colors.white,
                                     fontSize: 12,
@@ -593,7 +592,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                               ),
                               const Gap(05),
                               Text(
-                                AppString.chat,
+                                StringHelper.chat,
                                 style: context.textTheme.labelLarge?.copyWith(
                                     color: Colors.white,
                                     fontSize: 12,
@@ -636,7 +635,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                               ),
                               const Gap(05),
                               Text(
-                                AppString.whatsapp,
+                                StringHelper.whatsapp,
                                 style: context.textTheme.labelLarge?.copyWith(
                                   color: Colors.white,
                                   fontSize: 12,

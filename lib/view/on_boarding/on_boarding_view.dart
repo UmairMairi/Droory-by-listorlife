@@ -7,8 +7,8 @@ import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/view_model/on_boarding_vm.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 
-import '../../base/helpers/app_string.dart';
 import '../../base/helpers/db_helper.dart';
+import '../../base/helpers/string_helper.dart';
 
 class OnBoardingView extends BaseView<OnBoardingVM> {
   const OnBoardingView({super.key});
@@ -85,8 +85,8 @@ class OnBoardingView extends BaseView<OnBoardingVM> {
                       }
                     },
                     title: viewModel.currentIndexPage != 2
-                        ? AppString.next
-                        : AppString.getStarted,
+                        ? StringHelper.next
+                        : StringHelper.getStarted,
                   )
                 ],
               )

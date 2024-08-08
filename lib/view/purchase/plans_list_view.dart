@@ -5,8 +5,7 @@ import 'package:list_and_life/view/payment/payment_options_screen.dart';
 import 'package:list_and_life/view_model/active_plan_v_m.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 
-import '../../base/helpers/app_string.dart';
-
+import '../../base/helpers/string_helper.dart';
 
 class PlansListView extends BaseView<ActivePlanVM> {
   const PlansListView({super.key});
@@ -15,7 +14,7 @@ class PlansListView extends BaseView<ActivePlanVM> {
   Widget build(BuildContext context, ActivePlanVM viewModel) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppString.sellFasterNow),
+        title: const Text(StringHelper.sellFasterNow),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -25,7 +24,7 @@ class PlansListView extends BaseView<ActivePlanVM> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
-              AppString.featureAd,
+              StringHelper.featureAd,
               style: context.textTheme.titleMedium,
             ),
             ListView.separated(
@@ -81,7 +80,7 @@ class PlansListView extends BaseView<ActivePlanVM> {
                 },
                 itemCount: viewModel.plansList.length),
             Text(
-              AppString.boostToTop,
+              StringHelper.boostToTop,
               style: context.textTheme.titleMedium,
             ),
             ListView.separated(
@@ -146,7 +145,7 @@ class PlansListView extends BaseView<ActivePlanVM> {
                         builder: (builder) => const PaymentOptionsScreen()));
                 //context.go(Routes.main);
               },
-              title: AppString.buyNow,
+              title: StringHelper.buyNow,
             ),
             const Gap(20),
           ],

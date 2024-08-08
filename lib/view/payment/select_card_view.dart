@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 
-import '../../base/helpers/app_string.dart';
 import '../../base/helpers/dialog_helper.dart';
+import '../../base/helpers/string_helper.dart';
 import '../../routes/app_routes.dart';
 import '../../widgets/app_elevated_button.dart';
 import 'add_card_screen.dart';
@@ -33,7 +33,7 @@ class _SelectCardViewState extends State<SelectCardView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppString.paymentOptions),
+        title: const Text(StringHelper.paymentOptions),
       ),
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: context.theme.primaryColor,
@@ -42,7 +42,7 @@ class _SelectCardViewState extends State<SelectCardView> {
           color: Colors.white,
         ),
         label: Text(
-          AppString.addCard,
+          StringHelper.addCard,
           style: context.textTheme.titleSmall?.copyWith(color: Colors.white),
         ),
         onPressed: () {
@@ -58,13 +58,13 @@ class _SelectCardViewState extends State<SelectCardView> {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         onTap: () {
           if (_selectedCardIndex < 0) {
-            DialogHelper.showToast(message: AppString.pleaseSelectCard);
+            DialogHelper.showToast(message: StringHelper.pleaseSelectCard);
             return;
           }
           context.go(Routes.main);
           //context.go(Routes.main);
         },
-        title: AppString.payNow,
+        title: StringHelper.payNow,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -72,7 +72,7 @@ class _SelectCardViewState extends State<SelectCardView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              AppString.selectCardAddNewCard,
+              StringHelper.selectCardAddNewCard,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
@@ -84,8 +84,9 @@ class _SelectCardViewState extends State<SelectCardView> {
                   elevation: 4,
                   child: ListTile(
                     leading: const Icon(Icons.credit_card),
-                    title: Text(card[AppString.cardNumber]!),
-                    subtitle: Text('${AppString.expiry} ${card[AppString.expiryDate]}'),
+                    title: Text(card[StringHelper.cardNumber]!),
+                    subtitle: Text(
+                        '${StringHelper.expiry} ${card[StringHelper.expiryDate]}'),
                     trailing: Radio<int>(
                       value: index,
                       groupValue: _selectedCardIndex,

@@ -6,7 +6,7 @@ import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/app_outline_button.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../../../base/helpers/app_string.dart';
+import '../../../../base/helpers/string_helper.dart';
 import '../../../../models/prodect_detail_model.dart';
 import '../../../../routes/app_routes.dart';
 import '../../../product/my_product_view.dart';
@@ -40,12 +40,13 @@ class PostAddedFinalView extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  Text(AppString.congratulations, style: context.textTheme.titleLarge),
+                  Text(StringHelper.congratulations,
+                      style: context.textTheme.titleLarge),
                   const SizedBox(
                     height: 10,
                   ),
                   Text(
-                    AppString.yourAdWillGoLiveShortly,
+                    StringHelper.yourAdWillGoLiveShortly,
                     style: context.textTheme.titleMedium
                         ?.copyWith(color: Colors.black.withOpacity(0.5)),
                   ),
@@ -58,7 +59,7 @@ class PostAddedFinalView extends StatelessWidget {
                 color: const Color(0xffFF385C),
                 child: Center(
                   child: Text(
-                    AppString.listOrLiftAllowsFreeAds,
+                    StringHelper.listOrLiftAllowsFreeAds,
                     style: context.textTheme.titleMedium
                         ?.copyWith(color: Colors.white),
                   ),
@@ -76,7 +77,7 @@ class PostAddedFinalView extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Text(
-                AppString.reachMoreBuyersAndSellFaster,
+                StringHelper.reachMoreBuyersAndSellFaster,
                 style: context.textTheme.titleLarge,
               ),
             ),
@@ -86,7 +87,7 @@ class PostAddedFinalView extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Text(
-                AppString.upgradingAnAdHelpsYouToReachMoreBuyers,
+                StringHelper.upgradingAnAdHelpsYouToReachMoreBuyers,
                 textAlign: TextAlign.center,
                 style: context.textTheme.titleMedium
                     ?.copyWith(color: Colors.black.withOpacity(0.5)),
@@ -99,7 +100,7 @@ class PostAddedFinalView extends StatelessWidget {
               onTap: () {
                 context.push(Routes.planList);
               },
-              title: AppString.sellFasterNow,
+              title: StringHelper.sellFasterNow,
               width: context.width,
               padding: const EdgeInsets.only(
                   left: 40, right: 40, top: 20, bottom: 0),
@@ -113,7 +114,7 @@ class PostAddedFinalView extends StatelessWidget {
                               data: data,
                             )));
               },
-              title: AppString.reviewAd,
+              title: StringHelper.reviewAd,
               width: context.width,
               padding: const EdgeInsets.only(
                   left: 40, right: 40, top: 20, bottom: 20),

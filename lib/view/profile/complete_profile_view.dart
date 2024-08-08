@@ -14,7 +14,7 @@ import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 
-import '../../base/helpers/app_string.dart';
+import '../../base/helpers/string_helper.dart';
 
 class CompleteProfileView extends BaseView<AuthVM> {
   const CompleteProfileView({super.key});
@@ -24,7 +24,7 @@ class CompleteProfileView extends BaseView<AuthVM> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          AppString.completeYourProfile,
+          StringHelper.completeYourProfile,
         ),
         centerTitle: true,
       ),
@@ -88,24 +88,24 @@ class CompleteProfileView extends BaseView<AuthVM> {
             ),
             const Gap(50),
             AppTextField(
-              title: AppString.firstName,
-              hint: AppString.enter,
+              title: StringHelper.firstName,
+              hint: StringHelper.enter,
               inputType: TextInputType.name,
               controller: viewModel.nameTextController,
               inputFormatters: AppTextInputFormatters.withNameFormatter(),
             ),
             const Gap(10),
             AppTextField(
-              title: AppString.lastName,
-              hint: AppString.enter,
+              title: StringHelper.lastName,
+              hint: StringHelper.enter,
               inputType: TextInputType.name,
               controller: viewModel.lNameTextController,
               inputFormatters: AppTextInputFormatters.withNameFormatter(),
             ),
             const Gap(10),
             AppTextField(
-              title: AppString.email,
-              hint: AppString.enter,
+              title: StringHelper.email,
+              hint: StringHelper.enter,
               inputType: TextInputType.emailAddress,
               controller: viewModel.emailTextController,
               inputFormatters: AppTextInputFormatters.withEmailFormatter(),
@@ -122,11 +122,11 @@ class CompleteProfileView extends BaseView<AuthVM> {
                 Expanded(
                   child: RichText(
                     text: TextSpan(
-                        text: AppString.iAgreeWithThe,
+                        text: StringHelper.iAgreeWithThe,
                         style: const TextStyle(color: Colors.black),
                         children: [
                           TextSpan(
-                              text: AppString.termsConditions,
+                              text: StringHelper.termsConditions,
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   context.push(Routes.termsOfUse, extra: 2);
@@ -178,7 +178,7 @@ class CompleteProfileView extends BaseView<AuthVM> {
                 DialogHelper.showLoading();
                 viewModel.completeProfileApi();
               },
-              title: AppString.continueButton,
+              title: StringHelper.continueButton,
             )
           ],
         ),

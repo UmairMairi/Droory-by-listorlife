@@ -8,7 +8,7 @@ import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../../../base/helpers/app_string.dart';
+import '../../../base/helpers/string_helper.dart';
 import '../../../routes/app_routes.dart';
 
 class LocationPermissionView extends StatelessWidget {
@@ -18,7 +18,7 @@ class LocationPermissionView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppString.location),
+        title: const Text(StringHelper.location),
         centerTitle: true,
       ),
       body: Padding(
@@ -33,13 +33,13 @@ class LocationPermissionView extends StatelessWidget {
             ),
             const Gap(20),
             Text(
-              AppString.helloWelcome,
+              StringHelper.helloWelcome,
               style: context.textTheme.titleLarge,
               textAlign: TextAlign.center,
             ),
             const Gap(20),
             Text(
-              AppString.loremText,
+              StringHelper.loremText,
               style: context.textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
@@ -52,7 +52,7 @@ class LocationPermissionView extends StatelessWidget {
                   }
                   if (context.mounted) context.go(Routes.main);
                 },
-                title: AppString.useCurrentLocation,
+                title: StringHelper.useCurrentLocation,
                 icon: const Icon(
                   CupertinoIcons.location_fill,
                   color: Colors.white,
@@ -63,7 +63,7 @@ class LocationPermissionView extends StatelessWidget {
                   context.go(Routes.main);
                 },
                 child: const Text(
-                  AppString.skip,
+                  StringHelper.skip,
                   style: TextStyle(
                       decoration: TextDecoration.underline,
                       fontFamily: FontRes.MONTSERRAT_SEMIBOLD),

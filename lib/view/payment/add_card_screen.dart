@@ -3,7 +3,7 @@ import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
 
-import '../../base/helpers/app_string.dart';
+import '../../base/helpers/string_helper.dart';
 
 class AddCardScreen extends StatelessWidget {
   const AddCardScreen({super.key});
@@ -18,8 +18,8 @@ class AddCardScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             AppTextField(
-              title: AppString.nameOnCard,
-              hint: AppString.enter,
+              title: StringHelper.nameOnCard,
+              hint: StringHelper.enter,
               inputType: TextInputType.name,
               inputFormatters: AppTextInputFormatters.withNameFormatter(),
             ),
@@ -27,8 +27,8 @@ class AddCardScreen extends StatelessWidget {
               height: 10,
             ),
             AppTextField(
-              title: AppString.cardNumber,
-              hint: AppString.enter,
+              title: StringHelper.cardNumber,
+              hint: StringHelper.enter,
               inputType: TextInputType.number,
               inputFormatters: AppTextInputFormatters.withCardFormatter(),
             ),
@@ -39,8 +39,8 @@ class AddCardScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: AppTextField(
-                    title: AppString.expDate,
-                    hint: AppString.enter,
+                    title: StringHelper.expDate,
+                    hint: StringHelper.enter,
                     inputType: TextInputType.number,
                     inputFormatters:
                         AppTextInputFormatters.withExpiryDateFormatter(),
@@ -51,10 +51,10 @@ class AddCardScreen extends StatelessWidget {
                 ),
                 Expanded(
                   child: AppTextField(
-                    title: AppString.cvv,
+                    title: StringHelper.cvv,
                     inputType: TextInputType.name,
                     inputFormatters: AppTextInputFormatters.withCVVFormatter(),
-                    hint: AppString.enter,
+                    hint: StringHelper.enter,
                   ),
                 ),
               ],
@@ -66,7 +66,7 @@ class AddCardScreen extends StatelessWidget {
                 Navigator.pop(context);
               },
               height: 40,
-              title: AppString.saveCard,
+              title: StringHelper.saveCard,
             )
           ],
         ),

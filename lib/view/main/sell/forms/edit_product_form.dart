@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../base/helpers/app_string.dart';
+import '../../../../base/helpers/string_helper.dart';
 import '../../../../models/prodect_detail_model.dart';
 
 class EditProductForm extends StatelessWidget {
@@ -11,7 +11,7 @@ class EditProductForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppString.editProduct),
+        title: const Text(StringHelper.editProduct),
       ),
       body: const SizedBox(),
     );

@@ -12,7 +12,7 @@ import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
-import '../../../base/helpers/app_string.dart';
+import '../../../base/helpers/string_helper.dart';
 import '../../../base/network/api_constants.dart';
 import '../../../base/network/api_request.dart';
 import '../../../base/network/base_client.dart';
@@ -49,7 +49,7 @@ class _FilterViewState extends State<FilterView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppString.filter),
+        title: const Text(StringHelper.filter),
         centerTitle: true,
       ),
       body: Consumer<HomeVM>(builder: (context, viewModel, child) {
@@ -74,7 +74,7 @@ class _FilterViewState extends State<FilterView> {
                             : Colors.white,
                       ),
                       child: Text(
-                        AppString.newText,
+                        StringHelper.newText,
                         style: context.textTheme.titleMedium?.copyWith(
                           color: viewModel.selectedIndex == 0
                               ? Colors.white
@@ -101,7 +101,7 @@ class _FilterViewState extends State<FilterView> {
                             : Colors.black,
                       ),
                       child: Text(
-                        AppString.used,
+                        StringHelper.used,
                         style: context.textTheme.titleMedium?.copyWith(
                             color: viewModel.selectedIndex == 1
                                 ? Colors.white
@@ -119,7 +119,7 @@ class _FilterViewState extends State<FilterView> {
                 height: 15,
               ),
               Text(
-                AppString.price,
+                StringHelper.price,
                 style: context.textTheme.titleSmall,
               ),
               const Gap(10),
@@ -153,7 +153,7 @@ class _FilterViewState extends State<FilterView> {
                           },
                           decoration: InputDecoration(
                               fillColor: const Color(0xffFCFCFD),
-                              hintText: AppString.egp0,
+                              hintText: StringHelper.egp0,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide:
@@ -170,7 +170,7 @@ class _FilterViewState extends State<FilterView> {
                     width: 5,
                   ),
                   Text(
-                    AppString.to,
+                    StringHelper.to,
                     style: context.textTheme.titleSmall,
                   ),
                   const SizedBox(
@@ -255,8 +255,8 @@ class _FilterViewState extends State<FilterView> {
                 height: 10,
               ),
               AppTextField(
-                title: AppString.category,
-                hint: AppString.selectCategory,
+                title: StringHelper.category,
+                hint: StringHelper.selectCategory,
                 controller: viewModel.categoryTextController,
                 readOnly: true,
                 suffix: PopupMenuButton(
@@ -282,8 +282,8 @@ class _FilterViewState extends State<FilterView> {
               ),
               if (subCategories.isNotEmpty) ...{
                 AppTextField(
-                  title: AppString.subCategory,
-                  hint: AppString.selectSubCategory,
+                  title: StringHelper.subCategory,
+                  hint: StringHelper.selectSubCategory,
                   controller: viewModel.subCategoryTextController,
                   readOnly: true,
                   suffix: PopupMenuButton(
@@ -309,8 +309,8 @@ class _FilterViewState extends State<FilterView> {
                 ),
               },
               AppTextField(
-                title: AppString.location,
-                hint: AppString.selectLocation,
+                title: StringHelper.location,
+                hint: StringHelper.selectLocation,
                 controller: viewModel.locationTextController,
                 readOnly: true,
                 suffix: const Icon(Icons.location_on),
@@ -347,22 +347,25 @@ class _FilterViewState extends State<FilterView> {
                     children: [
                       ListTile(
                         title: const Text(
-                          AppString.priceHighToLow,
+                          StringHelper.priceHighToLow,
                           selectionColor: Colors.white,
                         ),
-                        onTap: () => viewModel.sortBy = AppString.priceHighToLow,
+                        onTap: () =>
+                            viewModel.sortBy = StringHelper.priceHighToLow,
                       ),
                       ListTile(
-                        title: const Text(AppString.priceLowToHigh),
-                        onTap: () => viewModel.sortBy = AppString.priceLowToHigh,
+                        title: const Text(StringHelper.priceLowToHigh),
+                        onTap: () =>
+                            viewModel.sortBy = StringHelper.priceLowToHigh,
                       ),
                       ListTile(
-                        title: const Text(AppString.datePublished),
-                        onTap: () => viewModel.sortBy = AppString.priceLowToHigh,
+                        title: const Text(StringHelper.datePublished),
+                        onTap: () =>
+                            viewModel.sortBy = StringHelper.priceLowToHigh,
                       ),
                       ListTile(
-                        title: const Text(AppString.distance),
-                        onTap: () => viewModel.sortBy = AppString.distance,
+                        title: const Text(StringHelper.distance),
+                        onTap: () => viewModel.sortBy = StringHelper.distance,
                       )
                     ],
                   ),
@@ -386,22 +389,25 @@ class _FilterViewState extends State<FilterView> {
                     children: [
                       ListTile(
                         title: const Text(
-                          AppString.today,
+                          StringHelper.today,
                           selectionColor: Colors.white,
                         ),
-                        onTap: () => viewModel.publishedBy = AppString.today,
+                        onTap: () => viewModel.publishedBy = StringHelper.today,
                       ),
                       ListTile(
-                        title: const Text(AppString.yesterday),
-                        onTap: () => viewModel.publishedBy = AppString.yesterday,
+                        title: const Text(StringHelper.yesterday),
+                        onTap: () =>
+                            viewModel.publishedBy = StringHelper.yesterday,
                       ),
                       ListTile(
-                        title: const Text(AppString.lastWeek),
-                        onTap: () => viewModel.publishedBy = AppString.lastWeek,
+                        title: const Text(StringHelper.lastWeek),
+                        onTap: () =>
+                            viewModel.publishedBy = StringHelper.lastWeek,
                       ),
                       ListTile(
-                        title: const Text(AppString.lastMonth),
-                        onTap: () => viewModel.publishedBy = AppString.lastMonth,
+                        title: const Text(StringHelper.lastMonth),
+                        onTap: () =>
+                            viewModel.publishedBy = StringHelper.lastMonth,
                       )
                     ],
                   ),
@@ -418,8 +424,9 @@ class _FilterViewState extends State<FilterView> {
                 width: context.width,
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 onTap: () {
-                  filter.itemCondition =
-                      viewModel.selectedIndex == 0 ? AppString.newText : AppString.used;
+                  filter.itemCondition = viewModel.selectedIndex == 0
+                      ? StringHelper.newText
+                      : StringHelper.used;
                   filter.minPrice =
                       viewModel.startPriceTextController.text.trim();
                   filter.maxPrice =
@@ -432,11 +439,11 @@ class _FilterViewState extends State<FilterView> {
                       MaterialPageRoute(
                           builder: (context) => FilterItemView(model: filter)));
                 },
-                title: AppString.apply,
+                title: StringHelper.apply,
               ),
               const Gap(10),
               AppOutlineButton(
-                title: AppString.reset,
+                title: StringHelper.reset,
                 width: context.width,
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 onTap: () {},

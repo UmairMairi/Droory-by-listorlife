@@ -9,8 +9,8 @@ import 'package:list_and_life/widgets/app_error_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../base/helpers/app_string.dart';
 import '../../base/helpers/dialog_helper.dart';
+import '../../base/helpers/string_helper.dart';
 import '../../res/assets_res.dart';
 import '../../view_model/my_ads_v_m.dart';
 import '../../widgets/app_elevated_button.dart';
@@ -73,12 +73,13 @@ class MyProductView extends BaseView<ProductVM> {
                               ),
                               const Gap(10),
                               Text(
-                                "${AppString.egp} ${data?.price}",
+                                "${StringHelper.egp} ${data?.price}",
                                 style: context.textTheme.titleLarge
                                     ?.copyWith(color: Colors.red),
                               ),
                               const Gap(10),
-                              if (data?.category?.name?.contains(AppString.cars) ??
+                              if (data?.category?.name
+                                      ?.contains(StringHelper.cars) ??
                                   false) ...{
                                 Container(
                                   width: double.infinity,
@@ -159,7 +160,7 @@ class MyProductView extends BaseView<ProductVM> {
                                                 width: 5,
                                               ),
                                               Text(
-                                                AppString.owner,
+                                                StringHelper.owner,
                                                 style: context
                                                     .textTheme.titleSmall,
                                               ),
@@ -179,7 +180,7 @@ class MyProductView extends BaseView<ProductVM> {
                                                 width: 5,
                                               ),
                                               Text(
-                                                AppString.city,
+                                                StringHelper.city,
                                                 style: context
                                                     .textTheme.titleSmall,
                                               ),
@@ -199,7 +200,7 @@ class MyProductView extends BaseView<ProductVM> {
                                                 width: 5,
                                               ),
                                               Text(
-                                                AppString.postingDate,
+                                                StringHelper.postingDate,
                                                 style: context
                                                     .textTheme.titleSmall,
                                               ),
@@ -246,7 +247,7 @@ class MyProductView extends BaseView<ProductVM> {
                                 ),
                                 const Gap(10),
                               },
-                              data?.sellStatus != AppString.soldText
+                              data?.sellStatus != StringHelper.soldText
                                   ? Row(
                                       children: [
                                         Expanded(
@@ -268,7 +269,7 @@ class MyProductView extends BaseView<ProductVM> {
                                                     BorderRadius.circular(10),
                                               ),
                                               child: Text(
-                                                AppString.markAsSold,
+                                                StringHelper.markAsSold,
                                                 style: context
                                                     .textTheme.labelLarge
                                                     ?.copyWith(
@@ -292,7 +293,7 @@ class MyProductView extends BaseView<ProductVM> {
                                                   BorderRadius.circular(10),
                                             ),
                                             child: Text(
-                                              AppString.sellFasterNow,
+                                              StringHelper.sellFasterNow,
                                               style: context
                                                   .textTheme.labelLarge
                                                   ?.copyWith(
@@ -306,7 +307,7 @@ class MyProductView extends BaseView<ProductVM> {
                                       ],
                                     )
                                   : const AppElevatedButton(
-                                      title: AppString.soldText,
+                                      title: StringHelper.soldText,
                                       height: 30,
                                       width: 100,
                                       backgroundColor: Colors.grey,
@@ -320,7 +321,7 @@ class MyProductView extends BaseView<ProductVM> {
                               ),
                               const Gap(10),
                               Text(
-                                AppString.description,
+                                StringHelper.description,
                                 style: context.textTheme.titleMedium,
                               ),
                               const Gap(05),
@@ -369,8 +370,8 @@ class MyProductView extends BaseView<ProductVM> {
                       decoration: const BoxDecoration(
                           shape: BoxShape.circle, color: Colors.black26),
                       child: IconButton(
-                          onPressed: () => Share.share(
-                              AppString.checkProductUrl),
+                          onPressed: () =>
+                              Share.share(StringHelper.checkProductUrl),
                           icon: const Icon(
                             Icons.share_outlined,
                             color: Colors.white,
@@ -398,15 +399,15 @@ class MyProductView extends BaseView<ProductVM> {
                             <PopupMenuEntry<int>>[
                           const PopupMenuItem(
                             value: 1,
-                            child: Text(AppString.edit),
+                            child: Text(StringHelper.edit),
                           ),
                           const PopupMenuItem(
                             value: 2,
-                            child: Text(AppString.deactivate),
+                            child: Text(StringHelper.deactivate),
                           ),
                           const PopupMenuItem(
                             value: 3,
-                            child: Text(AppString.remove),
+                            child: Text(StringHelper.remove),
                           ),
                         ],
                       ),

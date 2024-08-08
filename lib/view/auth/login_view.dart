@@ -2,6 +2,7 @@ import 'package:ccp_dialog/country_picker/flutter_country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/db_helper.dart';
 import 'package:list_and_life/res/assets_res.dart';
@@ -9,10 +10,9 @@ import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
 
-import '../../base/helpers/app_string.dart';
 import '../../base/helpers/dialog_helper.dart';
+import '../../base/helpers/string_helper.dart';
 import '../../view_model/auth_vm.dart';
-import 'package:keyboard_actions/keyboard_actions.dart';
 
 class LoginView extends BaseView<AuthVM> {
   const LoginView({super.key});
@@ -21,7 +21,7 @@ class LoginView extends BaseView<AuthVM> {
   Widget build(BuildContext context, AuthVM viewModel) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppString.login),
+        title: const Text(StringHelper.login),
         centerTitle: true,
         actions: [
           TextButton(
@@ -30,7 +30,7 @@ class LoginView extends BaseView<AuthVM> {
                 context.go(Routes.main);
               },
               child: Text(
-                AppString.guestLogin,
+                StringHelper.guestLogin,
                 style: context.textTheme.titleSmall?.copyWith(
                     color: Colors.red,
                     decoration: TextDecoration.underline,
@@ -63,8 +63,8 @@ class LoginView extends BaseView<AuthVM> {
                 ),
                 const Flexible(child: Gap(100)),
                 AppTextField(
-                  title: AppString.phoneNumber,
-                  hint: AppString.phoneNumber,
+                  title: StringHelper.phoneNumber,
+                  hint: StringHelper.phoneNumber,
                   focusNode: viewModel.nodeText,
                   inputFormatters:
                       AppTextInputFormatters.withPhoneNumberFormatter(),
@@ -100,11 +100,11 @@ class LoginView extends BaseView<AuthVM> {
                     DialogHelper.showLoading();
                     viewModel.loginApi();
                   },
-                  title: AppString.continueButton,
+                  title: StringHelper.continueButton,
                 ),
                 const Flexible(child: Gap(100)),
                 Text(
-                  AppString.loginWithSocial,
+                  StringHelper.loginWithSocial,
                   style: context.textTheme.titleSmall,
                 ),
                 const Gap(30),

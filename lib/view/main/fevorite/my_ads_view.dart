@@ -13,8 +13,8 @@ import 'package:list_and_life/widgets/app_empty_widget.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import '../../../base/helpers/app_string.dart';
 import '../../../base/helpers/db_helper.dart';
+import '../../../base/helpers/string_helper.dart';
 import '../../../view_model/my_ads_v_m.dart';
 import '../../../widgets/unauthorised_view.dart';
 
@@ -101,15 +101,16 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                               <PopupMenuEntry<int>>[
                                             const PopupMenuItem(
                                               value: 1,
-                                              child: Text(AppString.edit),
+                                              child: Text(StringHelper.edit),
                                             ),
                                             const PopupMenuItem(
                                               value: 2,
-                                              child: Text(AppString.deactivate),
+                                              child:
+                                                  Text(StringHelper.deactivate),
                                             ),
                                             const PopupMenuItem(
                                               value: 3,
-                                              child: Text(AppString.remove),
+                                              child: Text(StringHelper.remove),
                                             ),
                                           ],
                                         )
@@ -165,7 +166,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                         color: Colors.grey),
                                               ),
                                               Text(
-                                                "${AppString.egp} ${viewModel.productsList[index].price}",
+                                                "${StringHelper.egp} ${viewModel.productsList[index].price}",
                                                 style: context
                                                     .textTheme.titleMedium
                                                     ?.copyWith(
@@ -199,7 +200,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                           ),
                                                           const Gap(02),
                                                           Text(
-                                                            '${AppString.likes} ${viewModel.productsList[index].favouritesCount}',
+                                                            '${StringHelper.likes} ${viewModel.productsList[index].favouritesCount}',
                                                             style: context
                                                                 .textTheme
                                                                 .labelMedium
@@ -220,7 +221,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                           ),
                                                           const Gap(02),
                                                           Text(
-                                                            '${AppString.views} ${viewModel.productsList[index].countViews}',
+                                                            '${StringHelper.views} ${viewModel.productsList[index].countViews}',
                                                             style: context
                                                                 .textTheme
                                                                 .labelMedium
@@ -260,16 +261,16 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                       children: [
                                         viewModel.productsList[index]
                                                     .sellStatus !=
-                                                AppString.sold
+                                                StringHelper.sold
                                             ? AppElevatedButton(
                                                 onTap: () {},
-                                                title: AppString.active,
+                                                title: StringHelper.active,
                                                 height: 30,
                                                 width: 100,
                                                 backgroundColor: Colors.red,
                                               )
                                             : const AppElevatedButton(
-                                                title: AppString.sold,
+                                                title: StringHelper.sold,
                                                 height: 30,
                                                 width: 100,
                                                 backgroundColor: Colors.grey,
@@ -277,9 +278,10 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                         const Gap(10),
                                         viewModel.productsList[index]
                                                     .sellStatus !=
-                                                AppString.sold
+                                                StringHelper.sold
                                             ? Text(
-                                                AppString.thisAdisCurrentlyLive,
+                                                StringHelper
+                                                    .thisAdisCurrentlyLive,
                                                 style: context
                                                     .textTheme.labelMedium
                                                     ?.copyWith(
@@ -287,7 +289,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                             .MONTSERRAT_MEDIUM),
                                               )
                                             : Text(
-                                                AppString.thisAdisSold,
+                                                StringHelper.thisAdisSold,
                                                 style: context
                                                     .textTheme.labelMedium
                                                     ?.copyWith(
@@ -296,7 +298,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                               ),
                                         if (viewModel.productsList[index]
                                                 .sellStatus !=
-                                            AppString.sold) ...{
+                                            StringHelper.sold) ...{
                                           const Gap(10),
                                           Row(
                                             children: [
@@ -322,7 +324,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                               08),
                                                     ),
                                                     child: Text(
-                                                      AppString.markAsSold,
+                                                      StringHelper.markAsSold,
                                                       style: context
                                                           .textTheme.labelLarge
                                                           ?.copyWith(
@@ -354,7 +356,8 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                               08),
                                                     ),
                                                     child: Text(
-                                                      AppString.sellFasterNow,
+                                                      StringHelper
+                                                          .sellFasterNow,
                                                       style: context
                                                           .textTheme.labelLarge
                                                           ?.copyWith(

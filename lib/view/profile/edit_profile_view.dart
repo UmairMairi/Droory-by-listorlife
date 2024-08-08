@@ -10,7 +10,7 @@ import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 
-import '../../base/helpers/app_string.dart';
+import '../../base/helpers/string_helper.dart';
 import '../../base/network/api_constants.dart';
 
 class EditProfileView extends BaseView<ProfileVM> {
@@ -21,7 +21,7 @@ class EditProfileView extends BaseView<ProfileVM> {
     debugPrint('${DbHelper.getUserModel()?.id}');
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppString.editProfile),
+        title: const Text(StringHelper.editProfile),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -66,34 +66,35 @@ class EditProfileView extends BaseView<ProfileVM> {
             ),
             const Gap(20),
             AppTextField(
-              title: AppString.firstName,
-              hint: AppString.firstName,
+              title: StringHelper.firstName,
+              hint: StringHelper.firstName,
               inputType: TextInputType.name,
               inputFormatters: AppTextInputFormatters.withNameFormatter(),
               controller: viewModel.nameTextController,
             ),
             const Gap(20),
             AppTextField(
-              title: AppString.lastName,
-              hint: AppString.lastName,
+              title: StringHelper.lastName,
+              hint: StringHelper.lastName,
               inputType: TextInputType.name,
               inputFormatters: AppTextInputFormatters.withNameFormatter(),
               controller: viewModel.lastNameController,
             ),
             const Gap(20),
             AppTextField(
-              title: AppString.email,
-              hint: AppString.email,
+              title: StringHelper.email,
+              hint: StringHelper.email,
               inputType: TextInputType.emailAddress,
               inputFormatters: AppTextInputFormatters.withEmailFormatter(),
               controller: viewModel.emailTextController,
             ),
             const Gap(20),
             AppTextField(
-              title: AppString.phoneNumber,
-              hint: AppString.phoneNumber,
+              title: StringHelper.phoneNumber,
+              hint: StringHelper.phoneNumber,
               onTap: () {
-                DialogHelper.showToast(message: AppString.thisFieldIsNotEditable);
+                DialogHelper.showToast(
+                    message: StringHelper.thisFieldIsNotEditable);
               },
               readOnly: true,
               focusNode: viewModel.nodeText,
@@ -104,8 +105,8 @@ class EditProfileView extends BaseView<ProfileVM> {
             ),
             const Gap(20),
             AppTextField(
-              title: AppString.bio,
-              hint: AppString.writeHere,
+              title: StringHelper.bio,
+              hint: StringHelper.writeHere,
               inputType: TextInputType.multiline,
               controller: viewModel.bioTextController,
               lines: 5,
@@ -136,7 +137,7 @@ class EditProfileView extends BaseView<ProfileVM> {
                 DialogHelper.showLoading();
                 viewModel.updateProfileApi();
               },
-              title: AppString.update,
+              title: StringHelper.update,
             ),
             const Gap(20),
           ],

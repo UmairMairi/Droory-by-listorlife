@@ -9,7 +9,7 @@ import 'package:list_and_life/view/main/fevorite/my_favourites_view.dart';
 import 'package:list_and_life/view_model/my_ads_v_m.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 
-import '../../../base/helpers/app_string.dart';
+import '../../../base/helpers/string_helper.dart';
 
 class AdsView extends BaseView<MyAdsVM> {
   const AdsView({super.key});
@@ -33,7 +33,7 @@ class AdsView extends BaseView<MyAdsVM> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 AppElevatedButton(
-                  title: AppString.ads,
+                  title: StringHelper.ads,
                   height: 40,
                   tittleColor:
                       viewModel.selectIndex == 0 ? Colors.white : Colors.black,
@@ -46,7 +46,7 @@ class AdsView extends BaseView<MyAdsVM> {
                 ),
                 const Gap(10),
                 AppElevatedButton(
-                  title: AppString.favourites,
+                  title: StringHelper.favourites,
                   height: 40,
                   tittleColor:
                       viewModel.selectIndex == 1 ? Colors.white : Colors.black,

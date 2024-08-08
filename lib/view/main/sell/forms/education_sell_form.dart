@@ -5,9 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:list_and_life/base/base.dart';
 
-import '../../../../base/helpers/app_string.dart';
 import '../../../../base/helpers/dialog_helper.dart';
 import '../../../../base/helpers/image_picker_helper.dart';
+import '../../../../base/helpers/string_helper.dart';
 import '../../../../models/category_model.dart';
 import '../../../../view_model/sell_forms_vm.dart';
 import '../../../../widgets/app_map_widget.dart';
@@ -43,7 +43,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              AppString.uploadImages,
+              StringHelper.uploadImages,
               style: context.textTheme.titleMedium,
             ),
             GestureDetector(
@@ -82,7 +82,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                             height: 2,
                           ),
                           Text(
-                            AppString.upload,
+                            StringHelper.upload,
                             style: TextStyle(
                               fontSize: 14,
                             ),
@@ -168,7 +168,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                             height: 2,
                           ),
                           Text(
-                            AppString.add,
+                            StringHelper.add,
                             style: TextStyle(
                               fontSize: 14,
                             ),
@@ -183,7 +183,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
             RichText(
                 text: const TextSpan(children: [
               TextSpan(
-                text: AppString.type,
+                text: StringHelper.type,
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
@@ -211,7 +211,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                   contentPadding: const EdgeInsets.only(
                     left: 20,
                   ),
-                  hintText: AppString.select,
+                  hintText: StringHelper.select,
                   hintStyle:
                       const TextStyle(color: Color(0xffACACAC), fontSize: 14),
                   border: const OutlineInputBorder(
@@ -248,7 +248,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
               RichText(
                   text: const TextSpan(children: [
                 TextSpan(
-                  text: AppString.brand,
+                  text: StringHelper.brand,
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 14,
@@ -276,7 +276,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                     contentPadding: const EdgeInsets.only(
                       left: 20,
                     ),
-                    hintText: AppString.select,
+                    hintText: StringHelper.select,
                     hintStyle:
                         const TextStyle(color: Color(0xffACACAC), fontSize: 14),
                     border: const OutlineInputBorder(
@@ -316,7 +316,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
               RichText(
                   text: const TextSpan(children: [
                 TextSpan(
-                  text: AppString.models,
+                  text: StringHelper.models,
                   style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 14,
@@ -344,7 +344,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                     contentPadding: const EdgeInsets.only(
                       left: 20,
                     ),
-                    hintText: AppString.models,
+                    hintText: StringHelper.models,
                     hintStyle:
                         const TextStyle(color: Color(0xffACACAC), fontSize: 14),
                     border: const OutlineInputBorder(
@@ -385,7 +385,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
             RichText(
                 text: const TextSpan(children: [
               TextSpan(
-                text: AppString.adTitle,
+                text: StringHelper.adTitle,
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
@@ -413,7 +413,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                 decoration: const InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                    hintText: AppString.enter,
+                    hintText: StringHelper.enter,
                     hintStyle:
                         TextStyle(color: Color(0xffACACAC), fontSize: 14),
                     border: OutlineInputBorder(
@@ -430,7 +430,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
             RichText(
                 text: const TextSpan(children: [
               TextSpan(
-                text: AppString.describeWhatYouAreSelling,
+                text: StringHelper.describeWhatYouAreSelling,
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
@@ -457,7 +457,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                 decoration: const InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                    hintText: AppString.enter,
+                    hintText: StringHelper.enter,
                     hintStyle:
                         TextStyle(color: Color(0xffACACAC), fontSize: 14),
                     border: OutlineInputBorder(
@@ -474,7 +474,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
             RichText(
                 text: const TextSpan(children: [
               TextSpan(
-                text: AppString.location,
+                text: StringHelper.location,
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
@@ -514,7 +514,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                 decoration: const InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                    hintText: AppString.select,
+                    hintText: StringHelper.select,
                     suffixIcon: Icon(Icons.location_on),
                     hintStyle:
                         TextStyle(color: Color(0xffACACAC), fontSize: 14),
@@ -532,7 +532,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
             RichText(
                 text: const TextSpan(children: [
               TextSpan(
-                text: AppString.priceEgp,
+                text: StringHelper.priceEgp,
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
@@ -559,7 +559,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                 decoration: const InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                    hintText: AppString.enterPrice,
+                    hintText: StringHelper.enterPrice,
                     hintStyle:
                         TextStyle(color: Color(0xffACACAC), fontSize: 14),
                     border: OutlineInputBorder(
@@ -578,34 +578,38 @@ class EducationSellForm extends BaseView<SellFormsVM> {
             GestureDetector(
               onTap: () {
                 if (viewModel.mainImagePath.isEmpty) {
-                  DialogHelper.showToast(message: AppString.pleaseUploadMainImage);
+                  DialogHelper.showToast(
+                      message: StringHelper.pleaseUploadMainImage);
                   return;
                 }
                 if (viewModel.imagesList.isEmpty) {
                   DialogHelper.showToast(
-                      message: AppString.pleaseUploadAddAtLeastOneImage);
+                      message: StringHelper.pleaseUploadAddAtLeastOneImage);
                   return;
                 }
                 if (viewModel.educationTypeTextController.text.trim().isEmpty) {
                   DialogHelper.showToast(
-                      message: AppString.pleaseSelectEducationType);
+                      message: StringHelper.pleaseSelectEducationType);
                   return;
                 }
 
                 if (viewModel.adTitleTextController.text.trim().isEmpty) {
-                  DialogHelper.showToast(message: AppString.adTitleIsRequired);
+                  DialogHelper.showToast(
+                      message: StringHelper.adTitleIsRequired);
                   return;
                 }
                 if (viewModel.descriptionTextController.text.trim().isEmpty) {
-                  DialogHelper.showToast(message:AppString.descriptionIsRequired);
+                  DialogHelper.showToast(
+                      message: StringHelper.descriptionIsRequired);
                   return;
                 }
                 if (viewModel.addressTextController.text.trim().isEmpty) {
-                  DialogHelper.showToast(message:AppString.locationIsRequired);
+                  DialogHelper.showToast(
+                      message: StringHelper.locationIsRequired);
                   return;
                 }
                 if (viewModel.priceTextController.text.trim().isEmpty) {
-                  DialogHelper.showToast(message: AppString.priceIsRequired);
+                  DialogHelper.showToast(message: StringHelper.priceIsRequired);
                   return;
                 }
                 DialogHelper.showLoading();
@@ -624,7 +628,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                     color: Colors.black,
                     borderRadius: BorderRadius.circular(100)),
                 child: const Text(
-                  AppString.postNow,
+                  StringHelper.postNow,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 16,

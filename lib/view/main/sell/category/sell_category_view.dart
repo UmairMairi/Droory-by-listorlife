@@ -5,8 +5,8 @@ import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/widgets/app_error_widget.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 
-import '../../../../base/helpers/app_string.dart';
 import '../../../../base/helpers/db_helper.dart';
+import '../../../../base/helpers/string_helper.dart';
 import '../../../../base/network/api_constants.dart';
 import '../../../../skeletons/sell_loading_widget.dart';
 import '../../../../view_model/sell_v_m.dart';
@@ -19,7 +19,7 @@ class SellCategoryView extends BaseView<SellVM> {
   Widget build(BuildContext context, SellVM viewModel) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppString.sell),
+        title: const Text(StringHelper.sell),
         centerTitle: true,
       ),
       body: DbHelper.getIsGuest()
@@ -29,7 +29,7 @@ class SellCategoryView extends BaseView<SellVM> {
               child: Column(
                 children: [
                   Text(
-                    AppString.whatAreYouOffering,
+                    StringHelper.whatAreYouOffering,
                     style: context.textTheme.titleLarge,
                   ),
                   const SizedBox(
