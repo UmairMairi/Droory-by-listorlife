@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,17 +11,12 @@ import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/res/font_res.dart';
-import 'package:list_and_life/view_model/chat_vm.dart';
 import 'package:list_and_life/widgets/app_empty_widget.dart';
-import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 import 'package:list_and_life/widgets/like_button.dart';
-import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:share_plus/share_plus.dart';
 
 import '../../base/helpers/date_helper.dart';
-import '../../base/helpers/dialog_helper.dart';
 import '../../base/helpers/string_helper.dart';
 import '../../base/network/api_request.dart';
 import '../../base/network/base_client.dart';
@@ -114,7 +110,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
       appBar: AppBar(
         title: const Text(StringHelper.seeProfile),
         centerTitle: true,
-        actions: [
+        /* actions: [
           PopupMenuButton<int>(
               offset: const Offset(0, 40),
               icon: const Icon(Icons.more_vert),
@@ -198,7 +194,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                       child: Text(StringHelper.blockUser),
                     ),
                   ]),
-        ],
+        ],*/
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -262,8 +258,10 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                 controller: _refreshController,
                 enablePullDown: true,
                 enablePullUp: true,
-                header: const WaterDropHeader(
-                  complete: CupertinoActivityIndicator(),
+                header: WaterDropHeader(
+                  complete: Platform.isAndroid
+                      ? const CircularProgressIndicator()
+                      : const CupertinoActivityIndicator(),
                 ),
                 onRefresh: _onRefresh,
                 onLoading: _onLoading,

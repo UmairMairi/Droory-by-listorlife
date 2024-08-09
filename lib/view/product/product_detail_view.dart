@@ -15,6 +15,7 @@ import 'package:share_plus/share_plus.dart';
 import '../../base/helpers/date_helper.dart';
 import '../../base/helpers/db_helper.dart';
 import '../../base/helpers/dialog_helper.dart';
+import '../../base/helpers/dynamic_link_helper.dart';
 import '../../base/helpers/string_helper.dart';
 import '../../routes/app_routes.dart';
 import '../../skeletons/product_detail_skeleton.dart';
@@ -29,19 +30,51 @@ class ProductDetailView extends BaseView<ProductVM> {
   @override
   Widget build(BuildContext context, ProductVM viewModel) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Details'),
+        centerTitle: true,
+        actions: [
+          LikeButton(
+            isFav: data?.isFavourite == 1,
+            onTap: () async {
+              await viewModel.onLikeButtonTapped(id: data?.id);
+            },
+          ),
+          InkWell(
+            onTap: () async {
+              final dynamicLink =
+                  await DynamicLinkHelper.createDynamicLink("${data?.id}");
+              debugPrint(dynamicLink.toString());
+
+              Share.share(
+                  'Hello, Please check this useful product on following link \n$dynamicLink',
+                  subject: 'Check this issue');
+            },
+            child: Container(
+              padding: const EdgeInsets.all(08),
+              margin: const EdgeInsets.all(08),
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(
+                  color: Colors.white, shape: BoxShape.circle),
+              child: const Icon(Icons.share_outlined),
+            ),
+          ),
+        ],
+      ),
       body: Stack(
         children: [
           FutureBuilder<ProductDetailModel?>(
               future: viewModel.getProductDetails(id: data?.id),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
+                  ProductDetailModel? data = snapshot.data;
                   return SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         CardSwipeWidget(
-                          height: 300,
+                          height: 220,
                           imagesList: data?.productMedias,
                           borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(20),
@@ -320,7 +353,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                                 return;
                                               }
 
-                                              data?.user?.id = data?.userId;
+                                              data?.user?.id = data.userId;
 
                                               context.push(Routes.seeProfile,
                                                   extra: data?.user);
@@ -443,57 +476,6 @@ class ProductDetailView extends BaseView<ProductVM> {
                       snapshot.connectionState == ConnectionState.waiting,
                 );
               }),
-          Positioned(
-              top: 10,
-              left: 10,
-              child: SafeArea(
-                child: Container(
-                  decoration: const BoxDecoration(
-                      shape: BoxShape.circle, color: Colors.black26),
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.arrow_back,
-                      color: Colors.white70,
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ),
-              )),
-          Positioned(
-              top: 10,
-              right: 10,
-              child: SafeArea(
-                child: Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(08),
-                      margin: const EdgeInsets.all(08),
-                      alignment: Alignment.center,
-                      decoration: const BoxDecoration(
-                          color: Colors.white, shape: BoxShape.circle),
-                      child: LikeButton(
-                        isFav: data?.isFavourite == 1,
-                        onTap: () async {
-                          await viewModel.onLikeButtonTapped(id: data?.id);
-                        },
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () => Share.share(StringHelper.checkProductUrl),
-                      child: Container(
-                        padding: const EdgeInsets.all(08),
-                        margin: const EdgeInsets.all(08),
-                        alignment: Alignment.center,
-                        decoration: const BoxDecoration(
-                            color: Colors.white, shape: BoxShape.circle),
-                        child: const Icon(Icons.share_outlined),
-                      ),
-                    ),
-                  ],
-                ),
-              )),
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(

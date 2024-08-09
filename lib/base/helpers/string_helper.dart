@@ -102,6 +102,8 @@ class StringHelper {
   static const String lastMonth = "Last Month";
   static const String apply = "Apply";
   static const String reset = "Reset";
+  static const String sortBy = "Sort By";
+  static const String postedWithin = "Posted Within";
 
   /// Permission Screen
   static const String helloWelcome = "Hello! Welcome";

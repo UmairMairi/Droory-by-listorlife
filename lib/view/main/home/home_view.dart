@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -39,7 +41,8 @@ class HomeView extends BaseView<HomeVM> {
             const Gap(01),
             Text(
               viewModel.currentLocation,
-              style: context.textTheme.bodySmall,
+              style: context.textTheme.bodySmall
+                  ?.copyWith(fontWeight: FontWeight.bold, fontSize: 10),
             )
           ],
         ),
@@ -73,6 +76,7 @@ class HomeView extends BaseView<HomeVM> {
                   autofocus: false,
                   focusNode: viewModel.searchFocusNode,
                   onChanged: viewModel.onSearchChanged,
+                  textAlign: TextAlign.center,
                   decoration: InputDecoration(
                       prefixIcon: const Icon(Icons.search),
                       border: OutlineInputBorder(
@@ -108,8 +112,10 @@ class HomeView extends BaseView<HomeVM> {
         controller: viewModel.refreshController,
         enablePullDown: true,
         enablePullUp: true,
-        header: const WaterDropHeader(
-          complete: CupertinoActivityIndicator(),
+        header: WaterDropHeader(
+          complete: Platform.isAndroid
+              ? const CircularProgressIndicator()
+              : const CupertinoActivityIndicator(),
         ),
         onRefresh: viewModel.onRefresh,
         onLoading: viewModel.onLoading,

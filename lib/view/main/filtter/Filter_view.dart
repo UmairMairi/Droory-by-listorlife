@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:intl/intl.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/base/helpers/location_helper.dart';
@@ -33,15 +34,24 @@ class FilterView extends StatefulWidget {
 class _FilterViewState extends State<FilterView> {
   SfRangeValues values = const SfRangeValues(00, 00);
   FilterModel filter = FilterModel();
-  List<CategoryModel> categories = [];
-  List<CategoryModel> subCategories = [];
-  List<CategoryModel> subSubCategories = [];
+  List<CategoryModel> categoriesList = [];
+  List<CategoryModel> subCategoriesList = [];
+  List<CategoryModel> subSubCategoriesList = [];
+  List<CategoryModel> sortByList = [
+    CategoryModel(name: StringHelper.priceHighToLow),
+    CategoryModel(name: StringHelper.priceLowToHigh),
+  ];
+  List<CategoryModel> postedWithinList = [
+    CategoryModel(name: StringHelper.today),
+    CategoryModel(name: StringHelper.yesterday),
+    CategoryModel(name: StringHelper.lastWeek),
+    CategoryModel(name: StringHelper.lastMonth),
+  ];
 
   @override
   void initState() {
     var vm = context.read<HomeVM>();
     WidgetsBinding.instance.addPostFrameCallback((t) => updateFilter(vm: vm));
-
     super.initState();
   }
 
@@ -268,7 +278,7 @@ class _FilterViewState extends State<FilterView> {
                     viewModel.subCategoryTextController.clear();
                   },
                   itemBuilder: (BuildContext context) {
-                    return categories.map((option) {
+                    return categoriesList.map((option) {
                       return PopupMenuItem(
                         value: option,
                         child: Text(option.name ?? ''),
@@ -280,7 +290,7 @@ class _FilterViewState extends State<FilterView> {
               const SizedBox(
                 height: 10,
               ),
-              if (subCategories.isNotEmpty) ...{
+              if (subCategoriesList.isNotEmpty) ...{
                 AppTextField(
                   title: StringHelper.subCategory,
                   hint: StringHelper.selectSubCategory,
@@ -295,7 +305,7 @@ class _FilterViewState extends State<FilterView> {
                       filter.subcategoryId = "${value.id}";
                     },
                     itemBuilder: (BuildContext context) {
-                      return subCategories.map((option) {
+                      return subCategoriesList.map((option) {
                         return PopupMenuItem(
                           value: option,
                           child: Text(option.name ?? ''),
@@ -331,86 +341,55 @@ class _FilterViewState extends State<FilterView> {
               const SizedBox(
                 height: 20,
               ),
-              Container(
-                color: const Color(0xffEAEEF1),
-                child: Theme(
-                  data: Theme.of(context)
-                      .copyWith(dividerColor: Colors.transparent),
-                  child: ExpansionTile(
-                    childrenPadding: EdgeInsets.zero,
-                    initiallyExpanded: false,
-                    title: Text(
-                      viewModel.sortBy,
-                      style: context.textTheme.titleSmall,
-                    ),
-                    backgroundColor: Colors.white,
-                    children: [
-                      ListTile(
-                        title: const Text(
-                          StringHelper.priceHighToLow,
-                          selectionColor: Colors.white,
-                        ),
-                        onTap: () =>
-                            viewModel.sortBy = StringHelper.priceHighToLow,
-                      ),
-                      ListTile(
-                        title: const Text(StringHelper.priceLowToHigh),
-                        onTap: () =>
-                            viewModel.sortBy = StringHelper.priceLowToHigh,
-                      ),
-                      ListTile(
-                        title: const Text(StringHelper.datePublished),
-                        onTap: () =>
-                            viewModel.sortBy = StringHelper.priceLowToHigh,
-                      ),
-                      ListTile(
-                        title: const Text(StringHelper.distance),
-                        onTap: () => viewModel.sortBy = StringHelper.distance,
-                      )
-                    ],
-                  ),
+              AppTextField(
+                title: StringHelper.sortBy,
+                hint: StringHelper.sortBy,
+                controller: viewModel.sortByTextController,
+                readOnly: true,
+                suffix: PopupMenuButton(
+                  icon: const Icon(Icons.arrow_drop_down),
+                  onSelected: (value) {
+                    /// TODO: Need to immpliment Sort By onTap
+                    viewModel.sortByTextController.text = value.name ?? '';
+                    filter.sortByPrice =
+                        value.name == StringHelper.priceLowToHigh
+                            ? 'asc'
+                            : 'desc';
+                  },
+                  itemBuilder: (BuildContext context) {
+                    return sortByList.map((option) {
+                      return PopupMenuItem(
+                        value: option,
+                        child: Text(option.name ?? ''),
+                      );
+                    }).toList();
+                  },
                 ),
               ),
               const SizedBox(
                 height: 20,
               ),
-              Container(
-                color: const Color(0xffEAEEF1),
-                child: Theme(
-                  data: Theme.of(context)
-                      .copyWith(dividerColor: Colors.transparent),
-                  child: ExpansionTile(
-                    childrenPadding: EdgeInsets.zero,
-                    title: Text(
-                      viewModel.publishedBy,
-                      style: context.textTheme.titleSmall,
-                    ),
-                    backgroundColor: Colors.white,
-                    children: [
-                      ListTile(
-                        title: const Text(
-                          StringHelper.today,
-                          selectionColor: Colors.white,
-                        ),
-                        onTap: () => viewModel.publishedBy = StringHelper.today,
-                      ),
-                      ListTile(
-                        title: const Text(StringHelper.yesterday),
-                        onTap: () =>
-                            viewModel.publishedBy = StringHelper.yesterday,
-                      ),
-                      ListTile(
-                        title: const Text(StringHelper.lastWeek),
-                        onTap: () =>
-                            viewModel.publishedBy = StringHelper.lastWeek,
-                      ),
-                      ListTile(
-                        title: const Text(StringHelper.lastMonth),
-                        onTap: () =>
-                            viewModel.publishedBy = StringHelper.lastMonth,
-                      )
-                    ],
-                  ),
+              AppTextField(
+                title: StringHelper.postedWithin,
+                hint: StringHelper.postedWithin,
+                controller: viewModel.postedWithinTextController,
+                readOnly: true,
+                suffix: PopupMenuButton(
+                  icon: const Icon(Icons.arrow_drop_down),
+                  onSelected: (value) {
+                    /// TODO: Need to immpliment Sort By onTap
+                    viewModel.postedWithinTextController.text =
+                        value.name ?? '';
+                    setDatePosted(value: value.name);
+                  },
+                  itemBuilder: (BuildContext context) {
+                    return postedWithinList.map((option) {
+                      return PopupMenuItem(
+                        value: option,
+                        child: Text(option.name ?? ''),
+                      );
+                    }).toList();
+                  },
                 ),
               ),
               const SizedBox(
@@ -456,7 +435,7 @@ class _FilterViewState extends State<FilterView> {
   }
 
   void updateFilter({required HomeVM vm}) async {
-    categories = vm.categories;
+    categoriesList = vm.categories;
     if (widget.filters != null) {
       filter = widget.filters!;
 
@@ -472,24 +451,53 @@ class _FilterViewState extends State<FilterView> {
       vm.currentLocation = await LocationHelper.getAddressFromCoordinates(
           vm.latitude, vm.longitude);
       vm.categoryTextController.text = getCategoryName(id: filter.categoryId);
+      if (filter.categoryId != null && filter.categoryId != '0') {
+        getSubCategory(id: filter.categoryId);
+      }
+      if (filter.subcategoryId != null) {
+        vm.subCategoryTextController.text =
+            getSubCategoryName(id: filter.subcategoryId);
+      }
 
       values = SfRangeValues(
           int.parse(vm.startPriceTextController.text.isEmpty
               ? '0'
               : vm.startPriceTextController.text),
           int.parse(vm.endPriceTextController.text.isEmpty
-              ? '0'
+              ? '20000'
               : vm.endPriceTextController.text));
       vm.locationTextController.text = vm.currentLocation;
     }
-    log("${categories.map((element) => element.toJson()).toList()}",
+    log("${categoriesList.map((element) => element.toJson()).toList()}",
         name: "BASEX");
+  }
+
+  void resetFilters() {
+    HomeVM vm = context.read<HomeVM>();
+    filter = FilterModel();
+    vm.selectedIndex = 0;
+    vm.latitude = 0;
+    vm.longitude = 0;
+    vm.startPriceTextController.text = '0';
+    vm.endPriceTextController.text = '20000';
+    values = SfRangeValues(
+        int.parse(vm.startPriceTextController.text.isEmpty
+            ? '0'
+            : vm.startPriceTextController.text),
+        int.parse(vm.endPriceTextController.text.isEmpty
+            ? '20000'
+            : vm.endPriceTextController.text));
+    vm.locationTextController.clear();
+    vm.categoryTextController.clear();
+    vm.subCategoryTextController.clear();
+    vm.sortByTextController.clear();
+    vm.postedWithinTextController.clear();
   }
 
   String getCategoryName({String? id}) {
     if (id == null) return '';
 
-    for (var category in categories) {
+    for (var category in categoriesList) {
       if (category.id.toString() == id) {
         return category.name ?? '';
       }
@@ -501,19 +509,7 @@ class _FilterViewState extends State<FilterView> {
   String getSubCategoryName({String? id}) {
     if (id == null) return '';
 
-    for (var category in categories) {
-      if (category.id.toString() == id) {
-        return category.name ?? '';
-      }
-    }
-
-    return ''; // Return empty string if category not found
-  }
-
-  String getSubSubCategoryName({String? id}) {
-    if (id == null) return '';
-
-    for (var category in subCategories) {
+    for (var category in categoriesList) {
       if (category.id.toString() == id) {
         return category.name ?? '';
       }
@@ -532,8 +528,34 @@ class _FilterViewState extends State<FilterView> {
 
     ListResponse<CategoryModel> model = ListResponse<CategoryModel>.fromJson(
         response, (json) => CategoryModel.fromJson(json));
-    subCategories = model.body ?? [];
+    subCategoriesList = model.body ?? [];
     DialogHelper.hideLoading();
     setState(() {});
+  }
+
+  void setDatePosted({String? value}) {
+    var now = DateTime.now();
+    switch (value) {
+      case StringHelper.today:
+        filter.startDate = DateFormat('yyyy-MM-dd').format(now);
+        filter.endDate = DateFormat('yyyy-MM-dd').format(now);
+        break;
+      case StringHelper.yesterday:
+        filter.startDate = DateFormat('yyyy-MM-dd')
+            .format(now.subtract(const Duration(days: 1)));
+        filter.endDate = DateFormat('yyyy-MM-dd')
+            .format(now.subtract(const Duration(days: 1)));
+        break;
+      case StringHelper.lastWeek:
+        filter.startDate = DateFormat('yyyy-MM-dd').format(now);
+        filter.endDate = DateFormat('yyyy-MM-dd')
+            .format(now.subtract(const Duration(days: 7)));
+        break;
+      case StringHelper.lastMonth:
+        filter.startDate = DateFormat('yyyy-MM-dd').format(now);
+        filter.endDate = DateFormat('yyyy-MM-dd')
+            .format(now.subtract(const Duration(days: 30)));
+        break;
+    }
   }
 }

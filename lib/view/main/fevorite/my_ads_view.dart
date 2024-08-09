@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -29,8 +31,10 @@ class MyAdsView extends BaseView<MyAdsVM> {
             controller: viewModel.refreshController,
             enablePullDown: true,
             enablePullUp: true,
-            header: const WaterDropHeader(
-              complete: CupertinoActivityIndicator(),
+            header: WaterDropHeader(
+              complete: Platform.isAndroid
+                  ? const CircularProgressIndicator()
+                  : const CupertinoActivityIndicator(),
             ),
             onRefresh: viewModel.onRefresh,
             onLoading: viewModel.onLoading,

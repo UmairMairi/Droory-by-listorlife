@@ -109,7 +109,7 @@ class ProductVM extends BaseViewModel {
       children: [
         Text(
           specName,
-          style: TextStyle(fontWeight: FontWeight.w600),
+          style: const TextStyle(fontWeight: FontWeight.w600),
         ),
         Text(specValue),
       ],

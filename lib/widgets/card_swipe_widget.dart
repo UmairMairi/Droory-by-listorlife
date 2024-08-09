@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
+import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 
 import '../res/assets_res.dart';
@@ -91,7 +91,7 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget>
               shape: BoxShape.circle,
               color: _currentPage == index
                   ? context.theme.primaryColor
-                  : Colors.white,
+                  : Colors.grey.withOpacity(0.8),
             ),
           );
         }).toList(),

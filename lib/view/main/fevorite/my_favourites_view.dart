@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -94,8 +96,10 @@ class _MyFavouritesViewState extends State<MyFavouritesView> {
               controller: refreshController,
               enablePullDown: true,
               enablePullUp: true,
-              header: const WaterDropHeader(
-                complete: CupertinoActivityIndicator(),
+              header: WaterDropHeader(
+                complete: Platform.isAndroid
+                    ? const CircularProgressIndicator()
+                    : const CupertinoActivityIndicator(),
               ),
               onRefresh: _onRefresh,
               onLoading: _onLoading,

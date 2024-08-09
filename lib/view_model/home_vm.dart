@@ -26,12 +26,6 @@ class HomeVM extends BaseViewModel {
   List<CategoryModel> categories = [];
 
   FocusNode searchFocusNode = FocusNode();
-  String _sortBy = 'Sort By';
-  String get sortBy => _sortBy;
-  set sortBy(String value) {
-    _sortBy = value;
-    notifyListeners();
-  }
 
   String _publishedBy = 'Posted Within';
   String get publishedBy => _publishedBy;
@@ -133,6 +127,8 @@ class HomeVM extends BaseViewModel {
   TextEditingController locationTextController = TextEditingController();
   TextEditingController categoryTextController = TextEditingController();
   TextEditingController subCategoryTextController = TextEditingController();
+  TextEditingController sortByTextController = TextEditingController();
+  TextEditingController postedWithinTextController = TextEditingController();
 
   @override
   void onInit() {
