@@ -1,17 +1,19 @@
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../base/helpers/date_helper.dart';
 import '../base/helpers/db_helper.dart';
-import '../models/common/map_response.dart';
-import '../models/home_list_model.dart';
-import '../models/prodect_detail_model.dart';
 import '../base/network/api_constants.dart';
 import '../base/network/api_request.dart';
 import '../base/network/base_client.dart';
+import '../models/common/map_response.dart';
+import '../models/home_list_model.dart';
+import '../models/prodect_detail_model.dart';
+import '../view/main/sell/forms/edit_product_form.dart';
 
 class MyAdsVM extends BaseViewModel {
   late RefreshController refreshController;
@@ -126,12 +128,12 @@ class MyAdsVM extends BaseViewModel {
       {required int index, required ProductDetailModel? item}) {
     switch (index) {
       case 1:
-        /*  Navigator.push(
+        Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => EditProductForm(
                       product: item,
-                    )));*/
+                    )));
         return;
       case 2:
         deactivateProductApi(id: item?.id);

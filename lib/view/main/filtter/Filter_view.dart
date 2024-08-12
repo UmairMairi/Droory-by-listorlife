@@ -413,10 +413,11 @@ class _FilterViewState extends State<FilterView> {
                   filter.latitude = viewModel.latitude.toString();
                   filter.longitude = viewModel.longitude.toString();
 
-                  Navigator.push(
+                  Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => FilterItemView(model: filter)));
+                          builder: (context) => FilterItemView(model: filter)),
+                      (context) => false);
                 },
                 title: StringHelper.apply,
               ),
@@ -425,7 +426,9 @@ class _FilterViewState extends State<FilterView> {
                 title: StringHelper.reset,
                 width: context.width,
                 padding: const EdgeInsets.symmetric(horizontal: 15),
-                onTap: () {},
+                onTap: () {
+                  resetFilters();
+                },
               ),
             ],
           ),
@@ -492,6 +495,7 @@ class _FilterViewState extends State<FilterView> {
     vm.subCategoryTextController.clear();
     vm.sortByTextController.clear();
     vm.postedWithinTextController.clear();
+    setState(() {});
   }
 
   String getCategoryName({String? id}) {
@@ -502,7 +506,6 @@ class _FilterViewState extends State<FilterView> {
         return category.name ?? '';
       }
     }
-
     return ''; // Return empty string if category not found
   }
 
