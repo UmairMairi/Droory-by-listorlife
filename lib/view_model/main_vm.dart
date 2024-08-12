@@ -1,3 +1,4 @@
+import 'package:app_links/app_links.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -8,7 +9,6 @@ import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/view_model/chat_vm.dart';
 import 'package:persistent_bottom_nav_bar_plus/persistent_bottom_nav_bar_plus.dart';
 import 'package:provider/provider.dart';
-import 'package:uni_links/uni_links.dart';
 
 import '../base/helpers/db_helper.dart';
 import '../base/sockets/socket_helper.dart';
@@ -30,43 +30,21 @@ class MainVM extends BaseViewModel {
     const AdsView(),
     const SettingView()
   ];
-
+  final _appLinks = AppLinks();
   Future<void> initUniLinks() async {
     // Platform messages may fail, so we use a try/catch PlatformException.
     DynamicLinkHelper.initDynamicLinks();
     // Attach a listener to the stream
-    linkStream.listen((String? initialLink) {
-      if (initialLink != null) {
-        // Parse the link to extract data, e.g., ID
-        Uri uri = Uri.parse(initialLink.toString());
 
+    // Subscribe to all events (initial link and further)
+    _appLinks.uriLinkStream.listen((uri) {
+      if (uri.toString().isNotEmpty) {
         // Extract the ID from the path
         String id = uri.pathSegments.last;
         context.push(Routes.productDetails,
             extra: ProductDetailModel(id: num.parse(id)));
       }
-    }, onError: (err) {
-      DialogHelper.showToast(message: "Link is broken.");
     });
-
-    try {
-      final initialLink = await getInitialLink();
-
-      if (initialLink != null) {
-        // Parse the link to extract data, e.g., ID
-        Uri uri = Uri.parse(initialLink.toString());
-
-        // Extract the ID from the path
-        String id = uri.pathSegments.last;
-
-        if (context.mounted) {
-          context.push(Routes.productDetails,
-              extra: ProductDetailModel(id: num.parse(id)));
-        }
-      }
-    } on PlatformException {
-      DialogHelper.showToast(message: "Link is broken.");
-    }
   }
 
   @override

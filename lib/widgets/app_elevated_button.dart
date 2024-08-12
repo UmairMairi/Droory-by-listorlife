@@ -6,7 +6,6 @@ import '../res/font_res.dart';
 class AppElevatedButton extends StatelessWidget {
   final String? title;
   final VoidCallback? onTap;
-
   final double? height;
   final double? width;
   final EdgeInsetsGeometry? padding;

@@ -16,6 +16,7 @@ class ImageZoomScreen extends StatelessWidget {
         body: InteractiveViewer(
             minScale: 0.2,
             maxScale: 5.0,
+
             child: Center(
               child: CachedNetworkImage(
                 imageUrl: imageUrl,
