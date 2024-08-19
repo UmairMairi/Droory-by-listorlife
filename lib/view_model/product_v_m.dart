@@ -64,11 +64,11 @@ class ProductVM extends BaseViewModel {
       specs.add(_buildSpecRow(context, 'Model', '${data.model?.name}'));
     }
 
-    if (data?.ram != null) {
-      specs.add(_buildSpecRow(context, 'RAM', '${data?.ram} GB'));
+    if (data?.ram != null && data!.ram != 0) {
+      specs.add(_buildSpecRow(context, 'RAM', '${data.ram} GB'));
     }
-    if (data?.storage != null) {
-      specs.add(_buildSpecRow(context, 'Storage', '${data?.storage} GB'));
+    if (data?.storage != null && data!.storage != 0) {
+      specs.add(_buildSpecRow(context, 'Storage', '${data.storage} GB'));
     }
     if (data?.screenSize != null && data!.screenSize!.isNotEmpty) {
       specs.add(_buildSpecRow(context, 'Screen Size', "${data.screenSize}"));

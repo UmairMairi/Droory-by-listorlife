@@ -203,9 +203,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
             Row(
               children: [
                 ImageView.circle(
-                  image:
-                      "${ApiConstants.imageUrl}/${widget.user?.profilePic}" ??
-                          AssetsRes.DUMMY_PROFILE,
+                  image: "${ApiConstants.imageUrl}/${widget.user?.profilePic}",
                   height: 60,
                   width: 60,
                 ),
