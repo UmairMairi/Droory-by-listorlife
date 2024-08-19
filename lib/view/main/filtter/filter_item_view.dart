@@ -23,7 +23,7 @@ import '../../../widgets/app_empty_widget.dart';
 import '../../../widgets/app_product_item_widget.dart';
 
 class FilterItemView extends StatefulWidget {
-  final FilterModel model;
+  final FilterModel? model;
   const FilterItemView({super.key, required this.model});
 
   @override
@@ -44,8 +44,8 @@ class _FilterItemViewState extends State<FilterItemView> {
 
   @override
   void initState() {
-    print(widget.model.toMap());
-    filterModel = widget.model;
+    print(widget.model?.toMap());
+    filterModel = widget.model ?? FilterModel();
     refreshController = RefreshController(initialRefresh: true);
     getProductsApi();
     super.initState();

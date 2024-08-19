@@ -144,19 +144,13 @@ class HomeView extends BaseView<HomeVM> {
                                 width: 80,
                                 child: GestureDetector(
                                   onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                FilterItemView(
-                                                    model: FilterModel(
-                                                  categoryId:
-                                                      "${categoryItems[index].id}",
-                                                  latitude:
-                                                      "${viewModel.latitude}",
-                                                  longitude:
-                                                      "${viewModel.longitude}",
-                                                ))));
+                                    context.push(Routes.filterDetails,
+                                        extra: FilterModel(
+                                          categoryId:
+                                              "${categoryItems[index].id}",
+                                          latitude: "${viewModel.latitude}",
+                                          longitude: "${viewModel.longitude}",
+                                        ));
                                   },
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,

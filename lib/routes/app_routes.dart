@@ -24,6 +24,7 @@ class Routes {
   static const String planList = '/plan_list';
   static const String seeProfile = '/see_profile';
   static const String filter = '/filter';
+  static const String filterDetails = '/filterDetails';
   static const String chooseLocationView = '/choose_location';
   static const String postAddedFinalView = '/post_added_final';
   static const String mobileSubcategoryView = '/mobile_subcategory';

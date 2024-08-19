@@ -21,6 +21,7 @@ import '../view/auth/guest_login_view.dart';
 import '../view/auth/login_view.dart';
 import '../view/auth/verification_view.dart';
 import '../view/error/not_found_view.dart';
+import '../view/main/filtter/filter_item_view.dart';
 import '../view/main/main_view.dart';
 import '../view/main/sell/forms/post_added_final_view.dart';
 import '../view/notifications/notification_view.dart';
@@ -145,6 +146,16 @@ class AppPages {
           return getPage(
               child: FilterView(
                 filters: state.extra as FilterModel?,
+              ),
+              state: state);
+        },
+      ),
+      GoRoute(
+        path: Routes.filterDetails,
+        pageBuilder: (context, state) {
+          return getPage(
+              child: FilterItemView(
+                model: state.extra as FilterModel?,
               ),
               state: state);
         },

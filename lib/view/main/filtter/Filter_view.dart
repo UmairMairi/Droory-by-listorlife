@@ -2,10 +2,12 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/base/helpers/location_helper.dart';
+import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/view_model/home_vm.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/app_outline_button.dart';
@@ -413,10 +415,7 @@ class _FilterViewState extends State<FilterView> {
                   filter.latitude = viewModel.latitude.toString();
                   filter.longitude = viewModel.longitude.toString();
 
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => FilterItemView(model: filter)));
+                  context.pushReplacement(Routes.filterDetails, extra: filter);
                 },
                 title: StringHelper.apply,
               ),
