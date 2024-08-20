@@ -415,10 +415,7 @@ class _FilterViewState extends State<FilterView> {
                   filter.latitude = viewModel.latitude.toString();
                   filter.longitude = viewModel.longitude.toString();
 
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => FilterItemView(model: filter)));
+                  context.pushReplacement(Routes.filterDetails, extra: filter);
                 },
                 title: StringHelper.apply,
               ),

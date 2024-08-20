@@ -140,6 +140,7 @@ class MyAdsVM extends BaseViewModel {
         return;
       case 3:
         removeProductApi(id: item?.id);
+
       default:
         return;
     }

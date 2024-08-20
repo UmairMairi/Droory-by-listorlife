@@ -263,9 +263,9 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        viewModel.productsList[index]
-                                                    .sellStatus !=
-                                                StringHelper.sold
+                                        viewModel.productsList[index].sellStatus
+                                                    ?.toLowerCase() !=
+                                                StringHelper.sold.toLowerCase()
                                             ? AppElevatedButton(
                                                 onTap: () {},
                                                 title: StringHelper.active,
@@ -282,7 +282,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                         const Gap(10),
                                         viewModel.productsList[index]
                                                     .sellStatus !=
-                                                StringHelper.sold
+                                                StringHelper.sold.toLowerCase()
                                             ? Text(
                                                 StringHelper
                                                     .thisAdisCurrentlyLive,
@@ -302,7 +302,8 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                               ),
                                         if (viewModel.productsList[index]
                                                 .sellStatus !=
-                                            StringHelper.sold) ...{
+                                            StringHelper.sold
+                                                .toLowerCase()) ...{
                                           const Gap(10),
                                           Row(
                                             children: [

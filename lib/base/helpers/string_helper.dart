@@ -72,7 +72,7 @@ class StringHelper {
   static const String egp = "EGP";
   static const String likes = "Likes:";
   static const String views = "Views:";
-  static const String sold = "sold:";
+  static const String sold = "Sold";
   static const String active = "Active";
   static const String thisAdisCurrentlyLive = "This ad is currently live";
   static const String thisAdisSold = "This ad is sold";

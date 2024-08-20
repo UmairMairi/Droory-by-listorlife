@@ -19,7 +19,6 @@ class ProductListSkeleton extends StatelessWidget {
         itemCount: 5,
         padding: const EdgeInsets.symmetric(horizontal: 20),
         shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           return Container(
             decoration: BoxDecoration(

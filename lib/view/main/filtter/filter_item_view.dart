@@ -40,6 +40,25 @@ class _FilterItemViewState extends State<FilterItemView> {
   FocusNode searchFocusNode = FocusNode();
   final DebounceHelper _debounce = DebounceHelper(milliseconds: 500);
 
+  // Map of filters based on category ID
+  Map<int, List<String>> filters = {
+    1: ['Brand', 'Model', 'Condition'], // Electronics
+    2: ['Category', 'Condition'], // Home & Living
+    3: ['Condition', 'Type'], // Fashion
+    4: ['Make', 'Model', 'Year', 'Mileage'], // Vehicles
+    5: ['Condition'], // Hobbies, Music, Art & Books
+    6: ['Gender'], // Pets
+    7: ['Condition'], // Business & Industrial
+    8: ['Service Type'], // Services
+    9: ['Job Type', 'Education', 'Salary Range', 'Experience'], // Jobs
+    10: ['Brand', 'Condition'], // Mobiles & Tablets
+  };
+  List<String> filtersCat = [];
+  // Method to get filters based on the selected category ID
+  List<String> getFiltersByCategory(int? categoryId) {
+    return filters[categoryId] ?? [];
+  }
+
   late FilterModel filterModel;
 
   @override
@@ -48,6 +67,10 @@ class _FilterItemViewState extends State<FilterItemView> {
     filterModel = widget.model ?? FilterModel();
     refreshController = RefreshController(initialRefresh: true);
     getProductsApi();
+    setState(() {
+      filtersCat =
+          getFiltersByCategory(int.tryParse("${filterModel.categoryId}"));
+    });
     super.initState();
   }
 
@@ -186,78 +209,139 @@ class _FilterItemViewState extends State<FilterItemView> {
           ),
         ),
       ),
-      body: SmartRefresher(
-        controller: refreshController,
-        enablePullDown: true,
-        enablePullUp: true,
-        header: WaterDropHeader(
-          complete: Platform.isAndroid
-              ? const CircularProgressIndicator()
-              : const CupertinoActivityIndicator(),
-        ),
-        onRefresh: onRefresh,
-        onLoading: onLoading,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Column(
-            children: [
-              /*  Wrap(
-                crossAxisAlignment: WrapCrossAlignment.start,
-                spacing: 8.0,
-                runSpacing: 4.0,
+      body: Column(
+        children: [
+          SizedBox(
+            height: 100,
+            child: ListView.builder(
+              itemCount: filtersCat.length,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                String filter = filtersCat[index];
+
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: FilterWidget(filterName: filter),
+                );
+              },
+            ),
+          ),
+          Expanded(
+            child: SmartRefresher(
+              controller: refreshController,
+              enablePullDown: true,
+              enablePullUp: true,
+              header: WaterDropHeader(
+                complete: Platform.isAndroid
+                    ? const CircularProgressIndicator()
+                    : const CupertinoActivityIndicator(),
+              ),
+              onRefresh: onRefresh,
+              onLoading: onLoading,
+              child: Column(
                 children: [
-                  if (filterModel.categoryId != null)
-                    FilterChip(
-                      label: Text('Category: ${filterModel.categoryId}'),
-                      onSelected: (_) => removeFilter('categoryId'),
-                    ),
-                  if (filterModel.subcategoryId != null)
-                    FilterChip(
-                      label: Text('Subcategory: ${filterModel.subcategoryId}'),
-                      onSelected: (_) => removeFilter('subcategoryId'),
-                    ),
-                  // Add other filter chips similarly
+                  if (isLoading) ...{
+                    ProductListSkeleton(isLoading: isLoading)
+                  } else ...{
+                    if (productsList.isEmpty)
+                      const Expanded(child: AppEmptyWidget())
+                    else
+                      Expanded(
+                        child: ListView.separated(
+                          shrinkWrap: true,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          itemCount: productsList.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                if (productsList[index].userId ==
+                                    DbHelper.getUserModel()?.id) {
+                                  context.push(Routes.myProduct,
+                                      extra: productsList[index]);
+                                  return;
+                                }
+
+                                context.push(Routes.productDetails,
+                                    extra: productsList[index]);
+                              },
+                              child: AppProductItemWidget(
+                                data: productsList[index],
+                              ),
+                            );
+                          },
+                          separatorBuilder: (BuildContext context, int index) {
+                            return const Gap(20);
+                          },
+                        ),
+                      )
+                  },
+                  // Display selected filters
                 ],
               ),
-              Gap(20),*/
-              if (isLoading) ...{
-                ProductListSkeleton(isLoading: isLoading)
-              } else ...{
-                productsList.isEmpty
-                    ? const AppEmptyWidget()
-                    : ListView.separated(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: productsList.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              if (productsList[index].userId ==
-                                  DbHelper.getUserModel()?.id) {
-                                context.push(Routes.myProduct,
-                                    extra: productsList[index]);
-                                return;
-                              }
-
-                              context.push(Routes.productDetails,
-                                  extra: productsList[index]);
-                            },
-                            child: AppProductItemWidget(
-                              data: productsList[index],
-                            ),
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) {
-                          return const Gap(20);
-                        },
-                      )
-              },
-              const Gap(40),
-              // Display selected filters
-            ],
+            ),
           ),
-        ),
+        ],
       ),
+    );
+  }
+}
+
+class FilterWidget extends StatelessWidget {
+  final String filterName;
+
+  FilterWidget({required this.filterName});
+
+  @override
+  Widget build(BuildContext context) {
+    // Here, you can customize how each filter is rendered
+    // Based on the filterName, you can render Dropdowns, Checkboxes, Sliders, etc.
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          filterName,
+          style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 8),
+        if (filterName == 'Brand' || filterName == 'Model')
+          SizedBox(
+            width: 120,
+            child: DropdownButtonFormField<String>(
+              items: ['Option 1', 'Option 2', 'Option 3'].map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              onChanged: (newValue) {},
+            ),
+          )
+        else if (filterName == 'Condition')
+          SizedBox(
+            width: 120,
+            child: DropdownButtonFormField<String>(
+              items: ['New', 'Used', 'Refurbished'].map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              onChanged: (newValue) {},
+            ),
+          )
+        else
+          // Default text field or any other input type
+          SizedBox(
+            width: 120,
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Enter value for $filterName',
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ),
+      ],
     );
   }
 }
