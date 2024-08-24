@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -14,6 +15,7 @@ import 'package:list_and_life/widgets/app_outline_button.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
+import 'package:whitecodel_reels/whitecodel_reels.dart';
 
 import '../../../base/helpers/string_helper.dart';
 import '../../../base/network/api_constants.dart';
@@ -34,11 +36,12 @@ class FilterView extends StatefulWidget {
 }
 
 class _FilterViewState extends State<FilterView> {
-  SfRangeValues values = const SfRangeValues(00, 00);
+  SfRangeValues values = const SfRangeValues(00, 20000);
   FilterModel filter = FilterModel();
   List<CategoryModel> categoriesList = [];
   List<CategoryModel> subCategoriesList = [];
-  List<CategoryModel> subSubCategoriesList = [];
+  List<CategoryModel> brands = [];
+  List<CategoryModel> models = [];
   List<CategoryModel> sortByList = [
     CategoryModel(name: StringHelper.priceHighToLow),
     CategoryModel(name: StringHelper.priceLowToHigh),
@@ -49,6 +52,23 @@ class _FilterViewState extends State<FilterView> {
     CategoryModel(name: StringHelper.lastWeek),
     CategoryModel(name: StringHelper.lastMonth),
   ];
+  List<CategoryModel> genders = [
+    CategoryModel(name: 'Male'),
+    CategoryModel(name: 'Female')
+  ];
+
+  // Map of filters based on category ID
+  Map<int, List<String>> filters = {
+    // Fashion
+    4: ['Make', 'Model', 'Year', 'Mileage'], // Vehicles// Services
+    9: ['Job Type', 'Education', 'Salary Range', 'Experience'], // Jobs
+    // Mobiles & Tablets
+  };
+  List<String> filtersCat = [];
+  // Method to get filters based on the selected category ID
+  List<String> getFiltersByCategory(int? categoryId) {
+    return filters[categoryId] ?? [];
+  }
 
   @override
   void initState() {
@@ -274,9 +294,15 @@ class _FilterViewState extends State<FilterView> {
                 suffix: PopupMenuButton(
                   icon: const Icon(Icons.arrow_drop_down),
                   onSelected: (value) {
+                    setState(() {
+                      filtersCat = getFiltersByCategory(value.id);
+                    });
+
                     getSubCategory(id: "${value.id}");
                     viewModel.categoryTextController.text = value.name ?? '';
                     filter.categoryId = "${value.id}";
+                    brands.clear();
+                    viewModel.brandsTextController.clear();
                     viewModel.subCategoryTextController.clear();
                   },
                   itemBuilder: (BuildContext context) {
@@ -294,17 +320,25 @@ class _FilterViewState extends State<FilterView> {
               ),
               if (subCategoriesList.isNotEmpty) ...{
                 AppTextField(
-                  title: StringHelper.subCategory,
-                  hint: StringHelper.selectSubCategory,
+                  title: filter.categoryId == '8'
+                      ? 'Services'
+                      : filter.categoryId == '9'
+                          ? 'Job Type'
+                          : StringHelper.subCategory,
+                  hint: filter.categoryId == '8'
+                      ? 'Select Services'
+                      : filter.categoryId == '9'
+                          ? 'Select Job Type'
+                          : StringHelper.selectSubCategory,
                   controller: viewModel.subCategoryTextController,
                   readOnly: true,
                   suffix: PopupMenuButton(
                     icon: const Icon(Icons.arrow_drop_down),
-                    onSelected: (value) {
-                      /// TODO: Need to immpliment subCat onTap
+                    onSelected: (value) async {
                       viewModel.subCategoryTextController.text =
                           value.name ?? '';
                       filter.subcategoryId = "${value.id}";
+                      await getBrands(id: "${filter.subcategoryId}");
                     },
                     itemBuilder: (BuildContext context) {
                       return subCategoriesList.map((option) {
@@ -317,6 +351,129 @@ class _FilterViewState extends State<FilterView> {
                   ),
                 ),
                 const SizedBox(
+                  height: 10,
+                ),
+              },
+              if (brands.isNotEmpty) ...{
+                AppTextField(
+                  title:
+                      filter.categoryId == '6' ? 'Breed' : StringHelper.brand,
+                  hint: filter.categoryId == '6'
+                      ? 'Select Breeds'
+                      : StringHelper.selectBrands,
+                  controller: viewModel.brandsTextController,
+                  readOnly: true,
+                  suffix: PopupMenuButton(
+                    icon: const Icon(Icons.arrow_drop_down),
+                    onSelected: (value) {
+                      viewModel.brandsTextController.text = value.name ?? '';
+                      filter.brandId = "${value.id}";
+                    },
+                    itemBuilder: (BuildContext context) {
+                      return brands.map((option) {
+                        return PopupMenuItem(
+                          value: option,
+                          child: Text(option.name ?? ''),
+                        );
+                      }).toList();
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                filter.categoryId == '6'
+                    ? AppTextField(
+                        title: 'Gender',
+                        hint: 'Select Gender',
+                        controller: viewModel.genderTextController,
+                        readOnly: true,
+                        suffix: PopupMenuButton(
+                          icon: const Icon(Icons.arrow_drop_down),
+                          onSelected: (value) {
+                            viewModel.genderTextController.text =
+                                value.name ?? '';
+                          },
+                          itemBuilder: (BuildContext context) {
+                            return genders.map((option) {
+                              return PopupMenuItem(
+                                value: option,
+                                child: Text(option.name ?? ''),
+                              );
+                            }).toList();
+                          },
+                        ),
+                      )
+                    : const SizedBox.shrink(),
+                const SizedBox(
+                  height: 10,
+                ),
+              },
+              if (filter.categoryId == '4') ...{
+                AppTextField(
+                  title: StringHelper.year,
+                  hint: 'Enter Year',
+                  controller: viewModel.yearTextController,
+                  readOnly: false,
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(4),
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                  inputType: TextInputType.number,
+                  action: TextInputAction.done,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                AppTextField(
+                  title: StringHelper.fuel,
+                  hint: StringHelper.enter,
+                  controller: viewModel.fuelTextController,
+                  action: TextInputAction.done,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                AppTextField(
+                  title: StringHelper.mileage,
+                  hint: StringHelper.select,
+                  controller: viewModel.mileageTextController,
+                  readOnly: true,
+                  suffix: PopupMenuButton<String>(
+                    clipBehavior: Clip.hardEdge,
+                    icon: const Icon(
+                      Icons.arrow_drop_down,
+                      color: Colors.black,
+                    ),
+                    onSelected: (value) {
+                      viewModel.mileageTextController.text = value;
+                    },
+                    itemBuilder: (BuildContext context) {
+                      return viewModel.mileageRanges.map((option) {
+                        return PopupMenuItem(
+                          value: option,
+                          child: Text(option ?? ''),
+                        );
+                      }).toList();
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                AppTextField(
+                  title: StringHelper.kmDriven,
+                  hint: StringHelper.enter,
+                  controller: viewModel.kmDrivenTextController,
+                  readOnly: false,
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(10),
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                  inputType: TextInputType.number,
+                  action: TextInputAction.done,
+                ),
+                SizedBox(
                   height: 10,
                 ),
               },
@@ -351,7 +508,6 @@ class _FilterViewState extends State<FilterView> {
                 suffix: PopupMenuButton(
                   icon: const Icon(Icons.arrow_drop_down),
                   onSelected: (value) {
-                    /// TODO: Need to immpliment Sort By onTap
                     viewModel.sortByTextController.text = value.name ?? '';
                     filter.sortByPrice =
                         value.name == StringHelper.priceLowToHigh
@@ -379,7 +535,6 @@ class _FilterViewState extends State<FilterView> {
                 suffix: PopupMenuButton(
                   icon: const Icon(Icons.arrow_drop_down),
                   onSelected: (value) {
-                    /// TODO: Need to immpliment Sort By onTap
                     viewModel.postedWithinTextController.text =
                         value.name ?? '';
                     setDatePosted(value: value.name);
@@ -414,7 +569,11 @@ class _FilterViewState extends State<FilterView> {
                       viewModel.endPriceTextController.text.trim();
                   filter.latitude = viewModel.latitude.toString();
                   filter.longitude = viewModel.longitude.toString();
+                  filter.year = viewModel.yearTextController.text.trim();
+                  filter.fuel = viewModel.fuelTextController.text.trim();
 
+                  filter.minKmDriven =
+                      viewModel.kmDrivenTextController.text.trim();
                   context.pushReplacement(Routes.filterDetails, extra: filter);
                 },
                 title: StringHelper.apply,
@@ -448,25 +607,33 @@ class _FilterViewState extends State<FilterView> {
       vm.latitude = double.parse(filter.latitude ?? '0.0');
       vm.longitude = double.parse(filter.longitude ?? '0.0');
       vm.startPriceTextController.text = filter.minPrice ?? '0';
-      vm.endPriceTextController.text = filter.maxPrice ?? '20000';
+      vm.endPriceTextController.text =
+          filter.maxPrice != '0' ? filter.maxPrice ?? '20000' : '20000';
+      vm.kmDrivenTextController.text = filter.minKmDriven ?? '';
+      vm.yearTextController.text = filter.year ?? '';
+      vm.fuelTextController.text = filter.fuel ?? '';
+
       vm.currentLocation = await LocationHelper.getAddressFromCoordinates(
           vm.latitude, vm.longitude);
       vm.categoryTextController.text = getCategoryName(id: filter.categoryId);
       if (filter.categoryId != null && filter.categoryId != '0') {
-        getSubCategory(id: filter.categoryId);
+        await getSubCategory(id: filter.categoryId);
       }
       if (filter.subcategoryId != null) {
+        await getBrands(id: filter.subcategoryId);
         vm.subCategoryTextController.text =
             getSubCategoryName(id: filter.subcategoryId);
+      }
+
+      if (filter.brandId != null) {
+        vm.brandsTextController.text = getBrandName(id: filter.brandId);
       }
 
       values = SfRangeValues(
           int.parse(vm.startPriceTextController.text.isEmpty
               ? '0'
               : vm.startPriceTextController.text),
-          int.parse(vm.endPriceTextController.text.isEmpty
-              ? '20000'
-              : vm.endPriceTextController.text));
+          int.parse(vm.endPriceTextController.text));
       vm.locationTextController.text = vm.currentLocation;
     }
     log("${categoriesList.map((element) => element.toJson()).toList()}",
@@ -488,11 +655,14 @@ class _FilterViewState extends State<FilterView> {
         int.parse(vm.endPriceTextController.text.isEmpty
             ? '20000'
             : vm.endPriceTextController.text));
+    brands.clear();
+    subCategoriesList.clear();
     vm.locationTextController.clear();
     vm.categoryTextController.clear();
     vm.subCategoryTextController.clear();
     vm.sortByTextController.clear();
     vm.postedWithinTextController.clear();
+    vm.brandsTextController.clear();
     setState(() {});
   }
 
@@ -510,16 +680,28 @@ class _FilterViewState extends State<FilterView> {
   String getSubCategoryName({String? id}) {
     if (id == null) return '';
 
-    for (var category in categoriesList) {
-      if (category.id.toString() == id) {
-        return category.name ?? '';
+    for (var subCategories in subCategoriesList) {
+      if (subCategories.id.toString() == id) {
+        return subCategories.name ?? '';
       }
     }
 
     return ''; // Return empty string if category not found
   }
 
-  void getSubCategory({String? id}) async {
+  String getBrandName({String? id}) {
+    if (id == null) return '';
+
+    for (var brand in brands) {
+      if (brand.id.toString() == id) {
+        return brand.name ?? '';
+      }
+    }
+
+    return ''; // Return empty string if category not found
+  }
+
+  Future<void> getSubCategory({String? id}) async {
     DialogHelper.showLoading();
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.getSubCategoriesUrl(id: "$id"),
@@ -530,6 +712,20 @@ class _FilterViewState extends State<FilterView> {
     ListResponse<CategoryModel> model = ListResponse<CategoryModel>.fromJson(
         response, (json) => CategoryModel.fromJson(json));
     subCategoriesList = model.body ?? [];
+    DialogHelper.hideLoading();
+    setState(() {});
+  }
+
+  Future<void> getBrands({String? id}) async {
+    DialogHelper.showLoading();
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.getBrandsUrl(id: "$id"),
+        requestType: RequestType.get);
+    var response = await BaseClient.handleRequest(apiRequest);
+
+    ListResponse<CategoryModel> model =
+        ListResponse.fromJson(response, (json) => CategoryModel.fromJson(json));
+    brands = model.body ?? [];
     DialogHelper.hideLoading();
     setState(() {});
   }

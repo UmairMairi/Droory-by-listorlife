@@ -91,6 +91,7 @@ class StringHelper {
   static const String selectCategory = "Select Category";
   static const String selectSubCategory = "Select Sub Category";
   static const String subCategory = "Sub Category";
+  static const String selectBrands = "Select Brands";
   static const String selectLocation = "Select Location";
   static const String priceHighToLow = "Price: High to Low";
   static const String priceLowToHigh = "Price: Low to High";

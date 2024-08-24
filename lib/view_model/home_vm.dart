@@ -127,8 +127,28 @@ class HomeVM extends BaseViewModel {
   TextEditingController locationTextController = TextEditingController();
   TextEditingController categoryTextController = TextEditingController();
   TextEditingController subCategoryTextController = TextEditingController();
+  TextEditingController brandsTextController = TextEditingController();
+  TextEditingController genderTextController = TextEditingController();
   TextEditingController sortByTextController = TextEditingController();
   TextEditingController postedWithinTextController = TextEditingController();
+  TextEditingController yearTextController = TextEditingController();
+  TextEditingController fuelTextController = TextEditingController();
+  TextEditingController mileageTextController = TextEditingController();
+  TextEditingController kmDrivenTextController = TextEditingController();
+
+  // List of mileage ranges
+  final List<String> mileageRanges = [
+    '0-5 km',
+    '5-10 km',
+    '10-15 km',
+    '15-20 km',
+    '20-25 km',
+    '25-30 km',
+    '30-35 km',
+    '35-40 km',
+    '40-45 km',
+    '45-50 km',
+  ];
 
   @override
   void onInit() {

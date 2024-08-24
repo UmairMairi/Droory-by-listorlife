@@ -7,7 +7,7 @@ import 'package:list_and_life/models/inbox_model.dart';
 import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/models/user_model.dart';
 import 'package:list_and_life/view/main/chat/message_view.dart';
-import 'package:list_and_life/view/main/filtter/Filter_view.dart';
+import 'package:list_and_life/view/main/filtter/filter_view.dart';
 import 'package:list_and_life/view/main/permission/location_permission_view.dart';
 import 'package:list_and_life/view/main/sell/sub_category/sell_sub_category_view.dart';
 import 'package:list_and_life/view/main/settings/TermsOfUseView.dart';

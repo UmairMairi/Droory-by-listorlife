@@ -7,11 +7,16 @@ import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/base/network/api_request.dart';
 import 'package:list_and_life/base/network/base_client.dart';
+import 'package:list_and_life/models/category_model.dart';
+import 'package:list_and_life/view_model/home_vm.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../base/helpers/db_helper.dart';
 import '../../../base/helpers/debouncer_helper.dart';
+import '../../../base/helpers/dialog_helper.dart';
 import '../../../base/helpers/string_helper.dart';
+import '../../../models/common/list_response.dart';
 import '../../../models/common/map_response.dart';
 import '../../../models/filter_model.dart';
 import '../../../models/home_list_model.dart';
@@ -21,6 +26,7 @@ import '../../../routes/app_routes.dart';
 import '../../../skeletons/product_list_skeleton.dart';
 import '../../../widgets/app_empty_widget.dart';
 import '../../../widgets/app_product_item_widget.dart';
+import '../../../widgets/app_text_field.dart';
 
 class FilterItemView extends StatefulWidget {
   final FilterModel? model;
@@ -40,37 +46,13 @@ class _FilterItemViewState extends State<FilterItemView> {
   FocusNode searchFocusNode = FocusNode();
   final DebounceHelper _debounce = DebounceHelper(milliseconds: 500);
 
-  // Map of filters based on category ID
-  Map<int, List<String>> filters = {
-    1: ['Brand', 'Model', 'Condition'], // Electronics
-    2: ['Category', 'Condition'], // Home & Living
-    3: ['Condition', 'Type'], // Fashion
-    4: ['Make', 'Model', 'Year', 'Mileage'], // Vehicles
-    5: ['Condition'], // Hobbies, Music, Art & Books
-    6: ['Gender'], // Pets
-    7: ['Condition'], // Business & Industrial
-    8: ['Service Type'], // Services
-    9: ['Job Type', 'Education', 'Salary Range', 'Experience'], // Jobs
-    10: ['Brand', 'Condition'], // Mobiles & Tablets
-  };
-  List<String> filtersCat = [];
-  // Method to get filters based on the selected category ID
-  List<String> getFiltersByCategory(int? categoryId) {
-    return filters[categoryId] ?? [];
-  }
-
   late FilterModel filterModel;
 
   @override
   void initState() {
-    print(widget.model?.toMap());
     filterModel = widget.model ?? FilterModel();
     refreshController = RefreshController(initialRefresh: true);
     getProductsApi();
-    setState(() {
-      filtersCat =
-          getFiltersByCategory(int.tryParse("${filterModel.categoryId}"));
-    });
     super.initState();
   }
 
@@ -209,139 +191,176 @@ class _FilterItemViewState extends State<FilterItemView> {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 100,
-            child: ListView.builder(
-              itemCount: filtersCat.length,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                String filter = filtersCat[index];
+      body: SmartRefresher(
+        controller: refreshController,
+        enablePullDown: true,
+        enablePullUp: true,
+        header: WaterDropHeader(
+          complete: Platform.isAndroid
+              ? const CircularProgressIndicator()
+              : const CupertinoActivityIndicator(),
+        ),
+        onRefresh: onRefresh,
+        onLoading: onLoading,
+        child: Column(
+          children: [
+            if (isLoading) ...{
+              ProductListSkeleton(isLoading: isLoading)
+            } else ...{
+              if (productsList.isEmpty)
+                const Expanded(child: AppEmptyWidget())
+              else
+                Expanded(
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    itemCount: productsList.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          if (productsList[index].userId ==
+                              DbHelper.getUserModel()?.id) {
+                            context.push(Routes.myProduct,
+                                extra: productsList[index]);
+                            return;
+                          }
 
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: FilterWidget(filterName: filter),
-                );
-              },
-            ),
-          ),
-          Expanded(
-            child: SmartRefresher(
-              controller: refreshController,
-              enablePullDown: true,
-              enablePullUp: true,
-              header: WaterDropHeader(
-                complete: Platform.isAndroid
-                    ? const CircularProgressIndicator()
-                    : const CupertinoActivityIndicator(),
-              ),
-              onRefresh: onRefresh,
-              onLoading: onLoading,
-              child: Column(
-                children: [
-                  if (isLoading) ...{
-                    ProductListSkeleton(isLoading: isLoading)
-                  } else ...{
-                    if (productsList.isEmpty)
-                      const Expanded(child: AppEmptyWidget())
-                    else
-                      Expanded(
-                        child: ListView.separated(
-                          shrinkWrap: true,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          itemCount: productsList.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                if (productsList[index].userId ==
-                                    DbHelper.getUserModel()?.id) {
-                                  context.push(Routes.myProduct,
-                                      extra: productsList[index]);
-                                  return;
-                                }
-
-                                context.push(Routes.productDetails,
-                                    extra: productsList[index]);
-                              },
-                              child: AppProductItemWidget(
-                                data: productsList[index],
-                              ),
-                            );
-                          },
-                          separatorBuilder: (BuildContext context, int index) {
-                            return const Gap(20);
-                          },
+                          context.push(Routes.productDetails,
+                              extra: productsList[index]);
+                        },
+                        child: AppProductItemWidget(
+                          data: productsList[index],
                         ),
-                      )
-                  },
-                  // Display selected filters
-                ],
-              ),
-            ),
-          ),
-        ],
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return const Gap(20);
+                    },
+                  ),
+                )
+            },
+            // Display selected filters
+          ],
+        ),
       ),
     );
   }
-}
 
-class FilterWidget extends StatelessWidget {
-  final String filterName;
+  Future<List<CategoryModel>> getSubCategory({String? id}) async {
+    DialogHelper.showLoading();
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.getSubCategoriesUrl(id: "$id"),
+        requestType: RequestType.get);
 
-  FilterWidget({required this.filterName});
+    var response = await BaseClient.handleRequest(apiRequest);
 
-  @override
-  Widget build(BuildContext context) {
-    // Here, you can customize how each filter is rendered
-    // Based on the filterName, you can render Dropdowns, Checkboxes, Sliders, etc.
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          filterName,
-          style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(height: 8),
-        if (filterName == 'Brand' || filterName == 'Model')
-          SizedBox(
-            width: 120,
-            child: DropdownButtonFormField<String>(
-              items: ['Option 1', 'Option 2', 'Option 3'].map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              onChanged: (newValue) {},
+    ListResponse<CategoryModel> model = ListResponse<CategoryModel>.fromJson(
+        response, (json) => CategoryModel.fromJson(json));
+    DialogHelper.hideLoading();
+    return model.body ?? [];
+  }
+
+  Widget getFilterWidget({required String filterName}) {
+    return Consumer<HomeVM>(
+      builder: (BuildContext context, viewModel, Widget? child) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              filterName,
+              style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
             ),
-          )
-        else if (filterName == 'Condition')
-          SizedBox(
-            width: 120,
-            child: DropdownButtonFormField<String>(
-              items: ['New', 'Used', 'Refurbished'].map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              onChanged: (newValue) {},
-            ),
-          )
-        else
-          // Default text field or any other input type
-          SizedBox(
-            width: 120,
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'Enter value for $filterName',
-                border: OutlineInputBorder(),
+            const SizedBox(height: 8),
+            if (filterName == 'Subcategory')
+              FutureBuilder<List<CategoryModel>>(
+                  future: getSubCategory(id: widget.model?.categoryId),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      List<CategoryModel> subCategoriesList =
+                          snapshot.data ?? [];
+                      return Expanded(
+                        child: SizedBox(
+                          width: 200,
+                          child: DropdownButtonFormField<CategoryModel>(
+                            hint: Text('Select'),
+                            items: subCategoriesList.map((CategoryModel value) {
+                              return DropdownMenuItem<CategoryModel>(
+                                value: value,
+                                child: Text(
+                                  value.name ?? '',
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (newValue) {},
+                          ),
+                        ),
+                      );
+                    }
+                    if (snapshot.hasError) {
+                      return SizedBox.shrink();
+                    }
+                    return SizedBox.shrink();
+                  })
+            else if (filterName == 'Brand')
+              SizedBox(
+                width: 120,
+                child: DropdownButtonFormField<String>(
+                  items:
+                      ['Option 1', 'Option 2', 'Option 3'].map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) {},
+                ),
+              )
+            else if (filterName == 'Model')
+              SizedBox(
+                width: 120,
+                child: DropdownButtonFormField<String>(
+                  items:
+                      ['Option 1', 'Option 2', 'Option 3'].map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) {},
+                ),
+              )
+            else if (filterName == 'Condition')
+              SizedBox(
+                width: 120,
+                child: DropdownButtonFormField<String>(
+                  items: ['New', 'Used'].map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) {
+                    filterModel.itemCondition = newValue?.toLowerCase();
+                    getProductsApi(loading: true);
+                  },
+                ),
+              )
+            else
+              // Default text field or any other input type
+              SizedBox(
+                width: 120,
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Enter value for $filterName',
+                    border: const OutlineInputBorder(),
+                  ),
+                ),
               ),
-            ),
-          ),
-      ],
+          ],
+        );
+      },
     );
   }
 }
