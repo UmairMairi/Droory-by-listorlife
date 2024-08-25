@@ -93,6 +93,8 @@ dependencies:
   google_fonts: ^6.2.1
   firebase_dynamic_links: ^6.0.4
   app_links: ^6.1.4
+  autocomplete_textfield: ^2.0.1
+  searchfield: ^1.0.9
 
 dev_dependencies:
   flutter_test:
@@ -155,6 +157,7 @@ flutter:
     - assets/icons/ic_block_user.png
     - assets/icons/ic_calender_icon.png
     - assets/icons/ic_call_icon.png
+    - assets/icons/ic_camera.png
     - assets/icons/ic_car_cat_image.png
     - assets/icons/ic_cards_icon.png
     - assets/icons/ic_cat_car.png

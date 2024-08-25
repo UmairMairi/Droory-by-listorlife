@@ -313,7 +313,7 @@ class MyProductView extends BaseView<ProductVM> {
                                       ),
                                     ),
                                     const Gap(10),
-                                    Expanded(
+                                    /*Expanded(
                                       child: Container(
                                         alignment: Alignment.center,
                                         padding: const EdgeInsets.symmetric(
@@ -332,7 +332,7 @@ class MyProductView extends BaseView<ProductVM> {
                                                   fontWeight: FontWeight.w600),
                                         ),
                                       ),
-                                    ),
+                                    ),*/
                                   ],
                                 )
                               : const AppElevatedButton(
@@ -342,12 +342,32 @@ class MyProductView extends BaseView<ProductVM> {
                                   backgroundColor: Colors.grey,
                                 ),
                           const Gap(10),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: viewModel.getSpecifications(
-                                context: context, data: data),
-                          ),
+                          if (viewModel
+                              .getSpecifications(context: context, data: data)
+                              .isNotEmpty) ...{
+                            Text('Specifications',
+                                style: context.textTheme.titleMedium),
+                            const SizedBox(height: 10),
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: Colors.grey.withOpacity(0.2),
+                              ),
+                              child: GridView(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                padding: EdgeInsets.all(10),
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 3,
+                                        mainAxisExtent: 50,
+                                        mainAxisSpacing: 5,
+                                        crossAxisSpacing: 20),
+                                children: viewModel.getSpecifications(
+                                    context: context, data: data),
+                              ),
+                            ),
+                          },
                           const Gap(10),
                           Text(
                             StringHelper.description,

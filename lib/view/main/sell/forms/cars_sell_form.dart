@@ -9,6 +9,7 @@ import '../../../../base/helpers/dialog_helper.dart';
 import '../../../../base/helpers/image_picker_helper.dart';
 import '../../../../base/helpers/string_helper.dart';
 import '../../../../models/category_model.dart';
+import '../../../../models/prodect_detail_model.dart';
 import '../../../../view_model/sell_forms_vm.dart';
 import '../../../../widgets/app_map_widget.dart';
 
@@ -18,16 +19,17 @@ class CarsSellForm extends BaseView<SellFormsVM> {
   final CategoryModel? subCategory;
   final CategoryModel? subSubCategory;
   final List<CategoryModel>? brands;
+  final ProductDetailModel? item;
   const CarsSellForm(
       {super.key,
       this.type,
       this.category,
       this.subSubCategory,
       this.subCategory,
+      this.item,
       this.brands});
   @override
   Widget build(BuildContext context, SellFormsVM viewModel) {
-    print("brands => ${brands?.length}");
     return KeyboardActions(
       config: KeyboardActionsConfig(
           keyboardActionsPlatform: KeyboardActionsPlatform.ALL,

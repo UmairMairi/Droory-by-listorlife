@@ -57,6 +57,7 @@ class AssetsRes {
   static const String IC_BLOCK_USER = 'assets/icons/ic_block_user.png';
   static const String IC_CALENDER_ICON = 'assets/icons/ic_calender_icon.png';
   static const String IC_CALL_ICON = 'assets/icons/ic_call_icon.png';
+  static const String IC_CAMERA = 'assets/icons/ic_camera.png';
   static const String IC_CAR_CAT_IMAGE = 'assets/icons/ic_car_cat_image.png';
   static const String IC_CARDS_ICON = 'assets/icons/ic_cards_icon.png';
   static const String IC_CAT_CAR = 'assets/icons/ic_cat_car.png';

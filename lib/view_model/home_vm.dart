@@ -12,6 +12,7 @@ import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/routes/app_pages.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../base/helpers/db_helper.dart';
 import '../models/category_model.dart';
 import '../models/common/list_response.dart';
 
@@ -19,7 +20,7 @@ class HomeVM extends BaseViewModel {
   RefreshController refreshController = RefreshController(initialRefresh: true);
   String _currentLocation = "";
   String get currentLocation => _currentLocation;
-  final DebounceHelper _debounce = DebounceHelper(milliseconds: 500);
+  final DebounceHelper _debounce = DebounceHelper(milliseconds: 1000);
   String searchQuery = '';
 
   List<ProductDetailModel> productsList = [];
@@ -150,10 +151,27 @@ class HomeVM extends BaseViewModel {
     '45-50 km',
   ];
 
+  TextEditingController searchController = TextEditingController();
+
+  List<String> searchQueryesList = [];
+
   @override
   void onInit() {
     // TODO: implement onInit
+    searchQueryesList.addAll(DbHelper.getSearchHistory().reversed.toList());
 
+    searchQueryesList.addAll([
+      'Electronics',
+      'Home & Living',
+      'Fashion',
+      'Vehicles',
+      'Hobbies, Music, Art & Books',
+      'Pets',
+      'Business & Industrial',
+      'Services',
+      'Jobs',
+      'Mobiles & Tablets'
+    ]);
     refreshController = RefreshController(initialRefresh: true);
     updateLocation();
     super.onInit();
@@ -213,11 +231,16 @@ class HomeVM extends BaseViewModel {
   }
 
   void onSearchChanged(String query) {
+    if (query.isEmpty) {
+      onRefresh();
+    }
+
     searchQuery = query;
     _debounce.run(() {
       page = 1;
       productsList.clear();
       getProductsApi(search: searchQuery, loading: true);
+      DbHelper.saveSearchQuery(query);
     });
   }
 

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/base/helpers/location_helper.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
@@ -186,6 +187,23 @@ class SellFormsVM extends BaseViewModel {
   TextEditingController screenSizeTextController = TextEditingController();
   TextEditingController materialTextController = TextEditingController();
   TextEditingController sizeTextController = TextEditingController();
+
+  void updateTextFieldsItems({ProductDetailModel? item}) async {
+    imagesList.clear();
+    imagesList.addAll(item?.productMedias
+            ?.map((element) => "${ApiConstants.imageUrl}/${element.media}")
+            ?.toList() ??
+        []);
+
+    mainImagePath = "${ApiConstants.imageUrl}/${item?.image}";
+    adTitleTextController.text = item?.name ?? '';
+    descriptionTextController.text = item?.description ?? '';
+    addressTextController.text =
+        "${item?.city}, ${item?.state}, ${item?.country}";
+    priceTextController.text = item?.price ?? '';
+    currentIndex =
+        (item?.itemCondition?.toLowerCase().contains('used') ?? false) ? 2 : 1;
+  }
 
   void resetTextFields() {
     currentIndex = 1;

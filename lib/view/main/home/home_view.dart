@@ -11,7 +11,9 @@ import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/skeletons/product_list_skeleton.dart';
 import 'package:list_and_life/view/main/filtter/filter_item_view.dart';
 import 'package:list_and_life/view_model/home_vm.dart';
+import 'package:list_and_life/widgets/app_search_widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:searchfield/searchfield.dart';
 
 import '../../../base/helpers/db_helper.dart';
 import '../../../base/helpers/string_helper.dart';
@@ -72,20 +74,33 @@ class HomeView extends BaseView<HomeVM> {
             child: Row(
               children: [
                 Expanded(
-                    child: TextField(
-                  autofocus: false,
-                  focusNode: viewModel.searchFocusNode,
-                  onChanged: viewModel.onSearchChanged,
-                  textAlign: TextAlign.center,
-                  decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.search),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide:
-                              const BorderSide(color: Color(0xffd5d5d5))),
-                      hintStyle: context.textTheme.labelSmall,
-                      hintText: StringHelper.findCarsMobilePhonesAndMore),
-                )),
+                  child: AppAutoCompleteTextField<String>(
+                    onChanged: (search) => viewModel.onSearchChanged(search),
+                    suggestions: viewModel.searchQueryesList
+                        .map(
+                          (e) => SearchFieldListItem<String>(
+                            e ?? '',
+                            item: e,
+                            // Use child to show Custom Widgets in the suggestions
+                            // defaults to Text widget
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(e ?? ''),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                    controller: viewModel.categoryTextController,
+                    onSuggestionSelected: (suggestion) {
+                      viewModel.searchController.text = suggestion.searchKey;
+                      DbHelper.saveSearchQuery(
+                          suggestion.searchKey); // Save the selected search
+                      viewModel.onSearchChanged(suggestion.searchKey);
+                      // Perform the search or navigate to the results page
+                    },
+                    suggestionToString: (String category) => category,
+                  ),
+                ),
                 const Gap(10),
                 InkWell(
                   onTap: () {

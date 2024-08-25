@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -14,6 +15,7 @@ import '../models/common/map_response.dart';
 import '../models/home_list_model.dart';
 import '../models/prodect_detail_model.dart';
 import '../view/main/sell/forms/edit_product_form.dart';
+import '../view/main/sell/forms/sell_form_view.dart';
 
 class MyAdsVM extends BaseViewModel {
   late RefreshController refreshController;
@@ -124,29 +126,36 @@ class MyAdsVM extends BaseViewModel {
     onRefresh();
   }
 
-  void handelPopupMenuItemClick(
-      {required int index, required ProductDetailModel? item}) {
+  Future<void> handelPopupMenuItemClick(
+      {required int index,
+      required ProductDetailModel? item,
+      bool isDetailsPage = false}) async {
     switch (index) {
       case 1:
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => EditProductForm(
-                      product: item,
+                builder: (context) => SellFormView(
+                      category: item?.category,
+                      subSubCategory: item?.subSubCategory,
+                      subCategory: item?.category,
+                      type: item?.category?.name?.toLowerCase(),
+                      item: item,
                     )));
         return;
       case 2:
-        deactivateProductApi(id: item?.id);
+        await deactivateProductApi(id: item?.id);
+        if (context.mounted) context.pop();
         return;
       case 3:
-        removeProductApi(id: item?.id);
-
+        await removeProductApi(id: item?.id);
+        if (context.mounted) context.pop();
       default:
         return;
     }
   }
 
-  void removeProductApi({num? id}) async {
+  Future<void> removeProductApi({num? id}) async {
     DialogHelper.showLoading();
 
     ApiRequest apiRequest = ApiRequest(
@@ -162,7 +171,7 @@ class MyAdsVM extends BaseViewModel {
     onRefresh();
   }
 
-  void deactivateProductApi({num? id}) async {
+  Future<void> deactivateProductApi({num? id}) async {
     DialogHelper.showLoading();
 
     ApiRequest apiRequest = ApiRequest(

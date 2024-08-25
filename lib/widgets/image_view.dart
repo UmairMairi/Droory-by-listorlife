@@ -143,11 +143,12 @@ class ImageView extends StatelessWidget {
   /// Builds a placeholder image.
   Widget _buildPlaceholder() {
     return Container(
+      height: 50,
+      width: 50,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage(placeholder ?? AssetsRes.IC_IMAGE_PLACEHOLDER),
-          fit: BoxFit.cover,
-        ),
+            image: AssetImage(placeholder ?? AssetsRes.IC_IMAGE_PLACEHOLDER),
+            scale: 10),
       ),
     );
   }

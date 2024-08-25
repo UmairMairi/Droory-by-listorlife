@@ -59,7 +59,6 @@ class _FilterViewState extends State<FilterView> {
 
   // Map of filters based on category ID
   Map<int, List<String>> filters = {
-    // Fashion
     4: ['Make', 'Model', 'Year', 'Mileage'], // Vehicles// Services
     9: ['Job Type', 'Education', 'Salary Range', 'Experience'], // Jobs
     // Mobiles & Tablets
@@ -585,6 +584,8 @@ class _FilterViewState extends State<FilterView> {
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 onTap: () {
                   resetFilters();
+                  context.pop();
+                  context.push(Routes.filterDetails, extra: filter);
                 },
               ),
             ],
@@ -644,8 +645,9 @@ class _FilterViewState extends State<FilterView> {
     HomeVM vm = context.read<HomeVM>();
     filter = FilterModel();
     vm.selectedIndex = 0;
-    vm.latitude = 0;
-    vm.longitude = 0;
+    vm.latitude = LocationHelper.cairoLatitude;
+    vm.longitude = LocationHelper.cairoLongitude;
+    vm.locationTextController.text = "Cairo, Egypt";
     vm.startPriceTextController.text = '0';
     vm.endPriceTextController.text = '20000';
     values = SfRangeValues(
@@ -657,7 +659,6 @@ class _FilterViewState extends State<FilterView> {
             : vm.endPriceTextController.text));
     brands.clear();
     subCategoriesList.clear();
-    vm.locationTextController.clear();
     vm.categoryTextController.clear();
     vm.subCategoryTextController.clear();
     vm.sortByTextController.clear();

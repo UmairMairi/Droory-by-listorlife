@@ -95,8 +95,6 @@ class ProductVM extends BaseViewModel {
 
     return specs.isNotEmpty
         ? [
-            Text('Specifications', style: context.textTheme.titleMedium),
-            const SizedBox(height: 10),
             ...specs,
           ]
         : [];
@@ -104,12 +102,13 @@ class ProductVM extends BaseViewModel {
 
   Widget _buildSpecRow(
       BuildContext context, String specName, String specValue) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           specName,
-          style: const TextStyle(fontWeight: FontWeight.w600),
+          style: const TextStyle(fontWeight: FontWeight.w800),
         ),
         Text(specValue),
       ],

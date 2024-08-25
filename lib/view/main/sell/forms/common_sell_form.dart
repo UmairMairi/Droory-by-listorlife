@@ -5,10 +5,13 @@ import 'package:flutter/services.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
+import 'package:list_and_life/res/assets_res.dart';
+import 'package:list_and_life/widgets/image_view.dart';
 
 import '../../../../base/helpers/image_picker_helper.dart';
 import '../../../../base/helpers/string_helper.dart';
 import '../../../../models/category_model.dart';
+import '../../../../models/prodect_detail_model.dart';
 import '../../../../view_model/sell_forms_vm.dart';
 import '../../../../widgets/app_map_widget.dart';
 
@@ -18,6 +21,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
   final CategoryModel? subCategory;
   final CategoryModel? subSubCategory;
   final List<CategoryModel>? brands;
+  final ProductDetailModel? item;
 
   const CommonSellForm(
       {super.key,
@@ -25,6 +29,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
       required this.category,
       required this.subCategory,
       required this.subSubCategory,
+      this.item,
       required this.brands});
 
   @override
@@ -47,50 +52,30 @@ class CommonSellForm extends BaseView<SellFormsVM> {
               StringHelper.uploadImages,
               style: context.textTheme.titleMedium,
             ),
-            GestureDetector(
-              onTap: () async {
-                viewModel.mainImagePath =
-                    await ImagePickerHelper.openImagePicker(
-                            context: context, isCropping: true) ??
-                        '';
-              },
-              child: Container(
-                margin: const EdgeInsets.symmetric(vertical: 10),
-                width: double.infinity,
-                height: 220,
-                decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        offset: const Offset(0, 1),
-                        blurRadius: 6,
-                      ),
-                    ],
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10)),
-                child: viewModel.mainImagePath.isNotEmpty
-                    ? ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.file(
-                          File(viewModel.mainImagePath),
-                          fit: BoxFit.contain,
-                        ))
-                    : const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.camera_alt_outlined),
-                          SizedBox(
-                            height: 2,
-                          ),
-                          Text(
-                            StringHelper.upload,
-                            style: TextStyle(
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-              ),
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              width: double.infinity,
+              height: 220,
+              decoration: BoxDecoration(boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  offset: const Offset(0, 1),
+                  blurRadius: 6,
+                ),
+              ], color: Colors.white, borderRadius: BorderRadius.circular(10)),
+              child: GestureDetector(
+                  onTap: () async {
+                    viewModel.mainImagePath =
+                        await ImagePickerHelper.openImagePicker(
+                                context: context, isCropping: true) ??
+                            '';
+                  },
+                  child: ImageView.rect(
+                      image: viewModel.mainImagePath,
+                      borderRadius: 10,
+                      width: context.width,
+                      placeholder: AssetsRes.IC_CAMERA,
+                      height: 220)),
             ),
             Wrap(
               children: List.generate(viewModel.imagesList.length + 1, (index) {
@@ -113,13 +98,10 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.file(
-                            File(viewModel.imagesList[index]),
-                            fit: BoxFit.contain,
-                          ),
-                        ),
+                        child: ImageView.rect(
+                            image: viewModel.imagesList[index],
+                            height: 80,
+                            width: 120),
                       ),
                       Container(
                         decoration: const BoxDecoration(

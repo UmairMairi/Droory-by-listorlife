@@ -96,7 +96,7 @@ class PostAddedFinalView extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            AppElevatedButton(
+            /*     AppElevatedButton(
               onTap: () {
                 context.push(Routes.planList);
               },
@@ -104,7 +104,7 @@ class PostAddedFinalView extends StatelessWidget {
               width: context.width,
               padding: const EdgeInsets.only(
                   left: 40, right: 40, top: 20, bottom: 0),
-            ),
+            ),*/
             AppOutlineButton(
               onTap: () {
                 Navigator.pushReplacement(

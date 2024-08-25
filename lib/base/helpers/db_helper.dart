@@ -10,6 +10,7 @@ class DbHelper {
   static const JsonDecoder _decoder = JsonDecoder();
   static const JsonEncoder _encoder = JsonEncoder.withIndent('  ');
 
+  static const String _searchHistory = "searchHistory";
   static const String _userModel = "userModel";
   static const String _isLoggedIn = "isLoggedIn";
   static const String _isGuest = "isGuest";
@@ -86,6 +87,26 @@ class DbHelper {
 
   static String? getToken() {
     return readData(_token);
+  }
+
+  static void saveSearchQuery(String query) {
+    List<String> history = getSearchHistory();
+
+    if (history.contains(query)) {
+      history.remove(query); // Avoid duplicate entries
+    }
+
+    history.insert(0, query); // Add the new query to the beginning
+
+    if (history.length > 10) {
+      history = history.sublist(0, 10); // Keep only the last 10 searches
+    }
+
+    writeData(_searchHistory, history);
+  }
+
+  static List<String> getSearchHistory() {
+    return List<String>.from(readData(_searchHistory) ?? []);
   }
 
 /*  static NotificationEntity? convertStringToNotificationEntity(String? value) {

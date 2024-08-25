@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/view_model/notification_v_m.dart';
+import 'package:list_and_life/widgets/app_empty_notification_wiidget.dart';
 
 import '../../base/helpers/string_helper.dart';
 
@@ -11,11 +12,12 @@ class NotificationView extends BaseView<NotificationVM> {
   @override
   Widget build(BuildContext context, NotificationVM viewModel) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(StringHelper.notifications),
-        centerTitle: true,
-      ),
-      body: ListView.separated(
+        appBar: AppBar(
+          title: const Text(StringHelper.notifications),
+          centerTitle: true,
+        ),
+        body: const AppEmptyNotificationWidget()
+        /*ListView.separated(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         itemCount: viewModel.notificationList.length,
         itemBuilder: (context, index) {
@@ -66,7 +68,7 @@ class NotificationView extends BaseView<NotificationVM> {
             height: 10,
           );
         },
-      ),
-    );
+      )*/
+        );
   }
 }

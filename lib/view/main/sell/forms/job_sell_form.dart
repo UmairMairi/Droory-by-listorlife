@@ -8,6 +8,7 @@ import 'package:list_and_life/models/category_model.dart';
 import '../../../../base/helpers/dialog_helper.dart';
 import '../../../../base/helpers/image_picker_helper.dart';
 import '../../../../base/helpers/string_helper.dart';
+import '../../../../models/prodect_detail_model.dart';
 import '../../../../view_model/sell_forms_vm.dart';
 import '../../../../widgets/app_map_widget.dart';
 
@@ -17,11 +18,13 @@ class JobSellForm extends BaseView<SellFormsVM> {
   final CategoryModel? subCategory;
   final CategoryModel? subSubCategory;
   final List<CategoryModel>? brands;
+  final ProductDetailModel? item;
   const JobSellForm(
       {required this.type,
       required this.category,
       required this.subCategory,
       this.subSubCategory,
+      this.item,
       required this.brands,
       super.key});
 
