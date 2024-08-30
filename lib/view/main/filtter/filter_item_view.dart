@@ -26,7 +26,6 @@ import '../../../routes/app_routes.dart';
 import '../../../skeletons/product_list_skeleton.dart';
 import '../../../widgets/app_empty_widget.dart';
 import '../../../widgets/app_product_item_widget.dart';
-import '../../../widgets/app_text_field.dart';
 
 class FilterItemView extends StatefulWidget {
   final FilterModel? model;
@@ -283,7 +282,7 @@ class _FilterItemViewState extends State<FilterItemView> {
                         child: SizedBox(
                           width: 200,
                           child: DropdownButtonFormField<CategoryModel>(
-                            hint: Text('Select'),
+                            hint: const Text('Select'),
                             items: subCategoriesList.map((CategoryModel value) {
                               return DropdownMenuItem<CategoryModel>(
                                 value: value,
@@ -299,9 +298,9 @@ class _FilterItemViewState extends State<FilterItemView> {
                       );
                     }
                     if (snapshot.hasError) {
-                      return SizedBox.shrink();
+                      return const SizedBox.shrink();
                     }
-                    return SizedBox.shrink();
+                    return const SizedBox.shrink();
                   })
             else if (filterName == 'Brand')
               SizedBox(

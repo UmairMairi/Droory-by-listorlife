@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
@@ -924,63 +922,150 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                 textInputAction: TextInputAction.done,
               ),
             ),
-            GestureDetector(
-              onTap: () {
-                if (viewModel.mainImagePath.isEmpty) {
-                  DialogHelper.showToast(
-                      message: StringHelper.pleaseUploadMainImage);
-                  return;
-                }
-                if (viewModel.imagesList.isEmpty) {
-                  DialogHelper.showToast(
-                      message: StringHelper.pleaseUploadAddAtLeastOneImage);
-                  return;
-                }
+            if (viewModel.isEditProduct) ...{
+              GestureDetector(
+                onTap: () {
+                  if (viewModel.mainImagePath.isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.pleaseUploadMainImage);
+                    return;
+                  }
+                  if (viewModel.imagesList.isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.pleaseUploadAddAtLeastOneImage);
+                    return;
+                  }
 
-                if (viewModel.adTitleTextController.text.trim().isEmpty) {
-                  DialogHelper.showToast(
-                      message: StringHelper.adTitleIsRequired);
-                  return;
-                }
-                if (viewModel.descriptionTextController.text.trim().isEmpty) {
-                  DialogHelper.showToast(
-                      message: StringHelper.descriptionIsRequired);
-                  return;
-                }
-                if (viewModel.addressTextController.text.trim().isEmpty) {
-                  DialogHelper.showToast(
-                      message: StringHelper.locationIsRequired);
-                  return;
-                }
-                if (viewModel.priceTextController.text.trim().isEmpty) {
-                  DialogHelper.showToast(message: StringHelper.priceIsRequired);
-                  return;
-                }
-                DialogHelper.showLoading();
-                viewModel.addProduct(
-                    category: category,
-                    subCategory: subCategory,
-                    subSubCategory: subSubCategory,
-                    brand: viewModel.selectedBrand,
-                    models: viewModel.selectedModel);
-              },
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                margin: const EdgeInsets.symmetric(vertical: 20),
-                decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(100)),
-                child: const Text(
-                  StringHelper.postNow,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600),
+                  if (viewModel.yearTextController.text.trim().isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.yearIsRequired);
+                    return;
+                  }
+
+                  if (viewModel.kmDrivenTextController.text.trim().isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.kMDrivenIsRequired);
+                    return;
+                  }
+
+                  if (viewModel.adTitleTextController.text.trim().isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.adTitleIsRequired);
+                    return;
+                  }
+                  if (viewModel.descriptionTextController.text.trim().isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.describeWhatYouAreSelling);
+                    return;
+                  }
+                  if (viewModel.addressTextController.text.trim().isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.locationIsRequired);
+                    return;
+                  }
+                  if (viewModel.priceTextController.text.trim().isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.priceIsRequired);
+                    return;
+                  }
+                  DialogHelper.showLoading();
+                  viewModel.editProduct(
+                      productId: item?.id,
+                      category: category,
+                      subCategory: subCategory,
+                      subSubCategory: subSubCategory,
+                      brand: viewModel.selectedBrand,
+                      models: viewModel.selectedModel);
+                },
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  margin: const EdgeInsets.symmetric(vertical: 20),
+                  decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(100)),
+                  child: const Text(
+                    StringHelper.updateNow,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600),
+                  ),
                 ),
               ),
-            ),
+            } else ...{
+              GestureDetector(
+                onTap: () {
+                  if (viewModel.mainImagePath.isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.pleaseUploadMainImage);
+                    return;
+                  }
+                  if (viewModel.imagesList.isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.pleaseUploadAddAtLeastOneImage);
+                    return;
+                  }
+
+                  if (viewModel.yearTextController.text.trim().isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.yearIsRequired);
+                    return;
+                  }
+
+                  if (viewModel.kmDrivenTextController.text.trim().isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.kMDrivenIsRequired);
+                    return;
+                  }
+
+                  if (viewModel.adTitleTextController.text.trim().isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.adTitleIsRequired);
+                    return;
+                  }
+                  if (viewModel.descriptionTextController.text.trim().isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.describeWhatYouAreSelling);
+                    return;
+                  }
+                  if (viewModel.addressTextController.text.trim().isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.locationIsRequired);
+                    return;
+                  }
+                  if (viewModel.priceTextController.text.trim().isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.priceIsRequired);
+                    return;
+                  }
+                  DialogHelper.showLoading();
+                  viewModel.addProduct(
+                      category: category,
+                      subCategory: subCategory,
+                      subSubCategory: subSubCategory,
+                      brand: viewModel.selectedBrand,
+                      models: viewModel.selectedModel);
+                },
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  margin: const EdgeInsets.symmetric(vertical: 20),
+                  decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(100)),
+                  child: const Text(
+                    StringHelper.postNow,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ),
+            },
             const SizedBox(
               height: 30,
             )

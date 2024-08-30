@@ -9,7 +9,6 @@ import 'package:list_and_life/models/filter_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/skeletons/product_list_skeleton.dart';
-import 'package:list_and_life/view/main/filtter/filter_item_view.dart';
 import 'package:list_and_life/view_model/home_vm.dart';
 import 'package:list_and_life/widgets/app_search_widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';

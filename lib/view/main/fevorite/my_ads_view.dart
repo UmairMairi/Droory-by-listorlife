@@ -103,10 +103,16 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                           },
                                           itemBuilder: (BuildContext context) =>
                                               <PopupMenuEntry<int>>[
-                                            const PopupMenuItem(
-                                              value: 1,
-                                              child: Text(StringHelper.edit),
-                                            ),
+                                            if (viewModel.productsList[index]
+                                                    .sellStatus
+                                                    ?.toLowerCase() !=
+                                                StringHelper.sold
+                                                    .toLowerCase()) ...{
+                                              const PopupMenuItem(
+                                                value: 1,
+                                                child: Text(StringHelper.edit),
+                                              )
+                                            },
                                             const PopupMenuItem(
                                               value: 2,
                                               child:

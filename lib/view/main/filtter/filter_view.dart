@@ -15,7 +15,6 @@ import 'package:list_and_life/widgets/app_outline_button.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
-import 'package:whitecodel_reels/whitecodel_reels.dart';
 
 import '../../../base/helpers/string_helper.dart';
 import '../../../base/network/api_constants.dart';
@@ -25,7 +24,6 @@ import '../../../models/category_model.dart';
 import '../../../models/common/list_response.dart';
 import '../../../models/filter_model.dart';
 import '../../../widgets/app_map_widget.dart';
-import 'filter_item_view.dart';
 
 class FilterView extends StatefulWidget {
   final FilterModel? filters;
@@ -421,7 +419,7 @@ class _FilterViewState extends State<FilterView> {
                   inputType: TextInputType.number,
                   action: TextInputAction.done,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 AppTextField(
@@ -430,7 +428,7 @@ class _FilterViewState extends State<FilterView> {
                   controller: viewModel.fuelTextController,
                   action: TextInputAction.done,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 AppTextField(
@@ -457,7 +455,7 @@ class _FilterViewState extends State<FilterView> {
                     },
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 AppTextField(
@@ -472,7 +470,7 @@ class _FilterViewState extends State<FilterView> {
                   inputType: TextInputType.number,
                   action: TextInputAction.done,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
               },

@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/base/helpers/location_helper.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
@@ -20,6 +19,13 @@ class SellFormsVM extends BaseViewModel {
       r'(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])';
   int _currentIndex = 1;
   int _transmission = 0;
+  bool _isEditProduct = false;
+
+  bool get isEditProduct => _isEditProduct;
+  set isEditProduct(bool value) {
+    _isEditProduct = value;
+    notifyListeners();
+  }
 
   final FocusNode priceText = FocusNode();
   final FocusNode yearText = FocusNode();
@@ -30,6 +36,7 @@ class SellFormsVM extends BaseViewModel {
 
   String _mainImagePath = "";
   List<String> imagesList = <String>[];
+  List<String> deletedImageIds = <String>[];
 
   List<String> educationList = [
     'Tutions',
@@ -41,7 +48,7 @@ class SellFormsVM extends BaseViewModel {
   @override
   void onReady() {
     // TODO: implement onInit
-    resetTextFields();
+    // resetTextFields();
     super.onReady();
   }
 
@@ -189,20 +196,47 @@ class SellFormsVM extends BaseViewModel {
   TextEditingController sizeTextController = TextEditingController();
 
   void updateTextFieldsItems({ProductDetailModel? item}) async {
+    if (item == null) {
+      resetTextFields();
+      isEditProduct = false;
+      return;
+    }
+    log("${item.toJson()}", name: "~-> Alok", level: 200);
     imagesList.clear();
-    imagesList.addAll(item?.productMedias
+    imagesList.addAll(item.productMedias
             ?.map((element) => "${ApiConstants.imageUrl}/${element.media}")
-            ?.toList() ??
+            .toList() ??
         []);
-
-    mainImagePath = "${ApiConstants.imageUrl}/${item?.image}";
-    adTitleTextController.text = item?.name ?? '';
-    descriptionTextController.text = item?.description ?? '';
-    addressTextController.text =
-        "${item?.city}, ${item?.state}, ${item?.country}";
-    priceTextController.text = item?.price ?? '';
+    transmission = item.transmission == 'manual' ? 0 : 1;
+    mainImagePath = "${ApiConstants.imageUrl}/${item.image}";
+    log(mainImagePath, name: 'url', level: 404);
+    adTitleTextController.text = item.name ?? '';
+    descriptionTextController.text = item.description ?? '';
+    addressTextController.text = "${item.city}, ${item.state}, ${item.country}";
+    priceTextController.text = item.price ?? '';
     currentIndex =
-        (item?.itemCondition?.toLowerCase().contains('used') ?? false) ? 2 : 1;
+        (item.itemCondition?.toLowerCase().contains('used') ?? false) ? 2 : 1;
+    brandTextController.text = item.brand?.name ?? '';
+    modelTextController.text = item.model?.name ?? '';
+    ramTextController.text = "${item.ram ?? ''} GB";
+    storageTextController.text = "${item.storage ?? ''} GB";
+    screenSizeTextController.text = item.screenSize ?? '5.5"';
+
+    jobPositionTextController.text = item.positionType ?? '';
+    jobSalaryTextController.text = item.salleryFrom ?? '';
+    jobSalaryFromController.text = item.salleryFrom ?? '';
+    jobSalaryToController.text = item.salleryTo ?? '';
+    mileageTextController.text = item.milleage ?? '';
+    educationTypeTextController.text = item.educationType ?? '';
+    yearTextController.text = "${item.year ?? ''}";
+    fuelTextController.text = item.fuel ?? '';
+    kmDrivenTextController.text = "${item.kmDriven ?? ''}";
+    numOfOwnerTextController.text = "${item.numberOfOwner ?? ''}";
+    sizeTextController.text = "${item.fashionSize ?? ''}";
+    selectedBrand = CategoryModel(id: item.brandId, name: item.brand?.name);
+    selectedModel = CategoryModel(id: item.modelId, name: item.model?.name);
+    selectedSize = CategoryModel(id: item.sizeId, name: item.fashionSize?.name);
+    isEditProduct = true;
   }
 
   void resetTextFields() {
@@ -267,9 +301,6 @@ class SellFormsVM extends BaseViewModel {
     for (var element in imagesList) {
       images.add(await BaseClient.uploadImage(imagePath: element));
     }
-    images.insert(0, mainImage);
-    print(models?.id);
-    print(models?.toJson());
     Map<String, dynamic> body = {
       "category_id": category?.id,
       "sub_category_id": subCategory?.id,
@@ -379,5 +410,93 @@ class SellFormsVM extends BaseViewModel {
     ListResponse<CategoryModel> model =
         ListResponse.fromJson(response, (json) => CategoryModel.fromJson(json));
     return model.body ?? [];
+  }
+
+  void editProduct(
+      {num? productId,
+      CategoryModel? category,
+      CategoryModel? subCategory,
+      CategoryModel? subSubCategory,
+      CategoryModel? brand,
+      CategoryModel? models}) async {
+    bool isEgypt = await LocationHelper.checkLocationIsEgypt(
+        latitude: double.parse(latitude ?? '0'),
+        longitude: double.parse(longitude ?? '0'));
+
+    if (!isEgypt) {
+      DialogHelper.hideLoading();
+      LocationHelper.showPopupAddProduct(context, () {});
+      return;
+    }
+
+    final List<String> images = [];
+    String mainImage = mainImagePath.contains('http')
+        ? mainImagePath.split('/').last
+        : await BaseClient.uploadImage(imagePath: mainImagePath);
+    for (var element in imagesList) {
+      if (!element.contains('http')) {
+        images.add(await BaseClient.uploadImage(imagePath: element));
+      } else {
+        images.add(element);
+      }
+    }
+
+    Map<String, dynamic> body = {
+      "product_id": productId,
+      "category_id": category?.id,
+      "sub_category_id": subCategory?.id,
+      "sub_sub_category_id": subSubCategory?.id,
+      "brand_id": brand?.id,
+      "model_id": models?.id,
+      "name": adTitleTextController.text.trim(),
+      "item_condition": currentIndex == 1 ? "new" : "used",
+      "description": descriptionTextController.text.trim(),
+      "image": mainImage,
+      "medias": images,
+      "price": priceTextController.text.trim(),
+      "year": yearTextController.text.trim(),
+      "fuel": fuelTextController.text.trim(),
+      "transmission": transmission == 1 ? 'automatic' : 'manual',
+      "km_driven": kmDrivenTextController.text.trim(),
+      "number_of_owner": numOfOwnerTextController.text.trim(),
+      "education_type": educationTypeTextController.text.trim(),
+      "country": country,
+      "state": state,
+      "city": city,
+      "latitude": latitude,
+      "longitude": longitude,
+      "nearby": addressTextController.text.trim(),
+      "position_type":
+          getPositionType(type: jobPositionTextController.text.trim()),
+      "sallery_period":
+          getSallaryPeriod(type: jobSalaryTextController.text.trim()),
+      "sallery_from": jobSalaryFromController.text.trim(),
+      "sallery_to": jobSalaryToController.text.trim(),
+      "material": materialTextController.text.trim(),
+      "ram": ramTextController.text.trim(),
+      "storage": storageTextController.text.trim(),
+      "screen_size": screenSizeTextController.text.trim(),
+      "size_id": selectedSize?.id,
+    };
+
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.editProductsUrl(),
+        requestType: RequestType.post,
+        bodyType: BodyType.formData,
+        body: body);
+
+    var response = await BaseClient.handleRequest(apiRequest);
+    log("$response", name: "BASEX");
+    MapResponse<ProductDetailModel> model = MapResponse.fromJson(
+        response, (json) => ProductDetailModel.fromJson(json));
+    DialogHelper.hideLoading();
+    DialogHelper.showToast(message: model.message);
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+          builder: (context) => PostAddedFinalView(
+                data: model.body,
+              )),
+    );
   }
 }

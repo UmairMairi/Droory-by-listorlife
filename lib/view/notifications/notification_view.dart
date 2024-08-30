@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/view_model/notification_v_m.dart';
 import 'package:list_and_life/widgets/app_empty_notification_wiidget.dart';

@@ -1,12 +1,14 @@
 import 'dart:io';
 
 import 'package:ccp_dialog/country_picker/flutter_country_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/db_helper.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
+import 'package:list_and_life/base/helpers/social_login_helper.dart';
 import 'package:list_and_life/models/common/map_response.dart';
 import 'package:list_and_life/models/user_model.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
@@ -16,6 +18,8 @@ import 'package:list_and_life/routes/app_pages.dart';
 import 'package:list_and_life/routes/app_routes.dart';
 
 import '../base/helpers/image_picker_helper.dart';
+import '../base/helpers/string_helper.dart';
+import '../widgets/app_text_field.dart';
 
 class AuthVM extends BaseViewModel {
   TextEditingController phoneTextController = TextEditingController();
@@ -84,6 +88,167 @@ class AuthVM extends BaseViewModel {
       AppPages.rootNavigatorKey.currentContext?.push(Routes.verify);
     }
     DialogHelper.showToast(message: "Your verification code is 1111");
+  }
+
+  Future<void> socialLogin({required int type}) async {
+    switch (type) {
+      case 1:
+        var user = await SocialLoginHelper.loginWithGoogle();
+        if (user != null) {
+          socialLoginApi(user: user, type: type);
+        }
+        break;
+      case 2:
+      case 3:
+        var user = await SocialLoginHelper.loginWithApple();
+        if (user != null) {
+          socialLoginApi(user: user, type: type);
+        }
+      default:
+    }
+  }
+
+  Future<void> socialLoginApi(
+      {required UserCredential user, required int type}) async {
+    if (user.additionalUserInfo?.isNewUser ?? false) {
+      _showPhoneNumberDialog(context, user, type);
+    } else {
+      DialogHelper.showLoading();
+      Map<String, dynamic> body = {
+        'device_token': await _fcm.getToken(),
+        'device_type': Platform.isAndroid ? '1' : '2',
+        'name': user.user?.displayName?.split(' ').first,
+        'type': 1,
+        'last_name': user.user?.displayName?.split(' ').last,
+        'social_id': user.user?.uid,
+        'social_type': type,
+        'email': user.user?.email,
+        'profile_pic': user.user?.photoURL,
+      };
+      ApiRequest apiRequest = ApiRequest(
+          url: ApiConstants.socialLoginUrl(),
+          requestType: RequestType.post,
+          body: body);
+
+      var response = await BaseClient.handleRequest(apiRequest);
+
+      MapResponse<UserModel> model =
+          MapResponse.fromJson(response, (json) => UserModel.fromJson(json));
+      DialogHelper.hideLoading();
+      DialogHelper.showToast(message: model.message);
+
+      DbHelper.saveIsGuest(false);
+      DbHelper.saveUserModel(model.body);
+      DbHelper.saveToken(model.body?.token);
+      DbHelper.saveIsGuest(false);
+      DbHelper.saveIsLoggedIn(true);
+      if (context.mounted) {
+        context.go(Routes.main);
+      } else {
+        AppPages.rootNavigatorKey.currentContext?.go(Routes.main);
+      }
+      DialogHelper.showToast(message: model.message);
+    }
+  }
+
+  Future<void> _showPhoneNumberDialog(
+      BuildContext context, UserCredential user, int type) async {
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Enter Your Phone Number'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'We need your phone number to complete the registration process.',
+                style: TextStyle(fontSize: 14),
+              ),
+              const SizedBox(height: 20),
+              AppTextField(
+                title: StringHelper.phoneNumber,
+                hint: StringHelper.phoneNumber,
+                focusNode: nodeText,
+                inputFormatters:
+                    AppTextInputFormatters.withPhoneNumberFormatter(),
+                controller: phoneTextController,
+                inputType: TextInputType.phone,
+                prefix: CountryPicker(
+                    selectedCountry: selectedCountry,
+                    dense: false,
+                    //displays arrow, true by default
+                    showLine: false,
+                    showFlag: true,
+                    showFlagCircle: false,
+                    showDialingCode: true,
+                    //displays dialing code, false by default
+                    showName: false,
+                    //displays Name, true by default
+                    withBottomSheet: true,
+                    //displays country name, true by default
+                    showCurrency: false,
+                    //eg. 'British pound'
+                    showCurrencyISO: false,
+                    onChanged: (country) => updateCountry(country)),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            ElevatedButton(
+              child: const Text('Submit'),
+              onPressed: () async {
+                if (phoneTextController.text.isEmpty) {
+                  DialogHelper.showToast(
+                      message: FormFieldErrors.phoneNumberRequired);
+                  return;
+                }
+                Navigator.of(context).pop();
+                DialogHelper.showLoading();
+                Map<String, dynamic> body = {
+                  'country_code': countryCode,
+                  'phone_no': phoneTextController.text.trim(),
+                  'device_token': await _fcm.getToken(),
+                  'device_type': Platform.isAndroid ? '1' : '2',
+                  'name': user.user?.displayName?.split(' ').first,
+                  'type': 1,
+                  'last_name': user.user?.displayName?.split(' ').last,
+                  'social_id': user.user?.uid,
+                  'social_type': type,
+                  'email': user.user?.email,
+                  'profile_pic': user.user?.photoURL,
+                };
+                ApiRequest apiRequest = ApiRequest(
+                    url: ApiConstants.socialLoginUrl(),
+                    requestType: RequestType.post,
+                    body: body);
+
+                var response = await BaseClient.handleRequest(apiRequest);
+
+                MapResponse<UserModel> model = MapResponse.fromJson(
+                    response, (json) => UserModel.fromJson(json));
+                DialogHelper.hideLoading();
+                DialogHelper.showToast(message: model.message);
+
+                if (context.mounted) {
+                  context.push(Routes.verify);
+                } else {
+                  AppPages.rootNavigatorKey.currentContext?.push(Routes.verify);
+                }
+                DialogHelper.showToast(
+                    message: "Your verification code is 1111");
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<void> verifyOtpApi() async {

@@ -68,6 +68,8 @@ class ProductDetailView extends BaseView<ProductVM> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   ProductDetailModel? data = snapshot.data;
+                  data?.productMedias
+                      ?.insert(0, ProductMedias(media: data.image));
                   return SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,6 +77,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                       children: [
                         CardSwipeWidget(
                           height: 220,
+                          data: data,
                           imagesList: data?.productMedias,
                           borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(20),
@@ -301,7 +304,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                     shrinkWrap: true,
                                     physics:
                                         const NeverScrollableScrollPhysics(),
-                                    padding: EdgeInsets.all(10),
+                                    padding: const EdgeInsets.all(10),
                                     gridDelegate:
                                         const SliverGridDelegateWithFixedCrossAxisCount(
                                             crossAxisCount: 3,

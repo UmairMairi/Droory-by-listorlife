@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/res/assets_res.dart';
-import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/app_outline_button.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../../../base/helpers/string_helper.dart';
 import '../../../../models/prodect_detail_model.dart';
-import '../../../../routes/app_routes.dart';
 import '../../../product/my_product_view.dart';
 
 class PostAddedFinalView extends StatelessWidget {

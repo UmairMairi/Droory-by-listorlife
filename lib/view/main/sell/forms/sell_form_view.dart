@@ -1,8 +1,4 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/base/network/api_request.dart';
 import 'package:list_and_life/models/category_model.dart';
 import 'package:list_and_life/view/main/sell/forms/cars_sell_form.dart';
 import 'package:list_and_life/view/main/sell/forms/common_sell_form.dart';
@@ -13,6 +9,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../base/helpers/string_helper.dart';
 import '../../../../base/network/api_constants.dart';
+import '../../../../base/network/api_request.dart';
 import '../../../../base/network/base_client.dart';
 import '../../../../models/common/list_response.dart';
 import '../../../../models/prodect_detail_model.dart';
@@ -43,43 +40,45 @@ class SellFormView extends StatefulWidget {
 class _SellFormViewState extends State<SellFormView> {
   @override
   void initState() {
+    context.read<SellFormsVM>().updateTextFieldsItems(item: widget.item);
     super.initState();
+  }
+
+  Future<List<CategoryModel>> getBrands({CategoryModel? data}) async {
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.getBrandsUrl(id: "${data?.id}"),
+        requestType: RequestType.get);
+    var response = await BaseClient.handleRequest(apiRequest);
+
+    ListResponse<CategoryModel> model =
+        ListResponse.fromJson(response, (json) => CategoryModel.fromJson(json));
+
+    return model.body ?? [];
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<SellFormsVM>(
-      builder: (context, viewModel, child) {
-        viewModel.updateTextFieldsItems(item: widget.item);
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text(StringHelper.includeSomeDetails),
-          ),
-          body: FutureBuilder<List<CategoryModel>>(
-              future: viewModel.getBrands(data: widget.subCategory),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return _buildBody(context, snapshot.data ?? []);
-                }
-                if (snapshot.hasError) {
-                  return const AppErrorWidget();
-                }
-                return SellFormSkeleton(
-                  isLoading:
-                      snapshot.connectionState == ConnectionState.waiting,
-                );
-              }),
-        );
-      },
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(StringHelper.includeSomeDetails),
+      ),
+      body: FutureBuilder<List<CategoryModel>>(
+          future: getBrands(data: widget.subCategory),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return _buildBody(context, snapshot.data ?? []);
+            }
+            if (snapshot.hasError) {
+              return const AppErrorWidget();
+            }
+            return SellFormSkeleton(
+              isLoading: snapshot.connectionState == ConnectionState.waiting,
+            );
+          }),
     );
   }
 
   Widget _buildBody(BuildContext context, List<CategoryModel>? brands) {
-    print("Alok Category ~--> ${widget.category?.toJson()}");
-    print("Alok Sub Category ~--> ${widget.subCategory?.toJson()}");
-    print("Alok Sub Sub Category ~--> ${widget.subSubCategory?.toJson()}");
-    print(
-        "Alok brands ~--> ${brands?.map((element) => element.toJson()).toList()}");
     switch (widget.type) {
       case 'jobs':
         return JobSellForm(

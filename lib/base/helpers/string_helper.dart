@@ -161,6 +161,7 @@ class StringHelper {
   static const String add = 'Add';
   static const String size = "Size";
   static const String postNow = 'Post Now';
+  static const String updateNow = 'Update';
   static const String ram = "Ram";
   static const String strong = "Storage";
   static const String screenSize = "Screen Size";

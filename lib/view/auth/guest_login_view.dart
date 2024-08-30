@@ -126,9 +126,8 @@ class GuestLoginView extends BaseView<AuthVM> {
               height: 30,
             ),
             GestureDetector(
-                onTap: () {
-                  DbHelper.saveIsGuest(false);
-                  context.pop();
+                onTap: () async {
+                  viewModel.socialLogin(type: 1);
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 16),
@@ -150,10 +149,6 @@ class GuestLoginView extends BaseView<AuthVM> {
                         height: 30,
                         width: 30,
                       ),
-                      /* Image.network(
-                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlB3CZ5R6UsCPYh-Wa0R1N-6pV5_GQQiNaTDAgtC5j1A&s",
-                        height: 25,
-                      ),*/
                       Text(
                         StringHelper.loginWithGoogle,
                         style: TextStyle(
@@ -173,9 +168,7 @@ class GuestLoginView extends BaseView<AuthVM> {
             ),
             GestureDetector(
                 onTap: () {
-                  DbHelper.saveIsGuest(false);
-
-                  context.pop();
+                  viewModel.socialLogin(type: 3);
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 16),

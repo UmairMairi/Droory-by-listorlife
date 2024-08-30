@@ -8,10 +8,15 @@ import '../res/assets_res.dart';
 
 class CardSwipeWidget extends StatefulWidget {
   final double? height;
+  final ProductDetailModel? data;
   final List<ProductMedias>? imagesList;
   final BorderRadiusGeometry? borderRadius;
   const CardSwipeWidget(
-      {super.key, this.height, this.imagesList, this.borderRadius});
+      {super.key,
+      required this.data,
+      this.height,
+      this.imagesList,
+      this.borderRadius});
 
   @override
   State<CardSwipeWidget> createState() => _CardSwipeWidgetState();
@@ -27,6 +32,9 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget>
   @override
   void initState() {
     // TODO: implement initState
+
+    bannerImages.insert(0, widget.data?.image);
+
     bannerImages =
         widget.imagesList?.map((element) => element.media).toList() ?? [];
 

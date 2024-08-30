@@ -111,22 +111,28 @@ class LoginView extends BaseView<AuthVM> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Image.asset(
-                          AssetsRes.IC_GOOGLE_ICON,
-                          height: 30,
+                    InkWell(
+                      onTap: () => viewModel.socialLogin(type: 1),
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Image.asset(
+                            AssetsRes.IC_GOOGLE_ICON,
+                            height: 30,
+                          ),
                         ),
                       ),
                     ),
                     const Gap(10),
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Image.asset(
-                          AssetsRes.IC_APPLE_ICON,
-                          height: 30,
+                    InkWell(
+                      onTap: () => viewModel.socialLogin(type: 3),
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Image.asset(
+                            AssetsRes.IC_APPLE_ICON,
+                            height: 30,
+                          ),
                         ),
                       ),
                     )

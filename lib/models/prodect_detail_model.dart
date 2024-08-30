@@ -7,8 +7,8 @@ class ProductDetailModel {
   num? categoryId;
   num? subCategoryId;
   num? subSubCategoryId;
-  num? brandId;
-  num? modelId;
+  int? brandId;
+  int? modelId;
   String? name;
   String? image;
   String? itemCondition;
@@ -24,7 +24,7 @@ class ProductDetailModel {
   String? material;
   num? ram;
   num? storage;
-  num? sizeId;
+  int? sizeId;
   String? milleage;
   String? screenSize;
   String? transmission;
@@ -163,13 +163,11 @@ class ProductDetailModel {
     subSubCategory = json['sub_sub_category'] != null
         ? CategoryModel.fromJson(json['sub_sub_category'])
         : null;
-    model = json['model'] != null
-        ? CategoryModel.fromJson(json['model'])
-        : null;
+    model =
+        json['model'] != null ? CategoryModel.fromJson(json['model']) : null;
     fashionSize = json['fashion_size'];
-    brand = json['brand'] != null
-        ? CategoryModel.fromJson(json['brand'])
-        : null;
+    brand =
+        json['brand'] != null ? CategoryModel.fromJson(json['brand']) : null;
     user = json['user'] != null ? UserModel.fromJson(json['user']) : null;
   }
 
@@ -218,8 +216,7 @@ class ProductDetailModel {
     data['favourites_count'] = favouritesCount;
     data['count_views'] = countViews;
     if (productMedias != null) {
-      data['product_medias'] =
-          productMedias!.map((v) => v.toJson()).toList();
+      data['product_medias'] = productMedias!.map((v) => v.toJson()).toList();
     }
     if (category != null) {
       data['category'] = category!.toJson();
@@ -245,17 +242,20 @@ class ProductDetailModel {
 }
 
 class ProductMedias {
+  int? id;
   String? media;
 
   ProductMedias({this.media});
 
   ProductMedias.fromJson(Map<String, dynamic> json) {
     media = json['media'];
+    id = json['id'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['media'] = media;
+    data['id'] = id;
     return data;
   }
 }

@@ -107,8 +107,7 @@ class SettingView extends BaseView<SettingVM> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           ImageView.circle(
-                            image:
-                                "${ApiConstants.imageUrl}/${DbHelper.getUserModel()?.profilePic}",
+                            image: getImageUrl(),
                             borderWidth: 1,
                             borderColor: Colors.black,
                             height: 120,
@@ -219,6 +218,15 @@ class SettingView extends BaseView<SettingVM> {
         ),
       ),
     );
+  }
+
+  String getImageUrl() {
+    String url = "${DbHelper.getUserModel()?.profilePic}";
+
+    if (url.contains('http')) {
+      return url;
+    }
+    return "${ApiConstants.imageUrl}/$url";
   }
 }
 

@@ -1,9 +1,7 @@
 import 'package:app_links/app_links.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/base/helpers/dynamic_link_helper.dart';
 import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/view_model/chat_vm.dart';

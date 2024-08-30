@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
+import 'package:list_and_life/models/category_model.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../base/helpers/date_helper.dart';
@@ -14,7 +15,6 @@ import '../base/network/base_client.dart';
 import '../models/common/map_response.dart';
 import '../models/home_list_model.dart';
 import '../models/prodect_detail_model.dart';
-import '../view/main/sell/forms/edit_product_form.dart';
 import '../view/main/sell/forms/sell_form_view.dart';
 
 class MyAdsVM extends BaseViewModel {
@@ -132,16 +132,8 @@ class MyAdsVM extends BaseViewModel {
       bool isDetailsPage = false}) async {
     switch (index) {
       case 1:
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => SellFormView(
-                      category: item?.category,
-                      subSubCategory: item?.subSubCategory,
-                      subCategory: item?.category,
-                      type: item?.category?.name?.toLowerCase(),
-                      item: item,
-                    )));
+        navigateToEditProduct(item: item);
+
         return;
       case 2:
         await deactivateProductApi(id: item?.id);
@@ -187,5 +179,25 @@ class MyAdsVM extends BaseViewModel {
     DialogHelper.hideLoading();
     DialogHelper.showToast(message: model.message);
     onRefresh();
+  }
+
+  void navigateToEditProduct({ProductDetailModel? item}) {
+    CategoryModel category = CategoryModel(
+        id: item?.categoryId?.toInt(), name: item?.category?.name);
+    CategoryModel subCategory = CategoryModel(
+        id: item?.subCategoryId?.toInt(), name: item?.subCategory?.name);
+    CategoryModel subSubCategory = CategoryModel(
+        id: item?.subSubCategoryId?.toInt(), name: item?.subSubCategory?.name);
+
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => SellFormView(
+                  category: category,
+                  subSubCategory: subSubCategory,
+                  subCategory: subCategory,
+                  type: category.name?.toLowerCase(),
+                  item: item,
+                )));
   }
 }

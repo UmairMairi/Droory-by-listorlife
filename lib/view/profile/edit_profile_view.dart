@@ -4,7 +4,7 @@ import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/db_helper.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/base/helpers/image_picker_helper.dart';
-import 'package:list_and_life/res/assets_res.dart';
+
 import 'package:list_and_life/view_model/profile_vm.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
@@ -32,16 +32,15 @@ class EditProfileView extends BaseView<ProfileVM> {
               borderRadius: BorderRadius.circular(10),
               child: Stack(
                 children: [
-                  ImageView.rect(
-                    image: viewModel.imagePath.isNotEmpty
-                        ? viewModel.imagePath
-                        : "${ApiConstants.imageUrl}/${DbHelper.getUserModel()?.profilePic}",
-                    placeholder: AssetsRes.DUMMY_PROFILE,
-                    width: context.width,
-                    height: 250,
+                  ImageView.circle(
+                    image: getImageUrl(),
+                    borderWidth: 1,
+                    borderColor: Colors.black,
+                    height: 180,
+                    width: 180,
                   ),
                   Positioned(
-                    bottom: 10,
+                    bottom: 0,
                     right: 10,
                     child: InkWell(
                       onTap: () async {
@@ -85,6 +84,11 @@ class EditProfileView extends BaseView<ProfileVM> {
               title: StringHelper.email,
               hint: StringHelper.email,
               inputType: TextInputType.emailAddress,
+              onTap: () {
+                DialogHelper.showToast(
+                    message: StringHelper.thisFieldIsNotEditable);
+              },
+              readOnly: true,
               inputFormatters: AppTextInputFormatters.withEmailFormatter(),
               controller: viewModel.emailTextController,
             ),
@@ -144,5 +148,14 @@ class EditProfileView extends BaseView<ProfileVM> {
         ),
       ),
     );
+  }
+
+  String getImageUrl() {
+    String url = "${DbHelper.getUserModel()?.profilePic}";
+
+    if (url.contains('http')) {
+      return url;
+    }
+    return "${ApiConstants.imageUrl}/$url";
   }
 }

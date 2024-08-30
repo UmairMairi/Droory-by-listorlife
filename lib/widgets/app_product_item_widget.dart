@@ -30,6 +30,7 @@ class AppProductItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    data?.productMedias?.insert(0, ProductMedias(media: data?.image));
     return InkWell(
       onTap: onItemTapped,
       child: Container(
@@ -53,6 +54,7 @@ class AppProductItemWidget extends StatelessWidget {
             Stack(
               children: [
                 CardSwipeWidget(
+                  data: data,
                   imagesList: data?.productMedias,
                   height: 160,
                   borderRadius: const BorderRadius.only(

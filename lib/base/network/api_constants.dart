@@ -5,6 +5,7 @@ class ApiConstants {
   /*----------------------------------------------- End Point Urls ---------------------------------------*/
 
   static String loginUrl() => "$_baseUrl/login";
+  static String socialLoginUrl() => "$_baseUrl/social/login";
   static String verifyOtpUrl() => "$_baseUrl/verify/otp";
   static String signupUrl() => "$_baseUrl/signup";
   static String editProfileUrl() => "$_baseUrl/edit/profile";
@@ -22,6 +23,7 @@ class ApiConstants {
       "$_baseUrl/get/brands?sub_category_id=$id";
   static String getProductUrl({String? id}) => "$_baseUrl/get/product/$id";
   static String addProductsUrl() => "$_baseUrl/add/products";
+  static String editProductsUrl() => "$_baseUrl/edit/product";
   static String getProductsUrl(
           {int? limit = 10,
           int? page = 1,

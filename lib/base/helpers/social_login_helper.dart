@@ -53,10 +53,7 @@ class SocialLoginHelper {
   }
 
   static Future<UserCredential?> loginWithGoogle() async {
-    GoogleSignIn googleSignIn = GoogleSignIn(scopes: [
-      'email',
-      'https://www.googleapis.com/auth/contacts.readonly',
-    ]);
+    GoogleSignIn googleSignIn = GoogleSignIn();
     try {
       if (await googleSignIn.isSignedIn()) {
         await googleSignIn.signOut();
