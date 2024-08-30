@@ -936,18 +936,6 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                     return;
                   }
 
-                  if (viewModel.yearTextController.text.trim().isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.yearIsRequired);
-                    return;
-                  }
-
-                  if (viewModel.kmDrivenTextController.text.trim().isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.kMDrivenIsRequired);
-                    return;
-                  }
-
                   if (viewModel.adTitleTextController.text.trim().isEmpty) {
                     DialogHelper.showToast(
                         message: StringHelper.adTitleIsRequired);
@@ -955,7 +943,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                   }
                   if (viewModel.descriptionTextController.text.trim().isEmpty) {
                     DialogHelper.showToast(
-                        message: StringHelper.describeWhatYouAreSelling);
+                        message: StringHelper.descriptionIsRequired);
                     return;
                   }
                   if (viewModel.addressTextController.text.trim().isEmpty) {
@@ -1008,18 +996,6 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                     return;
                   }
 
-                  if (viewModel.yearTextController.text.trim().isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.yearIsRequired);
-                    return;
-                  }
-
-                  if (viewModel.kmDrivenTextController.text.trim().isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.kMDrivenIsRequired);
-                    return;
-                  }
-
                   if (viewModel.adTitleTextController.text.trim().isEmpty) {
                     DialogHelper.showToast(
                         message: StringHelper.adTitleIsRequired);
@@ -1027,7 +1003,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                   }
                   if (viewModel.descriptionTextController.text.trim().isEmpty) {
                     DialogHelper.showToast(
-                        message: StringHelper.describeWhatYouAreSelling);
+                        message: StringHelper.descriptionIsRequired);
                     return;
                   }
                   if (viewModel.addressTextController.text.trim().isEmpty) {

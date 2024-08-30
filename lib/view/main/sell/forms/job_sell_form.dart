@@ -683,15 +683,25 @@ class JobSellForm extends BaseView<SellFormsVM> {
                       message: StringHelper.pleaseUploadAddAtLeastOneImage);
                   return;
                 }
-
-                if (viewModel.yearTextController.text.trim().isEmpty) {
-                  DialogHelper.showToast(message: StringHelper.yearIsRequired);
+                if (viewModel.jobPositionTextController.text.trim().isEmpty) {
+                  DialogHelper.showToast(
+                      message: StringHelper.pleasesSelectPositionType);
+                  return;
+                }
+                if (viewModel.jobSalaryTextController.text.trim().isEmpty) {
+                  DialogHelper.showToast(
+                      message: StringHelper.pleaseSelectSalaryPeriod);
+                  return;
+                }
+                if (viewModel.jobSalaryFromController.text.trim().isEmpty) {
+                  DialogHelper.showToast(
+                      message: StringHelper.pleaseSelectSalaryForm);
                   return;
                 }
 
-                if (viewModel.kmDrivenTextController.text.trim().isEmpty) {
+                if (viewModel.jobSalaryToController.text.trim().isEmpty) {
                   DialogHelper.showToast(
-                      message: StringHelper.kMDrivenIsRequired);
+                      message: StringHelper.pleaseSelectSalaryTo);
                   return;
                 }
 
@@ -702,16 +712,12 @@ class JobSellForm extends BaseView<SellFormsVM> {
                 }
                 if (viewModel.descriptionTextController.text.trim().isEmpty) {
                   DialogHelper.showToast(
-                      message: StringHelper.describeWhatYouAreSelling);
+                      message: StringHelper.descriptionIsRequired);
                   return;
                 }
                 if (viewModel.addressTextController.text.trim().isEmpty) {
                   DialogHelper.showToast(
                       message: StringHelper.locationIsRequired);
-                  return;
-                }
-                if (viewModel.priceTextController.text.trim().isEmpty) {
-                  DialogHelper.showToast(message: StringHelper.priceIsRequired);
                   return;
                 }
                 DialogHelper.showLoading();
@@ -753,15 +759,25 @@ class JobSellForm extends BaseView<SellFormsVM> {
                       message: StringHelper.pleaseUploadAddAtLeastOneImage);
                   return;
                 }
-
-                if (viewModel.yearTextController.text.trim().isEmpty) {
-                  DialogHelper.showToast(message: StringHelper.yearIsRequired);
+                if (viewModel.jobPositionTextController.text.trim().isEmpty) {
+                  DialogHelper.showToast(
+                      message: StringHelper.pleasesSelectPositionType);
+                  return;
+                }
+                if (viewModel.jobSalaryTextController.text.trim().isEmpty) {
+                  DialogHelper.showToast(
+                      message: StringHelper.pleaseSelectSalaryPeriod);
+                  return;
+                }
+                if (viewModel.jobSalaryFromController.text.trim().isEmpty) {
+                  DialogHelper.showToast(
+                      message: StringHelper.pleaseSelectSalaryForm);
                   return;
                 }
 
-                if (viewModel.kmDrivenTextController.text.trim().isEmpty) {
+                if (viewModel.jobSalaryToController.text.trim().isEmpty) {
                   DialogHelper.showToast(
-                      message: StringHelper.kMDrivenIsRequired);
+                      message: StringHelper.pleaseSelectSalaryTo);
                   return;
                 }
 
@@ -772,16 +788,12 @@ class JobSellForm extends BaseView<SellFormsVM> {
                 }
                 if (viewModel.descriptionTextController.text.trim().isEmpty) {
                   DialogHelper.showToast(
-                      message: StringHelper.describeWhatYouAreSelling);
+                      message: StringHelper.descriptionIsRequired);
                   return;
                 }
                 if (viewModel.addressTextController.text.trim().isEmpty) {
                   DialogHelper.showToast(
                       message: StringHelper.locationIsRequired);
-                  return;
-                }
-                if (viewModel.priceTextController.text.trim().isEmpty) {
-                  DialogHelper.showToast(message: StringHelper.priceIsRequired);
                   return;
                 }
                 DialogHelper.showLoading();

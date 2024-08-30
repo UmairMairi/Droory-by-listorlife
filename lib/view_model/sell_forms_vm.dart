@@ -437,7 +437,7 @@ class SellFormsVM extends BaseViewModel {
       if (!element.contains('http')) {
         images.add(await BaseClient.uploadImage(imagePath: element));
       } else {
-        images.add(element);
+        images.add(element.split('/').last);
       }
     }
 

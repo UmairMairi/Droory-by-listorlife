@@ -591,16 +591,11 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                         message: StringHelper.pleaseUploadAddAtLeastOneImage);
                     return;
                   }
-
-                  if (viewModel.yearTextController.text.trim().isEmpty) {
+                  if (viewModel.educationTypeTextController.text
+                      .trim()
+                      .isEmpty) {
                     DialogHelper.showToast(
-                        message: StringHelper.yearIsRequired);
-                    return;
-                  }
-
-                  if (viewModel.kmDrivenTextController.text.trim().isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.kMDrivenIsRequired);
+                        message: StringHelper.pleaseSelectEducationType);
                     return;
                   }
 
@@ -611,7 +606,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                   }
                   if (viewModel.descriptionTextController.text.trim().isEmpty) {
                     DialogHelper.showToast(
-                        message: StringHelper.describeWhatYouAreSelling);
+                        message: StringHelper.descriptionIsRequired);
                     return;
                   }
                   if (viewModel.addressTextController.text.trim().isEmpty) {
@@ -663,16 +658,11 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                         message: StringHelper.pleaseUploadAddAtLeastOneImage);
                     return;
                   }
-
-                  if (viewModel.yearTextController.text.trim().isEmpty) {
+                  if (viewModel.educationTypeTextController.text
+                      .trim()
+                      .isEmpty) {
                     DialogHelper.showToast(
-                        message: StringHelper.yearIsRequired);
-                    return;
-                  }
-
-                  if (viewModel.kmDrivenTextController.text.trim().isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.kMDrivenIsRequired);
+                        message: StringHelper.pleaseSelectEducationType);
                     return;
                   }
 
@@ -683,7 +673,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                   }
                   if (viewModel.descriptionTextController.text.trim().isEmpty) {
                     DialogHelper.showToast(
-                        message: StringHelper.describeWhatYouAreSelling);
+                        message: StringHelper.descriptionIsRequired);
                     return;
                   }
                   if (viewModel.addressTextController.text.trim().isEmpty) {

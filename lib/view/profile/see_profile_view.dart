@@ -290,7 +290,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                                       children: [
                                         ImageView.rect(
                                             image:
-                                                "${ApiConstants.imageUrl}/${_productsList[index].productMedias?.first.media}",
+                                                "${ApiConstants.imageUrl}/${_productsList[index].image}",
                                             borderRadius: 15,
                                             width: 90,
                                             height: 100),

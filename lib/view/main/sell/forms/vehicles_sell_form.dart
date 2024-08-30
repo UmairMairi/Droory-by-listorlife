@@ -719,7 +719,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                   }
                   if (viewModel.descriptionTextController.text.trim().isEmpty) {
                     DialogHelper.showToast(
-                        message: StringHelper.describeWhatYouAreSelling);
+                        message: StringHelper.descriptionIsRequired);
                     return;
                   }
                   if (viewModel.addressTextController.text.trim().isEmpty) {
@@ -791,7 +791,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                   }
                   if (viewModel.descriptionTextController.text.trim().isEmpty) {
                     DialogHelper.showToast(
-                        message: StringHelper.describeWhatYouAreSelling);
+                        message: StringHelper.descriptionIsRequired);
                     return;
                   }
                   if (viewModel.addressTextController.text.trim().isEmpty) {
