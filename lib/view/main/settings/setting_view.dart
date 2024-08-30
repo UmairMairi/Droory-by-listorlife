@@ -27,117 +27,113 @@ class SettingView extends BaseView<SettingVM> {
         title: const Text(StringHelper.myProfile),
         centerTitle: true,
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             viewModel.isGuest
-                ? Flexible(
-                    child: Container(
-                      width: context.width,
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5), // Shadow color
-                            spreadRadius: 2, // Spread radius
-                            blurRadius: 5, // Blur radius
-                            offset: const Offset(0, 5), // Offset from the top
+                ? Container(
+                    width: context.width,
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5), // Shadow color
+                          spreadRadius: 2, // Spread radius
+                          blurRadius: 5, // Blur radius
+                          offset: const Offset(0, 5), // Offset from the top
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const ImageView.circle(
+                          image: AssetsRes.IC_USER_ICON,
+                          placeholder: AssetsRes.IC_USER_ICON,
+                          borderColor: Colors.black,
+                          borderWidth: 4,
+                          height: 120,
+                          width: 120,
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          StringHelper.guestUser,
+                          style: context.textTheme.bodyMedium?.copyWith(
+                            fontFamily: FontRes.POPPINS_REGULAR,
+                            fontSize: 18,
                           ),
-                        ],
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const ImageView.circle(
-                            image: AssetsRes.IC_USER_ICON,
-                            placeholder: AssetsRes.IC_USER_ICON,
-                            borderColor: Colors.black,
-                            borderWidth: 4,
-                            height: 100,
-                            width: 100,
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            StringHelper.guestUser,
-                            style: context.textTheme.bodyMedium?.copyWith(
-                              fontFamily: FontRes.POPPINS_REGULAR,
-                              fontSize: 18,
-                            ),
-                          ),
-                          AppElevatedButton(
-                            onTap: () {
-                              context.push(Routes.guestLogin);
-                            },
-                            height: 30,
-                            width: 100,
-                            title: StringHelper.login,
-                          )
-                        ],
-                      ),
+                        ),
+                        AppElevatedButton(
+                          onTap: () {
+                            context.push(Routes.guestLogin);
+                          },
+                          height: 30,
+                          width: 100,
+                          title: StringHelper.login,
+                        )
+                      ],
                     ),
                   )
-                : Flexible(
-                    child: Container(
-                      width: context.width,
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5), // Shadow color
-                            spreadRadius: 2, // Spread radius
-                            blurRadius: 5, // Blur radius
-                            offset: const Offset(0, 5), // Offset from the top
+                : Container(
+                    width: context.width,
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5), // Shadow color
+                          spreadRadius: 2, // Spread radius
+                          blurRadius: 5, // Blur radius
+                          offset: const Offset(0, 5), // Offset from the top
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ImageView.circle(
+                          image: getImageUrl(),
+                          borderWidth: 1,
+                          borderColor: Colors.black,
+                          height: 120,
+                          width: 120,
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              context.read<ProfileVM>().imagePath = '';
+                              context.push(Routes.editProfile);
+                            },
+                            icon: const Icon(
+                              CupertinoIcons.square_pencil,
+                              size: 20,
+                            )),
+                        Text(
+                          "${DbHelper.getUserModel()?.name} ${DbHelper.getUserModel()?.lastName}",
+                          style: context.textTheme.bodyMedium?.copyWith(
+                            fontFamily: FontRes.POPPINS_SEMIBOLD,
+                            fontSize: 18,
                           ),
-                        ],
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          ImageView.circle(
-                            image: getImageUrl(),
-                            borderWidth: 1,
-                            borderColor: Colors.black,
-                            height: 100,
-                            width: 100,
+                        ),
+                        Text(
+                          DbHelper.getUserModel()?.email ?? '',
+                          style: context.textTheme.bodyMedium?.copyWith(
+                            fontFamily: FontRes.POPPINS_REGULAR,
+                            fontSize: 16,
                           ),
-                          IconButton(
-                              onPressed: () {
-                                context.read<ProfileVM>().imagePath = '';
-                                context.push(Routes.editProfile);
-                              },
-                              icon: const Icon(
-                                CupertinoIcons.square_pencil,
-                                size: 20,
-                              )),
-                          Text(
-                            "${DbHelper.getUserModel()?.name} ${DbHelper.getUserModel()?.lastName}",
-                            style: context.textTheme.bodyMedium?.copyWith(
-                              fontFamily: FontRes.POPPINS_SEMIBOLD,
-                              fontSize: 16,
-                            ),
-                          ),
-                          Text(
-                            DbHelper.getUserModel()?.email ?? '',
-                            style: context.textTheme.bodyMedium?.copyWith(
-                              fontFamily: FontRes.POPPINS_REGULAR,
-                              fontSize: 14,
-                            ),
-                          )
-                        ],
-                      ),
+                        )
+                      ],
                     ),
                   ),
             const Gap(20),

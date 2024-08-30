@@ -57,6 +57,7 @@ class ApiConstants {
   static String markAsSoldUrl() => "$_baseUrl/mark/as/sold";
   static String deleteProductUrl() => "$_baseUrl/delete/product";
   static String deactivateProductUrl() => "$_baseUrl/edit/product";
+  static String getFaqUrl() => "$_baseUrl/get/faqs";
   static String getFilteredProduct({
     int? limit = 10,
     int? page = 1,

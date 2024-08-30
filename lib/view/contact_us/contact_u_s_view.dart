@@ -25,12 +25,7 @@ class ContactUsView extends StatelessWidget {
       ),
       appBar: AppBar(
         title: const Text('Contact Us'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),

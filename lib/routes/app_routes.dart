@@ -21,6 +21,8 @@ class Routes {
 
   static const String termsOfUse = '/termsOfUse';
   static const String contactUsView = '/contactUsView';
+  static const String faqView = '/faqView';
+  static const String blockedUserList = '/blockedUserList';
   static const String permission = '/permission';
   static const String planList = '/plan_list';
   static const String seeProfile = '/see_profile';

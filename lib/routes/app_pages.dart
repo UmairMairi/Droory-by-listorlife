@@ -7,6 +7,7 @@ import 'package:list_and_life/models/inbox_model.dart';
 import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/models/user_model.dart';
 import 'package:list_and_life/view/contact_us/contact_u_s_view.dart';
+import 'package:list_and_life/view/contact_us/faq_view.dart';
 import 'package:list_and_life/view/main/chat/message_view.dart';
 import 'package:list_and_life/view/main/filtter/filter_view.dart';
 import 'package:list_and_life/view/main/permission/location_permission_view.dart';
@@ -25,6 +26,7 @@ import '../view/error/not_found_view.dart';
 import '../view/main/filtter/filter_item_view.dart';
 import '../view/main/main_view.dart';
 import '../view/main/sell/forms/post_added_final_view.dart';
+import '../view/main/settings/blocked_users_list.dart';
 import '../view/notifications/notification_view.dart';
 import '../view/on_boarding/on_boarding_view.dart';
 import '../view/profile/see_profile_view.dart';
@@ -128,7 +130,19 @@ class AppPages {
       GoRoute(
         path: Routes.contactUsView,
         pageBuilder: (context, state) {
-          return getPage(child: ContactUsView(), state: state);
+          return getPage(child: const ContactUsView(), state: state);
+        },
+      ),
+      GoRoute(
+        path: Routes.faqView,
+        pageBuilder: (context, state) {
+          return getPage(child: const FaqView(), state: state);
+        },
+      ),
+      GoRoute(
+        path: Routes.blockedUserList,
+        pageBuilder: (context, state) {
+          return getPage(child: const BlockedUsersList(), state: state);
         },
       ),
       GoRoute(

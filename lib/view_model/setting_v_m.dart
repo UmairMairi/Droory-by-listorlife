@@ -49,10 +49,24 @@ class SettingVM extends BaseViewModel {
                   }),
               SettingItemModel(
                   isArrow: true,
-                  icon: AssetsRes.IC_T_AND_C,
+                  icon: AssetsRes.IC_CONTACT_US,
                   title: 'Contact Us',
                   onTap: () {
                     context.push(Routes.contactUsView);
+                  }),
+              SettingItemModel(
+                  isArrow: true,
+                  icon: AssetsRes.IC_FAQ,
+                  title: 'FAQ\'s',
+                  onTap: () {
+                    context.push(Routes.faqView);
+                  }),
+              SettingItemModel(
+                  isArrow: true,
+                  icon: AssetsRes.IC_BLOCS_LIST,
+                  title: 'Blocked Users',
+                  onTap: () {
+                    context.push(Routes.blockedUserList);
                   }),
               SettingItemModel(
                   icon: AssetsRes.IC_LOGOUT,
@@ -82,6 +96,20 @@ class SettingVM extends BaseViewModel {
                   title: 'Contact Us',
                   onTap: () {
                     context.push(Routes.contactUsView);
+                  }),
+              SettingItemModel(
+                  isArrow: true,
+                  icon: AssetsRes.IC_FAQ,
+                  title: 'FAQ\'s',
+                  onTap: () {
+                    context.push(Routes.faqView);
+                  }),
+              SettingItemModel(
+                  isArrow: true,
+                  icon: AssetsRes.IC_BLOCS_LIST,
+                  title: 'Blocked Users',
+                  onTap: () {
+                    context.push(Routes.blockedUserList);
                   }),
               SettingItemModel(
                   icon: AssetsRes.IC_DELETE_ACCOUNT,
@@ -166,6 +194,20 @@ class SettingVM extends BaseViewModel {
                   context.push(Routes.contactUsView);
                 }),
             SettingItemModel(
+                isArrow: true,
+                icon: AssetsRes.IC_FAQ,
+                title: 'FAQ\'s',
+                onTap: () {
+                  context.push(Routes.faqView);
+                }),
+            SettingItemModel(
+                isArrow: true,
+                icon: AssetsRes.IC_BLOCS_LIST,
+                title: 'Blocked Users',
+                onTap: () {
+                  context.push(Routes.blockedUserList);
+                }),
+            SettingItemModel(
                 icon: AssetsRes.IC_LOGOUT,
                 title: 'Login',
                 onTap: () {
@@ -193,6 +235,20 @@ class SettingVM extends BaseViewModel {
                 title: 'Contact Us',
                 onTap: () {
                   context.push(Routes.contactUsView);
+                }),
+            SettingItemModel(
+                isArrow: true,
+                icon: AssetsRes.IC_FAQ,
+                title: 'FAQ\'s',
+                onTap: () {
+                  context.push(Routes.faqView);
+                }),
+            SettingItemModel(
+                isArrow: true,
+                icon: AssetsRes.IC_BLOCS_LIST,
+                title: 'Blocked Users',
+                onTap: () {
+                  context.push(Routes.blockedUserList);
                 }),
             SettingItemModel(
                 icon: AssetsRes.IC_DELETE_ACCOUNT,
