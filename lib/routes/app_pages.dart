@@ -6,6 +6,7 @@ import 'package:list_and_life/models/filter_model.dart';
 import 'package:list_and_life/models/inbox_model.dart';
 import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/models/user_model.dart';
+import 'package:list_and_life/view/contact_us/contact_u_s_view.dart';
 import 'package:list_and_life/view/main/chat/message_view.dart';
 import 'package:list_and_life/view/main/filtter/filter_view.dart';
 import 'package:list_and_life/view/main/permission/location_permission_view.dart';
@@ -122,6 +123,12 @@ class AppPages {
                 type: state.extra as int?,
               ),
               state: state);
+        },
+      ),
+      GoRoute(
+        path: Routes.contactUsView,
+        pageBuilder: (context, state) {
+          return getPage(child: ContactUsView(), state: state);
         },
       ),
       GoRoute(

@@ -3,11 +3,11 @@ import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/db_helper.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
-import 'package:list_and_life/models/common/map_response.dart';
-import 'package:list_and_life/models/user_model.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/base/network/api_request.dart';
 import 'package:list_and_life/base/network/base_client.dart';
+import 'package:list_and_life/models/common/map_response.dart';
+import 'package:list_and_life/models/user_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
 
@@ -48,6 +48,13 @@ class SettingVM extends BaseViewModel {
                     context.push(Routes.termsOfUse, extra: 2);
                   }),
               SettingItemModel(
+                  isArrow: true,
+                  icon: AssetsRes.IC_T_AND_C,
+                  title: 'Contact Us',
+                  onTap: () {
+                    context.push(Routes.contactUsView);
+                  }),
+              SettingItemModel(
                   icon: AssetsRes.IC_LOGOUT,
                   title: 'Login',
                   onTap: () {
@@ -68,6 +75,13 @@ class SettingVM extends BaseViewModel {
                   title: 'Terms & Conditions',
                   onTap: () {
                     context.push(Routes.termsOfUse, extra: 2);
+                  }),
+              SettingItemModel(
+                  isArrow: true,
+                  icon: AssetsRes.IC_CONTACT_US,
+                  title: 'Contact Us',
+                  onTap: () {
+                    context.push(Routes.contactUsView);
                   }),
               SettingItemModel(
                   icon: AssetsRes.IC_DELETE_ACCOUNT,
@@ -145,6 +159,13 @@ class SettingVM extends BaseViewModel {
                   context.push(Routes.termsOfUse, extra: 2);
                 }),
             SettingItemModel(
+                isArrow: true,
+                icon: AssetsRes.IC_CONTACT_US,
+                title: 'Contact Us',
+                onTap: () {
+                  context.push(Routes.contactUsView);
+                }),
+            SettingItemModel(
                 icon: AssetsRes.IC_LOGOUT,
                 title: 'Login',
                 onTap: () {
@@ -165,6 +186,13 @@ class SettingVM extends BaseViewModel {
                 title: 'Terms & Conditions',
                 onTap: () {
                   context.push(Routes.termsOfUse, extra: 2);
+                }),
+            SettingItemModel(
+                isArrow: true,
+                icon: AssetsRes.IC_CONTACT_US,
+                title: 'Contact Us',
+                onTap: () {
+                  context.push(Routes.contactUsView);
                 }),
             SettingItemModel(
                 icon: AssetsRes.IC_DELETE_ACCOUNT,

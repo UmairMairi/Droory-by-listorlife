@@ -60,8 +60,8 @@ class SettingView extends BaseView<SettingVM> {
                             placeholder: AssetsRes.IC_USER_ICON,
                             borderColor: Colors.black,
                             borderWidth: 4,
-                            height: 120,
-                            width: 120,
+                            height: 100,
+                            width: 100,
                           ),
                           const SizedBox(
                             height: 5,
@@ -110,27 +110,30 @@ class SettingView extends BaseView<SettingVM> {
                             image: getImageUrl(),
                             borderWidth: 1,
                             borderColor: Colors.black,
-                            height: 120,
-                            width: 120,
+                            height: 100,
+                            width: 100,
                           ),
                           IconButton(
                               onPressed: () {
                                 context.read<ProfileVM>().imagePath = '';
                                 context.push(Routes.editProfile);
                               },
-                              icon: const Icon(CupertinoIcons.square_pencil)),
+                              icon: const Icon(
+                                CupertinoIcons.square_pencil,
+                                size: 20,
+                              )),
                           Text(
                             "${DbHelper.getUserModel()?.name} ${DbHelper.getUserModel()?.lastName}",
                             style: context.textTheme.bodyMedium?.copyWith(
                               fontFamily: FontRes.POPPINS_SEMIBOLD,
-                              fontSize: 18,
+                              fontSize: 16,
                             ),
                           ),
                           Text(
                             DbHelper.getUserModel()?.email ?? '',
                             style: context.textTheme.bodyMedium?.copyWith(
                               fontFamily: FontRes.POPPINS_REGULAR,
-                              fontSize: 16,
+                              fontSize: 14,
                             ),
                           )
                         ],

@@ -168,7 +168,11 @@ flutter:
     - assets/icons/ic_chat_icon.png
     - assets/icons/ic_clothes_cat_imge.png
     - assets/icons/ic_congratulation_image.png
+    - assets/icons/ic_contact_us.png
     - assets/icons/ic_delete_account.png
+    - assets/icons/ic_earth.png
+    - assets/icons/ic_email_service.png
+    - assets/icons/ic_facebook.png
     - assets/icons/ic_filter_icon.png
     - assets/icons/ic_furniture_cat_imge.png
     - assets/icons/ic_gear_icon.png
@@ -177,6 +181,7 @@ flutter:
     - assets/icons/ic_image_placeholder.png
     - assets/icons/ic_item_location.png
     - assets/icons/ic_laptop_cat_imge.png
+    - assets/icons/ic_linkedin.png
     - assets/icons/ic_loaction_icon.png
     - assets/icons/ic_location_pin.png
     - assets/icons/ic_lock_login.png
@@ -186,12 +191,14 @@ flutter:
     - assets/icons/ic_no_wifi.png
     - assets/icons/ic_notification.png
     - assets/icons/ic_petrol_icon.png
+    - assets/icons/ic_phone_service.png
     - assets/icons/ic_privcy_policy.png
     - assets/icons/ic_profile.png
     - assets/icons/ic_report_user.png
     - assets/icons/ic_speed_icon.png
     - assets/icons/ic_t_and_c.png
     - assets/icons/ic_tablet_image.png
+    - assets/icons/ic_twitter.png
     - assets/icons/ic_user_icon.png
     - assets/icons/ic_wallet_icon.png
     - assets/icons/ic_whatsapp_icon.png

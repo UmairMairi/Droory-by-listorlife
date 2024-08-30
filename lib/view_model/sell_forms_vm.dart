@@ -481,7 +481,7 @@ class SellFormsVM extends BaseViewModel {
 
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.editProductsUrl(),
-        requestType: RequestType.post,
+        requestType: RequestType.put,
         bodyType: BodyType.formData,
         body: body);
 
