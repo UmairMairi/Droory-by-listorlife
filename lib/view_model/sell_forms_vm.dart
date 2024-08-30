@@ -337,7 +337,7 @@ class SellFormsVM extends BaseViewModel {
       "screen_size": screenSizeTextController.text.trim(),
       "size_id": selectedSize?.id,
     };
-
+    // dea26a54c91ab44f8faf73b88c85e26d88980b90
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.addProductsUrl(),
         requestType: RequestType.post,
@@ -413,7 +413,7 @@ class SellFormsVM extends BaseViewModel {
   }
 
   void editProduct(
-      {num? productId,
+      {int? productId,
       CategoryModel? category,
       CategoryModel? subCategory,
       CategoryModel? subSubCategory,

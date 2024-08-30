@@ -40,7 +40,7 @@ class MainVM extends BaseViewModel {
         // Extract the ID from the path
         String id = uri.pathSegments.last;
         context.push(Routes.productDetails,
-            extra: ProductDetailModel(id: num.parse(id)));
+            extra: ProductDetailModel(id: int.parse(id)));
       }
     });
   }

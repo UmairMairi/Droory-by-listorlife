@@ -2,7 +2,7 @@ import 'package:list_and_life/models/category_model.dart';
 import 'package:list_and_life/models/user_model.dart';
 
 class ProductDetailModel {
-  num? id;
+  int? id;
   num? userId;
   num? categoryId;
   num? subCategoryId;
