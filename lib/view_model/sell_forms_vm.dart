@@ -60,6 +60,8 @@ class SellFormsVM extends BaseViewModel {
     'Temporary'
   ];
 
+  List<String> salaryPeriodList = ['Hourly', 'Monthly', 'Weekly', 'Yearly'];
+
   // List of mileage ranges
   final List<String> mileageRanges = [
     '0-5 km',
@@ -101,8 +103,6 @@ class SellFormsVM extends BaseViewModel {
   ];
   final List<String> materialOptions = ['Wood', 'Metal', 'Fabric'];
   final List<CategoryModel> sizeOptions = [];
-
-  List<String> salaryPeriodList = ['Hourly', 'Monthly', 'Weekly', 'Yearly'];
 
   String? country = '';
   String? city = '';
@@ -196,6 +196,10 @@ class SellFormsVM extends BaseViewModel {
   TextEditingController materialTextController = TextEditingController();
   TextEditingController sizeTextController = TextEditingController();
 
+  List<String> yearsType = [];
+
+  List<String> fuelsType = ['Petrol', 'Diesel', 'Electric', 'Hybrid', 'Gas'];
+
   void updateTextFieldsItems({ProductDetailModel? item}) async {
     if (item == null) {
       resetTextFields();
@@ -211,9 +215,11 @@ class SellFormsVM extends BaseViewModel {
                 media: "${ApiConstants.imageUrl}/${element.media}"))
             .toList() ??
         []);
+    if (item.brandId != null) {
+      getModels(brandId: int.parse("${item.brandId}"));
+    }
     transmission = item.transmission == 'manual' ? 0 : 1;
     mainImagePath = "${ApiConstants.imageUrl}/${item.image}";
-    log(mainImagePath, name: 'url', level: 404);
     adTitleTextController.text = item.name ?? '';
     descriptionTextController.text = item.description ?? '';
     addressTextController.text = "${item.nearby}";

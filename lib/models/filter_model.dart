@@ -23,6 +23,8 @@ class FilterModel {
   String? itemCondition;
   String? startDate;
   String? endDate;
+  String? transmission;
+  String? modelId;
 
   FilterModel({
     this.limit,
@@ -49,6 +51,8 @@ class FilterModel {
     this.itemCondition,
     this.startDate,
     this.endDate,
+    this.transmission,
+    this.modelId,
   });
 
   Map<String, String?> toMap() {
@@ -77,6 +81,8 @@ class FilterModel {
       'item_condition': itemCondition,
       'start_date': startDate,
       'end_date': endDate,
+      'transmission': transmission,
+      'model_id': modelId,
     };
   }
 
@@ -105,6 +111,8 @@ class FilterModel {
     String? itemCondition,
     String? startDate,
     String? endDate,
+    String? transmission,
+    String? modelId,
   }) {
     return FilterModel(
       limit: limit ?? this.limit,
@@ -131,6 +139,8 @@ class FilterModel {
       itemCondition: itemCondition ?? this.itemCondition,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
+      transmission: transmission ?? this.transmission,
+      modelId: modelId ?? this.modelId,
     );
   }
 }

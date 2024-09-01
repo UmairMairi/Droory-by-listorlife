@@ -31,6 +31,10 @@ class CarsSellForm extends BaseView<SellFormsVM> {
       this.brands});
   @override
   Widget build(BuildContext context, SellFormsVM viewModel) {
+    int currentYear = DateTime.now().year;
+    for (int i = 0; i < 20; i++) {
+      viewModel.yearsType.add((currentYear - i).toString());
+    }
     return KeyboardActions(
       config: KeyboardActionsConfig(
           keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
@@ -429,13 +433,28 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                 readOnly: false,
                 focusNode: viewModel.yearText,
                 cursorColor: Colors.black,
-                decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.only(
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.only(
                     left: 20,
                   ),
                   hintText: StringHelper.enter,
-                  hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                  border: OutlineInputBorder(
+                  suffixIcon: PopupMenuButton<String>(
+                    icon: const Icon(Icons.arrow_drop_down),
+                    onSelected: (value) {
+                      viewModel.yearTextController.text = value ?? '';
+                    },
+                    itemBuilder: (BuildContext context) {
+                      return viewModel.yearsType.map((option) {
+                        return PopupMenuItem(
+                          value: option,
+                          child: Text(option),
+                        );
+                      }).toList();
+                    },
+                  ),
+                  hintStyle:
+                      const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  border: const OutlineInputBorder(
                     borderSide: BorderSide.none,
                   ),
                 ),
@@ -475,7 +494,22 @@ class CarsSellForm extends BaseView<SellFormsVM> {
               child: TextFormField(
                 controller: viewModel.fuelTextController,
                 cursorColor: Colors.black,
-                decoration: const InputDecoration(
+                readOnly: true,
+                decoration: InputDecoration(
+                    suffixIcon: PopupMenuButton<String>(
+                      icon: const Icon(Icons.arrow_drop_down),
+                      onSelected: (value) {
+                        viewModel.fuelTextController.text = value ?? '';
+                      },
+                      itemBuilder: (BuildContext context) {
+                        return viewModel.fuelsType.map((option) {
+                          return PopupMenuItem(
+                            value: option,
+                            child: Text(option),
+                          );
+                        }).toList();
+                      },
+                    ),
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 25, vertical: 18),
                     hintText: StringHelper.enter,

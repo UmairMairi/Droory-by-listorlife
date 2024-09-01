@@ -364,7 +364,7 @@ class _LocationSearchPopupState extends State<LocationSearchPopup> {
                 )),
 
             const SizedBox(height: 10),
-            Text('Recent Searches;', style: context.textTheme.titleMedium),
+            Text('Recent Searches:', style: context.textTheme.titleMedium),
             const Divider(),
             // Add other search-related features here
             Expanded(

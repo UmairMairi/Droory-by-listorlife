@@ -133,9 +133,15 @@ class HomeVM extends BaseViewModel {
   TextEditingController sortByTextController = TextEditingController();
   TextEditingController postedWithinTextController = TextEditingController();
   TextEditingController yearTextController = TextEditingController();
+  TextEditingController transmissionTextController = TextEditingController();
   TextEditingController fuelTextController = TextEditingController();
   TextEditingController mileageTextController = TextEditingController();
   TextEditingController kmDrivenTextController = TextEditingController();
+  TextEditingController modelTextController = TextEditingController();
+  TextEditingController jobPositionTextController = TextEditingController();
+  TextEditingController jobSalaryTextController = TextEditingController();
+  TextEditingController jobSalaryToController = TextEditingController();
+  TextEditingController jobSalaryFromController = TextEditingController();
 
   // List of mileage ranges
   final List<String> mileageRanges = [
@@ -154,6 +160,15 @@ class HomeVM extends BaseViewModel {
   TextEditingController searchController = TextEditingController();
 
   List<String> searchQueryesList = [];
+
+  List<String> jobPositionList = [
+    'Contract',
+    'Full Time',
+    'Part-time',
+    'Temporary'
+  ];
+
+  List<String> salaryPeriodList = ['Hourly', 'Monthly', 'Weekly', 'Yearly'];
 
   @override
   void onInit() {

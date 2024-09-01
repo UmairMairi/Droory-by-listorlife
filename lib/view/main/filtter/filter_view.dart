@@ -39,7 +39,13 @@ class _FilterViewState extends State<FilterView> {
   List<CategoryModel> categoriesList = [];
   List<CategoryModel> subCategoriesList = [];
   List<CategoryModel> brands = [];
-  List<CategoryModel> models = [];
+  List<CategoryModel> allModels = [];
+  List<String> yearsType = [];
+  List<String> fuelsType = ['Petrol', 'Diesel', 'Electric', 'Hybrid', 'Gas'];
+  List<String> transmissionType = [
+    'Manual',
+    'Automatic',
+  ];
   List<CategoryModel> sortByList = [
     CategoryModel(name: StringHelper.priceHighToLow),
     CategoryModel(name: StringHelper.priceLowToHigh),
@@ -57,9 +63,8 @@ class _FilterViewState extends State<FilterView> {
 
   // Map of filters based on category ID
   Map<int, List<String>> filters = {
-    4: ['Make', 'Model', 'Year', 'Mileage'], // Vehicles// Services
+    // Vehicles// Services
     9: ['Job Type', 'Education', 'Salary Range', 'Experience'], // Jobs
-    // Mobiles & Tablets
   };
   List<String> filtersCat = [];
   // Method to get filters based on the selected category ID
@@ -67,9 +72,26 @@ class _FilterViewState extends State<FilterView> {
     return filters[categoryId] ?? [];
   }
 
+  Future<void> getModels({required int? brandId}) async {
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.getModelsUrl(brandId: "$brandId"),
+        requestType: RequestType.get);
+    var response = await BaseClient.handleRequest(apiRequest);
+    ListResponse<CategoryModel> model =
+        ListResponse.fromJson(response, (json) => CategoryModel.fromJson(json));
+    DialogHelper.hideLoading();
+    allModels = model.body ?? [];
+    print("response ~--> $response");
+    setState(() {});
+  }
+
   @override
   void initState() {
     var vm = context.read<HomeVM>();
+    int currentYear = DateTime.now().year;
+    for (int i = 0; i < 20; i++) {
+      yearsType.add((currentYear - i).toString());
+    }
     WidgetsBinding.instance.addPostFrameCallback((t) => updateFilter(vm: vm));
     super.initState();
   }
@@ -299,7 +321,9 @@ class _FilterViewState extends State<FilterView> {
                     viewModel.categoryTextController.text = value.name ?? '';
                     filter.categoryId = "${value.id}";
                     brands.clear();
+                    allModels.clear();
                     viewModel.brandsTextController.clear();
+                    viewModel.modelTextController.clear();
                     viewModel.subCategoryTextController.clear();
                   },
                   itemBuilder: (BuildContext context) {
@@ -318,7 +342,7 @@ class _FilterViewState extends State<FilterView> {
               if (subCategoriesList.isNotEmpty) ...{
                 AppTextField(
                   title: filter.categoryId == '8'
-                      ? 'Services'
+                      ? 'Select Services'
                       : filter.categoryId == '9'
                           ? 'Job Type'
                           : StringHelper.subCategory,
@@ -335,6 +359,11 @@ class _FilterViewState extends State<FilterView> {
                       viewModel.subCategoryTextController.text =
                           value.name ?? '';
                       filter.subcategoryId = "${value.id}";
+                      DialogHelper.showLoading();
+                      brands.clear();
+                      allModels.clear();
+                      viewModel.brandsTextController.clear();
+                      viewModel.modelTextController.clear();
                       await getBrands(id: "${filter.subcategoryId}");
                     },
                     itemBuilder: (BuildContext context) {
@@ -362,9 +391,11 @@ class _FilterViewState extends State<FilterView> {
                   readOnly: true,
                   suffix: PopupMenuButton(
                     icon: const Icon(Icons.arrow_drop_down),
-                    onSelected: (value) {
+                    onSelected: (value) async {
                       viewModel.brandsTextController.text = value.name ?? '';
                       filter.brandId = "${value.id}";
+                      viewModel.modelTextController.clear();
+                      await getModels(brandId: int.parse("${filter.brandId}"));
                     },
                     itemBuilder: (BuildContext context) {
                       return brands.map((option) {
@@ -406,13 +437,57 @@ class _FilterViewState extends State<FilterView> {
                   height: 10,
                 ),
               },
-              if (models.isNotEmpty) ...{},
+              if (allModels.isNotEmpty) ...{
+                AppTextField(
+                  title: StringHelper.models,
+                  hint: 'Select Model',
+                  readOnly: true,
+                  controller: viewModel.modelTextController,
+                  suffix: PopupMenuButton(
+                    icon: const Icon(Icons.arrow_drop_down),
+                    onSelected: (value) {
+                      viewModel.modelTextController.text = value.name ?? '';
+                      filter.modelId = value.id.toString();
+                    },
+                    itemBuilder: (BuildContext context) {
+                      return allModels.map((option) {
+                        return PopupMenuItem(
+                          value: option,
+                          child: Text(option.name ?? ''),
+                        );
+                      }).toList();
+                    },
+                  ),
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(4),
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                  inputType: TextInputType.number,
+                  action: TextInputAction.done,
+                ),
+                Gap(10),
+              },
               if (filter.categoryId == '4') ...{
                 AppTextField(
                   title: StringHelper.year,
-                  hint: 'Enter Year',
+                  hint: 'Select Year',
+                  readOnly: true,
                   controller: viewModel.yearTextController,
-                  readOnly: false,
+                  suffix: PopupMenuButton<String>(
+                    icon: const Icon(Icons.arrow_drop_down),
+                    onSelected: (value) {
+                      viewModel.yearTextController.text = value ?? '';
+                      filter.year = value;
+                    },
+                    itemBuilder: (BuildContext context) {
+                      return yearsType.map((option) {
+                        return PopupMenuItem(
+                          value: option,
+                          child: Text(option),
+                        );
+                      }).toList();
+                    },
+                  ),
                   inputFormatters: [
                     LengthLimitingTextInputFormatter(4),
                     FilteringTextInputFormatter.digitsOnly,
@@ -428,6 +503,22 @@ class _FilterViewState extends State<FilterView> {
                   hint: StringHelper.enter,
                   controller: viewModel.fuelTextController,
                   action: TextInputAction.done,
+                  readOnly: true,
+                  suffix: PopupMenuButton<String>(
+                    icon: const Icon(Icons.arrow_drop_down),
+                    onSelected: (value) {
+                      viewModel.fuelTextController.text = value ?? '';
+                      filter.fuel = value;
+                    },
+                    itemBuilder: (BuildContext context) {
+                      return fuelsType.map((option) {
+                        return PopupMenuItem(
+                          value: option,
+                          child: Text(option),
+                        );
+                      }).toList();
+                    },
+                  ),
                 ),
                 const SizedBox(
                   height: 10,
@@ -460,6 +551,36 @@ class _FilterViewState extends State<FilterView> {
                   height: 10,
                 ),
                 AppTextField(
+                  title: StringHelper.transmission,
+                  hint: 'Select Transmission',
+                  readOnly: true,
+                  controller: viewModel.transmissionTextController,
+                  suffix: PopupMenuButton<String>(
+                    icon: const Icon(Icons.arrow_drop_down),
+                    onSelected: (value) {
+                      viewModel.transmissionTextController.text = value ?? '';
+                      filter.transmission = value.toLowerCase();
+                    },
+                    itemBuilder: (BuildContext context) {
+                      return transmissionType.map((option) {
+                        return PopupMenuItem(
+                          value: option,
+                          child: Text(option),
+                        );
+                      }).toList();
+                    },
+                  ),
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(4),
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                  inputType: TextInputType.number,
+                  action: TextInputAction.done,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                AppTextField(
                   title: StringHelper.kmDriven,
                   hint: StringHelper.enter,
                   controller: viewModel.kmDrivenTextController,
@@ -474,6 +595,78 @@ class _FilterViewState extends State<FilterView> {
                 const SizedBox(
                   height: 10,
                 ),
+              },
+              if (filter.categoryId == '9') ...{
+                AppTextField(
+                  title: StringHelper.positionType,
+                  hint: StringHelper.select,
+                  controller: viewModel.jobPositionTextController,
+                  readOnly: true,
+                  suffix: PopupMenuButton(
+                    clipBehavior: Clip.hardEdge,
+                    icon: const Icon(
+                      Icons.arrow_drop_down,
+                      color: Colors.black,
+                    ),
+                    onSelected: (String value) {
+                      viewModel.jobPositionTextController.text = value;
+                    },
+                    itemBuilder: (BuildContext context) {
+                      return viewModel.jobPositionList.map((option) {
+                        return PopupMenuItem(
+                          value: option,
+                          child: Text(option),
+                        );
+                      }).toList();
+                    },
+                  ),
+                ),
+                Gap(10),
+                AppTextField(
+                  title: StringHelper.salaryPeriod,
+                  hint: StringHelper.select,
+                  controller: viewModel.jobSalaryTextController,
+                  readOnly: true,
+                  suffix: PopupMenuButton(
+                    clipBehavior: Clip.hardEdge,
+                    icon: const Icon(
+                      Icons.arrow_drop_down,
+                      color: Colors.black,
+                    ),
+                    onSelected: (String value) {
+                      viewModel.jobSalaryTextController.text = value;
+                    },
+                    itemBuilder: (BuildContext context) {
+                      return viewModel.salaryPeriodList.map((option) {
+                        return PopupMenuItem(
+                          value: option,
+                          child: Text(option),
+                        );
+                      }).toList();
+                    },
+                  ),
+                ),
+                Gap(10),
+                AppTextField(
+                  title: StringHelper.salaryFrom,
+                  hint: StringHelper.enter,
+                  controller: viewModel.jobSalaryFromController,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    LengthLimitingTextInputFormatter(8),
+                  ],
+                ),
+                Gap(10),
+                AppTextField(
+                  title: StringHelper.salaryTo,
+                  hint: StringHelper.enter,
+                  controller: viewModel.jobSalaryToController,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    LengthLimitingTextInputFormatter(8),
+                  ],
+                ),
+                Gap(10),
               },
               AppTextField(
                 title: StringHelper.location,
