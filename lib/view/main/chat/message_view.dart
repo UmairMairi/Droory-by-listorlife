@@ -80,7 +80,13 @@ class MessageView extends BaseView<ChatVM> {
                                 StringHelper.areYouSureWantToDeleteThisChat,
                             onTap: () {
                               context.pop();
-                              context.pop();
+                              viewModel.clearChat(
+                                  sender: DbHelper.getUserModel()?.id,
+                                  reciver: chat?.senderId ==
+                                          DbHelper.getUserModel()?.id
+                                      ? chat?.receiverDetail?.id
+                                      : chat?.senderDetail?.id,
+                                  product: chat?.productId);
                             },
                             lottieIcon: AssetsRes.DELETE_LOTTIE,
                             showCancelButton: true,

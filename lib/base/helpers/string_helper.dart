@@ -43,7 +43,7 @@ class StringHelper {
   static const String areYouSureWantToDeleteThisChat =
       "Are you sure want to delete this chat?";
   static const String no = "No";
-  static const String deleteChat = "Delete Chat";
+  static const String deleteChat = "Clear Chat";
   static const String yes = "Yes";
   static const String pleaseEnterReasonOfReport =
       "Please enter reason of report.";

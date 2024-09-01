@@ -22,7 +22,7 @@ class DateHelper {
   static final _addCardDateFormat = DateFormat("MM/yyyy", _locale);
   static final _dateFormateWithoutString = DateFormat("yyyy-MM-dd", _locale);
   static final _dateFormateNoString = DateFormat("dd/MM/yyyy", _locale);
-  static final _walletScreenFormate = DateFormat("MMMdd,yyyy h:mm a", _locale);
+  static final _walletScreenFormate = DateFormat("MMM dd,yyyy h:mm a", _locale);
   static final _dateTimeFormat = DateFormat("dd MM yyyy HH:mm", _locale);
   static final _dateTimeFormatChat = DateFormat("yyyy-MM-dd hh:mm a", _locale);
 

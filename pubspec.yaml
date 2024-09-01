@@ -95,6 +95,7 @@ dependencies:
   app_links: ^6.3.0
   autocomplete_textfield: ^2.0.1
   searchfield: ^1.0.9
+  flutter_svg: ^2.0.10+1
 
 dev_dependencies:
   flutter_test:

@@ -406,6 +406,7 @@ class _FilterViewState extends State<FilterView> {
                   height: 10,
                 ),
               },
+              if (models.isNotEmpty) ...{},
               if (filter.categoryId == '4') ...{
                 AppTextField(
                   title: StringHelper.year,

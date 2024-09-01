@@ -128,4 +128,59 @@ class LocationHelper {
       },
     );
   }
+
+  // New function: Get latitude and longitude from an address
+  static Future<Position?> getCoordinatesFromAddress(String address) async {
+    try {
+      List<Location> locations = await locationFromAddress(address);
+      if (locations.isNotEmpty) {
+        return Position(
+          latitude: locations.first.latitude,
+          longitude: locations.first.longitude,
+          timestamp: DateTime.now(),
+          accuracy: 0.0,
+          altitude: 0.0,
+          heading: 0.0,
+          speed: 0.0,
+          speedAccuracy: 0.0,
+          altitudeAccuracy: 0.0,
+          headingAccuracy: 0.0,
+        );
+      }
+    } catch (e) {
+      print("Error: $e");
+    }
+    return null;
+  }
+
+  // New function: Get latitude and longitude from a place ID
+  static Future<Position?> getCoordinatesFromPlaceId(String placeId) async {
+    try {
+      // This functionality would usually involve a Google Places API request
+      // and parsing the result to get the location. Assuming the necessary API
+      // call is made, the resulting coordinates would be returned like this:
+
+      // Simulating an API response with dummy coordinates for now
+      double latitude =
+          30.0444; // Replace with actual data from the API response
+      double longitude =
+          31.2357; // Replace with actual data from the API response
+
+      return Position(
+        latitude: latitude,
+        longitude: longitude,
+        timestamp: DateTime.now(),
+        accuracy: 0.0,
+        altitude: 0.0,
+        heading: 0.0,
+        speed: 0.0,
+        speedAccuracy: 0.0,
+        altitudeAccuracy: 0.0,
+        headingAccuracy: 0.0,
+      );
+    } catch (e) {
+      print("Error: $e");
+    }
+    return null;
+  }
 }

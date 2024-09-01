@@ -149,7 +149,14 @@ class BaseClient {
   static Response _handleError(dynamic error) {
     // You can customize error handling here
     if (error is DioException) {
-      return error.response!;
+      if (error.response != null) {
+        return error.response!;
+      }
+      return Response(
+        requestOptions: RequestOptions(path: ''),
+        statusCode: 500,
+        statusMessage: error.toString(),
+      );
     } else {
       return Response(
         requestOptions: RequestOptions(path: ''),

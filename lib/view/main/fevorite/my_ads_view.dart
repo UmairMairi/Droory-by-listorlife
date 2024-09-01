@@ -350,7 +350,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                 ),
                                               ),
                                               const Gap(15),
-                                              Expanded(
+                                              /* Expanded(
                                                 child: InkWell(
                                                   onTap: () => context
                                                       .push(Routes.planList),
@@ -381,7 +381,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                     ),
                                                   ),
                                                 ),
-                                              ),
+                                              ),*/
                                             ],
                                           )
                                         }

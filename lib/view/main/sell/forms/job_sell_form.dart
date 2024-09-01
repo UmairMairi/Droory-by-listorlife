@@ -11,6 +11,7 @@ import '../../../../base/helpers/string_helper.dart';
 import '../../../../models/prodect_detail_model.dart';
 import '../../../../view_model/sell_forms_vm.dart';
 import '../../../../widgets/app_map_widget.dart';
+import '../../../../widgets/image_view.dart';
 
 class JobSellForm extends BaseView<SellFormsVM> {
   final String? type;
@@ -90,7 +91,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
                   children: [
                     Container(
                       margin: const EdgeInsets.all(10),
-                      width: 120,
+                      width: 100,
                       height: 80,
                       decoration: BoxDecoration(
                         boxShadow: [
@@ -105,9 +106,11 @@ class JobSellForm extends BaseView<SellFormsVM> {
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
-                        child: Image.file(
-                          File(viewModel.imagesList[index]),
+                        child: ImageView.rect(
+                          image: viewModel.imagesList[index].media ?? '',
                           fit: BoxFit.contain,
+                          height: 80,
+                          width: 100,
                         ),
                       ),
                     ),
@@ -116,7 +119,8 @@ class JobSellForm extends BaseView<SellFormsVM> {
                           color: Colors.white, shape: BoxShape.circle),
                       child: InkWell(
                         onTap: () {
-                          viewModel.removeImage(index);
+                          viewModel.removeImage(index,
+                              data: viewModel.imagesList[index]);
                         },
                         child: const Icon(
                           Icons.cancel,

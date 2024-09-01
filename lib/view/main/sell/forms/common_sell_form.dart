@@ -83,7 +83,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                     children: [
                       Container(
                         margin: const EdgeInsets.all(10),
-                        width: 120,
+                        width: 100,
                         height: 80,
                         decoration: BoxDecoration(
                           boxShadow: [
@@ -97,7 +97,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: ImageView.rect(
-                            image: viewModel.imagesList[index],
+                            image: viewModel.imagesList[index].media ?? '',
                             height: 80,
                             width: 120),
                       ),
@@ -106,7 +106,8 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                             color: Colors.white, shape: BoxShape.circle),
                         child: InkWell(
                           onTap: () {
-                            viewModel.removeImage(index);
+                            viewModel.removeImage(index,
+                                data: viewModel.imagesList[index]);
                           },
                           child: const Icon(
                             Icons.cancel,
@@ -848,8 +849,6 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                           builder: (context) => const AppMapWidget()));
                   print(value);
                   if (value != null && value.isNotEmpty) {
-                    viewModel.latitude = value['latitude'];
-                    viewModel.longitude = value['longitude'];
                     viewModel.state = value['state'];
                     viewModel.city = value['city'];
                     viewModel.country = value['country'];

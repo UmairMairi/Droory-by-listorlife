@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/widgets/image_view.dart';
 
 import '../../../../base/helpers/dialog_helper.dart';
 import '../../../../base/helpers/image_picker_helper.dart';
@@ -108,7 +109,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                     children: [
                       Container(
                         margin: const EdgeInsets.all(10),
-                        width: 120,
+                        width: 100,
                         height: 80,
                         decoration: BoxDecoration(
                           boxShadow: [
@@ -123,9 +124,11 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                         ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
-                          child: Image.file(
-                            File(viewModel.imagesList[index]),
+                          child: ImageView.rect(
+                            image: viewModel.imagesList[index].media ?? '',
                             fit: BoxFit.contain,
+                            height: 80,
+                            width: 100,
                           ),
                         ),
                       ),
@@ -134,7 +137,8 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                             color: Colors.white, shape: BoxShape.circle),
                         child: InkWell(
                           onTap: () {
-                            viewModel.removeImage(index);
+                            viewModel.removeImage(index,
+                                data: viewModel.imagesList[index]);
                           },
                           child: const Icon(
                             Icons.cancel,

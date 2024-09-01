@@ -34,6 +34,7 @@ class AppTextField extends StatelessWidget {
   final Function(bool)? onPrefixTap;
   final String? prefixText;
   final bool? editabled;
+  final int? elevation;
   final TextStyle? hintStyle;
   final bool readOnly;
   final EdgeInsetsGeometry? padding;
@@ -48,6 +49,7 @@ class AppTextField extends StatelessWidget {
     this.animation = true,
     this.onTap,
     this.hint,
+    this.elevation,
     this.vPadding,
     this.onChanged,
     this.lines,

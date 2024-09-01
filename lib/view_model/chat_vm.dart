@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/chat_bubble/bubble_normal_image.dart';
 import 'package:list_and_life/base/helpers/db_helper.dart';
@@ -114,12 +115,28 @@ class ChatVM extends BaseViewModel {
     });
     _socketIO.on(SocketConstants.blockOrReportUser, (data) {
       log("data => $data");
-      DialogHelper.showToast(
-          message: "Your report/Block submitted successfully");
+      if (data['type'] == 'block') {
+        DialogHelper.showToast(message: "You blocked this user successfully");
+      }
+
+      if (data['type'] == 'report') {
+        DialogHelper.showToast(message: "Your report submitted successfully");
+      }
+
+      if (data['type'] == 'unblock') {
+        DialogHelper.showToast(message: "You unblocked this user successfully");
+      }
+
       notifyListeners();
       //DialogHelper.showToast(message: "You blocked this user successfully");
     });
     _socketIO.on(SocketConstants.readChatStatus, (data) {});
+    _socketIO.on(SocketConstants.clearChat, (data) {
+      log("Data => ${SocketConstants.clearChat} listen data $data");
+      getInboxList();
+      Navigator.pop(context);
+      notifyListeners();
+    });
   }
 
   void getInboxList() {
@@ -307,5 +324,16 @@ class ChatVM extends BaseViewModel {
       default:
         return '${message?.message}';
     }
+  }
+
+  void clearChat({num? reciver, num? sender, required num? product}) {
+    Map<String, dynamic> map = {
+      "sender_id": sender,
+      "receiver_id": reciver,
+      "product_id": product
+    };
+    log("Socket call => ${SocketConstants.clearChat} with $map",
+        name: "SOCKET");
+    _socketIO.emit(SocketConstants.clearChat, map);
   }
 }

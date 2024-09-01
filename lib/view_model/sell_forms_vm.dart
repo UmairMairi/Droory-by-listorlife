@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/base/helpers/location_helper.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
@@ -35,7 +36,7 @@ class SellFormsVM extends BaseViewModel {
   final FocusNode ownerText = FocusNode();
 
   String _mainImagePath = "";
-  List<String> imagesList = <String>[];
+  List<ProductMedias> imagesList = <ProductMedias>[];
   List<String> deletedImageIds = <String>[];
 
   List<String> educationList = [
@@ -106,15 +107,15 @@ class SellFormsVM extends BaseViewModel {
   String? country = '';
   String? city = '';
   String? state = '';
-  String? latitude = '0.0', longitude = '0.0';
 
   void addImage(String path) {
-    imagesList.add(path);
+    imagesList.add(ProductMedias(media: path));
     notifyListeners();
   }
 
-  void removeImage(int index) {
+  void removeImage(int index, {required ProductMedias data}) {
     imagesList.removeAt(index);
+    deletedImageIds.add("${data.id}");
     notifyListeners();
   }
 
@@ -203,8 +204,11 @@ class SellFormsVM extends BaseViewModel {
     }
     log("${item.toJson()}", name: "~-> Alok", level: 200);
     imagesList.clear();
+    deletedImageIds.clear();
     imagesList.addAll(item.productMedias
-            ?.map((element) => "${ApiConstants.imageUrl}/${element.media}")
+            ?.map((element) => ProductMedias(
+                id: element.id,
+                media: "${ApiConstants.imageUrl}/${element.media}"))
             .toList() ??
         []);
     transmission = item.transmission == 'manual' ? 0 : 1;
@@ -212,7 +216,7 @@ class SellFormsVM extends BaseViewModel {
     log(mainImagePath, name: 'url', level: 404);
     adTitleTextController.text = item.name ?? '';
     descriptionTextController.text = item.description ?? '';
-    addressTextController.text = "${item.city}, ${item.state}, ${item.country}";
+    addressTextController.text = "${item.nearby}";
     priceTextController.text = item.price ?? '';
     currentIndex =
         (item.itemCondition?.toLowerCase().contains('used') ?? false) ? 2 : 1;
@@ -286,9 +290,12 @@ class SellFormsVM extends BaseViewModel {
     CategoryModel? brand,
     CategoryModel? models,
   }) async {
+    Position? position = await LocationHelper.getCoordinatesFromAddress(
+        addressTextController.text.trim());
+
     bool isEgypt = await LocationHelper.checkLocationIsEgypt(
-        latitude: double.parse(latitude ?? '0'),
-        longitude: double.parse(longitude ?? '0'));
+        latitude: double.parse("${position?.latitude}"),
+        longitude: double.parse("${position?.longitude}"));
 
     if (!isEgypt) {
       DialogHelper.hideLoading();
@@ -299,7 +306,7 @@ class SellFormsVM extends BaseViewModel {
     final List<String> images = [];
     String mainImage = await BaseClient.uploadImage(imagePath: mainImagePath);
     for (var element in imagesList) {
-      images.add(await BaseClient.uploadImage(imagePath: element));
+      images.add(await BaseClient.uploadImage(imagePath: element.media ?? ''));
     }
     Map<String, dynamic> body = {
       "category_id": category?.id,
@@ -311,7 +318,7 @@ class SellFormsVM extends BaseViewModel {
       "item_condition": currentIndex == 1 ? "new" : "used",
       "description": descriptionTextController.text.trim(),
       "image": mainImage,
-      "medias": images.reversed.toList(),
+      "medias": images.reversed.toList().join(','),
       "price": priceTextController.text.trim(),
       "year": yearTextController.text.trim(),
       "fuel": fuelTextController.text.trim(),
@@ -322,8 +329,8 @@ class SellFormsVM extends BaseViewModel {
       "country": country,
       "state": state,
       "city": city,
-      "latitude": latitude,
-      "longitude": longitude,
+      "latitude": position?.latitude,
+      "longitude": position?.longitude,
       "nearby": addressTextController.text.trim(),
       "position_type":
           getPositionType(type: jobPositionTextController.text.trim()),
@@ -419,9 +426,12 @@ class SellFormsVM extends BaseViewModel {
       CategoryModel? subSubCategory,
       CategoryModel? brand,
       CategoryModel? models}) async {
+    Position? position = await LocationHelper.getCoordinatesFromAddress(
+        addressTextController.text.trim());
+
     bool isEgypt = await LocationHelper.checkLocationIsEgypt(
-        latitude: double.parse(latitude ?? '0'),
-        longitude: double.parse(longitude ?? '0'));
+        latitude: double.parse("${position?.latitude}"),
+        longitude: double.parse("${position?.longitude}"));
 
     if (!isEgypt) {
       DialogHelper.hideLoading();
@@ -434,10 +444,9 @@ class SellFormsVM extends BaseViewModel {
         ? mainImagePath.split('/').last
         : await BaseClient.uploadImage(imagePath: mainImagePath);
     for (var element in imagesList) {
-      if (!element.contains('http')) {
-        images.add(await BaseClient.uploadImage(imagePath: element));
-      } else {
-        images.add(element.split('/').last);
+      if (!element.media!.contains('http')) {
+        images
+            .add(await BaseClient.uploadImage(imagePath: element.media ?? ''));
       }
     }
 
@@ -452,7 +461,7 @@ class SellFormsVM extends BaseViewModel {
       "item_condition": currentIndex == 1 ? "new" : "used",
       "description": descriptionTextController.text.trim(),
       "image": mainImage,
-      "medias": images,
+      "medias": images.reversed.toList().join(','),
       "price": priceTextController.text.trim(),
       "year": yearTextController.text.trim(),
       "fuel": fuelTextController.text.trim(),
@@ -463,8 +472,8 @@ class SellFormsVM extends BaseViewModel {
       "country": country,
       "state": state,
       "city": city,
-      "latitude": latitude,
-      "longitude": longitude,
+      "latitude": position?.latitude,
+      "longitude": position?.longitude,
       "nearby": addressTextController.text.trim(),
       "position_type":
           getPositionType(type: jobPositionTextController.text.trim()),
@@ -477,6 +486,7 @@ class SellFormsVM extends BaseViewModel {
       "storage": storageTextController.text.trim(),
       "screen_size": screenSizeTextController.text.trim(),
       "size_id": selectedSize?.id,
+      "delete_img_id": deletedImageIds.join(',')
     };
 
     ApiRequest apiRequest = ApiRequest(

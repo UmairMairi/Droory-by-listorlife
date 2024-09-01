@@ -44,7 +44,7 @@ class ApiConstants {
   static String getModelsUrl({String? brandId}) =>
       "$_baseUrl/get/models?brand_id=$brandId";
   static String getNotificationUrl({
-    int? limit = 10,
+    int? limit = 1000,
     int? page = 1,
   }) =>
       "$_baseUrl/notification/list?limit=$limit&page=$page";
@@ -58,6 +58,7 @@ class ApiConstants {
   static String deleteProductUrl() => "$_baseUrl/delete/product";
   static String deactivateProductUrl() => "$_baseUrl/edit/product";
   static String getFaqUrl() => "$_baseUrl/get/faqs";
+  static String getBlockListUrl() => "$_baseUrl/block/list?limit=1000&page=1";
   static String getFilteredProduct({
     int? limit = 10,
     int? page = 1,

@@ -1,10 +1,15 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_places_flutter/google_places_flutter.dart';
+import 'package:google_places_flutter/model/prediction.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/base/helpers/location_helper.dart';
 import 'package:list_and_life/models/filter_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
@@ -40,11 +45,30 @@ class HomeView extends BaseView<HomeVM> {
               style: context.textTheme.titleMedium,
             ),
             const Gap(01),
-            Text(
-              viewModel.currentLocation,
-              style: context.textTheme.bodySmall
-                  ?.copyWith(fontWeight: FontWeight.bold, fontSize: 10),
-            )
+            Row(
+              children: [
+                Text(
+                  viewModel.currentLocation,
+                  style: context.textTheme.bodySmall
+                      ?.copyWith(fontWeight: FontWeight.bold, fontSize: 10),
+                ),
+                GestureDetector(
+                    onTap: () {
+                      log("Taped on location");
+                      showModalBottomSheet(
+                        context: context,
+                        showDragHandle: true,
+                        isScrollControlled: true,
+                        builder: (BuildContext context) {
+                          return LocationSearchPopup(
+                            viewModel: viewModel,
+                          );
+                        },
+                      );
+                    },
+                    child: const Icon(Icons.arrow_drop_down)),
+              ],
+            ),
           ],
         ),
         actions: [
@@ -173,6 +197,7 @@ class HomeView extends BaseView<HomeVM> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       CircleAvatar(
+                                        backgroundColor: Colors.white70,
                                         radius: 30,
                                         child: ImageView.rect(
                                           image:
@@ -252,6 +277,125 @@ class HomeView extends BaseView<HomeVM> {
               const Gap(40),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+// Create a widget for the location search popup
+class LocationSearchPopup extends StatefulWidget {
+  final HomeVM viewModel;
+  const LocationSearchPopup({super.key, required this.viewModel});
+
+  @override
+  State<LocationSearchPopup> createState() => _LocationSearchPopupState();
+}
+
+class _LocationSearchPopupState extends State<LocationSearchPopup> {
+  TextEditingController searchController = TextEditingController();
+  List<String> searchHistory = DbHelper.getLocationSearchHistory() ?? [];
+
+  double lat = 30.0444, lng = 31.2357;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    lat = widget.viewModel.latitude;
+    lng = widget.viewModel.longitude;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: SizedBox(
+        height: 500,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SafeArea(
+              child: Container(
+                alignment: Alignment.center,
+                height: 55,
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: GooglePlaceAutoCompleteTextField(
+                    textEditingController: searchController,
+                    countries: const ['eg'],
+                    googleAPIKey: "AIzaSyBDLT4xDcywIynEnoHJn6GdPisZLr4G5TU",
+                    inputDecoration: const InputDecoration(
+                      border: InputBorder.none,
+                      prefixIcon: Icon(Icons.search),
+                      hintText: "Search",
+                    ),
+                    debounceTime: 400,
+                    // default 600 ms,
+                    isLatLngRequired: true,
+                    getPlaceDetailWithLatLng: (Prediction prediction) async {
+                      Navigator.pop(context);
+
+                      searchController.text =
+                          prediction.description ?? 'Cario, Egypt';
+                      DbHelper.saveLocationSearchQuery(
+                          "${prediction.description}");
+                      widget.viewModel.updateLatLong(
+                          lat: double.parse(prediction.lat ?? '$lat'),
+                          long: double.parse(prediction.lng ?? '$lng'));
+                    },
+                    itemClick: (Prediction prediction) async {}),
+              ),
+            ),
+
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  widget.viewModel.updateLocation();
+                },
+                child: Text(
+                  '📍Use current location',
+                  style: context.titleMedium?.copyWith(color: Colors.blue),
+                )),
+
+            const SizedBox(height: 10),
+            Text('Recent Searches;', style: context.textTheme.titleMedium),
+            const Divider(),
+            // Add other search-related features here
+            Expanded(
+              child: searchHistory.isEmpty
+                  ? const AppEmptyWidget()
+                  : ListView(
+                      shrinkWrap: true,
+                      children: List.generate(
+                        searchHistory.length,
+                        (index) => ListTile(
+                          leading: const Icon(Icons.location_on),
+                          title: Text(searchHistory[index]),
+                          onTap: () async {
+                            Navigator.pop(context);
+                            // Handle location selection
+                            searchController.text = searchHistory[index];
+
+                            Position? position =
+                                await LocationHelper.getCoordinatesFromAddress(
+                                    searchController.text);
+                            widget.viewModel.locationTextController.text =
+                                searchHistory[index];
+                            widget.viewModel.updateLatLong(
+                                lat: position?.latitude ?? lat,
+                                long: position?.longitude ?? lng);
+                          },
+                        ),
+                      ),
+                    ),
+            ),
+          ],
         ),
       ),
     );

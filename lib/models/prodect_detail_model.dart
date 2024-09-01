@@ -245,7 +245,7 @@ class ProductMedias {
   int? id;
   String? media;
 
-  ProductMedias({this.media});
+  ProductMedias({this.media, this.id});
 
   ProductMedias.fromJson(Map<String, dynamic> json) {
     media = json['media'];

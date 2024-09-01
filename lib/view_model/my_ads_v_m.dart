@@ -181,7 +181,7 @@ class MyAdsVM extends BaseViewModel {
     onRefresh();
   }
 
-  void navigateToEditProduct({ProductDetailModel? item}) {
+  void navigateToEditProduct({ProductDetailModel? item}) async {
     CategoryModel category = CategoryModel(
         id: item?.categoryId?.toInt(), name: item?.category?.name);
     CategoryModel subCategory = CategoryModel(
@@ -189,7 +189,7 @@ class MyAdsVM extends BaseViewModel {
     CategoryModel subSubCategory = CategoryModel(
         id: item?.subSubCategoryId?.toInt(), name: item?.subSubCategory?.name);
 
-    Navigator.push(
+    await Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => SellFormView(
@@ -199,5 +199,6 @@ class MyAdsVM extends BaseViewModel {
                   type: category.name?.toLowerCase(),
                   item: item,
                 )));
+    onRefresh();
   }
 }
