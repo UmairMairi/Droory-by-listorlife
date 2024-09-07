@@ -27,377 +27,458 @@ class MyAdsView extends BaseView<MyAdsVM> {
   Widget build(BuildContext context, MyAdsVM viewModel) {
     return DbHelper.getIsGuest()
         ? const UnauthorisedView()
-        : SmartRefresher(
-            controller: viewModel.refreshController,
-            enablePullDown: true,
-            enablePullUp: true,
-            header: WaterDropHeader(
-              complete: Platform.isAndroid
-                  ? const CircularProgressIndicator()
-                  : const CupertinoActivityIndicator(),
-            ),
-            onRefresh: viewModel.onRefresh,
-            onLoading: viewModel.onLoading,
-            child: viewModel.isLoading
-                ? MyAdsSkeleton(isLoading: viewModel.isLoading)
-                : viewModel.productsList.isNotEmpty
-                    ? ListView.separated(
-                        shrinkWrap: true,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 10),
-                        itemCount: viewModel.productsList.length,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () async {
-                              await context.push(Routes.myProduct,
-                                  extra: viewModel.productsList[index]);
-                              viewModel.onRefresh();
-                            },
-                            child: Card(
-                              shape: RoundedRectangleBorder(
-                                  side: BorderSide(
-                                      color: Colors.grey.shade200, width: 2.0),
-                                  borderRadius: BorderRadius.circular(20.0)),
-                              elevation: 0,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    alignment: Alignment.center,
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 15.0, vertical: 10),
-                                    decoration: BoxDecoration(
-                                      border: Border(
-                                        bottom: BorderSide(
-                                          color: Colors.grey.shade200,
-                                          width: 2.0,
-                                        ),
-                                      ),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          viewModel.getCreatedAt(
-                                              time: viewModel
-                                                  .productsList[index]
-                                                  .createdAt),
-                                          style: context.textTheme.titleSmall,
-                                        ),
-                                        PopupMenuButton<int>(
-                                          icon: const Icon(
-                                            Icons.more_horiz,
-                                            color: Colors.black,
-                                          ),
-                                          offset: const Offset(0, 40),
-                                          shape: const RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(15.0))),
-                                          onSelected: (int value) {
-                                            viewModel.handelPopupMenuItemClick(
-                                                index: value,
-                                                item: viewModel
-                                                    .productsList[index]);
-                                          },
-                                          itemBuilder: (BuildContext context) =>
-                                              <PopupMenuEntry<int>>[
-                                            if (viewModel.productsList[index]
-                                                    .sellStatus
-                                                    ?.toLowerCase() !=
-                                                StringHelper.sold
-                                                    .toLowerCase()) ...{
-                                              const PopupMenuItem(
-                                                value: 1,
-                                                child: Text(StringHelper.edit),
-                                              )
-                                            },
-                                            const PopupMenuItem(
-                                              value: 2,
-                                              child:
-                                                  Text(StringHelper.deactivate),
-                                            ),
-                                            const PopupMenuItem(
-                                              value: 3,
-                                              child: Text(StringHelper.remove),
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  const Gap(20),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 15.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Expanded(
-                                            flex: 6,
-                                            child: ImageView.rect(
-                                              image:
-                                                  "${ApiConstants.imageUrl}/${viewModel.productsList[index].image}",
-                                              width: 250,
-                                              height: 100,
-                                              borderRadius: 10,
-                                            )),
-                                        const Gap(10),
-                                        Expanded(
-                                          flex: 7,
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                viewModel.productsList[index]
-                                                        .name ??
-                                                    '',
-                                                style: context
-                                                    .textTheme.titleMedium,
-                                              ),
-                                              Text(
-                                                viewModel.productsList[index]
-                                                        .description ??
-                                                    '',
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: context
-                                                    .textTheme.labelMedium
-                                                    ?.copyWith(
-                                                        fontFamily: FontRes
-                                                            .MONTSERRAT_SEMIBOLD,
-                                                        color: Colors.grey),
-                                              ),
-                                              Text(
-                                                "${StringHelper.egp} ${viewModel.productsList[index].price}",
-                                                style: context
-                                                    .textTheme.titleMedium
-                                                    ?.copyWith(
-                                                        color: Colors.red),
-                                              ),
-                                              const Gap(10),
-                                              Container(
-                                                margin:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 5),
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 05,
-                                                        vertical: 03),
-                                                decoration: BoxDecoration(
-                                                    color: Colors.grey.shade400,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            05)),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceAround,
-                                                  children: [
-                                                    Expanded(
-                                                      child: Row(
-                                                        children: [
-                                                          const Icon(
-                                                            Icons.favorite,
-                                                            size: 12,
-                                                          ),
-                                                          const Gap(02),
-                                                          Text(
-                                                            '${StringHelper.likes} ${viewModel.productsList[index].favouritesCount}',
-                                                            style: context
-                                                                .textTheme
-                                                                .labelMedium
-                                                                ?.copyWith(
-                                                                    fontFamily:
-                                                                        FontRes
-                                                                            .MONTSERRAT_MEDIUM),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Expanded(
-                                                      child: Row(
-                                                        children: [
-                                                          const Icon(
-                                                            Icons.visibility,
-                                                            size: 12,
-                                                          ),
-                                                          const Gap(02),
-                                                          Text(
-                                                            '${StringHelper.views} ${viewModel.productsList[index].countViews}',
-                                                            style: context
-                                                                .textTheme
-                                                                .labelMedium
-                                                                ?.copyWith(
-                                                                    fontFamily:
-                                                                        FontRes
-                                                                            .MONTSERRAT_MEDIUM),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  const Gap(20),
-                                  Container(
-                                    width: context.width,
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 15, vertical: 10),
-                                    decoration: BoxDecoration(
-                                        color: Colors.grey.shade300,
-                                        borderRadius: const BorderRadius.only(
-                                          bottomLeft: Radius.circular(20),
-                                          bottomRight: Radius.circular(20),
-                                        )),
+        : Column(
+            children: [
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Row(
+                  children: [
+                    FilterChip(
+                      label: Text('All Ads (${viewModel.allAds.length})'),
+                      selected: viewModel.selectedFilter == 0,
+                      onSelected: (bool selected) {
+                        viewModel.changeFilter(0); // All Ads
+                      },
+                    ),
+                    const SizedBox(width: 8),
+                    FilterChip(
+                      label: Text('Live Ads (${viewModel.liveAds.length})'),
+                      selected: viewModel.selectedFilter == 1,
+                      onSelected: (bool selected) {
+                        viewModel.changeFilter(1); // Live Ads
+                      },
+                    ),
+                    const SizedBox(width: 8),
+                    FilterChip(
+                      label: Text(
+                          'Under Review (${viewModel.underReviewAds.length})'),
+                      selected: viewModel.selectedFilter == 2,
+                      onSelected: (bool selected) {
+                        viewModel.changeFilter(2); // Under Review
+                      },
+                    ),
+                    const SizedBox(width: 8),
+                    FilterChip(
+                      label:
+                          Text('Expired Ads (${viewModel.expiredAds.length})'),
+                      selected: viewModel.selectedFilter == 4,
+                      onSelected: (bool selected) {
+                        viewModel.changeFilter(4); // Expired Ads
+                      },
+                    ),
+                    const SizedBox(width: 8),
+                    FilterChip(
+                      label: Text(
+                          'Rejected Ads (${viewModel.rejectedAds.length})'),
+                      selected: viewModel.selectedFilter == 5,
+                      onSelected: (bool selected) {
+                        viewModel.changeFilter(5); // Rejected Ads
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: SmartRefresher(
+                  controller: viewModel.refreshController,
+                  enablePullDown: true,
+                  enablePullUp: true,
+                  header: WaterDropHeader(
+                    complete: Platform.isAndroid
+                        ? const CircularProgressIndicator()
+                        : const CupertinoActivityIndicator(),
+                  ),
+                  onRefresh: viewModel.onRefresh,
+                  onLoading: viewModel.onLoading,
+                  child: viewModel.isLoading
+                      ? MyAdsSkeleton(isLoading: viewModel.isLoading)
+                      : viewModel.productsList.isNotEmpty
+                          ? ListView.separated(
+                              shrinkWrap: true,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
+                              itemCount: viewModel.productsList.length,
+                              itemBuilder: (context, index) {
+                                return InkWell(
+                                  onTap: () async {
+                                    await context.push(Routes.myProduct,
+                                        extra: viewModel.productsList[index]);
+                                    viewModel.onRefresh();
+                                  },
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(
+                                        side: BorderSide(
+                                            color: Colors.grey.shade200,
+                                            width: 2.0),
+                                        borderRadius:
+                                            BorderRadius.circular(20.0)),
+                                    elevation: 0,
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        viewModel.productsList[index].sellStatus
-                                                    ?.toLowerCase() !=
-                                                StringHelper.sold.toLowerCase()
-                                            ? AppElevatedButton(
-                                                onTap: () {},
-                                                title: StringHelper.active,
-                                                height: 30,
-                                                width: 100,
-                                                backgroundColor: Colors.red,
-                                              )
-                                            : const AppElevatedButton(
-                                                title: StringHelper.sold,
-                                                height: 30,
-                                                width: 100,
-                                                backgroundColor: Colors.grey,
+                                        Container(
+                                          alignment: Alignment.center,
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 15.0, vertical: 10),
+                                          decoration: BoxDecoration(
+                                            border: Border(
+                                              bottom: BorderSide(
+                                                color: Colors.grey.shade200,
+                                                width: 2.0,
                                               ),
-                                        const Gap(10),
-                                        viewModel.productsList[index]
-                                                    .sellStatus !=
-                                                StringHelper.sold.toLowerCase()
-                                            ? Text(
-                                                StringHelper
-                                                    .thisAdisCurrentlyLive,
+                                            ),
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                viewModel.getCreatedAt(
+                                                    time: viewModel
+                                                        .productsList[index]
+                                                        .createdAt),
                                                 style: context
-                                                    .textTheme.labelMedium
-                                                    ?.copyWith(
-                                                        fontFamily: FontRes
-                                                            .MONTSERRAT_MEDIUM),
-                                              )
-                                            : Text(
-                                                StringHelper.thisAdisSold,
-                                                style: context
-                                                    .textTheme.labelMedium
-                                                    ?.copyWith(
-                                                        fontFamily: FontRes
-                                                            .MONTSERRAT_MEDIUM),
+                                                    .textTheme.titleSmall,
                                               ),
-                                        if (viewModel.productsList[index]
-                                                .sellStatus !=
-                                            StringHelper.sold
-                                                .toLowerCase()) ...{
-                                          const Gap(10),
-                                          Row(
+                                              PopupMenuButton<int>(
+                                                icon: const Icon(
+                                                  Icons.more_horiz,
+                                                  color: Colors.black,
+                                                ),
+                                                offset: const Offset(0, 40),
+                                                shape:
+                                                    const RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    15.0))),
+                                                onSelected: (int value) {
+                                                  viewModel
+                                                      .handelPopupMenuItemClick(
+                                                          index: value,
+                                                          item: viewModel
+                                                                  .productsList[
+                                                              index]);
+                                                },
+                                                itemBuilder:
+                                                    (BuildContext context) =>
+                                                        <PopupMenuEntry<int>>[
+                                                  if (viewModel
+                                                          .productsList[index]
+                                                          .sellStatus
+                                                          ?.toLowerCase() !=
+                                                      StringHelper.sold
+                                                          .toLowerCase()) ...{
+                                                    const PopupMenuItem(
+                                                      value: 1,
+                                                      child: Text(
+                                                          StringHelper.edit),
+                                                    )
+                                                  },
+                                                  const PopupMenuItem(
+                                                    value: 2,
+                                                    child: Text(StringHelper
+                                                        .deactivate),
+                                                  ),
+                                                  const PopupMenuItem(
+                                                    value: 3,
+                                                    child: Text(
+                                                        StringHelper.remove),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        const Gap(20),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 15.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               Expanded(
-                                                child: InkWell(
-                                                  onTap: () async {
-                                                    DialogHelper.showLoading();
-                                                    await viewModel.markAsSoldApi(
-                                                        product: viewModel
-                                                                .productsList[
-                                                            index]);
-                                                  },
-                                                  child: Container(
-                                                    alignment: Alignment.center,
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 10,
-                                                        vertical: 08),
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.black54,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              08),
+                                                  flex: 6,
+                                                  child: ImageView.rect(
+                                                    image:
+                                                        "${ApiConstants.imageUrl}/${viewModel.productsList[index].image}",
+                                                    width: 250,
+                                                    height: 100,
+                                                    borderRadius: 10,
+                                                  )),
+                                              const Gap(10),
+                                              Expanded(
+                                                flex: 7,
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      viewModel
+                                                              .productsList[
+                                                                  index]
+                                                              .name ??
+                                                          '',
+                                                      style: context.textTheme
+                                                          .titleMedium,
                                                     ),
-                                                    child: Text(
-                                                      StringHelper.markAsSold,
+                                                    Text(
+                                                      viewModel
+                                                              .productsList[
+                                                                  index]
+                                                              .description ??
+                                                          '',
+                                                      maxLines: 2,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                       style: context
-                                                          .textTheme.labelLarge
+                                                          .textTheme.labelMedium
+                                                          ?.copyWith(
+                                                              fontFamily: FontRes
+                                                                  .MONTSERRAT_SEMIBOLD,
+                                                              color:
+                                                                  Colors.grey),
+                                                    ),
+                                                    Text(
+                                                      "${StringHelper.egp} ${viewModel.productsList[index].price}",
+                                                      style: context
+                                                          .textTheme.titleMedium
                                                           ?.copyWith(
                                                               color:
-                                                                  Colors.white,
-                                                              fontSize: 12,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600),
+                                                                  Colors.red),
                                                     ),
-                                                  ),
+                                                    const Gap(10),
+                                                    Container(
+                                                      margin: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 5),
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 05,
+                                                          vertical: 03),
+                                                      decoration: BoxDecoration(
+                                                          color: Colors
+                                                              .grey.shade400,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      05)),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceAround,
+                                                        children: [
+                                                          Expanded(
+                                                            child: Row(
+                                                              children: [
+                                                                const Icon(
+                                                                  Icons
+                                                                      .favorite,
+                                                                  size: 12,
+                                                                ),
+                                                                const Gap(02),
+                                                                Text(
+                                                                  '${StringHelper.likes} ${viewModel.productsList[index].favouritesCount}',
+                                                                  style: context
+                                                                      .textTheme
+                                                                      .labelMedium
+                                                                      ?.copyWith(
+                                                                          fontFamily:
+                                                                              FontRes.MONTSERRAT_MEDIUM),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          Expanded(
+                                                            child: Row(
+                                                              children: [
+                                                                const Icon(
+                                                                  Icons
+                                                                      .visibility,
+                                                                  size: 12,
+                                                                ),
+                                                                const Gap(02),
+                                                                Text(
+                                                                  '${StringHelper.views} ${viewModel.productsList[index].countViews}',
+                                                                  style: context
+                                                                      .textTheme
+                                                                      .labelMedium
+                                                                      ?.copyWith(
+                                                                          fontFamily:
+                                                                              FontRes.MONTSERRAT_MEDIUM),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
-                                              ),
-                                              const Gap(15),
-                                              /* Expanded(
-                                                child: InkWell(
-                                                  onTap: () => context
-                                                      .push(Routes.planList),
-                                                  child: Container(
-                                                    alignment: Alignment.center,
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 10,
-                                                        vertical: 08),
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.black54,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              08),
-                                                    ),
-                                                    child: Text(
-                                                      StringHelper
-                                                          .sellFasterNow,
-                                                      style: context
-                                                          .textTheme.labelLarge
-                                                          ?.copyWith(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 12,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),*/
+                                              )
                                             ],
-                                          )
-                                        }
+                                          ),
+                                        ),
+                                        const Gap(20),
+                                        Container(
+                                          width: context.width,
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 15, vertical: 10),
+                                          decoration: BoxDecoration(
+                                              color: Colors.grey.shade300,
+                                              borderRadius:
+                                                  const BorderRadius.only(
+                                                bottomLeft: Radius.circular(20),
+                                                bottomRight:
+                                                    Radius.circular(20),
+                                              )),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              viewModel.getStatus(
+                                                  data: viewModel
+                                                      .productsList[index]),
+                                              const Gap(10),
+                                              viewModel.productsList[index]
+                                                          .sellStatus !=
+                                                      StringHelper.sold
+                                                          .toLowerCase()
+                                                  ? Text(
+                                                      StringHelper
+                                                          .thisAdisCurrentlyLive,
+                                                      style: context
+                                                          .textTheme.labelMedium
+                                                          ?.copyWith(
+                                                              fontFamily: FontRes
+                                                                  .MONTSERRAT_MEDIUM),
+                                                    )
+                                                  : Text(
+                                                      StringHelper.thisAdisSold,
+                                                      style: context
+                                                          .textTheme.labelMedium
+                                                          ?.copyWith(
+                                                              fontFamily: FontRes
+                                                                  .MONTSERRAT_MEDIUM),
+                                                    ),
+                                              if (viewModel.productsList[index]
+                                                      .sellStatus !=
+                                                  StringHelper.sold
+                                                      .toLowerCase()) ...{
+                                                const Gap(10),
+                                                Row(
+                                                  children: [
+                                                    Expanded(
+                                                      child: InkWell(
+                                                        onTap: () async {
+                                                          DialogHelper
+                                                              .showLoading();
+                                                          await viewModel.markAsSoldApi(
+                                                              product: viewModel
+                                                                      .productsList[
+                                                                  index]);
+                                                        },
+                                                        child: Container(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal:
+                                                                      10,
+                                                                  vertical: 08),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color:
+                                                                Colors.black54,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        08),
+                                                          ),
+                                                          child: Text(
+                                                            StringHelper
+                                                                .markAsSold,
+                                                            style: context
+                                                                .textTheme
+                                                                .labelLarge
+                                                                ?.copyWith(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        12,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    const Gap(15),
+                                                    /* Expanded(
+                                                      child: InkWell(
+                                                        onTap: () => context
+                                                            .push(Routes.planList),
+                                                        child: Container(
+                                                          alignment: Alignment.center,
+                                                          padding: const EdgeInsets
+                                                              .symmetric(
+                                                              horizontal: 10,
+                                                              vertical: 08),
+                                                          decoration: BoxDecoration(
+                                                            color: Colors.black54,
+                                                            borderRadius:
+                                                                BorderRadius.circular(
+                                                                    08),
+                                                          ),
+                                                          child: Text(
+                                                            StringHelper
+                                                                .sellFasterNow,
+                                                            style: context
+                                                                .textTheme.labelLarge
+                                                                ?.copyWith(
+                                                                    color:
+                                                                        Colors.white,
+                                                                    fontSize: 12,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),*/
+                                                  ],
+                                                )
+                                              }
+                                            ],
+                                          ),
+                                        )
                                       ],
                                     ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) {
-                          return const Gap(20);
-                        },
-                      )
-                    : const AppEmptyWidget(),
+                                  ),
+                                );
+                              },
+                              separatorBuilder:
+                                  (BuildContext context, int index) {
+                                return const Gap(20);
+                              },
+                            )
+                          : const AppEmptyWidget(),
+                ),
+              ),
+            ],
           );
   }
 }

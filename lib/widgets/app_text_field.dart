@@ -108,10 +108,10 @@ class AppTextField extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.5), // Shadow color
-                spreadRadius: 2, // Spread radius
-                blurRadius: 5, // Blur radius
-                offset: const Offset(0, 5), // Offset from the top
+                color: Colors.grey.withOpacity(0.3), // Shadow color
+                spreadRadius: 1, // Spread radius
+                blurRadius: 3, // Blur radius
+                offset: const Offset(0, 2), // Offset from the top
               ),
             ],
           ),

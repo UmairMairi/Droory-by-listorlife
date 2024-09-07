@@ -31,7 +31,7 @@ class SettingView extends BaseView<SettingVM> {
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             viewModel.isGuest
                 ? Container(
@@ -40,14 +40,14 @@ class SettingView extends BaseView<SettingVM> {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
+                      /* boxShadow: [
                         BoxShadow(
                           color: Colors.grey.withOpacity(0.5), // Shadow color
                           spreadRadius: 2, // Spread radius
                           blurRadius: 5, // Blur radius
                           offset: const Offset(0, 5), // Offset from the top
                         ),
-                      ],
+                      ],*/
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -90,12 +90,12 @@ class SettingView extends BaseView<SettingVM> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
-                        BoxShadow(
+                        /* BoxShadow(
                           color: Colors.grey.withOpacity(0.5), // Shadow color
                           spreadRadius: 2, // Spread radius
                           blurRadius: 5, // Blur radius
                           offset: const Offset(0, 5), // Offset from the top
-                        ),
+                        ),*/
                       ],
                     ),
                     child: Column(
@@ -136,22 +136,28 @@ class SettingView extends BaseView<SettingVM> {
                       ],
                     ),
                   ),
+            const Divider(),
             const Gap(20),
             if (!viewModel.isGuest) ...{
+              Text(
+                'Account Settings',
+                style: context.titleMedium,
+              ),
+              Gap(10),
               Container(
                 width: context.width,
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
+                  /*    boxShadow: [
                     BoxShadow(
                       color: Colors.grey.withOpacity(0.5), // Shadow color
                       spreadRadius: 2, // Spread radius
                       blurRadius: 5, // Blur radius
                       offset: const Offset(0, 5), // Offset from the top
                     ),
-                  ],
+                  ],*/
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -182,37 +188,47 @@ class SettingView extends BaseView<SettingVM> {
                   ],
                 ),
               ),
-              const Gap(20),
+              const Divider(),
             },
-            Container(
-              width: context.width,
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5), // Shadow color
-                    spreadRadius: 2, // Spread radius
-                    blurRadius: 5, // Blur radius
-                    offset: const Offset(0, 5), // Offset from the top
-                  ),
-                ],
+            Text(
+              'Support',
+              style: context.titleMedium,
+            ),
+            Gap(10),
+            ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return InkWell(
+                      onTap: viewModel.supportList[index].onTap,
+                      child:
+                          SettingItemView(item: viewModel.supportList[index]));
+                },
+                separatorBuilder: (context, index) {
+                  return const Gap(5);
+                },
+                itemCount: viewModel.supportList.length),
+            Divider(),
+            if (!viewModel.isGuest) ...{
+              Text(
+                'Account Management',
+                style: context.titleMedium,
               ),
-              child: ListView.separated(
+              Gap(10),
+              ListView.separated(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     return InkWell(
-                        onTap: viewModel.settingList[index].onTap,
+                        onTap: viewModel.accountSettingsList[index].onTap,
                         child: SettingItemView(
-                            item: viewModel.settingList[index]));
+                            item: viewModel.accountSettingsList[index]));
                   },
                   separatorBuilder: (context, index) {
-                    return const Divider();
+                    return const Gap(5);
                   },
-                  itemCount: viewModel.settingList.length),
-            )
+                  itemCount: viewModel.accountSettingsList.length),
+            }
           ],
         ),
       ),

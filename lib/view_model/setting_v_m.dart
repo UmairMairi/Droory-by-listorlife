@@ -17,7 +17,10 @@ class SettingVM extends BaseViewModel {
   bool _isActiveNotification = DbHelper.getUserModel()?.notificationStatus == 1;
 
   bool get isActiveNotification => _isActiveNotification;
-  List<SettingItemModel> settingList = [];
+  List<SettingItemModel> appSettingList = [];
+  List<SettingItemModel> supportList = [];
+  List<SettingItemModel> privacySecurityList = [];
+  List<SettingItemModel> accountSettingsList = [];
 
   bool _isGuest = DbHelper.getIsGuest();
 
@@ -31,7 +34,7 @@ class SettingVM extends BaseViewModel {
   void onInit() {
     DbHelper.box.listenKey('isGuest', (value) {
       isGuest = DbHelper.getIsGuest();
-      settingList = isGuest
+      appSettingList = isGuest
           ? [
               SettingItemModel(
                   isArrow: true,
@@ -60,13 +63,6 @@ class SettingVM extends BaseViewModel {
                   title: 'FAQ\'s',
                   onTap: () {
                     context.push(Routes.faqView);
-                  }),
-              SettingItemModel(
-                  isArrow: true,
-                  icon: AssetsRes.IC_BLOCS_LIST,
-                  title: 'Blocked Users',
-                  onTap: () {
-                    context.push(Routes.blockedUserList);
                   }),
               SettingItemModel(
                   icon: AssetsRes.IC_LOGOUT,
@@ -170,143 +166,100 @@ class SettingVM extends BaseViewModel {
             ];
     });
     if (!isGuest) getProfile();
-    settingList = isGuest
-        ? [
-            SettingItemModel(
-                isArrow: true,
-                icon: AssetsRes.IC_PRIVCY_POLICY,
-                title: 'Privacy Policy',
-                onTap: () {
-                  context.push(Routes.termsOfUse, extra: 1);
-                }),
-            SettingItemModel(
-                isArrow: true,
-                icon: AssetsRes.IC_T_AND_C,
-                title: 'Terms & Conditions',
-                onTap: () {
-                  context.push(Routes.termsOfUse, extra: 2);
-                }),
-            SettingItemModel(
-                isArrow: true,
-                icon: AssetsRes.IC_CONTACT_US,
-                title: 'Contact Us',
-                onTap: () {
-                  context.push(Routes.contactUsView);
-                }),
-            SettingItemModel(
-                isArrow: true,
-                icon: AssetsRes.IC_FAQ,
-                title: 'FAQ\'s',
-                onTap: () {
-                  context.push(Routes.faqView);
-                }),
-            SettingItemModel(
-                isArrow: true,
-                icon: AssetsRes.IC_BLOCS_LIST,
-                title: 'Blocked Users',
-                onTap: () {
-                  context.push(Routes.blockedUserList);
-                }),
-            SettingItemModel(
-                icon: AssetsRes.IC_LOGOUT,
-                title: 'Login',
-                onTap: () {
-                  context.push(Routes.guestLogin);
-                }),
-          ]
-        : [
-            SettingItemModel(
-                isArrow: true,
-                icon: AssetsRes.IC_PRIVCY_POLICY,
-                title: 'Privacy Policy',
-                onTap: () {
-                  context.push(Routes.termsOfUse, extra: 1);
-                }),
-            SettingItemModel(
-                isArrow: true,
-                icon: AssetsRes.IC_T_AND_C,
-                title: 'Terms & Conditions',
-                onTap: () {
-                  context.push(Routes.termsOfUse, extra: 2);
-                }),
-            SettingItemModel(
-                isArrow: true,
-                icon: AssetsRes.IC_CONTACT_US,
-                title: 'Contact Us',
-                onTap: () {
-                  context.push(Routes.contactUsView);
-                }),
-            SettingItemModel(
-                isArrow: true,
-                icon: AssetsRes.IC_FAQ,
-                title: 'FAQ\'s',
-                onTap: () {
-                  context.push(Routes.faqView);
-                }),
-            SettingItemModel(
-                isArrow: true,
-                icon: AssetsRes.IC_BLOCS_LIST,
-                title: 'Blocked Users',
-                onTap: () {
-                  context.push(Routes.blockedUserList);
-                }),
-            SettingItemModel(
-                icon: AssetsRes.IC_DELETE_ACCOUNT,
-                title: 'Delete Account',
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (BuildContext dialogContext) {
-                      return AppAlertDialogWithLottie(
-                        lottieIcon: AssetsRes.DELETE_LOTTIE,
-                        title: 'Account Delete',
-                        description:
-                            'Are you sure you want to delete this account?',
-                        onTap: () {
-                          context.pop();
-                          DialogHelper.showLoading();
-                          deleteAccount();
-                        },
-                        onCancelTap: () {
-                          context.pop();
-                        },
-                        buttonText: 'Yes',
-                        cancelButtonText: 'No',
-                        showCancelButton: true,
-                      );
-                    },
-                  );
-                }),
-            SettingItemModel(
-                icon: AssetsRes.IC_LOGOUT,
-                title: 'Logout',
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (BuildContext dialogContext) {
-                      return AppAlertDialogWithWidget(
-                        title: 'Logout',
-                        description:
-                            'Are you sure you want to logout this account?',
-                        onTap: () {
-                          context.pop();
-                          DialogHelper.showLoading();
-                          logoutUser();
-                        },
-                        icon: AssetsRes.IC_LOGOUT_ICON,
-                        onCancelTap: () {
-                          context.pop();
-                        },
-                        buttonText: 'Yes',
-                        cancelButtonText: 'No',
-                        showCancelButton: true,
-                      );
-                    },
-                  );
-                }),
-          ];
+
+    supportList = [
+      SettingItemModel(
+          isArrow: true,
+          icon: AssetsRes.IC_CONTACT_US,
+          title: 'Contact Us',
+          onTap: () {
+            context.push(Routes.contactUsView);
+          }),
+      SettingItemModel(
+          isArrow: true,
+          icon: AssetsRes.IC_FAQ,
+          title: 'FAQ\'s',
+          onTap: () {
+            context.push(Routes.faqView);
+          }),
+      SettingItemModel(
+          isArrow: true,
+          icon: AssetsRes.IC_PRIVCY_POLICY,
+          title: 'Privacy Policy',
+          onTap: () {
+            context.push(Routes.termsOfUse, extra: 1);
+          }),
+      SettingItemModel(
+          isArrow: true,
+          icon: AssetsRes.IC_T_AND_C,
+          title: 'Terms & Conditions',
+          onTap: () {
+            context.push(Routes.termsOfUse, extra: 2);
+          }),
+    ];
+    accountSettingsList = [
+      SettingItemModel(
+          isArrow: true,
+          icon: AssetsRes.IC_BLOCS_LIST,
+          title: 'Blocked Users',
+          onTap: () {
+            context.push(Routes.blockedUserList);
+          }),
+      SettingItemModel(
+          icon: AssetsRes.IC_DELETE_ACCOUNT,
+          title: 'Delete Account',
+          onTap: () {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext dialogContext) {
+                return AppAlertDialogWithLottie(
+                  lottieIcon: AssetsRes.DELETE_LOTTIE,
+                  title: 'Account Delete',
+                  description: 'Are you sure you want to delete this account?',
+                  onTap: () {
+                    context.pop();
+                    DialogHelper.showLoading();
+                    deleteAccount();
+                  },
+                  onCancelTap: () {
+                    context.pop();
+                  },
+                  buttonText: 'Yes',
+                  cancelButtonText: 'No',
+                  showCancelButton: true,
+                );
+              },
+            );
+          }),
+      SettingItemModel(
+          icon: AssetsRes.IC_LOGOUT,
+          title: 'Logout',
+          onTap: () {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext dialogContext) {
+                return AppAlertDialogWithWidget(
+                  title: 'Logout',
+                  description: 'Are you sure you want to logout this account?',
+                  onTap: () {
+                    context.pop();
+                    DialogHelper.showLoading();
+                    logoutUser();
+                  },
+                  icon: AssetsRes.IC_LOGOUT_ICON,
+                  onCancelTap: () {
+                    context.pop();
+                  },
+                  buttonText: 'Yes',
+                  cancelButtonText: 'No',
+                  showCancelButton: true,
+                );
+              },
+            );
+          }),
+    ];
     super.onInit();
   }
 

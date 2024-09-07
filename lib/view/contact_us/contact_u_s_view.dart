@@ -8,21 +8,6 @@ class ContactUsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: Container(
-        color: Colors.white,
-        child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _buildSocialIcon(AssetsRes.IC_FACEBOOK),
-              _buildSocialIcon(AssetsRes.IC_TWITTER),
-              _buildSocialIcon(AssetsRes.IC_LINKEDIN),
-              _buildSocialIcon(AssetsRes.IC_EARTH),
-            ],
-          ),
-        ),
-      ),
       appBar: AppBar(
         title: const Text('Contact Us'),
         centerTitle: true,

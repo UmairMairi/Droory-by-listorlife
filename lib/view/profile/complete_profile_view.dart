@@ -145,11 +145,11 @@ class CompleteProfileView extends BaseView<AuthVM> {
             AppElevatedButton(
               width: context.width,
               onTap: () {
-                if (viewModel.imagePath.isEmpty) {
+                /*  if (viewModel.imagePath.isEmpty) {
                   DialogHelper.showToast(
                       message: FormFieldErrors.profilePicRequired);
                   return;
-                }
+                }*/
                 if (viewModel.nameTextController.text.trim().isEmpty) {
                   DialogHelper.showToast(
                       message: FormFieldErrors.firstNameRequired);

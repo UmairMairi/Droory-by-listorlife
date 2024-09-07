@@ -1,4 +1,6 @@
+import 'dart:developer';
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:ccp_dialog/country_picker/flutter_country_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,6 +18,7 @@ import 'package:list_and_life/base/network/api_request.dart';
 import 'package:list_and_life/base/network/base_client.dart';
 import 'package:list_and_life/routes/app_pages.dart';
 import 'package:list_and_life/routes/app_routes.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../base/helpers/image_picker_helper.dart';
 import '../base/helpers/string_helper.dart';
@@ -32,7 +35,7 @@ class AuthVM extends BaseViewModel {
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
 
   String countryCode = "+91";
-  Country selectedCountry = Country.IN;
+  Country selectedCountry = Country.EG;
 
   String _imagePath = '';
   bool _agreedToTerms = false;
@@ -294,6 +297,15 @@ class AuthVM extends BaseViewModel {
   }
 
   Future<void> completeProfileApi() async {
+    // If no image is selected, generate a default image with the first name's letter
+    if (imagePath.isEmpty) {
+      imagePath = await generateAndSaveDefaultAvatar(
+          firstName: nameTextController.text.trim(),
+          lastName: lNameTextController.text.trim());
+    }
+
+    log("image path => $imagePath");
+
     Map<String, dynamic> body = {
       'country_code': countryCode,
       'phone_no': phoneTextController.text.trim(),
@@ -305,6 +317,7 @@ class AuthVM extends BaseViewModel {
       'email': emailTextController.text.trim(),
       'profile_pic': await BaseClient.getMultipartImage(path: imagePath)
     };
+
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.signupUrl(),
         requestType: RequestType.post,
@@ -326,5 +339,70 @@ class AuthVM extends BaseViewModel {
     } else {
       AppPages.rootNavigatorKey.currentContext?.go(Routes.main);
     }
+    resetTextFields();
+  }
+
+  Future<String> generateAndSaveDefaultAvatar(
+      {required String firstName, required String lastName}) async {
+    final recorder = PictureRecorder();
+    final canvas = Canvas(recorder);
+    final paint = Paint()..color = Colors.blue;
+    const radius = 70.0;
+
+    // Draw the circle
+    canvas.drawCircle(
+      Offset(radius, radius),
+      radius,
+      paint,
+    );
+
+    // Draw the initials (first letter of first and last name)
+    const textStyle = TextStyle(
+      color: Colors.white,
+      fontSize: 40,
+      fontWeight: FontWeight.bold,
+    );
+
+    // Combine first and last name initials
+    final initials =
+        '${firstName[0].toUpperCase()}${lastName[0].toUpperCase()}';
+
+    final textSpan = TextSpan(
+      text: initials,
+      style: textStyle,
+    );
+
+    final textPainter = TextPainter(
+      text: textSpan,
+      textDirection: TextDirection.ltr,
+    );
+
+    textPainter.layout();
+    textPainter.paint(
+      canvas,
+      Offset(radius - textPainter.width / 2, radius - textPainter.height / 2),
+    );
+
+    // Convert to image
+    final picture = recorder.endRecording();
+    final img = await picture.toImage(140, 140);
+
+    final byteData = await img.toByteData(format: ImageByteFormat.png);
+    final buffer = byteData!.buffer.asUint8List();
+
+    // Save the image to a file
+    final tempDir = await getTemporaryDirectory();
+    final filePath = '${tempDir.path}/default_avatar.png';
+    final file = await File(filePath).writeAsBytes(buffer);
+
+    return file.path;
+  }
+
+  void resetTextFields() {
+    imagePath = '';
+    nameTextController.clear();
+    lNameTextController.clear();
+    emailTextController.clear();
+    agreedToTerms = false;
   }
 }

@@ -169,7 +169,6 @@ class HomeView extends BaseView<HomeVM> {
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       List<CategoryModel> categoryItems = snapshot.data ?? [];
-
                       return SizedBox(
                         height: 90,
                         width: context.width,

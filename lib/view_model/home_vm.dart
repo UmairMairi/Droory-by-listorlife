@@ -103,18 +103,13 @@ class HomeVM extends BaseViewModel {
           await LocationHelper.getAddressFromCoordinates(longitude, longitude);
     } else {
       if (context.mounted) {
-        await LocationHelper.showPopupIsEgypt(context, () {
-          latitude = LocationHelper.cairoLatitude;
-          longitude = LocationHelper.cairoLongitude;
-          currentLocation = "Cairo, Egypt";
-        });
+        latitude = LocationHelper.cairoLatitude;
+        longitude = LocationHelper.cairoLongitude;
+        currentLocation = "Cairo, Egypt";
       } else {
-        await LocationHelper.showPopupIsEgypt(
-            AppPages.rootNavigatorKey.currentState!.context, () {
-          latitude = LocationHelper.cairoLatitude;
-          longitude = LocationHelper.cairoLongitude;
-          currentLocation = "Cairo, Egypt";
-        });
+        latitude = LocationHelper.cairoLatitude;
+        longitude = LocationHelper.cairoLongitude;
+        currentLocation = "Cairo, Egypt";
       }
     }
     onRefresh();

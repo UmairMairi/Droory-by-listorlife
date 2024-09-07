@@ -96,6 +96,7 @@ dependencies:
   autocomplete_textfield: ^2.0.1
   searchfield: ^1.0.9
   flutter_svg: ^2.0.10+1
+  path_provider: ^2.1.4
 
 dev_dependencies:
   flutter_test:

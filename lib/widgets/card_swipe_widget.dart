@@ -67,15 +67,13 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget>
             },
             children: List.generate(bannerImages.length, (index) {
               return ClipRRect(
-                  borderRadius:
-                      widget.borderRadius ?? BorderRadius.circular(20),
                   child: ImageView.rect(
-                    image: "${ApiConstants.imageUrl}/${bannerImages[index]}",
-                    placeholder: AssetsRes.IC_IMAGE_PLACEHOLDER,
-                    width: context.width,
-                    height: widget.height ?? 220,
-                    fit: BoxFit.contain,
-                  ));
+                image: "${ApiConstants.imageUrl}/${bannerImages[index]}",
+                placeholder: AssetsRes.IC_IMAGE_PLACEHOLDER,
+                width: context.width,
+                height: widget.height ?? 220,
+                fit: BoxFit.cover,
+              ));
             }),
           ),
           _buildDots(),

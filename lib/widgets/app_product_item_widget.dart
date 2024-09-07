@@ -37,14 +37,14 @@ class AppProductItemWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
-          boxShadow: [
+          /*    boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.5), // Shadow color
               spreadRadius: 2, // Spread radius
               blurRadius: 5, // Blur radius
               offset: const Offset(0, 5), // Offset from the top
             ),
-          ],
+          ],*/
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,

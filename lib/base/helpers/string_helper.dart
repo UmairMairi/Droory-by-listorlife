@@ -73,7 +73,9 @@ class StringHelper {
   static const String likes = "Likes:";
   static const String views = "Views:";
   static const String sold = "Sold";
+  static const String rejected = "Rejected";
   static const String active = "Active";
+  static const String review = "In Review";
   static const String thisAdisCurrentlyLive = "This ad is currently live";
   static const String thisAdisSold = "This ad is sold";
   static const String markAsSold = "Mark as Sold";
@@ -249,4 +251,6 @@ class StringHelper {
   static const String featureAd = "Feature Ad";
   static const String boostToTop = "Boost to Top";
   static const String buyNow = "Buy Now";
+
+  static const String expiredAds = 'Expired';
 }

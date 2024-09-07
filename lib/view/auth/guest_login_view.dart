@@ -65,7 +65,8 @@ class GuestLoginView extends BaseView<AuthVM> {
               inputType: TextInputType.phone,
               prefix: CountryPicker(
                   selectedCountry: viewModel.selectedCountry,
-                  dense: false,
+                  dense: true,
+                  isEnable: false,
                   //displays arrow, true by default
                   showLine: false,
                   showFlag: true,

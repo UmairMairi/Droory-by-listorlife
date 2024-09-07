@@ -9,6 +9,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../base/helpers/date_helper.dart';
 import '../base/helpers/db_helper.dart';
+import '../base/helpers/string_helper.dart';
 import '../base/network/api_constants.dart';
 import '../base/network/api_request.dart';
 import '../base/network/base_client.dart';
@@ -16,6 +17,7 @@ import '../models/common/map_response.dart';
 import '../models/home_list_model.dart';
 import '../models/prodect_detail_model.dart';
 import '../view/main/sell/forms/sell_form_view.dart';
+import '../widgets/app_elevated_button.dart';
 
 class MyAdsVM extends BaseViewModel {
   late RefreshController refreshController;
@@ -28,7 +30,7 @@ class MyAdsVM extends BaseViewModel {
     notifyListeners();
   }
 
-  int _limit = 30;
+  int _limit = 1000;
 
   int get limit => _limit;
 
@@ -55,6 +57,15 @@ class MyAdsVM extends BaseViewModel {
   bool get isLoading => _loading;
 
   List<ProductDetailModel> productsList = [];
+  List<ProductDetailModel> allAds = [];
+  List<ProductDetailModel> liveAds = [];
+  List<ProductDetailModel> underReviewAds = [];
+  List<ProductDetailModel> draftAds = [];
+  List<ProductDetailModel> expiredAds = [];
+  List<ProductDetailModel> rejectedAds = [];
+
+  int selectedFilter = 0; // Tracks the currently selected filter
+
   @override
   void onInit() {
     // TODO: implement onInit
@@ -89,12 +100,34 @@ class MyAdsVM extends BaseViewModel {
     if (loading) isLoading = loading;
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.getUsersProductsUrl(
-            limit: limit, page: page, userId: "${DbHelper.getUserModel()?.id}"),
+            limit: 1000, page: 1, userId: "${DbHelper.getUserModel()?.id}"),
         requestType: RequestType.get);
     var response = await BaseClient.handleRequest(apiRequest);
     MapResponse<HomeListModel> model =
         MapResponse.fromJson(response, (json) => HomeListModel.fromJson(json));
-    productsList.addAll(model.body?.data ?? []);
+    allAds.clear();
+    liveAds.clear();
+    underReviewAds.clear();
+    expiredAds.clear();
+    rejectedAds.clear();
+    allAds.addAll(model.body?.data ?? []);
+
+    // Categorize ads based on their status
+    liveAds = allAds
+        .where((ad) => ad.status == 1 && ad.sellStatus == 'ongoing')
+        .toList();
+    underReviewAds = allAds.where((ad) => ad.status == 0).toList();
+    expiredAds = allAds
+        .where((ad) =>
+            DateTime.now()
+                .difference(DateTime.parse(ad.createdAt ?? ''))
+                .inDays >
+            30)
+        .toList();
+    rejectedAds = allAds.where((ad) => ad.status == 2).toList();
+
+    // Set initial filter to All Ads
+    changeFilter(selectedFilter);
 
     if (loading) isLoading = false;
     notifyListeners();
@@ -200,5 +233,97 @@ class MyAdsVM extends BaseViewModel {
                   item: item,
                 )));
     onRefresh();
+  }
+
+  // Method to change the selected filter and update the filtered list
+  void changeFilter(int filterIndex) {
+    selectedFilter = filterIndex;
+
+    switch (filterIndex) {
+      case 0: // All Ads
+        productsList = allAds;
+        notifyListeners();
+        break;
+      case 1: // Live Ads
+        productsList = liveAds;
+        notifyListeners();
+        break;
+      case 2: // Under Review Ads
+        productsList = underReviewAds;
+        notifyListeners();
+        break;
+      case 3: // Drafts
+        productsList = draftAds;
+        notifyListeners();
+        break;
+      case 4: // Expired Ads
+        productsList = expiredAds;
+        notifyListeners();
+        break;
+      case 5: // Rejected Ads
+        productsList = rejectedAds;
+        notifyListeners();
+        break;
+      default:
+        productsList = allAds;
+        notifyListeners();
+    }
+
+    notifyListeners(); // To update UI with the filtered list
+  }
+
+  Widget getStatus({required ProductDetailModel data}) {
+    switch (data.status) {
+      case 0:
+        if (DateTime.now()
+                .difference(DateTime.parse(data.createdAt ?? ''))
+                .inDays >
+            30) {
+          return AppElevatedButton(
+            onTap: () {},
+            title: StringHelper.expiredAds,
+            height: 30,
+            width: 100,
+            backgroundColor: Colors.red, // Red for Expired Ads
+          );
+        }
+        return AppElevatedButton(
+          onTap: () {},
+          title: StringHelper.review,
+          height: 30,
+          width: 100,
+          backgroundColor: Colors.amber,
+        );
+
+      case 1:
+        return data.sellStatus?.toLowerCase() != StringHelper.sold.toLowerCase()
+            ? AppElevatedButton(
+                onTap: () {},
+                title: StringHelper.active,
+                height: 30,
+                width: 100,
+                backgroundColor: Colors.green,
+              )
+            : const AppElevatedButton(
+                title: StringHelper.sold,
+                height: 30,
+                width: 100,
+                backgroundColor: Colors.grey,
+              );
+      case 2:
+        return const AppElevatedButton(
+          title: StringHelper.rejected,
+          height: 30,
+          width: 100,
+          backgroundColor: Colors.brown,
+        );
+      default:
+        return AppElevatedButton(
+          title: StringHelper.expiredAds,
+          height: 30,
+          width: 100,
+          backgroundColor: Colors.red, // Red for Expired Ads
+        );
+    }
   }
 }
