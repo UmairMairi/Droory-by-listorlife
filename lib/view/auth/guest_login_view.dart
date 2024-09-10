@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ccp_dialog/country_picker/flutter_country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -167,44 +169,46 @@ class GuestLoginView extends BaseView<AuthVM> {
             const SizedBox(
               height: 30,
             ),
-            GestureDetector(
-                onTap: () {
-                  viewModel.socialLogin(type: 3);
-                },
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  decoration: BoxDecoration(
-                      color: Colors.black,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          offset: const Offset(0, 1),
-                          blurRadius: 6,
+            if (Platform.isIOS) ...{
+              GestureDetector(
+                  onTap: () {
+                    viewModel.socialLogin(type: 3);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    decoration: BoxDecoration(
+                        color: Colors.black,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            offset: const Offset(0, 1),
+                            blurRadius: 6,
+                          ),
+                        ],
+                        borderRadius: BorderRadius.circular(100)),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        ImageView.circle(
+                          image: AssetsRes.IC_APPLE_LOGO,
+                          height: 30,
+                          width: 30,
                         ),
+                        Text(
+                          StringHelper.loginWithIos,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: FontRes.MONTSERRAT_BOLD,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        SizedBox(
+                          width: 15,
+                        )
                       ],
-                      borderRadius: BorderRadius.circular(100)),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      ImageView.circle(
-                        image: AssetsRes.IC_APPLE_LOGO,
-                        height: 30,
-                        width: 30,
-                      ),
-                      Text(
-                        StringHelper.loginWithIos,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: FontRes.MONTSERRAT_BOLD,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      SizedBox(
-                        width: 15,
-                      )
-                    ],
-                  ),
-                )),
+                    ),
+                  )),
+            }
           ],
         ),
       ),

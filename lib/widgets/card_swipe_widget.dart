@@ -76,19 +76,18 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget>
               ));
             }),
           ),
-          _buildDots(),
+          _buildDots(context: context),
         ],
       ),
     );
   }
 
-  Widget _buildDots() {
+  Widget _buildDots({required BuildContext context}) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: bannerImages.map((image) {
-          int index = bannerImages.indexOf(image);
+        children: List.generate(bannerImages.length, (index) {
           return Container(
             margin: const EdgeInsets.symmetric(horizontal: 5),
             width: 10,
@@ -96,11 +95,11 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget>
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: _currentPage == index
-                  ? context.theme.primaryColor
+                  ? Theme.of(context).primaryColor
                   : Colors.grey.withOpacity(0.8),
             ),
           );
-        }).toList(),
+        }),
       ),
     );
   }

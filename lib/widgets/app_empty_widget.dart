@@ -18,7 +18,7 @@ class AppEmptyWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Lottie.asset(AssetsRes.EMPTY_LOTTIE,
-              repeat: false, height: height, width: width),
+              repeat: false, height: height ?? 250, width: width),
           const SizedBox(
             height: 10,
           ),
