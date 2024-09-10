@@ -143,7 +143,7 @@ class SettingView extends BaseView<SettingVM> {
                 'Account Settings',
                 style: context.titleMedium,
               ),
-              Gap(10),
+              const Gap(10),
               Container(
                 width: context.width,
                 padding: const EdgeInsets.all(10),

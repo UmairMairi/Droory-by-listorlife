@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -85,8 +86,6 @@ class _FilterItemViewState extends State<FilterItemView> {
 
   Future<void> getProductsApi({bool loading = false}) async {
     if (loading) isLoading = loading;
-    print("--------------Raja Babu--------------");
-    print(filterModel.toMap());
     final url = constructUrl(filterModel);
     ApiRequest apiRequest = ApiRequest(url: url, requestType: RequestType.get);
     var response = await BaseClient.handleRequest(apiRequest);
@@ -203,6 +202,8 @@ class _FilterItemViewState extends State<FilterItemView> {
         onLoading: onLoading,
         child: Column(
           children: [
+            getFilterWidget(data: widget.model),
+
             if (isLoading) ...{
               ProductListSkeleton(isLoading: isLoading)
             } else ...{
@@ -260,10 +261,435 @@ class _FilterItemViewState extends State<FilterItemView> {
     return model.body ?? [];
   }
 
-  Widget getFilterWidget({required String filterName}) {
+  Widget getFilterWidget({required FilterModel? data}) {
     return Consumer<HomeVM>(
       builder: (BuildContext context, viewModel, Widget? child) {
-        return Column(
+        log("${data?.categoryId}", name: "Category ID");
+
+        if (data?.categoryId == '1') {
+          return SizedBox(
+            height: 105,
+            child: ListView(
+              shrinkWrap: false,
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              scrollDirection: Axis.horizontal,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Gap(10),
+                    const Text('Condition'),
+                    Chip(
+                      label: DropdownButton<String>(
+                        isDense: true,
+                        hint: Text(
+                            filterModel.itemCondition?.isNotEmpty ?? false
+                                ? '${filterModel.itemCondition}'
+                                : 'Item Condition'),
+                        items: ['New', 'Used'].map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          filterModel.itemCondition =
+                              newValue?.toLowerCase() ?? '';
+                          getProductsApi(loading: true);
+                        },
+                        underline:
+                            const SizedBox(), // Removes underline for a cleaner look
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          );
+        }
+        if (data?.categoryId == '2') {
+          return SizedBox(
+            height: 105,
+            child: ListView(
+              shrinkWrap: false,
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              scrollDirection: Axis.horizontal,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Gap(10),
+                    const Text('Condition'),
+                    Chip(
+                      label: DropdownButton<String>(
+                        isDense: true,
+                        hint: Text(
+                            filterModel.itemCondition?.isNotEmpty ?? false
+                                ? '${filterModel.itemCondition}'
+                                : 'Item Condition'),
+                        items: ['New', 'Used'].map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          filterModel.itemCondition =
+                              newValue?.toLowerCase() ?? '';
+                          getProductsApi(loading: true);
+                        },
+                        underline:
+                            const SizedBox(), // Removes underline for a cleaner look
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          );
+        }
+        if (data?.categoryId == '3') {
+          return SizedBox(
+            height: 105,
+            child: ListView(
+              shrinkWrap: false,
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              scrollDirection: Axis.horizontal,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Gap(10),
+                    const Text('Condition'),
+                    Chip(
+                      label: DropdownButton<String>(
+                        isDense: true,
+                        hint: Text(
+                            filterModel.itemCondition?.isNotEmpty ?? false
+                                ? '${filterModel.itemCondition}'
+                                : 'Item Condition'),
+                        items: ['New', 'Used'].map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          filterModel.itemCondition =
+                              newValue?.toLowerCase() ?? '';
+                          getProductsApi(loading: true);
+                        },
+                        underline:
+                            const SizedBox(), // Removes underline for a cleaner look
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          );
+        }
+        if (data?.categoryId == '4') {
+          return SizedBox(
+            height: 105,
+            child: ListView(
+              shrinkWrap: false,
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              scrollDirection: Axis.horizontal,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Gap(10),
+                    const Text('Condition'),
+                    Chip(
+                      label: DropdownButton<String>(
+                        isDense: true,
+                        hint: Text(
+                            filterModel.itemCondition?.isNotEmpty ?? false
+                                ? '${filterModel.itemCondition}'
+                                : 'Item Condition'),
+                        items: ['New', 'Used'].map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          filterModel.itemCondition =
+                              newValue?.toLowerCase() ?? '';
+                          getProductsApi(loading: true);
+                        },
+                        underline:
+                            const SizedBox(), // Removes underline for a cleaner look
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          );
+        }
+        if (data?.categoryId == '5') {
+          return SizedBox(
+            height: 105,
+            child: ListView(
+              shrinkWrap: false,
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              scrollDirection: Axis.horizontal,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Gap(10),
+                    const Text('Condition'),
+                    Chip(
+                      label: DropdownButton<String>(
+                        isDense: true,
+                        hint: Text(
+                            filterModel.itemCondition?.isNotEmpty ?? false
+                                ? '${filterModel.itemCondition}'
+                                : 'Item Condition'),
+                        items: ['New', 'Used'].map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          filterModel.itemCondition =
+                              newValue?.toLowerCase() ?? '';
+                          getProductsApi(loading: true);
+                        },
+                        underline:
+                            const SizedBox(), // Removes underline for a cleaner look
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          );
+        }
+        if (data?.categoryId == '6') {
+          return SizedBox(
+            height: 105,
+            child: ListView(
+              shrinkWrap: false,
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              scrollDirection: Axis.horizontal,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Gap(10),
+                    const Text('Condition'),
+                    Chip(
+                      label: DropdownButton<String>(
+                        isDense: true,
+                        hint: Text(
+                            filterModel.itemCondition?.isNotEmpty ?? false
+                                ? '${filterModel.itemCondition}'
+                                : 'Item Condition'),
+                        items: ['New', 'Used'].map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          filterModel.itemCondition =
+                              newValue?.toLowerCase() ?? '';
+                          getProductsApi(loading: true);
+                        },
+                        underline:
+                            const SizedBox(), // Removes underline for a cleaner look
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          );
+        }
+        if (data?.categoryId == '7') {
+          return SizedBox(
+            height: 105,
+            child: ListView(
+              shrinkWrap: false,
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              scrollDirection: Axis.horizontal,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Gap(10),
+                    const Text('Condition'),
+                    Chip(
+                      label: DropdownButton<String>(
+                        isDense: true,
+                        hint: Text(
+                            filterModel.itemCondition?.isNotEmpty ?? false
+                                ? '${filterModel.itemCondition}'
+                                : 'Item Condition'),
+                        items: ['New', 'Used'].map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          filterModel.itemCondition =
+                              newValue?.toLowerCase() ?? '';
+                          getProductsApi(loading: true);
+                        },
+                        underline:
+                            const SizedBox(), // Removes underline for a cleaner look
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          );
+        }
+        if (data?.categoryId == '8') {
+          return SizedBox(
+            height: 105,
+            child: ListView(
+              shrinkWrap: false,
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              scrollDirection: Axis.horizontal,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Gap(10),
+                    const Text('Condition'),
+                    Chip(
+                      label: DropdownButton<String>(
+                        isDense: true,
+                        hint: Text(
+                            filterModel.itemCondition?.isNotEmpty ?? false
+                                ? '${filterModel.itemCondition}'
+                                : 'Item Condition'),
+                        items: ['New', 'Used'].map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          filterModel.itemCondition =
+                              newValue?.toLowerCase() ?? '';
+                          getProductsApi(loading: true);
+                        },
+                        underline:
+                            const SizedBox(), // Removes underline for a cleaner look
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          );
+        }
+        if (data?.categoryId == '9') {
+          return SizedBox(
+            height: 105,
+            child: ListView(
+              shrinkWrap: false,
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              scrollDirection: Axis.horizontal,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Gap(10),
+                    const Text('Condition'),
+                    Chip(
+                      label: DropdownButton<String>(
+                        isDense: true,
+                        hint: Text(
+                            filterModel.itemCondition?.isNotEmpty ?? false
+                                ? '${filterModel.itemCondition}'
+                                : 'Item Condition'),
+                        items: ['New', 'Used'].map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          filterModel.itemCondition =
+                              newValue?.toLowerCase() ?? '';
+                          getProductsApi(loading: true);
+                        },
+                        underline:
+                            const SizedBox(), // Removes underline for a cleaner look
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          );
+        }
+        if (data?.categoryId == '10') {
+          return SizedBox(
+            height: 105,
+            child: ListView(
+              shrinkWrap: false,
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              scrollDirection: Axis.horizontal,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Gap(10),
+                    const Text('Condition'),
+                    Chip(
+                      label: DropdownButton<String>(
+                        isDense: true,
+                        hint: Text(
+                            filterModel.itemCondition?.isNotEmpty ?? false
+                                ? '${filterModel.itemCondition}'
+                                : 'Item Condition'),
+                        items: ['New', 'Used'].map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          filterModel.itemCondition =
+                              newValue?.toLowerCase() ?? '';
+                          getProductsApi(loading: true);
+                        },
+                        underline:
+                            const SizedBox(), // Removes underline for a cleaner look
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          );
+        }
+
+        return Container();
+
+        /* return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
@@ -278,78 +704,83 @@ class _FilterItemViewState extends State<FilterItemView> {
                     if (snapshot.hasData) {
                       List<CategoryModel> subCategoriesList =
                           snapshot.data ?? [];
-                      return Expanded(
-                        child: SizedBox(
-                          width: 200,
-                          child: DropdownButtonFormField<CategoryModel>(
-                            hint: const Text('Select'),
-                            items: subCategoriesList.map((CategoryModel value) {
-                              return DropdownMenuItem<CategoryModel>(
-                                value: value,
-                                child: Text(
-                                  value.name ?? '',
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: (newValue) {},
-                          ),
-                        ),
+                      return Wrap(
+                        spacing: 8.0, // Chip spacing
+                        children: subCategoriesList.map((category) {
+                          return ChoiceChip(
+                            label: Text(category.name ?? ''),
+                            selected: filterModel.subcategoryId == category.id,
+                            onSelected: (bool isSelected) {
+                              setState(() {
+                                filterModel.subcategoryId =
+                                    isSelected ? category.id.toString() : null;
+                              });
+                              getProductsApi(loading: true);
+                            },
+                          );
+                        }).toList(),
                       );
                     }
                     if (snapshot.hasError) {
                       return const SizedBox.shrink();
                     }
-                    return const SizedBox.shrink();
+                    return const CircularProgressIndicator();
                   })
             else if (filterName == 'Brand')
-              SizedBox(
-                width: 120,
-                child: DropdownButtonFormField<String>(
-                  items:
-                      ['Option 1', 'Option 2', 'Option 3'].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  onChanged: (newValue) {},
-                ),
+              Wrap(
+                spacing: 8.0,
+                children:
+                    ['Option 1', 'Option 2', 'Option 3'].map((String brand) {
+                  return ChoiceChip(
+                    label: Text(brand),
+                    selected: filterModel.brandId == brand,
+                    onSelected: (bool isSelected) {
+                      setState(() {
+                        filterModel.brandId = isSelected ? brand : null;
+                      });
+                      getProductsApi(loading: true);
+                    },
+                  );
+                }).toList(),
               )
             else if (filterName == 'Model')
-              SizedBox(
-                width: 120,
-                child: DropdownButtonFormField<String>(
-                  items:
-                      ['Option 1', 'Option 2', 'Option 3'].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  onChanged: (newValue) {},
-                ),
+              Wrap(
+                spacing: 8.0,
+                children:
+                    ['Option 1', 'Option 2', 'Option 3'].map((String model) {
+                  return ChoiceChip(
+                    label: Text(model),
+                    selected: filterModel.modelId == model,
+                    onSelected: (bool isSelected) {
+                      setState(() {
+                        filterModel.modelId = isSelected ? model : null;
+                      });
+                      getProductsApi(loading: true);
+                    },
+                  );
+                }).toList(),
               )
             else if (filterName == 'Condition')
-              SizedBox(
-                width: 120,
-                child: DropdownButtonFormField<String>(
-                  items: ['New', 'Used'].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  onChanged: (newValue) {
-                    filterModel.itemCondition = newValue?.toLowerCase();
-                    getProductsApi(loading: true);
-                  },
-                ),
+              Wrap(
+                spacing: 8.0,
+                children: ['New', 'Used'].map((String condition) {
+                  return ChoiceChip(
+                    label: Text(condition),
+                    selected:
+                        filterModel.itemCondition == condition.toLowerCase(),
+                    onSelected: (bool isSelected) {
+                      setState(() {
+                        filterModel.itemCondition =
+                            isSelected ? condition.toLowerCase() : null;
+                      });
+                      getProductsApi(loading: true);
+                    },
+                  );
+                }).toList(),
               )
             else
-              // Default text field or any other input type
               SizedBox(
-                width: 120,
+                width: 200,
                 child: TextField(
                   decoration: InputDecoration(
                     hintText: 'Enter value for $filterName',
@@ -358,7 +789,7 @@ class _FilterItemViewState extends State<FilterItemView> {
                 ),
               ),
           ],
-        );
+        );*/
       },
     );
   }
