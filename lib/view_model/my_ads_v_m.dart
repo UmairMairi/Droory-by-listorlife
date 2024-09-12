@@ -160,12 +160,13 @@ class MyAdsVM extends BaseViewModel {
   }
 
   Future<void> handelPopupMenuItemClick(
-      {required int index,
+      {required BuildContext context,
+      required int index,
       required ProductDetailModel? item,
       bool isDetailsPage = false}) async {
     switch (index) {
       case 1:
-        navigateToEditProduct(item: item);
+        navigateToEditProduct(context: context, item: item);
 
         return;
       case 2:
@@ -214,7 +215,8 @@ class MyAdsVM extends BaseViewModel {
     onRefresh();
   }
 
-  void navigateToEditProduct({ProductDetailModel? item}) async {
+  void navigateToEditProduct(
+      {ProductDetailModel? item, required BuildContext context}) async {
     CategoryModel category = CategoryModel(
         id: item?.categoryId?.toInt(), name: item?.category?.name);
     CategoryModel subCategory = CategoryModel(

@@ -160,6 +160,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                 onSelected: (int value) {
                                                   viewModel
                                                       .handelPopupMenuItemClick(
+                                                          context: context,
                                                           index: value,
                                                           item: viewModel
                                                                   .productsList[

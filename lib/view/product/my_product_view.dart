@@ -50,7 +50,8 @@ class MyProductView extends BaseView<ProductVM> {
             onSelected: (int value) {
               var vm = context.read<MyAdsVM>();
 
-              vm.handelPopupMenuItemClick(index: value, item: data);
+              vm.handelPopupMenuItemClick(
+                  context: context, index: value, item: data);
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
               const PopupMenuItem(

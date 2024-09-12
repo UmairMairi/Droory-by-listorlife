@@ -507,12 +507,13 @@ class SellFormsVM extends BaseViewModel {
         response, (json) => ProductDetailModel.fromJson(json));
     DialogHelper.hideLoading();
     DialogHelper.showToast(message: model.message);
-    Navigator.pushReplacement(
+    Navigator.pop(context);
+    /*Navigator.pushReplacement(
       context,
       MaterialPageRoute(
           builder: (context) => PostAddedFinalView(
                 data: model.body,
               )),
-    );
+    );*/
   }
 }
