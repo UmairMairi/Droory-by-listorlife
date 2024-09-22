@@ -51,10 +51,10 @@ class _FilterViewState extends State<FilterView> {
     CategoryModel(name: StringHelper.priceLowToHigh),
   ];
   List<CategoryModel> postedWithinList = [
-    CategoryModel(name: StringHelper.today),
-    CategoryModel(name: StringHelper.yesterday),
-    CategoryModel(name: StringHelper.lastWeek),
-    CategoryModel(name: StringHelper.lastMonth),
+    CategoryModel(id: 1, name: StringHelper.today),
+    CategoryModel(id: 2, name: StringHelper.yesterday),
+    CategoryModel(id: 3, name: StringHelper.lastWeek),
+    CategoryModel(id: 4, name: StringHelper.lastMonth),
   ];
   List<CategoryModel> genders = [
     CategoryModel(name: 'Male'),
@@ -100,7 +100,7 @@ class _FilterViewState extends State<FilterView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(StringHelper.filter),
+        title: Text(StringHelper.filter),
         centerTitle: true,
       ),
       body: Consumer<HomeVM>(builder: (context, viewModel, child) {
@@ -465,7 +465,7 @@ class _FilterViewState extends State<FilterView> {
                   inputType: TextInputType.number,
                   action: TextInputAction.done,
                 ),
-                Gap(10),
+                const Gap(10),
               },
               if (filter.categoryId == '4') ...{
                 AppTextField(
@@ -621,7 +621,7 @@ class _FilterViewState extends State<FilterView> {
                     },
                   ),
                 ),
-                Gap(10),
+                const Gap(10),
                 AppTextField(
                   title: StringHelper.salaryPeriod,
                   hint: StringHelper.select,
@@ -646,7 +646,7 @@ class _FilterViewState extends State<FilterView> {
                     },
                   ),
                 ),
-                Gap(10),
+                const Gap(10),
                 AppTextField(
                   title: StringHelper.salaryFrom,
                   hint: StringHelper.enter,
@@ -656,7 +656,7 @@ class _FilterViewState extends State<FilterView> {
                     LengthLimitingTextInputFormatter(8),
                   ],
                 ),
-                Gap(10),
+                const Gap(10),
                 AppTextField(
                   title: StringHelper.salaryTo,
                   hint: StringHelper.enter,
@@ -666,7 +666,7 @@ class _FilterViewState extends State<FilterView> {
                     LengthLimitingTextInputFormatter(8),
                   ],
                 ),
-                Gap(10),
+                const Gap(10),
               },
               AppTextField(
                 title: StringHelper.location,
@@ -728,7 +728,7 @@ class _FilterViewState extends State<FilterView> {
                   onSelected: (value) {
                     viewModel.postedWithinTextController.text =
                         value.name ?? '';
-                    setDatePosted(value: value.name);
+                    setDatePosted(value: value);
                   },
                   itemBuilder: (BuildContext context) {
                     return postedWithinList.map((option) {
@@ -923,25 +923,25 @@ class _FilterViewState extends State<FilterView> {
     setState(() {});
   }
 
-  void setDatePosted({String? value}) {
+  void setDatePosted({CategoryModel? value}) {
     var now = DateTime.now();
-    switch (value) {
-      case StringHelper.today:
+    switch (value?.id) {
+      case 1:
         filter.startDate = DateFormat('yyyy-MM-dd').format(now);
         filter.endDate = DateFormat('yyyy-MM-dd').format(now);
         break;
-      case StringHelper.yesterday:
+      case 2:
         filter.startDate = DateFormat('yyyy-MM-dd')
             .format(now.subtract(const Duration(days: 1)));
         filter.endDate = DateFormat('yyyy-MM-dd')
             .format(now.subtract(const Duration(days: 1)));
         break;
-      case StringHelper.lastWeek:
+      case 3:
         filter.startDate = DateFormat('yyyy-MM-dd').format(now);
         filter.endDate = DateFormat('yyyy-MM-dd')
             .format(now.subtract(const Duration(days: 7)));
         break;
-      case StringHelper.lastMonth:
+      case 4:
         filter.startDate = DateFormat('yyyy-MM-dd').format(now);
         filter.endDate = DateFormat('yyyy-MM-dd')
             .format(now.subtract(const Duration(days: 30)));

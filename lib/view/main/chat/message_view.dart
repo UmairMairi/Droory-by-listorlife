@@ -156,11 +156,11 @@ class MessageView extends BaseView<ChatVM> {
               }
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 1,
                 child: Text(StringHelper.deleteChat),
               ),
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 2,
                 child: Text(StringHelper.reportUser),
               ),
@@ -207,7 +207,7 @@ class MessageView extends BaseView<ChatVM> {
                           ),
                         )
                       : MessageBarWithSuggestions(
-                          suggestions: const [
+                          suggestions: [
                             StringHelper.hello,
                             StringHelper.howAreYou
                           ],

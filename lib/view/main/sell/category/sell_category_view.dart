@@ -19,7 +19,7 @@ class SellCategoryView extends BaseView<SellVM> {
   Widget build(BuildContext context, SellVM viewModel) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(StringHelper.sell),
+        title: Text(StringHelper.sell),
         centerTitle: true,
       ),
       body: DbHelper.getIsGuest()

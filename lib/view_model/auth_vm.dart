@@ -351,7 +351,7 @@ class AuthVM extends BaseViewModel {
 
     // Draw the circle
     canvas.drawCircle(
-      Offset(radius, radius),
+      const Offset(radius, radius),
       radius,
       paint,
     );

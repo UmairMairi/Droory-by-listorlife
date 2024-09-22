@@ -31,7 +31,7 @@ class ProductDetailView extends BaseView<ProductVM> {
   Widget build(BuildContext context, ProductVM viewModel) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Details'),
+        title: Text(StringHelper.details),
         centerTitle: true,
         actions: [
           LikeButton(
@@ -42,13 +42,15 @@ class ProductDetailView extends BaseView<ProductVM> {
           ),
           InkWell(
             onTap: () async {
-              final dynamicLink =
+              /*  final dynamicLink =
                   await DynamicLinkHelper.createDynamicLink("${data?.id}");
               debugPrint(dynamicLink.toString());
 
               Share.share(
                   'Hello, Please check this useful product on following link \n$dynamicLink',
-                  subject: 'Check this issue');
+                  subject: 'Check this issue');*/
+
+              DialogHelper.showToast(message: "Coming Soon");
             },
             child: Container(
               padding: const EdgeInsets.all(08),

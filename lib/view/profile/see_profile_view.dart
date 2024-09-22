@@ -108,7 +108,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(StringHelper.seeProfile),
+        title: Text(StringHelper.seeProfile),
         centerTitle: true,
         /* actions: [
           PopupMenuButton<int>(

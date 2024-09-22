@@ -19,9 +19,9 @@ class BlockedUsersSkeleton extends StatelessWidget {
                 child: ListTile(
                   leading: const ImageView.rect(
                       image: AssetsRes.DUMMY_CAR_FIRST, width: 50, height: 50),
-                  title: Text("User Name"),
+                  title: const Text("User Name"),
                   trailing: TextButton(
-                    child: Text('Unblock'),
+                    child: const Text('Unblock'),
                     onPressed: () {},
                   ),
                 ),

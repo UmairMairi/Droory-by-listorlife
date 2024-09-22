@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/date_helper.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
+import 'package:list_and_life/base/helpers/string_helper.dart';
 import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/res/font_res.dart';
@@ -178,7 +179,7 @@ class AppProductItemWidget extends StatelessWidget {
                                   ),
                                   const Gap(05),
                                   Text(
-                                    'Call',
+                                    StringHelper.call,
                                     style: context.textTheme.labelLarge
                                         ?.copyWith(
                                             color: Colors.white,
@@ -238,7 +239,7 @@ class AppProductItemWidget extends StatelessWidget {
                                   ),
                                   const Gap(05),
                                   Text(
-                                    'Chat',
+                                    StringHelper.chat,
                                     style: context.textTheme.labelLarge
                                         ?.copyWith(
                                             color: Colors.white,
@@ -283,7 +284,7 @@ class AppProductItemWidget extends StatelessWidget {
                                   ),
                                   const Gap(05),
                                   Text(
-                                    'Whatsapp',
+                                    StringHelper.whatsapp,
                                     style:
                                         context.textTheme.labelLarge?.copyWith(
                                       color: Colors.white,

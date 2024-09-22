@@ -67,7 +67,7 @@ class _PaymentOptionsScreenState extends State<PaymentOptionsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(StringHelper.paymentSelection),
+        title: Text(StringHelper.paymentSelection),
       ),
       bottomNavigationBar: AppElevatedButton(
         width: context.width,
@@ -93,7 +93,7 @@ class _PaymentOptionsScreenState extends State<PaymentOptionsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               StringHelper.paymentMethods,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
@@ -101,7 +101,7 @@ class _PaymentOptionsScreenState extends State<PaymentOptionsScreen> {
             Container(
               padding: const EdgeInsets.all(8.0),
               color: Colors.grey[200],
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(StringHelper.singleFeaturedAdFor7Days),

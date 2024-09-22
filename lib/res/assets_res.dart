@@ -86,6 +86,7 @@ class AssetsRes {
   static const String IC_IMAGE_PLACEHOLDER =
       'assets/icons/ic_image_placeholder.png';
   static const String IC_ITEM_LOCATION = 'assets/icons/ic_item_location.png';
+  static const String IC_LANG_CHANGE = 'assets/icons/ic_lang_change.png';
   static const String IC_LAPTOP_CAT_IMGE =
       'assets/icons/ic_laptop_cat_imge.png';
   static const String IC_LINKEDIN = 'assets/icons/ic_linkedin.png';
@@ -117,6 +118,8 @@ class AssetsRes {
   static const String ON_BOARD_SECOND = 'assets/images/on_board_second.png';
   static const String ON_BOARD_THIRD = 'assets/images/on_board_third.png';
   static const String SPLASH = 'assets/images/splash.png';
+  static const String AR = 'assets/lang/ar.json';
+  static const String EN = 'assets/lang/en.json';
   static const String AUTH_REQUIRED_LOTTIE =
       'assets/lottie_jsons/auth_required_lottie.json';
   static const String DELETE_LOTTIE = 'assets/lottie_jsons/delete_lottie.json';

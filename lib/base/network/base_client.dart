@@ -44,7 +44,8 @@ class BaseClient {
 
     Map<String, dynamic> headers = {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'language_type': DbHelper.getLanguage()
     };
     if (apiRequest.headers != null) {
       headers.addAll(apiRequest.headers!);

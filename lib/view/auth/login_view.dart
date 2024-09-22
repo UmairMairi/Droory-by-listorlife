@@ -21,7 +21,7 @@ class LoginView extends BaseView<AuthVM> {
   Widget build(BuildContext context, AuthVM viewModel) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(StringHelper.login),
+        title: Text(StringHelper.login),
         centerTitle: true,
         actions: [
           TextButton(
@@ -65,14 +65,14 @@ class LoginView extends BaseView<AuthVM> {
                 AppTextField(
                   title: StringHelper.phoneNumber,
                   hint: StringHelper.phoneNumber,
-                  focusNode: viewModel.nodeText,
                   inputFormatters:
                       AppTextInputFormatters.withPhoneNumberFormatter(),
                   controller: viewModel.phoneTextController,
                   inputType: TextInputType.phone,
                   prefix: CountryPicker(
                       selectedCountry: viewModel.selectedCountry,
-                      dense: false,
+                      dense: true,
+                      isEnable: false,
                       //displays arrow, true by default
                       showLine: false,
                       showFlag: true,

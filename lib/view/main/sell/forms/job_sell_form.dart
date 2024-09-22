@@ -66,7 +66,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
                         File(viewModel.mainImagePath),
                         fit: BoxFit.contain,
                       ))
-                  : const Column(
+                  : Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.camera_alt_outlined),
@@ -155,7 +155,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: const Column(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.add),
@@ -177,7 +177,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
           ),
           if (brands?.isNotEmpty ?? false) ...{
             RichText(
-                text: const TextSpan(children: [
+                text: TextSpan(children: [
               TextSpan(
                 text: StringHelper.brand,
                 style: TextStyle(
@@ -245,7 +245,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
               ),
             ),
             RichText(
-                text: const TextSpan(children: [
+                text: TextSpan(children: [
               TextSpan(
                 text: StringHelper.models,
                 style: TextStyle(
@@ -311,7 +311,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
             ),
           },
           RichText(
-              text: const TextSpan(children: [
+              text: TextSpan(children: [
             TextSpan(
               text: StringHelper.positionType,
               style: TextStyle(
@@ -375,7 +375,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
             ),
           ),
           RichText(
-              text: const TextSpan(children: [
+              text: TextSpan(children: [
             TextSpan(
               text: StringHelper.salaryPeriod,
               style: TextStyle(
@@ -439,7 +439,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
             ),
           ),
           RichText(
-              text: const TextSpan(children: [
+              text: TextSpan(children: [
             TextSpan(
               text: StringHelper.salaryFrom,
               style: TextStyle(
@@ -464,7 +464,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
             child: TextFormField(
               controller: viewModel.jobSalaryFromController,
               cursorColor: Colors.black,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 contentPadding: EdgeInsets.only(
                   left: 20,
                 ),
@@ -485,7 +485,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
             ),
           ),
           RichText(
-              text: const TextSpan(children: [
+              text: TextSpan(children: [
             TextSpan(
               text: StringHelper.salaryTo,
               style: TextStyle(
@@ -510,7 +510,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
             child: TextFormField(
               controller: viewModel.jobSalaryToController,
               cursorColor: Colors.black,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 contentPadding: EdgeInsets.only(
                   left: 20,
                 ),
@@ -531,7 +531,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
             ),
           ),
           RichText(
-              text: const TextSpan(children: [
+              text: TextSpan(children: [
             TextSpan(
               text: StringHelper.adTitle,
               style: TextStyle(
@@ -558,7 +558,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
               minLines: 1,
               controller: viewModel.adTitleTextController,
               cursorColor: Colors.black,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                   contentPadding:
                       EdgeInsets.symmetric(horizontal: 25, vertical: 18),
                   hintText: StringHelper.enter,
@@ -575,7 +575,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
             ),
           ),
           RichText(
-              text: const TextSpan(children: [
+              text: TextSpan(children: [
             TextSpan(
               text: StringHelper.describeWhatYouAreSelling,
               style: TextStyle(
@@ -601,7 +601,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
               controller: viewModel.descriptionTextController,
               maxLines: 4,
               cursorColor: Colors.black,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                   contentPadding:
                       EdgeInsets.symmetric(horizontal: 25, vertical: 18),
                   hintText: StringHelper.enter,
@@ -618,7 +618,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
             ),
           ),
           RichText(
-              text: const TextSpan(children: [
+              text: TextSpan(children: [
             TextSpan(
               text: StringHelper.location,
               style: TextStyle(
@@ -657,7 +657,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
                 }
               },
               cursorColor: Colors.black,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                   contentPadding:
                       EdgeInsets.symmetric(horizontal: 25, vertical: 18),
                   hintText: StringHelper.select,
@@ -740,7 +740,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
                 decoration: BoxDecoration(
                     color: Colors.black,
                     borderRadius: BorderRadius.circular(100)),
-                child: const Text(
+                child: Text(
                   StringHelper.updateNow,
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -815,7 +815,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
                 decoration: BoxDecoration(
                     color: Colors.black,
                     borderRadius: BorderRadius.circular(100)),
-                child: const Text(
+                child: Text(
                   StringHelper.postNow,
                   textAlign: TextAlign.center,
                   style: TextStyle(

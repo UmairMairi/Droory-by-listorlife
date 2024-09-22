@@ -48,7 +48,7 @@ class GuestLoginView extends BaseView<AuthVM> {
             const SizedBox(
               height: 10,
             ),
-            const Text(
+            Text(
               StringHelper.pleaseLoginToContinue,
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
             ),
@@ -144,7 +144,7 @@ class GuestLoginView extends BaseView<AuthVM> {
                         ),
                       ],
                       borderRadius: BorderRadius.circular(100)),
-                  child: const Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       ImageView.circle(
@@ -186,7 +186,7 @@ class GuestLoginView extends BaseView<AuthVM> {
                           ),
                         ],
                         borderRadius: BorderRadius.circular(100)),
-                    child: const Row(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         ImageView.circle(

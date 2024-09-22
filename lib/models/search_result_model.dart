@@ -17,18 +17,18 @@ class SearchResultModel {
     if (json['categories'] != null) {
       categories = <CategoryModel>[];
       json['categories'].forEach((v) {
-        categories!.add(new CategoryModel.fromJson(v));
+        categories!.add(CategoryModel.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.products != null) {
-      data['products'] = this.products!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (products != null) {
+      data['products'] = products!.map((v) => v.toJson()).toList();
     }
-    if (this.categories != null) {
-      data['categories'] = this.categories!.map((v) => v.toJson()).toList();
+    if (categories != null) {
+      data['categories'] = categories!.map((v) => v.toJson()).toList();
     }
     return data;
   }

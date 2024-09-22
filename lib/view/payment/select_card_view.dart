@@ -33,7 +33,7 @@ class _SelectCardViewState extends State<SelectCardView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(StringHelper.paymentOptions),
+        title: Text(StringHelper.paymentOptions),
       ),
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: context.theme.primaryColor,
@@ -71,7 +71,7 @@ class _SelectCardViewState extends State<SelectCardView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               StringHelper.selectCardAddNewCard,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),

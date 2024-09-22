@@ -10,6 +10,8 @@ import 'package:list_and_life/base/network/base_client.dart';
 import 'package:list_and_life/routes/app_pages.dart';
 import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/view/main/sell/sub_sub_category/sell_sub_sub_category_view.dart';
+import 'package:list_and_life/view_model/sell_forms_vm.dart';
+import 'package:provider/provider.dart';
 
 import '../view/main/sell/forms/sell_form_view.dart';
 
@@ -69,6 +71,7 @@ class SellVM extends BaseViewModel {
                     subCategory: subCategory,
                   )));
     } else {
+      context.read<SellFormsVM>().allModels.clear();
       Navigator.push(
           context,
           MaterialPageRoute(

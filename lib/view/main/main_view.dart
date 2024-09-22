@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/base/helpers/string_helper.dart';
 import 'package:persistent_bottom_nav_bar_plus/persistent_bottom_nav_bar_plus.dart';
 
 import '../../view_model/main_vm.dart';
@@ -20,13 +21,13 @@ class MainView extends BaseView<MainVM> {
           items: [
             PersistentBottomNavBarItem(
               icon: const Icon(Icons.home_outlined),
-              title: ("Home"),
+              title: (StringHelper.home),
               activeColorPrimary: CupertinoColors.black,
               inactiveColorPrimary: CupertinoColors.systemGrey,
             ),
             PersistentBottomNavBarItem(
               icon: const Icon(CupertinoIcons.chat_bubble_text),
-              title: ("My Chats"),
+              title: (StringHelper.myChat),
               activeColorPrimary: CupertinoColors.black,
               inactiveColorPrimary: CupertinoColors.systemGrey,
             ),
@@ -37,19 +38,19 @@ class MainView extends BaseView<MainVM> {
                 weight: 5,
                 size: 30,
               ),
-              title: ("Sell"),
+              title: (StringHelper.sell),
               activeColorPrimary: CupertinoColors.black,
               inactiveColorPrimary: CupertinoColors.systemGrey,
             ),
             PersistentBottomNavBarItem(
               icon: const Icon(Icons.favorite_border_outlined),
-              title: ("My Ads"),
+              title: (StringHelper.myAds),
               activeColorPrimary: CupertinoColors.black,
               inactiveColorPrimary: CupertinoColors.systemGrey,
             ),
             PersistentBottomNavBarItem(
               icon: const Icon(Icons.person),
-              title: ("My Profile"),
+              title: (StringHelper.myProfile),
               activeColorPrimary: CupertinoColors.black,
               inactiveColorPrimary: CupertinoColors.systemGrey,
             ),

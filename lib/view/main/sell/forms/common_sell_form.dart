@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
@@ -68,12 +69,28 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                                 context: context, isCropping: true) ??
                             '';
                   },
-                  child: ImageView.rect(
-                      image: viewModel.mainImagePath,
-                      borderRadius: 10,
-                      width: context.width,
-                      placeholder: AssetsRes.IC_CAMERA,
-                      height: 220)),
+                  child: ImagePickerHelper.isLoading
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CupertinoActivityIndicator(),
+                            SizedBox(
+                              height: 2,
+                            ),
+                            Text(
+                              StringHelper.upload,
+                              style: TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        )
+                      : ImageView.rect(
+                          image: viewModel.mainImagePath,
+                          borderRadius: 10,
+                          width: context.width,
+                          placeholder: AssetsRes.IC_CAMERA,
+                          height: 220)),
             ),
             Wrap(
               children: List.generate(viewModel.imagesList.length + 1, (index) {
@@ -142,7 +159,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: const Column(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Icons.add),
@@ -164,7 +181,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
             ),
             if (brands?.isNotEmpty ?? false) ...{
               RichText(
-                  text: const TextSpan(children: [
+                  text: TextSpan(children: [
                 TextSpan(
                   text: StringHelper.brand,
                   style: TextStyle(
@@ -232,7 +249,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                 ),
               ),
               RichText(
-                  text: const TextSpan(children: [
+                  text: TextSpan(children: [
                 TextSpan(
                   text: StringHelper.models,
                   style: TextStyle(
@@ -310,7 +327,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           RichText(
-                              text: const TextSpan(children: [
+                              text: TextSpan(children: [
                             TextSpan(
                               text: StringHelper.size,
                               style: TextStyle(
@@ -463,7 +480,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
             if (category?.id == 1) ...{
               /// RAM SPECIFICATION
               RichText(
-                  text: const TextSpan(children: [
+                  text: TextSpan(children: [
                 TextSpan(
                   text: StringHelper.ram,
                   style: TextStyle(
@@ -529,7 +546,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
 
               /// STORAGE SPECIFICATION
               RichText(
-                  text: const TextSpan(children: [
+                  text: TextSpan(children: [
                 TextSpan(
                   text: StringHelper.strong,
                   style: TextStyle(
@@ -595,7 +612,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
 
               /// SCREEN SIZE SPECIFICATION
               RichText(
-                  text: const TextSpan(children: [
+                  text: TextSpan(children: [
                 TextSpan(
                   text: StringHelper.screenSize,
                   style: TextStyle(
@@ -661,7 +678,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
             },
             if (category?.id == 2 || subCategory?.subCategoryId == 4) ...{
               RichText(
-                  text: const TextSpan(children: [
+                  text: TextSpan(children: [
                 TextSpan(
                   text: StringHelper.material,
                   style: TextStyle(
@@ -726,7 +743,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
               ),
             },
             RichText(
-                text: const TextSpan(children: [
+                text: TextSpan(children: [
               TextSpan(
                 text: StringHelper.adTitle,
                 style: TextStyle(
@@ -753,7 +770,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                 minLines: 1,
                 controller: viewModel.adTitleTextController,
                 cursorColor: Colors.black,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 25, vertical: 18),
                     hintText: StringHelper.enter,
@@ -771,7 +788,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
               ),
             ),
             RichText(
-                text: const TextSpan(children: [
+                text: TextSpan(children: [
               TextSpan(
                 text: StringHelper.describeWhatYouAreSelling,
                 style: TextStyle(
@@ -797,7 +814,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                 controller: viewModel.descriptionTextController,
                 maxLines: 4,
                 cursorColor: Colors.black,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 25, vertical: 18),
                     hintText: StringHelper.enter,
@@ -815,7 +832,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
               ),
             ),
             RichText(
-                text: const TextSpan(children: [
+                text: TextSpan(children: [
               TextSpan(
                 text: StringHelper.location,
                 style: TextStyle(
@@ -857,7 +874,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                   }
                 },
                 cursorColor: Colors.black,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 25, vertical: 18),
                     hintText: StringHelper.select,
@@ -876,7 +893,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
               ),
             ),
             RichText(
-                text: const TextSpan(children: [
+                text: TextSpan(children: [
               TextSpan(
                 text: StringHelper.priceEgp,
                 style: TextStyle(
@@ -902,7 +919,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                 controller: viewModel.priceTextController,
                 cursorColor: Colors.black,
                 focusNode: viewModel.priceText,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 25, vertical: 18),
                     hintText: StringHelper.enterPrice,
@@ -971,7 +988,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                   decoration: BoxDecoration(
                       color: Colors.black,
                       borderRadius: BorderRadius.circular(100)),
-                  child: const Text(
+                  child: Text(
                     StringHelper.updateNow,
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -1030,7 +1047,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                   decoration: BoxDecoration(
                       color: Colors.black,
                       borderRadius: BorderRadius.circular(100)),
-                  child: const Text(
+                  child: Text(
                     StringHelper.postNow,
                     textAlign: TextAlign.center,
                     style: TextStyle(

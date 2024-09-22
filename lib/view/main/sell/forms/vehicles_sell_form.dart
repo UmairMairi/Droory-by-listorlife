@@ -84,7 +84,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                           File(viewModel.mainImagePath),
                           fit: BoxFit.contain,
                         ))
-                    : const Column(
+                    : Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Icons.camera_alt_outlined),
@@ -173,7 +173,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: const Column(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Icons.add),
@@ -195,7 +195,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
             ),
             if (brands?.isNotEmpty ?? false) ...{
               RichText(
-                  text: const TextSpan(children: [
+                  text: TextSpan(children: [
                 TextSpan(
                   text: StringHelper.brand,
                   style: TextStyle(
@@ -263,7 +263,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                 ),
               ),
               RichText(
-                  text: const TextSpan(children: [
+                  text: TextSpan(children: [
                 TextSpan(
                   text: StringHelper.models,
                   style: TextStyle(
@@ -329,7 +329,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
               ),
             },
             RichText(
-                text: const TextSpan(children: [
+                text: TextSpan(children: [
               TextSpan(
                 text: StringHelper.year,
                 style: TextStyle(
@@ -356,7 +356,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                 readOnly: false,
                 focusNode: viewModel.yearText,
                 cursorColor: Colors.black,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(
                     left: 20,
                   ),
@@ -377,7 +377,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
               ),
             ),
             RichText(
-                text: const TextSpan(children: [
+                text: TextSpan(children: [
               TextSpan(
                 text: StringHelper.kmDriven,
                 style: TextStyle(
@@ -404,7 +404,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                 focusNode: viewModel.kmDrivenText,
                 readOnly: false,
                 cursorColor: Colors.black,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(
                     left: 20,
                   ),
@@ -498,7 +498,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
               height: 25,
             ),
             RichText(
-                text: const TextSpan(children: [
+                text: TextSpan(children: [
               TextSpan(
                 text: StringHelper.adTitle,
                 style: TextStyle(
@@ -525,7 +525,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                 minLines: 1,
                 controller: viewModel.adTitleTextController,
                 cursorColor: Colors.black,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 25, vertical: 18),
                     hintText: StringHelper.enter,
@@ -543,7 +543,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
               ),
             ),
             RichText(
-                text: const TextSpan(children: [
+                text: TextSpan(children: [
               TextSpan(
                 text: StringHelper.describeWhatYouAreSelling,
                 style: TextStyle(
@@ -569,7 +569,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                 controller: viewModel.descriptionTextController,
                 maxLines: 4,
                 cursorColor: Colors.black,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 25, vertical: 18),
                     hintText: StringHelper.enter,
@@ -587,7 +587,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
               ),
             ),
             RichText(
-                text: const TextSpan(children: [
+                text: TextSpan(children: [
               TextSpan(
                 text: StringHelper.location,
                 style: TextStyle(
@@ -626,7 +626,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                   }
                 },
                 cursorColor: Colors.black,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 25, vertical: 18),
                     hintText: StringHelper.select,
@@ -645,7 +645,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
               ),
             ),
             RichText(
-                text: const TextSpan(children: [
+                text: TextSpan(children: [
               TextSpan(
                 text: StringHelper.priceEgp,
                 style: TextStyle(
@@ -671,7 +671,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                 controller: viewModel.priceTextController,
                 cursorColor: Colors.black,
                 focusNode: viewModel.priceText,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 25, vertical: 18),
                     hintText: StringHelper.enterPrice,
@@ -752,7 +752,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                   decoration: BoxDecoration(
                       color: Colors.black,
                       borderRadius: BorderRadius.circular(100)),
-                  child: const Text(
+                  child: Text(
                     StringHelper.updateNow,
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -823,7 +823,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                   decoration: BoxDecoration(
                       color: Colors.black,
                       borderRadius: BorderRadius.circular(100)),
-                  child: const Text(
+                  child: Text(
                     StringHelper.postNow,
                     textAlign: TextAlign.center,
                     style: TextStyle(

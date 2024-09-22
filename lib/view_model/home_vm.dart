@@ -9,7 +9,6 @@ import 'package:list_and_life/base/network/base_client.dart';
 import 'package:list_and_life/models/common/map_response.dart';
 import 'package:list_and_life/models/home_list_model.dart';
 import 'package:list_and_life/models/prodect_detail_model.dart';
-import 'package:list_and_life/routes/app_pages.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../base/helpers/db_helper.dart';

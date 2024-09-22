@@ -50,12 +50,12 @@ class AppAutoCompleteTextField<T> extends StatelessWidget {
         focusNode: focusNode,
         onSearchTextChanged: (search) => onChanged!(search),
         onSuggestionTap: onSuggestionSelected,
-        searchStyle: const TextStyle(
+        suggestionStyle: const TextStyle(
           fontWeight: FontWeight.w400,
           fontSize: 13,
           color: Colors.black,
         ),
-        searchInputDecoration: InputDecoration(
+        searchInputDecoration: SearchInputDecoration(
             prefixIcon: const Icon(Icons.search),
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),

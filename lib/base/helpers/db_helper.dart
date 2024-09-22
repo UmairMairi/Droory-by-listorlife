@@ -19,6 +19,7 @@ class DbHelper {
   static const String _isVerified = "isVerified";
   static const String _token = "token";
   static const String _latLng = "latLng";
+  static const String _language = "language";
   static const String _selectedCategory = "selectedCategory";
   static const String _selectedCategoryId = "selectedCategoryId";
   static const String _category = "category";
@@ -138,6 +139,14 @@ class DbHelper {
 
   static List<String> getLocationSearchHistory() {
     return List<String>.from(readData(_locationSearchHistory) ?? []);
+  }
+
+  static void saveLanguage(String lang) {
+    writeData(_language, lang);
+  }
+
+  static String getLanguage() {
+    return readData(_language) ?? 'en';
   }
 
 /*  static NotificationEntity? convertStringToNotificationEntity(String? value) {

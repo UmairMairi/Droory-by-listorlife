@@ -60,7 +60,7 @@ class _SellFormViewState extends State<SellFormView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(StringHelper.includeSomeDetails),
+        title: Text(StringHelper.includeSomeDetails),
       ),
       body: FutureBuilder<List<CategoryModel>>(
           future: getBrands(data: widget.subCategory),

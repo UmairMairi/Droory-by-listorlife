@@ -14,7 +14,7 @@ class PlansListView extends BaseView<ActivePlanVM> {
   Widget build(BuildContext context, ActivePlanVM viewModel) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(StringHelper.sellFasterNow),
+        title: Text(StringHelper.sellFasterNow),
         centerTitle: true,
       ),
       body: SingleChildScrollView(

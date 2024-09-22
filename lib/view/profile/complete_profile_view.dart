@@ -23,7 +23,7 @@ class CompleteProfileView extends BaseView<AuthVM> {
   Widget build(BuildContext context, AuthVM viewModel) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           StringHelper.completeYourProfile,
         ),
         centerTitle: true,

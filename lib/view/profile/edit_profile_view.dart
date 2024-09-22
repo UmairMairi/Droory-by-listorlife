@@ -21,7 +21,7 @@ class EditProfileView extends BaseView<ProfileVM> {
     debugPrint('${DbHelper.getUserModel()?.id}');
     return Scaffold(
       appBar: AppBar(
-        title: const Text(StringHelper.editProfile),
+        title: Text(StringHelper.editProfile),
         centerTitle: true,
       ),
       body: SingleChildScrollView(

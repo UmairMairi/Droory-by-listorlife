@@ -22,7 +22,7 @@ class InboxView extends BaseView<ChatVM> {
   Widget build(BuildContext context, ChatVM viewModel) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(StringHelper.myChats),
+        title: Text(StringHelper.myChats),
         centerTitle: true,
       ),
       body: StreamBuilder<List<InboxModel>>(

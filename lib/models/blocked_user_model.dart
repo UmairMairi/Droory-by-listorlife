@@ -8,20 +8,20 @@ class BlockedListModel {
 
   BlockedListModel.fromJson(Map<String, dynamic> json) {
     pagination = json['pagination'] != null
-        ? new Pagination.fromJson(json['pagination'])
+        ? Pagination.fromJson(json['pagination'])
         : null;
     if (json['data'] != null) {
       data = <BlockedUserModel>[];
       json['data'].forEach((v) {
-        data!.add(new BlockedUserModel.fromJson(v));
+        data!.add(BlockedUserModel.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.pagination != null) {
-      data['pagination'] = this.pagination!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (pagination != null) {
+      data['pagination'] = pagination!.toJson();
     }
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
@@ -46,11 +46,11 @@ class Pagination {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['limit'] = this.limit;
-    data['offset'] = this.offset;
-    data['totalPages'] = this.totalPages;
-    data['page'] = this.page;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['limit'] = limit;
+    data['offset'] = offset;
+    data['totalPages'] = totalPages;
+    data['page'] = page;
     return data;
   }
 }
@@ -77,18 +77,18 @@ class BlockedUserModel {
     blockTo = json['block_to'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
-    user = json['user'] != null ? new UserModel.fromJson(json['user']) : null;
+    user = json['user'] != null ? UserModel.fromJson(json['user']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['block_by'] = this.blockBy;
-    data['block_to'] = this.blockTo;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    if (this.user != null) {
-      data['user'] = this.user!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['block_by'] = blockBy;
+    data['block_to'] = blockTo;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    if (user != null) {
+      data['user'] = user!.toJson();
     }
     return data;
   }

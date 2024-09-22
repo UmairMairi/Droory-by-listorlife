@@ -49,7 +49,7 @@ class _NotificationViewState extends State<NotificationView> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text(StringHelper.notifications),
+          title: Text(StringHelper.notifications),
           centerTitle: true,
         ),
         body: FutureBuilder<List<NotificationDataModel>>(

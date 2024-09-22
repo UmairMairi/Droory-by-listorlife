@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/db_helper.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
+import 'package:list_and_life/providers/language_provider.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
@@ -14,6 +15,7 @@ import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 import 'package:provider/provider.dart';
 
+import '../../../base/helpers/dialog_helper.dart';
 import '../../../base/helpers/string_helper.dart';
 import '../../../models/setting_item_model.dart';
 
@@ -22,9 +24,102 @@ class SettingView extends BaseView<SettingVM> {
 
   @override
   Widget build(BuildContext context, SettingVM viewModel) {
+    viewModel.supportList = [
+      SettingItemModel(
+          isArrow: true,
+          icon: AssetsRes.IC_CONTACT_US,
+          title: StringHelper.contactUs,
+          onTap: () {
+            context.push(Routes.contactUsView);
+          }),
+      SettingItemModel(
+          isArrow: true,
+          icon: AssetsRes.IC_FAQ,
+          title: StringHelper.faqs,
+          onTap: () {
+            context.push(Routes.faqView);
+          }),
+      SettingItemModel(
+          isArrow: true,
+          icon: AssetsRes.IC_PRIVCY_POLICY,
+          title: StringHelper.privacyPolicy,
+          onTap: () {
+            context.push(Routes.termsOfUse, extra: 1);
+          }),
+      SettingItemModel(
+          isArrow: true,
+          icon: AssetsRes.IC_T_AND_C,
+          title: StringHelper.termsConditions,
+          onTap: () {
+            context.push(Routes.termsOfUse, extra: 2);
+          }),
+    ];
+    viewModel.accountSettingsList = [
+      SettingItemModel(
+          isArrow: true,
+          icon: AssetsRes.IC_BLOCS_LIST,
+          title: StringHelper.blockedUsers,
+          onTap: () {
+            context.push(Routes.blockedUserList);
+          }),
+      SettingItemModel(
+          icon: AssetsRes.IC_DELETE_ACCOUNT,
+          title: StringHelper.deleteAccount,
+          onTap: () {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext dialogContext) {
+                return AppAlertDialogWithLottie(
+                  lottieIcon: AssetsRes.DELETE_LOTTIE,
+                  title: 'Account Delete',
+                  description: 'Are you sure you want to delete this account?',
+                  onTap: () {
+                    context.pop();
+                    DialogHelper.showLoading();
+                    viewModel.deleteAccount();
+                  },
+                  onCancelTap: () {
+                    context.pop();
+                  },
+                  buttonText: 'Yes',
+                  cancelButtonText: 'No',
+                  showCancelButton: true,
+                );
+              },
+            );
+          }),
+      SettingItemModel(
+          icon: AssetsRes.IC_LOGOUT,
+          title: StringHelper.logout,
+          onTap: () {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext dialogContext) {
+                return AppAlertDialogWithWidget(
+                  title: StringHelper.logout,
+                  description: 'Are you sure you want to logout this account?',
+                  onTap: () {
+                    context.pop();
+                    DialogHelper.showLoading();
+                    viewModel.logoutUser();
+                  },
+                  icon: AssetsRes.IC_LOGOUT_ICON,
+                  onCancelTap: () {
+                    context.pop();
+                  },
+                  buttonText: 'Yes',
+                  cancelButtonText: 'No',
+                  showCancelButton: true,
+                );
+              },
+            );
+          }),
+    ];
     return Scaffold(
       appBar: AppBar(
-        title: const Text(StringHelper.myProfile),
+        title: Text(StringHelper.myProfile),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -89,7 +184,7 @@ class SettingView extends BaseView<SettingVM> {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
+                      boxShadow: const [
                         /* BoxShadow(
                           color: Colors.grey.withOpacity(0.5), // Shadow color
                           spreadRadius: 2, // Spread radius
@@ -140,7 +235,7 @@ class SettingView extends BaseView<SettingVM> {
             const Gap(20),
             if (!viewModel.isGuest) ...{
               Text(
-                'Account Settings',
+                StringHelper.accountSettings,
                 style: context.titleMedium,
               ),
               const Gap(10),
@@ -150,14 +245,6 @@ class SettingView extends BaseView<SettingVM> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
-                  /*    boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5), // Shadow color
-                      spreadRadius: 2, // Spread radius
-                      blurRadius: 5, // Blur radius
-                      offset: const Offset(0, 5), // Offset from the top
-                    ),
-                  ],*/
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -191,10 +278,10 @@ class SettingView extends BaseView<SettingVM> {
               const Divider(),
             },
             Text(
-              'Support',
+              StringHelper.support,
               style: context.titleMedium,
             ),
-            Gap(10),
+            const Gap(10),
             ListView.separated(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -208,13 +295,102 @@ class SettingView extends BaseView<SettingVM> {
                   return const Gap(5);
                 },
                 itemCount: viewModel.supportList.length),
-            Divider(),
+            const Divider(),
+            Text(
+              StringHelper.appSettings,
+              style: context.titleMedium,
+            ),
+            const Gap(10),
+            InkWell(
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text('Select Language'),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            // English language option
+                            ListTile(
+                              title: Text('Switch to English'),
+                              trailing: DbHelper.getLanguage() == 'en'
+                                  ? Icon(Icons.check, color: Colors.green)
+                                  : null,
+                              onTap: () {
+                                if (DbHelper.getLanguage() != 'en') {
+                                  DbHelper.saveLanguage(
+                                      'en'); // Update to English
+                                  context.read<LanguageProvider>().updateLanguage(
+                                      context: context,
+                                      lang:
+                                          'en'); // Change app locale to Arabic
+                                  // Change app locale to English
+                                  Navigator.of(context)
+                                      .pop(); // Close the dialog
+                                }
+                              },
+                            ),
+                            // Arabic language option
+                            ListTile(
+                              title: Text('Switch to Arabic'),
+                              trailing: DbHelper.getLanguage() == 'ar'
+                                  ? Icon(Icons.check, color: Colors.green)
+                                  : null,
+                              onTap: () {
+                                if (DbHelper.getLanguage() != 'ar') {
+                                  DbHelper.saveLanguage(
+                                      'ar'); // Update to Arabic
+                                  context.read<LanguageProvider>().updateLanguage(
+                                      context: context,
+                                      lang:
+                                          'ar'); // Change app locale to Arabic
+                                  Navigator.of(context)
+                                      .pop(); // Close the dialog
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: Text('Cancel'),
+                          ),
+                        ],
+                      );
+                    });
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Image.asset(
+                        AssetsRes.IC_LANG_CHANGE,
+                        width: 40,
+                      ),
+                      const Gap(10),
+                      Text(
+                        StringHelper.language,
+                        style: context.textTheme.titleMedium
+                            ?.copyWith(fontFamily: FontRes.POPPINS_MEDIUM),
+                      ),
+                    ],
+                  ),
+                  Text('${DbHelper.getLanguage()}'),
+                ],
+              ),
+            ),
+            const Divider(),
             if (!viewModel.isGuest) ...{
               Text(
-                'Account Management',
+                StringHelper.accountManagement,
                 style: context.titleMedium,
               ),
-              Gap(10),
+              const Gap(10),
               ListView.separated(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),

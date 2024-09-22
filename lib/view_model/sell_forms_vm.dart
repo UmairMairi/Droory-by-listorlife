@@ -325,7 +325,9 @@ class SellFormsVM extends BaseViewModel {
       "description": descriptionTextController.text.trim(),
       "image": mainImage,
       "medias": images.reversed.toList().join(','),
-      "price": priceTextController.text.trim(),
+      "price": priceTextController.text.trim().isNotEmpty
+          ? priceTextController.text.trim()
+          : '0',
       "year": yearTextController.text.trim(),
       "fuel": fuelTextController.text.trim(),
       "transmission": transmission == 1 ? 'automatic' : 'manual',
@@ -468,7 +470,9 @@ class SellFormsVM extends BaseViewModel {
       "description": descriptionTextController.text.trim(),
       "image": mainImage,
       "medias": images.reversed.toList().join(','),
-      "price": priceTextController.text.trim(),
+      "price": priceTextController.text.trim().isNotEmpty
+          ? priceTextController.text.trim()
+          : '0',
       "year": yearTextController.text.trim(),
       "fuel": fuelTextController.text.trim(),
       "transmission": transmission == 1 ? 'automatic' : 'manual',

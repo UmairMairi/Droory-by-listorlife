@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
@@ -35,6 +36,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
     for (int i = 0; i < 20; i++) {
       viewModel.yearsType.add((currentYear - i).toString());
     }
+
     return KeyboardActions(
       config: KeyboardActionsConfig(
           keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
@@ -84,13 +86,29 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10)),
                 child: viewModel.mainImagePath.isNotEmpty
-                    ? ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.file(
-                          File(viewModel.mainImagePath),
-                          fit: BoxFit.contain,
-                        ))
-                    : const Column(
+                    ? ImagePickerHelper.isLoading
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CupertinoActivityIndicator(),
+                              SizedBox(
+                                height: 2,
+                              ),
+                              Text(
+                                StringHelper.upload,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          )
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.file(
+                              File(viewModel.mainImagePath),
+                              fit: BoxFit.contain,
+                            ))
+                    : Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Icons.camera_alt_outlined),
@@ -275,7 +293,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
             ),
             if (brands?.isNotEmpty ?? false) ...{
               RichText(
-                  text: const TextSpan(children: [
+                  text: TextSpan(children: [
                 TextSpan(
                   text: StringHelper.brand,
                   style: TextStyle(
@@ -318,8 +336,11 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                         color: Colors.black,
                       ),
                       onSelected: (CategoryModel value) {
+                        DialogHelper.showLoading();
+                        viewModel.getModels(brandId: value.id);
                         viewModel.selectedBrand = value;
                         viewModel.brandTextController.text = value.name ?? '';
+                        viewModel.getModels(brandId: value.id);
                       },
                       itemBuilder: (BuildContext context) {
                         return brands!.map((option) {
@@ -340,7 +361,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                 ),
               ),
               RichText(
-                  text: const TextSpan(children: [
+                  text: TextSpan(children: [
                 TextSpan(
                   text: StringHelper.models,
                   style: TextStyle(
@@ -406,7 +427,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
               ),
             },
             RichText(
-                text: const TextSpan(children: [
+                text: TextSpan(children: [
               TextSpan(
                 text: StringHelper.year,
                 style: TextStyle(
@@ -469,7 +490,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
               ),
             ),
             RichText(
-                text: const TextSpan(children: [
+                text: TextSpan(children: [
               TextSpan(
                 text: StringHelper.fuel,
                 style: TextStyle(
@@ -510,12 +531,12 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                         }).toList();
                       },
                     ),
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 25, vertical: 18),
                     hintText: StringHelper.enter,
                     hintStyle:
-                        TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                    border: OutlineInputBorder(
+                        const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                    border: const OutlineInputBorder(
                       borderSide: BorderSide.none,
                     )),
                 inputFormatters: [
@@ -526,7 +547,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
               ),
             ),
             RichText(
-                text: const TextSpan(children: [
+                text: TextSpan(children: [
               TextSpan(
                 text: StringHelper.mileage,
                 style: TextStyle(
@@ -592,7 +613,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
               ),
             ),
             RichText(
-                text: const TextSpan(children: [
+                text: TextSpan(children: [
               TextSpan(
                 text: StringHelper.transmission,
                 style: TextStyle(
@@ -671,7 +692,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
               height: 20,
             ),
             RichText(
-                text: const TextSpan(children: [
+                text: TextSpan(children: [
               TextSpan(
                 text: StringHelper.kmDriven,
                 style: TextStyle(
@@ -698,7 +719,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                 readOnly: false,
                 focusNode: viewModel.kmDrivenText,
                 cursorColor: Colors.black,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(
                     left: 20,
                   ),
@@ -719,7 +740,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
               ),
             ),
             RichText(
-                text: const TextSpan(children: [
+                text: TextSpan(children: [
               TextSpan(
                 text: StringHelper.noOfOwners,
                 style: TextStyle(
@@ -745,7 +766,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                 controller: viewModel.numOfOwnerTextController,
                 cursorColor: Colors.black,
                 focusNode: viewModel.ownerText,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 25, vertical: 18),
                     hintText: StringHelper.enter,
@@ -764,7 +785,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
               ),
             ),
             RichText(
-                text: const TextSpan(children: [
+                text: TextSpan(children: [
               TextSpan(
                 text: StringHelper.adTitle,
                 style: TextStyle(
@@ -791,7 +812,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                 minLines: 1,
                 controller: viewModel.adTitleTextController,
                 cursorColor: Colors.black,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 25, vertical: 18),
                     hintText: StringHelper.enter,
@@ -809,7 +830,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
               ),
             ),
             RichText(
-                text: const TextSpan(children: [
+                text: TextSpan(children: [
               TextSpan(
                 text: StringHelper.describeWhatYouAreSelling,
                 style: TextStyle(
@@ -835,7 +856,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                 controller: viewModel.descriptionTextController,
                 maxLines: 4,
                 cursorColor: Colors.black,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 25, vertical: 18),
                     hintText: StringHelper.enter,
@@ -853,7 +874,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
               ),
             ),
             RichText(
-                text: const TextSpan(children: [
+                text: TextSpan(children: [
               TextSpan(
                 text: StringHelper.location,
                 style: TextStyle(
@@ -892,7 +913,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                   }
                 },
                 cursorColor: Colors.black,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 25, vertical: 18),
                     hintText: StringHelper.select,
@@ -911,7 +932,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
               ),
             ),
             RichText(
-                text: const TextSpan(children: [
+                text: TextSpan(children: [
               TextSpan(
                 text: StringHelper.priceEgp,
                 style: TextStyle(
@@ -937,7 +958,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                 controller: viewModel.priceTextController,
                 cursorColor: Colors.black,
                 focusNode: viewModel.priceText,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 25, vertical: 18),
                     hintText: StringHelper.enterPrice,
@@ -1018,7 +1039,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                   decoration: BoxDecoration(
                       color: Colors.black,
                       borderRadius: BorderRadius.circular(100)),
-                  child: const Text(
+                  child: Text(
                     StringHelper.updateNow,
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -1089,7 +1110,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                   decoration: BoxDecoration(
                       color: Colors.black,
                       borderRadius: BorderRadius.circular(100)),
-                  child: const Text(
+                  child: Text(
                     StringHelper.postNow,
                     textAlign: TextAlign.center,
                     style: TextStyle(

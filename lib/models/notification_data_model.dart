@@ -6,20 +6,20 @@ class NotificationListModel {
 
   NotificationListModel.fromJson(Map<String, dynamic> json) {
     pagination = json['pagination'] != null
-        ? new Pagination.fromJson(json['pagination'])
+        ? Pagination.fromJson(json['pagination'])
         : null;
     if (json['data'] != null) {
       data = <NotificationDataModel>[];
       json['data'].forEach((v) {
-        data!.add(new NotificationDataModel.fromJson(v));
+        data!.add(NotificationDataModel.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.pagination != null) {
-      data['pagination'] = this.pagination!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (pagination != null) {
+      data['pagination'] = pagination!.toJson();
     }
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
@@ -44,11 +44,11 @@ class Pagination {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['limit'] = this.limit;
-    data['offset'] = this.offset;
-    data['totalPages'] = this.totalPages;
-    data['page'] = this.page;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['limit'] = limit;
+    data['offset'] = offset;
+    data['totalPages'] = totalPages;
+    data['page'] = page;
     return data;
   }
 }
@@ -61,7 +61,7 @@ class NotificationDataModel {
   String? title;
   String? body;
   String? notificationType;
-  Null? data;
+  Null data;
   String? createdAt;
   String? updatedAt;
   SenderDetail? senderDetail;
@@ -91,24 +91,24 @@ class NotificationDataModel {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     senderDetail = json['sender_detail'] != null
-        ? new SenderDetail.fromJson(json['sender_detail'])
+        ? SenderDetail.fromJson(json['sender_detail'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['sender_id'] = this.senderId;
-    data['receiver_id'] = this.receiverId;
-    data['product_id'] = this.productId;
-    data['title'] = this.title;
-    data['body'] = this.body;
-    data['notification_type'] = this.notificationType;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['sender_id'] = senderId;
+    data['receiver_id'] = receiverId;
+    data['product_id'] = productId;
+    data['title'] = title;
+    data['body'] = body;
+    data['notification_type'] = notificationType;
     data['data'] = this.data;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    if (this.senderDetail != null) {
-      data['sender_detail'] = this.senderDetail!.toJson();
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    if (senderDetail != null) {
+      data['sender_detail'] = senderDetail!.toJson();
     }
     return data;
   }
@@ -117,8 +117,8 @@ class NotificationDataModel {
 class SenderDetail {
   int? id;
   String? name;
-  Null? lastName;
-  Null? userName;
+  Null lastName;
+  Null userName;
   String? profilePic;
   String? email;
 
@@ -140,13 +140,13 @@ class SenderDetail {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['last_name'] = this.lastName;
-    data['user_name'] = this.userName;
-    data['profile_pic'] = this.profilePic;
-    data['email'] = this.email;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['last_name'] = lastName;
+    data['user_name'] = userName;
+    data['profile_pic'] = profilePic;
+    data['email'] = email;
     return data;
   }
 }

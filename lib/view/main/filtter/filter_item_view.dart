@@ -271,7 +271,7 @@ class _FilterItemViewState extends State<FilterItemView> {
             height: 105,
             child: ListView(
               shrinkWrap: false,
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               scrollDirection: Axis.horizontal,
               children: [
                 Column(
@@ -313,7 +313,7 @@ class _FilterItemViewState extends State<FilterItemView> {
             height: 105,
             child: ListView(
               shrinkWrap: false,
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               scrollDirection: Axis.horizontal,
               children: [
                 Column(
@@ -355,7 +355,7 @@ class _FilterItemViewState extends State<FilterItemView> {
             height: 105,
             child: ListView(
               shrinkWrap: false,
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               scrollDirection: Axis.horizontal,
               children: [
                 Column(
@@ -397,7 +397,7 @@ class _FilterItemViewState extends State<FilterItemView> {
             height: 105,
             child: ListView(
               shrinkWrap: false,
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               scrollDirection: Axis.horizontal,
               children: [
                 Column(
@@ -439,7 +439,7 @@ class _FilterItemViewState extends State<FilterItemView> {
             height: 105,
             child: ListView(
               shrinkWrap: false,
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               scrollDirection: Axis.horizontal,
               children: [
                 Column(
@@ -481,7 +481,7 @@ class _FilterItemViewState extends State<FilterItemView> {
             height: 105,
             child: ListView(
               shrinkWrap: false,
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               scrollDirection: Axis.horizontal,
               children: [
                 Column(
@@ -523,7 +523,7 @@ class _FilterItemViewState extends State<FilterItemView> {
             height: 105,
             child: ListView(
               shrinkWrap: false,
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               scrollDirection: Axis.horizontal,
               children: [
                 Column(
@@ -565,7 +565,7 @@ class _FilterItemViewState extends State<FilterItemView> {
             height: 105,
             child: ListView(
               shrinkWrap: false,
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               scrollDirection: Axis.horizontal,
               children: [
                 Column(
@@ -607,7 +607,7 @@ class _FilterItemViewState extends State<FilterItemView> {
             height: 105,
             child: ListView(
               shrinkWrap: false,
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               scrollDirection: Axis.horizontal,
               children: [
                 Column(
@@ -649,7 +649,7 @@ class _FilterItemViewState extends State<FilterItemView> {
             height: 105,
             child: ListView(
               shrinkWrap: false,
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               scrollDirection: Axis.horizontal,
               children: [
                 Column(

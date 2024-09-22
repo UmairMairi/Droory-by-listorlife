@@ -9,7 +9,6 @@ import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/location_helper.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:map_picker/map_picker.dart';
-import 'package:location/location.dart' as loc;
 
 import '../../res/assets_res.dart';
 import '../base/helpers/dialog_helper.dart';
@@ -79,12 +78,8 @@ class _AppMapWidgetState extends State<AppMapWidget> {
 
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      loc.Location location = loc.Location();
-      serviceEnabled = await location.requestService();
-      if (!serviceEnabled) {
-        Future.error('Location services are disabled.');
-        return false;
-      }
+      Future.error('Location services are disabled.');
+      return false;
     }
     return true;
   }

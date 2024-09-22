@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/chat_bubble/bubble_normal_image.dart';
 import 'package:list_and_life/base/helpers/db_helper.dart';

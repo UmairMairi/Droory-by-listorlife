@@ -10,7 +10,6 @@ import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/skeletons/my_ads_skeleton.dart';
-import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/app_empty_widget.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -36,7 +35,8 @@ class MyAdsView extends BaseView<MyAdsVM> {
                 child: Row(
                   children: [
                     FilterChip(
-                      label: Text('All Ads (${viewModel.allAds.length})'),
+                      label: Text(
+                          '${StringHelper.allAds} (${viewModel.allAds.length})'),
                       selected: viewModel.selectedFilter == 0,
                       onSelected: (bool selected) {
                         viewModel.changeFilter(0); // All Ads
@@ -44,7 +44,8 @@ class MyAdsView extends BaseView<MyAdsVM> {
                     ),
                     const SizedBox(width: 8),
                     FilterChip(
-                      label: Text('Live Ads (${viewModel.liveAds.length})'),
+                      label: Text(
+                          '${StringHelper.liveAds} (${viewModel.liveAds.length})'),
                       selected: viewModel.selectedFilter == 1,
                       onSelected: (bool selected) {
                         viewModel.changeFilter(1); // Live Ads
@@ -53,7 +54,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                     const SizedBox(width: 8),
                     FilterChip(
                       label: Text(
-                          'Under Review (${viewModel.underReviewAds.length})'),
+                          '${StringHelper.underReview} (${viewModel.underReviewAds.length})'),
                       selected: viewModel.selectedFilter == 2,
                       onSelected: (bool selected) {
                         viewModel.changeFilter(2); // Under Review
@@ -61,8 +62,8 @@ class MyAdsView extends BaseView<MyAdsVM> {
                     ),
                     const SizedBox(width: 8),
                     FilterChip(
-                      label:
-                          Text('Expired Ads (${viewModel.expiredAds.length})'),
+                      label: Text(
+                          '${StringHelper.expiredAds} (${viewModel.expiredAds.length})'),
                       selected: viewModel.selectedFilter == 4,
                       onSelected: (bool selected) {
                         viewModel.changeFilter(4); // Expired Ads
@@ -71,7 +72,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                     const SizedBox(width: 8),
                     FilterChip(
                       label: Text(
-                          'Rejected Ads (${viewModel.rejectedAds.length})'),
+                          '${StringHelper.rejectedAds} (${viewModel.rejectedAds.length})'),
                       selected: viewModel.selectedFilter == 5,
                       onSelected: (bool selected) {
                         viewModel.changeFilter(5); // Rejected Ads
@@ -175,18 +176,18 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                           ?.toLowerCase() !=
                                                       StringHelper.sold
                                                           .toLowerCase()) ...{
-                                                    const PopupMenuItem(
+                                                    PopupMenuItem(
                                                       value: 1,
                                                       child: Text(
                                                           StringHelper.edit),
                                                     )
                                                   },
-                                                  const PopupMenuItem(
+                                                  PopupMenuItem(
                                                     value: 2,
                                                     child: Text(StringHelper
                                                         .deactivate),
                                                   ),
-                                                  const PopupMenuItem(
+                                                  PopupMenuItem(
                                                     value: 3,
                                                     child: Text(
                                                         StringHelper.remove),

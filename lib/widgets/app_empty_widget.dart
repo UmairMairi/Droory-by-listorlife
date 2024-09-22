@@ -1,5 +1,6 @@
 import 'package:list_and_life/base/base.dart';
 import 'package:flutter/material.dart';
+import 'package:list_and_life/base/helpers/string_helper.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:lottie/lottie.dart';
 
@@ -23,7 +24,7 @@ class AppEmptyWidget extends StatelessWidget {
             height: 10,
           ),
           Text(
-            text ?? "No Data",
+            text ?? StringHelper.noData,
             style: context.textTheme.titleLarge,
             textAlign: TextAlign.center,
           ),

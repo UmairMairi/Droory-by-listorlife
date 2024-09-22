@@ -30,13 +30,15 @@ class MyProductView extends BaseView<ProductVM> {
         actions: [
           IconButton(
             onPressed: () async {
-              final dynamicLink =
+              /*   final dynamicLink =
                   await DynamicLinkHelper.createDynamicLink("${data?.id}");
               debugPrint(dynamicLink.toString());
 
               Share.share(
                   'Hello, Please check this useful product on following link \n$dynamicLink',
-                  subject: 'Check this issue');
+                  subject: 'Check this issue');*/
+
+              DialogHelper.showToast(message: "Coming Soon");
             },
             icon: const Icon(Icons.share_outlined),
           ),
@@ -54,15 +56,15 @@ class MyProductView extends BaseView<ProductVM> {
                   context: context, index: value, item: data);
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 1,
                 child: Text(StringHelper.edit),
               ),
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 2,
                 child: Text(StringHelper.deactivate),
               ),
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 3,
                 child: Text(StringHelper.remove),
               ),
@@ -338,7 +340,7 @@ class MyProductView extends BaseView<ProductVM> {
                                     ),*/
                                   ],
                                 )
-                              : const AppElevatedButton(
+                              : AppElevatedButton(
                                   title: StringHelper.soldText,
                                   height: 30,
                                   width: 100,

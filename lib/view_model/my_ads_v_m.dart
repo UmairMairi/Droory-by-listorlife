@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/models/category_model.dart';
+import 'package:list_and_life/view_model/sell_forms_vm.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../base/helpers/date_helper.dart';
@@ -306,14 +308,14 @@ class MyAdsVM extends BaseViewModel {
                 width: 100,
                 backgroundColor: Colors.green,
               )
-            : const AppElevatedButton(
+            : AppElevatedButton(
                 title: StringHelper.sold,
                 height: 30,
                 width: 100,
                 backgroundColor: Colors.grey,
               );
       case 2:
-        return const AppElevatedButton(
+        return AppElevatedButton(
           title: StringHelper.rejected,
           height: 30,
           width: 100,

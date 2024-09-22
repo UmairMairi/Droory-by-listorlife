@@ -18,7 +18,7 @@ class LocationPermissionView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(StringHelper.location),
+        title: Text(StringHelper.location),
         centerTitle: true,
       ),
       body: Padding(
@@ -62,7 +62,7 @@ class LocationPermissionView extends StatelessWidget {
                 onPressed: () {
                   context.go(Routes.main);
                 },
-                child: const Text(
+                child: Text(
                   StringHelper.skip,
                   style: TextStyle(
                       decoration: TextDecoration.underline,

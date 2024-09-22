@@ -6,6 +6,8 @@
 class FontRes {
   FontRes._();
 
+  static const String PLUGIN_NAME = 'list_and_life';
+  static const String PLUGIN_VERSION = '1.0.0+1';
   static const String MONTSERRAT_BOLD = 'Montserrat-Bold';
   static const String MONTSERRAT_LIGHT = 'Montserrat-Light';
   static const String MONTSERRAT_MEDIUM = 'Montserrat-Medium';

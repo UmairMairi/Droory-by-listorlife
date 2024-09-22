@@ -45,7 +45,7 @@ class _FaqViewState extends State<FaqView> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 key: Key(selected.toString()), //attention
-                itemCount: data?.length,
+                itemCount: data.length,
                 itemBuilder: (context, index) {
                   FaqModel item = data[index];
                   return Card(

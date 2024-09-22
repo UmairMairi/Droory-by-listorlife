@@ -31,7 +31,7 @@ class MainVM extends BaseViewModel {
   final _appLinks = AppLinks();
   Future<void> initUniLinks() async {
     // Platform messages may fail, so we use a try/catch PlatformException.
-    DynamicLinkHelper.initDynamicLinks();
+    //DynamicLinkHelper.initDynamicLinks();
     // Attach a listener to the stream
 
     // Subscribe to all events (initial link and further)
