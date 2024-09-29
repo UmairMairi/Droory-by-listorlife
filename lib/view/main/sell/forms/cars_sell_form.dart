@@ -11,6 +11,7 @@ import '../../../../base/helpers/image_picker_helper.dart';
 import '../../../../base/helpers/string_helper.dart';
 import '../../../../models/category_model.dart';
 import '../../../../models/prodect_detail_model.dart';
+import '../../../../res/assets_res.dart';
 import '../../../../view_model/sell_forms_vm.dart';
 import '../../../../widgets/app_map_widget.dart';
 import '../../../../widgets/image_view.dart';
@@ -85,44 +86,25 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                     ],
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10)),
-                child: viewModel.mainImagePath.isNotEmpty
-                    ? ImagePickerHelper.isLoading
-                        ? Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CupertinoActivityIndicator(),
-                              SizedBox(
-                                height: 2,
-                              ),
-                              Text(
-                                StringHelper.upload,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ],
-                          )
-                        : ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.file(
-                              File(viewModel.mainImagePath),
-                              fit: BoxFit.contain,
-                            ))
-                    : Column(
+                child: ImagePickerHelper.isLoading
+                    ? Column(
                         mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.camera_alt_outlined),
+                          CupertinoActivityIndicator(),
                           SizedBox(
-                            height: 2,
+                            height: 10,
                           ),
-                          Text(
-                            StringHelper.upload,
-                            style: TextStyle(
-                              fontSize: 14,
-                            ),
-                          ),
+                          Text('Upload'),
                         ],
-                      ),
+                      )
+                    : ImageView.rect(
+                        image: viewModel.mainImagePath,
+                        borderRadius: 10,
+                        width: context.width,
+                        placeholder: AssetsRes.IC_CAMERA,
+                        height: 220),
               ),
             ),
             Wrap(

@@ -20,6 +20,7 @@ class DbHelper {
   static const String _token = "token";
   static const String _latLng = "latLng";
   static const String _language = "language";
+  static const String _theme = "theme";
   static const String _selectedCategory = "selectedCategory";
   static const String _selectedCategoryId = "selectedCategoryId";
   static const String _category = "category";
@@ -147,6 +148,14 @@ class DbHelper {
 
   static String getLanguage() {
     return readData(_language) ?? 'en';
+  }
+
+  static void saveTheme(String theme) {
+    writeData(_theme, theme);
+  }
+
+  static String getTheme() {
+    return readData(_theme) ?? 'Light';
   }
 
 /*  static NotificationEntity? convertStringToNotificationEntity(String? value) {

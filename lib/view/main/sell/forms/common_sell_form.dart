@@ -69,28 +69,12 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                                 context: context, isCropping: true) ??
                             '';
                   },
-                  child: ImagePickerHelper.isLoading
-                      ? Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CupertinoActivityIndicator(),
-                            SizedBox(
-                              height: 2,
-                            ),
-                            Text(
-                              StringHelper.upload,
-                              style: TextStyle(
-                                fontSize: 14,
-                              ),
-                            ),
-                          ],
-                        )
-                      : ImageView.rect(
-                          image: viewModel.mainImagePath,
-                          borderRadius: 10,
-                          width: context.width,
-                          placeholder: AssetsRes.IC_CAMERA,
-                          height: 220)),
+                  child: ImageView.rect(
+                      image: viewModel.mainImagePath,
+                      borderRadius: 10,
+                      width: context.width,
+                      placeholder: AssetsRes.IC_CAMERA,
+                      height: 220)),
             ),
             Wrap(
               children: List.generate(viewModel.imagesList.length + 1, (index) {

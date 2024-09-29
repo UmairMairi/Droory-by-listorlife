@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:list_and_life/base/helpers/db_helper.dart';
 
 class DateHelper {
   static const _locale = 'en';
@@ -102,6 +103,7 @@ class DateHelper {
   }
 
   static String getTimeAgo(int time) {
+    String lang = DbHelper.getLanguage();
     if (time < 1000000000000) {
       // if timestamp given in seconds, convert to millis
       time *= 1000;
@@ -112,21 +114,43 @@ class DateHelper {
     }
     // TODO: localize
     final int diff = now - time;
-    if (diff < _minuteMillis) {
-      return "just now";
-    } else if (diff < 2 * _minuteMillis) {
-      return "a minute ago";
-    } else if (diff < 50 * _minuteMillis) {
-      return "${(diff / _minuteMillis).floor()} minutes ago";
-    } else if (diff < 90 * _minuteMillis) {
-      return "an hour ago";
-    } else if (diff < 24 * _hourMillis) {
-      return "${(diff / _hourMillis).floor()} hours ago";
-    } else if (diff < 48 * _hourMillis) {
-      return "yesterday";
-    } else {
-      var date = DateTime.fromMillisecondsSinceEpoch(time);
-      return _dateFormatLog.format(date);
+    switch (lang) {
+      case 'en':
+        if (diff < _minuteMillis) {
+          return "just now";
+        } else if (diff < 2 * _minuteMillis) {
+          return "a minute ago";
+        } else if (diff < 50 * _minuteMillis) {
+          return "${(diff / _minuteMillis).floor()} minutes ago";
+        } else if (diff < 90 * _minuteMillis) {
+          return "an hour ago";
+        } else if (diff < 24 * _hourMillis) {
+          return "${(diff / _hourMillis).floor()} hours ago";
+        } else if (diff < 48 * _hourMillis) {
+          return "yesterday";
+        } else {
+          var date = DateTime.fromMillisecondsSinceEpoch(time);
+          return _dateFormatLog.format(date);
+        }
+      case 'ar':
+        if (diff < _minuteMillis) {
+          return "الآن";
+        } else if (diff < 2 * _minuteMillis) {
+          return "منذ دقيقة";
+        } else if (diff < 50 * _minuteMillis) {
+          return "${(diff / _minuteMillis).floor()} منذ دقائق";
+        } else if (diff < 90 * _minuteMillis) {
+          return "منذ ساعة";
+        } else if (diff < 24 * _hourMillis) {
+          return "${(diff / _hourMillis).floor()} منذ ساعات";
+        } else if (diff < 48 * _hourMillis) {
+          return "أمس";
+        } else {
+          var date = DateTime.fromMillisecondsSinceEpoch(time);
+          return _dateFormatLog.format(date);
+        }
+      default:
+        return '';
     }
   }
 

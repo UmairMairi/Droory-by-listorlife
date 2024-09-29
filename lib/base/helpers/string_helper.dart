@@ -369,6 +369,7 @@ class StringHelper {
       LocaleService.translate('accountSettings') ?? 'Account Settings';
 
   static String language = LocaleService.translate('language') ?? 'Language';
+  static String theme = LocaleService.translate('theme') ?? 'Theme';
   static String home = LocaleService.translate('home') ?? 'Home';
   static String myChat = LocaleService.translate('myChat') ?? 'My Chats';
   static String myAds = LocaleService.translate('myAds') ?? 'My Ads';
@@ -732,7 +733,6 @@ class StringHelper {
     liveAds = LocaleService.translate('liveAds') ?? 'Live Ads';
     underReview = LocaleService.translate('underReview') ?? 'Under Review';
     rejectedAds = LocaleService.translate('rejectedAds') ?? 'Rejected Ads';
-
     call = LocaleService.translate('call') ?? 'Call';
     chat = LocaleService.translate('chat') ?? 'Chat';
     whatsapp = LocaleService.translate('whatsapp') ?? 'Whatsapp';

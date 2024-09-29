@@ -380,10 +380,93 @@ class SettingView extends BaseView<SettingVM> {
                       ),
                     ],
                   ),
-                  Text('${DbHelper.getLanguage()}'),
+                  Text(DbHelper.getLanguage() == 'en' ? 'English' : 'عربي'),
                 ],
               ),
             ),
+            /*  const Gap(10),
+            InkWell(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text('Select Theme'),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Light theme option
+                          ListTile(
+                            title: Text('Switch to Light Theme'),
+                            trailing: DbHelper.getTheme() == 'light'
+                                ? Icon(Icons.check, color: Colors.green)
+                                : null,
+                            onTap: () {
+                              if (DbHelper.getTheme() != 'light') {
+                                DbHelper.saveTheme(
+                                    'light'); // Update to Light Theme
+                                context.read<LanguageProvider>().updateTheme(
+                                      context: context,
+                                      theme:
+                                          'light', // Change app theme to Light
+                                    );
+                                Navigator.of(context).pop(); // Close the dialog
+                              }
+                            },
+                          ),
+                          // Dark theme option
+                          ListTile(
+                            title: Text('Switch to Dark Theme'),
+                            trailing: DbHelper.getTheme() == 'dark'
+                                ? Icon(Icons.check, color: Colors.green)
+                                : null,
+                            onTap: () {
+                              if (DbHelper.getTheme() != 'dark') {
+                                DbHelper.saveTheme(
+                                    'dark'); // Update to Dark Theme
+                                context.read<LanguageProvider>().updateTheme(
+                                      context: context,
+                                      theme: 'dark', // Change app theme to Dark
+                                    );
+                                Navigator.of(context).pop(); // Close the dialog
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: Text('Cancel'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Image.asset(
+                        AssetsRes.IC_THEMES,
+                        width: 40,
+                      ),
+                      const Gap(10),
+                      Text(
+                        StringHelper.theme,
+                        style: context.textTheme.titleMedium
+                            ?.copyWith(fontFamily: FontRes.POPPINS_MEDIUM),
+                      ),
+                    ],
+                  ),
+                  Text(DbHelper.getTheme()),
+                ],
+              ),
+            ),*/
             const Divider(),
             if (!viewModel.isGuest) ...{
               Text(

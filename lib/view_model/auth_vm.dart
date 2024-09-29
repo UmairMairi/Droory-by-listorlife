@@ -34,7 +34,7 @@ class AuthVM extends BaseViewModel {
 
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
 
-  String countryCode = "+91";
+  String countryCode = "+20";
   Country selectedCountry = Country.EG;
 
   String _imagePath = '';

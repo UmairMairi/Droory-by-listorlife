@@ -9,10 +9,7 @@ import 'package:image_picker/image_picker.dart';
 class ImagePickerHelper {
   static late Completer<String?> _imagePickerCompleter;
 
-  static bool _isLoading = false;
-
-  // Add a getter to access the loading state.
-  static bool get isLoading => _isLoading;
+  static bool isLoading = false;
 
   ///for picking image from camera and gallery
   static Future<String?> openImagePicker({
@@ -83,7 +80,7 @@ class ImagePickerHelper {
                     ),
                     onTap: () async {
                       Navigator.pop(context);
-                      _isLoading = true;
+                      isLoading = true;
                       try {
                         String? selectedImage = await pickImageFromCamera(
                             isCropping: isCropping, isCircle: isCircle);
@@ -92,13 +89,13 @@ class ImagePickerHelper {
                               selectedImage); // Complete the Future with the selected image path
                         }
                         await Future.delayed(const Duration(milliseconds: 250));
-                        _isLoading = false;
+                        isLoading = false;
                       } catch (e) {
                         await Future.delayed(const Duration(milliseconds: 250));
-                        _isLoading = false;
+                        isLoading = false;
                       } finally {
                         await Future.delayed(const Duration(milliseconds: 250));
-                        _isLoading = false;
+                        isLoading = false;
                       }
                     },
                   ),
@@ -141,7 +138,7 @@ class ImagePickerHelper {
                     ),
                     onTap: () async {
                       Navigator.pop(context);
-                      _isLoading = true;
+                      isLoading = true;
                       try {
                         String? selectedImage = await pickImageFromGallery(
                             isCropping: isCropping, isCircle: isCircle);
@@ -150,13 +147,13 @@ class ImagePickerHelper {
                               selectedImage); // Complete the Future with the selected image path
                         }
                         await Future.delayed(const Duration(milliseconds: 250));
-                        _isLoading = false;
+                        isLoading = false;
                       } catch (e) {
                         await Future.delayed(const Duration(milliseconds: 250));
-                        _isLoading = false;
+                        isLoading = false;
                       } finally {
                         await Future.delayed(const Duration(milliseconds: 250));
-                        _isLoading = false;
+                        isLoading = false;
                       }
                     },
                   ),

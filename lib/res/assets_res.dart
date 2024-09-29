@@ -107,6 +107,7 @@ class AssetsRes {
   static const String IC_SPEED_ICON = 'assets/icons/ic_speed_icon.png';
   static const String IC_T_AND_C = 'assets/icons/ic_t_and_c.png';
   static const String IC_TABLET_IMAGE = 'assets/icons/ic_tablet_image.png';
+  static const String IC_THEMES = 'assets/icons/ic_themes.png';
   static const String IC_TWITTER = 'assets/icons/ic_twitter.png';
   static const String IC_USER_ICON = 'assets/icons/ic_user_icon.png';
   static const String IC_WALLET_ICON = 'assets/icons/ic_wallet_icon.png';

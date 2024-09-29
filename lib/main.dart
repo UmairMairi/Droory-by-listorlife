@@ -18,8 +18,9 @@ import 'package:toastification/toastification.dart';
 import '/base/notification/notification_service.dart';
 import 'base/helpers/string_helper.dart';
 import 'base/helpers/theme_helper.dart';
-import 'base/lang/locale_service.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'firebase_options.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -86,7 +87,16 @@ class _MyAppState extends State<MyApp> {
                 title: StringHelper.listLife,
                 theme: ThemeHelper.lightTheme(),
                 darkTheme: ThemeHelper.lightTheme(),
+                themeMode: ThemeMode.light,
                 debugShowCheckedModeBanner: false,
+                localizationsDelegates: [
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                  AppLocalizations.delegate
+                ],
+                locale: Locale(value.selectedLang),
+                supportedLocales: const [Locale('en'), Locale('ar')],
                 routeInformationProvider:
                     AppPages.router.routeInformationProvider,
                 routeInformationParser: AppPages.router.routeInformationParser,
