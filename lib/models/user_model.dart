@@ -5,6 +5,8 @@ class UserModel {
   dynamic bio;
   num? deviceType;
   num? type;
+  num? emailVerified;
+  num? phoneVerified;
   String? createdAt;
   dynamic password;
   num? socialType;
@@ -26,6 +28,7 @@ class UserModel {
   dynamic referralCode;
   String? deviceToken;
   String? name;
+  String? communicationChoice;
   num? status;
 
   UserModel(
@@ -35,6 +38,8 @@ class UserModel {
       this.bio,
       this.deviceType,
       this.type,
+      this.emailVerified,
+      this.phoneVerified,
       this.createdAt,
       this.password,
       this.socialType,
@@ -56,6 +61,7 @@ class UserModel {
       this.referralCode,
       this.deviceToken,
       this.name,
+      this.communicationChoice,
       this.status});
 
   UserModel.fromJson(Map<String, dynamic> json) {
@@ -65,6 +71,8 @@ class UserModel {
     bio = json['bio'];
     deviceType = json['device_type'];
     type = json['type'];
+    emailVerified = json['email_verified'];
+    phoneVerified = json['phone_verified'];
     createdAt = json['createdAt'];
     password = json['password'];
     socialType = json['social_type'];
@@ -86,6 +94,7 @@ class UserModel {
     referralCode = json['referral_code'];
     deviceToken = json['device_token'];
     name = json['name'];
+    communicationChoice = json['communication_choice'];
     status = json['status'];
   }
 
@@ -105,6 +114,8 @@ class UserModel {
     data['email'] = email;
     data['is_approve'] = isApprove;
     data['longitude'] = longitude;
+    data['email_verified'] = emailVerified;
+    data['phone_verified'] = phoneVerified;
     data['updatedAt'] = updatedAt;
     data['address'] = address;
     data['device_id'] = deviceId;
@@ -118,6 +129,7 @@ class UserModel {
     data['referral_code'] = referralCode;
     data['device_token'] = deviceToken;
     data['name'] = name;
+    data['communication_choice'] = communicationChoice;
     data['status'] = status;
     return data;
   }

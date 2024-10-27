@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/widgets/multi_select_category.dart';
 
 import '../../../../base/helpers/dialog_helper.dart';
 import '../../../../base/helpers/image_picker_helper.dart';
@@ -451,6 +452,15 @@ class PetsSellForm extends BaseView<SellFormsVM> {
                 keyboardType: TextInputType.number,
                 textInputAction: TextInputAction.done,
               ),
+            ),
+            Text(
+              StringHelper.howToConnect,
+              style: context.textTheme.titleSmall,
+            ),
+            MultiSelectCategory(
+              onSelectedCommunicationChoice: (CommunicationChoice value) {
+                viewModel.communicationChoice = value.name;
+              },
             ),
             if (viewModel.isEditProduct) ...{
               GestureDetector(

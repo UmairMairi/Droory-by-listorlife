@@ -52,6 +52,7 @@ class ProductDetailModel {
   CategoryModel? fashionSize;
   CategoryModel? brand;
   UserModel? user;
+  String? communicationChoice;
 
   ProductDetailModel(
       {this.id,
@@ -103,6 +104,7 @@ class ProductDetailModel {
       this.model,
       this.fashionSize,
       this.brand,
+      this.communicationChoice,
       this.user});
 
   ProductDetailModel.fromJson(Map<String, dynamic> json) {
@@ -146,6 +148,7 @@ class ProductDetailModel {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     isFavourite = json['is_favourite'];
+    communicationChoice = json['communication_choice'];
     favouritesCount = json['favourites_count'];
     countViews = json['count_views'];
     if (json['product_medias'] != null) {
@@ -215,6 +218,7 @@ class ProductDetailModel {
     data['is_favourite'] = isFavourite;
     data['favourites_count'] = favouritesCount;
     data['count_views'] = countViews;
+    data['communication_choice'] = communicationChoice;
     if (productMedias != null) {
       data['product_medias'] = productMedias!.map((v) => v.toJson()).toList();
     }

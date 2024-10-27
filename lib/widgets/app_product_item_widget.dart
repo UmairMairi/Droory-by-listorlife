@@ -11,6 +11,7 @@ import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/widgets/card_swipe_widget.dart';
+import 'package:list_and_life/widgets/communication_buttons.dart';
 import 'package:list_and_life/widgets/like_button.dart';
 
 import '../base/helpers/db_helper.dart';
@@ -145,7 +146,7 @@ class AppProductItemWidget extends StatelessWidget {
                     ],
                   ),
                   const Gap(10),
-                  Row(
+                  /*Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
@@ -297,7 +298,10 @@ class AppProductItemWidget extends StatelessWidget {
                             ),
                           ),
                         ),
-                      ]),
+                      ]),*/
+                  CommunicationButtons(
+                    data: data, // Pass any additional data required
+                  ),
                   const Gap(10),
                 ],
               ),

@@ -32,6 +32,9 @@ class AuthVM extends BaseViewModel {
   TextEditingController lNameTextController = TextEditingController();
   TextEditingController emailTextController = TextEditingController();
 
+  String _communicationChoice =
+      DbHelper.getUserModel()?.communicationChoice ?? '';
+
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
 
   String countryCode = "+20";
@@ -113,45 +116,41 @@ class AuthVM extends BaseViewModel {
 
   Future<void> socialLoginApi(
       {required UserCredential user, required int type}) async {
-    if (user.additionalUserInfo?.isNewUser ?? false) {
-      _showPhoneNumberDialog(context, user, type);
+    DialogHelper.showLoading();
+    Map<String, dynamic> body = {
+      'device_token': await _fcm.getToken(),
+      'device_type': Platform.isAndroid ? '1' : '2',
+      'name': user.user?.displayName?.split(' ').first,
+      'type': 1,
+      'last_name': user.user?.displayName?.split(' ').last,
+      'social_id': user.user?.uid,
+      'social_type': type,
+      'email': user.user?.email,
+      'profile_pic': user.user?.photoURL,
+    };
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.socialLoginUrl(),
+        requestType: RequestType.post,
+        body: body);
+
+    var response = await BaseClient.handleRequest(apiRequest);
+
+    MapResponse<UserModel> model =
+        MapResponse.fromJson(response, (json) => UserModel.fromJson(json));
+    DialogHelper.hideLoading();
+    DialogHelper.showToast(message: model.message);
+
+    DbHelper.saveIsGuest(false);
+    DbHelper.saveUserModel(model.body);
+    DbHelper.saveToken(model.body?.token);
+    DbHelper.saveIsGuest(false);
+    DbHelper.saveIsLoggedIn(true);
+    if (context.mounted) {
+      context.go(Routes.main);
     } else {
-      DialogHelper.showLoading();
-      Map<String, dynamic> body = {
-        'device_token': await _fcm.getToken(),
-        'device_type': Platform.isAndroid ? '1' : '2',
-        'name': user.user?.displayName?.split(' ').first,
-        'type': 1,
-        'last_name': user.user?.displayName?.split(' ').last,
-        'social_id': user.user?.uid,
-        'social_type': type,
-        'email': user.user?.email,
-        'profile_pic': user.user?.photoURL,
-      };
-      ApiRequest apiRequest = ApiRequest(
-          url: ApiConstants.socialLoginUrl(),
-          requestType: RequestType.post,
-          body: body);
-
-      var response = await BaseClient.handleRequest(apiRequest);
-
-      MapResponse<UserModel> model =
-          MapResponse.fromJson(response, (json) => UserModel.fromJson(json));
-      DialogHelper.hideLoading();
-      DialogHelper.showToast(message: model.message);
-
-      DbHelper.saveIsGuest(false);
-      DbHelper.saveUserModel(model.body);
-      DbHelper.saveToken(model.body?.token);
-      DbHelper.saveIsGuest(false);
-      DbHelper.saveIsLoggedIn(true);
-      if (context.mounted) {
-        context.go(Routes.main);
-      } else {
-        AppPages.rootNavigatorKey.currentContext?.go(Routes.main);
-      }
-      DialogHelper.showToast(message: model.message);
+      AppPages.rootNavigatorKey.currentContext?.go(Routes.main);
     }
+    DialogHelper.showToast(message: model.message);
   }
 
   Future<void> _showPhoneNumberDialog(
@@ -179,7 +178,8 @@ class AuthVM extends BaseViewModel {
                 inputType: TextInputType.phone,
                 prefix: CountryPicker(
                     selectedCountry: selectedCountry,
-                    dense: false,
+                    dense: true,
+                    isEnable: false,
                     //displays arrow, true by default
                     showLine: false,
                     showFlag: true,
@@ -315,6 +315,7 @@ class AuthVM extends BaseViewModel {
       'type': '2',
       'last_name': lNameTextController.text.trim(),
       'email': emailTextController.text.trim(),
+      'communication_choice': communicationChoice,
       'profile_pic': await BaseClient.getMultipartImage(path: imagePath)
     };
 
@@ -341,6 +342,13 @@ class AuthVM extends BaseViewModel {
     }
     resetTextFields();
   }
+
+  set communicationChoice(String value) {
+    _communicationChoice = value;
+    notifyListeners();
+  }
+
+  String get communicationChoice => _communicationChoice;
 
   Future<String> generateAndSaveDefaultAvatar(
       {required String firstName, required String lastName}) async {

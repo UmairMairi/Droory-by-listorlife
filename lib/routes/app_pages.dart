@@ -13,6 +13,7 @@ import 'package:list_and_life/view/main/filtter/filter_view.dart';
 import 'package:list_and_life/view/main/permission/location_permission_view.dart';
 import 'package:list_and_life/view/main/sell/sub_category/sell_sub_category_view.dart';
 import 'package:list_and_life/view/main/settings/TermsOfUseView.dart';
+import 'package:list_and_life/view/main/settings/verification_profile_view.dart';
 import 'package:list_and_life/view/product/my_product_view.dart';
 import 'package:list_and_life/view/product/product_detail_view.dart';
 import 'package:list_and_life/view/profile/complete_profile_view.dart';
@@ -67,6 +68,12 @@ class AppPages {
         path: Routes.verify,
         pageBuilder: (context, state) {
           return getPage(child: const VerificationView(), state: state);
+        },
+      ),
+      GoRoute(
+        path: Routes.verifyProfile,
+        pageBuilder: (context, state) {
+          return getPage(child: const VerificationProfileView(), state: state);
         },
       ),
       GoRoute(

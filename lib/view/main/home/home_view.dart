@@ -54,7 +54,6 @@ class HomeView extends BaseView<HomeVM> {
                 ),
                 GestureDetector(
                     onTap: () {
-                      log("Taped on location");
                       showModalBottomSheet(
                         context: context,
                         showDragHandle: true,
@@ -74,9 +73,14 @@ class HomeView extends BaseView<HomeVM> {
         actions: [
           InkWell(
             onTap: () async {
+              if (DbHelper.getIsGuest()) {
+                context.push(Routes.guestLogin);
+              } else {
+                context.push(Routes.notifications);
+              }
+
               /*     await NotificationService.sendNotification(
                   title: "Test Notification", body: "Test Body");*/
-              context.push(Routes.notifications);
             },
             child: Container(
                 padding: const EdgeInsets.all(05),

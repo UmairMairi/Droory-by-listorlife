@@ -189,4 +189,9 @@ class DbHelper {
     String value = _encoder.convert(notificationEntity);
     return value;
   }
+
+  static getIsVerifiedEmailOrPhone() {
+    return DbHelper.getUserModel()?.emailVerified != 0 &&
+        DbHelper.getUserModel()?.phoneVerified != 0;
+  }
 }

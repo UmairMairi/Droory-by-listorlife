@@ -4,6 +4,7 @@ class Routes {
   static const String onBoarding = '/on_boarding';
   static const String login = '/login';
   static const String verify = '/verify';
+  static const String verifyProfile = '/verifyProfile';
   static const String completeProfile = '/complete_profile';
   static const String notifications = '/notifications';
   static const String editProfile = '/edit_profile';

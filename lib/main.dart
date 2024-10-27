@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -75,6 +77,7 @@ class _MyAppState extends State<MyApp> {
         child: ToastificationWrapper(
           child: Consumer<LanguageProvider>(
             builder: (BuildContext context, value, Widget? child) {
+              log("Builder called", name: "Restart");
               return MaterialApp.router(
                 scrollBehavior: const MaterialScrollBehavior().copyWith(
                   dragDevices: {
@@ -89,7 +92,7 @@ class _MyAppState extends State<MyApp> {
                 darkTheme: ThemeHelper.lightTheme(),
                 themeMode: ThemeMode.light,
                 debugShowCheckedModeBanner: false,
-                localizationsDelegates: [
+                localizationsDelegates: const [
                   GlobalMaterialLocalizations.delegate,
                   GlobalWidgetsLocalizations.delegate,
                   GlobalCupertinoLocalizations.delegate,

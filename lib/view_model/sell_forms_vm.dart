@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:list_and_life/base/helpers/db_helper.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/base/helpers/location_helper.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
@@ -21,6 +22,8 @@ class SellFormsVM extends BaseViewModel {
   int _currentIndex = 1;
   int _transmission = 0;
   bool _isEditProduct = false;
+  String _communicationChoice =
+      DbHelper.getUserModel()?.communicationChoice ?? '';
 
   bool get isEditProduct => _isEditProduct;
   set isEditProduct(bool value) {
@@ -52,6 +55,13 @@ class SellFormsVM extends BaseViewModel {
     // resetTextFields();
     super.onReady();
   }
+
+  set communicationChoice(String value) {
+    _communicationChoice = value;
+    notifyListeners();
+  }
+
+  String get communicationChoice => _communicationChoice;
 
   List<String> jobPositionList = [
     'Contract',
@@ -199,6 +209,13 @@ class SellFormsVM extends BaseViewModel {
   List<String> yearsType = [];
 
   List<String> fuelsType = ['Petrol', 'Diesel', 'Electric', 'Hybrid', 'Gas'];
+  String _selectedOption = 'Select';
+  String get selectedOption => _selectedOption;
+
+  set selectedOption(String value) {
+    _selectedOption = value;
+    notifyListeners();
+  }
 
   void updateTextFieldsItems({ProductDetailModel? item}) async {
     if (item == null) {
@@ -351,6 +368,7 @@ class SellFormsVM extends BaseViewModel {
       "storage": storageTextController.text.trim(),
       "screen_size": screenSizeTextController.text.trim(),
       "size_id": selectedSize?.id,
+      'communication_choice': communicationChoice,
     };
     // dea26a54c91ab44f8faf73b88c85e26d88980b90
     ApiRequest apiRequest = ApiRequest(
@@ -496,7 +514,8 @@ class SellFormsVM extends BaseViewModel {
       "storage": storageTextController.text.trim(),
       "screen_size": screenSizeTextController.text.trim(),
       "size_id": selectedSize?.id,
-      "delete_img_id": deletedImageIds.join(',')
+      "delete_img_id": deletedImageIds.join(','),
+      'communication_choice': communicationChoice,
     };
 
     ApiRequest apiRequest = ApiRequest(

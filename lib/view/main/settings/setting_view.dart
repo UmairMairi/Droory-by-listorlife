@@ -227,7 +227,13 @@ class SettingView extends BaseView<SettingVM> {
                             fontFamily: FontRes.POPPINS_REGULAR,
                             fontSize: 16,
                           ),
-                        )
+                        ),
+                        DbHelper.getIsVerifiedEmailOrPhone()
+                            ? Icon(
+                                Icons.verified,
+                                color: Colors.green,
+                              )
+                            : SizedBox.shrink()
                       ],
                     ),
                   ),
@@ -241,7 +247,9 @@ class SettingView extends BaseView<SettingVM> {
               const Gap(10),
               Container(
                 width: context.width,
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.only(
+                  top: 10,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
@@ -275,6 +283,13 @@ class SettingView extends BaseView<SettingVM> {
                   ],
                 ),
               ),
+              const Gap(10),
+              SettingItemView(
+                  item: SettingItemModel(
+                      title: StringHelper.howToConnect,
+                      icon: AssetsRes.IC_COMMUNICATION,
+                      isArrow: true,
+                      onTap: () {})),
               const Divider(),
             },
             Text(
@@ -315,7 +330,8 @@ class SettingView extends BaseView<SettingVM> {
                             ListTile(
                               title: Text('Switch to English'),
                               trailing: DbHelper.getLanguage() == 'en'
-                                  ? Icon(Icons.check, color: Colors.green)
+                                  ? Icon(Icons.check_circle,
+                                      color: Colors.green)
                                   : null,
                               onTap: () {
                                 if (DbHelper.getLanguage() != 'en') {
@@ -335,7 +351,8 @@ class SettingView extends BaseView<SettingVM> {
                             ListTile(
                               title: Text('Switch to Arabic'),
                               trailing: DbHelper.getLanguage() == 'ar'
-                                  ? Icon(Icons.check, color: Colors.green)
+                                  ? Icon(Icons.check_circle,
+                                      color: Colors.green)
                                   : null,
                               onTap: () {
                                 if (DbHelper.getLanguage() != 'ar') {

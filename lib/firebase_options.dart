@@ -48,7 +48,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDFB1JQ1oOHV2CVJI35EZNK_IdGtGOu0NA',
-    appId: '1:349423978681:android:d4dc7090156f838cf33368',
+    appId: '1:349423978681:android:4a584bce7167e883f33368',
     messagingSenderId: '349423978681',
     projectId: 'list-and-life',
     storageBucket: 'list-and-life.appspot.com',
@@ -56,13 +56,13 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBkdLVx_W737dq6DcqKjsswIJ9LgBet5WQ',
-    appId: '1:349423978681:ios:fd5a2781c53e724ff33368',
+    appId: '1:349423978681:ios:4cd013bef1ea3d07f33368',
     messagingSenderId: '349423978681',
     projectId: 'list-and-life',
     storageBucket: 'list-and-life.appspot.com',
-    androidClientId: '349423978681-n43e63b2n0mn6vmv4mo7469bvlg08f0j.apps.googleusercontent.com',
-    iosClientId: '349423978681-3mv3ihrm2mjgh5sdti60us3093h2ksjh.apps.googleusercontent.com',
-    iosBundleId: 'com.dev.listorlife',
+    androidClientId: '349423978681-icqumpp2tb35rcb38fpknprtoftq0klf.apps.googleusercontent.com',
+    iosClientId: '349423978681-js9aqmag1bjvutrll786mmdp9tegfn9f.apps.googleusercontent.com',
+    iosBundleId: 'com.live.listorlife',
   );
 
   static const FirebaseOptions web = FirebaseOptions(

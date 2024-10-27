@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:list_and_life/models/category_model.dart';
 import 'package:list_and_life/view/main/sell/forms/cars_sell_form.dart';
 import 'package:list_and_life/view/main/sell/forms/common_sell_form.dart';
 import 'package:list_and_life/view/main/sell/forms/pets_sell_form.dart';
+import 'package:list_and_life/view/main/sell/forms/property_sell_form.dart';
 import 'package:list_and_life/view/main/sell/forms/vehicles_sell_form.dart';
 import 'package:list_and_life/widgets/app_error_widget.dart';
 import 'package:provider/provider.dart';
@@ -40,6 +43,7 @@ class SellFormView extends StatefulWidget {
 class _SellFormViewState extends State<SellFormView> {
   @override
   void initState() {
+    log("${widget.type}", name: "PRINT");
     context.read<SellFormsVM>().updateTextFieldsItems(item: widget.item);
     super.initState();
   }
@@ -137,6 +141,14 @@ class _SellFormViewState extends State<SellFormView> {
         }
 
         return VehiclesSellForm(
+          type: widget.type,
+          category: widget.category,
+          subSubCategory: widget.subSubCategory,
+          brands: brands,
+          subCategory: widget.subCategory,
+        );
+      case 'real estate':
+        return PropertySellForm(
           type: widget.type,
           category: widget.category,
           subSubCategory: widget.subSubCategory,

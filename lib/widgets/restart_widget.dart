@@ -6,7 +6,7 @@ class RestartWidget extends StatefulWidget {
   const RestartWidget({super.key, required this.child});
 
   @override
-  _RestartWidgetState createState() => _RestartWidgetState();
+  State<RestartWidget> createState() => _RestartWidgetState();
 
   // Call this method to restart the app
   static void restartApp(BuildContext context) {

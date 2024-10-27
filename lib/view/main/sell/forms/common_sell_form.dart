@@ -6,6 +6,7 @@ import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/widgets/image_view.dart';
+import 'package:list_and_life/widgets/multi_select_category.dart';
 
 import '../../../../base/helpers/image_picker_helper.dart';
 import '../../../../base/helpers/string_helper.dart';
@@ -921,6 +922,15 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                 keyboardType: TextInputType.number,
                 textInputAction: TextInputAction.done,
               ),
+            ),
+            Text(
+              StringHelper.howToConnect,
+              style: context.textTheme.titleSmall,
+            ),
+            MultiSelectCategory(
+              onSelectedCommunicationChoice: (CommunicationChoice value) {
+                viewModel.communicationChoice = value.name;
+              },
             ),
             if (viewModel.isEditProduct) ...{
               GestureDetector(

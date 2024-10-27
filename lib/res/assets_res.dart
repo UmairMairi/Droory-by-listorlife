@@ -69,8 +69,10 @@ class AssetsRes {
   static const String IC_CHAT_ICON = 'assets/icons/ic_chat_icon.png';
   static const String IC_CLOTHES_CAT_IMGE =
       'assets/icons/ic_clothes_cat_imge.png';
+  static const String IC_COMMUNICATION = 'assets/icons/ic_communication.png';
   static const String IC_CONGRATULATION_IMAGE =
       'assets/icons/ic_congratulation_image.png';
+  static const String IC_CONTACT_MAIL = 'assets/icons/ic_contact_mail.png';
   static const String IC_CONTACT_US = 'assets/icons/ic_contact_us.png';
   static const String IC_DELETE_ACCOUNT = 'assets/icons/ic_delete_account.png';
   static const String IC_EARTH = 'assets/icons/ic_earth.png';

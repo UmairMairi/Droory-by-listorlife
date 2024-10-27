@@ -13,9 +13,9 @@ class MyAdsSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   return Skeletonizer(
-     enabled: isLoading,
-     child: ListView.separated(
+    return Skeletonizer(
+      enabled: isLoading,
+      child: ListView.separated(
         shrinkWrap: true,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         itemCount: 5,
@@ -56,10 +56,10 @@ class MyAdsSkeleton extends StatelessWidget {
                         offset: const Offset(0, 40),
                         shape: const RoundedRectangleBorder(
                             borderRadius:
-                            BorderRadius.all(Radius.circular(15.0))),
+                                BorderRadius.all(Radius.circular(15.0))),
                         onSelected: (int item) {},
                         itemBuilder: (BuildContext context) =>
-                        <PopupMenuEntry<int>>[
+                            <PopupMenuEntry<int>>[
                           const PopupMenuItem(
                             value: 1,
                             child: Text('Edit'),
@@ -103,10 +103,8 @@ class MyAdsSkeleton extends StatelessWidget {
                           ),
                           Text(
                             '2015 - 48000.0 km',
-                            style: context.textTheme.labelMedium
-                                ?.copyWith(
-                                fontFamily:
-                                FontRes.MONTSERRAT_SEMIBOLD,
+                            style: context.textTheme.labelMedium?.copyWith(
+                                fontFamily: FontRes.MONTSERRAT_SEMIBOLD,
                                 color: Colors.grey),
                           ),
                           Text(
@@ -116,8 +114,7 @@ class MyAdsSkeleton extends StatelessWidget {
                           ),
                           const Gap(10),
                           Container(
-                            margin: const EdgeInsets.symmetric(
-                                horizontal: 05),
+                            margin: const EdgeInsets.symmetric(horizontal: 05),
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 03),
                             decoration: BoxDecoration(
@@ -134,8 +131,8 @@ class MyAdsSkeleton extends StatelessWidget {
                                   'Likes: 5',
                                   style: context.textTheme.labelMedium
                                       ?.copyWith(
-                                      fontFamily:
-                                      FontRes.MONTSERRAT_MEDIUM),
+                                          fontFamily:
+                                              FontRes.MONTSERRAT_MEDIUM),
                                 ),
                                 const Gap(10),
                                 const Icon(
@@ -147,8 +144,8 @@ class MyAdsSkeleton extends StatelessWidget {
                                   'Views: 10',
                                   style: context.textTheme.labelMedium
                                       ?.copyWith(
-                                      fontFamily:
-                                      FontRes.MONTSERRAT_MEDIUM),
+                                          fontFamily:
+                                              FontRes.MONTSERRAT_MEDIUM),
                                 )
                               ],
                             ),
@@ -161,8 +158,8 @@ class MyAdsSkeleton extends StatelessWidget {
                 const Gap(20),
                 Container(
                   width: context.width,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 15, vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                   decoration: BoxDecoration(
                       color: Colors.grey.shade300,
                       borderRadius: const BorderRadius.only(
@@ -183,8 +180,8 @@ class MyAdsSkeleton extends StatelessWidget {
                       const Gap(10),
                       Text(
                         'This ad is currently live',
-                        style: context.textTheme.labelMedium?.copyWith(
-                            fontFamily: FontRes.MONTSERRAT_MEDIUM),
+                        style: context.textTheme.labelMedium
+                            ?.copyWith(fontFamily: FontRes.MONTSERRAT_MEDIUM),
                       ),
                       const Gap(10),
                       Row(
@@ -200,8 +197,7 @@ class MyAdsSkeleton extends StatelessWidget {
                               ),
                               child: Text(
                                 'Mark as Sold',
-                                style: context.textTheme.labelLarge
-                                    ?.copyWith(
+                                style: context.textTheme.labelLarge?.copyWith(
                                     color: Colors.white,
                                     fontSize: 12,
                                     fontWeight: FontWeight.w600),
@@ -220,8 +216,7 @@ class MyAdsSkeleton extends StatelessWidget {
                               ),
                               child: Text(
                                 'Sell Faster Now',
-                                style: context.textTheme.labelLarge
-                                    ?.copyWith(
+                                style: context.textTheme.labelLarge?.copyWith(
                                     color: Colors.white,
                                     fontSize: 12,
                                     fontWeight: FontWeight.w600),
@@ -241,6 +236,6 @@ class MyAdsSkeleton extends StatelessWidget {
           return const Gap(20);
         },
       ),
-   );
+    );
   }
 }

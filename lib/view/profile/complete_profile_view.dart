@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +15,7 @@ import 'package:list_and_life/view_model/auth_vm.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:list_and_life/widgets/image_view.dart';
+import 'package:list_and_life/widgets/multi_select_category.dart';
 
 import '../../base/helpers/string_helper.dart';
 
@@ -111,6 +114,15 @@ class CompleteProfileView extends BaseView<AuthVM> {
               inputFormatters: AppTextInputFormatters.withEmailFormatter(),
             ),
             const Gap(10),
+            Text(
+              StringHelper.howToConnect,
+              style: context.textTheme.titleSmall,
+            ),
+            MultiSelectCategory(
+              onSelectedCommunicationChoice: (CommunicationChoice value) {
+                viewModel.communicationChoice = value.name;
+              },
+            ),
             Row(
               children: [
                 Checkbox(

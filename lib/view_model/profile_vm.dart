@@ -1,3 +1,4 @@
+import 'package:ccp_dialog/country_picker/country.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -13,6 +14,8 @@ import '../models/common/map_response.dart';
 import '../models/user_model.dart';
 import '../base/network/api_constants.dart';
 import '../base/network/base_client.dart';
+import '../routes/app_pages.dart';
+import '../routes/app_routes.dart';
 
 class ProfileVM extends BaseViewModel {
   TextEditingController nameTextController =
@@ -21,19 +24,50 @@ class ProfileVM extends BaseViewModel {
       TextEditingController(text: DbHelper.getUserModel()?.lastName);
   TextEditingController emailTextController =
       TextEditingController(text: DbHelper.getUserModel()?.email);
-  TextEditingController phoneTextController = TextEditingController(
-      text:
-          "${DbHelper.getUserModel()?.countryCode}-${DbHelper.getUserModel()?.phoneNo}");
+  TextEditingController phoneTextController =
+      TextEditingController(text: "${DbHelper.getUserModel()?.phoneNo}");
   TextEditingController bioTextController =
       TextEditingController(text: DbHelper.getUserModel()?.bio);
 
+  TextEditingController otpTextController = TextEditingController();
+
   String _imagePath = '';
   bool _agreedToTerms = false;
+
+  bool _isPhoneVerified = false;
+  bool _isEmailVerified = false;
+  String _communicationChoice =
+      DbHelper.getUserModel()?.communicationChoice ?? '';
+
   String get imagePath => _imagePath;
 
   bool get agreedToTerms => _agreedToTerms;
 
   final FocusNode nodeText = FocusNode();
+
+  String countryCode = "+20";
+  Country selectedCountry = Country.EG;
+
+  set isPhoneVerified(bool value) {
+    _isPhoneVerified = value;
+    notifyListeners();
+  }
+
+  bool get isPhoneVerified => _isPhoneVerified;
+
+  set communicationChoice(String value) {
+    _communicationChoice = value;
+    notifyListeners();
+  }
+
+  String get communicationChoice => _communicationChoice;
+
+  set isEmailVerified(bool value) {
+    _isEmailVerified = value;
+    notifyListeners();
+  }
+
+  bool get isEmailVerified => _isEmailVerified;
 
   set agreedToTerms(bool value) {
     _agreedToTerms = value;
@@ -42,6 +76,24 @@ class ProfileVM extends BaseViewModel {
 
   set imagePath(String path) {
     _imagePath = path;
+    notifyListeners();
+  }
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    WidgetsBinding.instance.addPostFrameCallback((call) {
+      isPhoneVerified = DbHelper.getUserModel()?.phoneVerified != 0;
+      isEmailVerified = DbHelper.getUserModel()?.emailVerified != 0;
+      communicationChoice = DbHelper.getUserModel()?.communicationChoice ?? '';
+    });
+
+    super.onInit();
+  }
+
+  void updateCountry(Country country) {
+    selectedCountry = country;
+    countryCode = "+${country.dialingCode}";
     notifyListeners();
   }
 
@@ -57,6 +109,9 @@ class ProfileVM extends BaseViewModel {
       'last_name': lastNameController.text.trim(),
       'email': emailTextController.text.trim(),
       'bio': bioTextController.text.trim(),
+      'phone_no': phoneTextController.text.trim(),
+      'country_code': countryCode,
+      'communication_choice': communicationChoice,
     };
 
     if (imagePath.isNotEmpty) {
@@ -81,5 +136,84 @@ class ProfileVM extends BaseViewModel {
     DialogHelper.hideLoading();
     DialogHelper.showToast(message: "Profile updated successfully");
     if (context.mounted) context.pop();
+  }
+
+  void sendVerificationMail({required String email}) async {
+    if (email.isEmpty) {
+      DialogHelper.showToast(message: "Please enter email address");
+      return;
+    }
+    if (email.isNotEmail()) {
+      DialogHelper.showToast(message: "Please enter valid email address");
+      return;
+    }
+    DialogHelper.showLoading();
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.sendMailForVerifyUrl(),
+        requestType: RequestType.post,
+        body: {'email': email});
+    var response = await BaseClient.handleRequest(apiRequest);
+    MapResponse model = MapResponse.fromJson(response, (json) => null);
+    DialogHelper.hideLoading();
+    DialogHelper.showToast(message: model.message);
+  }
+
+  void sendVerificationPhone({required String phone}) async {
+    if (phone.isEmpty) {
+      DialogHelper.showToast(message: "Please enter phone number");
+      return;
+    }
+
+    DialogHelper.showLoading();
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.sendOtpMobileUrl(),
+        requestType: RequestType.post,
+        body: {'country_code': '+20', 'phone_no': phone});
+    var response = await BaseClient.handleRequest(apiRequest);
+    MapResponse model = MapResponse.fromJson(response, (json) => null);
+    DialogHelper.hideLoading();
+    if (context.mounted) {
+      context.push(Routes.verifyProfile);
+    } else {
+      AppPages.rootNavigatorKey.currentContext?.push(Routes.verifyProfile);
+    }
+    DialogHelper.showToast(message: "Your verification code is 1111");
+
+    DialogHelper.showToast(message: model.message);
+  }
+
+  Future<void> verifyOtpApi() async {
+    Map<String, dynamic> body = {
+      'country_code': countryCode,
+      'phone_no': phoneTextController.text.trim(),
+      'otp': otpTextController.text.trim()
+    };
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.verifyOtpMobileUrl(),
+        requestType: RequestType.post,
+        body: body);
+
+    var response = await BaseClient.handleRequest(apiRequest);
+
+    MapResponse<UserModel> model =
+        MapResponse.fromJson(response, (json) => UserModel.fromJson(json));
+    DialogHelper.hideLoading();
+    updateProfileApi();
+    if (context.mounted) {
+      context.pop();
+    } else {
+      AppPages.rootNavigatorKey.currentContext?.pop();
+    }
+    DialogHelper.showToast(message: model.message);
+    /*if (model.body?.id != null) {
+      DbHelper.saveIsGuest(false);
+      DbHelper.saveUserModel(model.body);
+      if (context.mounted) {
+        context.pop();
+      } else {
+        AppPages.rootNavigatorKey.currentContext?.pop();
+      }
+      DialogHelper.showToast(message: model.message);
+    }*/
   }
 }

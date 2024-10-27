@@ -3,6 +3,8 @@ import '../lang/locale_service.dart';
 class StringHelper {
   // Main Screen
   static String listLife = LocaleService.translate('listLife') ?? 'List & Lift';
+  static String howToConnect =
+      LocaleService.translate('howToConnect') ?? 'How to connect?';
 
   // OnBoarding Screen
   static String next = LocaleService.translate('next') ?? 'Next';
@@ -190,6 +192,12 @@ class StringHelper {
           'Describe what you are selling';
   static String enterPrice =
       LocaleService.translate('enterPrice') ?? 'Enter Price';
+  static String propertyType =
+      LocaleService.translate('propertyType') ?? 'Property Type';
+
+  static String areaSize = LocaleService.translate('areaSize') ?? 'Area Size';
+  static String noOfBathrooms =
+      LocaleService.translate('noOfBathrooms') ?? 'No Of Bathrooms';
 
   /// ShowToast
   static String pleaseUploadMainImage =
@@ -403,6 +411,7 @@ class StringHelper {
   static void refresh() {
     // Main Screen
     listLife = LocaleService.translate('listLife') ?? 'List & Lift';
+    howToConnect = LocaleService.translate('howToConnect') ?? 'How to connect?';
 
     // OnBoarding Screen
     next = LocaleService.translate('next') ?? 'Next';
