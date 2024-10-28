@@ -12,6 +12,7 @@ import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/view_model/profile_vm.dart';
 import 'package:list_and_life/view_model/setting_v_m.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
+import 'package:list_and_life/widgets/communication_buttons.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 import 'package:provider/provider.dart';
 

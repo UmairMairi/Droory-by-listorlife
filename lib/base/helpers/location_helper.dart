@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'dialog_helper.dart';
 
 class LocationHelper {
-  static const double cairoLatitude = 30.0444;
-  static const double cairoLongitude = 31.2357;
+  static const double cairoLatitude = 31.2341262;
+  static const double cairoLongitude = 30.0282809;
 
   static Future<Position> getCurrentLocation() async {
     bool serviceEnabled;

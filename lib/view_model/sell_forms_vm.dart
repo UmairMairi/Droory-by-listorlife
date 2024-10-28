@@ -211,7 +211,49 @@ class SellFormsVM extends BaseViewModel {
   List<String> fuelsType = ['Petrol', 'Diesel', 'Electric', 'Hybrid', 'Gas'];
   String _selectedOption = 'Select';
   String get selectedOption => _selectedOption;
+  String _propertyFor = 'Select';
+  String _noOfBathrooms = 'Select';
+  String _noOfBedrooms = 'Select';
+  String _furnishingStatus = 'Select';
 
+  String _ownershipStatus = 'Select';
+
+  set ownershipStatus(String value) {
+    _ownershipStatus = value;
+    notifyListeners();
+  }
+
+  String get ownershipStatus => _ownershipStatus;
+
+  set furnishingStatus(String value) {
+    _furnishingStatus = value;
+    notifyListeners();
+  }
+
+  String get furnishingStatus => _furnishingStatus;
+
+  set noOfBedrooms(String value) {
+    _noOfBedrooms = value;
+    notifyListeners();
+  }
+
+  String get noOfBedrooms => _noOfBedrooms;
+
+  set propertyFor(String value) {
+    _propertyFor = value;
+    notifyListeners();
+  }
+
+  String get propertyFor => _propertyFor;
+
+  TextEditingController areaSizeTextController = TextEditingController();
+
+  set noOfBathrooms(String value) {
+    _noOfBathrooms = value;
+    notifyListeners();
+  }
+
+  String get noOfBathrooms => _noOfBathrooms;
   set selectedOption(String value) {
     _selectedOption = value;
     notifyListeners();
@@ -264,6 +306,12 @@ class SellFormsVM extends BaseViewModel {
     selectedModel = CategoryModel(id: item.modelId, name: item.model?.name);
     selectedSize = CategoryModel(id: item.sizeId, name: item.fashionSize?.name);
     isEditProduct = true;
+    communicationChoice = item.communicationChoice ?? '';
+    propertyFor = item.propertyFor ?? '';
+    noOfBedrooms = item.bedrooms.toString() ?? '';
+    noOfBathrooms = item.bathrooms.toString() ?? '';
+    furnishingStatus = item.furnishedType ?? '';
+    ownershipStatus = item.ownership ?? '';
   }
 
   void resetTextFields() {
@@ -369,6 +417,12 @@ class SellFormsVM extends BaseViewModel {
       "screen_size": screenSizeTextController.text.trim(),
       "size_id": selectedSize?.id,
       'communication_choice': communicationChoice,
+      'property_for': propertyFor,
+      'bedrooms': noOfBedrooms,
+      'bathrooms': noOfBathrooms,
+      'furnished_type': furnishingStatus,
+      'ownership': ownershipStatus,
+      'ownership': ownershipStatus,
     };
     // dea26a54c91ab44f8faf73b88c85e26d88980b90
     ApiRequest apiRequest = ApiRequest(
@@ -516,6 +570,11 @@ class SellFormsVM extends BaseViewModel {
       "size_id": selectedSize?.id,
       "delete_img_id": deletedImageIds.join(','),
       'communication_choice': communicationChoice,
+      'property_for': propertyFor,
+      'bedrooms': noOfBedrooms,
+      'bathrooms': noOfBathrooms,
+      'furnished_type': furnishingStatus,
+      'ownership': ownershipStatus,
     };
 
     ApiRequest apiRequest = ApiRequest(

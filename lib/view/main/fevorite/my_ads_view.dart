@@ -259,71 +259,98 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                               color:
                                                                   Colors.red),
                                                     ),
-                                                    const Gap(10),
-                                                    Container(
-                                                      margin: const EdgeInsets
-                                                          .symmetric(
-                                                          horizontal: 5),
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                          horizontal: 05,
-                                                          vertical: 03),
-                                                      decoration: BoxDecoration(
-                                                          color: Colors
-                                                              .grey.shade400,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      05)),
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceAround,
-                                                        children: [
-                                                          Expanded(
-                                                            child: Row(
-                                                              children: [
-                                                                const Icon(
-                                                                  Icons
-                                                                      .favorite,
-                                                                  size: 12,
-                                                                ),
-                                                                const Gap(02),
-                                                                Text(
-                                                                  '${StringHelper.likes} ${viewModel.productsList[index].favouritesCount}',
-                                                                  style: context
-                                                                      .textTheme
-                                                                      .labelMedium
-                                                                      ?.copyWith(
-                                                                          fontFamily:
-                                                                              FontRes.MONTSERRAT_MEDIUM),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          Expanded(
-                                                            child: Row(
-                                                              children: [
-                                                                const Icon(
-                                                                  Icons
-                                                                      .visibility,
-                                                                  size: 12,
-                                                                ),
-                                                                const Gap(02),
-                                                                Text(
-                                                                  '${StringHelper.views} ${viewModel.productsList[index].countViews}',
-                                                                  style: context
-                                                                      .textTheme
-                                                                      .labelMedium
-                                                                      ?.copyWith(
-                                                                          fontFamily:
-                                                                              FontRes.MONTSERRAT_MEDIUM),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        const Gap(10),
+                                        Container(
+                                          margin: const EdgeInsets.symmetric(
+                                              horizontal: 5),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 05, vertical: 03),
+                                          decoration: BoxDecoration(
+                                              color: Colors.grey.shade400,
+                                              borderRadius:
+                                                  BorderRadius.circular(05)),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Expanded(
+                                                child: Row(
+                                                  children: [
+                                                    const Icon(
+                                                      Icons.favorite,
+                                                      size: 12,
+                                                    ),
+                                                    const Gap(02),
+                                                    Text(
+                                                      '${StringHelper.likes} ${viewModel.productsList[index].favouritesCount}',
+                                                      style: context
+                                                          .textTheme.labelMedium
+                                                          ?.copyWith(
+                                                              fontFamily: FontRes
+                                                                  .MONTSERRAT_MEDIUM),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Row(
+                                                  children: [
+                                                    const Icon(
+                                                      Icons.visibility,
+                                                      size: 12,
+                                                    ),
+                                                    const Gap(02),
+                                                    Text(
+                                                      '${StringHelper.views} ${viewModel.productsList[index].countViews}',
+                                                      style: context
+                                                          .textTheme.labelMedium
+                                                          ?.copyWith(
+                                                              fontFamily: FontRes
+                                                                  .MONTSERRAT_MEDIUM),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Row(
+                                                  children: [
+                                                    const Icon(
+                                                      Icons.call,
+                                                      size: 12,
+                                                    ),
+                                                    const Gap(02),
+                                                    Text(
+                                                      '${StringHelper.call}: ${viewModel.productsList[index].callCount}',
+                                                      style: context
+                                                          .textTheme.labelMedium
+                                                          ?.copyWith(
+                                                              fontFamily: FontRes
+                                                                  .MONTSERRAT_MEDIUM),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Row(
+                                                  children: [
+                                                    const Icon(
+                                                      Icons.chat,
+                                                      size: 12,
+                                                    ),
+                                                    const Gap(02),
+                                                    Text(
+                                                      '${StringHelper.chat}: ${viewModel.productsList[index].chatCount}',
+                                                      style: context
+                                                          .textTheme.labelMedium
+                                                          ?.copyWith(
+                                                              fontFamily: FontRes
+                                                                  .MONTSERRAT_MEDIUM),
                                                     ),
                                                   ],
                                                 ),

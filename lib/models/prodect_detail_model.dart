@@ -53,59 +53,85 @@ class ProductDetailModel {
   CategoryModel? brand;
   UserModel? user;
   String? communicationChoice;
+  num? chatCount;
+  num? callCount;
 
-  ProductDetailModel(
-      {this.id,
-      this.userId,
-      this.categoryId,
-      this.subCategoryId,
-      this.subSubCategoryId,
-      this.brandId,
-      this.modelId,
-      this.name,
-      this.image,
-      this.itemCondition,
-      this.positionType,
-      this.salleryPeriod,
-      this.educationType,
-      this.salleryFrom,
-      this.salleryTo,
-      this.price,
-      this.description,
-      this.year,
-      this.fuel,
-      this.material,
-      this.ram,
-      this.storage,
-      this.sizeId,
-      this.milleage,
-      this.screenSize,
-      this.transmission,
-      this.kmDriven,
-      this.numberOfOwner,
-      this.country,
-      this.state,
-      this.city,
-      this.nearby,
-      this.latitude,
-      this.longitude,
-      this.status,
-      this.sellStatus,
-      this.deletedAt,
-      this.createdAt,
-      this.updatedAt,
-      this.isFavourite,
-      this.favouritesCount,
-      this.countViews,
-      this.productMedias,
-      this.category,
-      this.subCategory,
-      this.subSubCategory,
-      this.model,
-      this.fashionSize,
-      this.brand,
-      this.communicationChoice,
-      this.user});
+  // New fields
+  String? propertyFor; // ENUM "sell", "rent"
+  int? bedrooms;
+  int? bathrooms;
+  String? furnishedType; // ENUM "furnished", "unfurnished", "semi_furnished"
+  String? ownership; // ENUM "primary", "resale"
+  String? paymentType; // ENUM "installment", "cash_or_installment", "cash"
+  String? completionStatus; // ENUM "ready", "off_plan"
+  String?
+      deliveryTerm; // ENUM "finished", "not_finished", "core_and_sell", "semi_finished"
+
+  ProductDetailModel({
+    this.id,
+    this.userId,
+    this.categoryId,
+    this.subCategoryId,
+    this.subSubCategoryId,
+    this.brandId,
+    this.modelId,
+    this.name,
+    this.image,
+    this.itemCondition,
+    this.positionType,
+    this.salleryPeriod,
+    this.educationType,
+    this.salleryFrom,
+    this.salleryTo,
+    this.price,
+    this.description,
+    this.year,
+    this.fuel,
+    this.material,
+    this.ram,
+    this.storage,
+    this.sizeId,
+    this.milleage,
+    this.screenSize,
+    this.transmission,
+    this.kmDriven,
+    this.numberOfOwner,
+    this.country,
+    this.state,
+    this.city,
+    this.nearby,
+    this.latitude,
+    this.longitude,
+    this.status,
+    this.sellStatus,
+    this.deletedAt,
+    this.createdAt,
+    this.updatedAt,
+    this.isFavourite,
+    this.favouritesCount,
+    this.countViews,
+    this.productMedias,
+    this.category,
+    this.subCategory,
+    this.subSubCategory,
+    this.model,
+    this.fashionSize,
+    this.brand,
+    this.chatCount,
+    this.callCount,
+    this.communicationChoice,
+    this.user,
+
+    // Initialize new fields
+    this.propertyFor,
+    this.bedrooms,
+    this.bathrooms,
+    this.furnishedType,
+    this.ownership,
+    this.paymentType,
+    this.completionStatus,
+    this.deliveryTerm,
+  });
 
   ProductDetailModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -147,10 +173,23 @@ class ProductDetailModel {
     deletedAt = json['deleted_at'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    chatCount = json['chat_count'];
+    callCount = json['call_count'];
     isFavourite = json['is_favourite'];
     communicationChoice = json['communication_choice'];
     favouritesCount = json['favourites_count'];
     countViews = json['count_views'];
+
+    // Deserialize new fields
+    propertyFor = json['property_for'];
+    bedrooms = json['bedrooms'];
+    bathrooms = json['bathrooms'];
+    furnishedType = json['furnished_type'];
+    ownership = json['ownership'];
+    paymentType = json['payment_type'];
+    completionStatus = json['completion_status'];
+    deliveryTerm = json['delivery_term'];
+
     if (json['product_medias'] != null) {
       productMedias = <ProductMedias>[];
       json['product_medias'].forEach((v) {
@@ -219,6 +258,17 @@ class ProductDetailModel {
     data['favourites_count'] = favouritesCount;
     data['count_views'] = countViews;
     data['communication_choice'] = communicationChoice;
+
+    // Serialize new fields
+    data['property_for'] = propertyFor;
+    data['bedrooms'] = bedrooms;
+    data['bathrooms'] = bathrooms;
+    data['furnished_type'] = furnishedType;
+    data['ownership'] = ownership;
+    data['payment_type'] = paymentType;
+    data['completion_status'] = completionStatus;
+    data['delivery_term'] = deliveryTerm;
+
     if (productMedias != null) {
       data['product_medias'] = productMedias!.map((v) => v.toJson()).toList();
     }

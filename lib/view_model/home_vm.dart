@@ -99,7 +99,7 @@ class HomeVM extends BaseViewModel {
       latitude = position.latitude;
       longitude = position.longitude;
       currentLocation =
-          await LocationHelper.getAddressFromCoordinates(longitude, longitude);
+          await LocationHelper.getAddressFromCoordinates(latitude, longitude);
     } else {
       if (context.mounted) {
         latitude = LocationHelper.cairoLatitude;

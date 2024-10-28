@@ -60,6 +60,7 @@ class ProductVM extends BaseViewModel {
       {required BuildContext context, ProductDetailModel? data}) {
     List<Widget> specs = [];
 
+    // Existing specifications for model, RAM, storage, etc.
     if (data?.modelId != null && data!.modelId != 0) {
       specs.add(_buildSpecRow(context, 'Model', '${data.model?.name}'));
     }
@@ -79,6 +80,8 @@ class ProductVM extends BaseViewModel {
     if (data?.itemCondition != null && data!.itemCondition!.isNotEmpty) {
       specs.add(_buildSpecRow(context, 'Condition', "${data.itemCondition}"));
     }
+
+    // Specifications for cars
     if (data?.category?.name?.toLowerCase().contains('cars') ?? false) {
       if (data?.transmission != null && data!.transmission!.isNotEmpty) {
         specs.add(
@@ -87,10 +90,47 @@ class ProductVM extends BaseViewModel {
       if (data?.kmDriven != null) {
         specs.add(_buildSpecRow(context, 'KM Driven', '${data?.kmDriven} km'));
       }
+      if (data?.numberOfOwner != null && data!.numberOfOwner != 0) {
+        specs.add(_buildSpecRow(
+            context, 'Number of Owners', '${data.numberOfOwner}'));
+      }
     }
-    if (data?.numberOfOwner != null && data?.numberOfOwner != 0) {
+
+    // New specifications for properties
+    if (data?.propertyFor != null && data!.propertyFor!.isNotEmpty) {
+      specs.add(_buildSpecRow(context, 'Property For', "${data.propertyFor}"));
+    }
+    if (data?.bedrooms != null && data!.bedrooms != 0) {
+      specs.add(_buildSpecRow(context, 'Bedrooms', "${data.bedrooms}"));
+    }
+    if (data?.bathrooms != null && data!.bathrooms != 0) {
+      specs.add(_buildSpecRow(context, 'Bathrooms', "${data.bathrooms}"));
+    }
+    if (data?.furnishedType != null && data!.furnishedType!.isNotEmpty) {
       specs.add(
-          _buildSpecRow(context, 'Number of Owners', '${data?.numberOfOwner}'));
+          _buildSpecRow(context, 'Furnished Type', "${data.furnishedType}"));
+    }
+    if (data?.ownership != null && data!.ownership!.isNotEmpty) {
+      specs.add(_buildSpecRow(context, 'Ownership', "${data.ownership}"));
+    }
+    if (data?.paymentType != null && data!.paymentType!.isNotEmpty) {
+      specs.add(_buildSpecRow(context, 'Payment Type', "${data.paymentType}"));
+    }
+    if (data?.completionStatus != null && data!.completionStatus!.isNotEmpty) {
+      specs.add(_buildSpecRow(
+          context, 'Completion Status', "${data.completionStatus}"));
+    }
+    if (data?.deliveryTerm != null && data!.deliveryTerm!.isNotEmpty) {
+      specs
+          .add(_buildSpecRow(context, 'Delivery Term', "${data.deliveryTerm}"));
+    }
+
+    // Additional Vehicle Specifications
+    if (data?.year != null && data!.year != 0) {
+      specs.add(_buildSpecRow(context, 'Year', "${data.year}"));
+    }
+    if (data?.milleage != null && data!.milleage!.isNotEmpty) {
+      specs.add(_buildSpecRow(context, 'Mileage', "${data.milleage} km"));
     }
 
     return specs.isNotEmpty

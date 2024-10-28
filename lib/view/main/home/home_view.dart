@@ -214,7 +214,9 @@ class HomeView extends BaseView<HomeVM> {
                                       ),
                                       const Gap(10),
                                       Text(
-                                        categoryItems[index].name ?? '',
+                                        DbHelper.getLanguage() == 'en'
+                                            ? categoryItems[index].name ?? ''
+                                            : categoryItems[index].nameAr ?? '',
                                         style: context.textTheme.labelSmall
                                             ?.copyWith(
                                                 color: Colors.black,

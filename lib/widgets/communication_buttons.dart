@@ -118,6 +118,7 @@ class CommunicationButtons extends StatelessWidget {
       {required String iconPath, required String label}) {
     return Container(
       alignment: Alignment.center,
+      margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 0),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
         color: const Color(0xff5A5B55),

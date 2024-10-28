@@ -44,7 +44,10 @@ class _SellFormViewState extends State<SellFormView> {
   @override
   void initState() {
     log("${widget.type}", name: "PRINT");
-    context.read<SellFormsVM>().updateTextFieldsItems(item: widget.item);
+    WidgetsBinding.instance.addPostFrameCallback((callback) {
+      context.read<SellFormsVM>().updateTextFieldsItems(item: widget.item);
+    });
+
     super.initState();
   }
 

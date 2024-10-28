@@ -235,11 +235,12 @@ class PropertySellForm extends BaseView<SellFormsVM> {
               ),
               child: DropdownButtonFormField2<String>(
                 onChanged: (newValue) {
-                  viewModel.selectedOption = newValue!;
+                  viewModel.propertyFor = newValue ?? 'select';
                 },
                 style: TextStyle(fontSize: 16, color: Colors.black),
                 decoration: InputDecoration(
-                  hintText: 'Select', // Hint text when nothing is selected
+                  hintText: viewModel
+                      .propertyFor, // Hint text when nothing is selected
                   hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
@@ -248,12 +249,18 @@ class PropertySellForm extends BaseView<SellFormsVM> {
                 // Customize the dropdown icon color
                 items: [
                   DropdownMenuItem(
-                    value: 'For Sell',
-                    child: Text('For Sell'),
+                    onTap: () {
+                      viewModel.propertyFor = 'sell';
+                    },
+                    value: 'Sell',
+                    child: Text('Sell'),
                   ),
                   DropdownMenuItem(
-                    value: 'For Rent',
-                    child: Text('For Rent'),
+                    onTap: () {
+                      viewModel.propertyFor = 'rent';
+                    },
+                    value: 'Rent',
+                    child: Text('Rent'),
                   ),
                 ],
               ),
@@ -282,7 +289,7 @@ class PropertySellForm extends BaseView<SellFormsVM> {
                 ],
               ),
               child: TextFormField(
-                controller: viewModel.descriptionTextController,
+                controller: viewModel.areaSizeTextController,
                 cursorColor: Colors.black,
                 decoration: InputDecoration(
                     contentPadding:
@@ -299,6 +306,51 @@ class PropertySellForm extends BaseView<SellFormsVM> {
                 ],
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.done,
+              ),
+            ),
+            RichText(
+                text: TextSpan(children: [
+              TextSpan(
+                text: 'No Of Bedrooms',
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                    color: Colors.black),
+              ),
+            ])),
+            Container(
+              margin: const EdgeInsets.only(top: 10, bottom: 20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    offset: const Offset(0, 1),
+                    blurRadius: 6,
+                  ),
+                ],
+              ),
+              child: DropdownButtonFormField2<String>(
+                onChanged: (newValue) {
+                  viewModel.noOfBedrooms = newValue!;
+                },
+                style: TextStyle(fontSize: 16, color: Colors.black),
+                decoration: InputDecoration(
+                  hintText: viewModel
+                      .noOfBedrooms, // Hint text when nothing is selected
+                  hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+                // Customize the dropdown icon color
+                items: ['1', '2', '3', '4', '5', '6', '7', '7+'].map((element) {
+                  return DropdownMenuItem(
+                    value: element,
+                    child: Text('$element'),
+                  );
+                }).toList(),
               ),
             ),
             RichText(
@@ -326,11 +378,12 @@ class PropertySellForm extends BaseView<SellFormsVM> {
               ),
               child: DropdownButtonFormField2<String>(
                 onChanged: (newValue) {
-                  // viewModel.selectedOption = newValue!;
+                  viewModel.noOfBathrooms = newValue!;
                 },
                 style: TextStyle(fontSize: 16, color: Colors.black),
                 decoration: InputDecoration(
-                  hintText: 'Select', // Hint text when nothing is selected
+                  hintText: viewModel
+                      .noOfBathrooms, // Hint text when nothing is selected
                   hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
@@ -340,7 +393,98 @@ class PropertySellForm extends BaseView<SellFormsVM> {
                 items: ['1', '2', '3', '4', '5', '6', '7', '7+'].map((element) {
                   return DropdownMenuItem(
                     value: element,
-                    child: Text('$element Bathrooms'),
+                    child: Text('$element'),
+                  );
+                }).toList(),
+              ),
+            ),
+            RichText(
+                text: TextSpan(children: [
+              TextSpan(
+                text: 'Furnishing',
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                    color: Colors.black),
+              ),
+            ])),
+            Container(
+              margin: const EdgeInsets.only(top: 10, bottom: 20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    offset: const Offset(0, 1),
+                    blurRadius: 6,
+                  ),
+                ],
+              ),
+              child: DropdownButtonFormField2<String>(
+                onChanged: (newValue) {
+                  viewModel.furnishingStatus = newValue!;
+                },
+                style: TextStyle(fontSize: 16, color: Colors.black),
+                decoration: InputDecoration(
+                  hintText: viewModel
+                      .furnishingStatus, // Hint text when nothing is selected
+                  hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+                // Customize the dropdown icon color
+                items: ['Furnished', 'Unfurnished', 'Semi Furnished']
+                    .map((element) {
+                  return DropdownMenuItem(
+                    value: element,
+                    child: Text('$element'),
+                  );
+                }).toList(),
+              ),
+            ),
+            RichText(
+                text: TextSpan(children: [
+              TextSpan(
+                text: 'Owner',
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                    color: Colors.black),
+              ),
+            ])),
+            Container(
+              margin: const EdgeInsets.only(top: 10, bottom: 20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    offset: const Offset(0, 1),
+                    blurRadius: 6,
+                  ),
+                ],
+              ),
+              child: DropdownButtonFormField2<String>(
+                onChanged: (newValue) {
+                  viewModel.ownershipStatus = newValue!;
+                },
+                style: TextStyle(fontSize: 16, color: Colors.black),
+                decoration: InputDecoration(
+                  hintText: viewModel
+                      .ownershipStatus, // Hint text when nothing is selected
+                  hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+                // Customize the dropdown icon color
+                items: ['Primary', 'Resell'].map((element) {
+                  return DropdownMenuItem(
+                    value: element,
+                    child: Text('$element'),
                   );
                 }).toList(),
               ),
@@ -568,7 +712,6 @@ class PropertySellForm extends BaseView<SellFormsVM> {
             } else ...{
               GestureDetector(
                 onTap: () {
-                  return;
                   if (viewModel.mainImagePath.isEmpty) {
                     DialogHelper.showToast(
                         message: StringHelper.pleaseUploadMainImage);
@@ -585,6 +728,37 @@ class PropertySellForm extends BaseView<SellFormsVM> {
                         message: StringHelper.adTitleIsRequired);
                     return;
                   }
+
+                  if (viewModel.propertyFor == 'Select') {
+                    DialogHelper.showToast(
+                        message: 'Please select Property Type');
+                    return;
+                  }
+                  if (viewModel.areaSizeTextController.text.trim().isEmpty) {
+                    DialogHelper.showToast(
+                        message: 'Please add area of Property');
+                    return;
+                  }
+
+                  if (viewModel.noOfBedrooms == 'Select') {
+                    DialogHelper.showToast(message: 'Please select Bedrooms');
+                    return;
+                  }
+                  if (viewModel.noOfBathrooms == 'Select') {
+                    DialogHelper.showToast(message: 'Please select Bathrooms');
+                    return;
+                  }
+
+                  if (viewModel.furnishingStatus == 'Select') {
+                    DialogHelper.showToast(message: 'Please select Furnishing');
+                    return;
+                  }
+
+                  if (viewModel.ownershipStatus == 'Select') {
+                    DialogHelper.showToast(message: 'Please select Ownership');
+                    return;
+                  }
+
                   if (viewModel.descriptionTextController.text.trim().isEmpty) {
                     DialogHelper.showToast(
                         message: StringHelper.descriptionIsRequired);

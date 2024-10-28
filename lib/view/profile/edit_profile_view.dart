@@ -38,7 +38,7 @@ class EditProfileView extends BaseView<ProfileVM> {
                 child: Stack(
                   children: [
                     ImageView.circle(
-                      image: getImageUrl(),
+                      image: getImageUrl(viewModel: viewModel),
                       borderWidth: 1,
                       borderColor: Colors.black,
                       height: 180,
@@ -211,7 +211,11 @@ class EditProfileView extends BaseView<ProfileVM> {
     );
   }
 
-  String getImageUrl() {
+  String getImageUrl({required ProfileVM viewModel}) {
+    if (viewModel.imagePath.isNotEmpty) {
+      return viewModel.imagePath;
+    }
+
     String url = "${DbHelper.getUserModel()?.profilePic}";
 
     if (url.contains('http')) {

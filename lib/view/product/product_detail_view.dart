@@ -9,6 +9,7 @@ import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/view_model/product_v_m.dart';
+import 'package:list_and_life/widgets/communication_buttons.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -508,7 +509,10 @@ class ProductDetailView extends BaseView<ProductVM> {
               alignment: Alignment.center,
               margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               height: 30,
-              child: Row(
+              child: CommunicationButtons(
+                data: data, // Pass any additional data required
+              ),
+              /*Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
@@ -655,7 +659,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                         ),
                       ),
                     ),
-                  ]),
+                  ])*/
             ),
           )
         ],

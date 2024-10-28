@@ -151,14 +151,17 @@ class BaseClient {
     // You can customize error handling here
     if (error is DioException) {
       if (error.response != null) {
+        DialogHelper.showToast(message: error.response!.data['message']);
         return error.response!;
       }
+      DialogHelper.showToast(message: error.toString());
       return Response(
         requestOptions: RequestOptions(path: ''),
         statusCode: 500,
         statusMessage: error.toString(),
       );
     } else {
+      DialogHelper.showToast(message: error.toString());
       return Response(
         requestOptions: RequestOptions(path: ''),
         statusCode: 500,
