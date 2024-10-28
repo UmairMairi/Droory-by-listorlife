@@ -312,7 +312,7 @@ class AuthVM extends BaseViewModel {
       'device_token': await _fcm.getToken(),
       'device_type': Platform.isAndroid ? '1' : '2',
       'name': nameTextController.text.trim(),
-      'type': '2',
+      'type': '1',
       'last_name': lNameTextController.text.trim(),
       'email': emailTextController.text.trim(),
       'communication_choice': communicationChoice,
