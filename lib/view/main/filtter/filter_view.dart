@@ -10,6 +10,7 @@ import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/base/helpers/location_helper.dart';
 import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/view_model/home_vm.dart';
+import 'package:list_and_life/widgets/amenities_widget.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/app_outline_button.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
@@ -595,6 +596,13 @@ class _FilterViewState extends State<FilterView> {
                 const SizedBox(
                   height: 10,
                 ),
+              },
+              if (filter.categoryId == '11') ...{
+                AmenitiesWidget(
+                  selectedAmenities: (List<int?> ids) {
+                    filter?.selectedAmnities = ids.join(',');
+                  },
+                )
               },
               if (filter.categoryId == '9') ...{
                 AppTextField(

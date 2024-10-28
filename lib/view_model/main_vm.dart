@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/dynamic_link_helper.dart';
 import 'package:list_and_life/models/prodect_detail_model.dart';
+import 'package:list_and_life/providers/language_provider.dart';
 import 'package:list_and_life/view_model/chat_vm.dart';
 import 'package:persistent_bottom_nav_bar_plus/persistent_bottom_nav_bar_plus.dart';
 import 'package:provider/provider.dart';
@@ -48,7 +49,9 @@ class MainVM extends BaseViewModel {
   @override
   void onInit() {
     // TODO: implement onInit
-
+    context
+        .read<LanguageProvider>()
+        .updateLanguage(context: context, lang: DbHelper.getLanguage());
     if (!DbHelper.getIsGuest()) {
       SocketHelper().connectUser();
     }

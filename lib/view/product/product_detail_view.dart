@@ -320,6 +320,26 @@ class ProductDetailView extends BaseView<ProductVM> {
                                 ),
                               },
                               const Gap(10),
+                              if (data?.categoryId == 11) ...{
+                                Text(
+                                  StringHelper.amenities,
+                                  style: context.textTheme.titleMedium,
+                                ),
+                                const Gap(10),
+                                ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    itemCount: data?.productAmenities?.length,
+                                    itemBuilder: (context, index) {
+                                      return ListTile(
+                                        title: Text(DbHelper.getLanguage() ==
+                                                'en'
+                                            ? "✧ ${data?.productAmenities?[index].amnity?.name}"
+                                            : "✧ ${data?.productAmenities?[index].amnity?.nameAr}"),
+                                      );
+                                    }),
+                                const Gap(10),
+                              },
                               Text(
                                 StringHelper.description,
                                 style: context.textTheme.titleMedium,

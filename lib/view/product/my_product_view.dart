@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/date_helper.dart';
+import 'package:list_and_life/base/helpers/db_helper.dart';
 import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/skeletons/my_product_skeleton.dart';
 import 'package:list_and_life/view_model/product_v_m.dart';
@@ -374,6 +375,22 @@ class MyProductView extends BaseView<ProductVM> {
                             ),
                           },
                           const Gap(10),
+                          if (data?.categoryId == 11) ...{
+                            Text(
+                              StringHelper.amenities,
+                              style: context.textTheme.titleMedium,
+                            ),
+                            const Gap(10),
+                            ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: data?.productAmenities?.length,
+                                itemBuilder: (context, index) {
+                                  return Text(DbHelper.getLanguage() == 'en'
+                                      ? "✧ ${data?.productAmenities?[index].amnity?.name}"
+                                      : "✧ ${data?.productAmenities?[index].amnity?.nameAr}");
+                                }),
+                          },
                           Text(
                             StringHelper.description,
                             style: context.textTheme.titleMedium,

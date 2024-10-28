@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/base/network/api_request.dart';
@@ -81,8 +82,8 @@ class ProductVM extends BaseViewModel {
       specs.add(_buildSpecRow(context, 'Condition', "${data.itemCondition}"));
     }
 
-    // Specifications for cars
-    if (data?.category?.name?.toLowerCase().contains('cars') ?? false) {
+    // Specifications for cars (categoryId == 4)
+    if (data?.categoryId == 4) {
       if (data?.transmission != null && data!.transmission!.isNotEmpty) {
         specs.add(
             _buildSpecRow(context, 'Transmission', "${data.transmission}"));
@@ -125,12 +126,29 @@ class ProductVM extends BaseViewModel {
           .add(_buildSpecRow(context, 'Delivery Term', "${data.deliveryTerm}"));
     }
 
-    // Additional Vehicle Specifications
-    if (data?.year != null && data!.year != 0) {
-      specs.add(_buildSpecRow(context, 'Year', "${data.year}"));
+    // Additional Vehicle Specifications for Cars (categoryId == 4)
+    if (data?.categoryId == 4) {
+      if (data?.year != null && data!.year != 0) {
+        specs.add(_buildSpecRow(context, 'Year', "${data.year}"));
+      }
+      if (data?.milleage != null && data!.milleage!.isNotEmpty) {
+        specs.add(_buildSpecRow(context, 'Mileage', '${data.milleage} km'));
+      }
+      if (data?.fuel != null && data!.fuel!.isNotEmpty) {
+        specs.add(_buildSpecRow(context, 'Fuel', '${data.fuel}'));
+      }
     }
-    if (data?.milleage != null && data!.milleage!.isNotEmpty) {
-      specs.add(_buildSpecRow(context, 'Mileage', "${data.milleage} km"));
+
+    if (data?.nearby != null && data!.nearby!.isNotEmpty) {
+      specs.add(_buildSpecRow(
+          context, 'Location', '${data.nearby?.split(',').last}'));
+    }
+    if (data?.createdAt != null && data!.createdAt!.isNotEmpty) {
+      specs.add(_buildSpecRow(
+          context,
+          'Posted At',
+          DateFormat('dd MMM yyyy')
+              .format(DateTime.parse('${data.createdAt}'))));
     }
 
     return specs.isNotEmpty

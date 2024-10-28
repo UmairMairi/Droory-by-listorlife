@@ -4,6 +4,7 @@ import 'package:list_and_life/res/assets_res.dart';
 import '../models/setting_item_model.dart';
 
 class NotificationVM extends BaseViewModel {
+  /*
   List<SettingItemModel> notificationList = [
     SettingItemModel(
         icon: AssetsRes.DUMMY_CHAT_IMAGE1,
@@ -29,5 +30,5 @@ class NotificationVM extends BaseViewModel {
         timeStamp: 'August 13, 2024',
         description:
             "I loved this dress so much as soon as I tried it on I knew I had to buy it in another color. I am 5'3 about."),
-  ];
+  ];*/
 }

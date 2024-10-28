@@ -4,7 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
+import 'package:list_and_life/models/amnites_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
+import 'package:list_and_life/widgets/amenities_widget.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:list_and_life/widgets/multi_select_category.dart';
@@ -640,6 +642,11 @@ class PropertySellForm extends BaseView<SellFormsVM> {
                 textInputAction: TextInputAction.done,
               ),
             ),
+            AmenitiesWidget(selectedAmenities: (List<int?> selectedIds) {
+              print(selectedIds);
+              viewModel.amenities = selectedIds;
+              print(viewModel.amenities);
+            }),
             Text(
               StringHelper.howToConnect,
               style: context.textTheme.titleSmall,
@@ -668,6 +675,37 @@ class PropertySellForm extends BaseView<SellFormsVM> {
                         message: StringHelper.adTitleIsRequired);
                     return;
                   }
+
+                  if (viewModel.propertyFor == 'Select') {
+                    DialogHelper.showToast(
+                        message: 'Please select Property Type');
+                    return;
+                  }
+                  if (viewModel.areaSizeTextController.text.trim().isEmpty) {
+                    DialogHelper.showToast(
+                        message: 'Please add area of Property');
+                    return;
+                  }
+
+                  if (viewModel.noOfBedrooms == 'Select') {
+                    DialogHelper.showToast(message: 'Please select Bedrooms');
+                    return;
+                  }
+                  if (viewModel.noOfBathrooms == 'Select') {
+                    DialogHelper.showToast(message: 'Please select Bathrooms');
+                    return;
+                  }
+
+                  if (viewModel.furnishingStatus == 'Select') {
+                    DialogHelper.showToast(message: 'Please select Furnishing');
+                    return;
+                  }
+
+                  if (viewModel.ownershipStatus == 'Select') {
+                    DialogHelper.showToast(message: 'Please select Ownership');
+                    return;
+                  }
+
                   if (viewModel.descriptionTextController.text.trim().isEmpty) {
                     DialogHelper.showToast(
                         message: StringHelper.descriptionIsRequired);

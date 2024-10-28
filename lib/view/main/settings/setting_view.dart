@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -5,6 +7,8 @@ import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/db_helper.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
+import 'package:list_and_life/base/network/api_request.dart';
+import 'package:list_and_life/base/network/base_client.dart';
 import 'package:list_and_life/providers/language_provider.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/res/font_res.dart';
@@ -285,12 +289,29 @@ class SettingView extends BaseView<SettingVM> {
                 ),
               ),
               const Gap(10),
-              SettingItemView(
-                  item: SettingItemModel(
-                      title: StringHelper.howToConnect,
-                      icon: AssetsRes.IC_COMMUNICATION,
-                      isArrow: true,
-                      onTap: () {})),
+              InkWell(
+                onTap: () async {
+                  print("Clicked");
+                  ApiRequest _apiRequest = ApiRequest(
+                      url: ApiConstants.getAmnitiesUrl(),
+                      requestType: RequestType.get);
+                  var response = await BaseClient.handleRequest(_apiRequest);
+                },
+                child: SettingItemView(
+                    item: SettingItemModel(
+                        title: StringHelper.howToConnect,
+                        icon: AssetsRes.IC_COMMUNICATION,
+                        isArrow: true,
+                        onTap: () async {
+                          print("Clicked");
+                          ApiRequest _apiRequest = ApiRequest(
+                              url: ApiConstants.getAmnitiesUrl(),
+                              requestType: RequestType.get);
+                          var response =
+                              await BaseClient.handleRequest(_apiRequest);
+                          log(response);
+                        })),
+              ),
               const Divider(),
             },
             Text(

@@ -21,7 +21,7 @@ class MainView extends BaseView<MainVM> {
           items: [
             PersistentBottomNavBarItem(
               icon: const Icon(Icons.home_outlined),
-              title: (StringHelper.home),
+              title: StringHelper.home,
               activeColorPrimary: CupertinoColors.black,
               inactiveColorPrimary: CupertinoColors.systemGrey,
             ),
@@ -38,19 +38,19 @@ class MainView extends BaseView<MainVM> {
                 weight: 5,
                 size: 30,
               ),
-              title: (StringHelper.sell),
+              title: StringHelper.sell,
               activeColorPrimary: CupertinoColors.black,
               inactiveColorPrimary: CupertinoColors.systemGrey,
             ),
             PersistentBottomNavBarItem(
               icon: const Icon(Icons.favorite_border_outlined),
-              title: (StringHelper.myAds),
+              title: StringHelper.myAds,
               activeColorPrimary: CupertinoColors.black,
               inactiveColorPrimary: CupertinoColors.systemGrey,
             ),
             PersistentBottomNavBarItem(
               icon: const Icon(Icons.person),
-              title: (StringHelper.myProfile),
+              title: StringHelper.myProfile,
               activeColorPrimary: CupertinoColors.black,
               inactiveColorPrimary: CupertinoColors.systemGrey,
             ),

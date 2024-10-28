@@ -1,5 +1,6 @@
-import 'package:list_and_life/models/category_model.dart';
 import 'package:list_and_life/models/user_model.dart';
+
+import 'category_model.dart';
 
 class ProductDetailModel {
   int? id;
@@ -45,6 +46,7 @@ class ProductDetailModel {
   num? isFavourite;
   num? favouritesCount;
   List<ProductMedias>? productMedias;
+  List<AmenitiesProductModel>? productAmenities; // New field for amenities
   CategoryModel? category;
   CategoryModel? subCategory;
   CategoryModel? subSubCategory;
@@ -56,16 +58,15 @@ class ProductDetailModel {
   num? chatCount;
   num? callCount;
 
-  // New fields
-  String? propertyFor; // ENUM "sell", "rent"
+  // New fields for property
+  String? propertyFor;
   int? bedrooms;
   int? bathrooms;
-  String? furnishedType; // ENUM "furnished", "unfurnished", "semi_furnished"
-  String? ownership; // ENUM "primary", "resale"
-  String? paymentType; // ENUM "installment", "cash_or_installment", "cash"
-  String? completionStatus; // ENUM "ready", "off_plan"
-  String?
-      deliveryTerm; // ENUM "finished", "not_finished", "core_and_sell", "semi_finished"
+  String? furnishedType;
+  String? ownership;
+  String? paymentType;
+  String? completionStatus;
+  String? deliveryTerm;
 
   ProductDetailModel({
     this.id,
@@ -111,6 +112,7 @@ class ProductDetailModel {
     this.favouritesCount,
     this.countViews,
     this.productMedias,
+    this.productAmenities, // Initialize the new field
     this.category,
     this.subCategory,
     this.subSubCategory,
@@ -120,9 +122,8 @@ class ProductDetailModel {
     this.chatCount,
     this.callCount,
     this.communicationChoice,
-    this.user,
 
-    // Initialize new fields
+    // New fields for property
     this.propertyFor,
     this.bedrooms,
     this.bathrooms,
@@ -180,22 +181,14 @@ class ProductDetailModel {
     favouritesCount = json['favourites_count'];
     countViews = json['count_views'];
 
-    // Deserialize new fields
-    propertyFor = json['property_for'];
-    bedrooms = json['bedrooms'];
-    bathrooms = json['bathrooms'];
-    furnishedType = json['furnished_type'];
-    ownership = json['ownership'];
-    paymentType = json['payment_type'];
-    completionStatus = json['completion_status'];
-    deliveryTerm = json['delivery_term'];
-
-    if (json['product_medias'] != null) {
-      productMedias = <ProductMedias>[];
-      json['product_medias'].forEach((v) {
-        productMedias!.add(ProductMedias.fromJson(v));
+    // Deserialize the new productAmenities field
+    if (json['product_amnities'] != null) {
+      productAmenities = <AmenitiesProductModel>[];
+      json['product_amnities'].forEach((v) {
+        productAmenities!.add(AmenitiesProductModel.fromJson(v));
       });
     }
+
     category = json['category'] != null
         ? CategoryModel.fromJson(json['category'])
         : null;
@@ -211,6 +204,16 @@ class ProductDetailModel {
     brand =
         json['brand'] != null ? CategoryModel.fromJson(json['brand']) : null;
     user = json['user'] != null ? UserModel.fromJson(json['user']) : null;
+
+    // Deserialize new property fields
+    propertyFor = json['property_for'];
+    bedrooms = json['bedrooms'];
+    bathrooms = json['bathrooms'];
+    furnishedType = json['furnished_type'];
+    ownership = json['ownership'];
+    paymentType = json['payment_type'];
+    completionStatus = json['completion_status'];
+    deliveryTerm = json['delivery_term'];
   }
 
   Map<String, dynamic> toJson() {
@@ -259,15 +262,11 @@ class ProductDetailModel {
     data['count_views'] = countViews;
     data['communication_choice'] = communicationChoice;
 
-    // Serialize new fields
-    data['property_for'] = propertyFor;
-    data['bedrooms'] = bedrooms;
-    data['bathrooms'] = bathrooms;
-    data['furnished_type'] = furnishedType;
-    data['ownership'] = ownership;
-    data['payment_type'] = paymentType;
-    data['completion_status'] = completionStatus;
-    data['delivery_term'] = deliveryTerm;
+    // Serialize the new productAmenities field
+    if (productAmenities != null) {
+      data['product_amnities'] =
+          productAmenities!.map((v) => v.toJson()).toList();
+    }
 
     if (productMedias != null) {
       data['product_medias'] = productMedias!.map((v) => v.toJson()).toList();
@@ -284,13 +283,26 @@ class ProductDetailModel {
     if (model != null) {
       data['model'] = model!.toJson();
     }
-    data['fashion_size'] = fashionSize;
+    if (fashionSize != null) {
+      data['fashion_size'] = fashionSize;
+    }
     if (brand != null) {
       data['brand'] = brand!.toJson();
     }
     if (user != null) {
       data['user'] = user!.toJson();
     }
+
+    // Serialize new property fields
+    data['property_for'] = propertyFor;
+    data['bedrooms'] = bedrooms;
+    data['bathrooms'] = bathrooms;
+    data['furnished_type'] = furnishedType;
+    data['ownership'] = ownership;
+    data['payment_type'] = paymentType;
+    data['completion_status'] = completionStatus;
+    data['delivery_term'] = deliveryTerm;
+
     return data;
   }
 }
@@ -310,6 +322,53 @@ class ProductMedias {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['media'] = media;
     data['id'] = id;
+    return data;
+  }
+}
+
+class AmenitiesProductModel {
+  int? id;
+  int? amnityId;
+  Amnity? amnity;
+
+  AmenitiesProductModel({this.id, this.amnityId, this.amnity});
+
+  AmenitiesProductModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    amnityId = json['amnity_id'];
+    amnity =
+        json['amnity'] != null ? new Amnity.fromJson(json['amnity']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['amnity_id'] = this.amnityId;
+    if (this.amnity != null) {
+      data['amnity'] = this.amnity!.toJson();
+    }
+    return data;
+  }
+}
+
+class Amnity {
+  int? id;
+  String? name;
+  String? nameAr;
+
+  Amnity({this.id, this.name, this.nameAr});
+
+  Amnity.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    nameAr = json['name_ar'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['name_ar'] = this.nameAr;
     return data;
   }
 }

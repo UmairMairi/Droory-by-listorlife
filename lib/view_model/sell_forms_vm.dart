@@ -8,6 +8,7 @@ import 'package:list_and_life/base/helpers/location_helper.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/base/network/api_request.dart';
 import 'package:list_and_life/base/network/base_client.dart';
+import 'package:list_and_life/models/amnites_model.dart';
 import 'package:list_and_life/models/category_model.dart';
 import 'package:list_and_life/models/common/list_response.dart';
 import 'package:list_and_life/models/common/map_response.dart';
@@ -30,6 +31,15 @@ class SellFormsVM extends BaseViewModel {
     _isEditProduct = value;
     notifyListeners();
   }
+
+  List<int?> _amenities = [];
+
+  set amenities(List<int?> value) {
+    _amenities = value;
+    notifyListeners();
+  }
+
+  List<int?> get amenities => _amenities;
 
   final FocusNode priceText = FocusNode();
   final FocusNode yearText = FocusNode();
@@ -422,7 +432,7 @@ class SellFormsVM extends BaseViewModel {
       'bathrooms': noOfBathrooms,
       'furnished_type': furnishingStatus,
       'ownership': ownershipStatus,
-      'ownership': ownershipStatus,
+      'selected_amnities': amenities.join(',')
     };
     // dea26a54c91ab44f8faf73b88c85e26d88980b90
     ApiRequest apiRequest = ApiRequest(
@@ -575,6 +585,7 @@ class SellFormsVM extends BaseViewModel {
       'bathrooms': noOfBathrooms,
       'furnished_type': furnishingStatus,
       'ownership': ownershipStatus,
+      'selected_amnities': amenities.join(',')
     };
 
     ApiRequest apiRequest = ApiRequest(
