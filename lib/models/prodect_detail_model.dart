@@ -180,6 +180,13 @@ class ProductDetailModel {
     communicationChoice = json['communication_choice'];
     favouritesCount = json['favourites_count'];
     countViews = json['count_views'];
+    // Deserialize the new productAmenities field
+    if (json['product_medias'] != null) {
+      productMedias = <ProductMedias>[];
+      json['product_medias'].forEach((v) {
+        productMedias!.add(ProductMedias.fromJson(v));
+      });
+    }
 
     // Deserialize the new productAmenities field
     if (json['product_amnities'] != null) {

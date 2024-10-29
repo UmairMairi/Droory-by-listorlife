@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
@@ -36,7 +38,8 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget>
     bannerImages.insert(0, widget.data?.image);
 
     bannerImages =
-        widget.imagesList?.map((element) => element.media).toList() ?? [];
+        widget.data?.productMedias?.map((element) => element.media).toList() ??
+            [];
 
     _pageController = PageController(initialPage: _currentPage);
     super.initState();
@@ -66,6 +69,8 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget>
               });
             },
             children: List.generate(bannerImages.length, (index) {
+              log("${ApiConstants.imageUrl}/${bannerImages[index]}",
+                  name: "Images");
               return ClipRRect(
                   child: ImageView.rect(
                 image: "${ApiConstants.imageUrl}/${bannerImages[index]}",

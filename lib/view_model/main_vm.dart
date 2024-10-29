@@ -49,9 +49,7 @@ class MainVM extends BaseViewModel {
   @override
   void onInit() {
     // TODO: implement onInit
-    context
-        .read<LanguageProvider>()
-        .updateLanguage(context: context, lang: DbHelper.getLanguage());
+
     if (!DbHelper.getIsGuest()) {
       SocketHelper().connectUser();
     }

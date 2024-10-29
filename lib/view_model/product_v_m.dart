@@ -20,6 +20,7 @@ class ProductVM extends BaseViewModel {
 
     var response = await BaseClient.handleRequest(apiRequest);
 
+    log("$response", name: "RAJA JI");
     MapResponse<ProductDetailModel> model =
         MapResponse<ProductDetailModel>.fromJson(
             response, (json) => ProductDetailModel.fromJson(json));

@@ -167,6 +167,7 @@ class HomeVM extends BaseViewModel {
   @override
   void onInit() {
     // TODO: implement onInit
+    updateLocation();
     searchQueryesList.addAll(DbHelper.getSearchHistory().reversed.toList());
 
     searchQueryesList.addAll([
@@ -182,7 +183,7 @@ class HomeVM extends BaseViewModel {
       'Mobiles & Tablets'
     ]);
     refreshController = RefreshController(initialRefresh: true);
-    updateLocation();
+
     super.onInit();
   }
 

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -71,6 +73,7 @@ class ProductDetailView extends BaseView<ProductVM> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   ProductDetailModel? data = snapshot.data;
+                  log("${data?.toJson()}", name: "RAJA JI");
                   data?.productMedias
                       ?.insert(0, ProductMedias(media: data.image));
                   return SingleChildScrollView(

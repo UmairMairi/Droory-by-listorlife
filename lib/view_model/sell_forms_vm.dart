@@ -276,6 +276,7 @@ class SellFormsVM extends BaseViewModel {
       return;
     }
     log("${item.toJson()}", name: "~-> Alok", level: 200);
+    isEditProduct = true;
     imagesList.clear();
     deletedImageIds.clear();
     imagesList.addAll(item.productMedias
@@ -350,6 +351,13 @@ class SellFormsVM extends BaseViewModel {
     screenSizeTextController.clear();
     materialTextController.clear();
     sizeTextController.clear();
+    propertyFor = "Select";
+    areaSizeTextController.clear();
+    noOfBathrooms = "Select";
+    noOfBathrooms = "Select";
+    furnishingStatus = "Select";
+    ownershipStatus = "Select";
+    amenities = [];
   }
 
   Future<List<CategoryModel>> getBrands({CategoryModel? data}) async {

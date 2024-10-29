@@ -390,6 +390,7 @@ class MyProductView extends BaseView<ProductVM> {
                                       ? "✧ ${data?.productAmenities?[index].amnity?.name}"
                                       : "✧ ${data?.productAmenities?[index].amnity?.nameAr}");
                                 }),
+                            const Gap(10),
                           },
                           Text(
                             StringHelper.description,

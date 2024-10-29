@@ -51,7 +51,7 @@ class LocationHelper {
 
     // Get current position
     return await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+        locationSettings: LocationSettings(accuracy: LocationAccuracy.high));
   }
 
   static Future<String> getAddressFromCoordinates(
