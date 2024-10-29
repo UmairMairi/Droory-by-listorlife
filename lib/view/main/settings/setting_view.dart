@@ -299,6 +299,7 @@ class SettingView extends BaseView<SettingVM> {
                         return AlertDialog(
                           title: Text(StringHelper.howToConnect),
                           content: MultiSelectCategory(
+                            inDialog: true,
                             onSelectedCommunicationChoice:
                                 (CommunicationChoice value) {
                               vm.communicationChoice = value.name;

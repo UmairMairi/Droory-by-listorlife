@@ -14,10 +14,11 @@ enum CommunicationChoice {
 
 class MultiSelectCategory extends StatefulWidget {
   final ValueChanged<CommunicationChoice> onSelectedCommunicationChoice;
-  const MultiSelectCategory({
-    Key? key,
-    required this.onSelectedCommunicationChoice,
-  }) : super(key: key);
+  final bool inDialog;
+  const MultiSelectCategory(
+      {super.key,
+      required this.onSelectedCommunicationChoice,
+      this.inDialog = false});
 
   @override
   State<MultiSelectCategory> createState() => _MultiSelectCategoryState();
@@ -39,34 +40,57 @@ class _MultiSelectCategoryState extends State<MultiSelectCategory> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Wrap(
-        children: categories.map((category) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            child: FilterChip(
-              label: Text(category),
-              backgroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 4.0),
-              side: const BorderSide(color: Colors.blue),
-              selected: selectedCategories.contains(category),
-              selectedColor: Colors.blue.withOpacity(0.2),
-              onSelected: (bool isSelected) {
-                setState(() {
-                  if (isSelected) {
-                    selectedCategories.add(category);
-                  } else {
-                    selectedCategories.remove(category);
-                  }
-                });
-                _updateCommunicationChoice();
-              },
-            ),
+    return widget.inDialog
+        ? Wrap(
+            children: categories.map((category) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                child: FilterChip(
+                  label: Text(category),
+                  backgroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  side: const BorderSide(color: Colors.blue),
+                  selected: selectedCategories.contains(category),
+                  selectedColor: Colors.blue.withOpacity(0.2),
+                  onSelected: (bool isSelected) {
+                    setState(() {
+                      if (isSelected) {
+                        selectedCategories.add(category);
+                      } else {
+                        selectedCategories.remove(category);
+                      }
+                    });
+                    _updateCommunicationChoice();
+                  },
+                ),
+              );
+            }).toList(),
+          )
+        : Row(
+            children: categories.map((category) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                child: FilterChip(
+                  label: Text(category),
+                  backgroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  side: const BorderSide(color: Colors.blue),
+                  selected: selectedCategories.contains(category),
+                  selectedColor: Colors.blue.withOpacity(0.2),
+                  onSelected: (bool isSelected) {
+                    setState(() {
+                      if (isSelected) {
+                        selectedCategories.add(category);
+                      } else {
+                        selectedCategories.remove(category);
+                      }
+                    });
+                    _updateCommunicationChoice();
+                  },
+                ),
+              );
+            }).toList(),
           );
-        }).toList(),
-      ),
-    );
   }
 
   void _updateCommunicationChoice() {

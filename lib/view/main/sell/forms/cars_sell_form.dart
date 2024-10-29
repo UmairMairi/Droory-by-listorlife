@@ -434,7 +434,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
               ),
               child: TextFormField(
                 controller: viewModel.yearTextController,
-                readOnly: false,
+                readOnly: true,
                 focusNode: viewModel.yearText,
                 cursorColor: Colors.black,
                 decoration: InputDecoration(

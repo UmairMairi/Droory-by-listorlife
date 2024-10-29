@@ -459,7 +459,9 @@ class SellFormsVM extends BaseViewModel {
     MapResponse<ProductDetailModel> model = MapResponse.fromJson(
         response, (json) => ProductDetailModel.fromJson(json));
     DialogHelper.hideLoading();
-    DialogHelper.showToast(message: model.message);
+    DialogHelper.showToast(
+        message:
+            "Your ad has been submitted to the admin and will be approved soon!");
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(

@@ -69,8 +69,6 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget>
               });
             },
             children: List.generate(bannerImages.length, (index) {
-              log("${ApiConstants.imageUrl}/${bannerImages[index]}",
-                  name: "Images");
               return ClipRRect(
                   child: ImageView.rect(
                 image: "${ApiConstants.imageUrl}/${bannerImages[index]}",

@@ -122,10 +122,6 @@ class ProductVM extends BaseViewModel {
       specs.add(_buildSpecRow(
           context, 'Completion Status', "${data.completionStatus}"));
     }
-    if (data?.deliveryTerm != null && data!.deliveryTerm!.isNotEmpty) {
-      specs
-          .add(_buildSpecRow(context, 'Delivery Term', "${data.deliveryTerm}"));
-    }
 
     // Additional Vehicle Specifications for Cars (categoryId == 4)
     if (data?.categoryId == 4) {
