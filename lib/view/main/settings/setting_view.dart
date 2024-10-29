@@ -23,6 +23,7 @@ import 'package:provider/provider.dart';
 import '../../../base/helpers/dialog_helper.dart';
 import '../../../base/helpers/string_helper.dart';
 import '../../../models/setting_item_model.dart';
+import '../../../widgets/multi_select_category.dart';
 
 class SettingView extends BaseView<SettingVM> {
   const SettingView({super.key});
@@ -291,26 +292,40 @@ class SettingView extends BaseView<SettingVM> {
               const Gap(10),
               InkWell(
                 onTap: () async {
-                  print("Clicked");
-                  ApiRequest _apiRequest = ApiRequest(
-                      url: ApiConstants.getAmnitiesUrl(),
-                      requestType: RequestType.get);
-                  var response = await BaseClient.handleRequest(_apiRequest);
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        ProfileVM vm = context.read<ProfileVM>();
+                        return AlertDialog(
+                          title: Text(StringHelper.howToConnect),
+                          content: MultiSelectCategory(
+                            onSelectedCommunicationChoice:
+                                (CommunicationChoice value) {
+                              vm.communicationChoice = value.name;
+                            },
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              child: Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: () => {
+                                vm.updateProfileApi(),
+                                Navigator.of(context).pop()
+                              },
+                              child: Text('Update'),
+                            ),
+                          ],
+                        );
+                      });
                 },
                 child: SettingItemView(
                     item: SettingItemModel(
                         title: StringHelper.howToConnect,
                         icon: AssetsRes.IC_COMMUNICATION,
                         isArrow: true,
-                        onTap: () async {
-                          print("Clicked");
-                          ApiRequest _apiRequest = ApiRequest(
-                              url: ApiConstants.getAmnitiesUrl(),
-                              requestType: RequestType.get);
-                          var response =
-                              await BaseClient.handleRequest(_apiRequest);
-                          log(response);
-                        })),
+                        onTap: () async {})),
               ),
               const Divider(),
             },

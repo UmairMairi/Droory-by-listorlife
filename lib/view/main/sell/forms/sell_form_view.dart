@@ -94,6 +94,7 @@ class _SellFormViewState extends State<SellFormView> {
           subSubCategory: widget.subSubCategory,
           brands: brands,
           subCategory: widget.subCategory,
+          item: widget.item,
         );
       case 'services':
         if (widget.subCategory?.name == 'Education') {
@@ -103,6 +104,7 @@ class _SellFormViewState extends State<SellFormView> {
             subSubCategory: widget.subSubCategory,
             brands: brands,
             subCategory: widget.subCategory,
+            item: widget.item,
           );
         }
         return PetsSellForm(
@@ -120,6 +122,7 @@ class _SellFormViewState extends State<SellFormView> {
           brands: brands,
           subSubCategory: widget.subSubCategory,
           subCategory: widget.subCategory,
+          item: widget.item,
         );
 
       case 'vehicles':
@@ -131,6 +134,7 @@ class _SellFormViewState extends State<SellFormView> {
             subSubCategory: widget.subSubCategory,
             brands: brands,
             subCategory: widget.subCategory,
+            item: widget.item,
           );
         }
         if (widget.subCategory?.name?.toLowerCase().contains('cars') ?? false) {
@@ -140,6 +144,7 @@ class _SellFormViewState extends State<SellFormView> {
             subSubCategory: widget.subSubCategory,
             brands: brands,
             subCategory: widget.subCategory,
+            item: widget.item,
           );
         }
 
@@ -149,6 +154,7 @@ class _SellFormViewState extends State<SellFormView> {
           subSubCategory: widget.subSubCategory,
           brands: brands,
           subCategory: widget.subCategory,
+          item: widget.item,
         );
       case 'real estate':
         return PropertySellForm(
@@ -157,6 +163,7 @@ class _SellFormViewState extends State<SellFormView> {
           subSubCategory: widget.subSubCategory,
           brands: brands,
           subCategory: widget.subCategory,
+          item: widget.item,
         );
       default:
         return CommonSellForm(

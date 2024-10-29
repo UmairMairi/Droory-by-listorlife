@@ -71,10 +71,13 @@ class AuthVM extends BaseViewModel {
   }
 
   Future<void> loginApi() async {
+    await _fcm.requestPermission();
     Map<String, dynamic> body = {
       'country_code': countryCode,
       'phone_no': phoneTextController.text.trim(),
-      'device_token': await _fcm.getToken(),
+      'device_token': Platform.isAndroid
+          ? await _fcm.getToken()
+          : await _fcm.getAPNSToken(),
       'device_type': Platform.isAndroid ? '1' : '2'
     };
     ApiRequest apiRequest = ApiRequest(
@@ -117,8 +120,11 @@ class AuthVM extends BaseViewModel {
   Future<void> socialLoginApi(
       {required UserCredential user, required int type}) async {
     DialogHelper.showLoading();
+    await _fcm.requestPermission();
     Map<String, dynamic> body = {
-      'device_token': await _fcm.getToken(),
+      'device_token': Platform.isAndroid
+          ? await _fcm.getToken()
+          : await _fcm.getAPNSToken(),
       'device_type': Platform.isAndroid ? '1' : '2',
       'name': user.user?.displayName?.split(' ').first,
       'type': 1,
@@ -214,10 +220,13 @@ class AuthVM extends BaseViewModel {
                 }
                 Navigator.of(context).pop();
                 DialogHelper.showLoading();
+                await _fcm.requestPermission();
                 Map<String, dynamic> body = {
                   'country_code': countryCode,
                   'phone_no': phoneTextController.text.trim(),
-                  'device_token': await _fcm.getToken(),
+                  'device_token': Platform.isAndroid
+                      ? await _fcm.getToken()
+                      : await _fcm.getAPNSToken(),
                   'device_type': Platform.isAndroid ? '1' : '2',
                   'name': user.user?.displayName?.split(' ').first,
                   'type': 1,
@@ -255,10 +264,13 @@ class AuthVM extends BaseViewModel {
   }
 
   Future<void> verifyOtpApi() async {
+    await _fcm.requestPermission();
     Map<String, dynamic> body = {
       'country_code': countryCode,
       'phone_no': phoneTextController.text.trim(),
-      'device_token': await _fcm.getToken(),
+      'device_token': Platform.isAndroid
+          ? await _fcm.getToken()
+          : await _fcm.getAPNSToken(),
       'device_type': Platform.isAndroid ? '1' : '2',
       'otp': otpTextController.text.trim()
     };
@@ -309,7 +321,9 @@ class AuthVM extends BaseViewModel {
     Map<String, dynamic> body = {
       'country_code': countryCode,
       'phone_no': phoneTextController.text.trim(),
-      'device_token': await _fcm.getToken(),
+      'device_token': Platform.isAndroid
+          ? await _fcm.getToken()
+          : await _fcm.getAPNSToken(),
       'device_type': Platform.isAndroid ? '1' : '2',
       'name': nameTextController.text.trim(),
       'type': '1',

@@ -199,8 +199,10 @@ class PropertySellForm extends BaseView<SellFormsVM> {
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 25, vertical: 18),
                     hintText: StringHelper.enter,
-                    hintStyle:
-                        TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                    hintStyle: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600),
                     border: OutlineInputBorder(
                       borderSide: BorderSide.none,
                     )),
@@ -243,7 +245,10 @@ class PropertySellForm extends BaseView<SellFormsVM> {
                 decoration: InputDecoration(
                   hintText: viewModel
                       .propertyFor, // Hint text when nothing is selected
-                  hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  hintStyle: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w300),
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                   ),
@@ -297,8 +302,7 @@ class PropertySellForm extends BaseView<SellFormsVM> {
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 25, vertical: 18),
                     hintText: StringHelper.enter,
-                    hintStyle:
-                        TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                    hintStyle: TextStyle(fontSize: 16, color: Colors.black),
                     border: OutlineInputBorder(
                       borderSide: BorderSide.none,
                     )),
@@ -341,7 +345,7 @@ class PropertySellForm extends BaseView<SellFormsVM> {
                 decoration: InputDecoration(
                   hintText: viewModel
                       .noOfBedrooms, // Hint text when nothing is selected
-                  hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  hintStyle: TextStyle(fontSize: 16, color: Colors.black),
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                   ),
@@ -386,7 +390,7 @@ class PropertySellForm extends BaseView<SellFormsVM> {
                 decoration: InputDecoration(
                   hintText: viewModel
                       .noOfBathrooms, // Hint text when nothing is selected
-                  hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  hintStyle: TextStyle(fontSize: 16, color: Colors.black),
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                   ),
@@ -431,7 +435,7 @@ class PropertySellForm extends BaseView<SellFormsVM> {
                 decoration: InputDecoration(
                   hintText: viewModel
                       .furnishingStatus, // Hint text when nothing is selected
-                  hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  hintStyle: TextStyle(fontSize: 16, color: Colors.black),
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                   ),
@@ -477,7 +481,7 @@ class PropertySellForm extends BaseView<SellFormsVM> {
                 decoration: InputDecoration(
                   hintText: viewModel
                       .ownershipStatus, // Hint text when nothing is selected
-                  hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  hintStyle: TextStyle(fontSize: 16, color: Colors.black),
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                   ),
@@ -642,11 +646,13 @@ class PropertySellForm extends BaseView<SellFormsVM> {
                 textInputAction: TextInputAction.done,
               ),
             ),
-            AmenitiesWidget(selectedAmenities: (List<int?> selectedIds) {
-              print(selectedIds);
-              viewModel.amenities = selectedIds;
-              print(viewModel.amenities);
-            }),
+            AmenitiesWidget(
+                amenitiesChecked: viewModel.amenities,
+                selectedAmenities: (List<int?> selectedIds) {
+                  print(selectedIds);
+                  viewModel.amenities = selectedIds;
+                  print(viewModel.amenities);
+                }),
             Text(
               StringHelper.howToConnect,
               style: context.textTheme.titleSmall,

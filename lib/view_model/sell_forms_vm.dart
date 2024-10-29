@@ -323,6 +323,10 @@ class SellFormsVM extends BaseViewModel {
     noOfBathrooms = item.bathrooms.toString() ?? '';
     furnishingStatus = item.furnishedType ?? '';
     ownershipStatus = item.ownership ?? '';
+    areaSizeTextController.text = "${item?.area ?? ''}";
+    amenities =
+        item.productAmenities?.map((element) => element.amnityId).toList() ??
+            [];
   }
 
   void resetTextFields() {
@@ -440,7 +444,8 @@ class SellFormsVM extends BaseViewModel {
       'bathrooms': noOfBathrooms,
       'furnished_type': furnishingStatus,
       'ownership': ownershipStatus,
-      'selected_amnities': amenities.join(',')
+      'selected_amnities': amenities.join(','),
+      'area': areaSizeTextController.text
     };
     // dea26a54c91ab44f8faf73b88c85e26d88980b90
     ApiRequest apiRequest = ApiRequest(
@@ -593,7 +598,8 @@ class SellFormsVM extends BaseViewModel {
       'bathrooms': noOfBathrooms,
       'furnished_type': furnishingStatus,
       'ownership': ownershipStatus,
-      'selected_amnities': amenities.join(',')
+      'selected_amnities': amenities.join(','),
+      //'area': areaSizeTextController.text
     };
 
     ApiRequest apiRequest = ApiRequest(

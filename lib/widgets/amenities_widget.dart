@@ -10,8 +10,10 @@ import 'package:list_and_life/models/common/list_response.dart';
 import '../models/amnites_model.dart';
 
 class AmenitiesWidget extends StatefulWidget {
-  const AmenitiesWidget({super.key, required this.selectedAmenities});
+  const AmenitiesWidget(
+      {super.key, required this.selectedAmenities, this.amenitiesChecked});
   final Function(List<int?> ids) selectedAmenities;
+  final List<int?>? amenitiesChecked;
 
   @override
   State<AmenitiesWidget> createState() => _AmenitiesWidgetState();
@@ -24,6 +26,7 @@ class _AmenitiesWidgetState extends State<AmenitiesWidget> {
   @override
   void initState() {
     _fetchAmenities();
+
     super.initState();
     // Fetch amenities on init
   }
@@ -39,6 +42,7 @@ class _AmenitiesWidgetState extends State<AmenitiesWidget> {
           ListResponse<AmenitiesModel>.fromJson(
               response, (json) => AmenitiesModel.fromJson(json));
 
+      amenitiesChecked = widget.amenitiesChecked ?? [];
       setState(() {
         _amenities = model.body ?? [];
       });

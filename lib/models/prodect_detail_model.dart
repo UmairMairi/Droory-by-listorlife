@@ -67,6 +67,7 @@ class ProductDetailModel {
   String? paymentType;
   String? completionStatus;
   String? deliveryTerm;
+  dynamic area;
 
   ProductDetailModel({
     this.id,
@@ -122,6 +123,7 @@ class ProductDetailModel {
     this.chatCount,
     this.callCount,
     this.communicationChoice,
+    this.area,
 
     // New fields for property
     this.propertyFor,
@@ -154,6 +156,7 @@ class ProductDetailModel {
     description = json['description'];
     year = json['year'];
     fuel = json['fuel'];
+    area = json['area'];
     material = json['material'];
     ram = json['ram'];
     storage = json['storage'];
@@ -234,6 +237,7 @@ class ProductDetailModel {
     data['model_id'] = modelId;
     data['name'] = name;
     data['image'] = image;
+    data['area'] = area;
     data['item_condition'] = itemCondition;
     data['position_type'] = positionType;
     data['sallery_period'] = salleryPeriod;

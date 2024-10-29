@@ -14,7 +14,7 @@ class CommunicationButtons extends StatelessWidget {
 
   const CommunicationButtons({
     Key? key,
-    this.data,
+    required this.data,
   }) : super(key: key);
 
   // Map the string values to generate corresponding buttons

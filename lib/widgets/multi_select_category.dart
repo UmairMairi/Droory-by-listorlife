@@ -41,7 +41,7 @@ class _MultiSelectCategoryState extends State<MultiSelectCategory> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
-      child: Row(
+      child: Wrap(
         children: categories.map((category) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
