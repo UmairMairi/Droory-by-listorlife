@@ -4,15 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/base/base_view.dart';
 import 'package:list_and_life/base/helpers/date_helper.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/base/helpers/string_helper.dart';
 import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/res/font_res.dart';
+import 'package:list_and_life/view_model/product_v_m.dart';
 import 'package:list_and_life/widgets/card_swipe_widget.dart';
 import 'package:list_and_life/widgets/communication_buttons.dart';
 import 'package:list_and_life/widgets/like_button.dart';
+import 'package:provider/provider.dart';
 
 import '../base/helpers/db_helper.dart';
 import '../models/common/map_response.dart';
@@ -107,6 +110,7 @@ class AppProductItemWidget extends StatelessWidget {
                     ],
                   ),
                   const Gap(5),
+                  getSpecifications(context: context, data: data),
                   Text(
                     data?.description ?? '',
                     maxLines: 1,
@@ -299,10 +303,12 @@ class AppProductItemWidget extends StatelessWidget {
                           ),
                         ),
                       ]),*/
-                  CommunicationButtons(
-                    data: data, // Pass any additional data required
-                  ),
-                  const Gap(10),
+                  if (data?.userId != DbHelper.getUserModel()?.id) ...{
+                    CommunicationButtons(
+                      data: data, // Pass any additional data required
+                    ),
+                    const Gap(10),
+                  }
                 ],
               ),
             )
@@ -317,7 +323,7 @@ class AppProductItemWidget extends StatelessWidget {
     DateTime dateTime = DateTime.parse(time ?? dateTimeString);
     int timestamp = dateTime.millisecondsSinceEpoch ~/ 1000;
 
-    return DateHelper.getTimeAgo(timestamp);
+    return "| ${DateHelper.getFormateDDMMMYYYY(timestamp)}";
   }
 
   Future<void> onLikeButtonTapped({required num? id}) async {
@@ -334,5 +340,66 @@ class AppProductItemWidget extends StatelessWidget {
     }
 
     log("Fav Message => ${model.message}");
+  }
+
+  Widget getSpecifications(
+      {required BuildContext context, ProductDetailModel? data}) {
+    List<Widget> specs = [];
+
+    if (data?.categoryId == 4) {
+      if (data?.year != null && data!.year != 0) {
+        specs.add(_buildSpecRow(context, "${data.year}", '📅'));
+      }
+      if (data?.milleage != null && data!.milleage!.isNotEmpty) {
+        specs.add(_buildSpecRow(context, '${data.milleage} km', '🔋'));
+      }
+      if (data?.fuel != null && data!.fuel!.isNotEmpty) {
+        specs.add(_buildSpecRow(
+          context,
+          '${data.fuel}',
+          '⛽',
+        ));
+      }
+    }
+    if (data?.categoryId == 11) {
+      if (data?.bedrooms != null && data!.bedrooms != 0) {
+        specs.add(_buildSpecRow(context, "${data.bedrooms}", '🛏️'));
+      }
+      if (data?.bathrooms != null && data!.bathrooms != 0) {
+        specs.add(_buildSpecRow(context, "${data.bathrooms}", '🚽'));
+      }
+      if (data?.area != null && data!.area != 0) {
+        specs.add(_buildSpecRow(context, "${data.area}", '📐'));
+      }
+    }
+
+    return SizedBox(
+        height: 50,
+        child: ListView(scrollDirection: Axis.horizontal, children: specs));
+  }
+
+  Widget _buildSpecRow(BuildContext context, String specValue, String symbol) {
+    return SizedBox(
+      width: 100,
+      child: Row(
+        children: [
+          Text(
+            symbol,
+            style: const TextStyle(fontSize: 15.0), // Customize size as needed
+          ),
+          const SizedBox(width: 3), // Space between symbol and text
+          Expanded(
+            child: Text(
+              specValue,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                overflow: TextOverflow.ellipsis, // Handle overflow
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

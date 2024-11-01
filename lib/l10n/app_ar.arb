@@ -1,7 +1,7 @@
 {
   "listLife": "قائمة ورفع",
   "next": "التالي",
-  "unverifiedToast": "التالي",
+  "unverifiedToast": "قبل نشر أي إعلان، يرجى التحقق من رقم هاتفك من الملف الشخصي.",
   "amenities": "وسائل الراحة",
   "getStarted": "ابدأ الآن",
   "login": "تسجيل الدخول",
@@ -212,7 +212,11 @@
   "liveAds": "إعلانات مباشرة",
   "underReview": "قيد المراجعة",
   "rejectedAds": "إعلانات مرفوضة",
-  "details": "تفاصيل"
+  "details": "تفاصيل",
+   "furnishing": "تأثيث",
+   "paymentType": "نوع الدفع",
+   "completionStatus": "حالة الإكمال",
+   "deliveryTerms": "شروط التسليم"
+
+
 }
-
-

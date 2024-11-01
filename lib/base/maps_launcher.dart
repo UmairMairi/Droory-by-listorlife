@@ -1,3 +1,4 @@
+/*
 import 'dart:io' show Platform;
 
 import 'package:flutter/foundation.dart';
@@ -71,3 +72,4 @@ class MapsLauncher {
     return launchUrl(createCoordinatesUri(latitude, longitude, label));
   }
 }
+*/

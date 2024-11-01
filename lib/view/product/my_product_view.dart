@@ -366,9 +366,9 @@ class MyProductView extends BaseView<ProductVM> {
                                 gridDelegate:
                                     const SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 3,
-                                        mainAxisExtent: 50,
+                                        mainAxisExtent: 40,
                                         mainAxisSpacing: 5,
-                                        crossAxisSpacing: 20),
+                                        crossAxisSpacing: 5),
                                 children: viewModel.getSpecifications(
                                     context: context, data: data),
                               ),

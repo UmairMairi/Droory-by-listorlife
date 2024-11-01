@@ -17,7 +17,7 @@ import '../models/common/list_response.dart';
 
 class HomeVM extends BaseViewModel {
   RefreshController refreshController = RefreshController(initialRefresh: true);
-  String _currentLocation = "";
+  String _currentLocation = '';
   String get currentLocation => _currentLocation;
   final DebounceHelper _debounce = DebounceHelper(milliseconds: 1000);
   String searchQuery = '';

@@ -16,6 +16,7 @@ class LanguageProvider extends ChangeNotifier {
     DbHelper.saveLanguage(lang);
     StringHelper.refresh();
     _selectedLang = lang;
+
     notifyListeners();
     RestartWidget.restartApp(context);
   }

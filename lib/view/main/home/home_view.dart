@@ -22,6 +22,7 @@ import 'package:searchfield/searchfield.dart';
 import '../../../base/helpers/db_helper.dart';
 import '../../../base/helpers/string_helper.dart';
 import '../../../base/network/api_constants.dart';
+import '../../../base/notification/notification_service.dart';
 import '../../../models/category_model.dart';
 import '../../../skeletons/home_category_skelton.dart';
 import '../../../widgets/app_empty_widget.dart';
@@ -73,6 +74,9 @@ class HomeView extends BaseView<HomeVM> {
         actions: [
           InkWell(
             onTap: () async {
+              /*await NotificationService.sendNotification(
+                  title: "Test Notification", body: "Test Body");
+              return;*/
               if (DbHelper.getIsGuest()) {
                 context.push(Routes.guestLogin);
               } else {

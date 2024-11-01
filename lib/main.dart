@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:list_and_life/base/helpers/date_helper.dart';
 import 'package:list_and_life/base/helpers/db_helper.dart';
 import 'package:list_and_life/base/sockets/socket_helper.dart';
 import 'package:list_and_life/providers/language_provider.dart';
@@ -77,7 +78,7 @@ class _MyAppState extends State<MyApp> {
         child: ToastificationWrapper(
           child: Consumer<LanguageProvider>(
             builder: (BuildContext context, value, Widget? child) {
-              log("Builder called", name: "Restart");
+              DateHelper.setLocale(value.selectedLang);
               return MaterialApp.router(
                 scrollBehavior: const MaterialScrollBehavior().copyWith(
                   dragDevices: {
@@ -112,3 +113,16 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
+/*
+>> When users are browsing vehicle ads, display the following three key details with icons underneath the ad title or image: (Done)
+
+>>For support currently we have Contact us feature in setting and user will add their details & issue there and admin will get all that information. Pending
+●	Send a real-time notification via the app to inform the user if their ad is approved, rejected, or needs revision. not working in ios (Working in my side SS shared)
+●	Also next to the ad should be the date of the ad posted currently it is today date. (Done)
+
+>> in chat > after accept the request still showing accept and reject button (Done)
+
+1. social login with gmail > in my priofile > previous login details are showing (Done)
+2. i have added one ad and this ad is showing on my home > user can chat, call  with own produc (Done)
+3.maine animals m ad add ki par specification laptop ki aari h.because it showing previous posted ad details*/

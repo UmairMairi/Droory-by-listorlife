@@ -69,7 +69,8 @@ class VerificationView extends BaseView<AuthVM> {
             AppResendOtpButton(
               seconds: 30,
               onResend: () {
-                print('Your new OTp is 1111');
+                viewModel.loginApi(resend: true);
+                //viewModel.resendOTP();
               },
             )
           ],

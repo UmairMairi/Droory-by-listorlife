@@ -3,7 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/dynamic_link_helper.dart';
+import 'package:list_and_life/base/network/api_constants.dart';
+import 'package:list_and_life/base/network/api_request.dart';
+import 'package:list_and_life/base/network/base_client.dart';
+import 'package:list_and_life/models/common/map_response.dart';
 import 'package:list_and_life/models/prodect_detail_model.dart';
+import 'package:list_and_life/models/user_model.dart';
 import 'package:list_and_life/providers/language_provider.dart';
 import 'package:list_and_life/view_model/chat_vm.dart';
 import 'package:persistent_bottom_nav_bar_plus/persistent_bottom_nav_bar_plus.dart';
@@ -90,8 +95,21 @@ class MainVM extends BaseViewModel {
         }
         return;
       case 4:
+        if (!DbHelper.getIsGuest()) {
+          getProfile();
+        }
         return;
     }
+    notifyListeners();
+  }
+
+  Future<void> getProfile() async {
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.getProfileUrl(), requestType: RequestType.get);
+    var response = await BaseClient.handleRequest(apiRequest);
+    MapResponse<UserModel> model = MapResponse<UserModel>.fromJson(
+        response, (json) => UserModel.fromJson(json));
+    DbHelper.saveUserModel(model.body);
     notifyListeners();
   }
 }

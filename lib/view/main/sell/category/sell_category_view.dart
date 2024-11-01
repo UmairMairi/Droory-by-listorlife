@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/models/category_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/widgets/app_error_widget.dart';
@@ -55,6 +56,15 @@ class SellCategoryView extends BaseView<SellVM> {
                               itemBuilder: (buildContext, index) {
                                 return GestureDetector(
                                   onTap: () {
+                                    if (DbHelper.getUserModel()
+                                            ?.phoneVerified !=
+                                        1) {
+                                      DialogHelper.showToast(
+                                          message:
+                                              StringHelper.unverifiedToast);
+                                      return;
+                                    }
+
                                     viewModel.handelSellCat(
                                         item: categoryData[index]);
                                   },

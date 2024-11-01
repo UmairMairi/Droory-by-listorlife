@@ -18,6 +18,7 @@ import 'package:list_and_life/widgets/image_view.dart';
 import 'package:list_and_life/widgets/multi_select_category.dart';
 
 import '../../base/helpers/string_helper.dart';
+import '../../widgets/app_map_widget.dart';
 
 class CompleteProfileView extends BaseView<AuthVM> {
   const CompleteProfileView({super.key});
@@ -104,6 +105,28 @@ class CompleteProfileView extends BaseView<AuthVM> {
               inputType: TextInputType.name,
               controller: viewModel.lNameTextController,
               inputFormatters: AppTextInputFormatters.withNameFormatter(),
+            ),
+            const Gap(10),
+            AppTextField(
+              title: StringHelper.location,
+              hint: StringHelper.location,
+              inputType: TextInputType.text,
+              readOnly: true,
+              onTap: () async {
+                Map<String, dynamic>? value = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AppMapWidget()));
+
+                if (value != null && value.isNotEmpty) {
+                  viewModel.latitude = "${value['latitude']}";
+                  viewModel.longitude = "${value['longitude']}";
+                  viewModel.locationTextController.text =
+                      "${value['location']}, ${value['city']}, ${value['state']}";
+                }
+              },
+              inputFormatters: AppTextInputFormatters.withNameFormatter(),
+              controller: viewModel.locationTextController,
             ),
             const Gap(10),
             AppTextField(

@@ -110,8 +110,8 @@ class _AppMapWidgetState extends State<AppMapWidget> {
       _animateCameraAndFindAddress(position);
     } else {
       _animateCameraAndFindAddress(Position(
-          longitude: 30.0444,
-          latitude: 31.2357,
+          longitude: LocationHelper.cairoLongitude,
+          latitude: LocationHelper.cairoLatitude,
           timestamp: DateTime.now(),
           accuracy: 0.0,
           altitude: 0.0,

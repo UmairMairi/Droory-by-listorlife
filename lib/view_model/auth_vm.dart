@@ -10,6 +10,7 @@ import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/db_helper.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
+import 'package:list_and_life/base/helpers/location_helper.dart';
 import 'package:list_and_life/base/helpers/social_login_helper.dart';
 import 'package:list_and_life/models/common/map_response.dart';
 import 'package:list_and_life/models/user_model.dart';
@@ -31,6 +32,24 @@ class AuthVM extends BaseViewModel {
   TextEditingController nameTextController = TextEditingController();
   TextEditingController lNameTextController = TextEditingController();
   TextEditingController emailTextController = TextEditingController();
+  TextEditingController locationTextController = TextEditingController();
+
+  String _latitude = "${LocationHelper.cairoLatitude}";
+  String _longitude = "${LocationHelper.cairoLatitude}";
+
+  String get longitude => _longitude;
+
+  set longitude(String value) {
+    _longitude = value;
+    notifyListeners();
+  }
+
+  String get latitude => _latitude;
+
+  set latitude(String value) {
+    _latitude = value;
+    notifyListeners();
+  }
 
   String _communicationChoice =
       DbHelper.getUserModel()?.communicationChoice ?? '';
@@ -70,14 +89,12 @@ class AuthVM extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> loginApi() async {
+  Future<void> loginApi({bool resend = false}) async {
     await _fcm.requestPermission();
     Map<String, dynamic> body = {
       'country_code': countryCode,
       'phone_no': phoneTextController.text.trim(),
-      'device_token': Platform.isAndroid
-          ? await _fcm.getToken()
-          : await _fcm.getAPNSToken(),
+      'device_token': await _fcm.getToken(),
       'device_type': Platform.isAndroid ? '1' : '2'
     };
     ApiRequest apiRequest = ApiRequest(
@@ -90,7 +107,13 @@ class AuthVM extends BaseViewModel {
     MapResponse<UserModel> model =
         MapResponse.fromJson(response, (json) => UserModel.fromJson(json));
     DialogHelper.hideLoading();
-    DialogHelper.showToast(message: model.message);
+    // DialogHelper.showToast(message: model.message);
+
+    if (resend) {
+      DialogHelper.showToast(message: "Your verification code is 1111");
+      return;
+    }
+
     if (context.mounted) {
       context.push(Routes.verify);
     } else {
@@ -122,9 +145,7 @@ class AuthVM extends BaseViewModel {
     DialogHelper.showLoading();
     await _fcm.requestPermission();
     Map<String, dynamic> body = {
-      'device_token': Platform.isAndroid
-          ? await _fcm.getToken()
-          : await _fcm.getAPNSToken(),
+      'device_token': await _fcm.getToken(),
       'device_type': Platform.isAndroid ? '1' : '2',
       'name': user.user?.displayName?.split(' ').first,
       'type': 1,
@@ -159,118 +180,12 @@ class AuthVM extends BaseViewModel {
     DialogHelper.showToast(message: model.message);
   }
 
-  Future<void> _showPhoneNumberDialog(
-      BuildContext context, UserCredential user, int type) async {
-    await showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Enter Your Phone Number'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                'We need your phone number to complete the registration process.',
-                style: TextStyle(fontSize: 14),
-              ),
-              const SizedBox(height: 20),
-              AppTextField(
-                title: StringHelper.phoneNumber,
-                hint: StringHelper.phoneNumber,
-                focusNode: nodeText,
-                inputFormatters:
-                    AppTextInputFormatters.withPhoneNumberFormatter(),
-                controller: phoneTextController,
-                inputType: TextInputType.phone,
-                prefix: CountryPicker(
-                    selectedCountry: selectedCountry,
-                    dense: true,
-                    isEnable: false,
-                    //displays arrow, true by default
-                    showLine: false,
-                    showFlag: true,
-                    showFlagCircle: false,
-                    showDialingCode: true,
-                    //displays dialing code, false by default
-                    showName: false,
-                    //displays Name, true by default
-                    withBottomSheet: true,
-                    //displays country name, true by default
-                    showCurrency: false,
-                    //eg. 'British pound'
-                    showCurrencyISO: false,
-                    onChanged: (country) => updateCountry(country)),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            ElevatedButton(
-              child: const Text('Submit'),
-              onPressed: () async {
-                if (phoneTextController.text.isEmpty) {
-                  DialogHelper.showToast(
-                      message: FormFieldErrors.phoneNumberRequired);
-                  return;
-                }
-                Navigator.of(context).pop();
-                DialogHelper.showLoading();
-                await _fcm.requestPermission();
-                Map<String, dynamic> body = {
-                  'country_code': countryCode,
-                  'phone_no': phoneTextController.text.trim(),
-                  'device_token': Platform.isAndroid
-                      ? await _fcm.getToken()
-                      : await _fcm.getAPNSToken(),
-                  'device_type': Platform.isAndroid ? '1' : '2',
-                  'name': user.user?.displayName?.split(' ').first,
-                  'type': 1,
-                  'last_name': user.user?.displayName?.split(' ').last,
-                  'social_id': user.user?.uid,
-                  'social_type': type,
-                  'email': user.user?.email,
-                  'profile_pic': user.user?.photoURL,
-                };
-                ApiRequest apiRequest = ApiRequest(
-                    url: ApiConstants.socialLoginUrl(),
-                    requestType: RequestType.post,
-                    body: body);
-
-                var response = await BaseClient.handleRequest(apiRequest);
-
-                MapResponse<UserModel> model = MapResponse.fromJson(
-                    response, (json) => UserModel.fromJson(json));
-                DialogHelper.hideLoading();
-                DialogHelper.showToast(message: model.message);
-
-                if (context.mounted) {
-                  context.push(Routes.verify);
-                } else {
-                  AppPages.rootNavigatorKey.currentContext?.push(Routes.verify);
-                }
-                DialogHelper.showToast(
-                    message: "Your verification code is 1111");
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   Future<void> verifyOtpApi() async {
     await _fcm.requestPermission();
     Map<String, dynamic> body = {
       'country_code': countryCode,
       'phone_no': phoneTextController.text.trim(),
-      'device_token': Platform.isAndroid
-          ? await _fcm.getToken()
-          : await _fcm.getAPNSToken(),
+      'device_token': await _fcm.getToken(),
       'device_type': Platform.isAndroid ? '1' : '2',
       'otp': otpTextController.text.trim()
     };
@@ -321,9 +236,7 @@ class AuthVM extends BaseViewModel {
     Map<String, dynamic> body = {
       'country_code': countryCode,
       'phone_no': phoneTextController.text.trim(),
-      'device_token': Platform.isAndroid
-          ? await _fcm.getToken()
-          : await _fcm.getAPNSToken(),
+      'device_token': await _fcm.getToken(),
       'device_type': Platform.isAndroid ? '1' : '2',
       'name': nameTextController.text.trim(),
       'type': '1',
@@ -426,5 +339,13 @@ class AuthVM extends BaseViewModel {
     lNameTextController.clear();
     emailTextController.clear();
     agreedToTerms = false;
+  }
+
+  void resendOTP() {
+    DialogHelper.showLoading();
+    Future.delayed(Duration(seconds: 2), () {
+      DialogHelper.hideLoading();
+      DialogHelper.showToast(message: "Your verification code is 1111");
+    });
   }
 }

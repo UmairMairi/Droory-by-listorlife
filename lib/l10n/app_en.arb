@@ -1,6 +1,7 @@
 {
   "listLife": "List & Lift",
   "next": "Next",
+  "unverifiedToast": "Before posting any ads, please verify your phone from profile.",
   "amenities": "Amenities",
   "getStarted": "Get Started",
   "login": "Log In",
@@ -211,5 +212,10 @@
   "liveAds": "Live Ads",
   "underReview": "Under Review",
   "rejectedAds": "Rejected Ads",
-  "details": "Details"
+  "details": "Details",
+  "furnishing": "Furnishing",
+  "paymentType": "Payment Type",
+  "completionStatus": "Completion Status",
+  "deliveryTerms": "Delivery Terms"
+
 }

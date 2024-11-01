@@ -407,7 +407,7 @@ class PropertySellForm extends BaseView<SellFormsVM> {
             RichText(
                 text: TextSpan(children: [
               TextSpan(
-                text: 'Furnishing',
+                text: StringHelper.furnishing,
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
@@ -453,7 +453,7 @@ class PropertySellForm extends BaseView<SellFormsVM> {
             RichText(
                 text: TextSpan(children: [
               TextSpan(
-                text: 'Owner',
+                text: StringHelper.owner,
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
@@ -488,6 +488,147 @@ class PropertySellForm extends BaseView<SellFormsVM> {
                 ),
                 // Customize the dropdown icon color
                 items: ['Primary', 'Resell'].map((element) {
+                  return DropdownMenuItem(
+                    value: element,
+                    child: Text('$element'),
+                  );
+                }).toList(),
+              ),
+            ),
+            RichText(
+                text: TextSpan(children: [
+              TextSpan(
+                text: StringHelper.paymentType,
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                    color: Colors.black),
+              ),
+            ])),
+            Container(
+              margin: const EdgeInsets.only(top: 10, bottom: 20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    offset: const Offset(0, 1),
+                    blurRadius: 6,
+                  ),
+                ],
+              ),
+              child: DropdownButtonFormField2<String>(
+                onChanged: (newValue) {
+                  viewModel.paymentType = newValue!;
+                },
+                style: TextStyle(fontSize: 16, color: Colors.black),
+                decoration: InputDecoration(
+                  hintText: viewModel
+                      .paymentType, // Hint text when nothing is selected
+                  hintStyle: TextStyle(fontSize: 16, color: Colors.black),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+                // Customize the dropdown icon color
+                items: ['Installment', 'Cash or Installment', 'cash']
+                    .map((element) {
+                  return DropdownMenuItem(
+                    value: element,
+                    child: Text('$element'),
+                  );
+                }).toList(),
+              ),
+            ),
+            RichText(
+                text: TextSpan(children: [
+              TextSpan(
+                text: StringHelper.completionStatus,
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                    color: Colors.black),
+              ),
+            ])),
+            Container(
+              margin: const EdgeInsets.only(top: 10, bottom: 20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    offset: const Offset(0, 1),
+                    blurRadius: 6,
+                  ),
+                ],
+              ),
+              child: DropdownButtonFormField2<String>(
+                onChanged: (newValue) {
+                  viewModel.completionStatus = newValue!;
+                },
+                style: TextStyle(fontSize: 16, color: Colors.black),
+                decoration: InputDecoration(
+                  hintText: viewModel
+                      .completionStatus, // Hint text when nothing is selected
+                  hintStyle: TextStyle(fontSize: 16, color: Colors.black),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+                // Customize the dropdown icon color
+                items: ['Ready', 'Off Plan'].map((element) {
+                  return DropdownMenuItem(
+                    value: element,
+                    child: Text('$element'),
+                  );
+                }).toList(),
+              ),
+            ),
+            RichText(
+                text: TextSpan(children: [
+              TextSpan(
+                text: StringHelper.deliveryTerms,
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                    color: Colors.black),
+              ),
+            ])),
+            Container(
+              margin: const EdgeInsets.only(top: 10, bottom: 20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    offset: const Offset(0, 1),
+                    blurRadius: 6,
+                  ),
+                ],
+              ),
+              child: DropdownButtonFormField2<String>(
+                onChanged: (newValue) {
+                  viewModel.deliveryTerm = newValue!;
+                },
+                style: TextStyle(fontSize: 16, color: Colors.black),
+                decoration: InputDecoration(
+                  hintText: viewModel
+                      .deliveryTerm, // Hint text when nothing is selected
+                  hintStyle: TextStyle(fontSize: 16, color: Colors.black),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+                // Customize the dropdown icon color
+                items: [
+                  'Finished',
+                  'Not Finished',
+                  'Core and sell',
+                  'Semi finished'
+                ].map((element) {
                   return DropdownMenuItem(
                     value: element,
                     child: Text('$element'),

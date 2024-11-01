@@ -96,6 +96,7 @@ dependencies:
   app_links: ^6.3.2
   autocomplete_textfield: ^2.0.1
   searchfield: ^1.1.7
+  map_launcher: ^3.5.0
   flutter_svg: ^2.0.10+1
   path_provider: ^2.1.4
   dropdown_button2: ^2.3.9
@@ -310,7 +311,7 @@ flutter_native_splash:
   color: "#FFFFFF"
   image: assets/images/splash.png
   image_dark: assets/images/splash.png
-  android: false
+  android: true
   ios: true
   web: false
   android_gravity: center

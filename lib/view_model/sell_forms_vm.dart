@@ -225,6 +225,30 @@ class SellFormsVM extends BaseViewModel {
   String _noOfBathrooms = 'Select';
   String _noOfBedrooms = 'Select';
   String _furnishingStatus = 'Select';
+  String _paymentType = 'Select';
+  String _completionStatus = 'Select';
+  String _deliveryTerm = 'Select';
+
+  set deliveryTerm(String value) {
+    _deliveryTerm = value;
+    notifyListeners();
+  }
+
+  String get deliveryTerm => _deliveryTerm;
+
+  set completionStatus(String value) {
+    _completionStatus = value;
+    notifyListeners();
+  }
+
+  String get completionStatus => _completionStatus;
+
+  set paymentType(String value) {
+    _paymentType = value;
+    notifyListeners();
+  }
+
+  String get paymentType => _paymentType;
 
   String _ownershipStatus = 'Select';
 
@@ -301,7 +325,6 @@ class SellFormsVM extends BaseViewModel {
     ramTextController.text = "${item.ram ?? ''} GB";
     storageTextController.text = "${item.storage ?? ''} GB";
     screenSizeTextController.text = item.screenSize ?? '5.5"';
-
     jobPositionTextController.text = item.positionType ?? '';
     jobSalaryTextController.text = item.salleryFrom ?? '';
     jobSalaryFromController.text = item.salleryFrom ?? '';
@@ -323,7 +346,8 @@ class SellFormsVM extends BaseViewModel {
     noOfBathrooms = item.bathrooms.toString() ?? '';
     furnishingStatus = item.furnishedType ?? '';
     ownershipStatus = item.ownership ?? '';
-    areaSizeTextController.text = "${item?.area ?? ''}";
+    paymentType = item.paymentType ?? '';
+    areaSizeTextController.text = "${item.area ?? ''}";
     amenities =
         item.productAmenities?.map((element) => element.amnityId).toList() ??
             [];
@@ -361,7 +385,9 @@ class SellFormsVM extends BaseViewModel {
     noOfBathrooms = "Select";
     furnishingStatus = "Select";
     ownershipStatus = "Select";
+    paymentType = "Select";
     amenities = [];
+    addressTextController.text = DbHelper.getUserModel()?.address ?? '';
   }
 
   Future<List<CategoryModel>> getBrands({CategoryModel? data}) async {
@@ -444,6 +470,9 @@ class SellFormsVM extends BaseViewModel {
       'bathrooms': noOfBathrooms,
       'furnished_type': furnishingStatus,
       'ownership': ownershipStatus,
+      'payment_type': paymentType.toLowerCase().split(' ')..join('_'),
+      'completion_status': completionStatus.toLowerCase().split(' ')..join('_'),
+      'delivery_term': deliveryTerm.toLowerCase().split(' ')..join('_'),
       'selected_amnities': amenities.join(','),
       'area': areaSizeTextController.text
     };
@@ -601,7 +630,10 @@ class SellFormsVM extends BaseViewModel {
       'furnished_type': furnishingStatus,
       'ownership': ownershipStatus,
       'selected_amnities': amenities.join(','),
-      //'area': areaSizeTextController.text
+      'payment_type': paymentType.toLowerCase().split(' ')..join('_'),
+      'area': areaSizeTextController.text,
+      'completion_status': completionStatus.toLowerCase().split(' ')..join('_'),
+      'delivery_term': completionStatus.toLowerCase().split(' ')..join('_'),
     };
 
     ApiRequest apiRequest = ApiRequest(

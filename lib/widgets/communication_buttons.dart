@@ -3,6 +3,9 @@ import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/helpers/db_helper.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/base/helpers/string_helper.dart';
+import 'package:list_and_life/base/network/api_constants.dart';
+import 'package:list_and_life/base/network/api_request.dart';
+import 'package:list_and_life/base/network/base_client.dart';
 import 'package:list_and_life/models/inbox_model.dart';
 import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
@@ -39,11 +42,13 @@ class CommunicationButtons extends StatelessWidget {
   Widget _buildCallButton(BuildContext context) {
     return Expanded(
       child: InkWell(
-        onTap: () {
+        onTap: () async {
           if (DbHelper.getIsGuest()) {
             DialogHelper.showLoginDialog(context: context);
             return;
           }
+          DialogHelper.showLoading();
+          await callClickedApi(productId: "${data?.id}");
           String phone = "${data?.user?.countryCode}${data?.user?.phoneNo}";
           DialogHelper.goToUrl(uri: Uri.parse("tel://$phone"));
         },
@@ -153,5 +158,13 @@ class CommunicationButtons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: _buildButtons(context),
     );
+  }
+
+  Future<void> callClickedApi({required String productId}) async {
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.callOnUrl(productId: productId),
+        requestType: RequestType.get);
+    var response = await BaseClient.handleRequest(apiRequest);
+    DialogHelper.hideLoading();
   }
 }

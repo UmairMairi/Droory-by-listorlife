@@ -54,12 +54,22 @@ class ChatVM extends BaseViewModel {
     super.onInit();
   }
 
+  @override
+  void onReady() {
+    // TODO: implement onReady
+    if (!DbHelper.getIsGuest()) {
+      getInboxList();
+      initListeners();
+    }
+    super.onReady();
+  }
+
   void initListeners() {
     if (SocketHelper().isUserConnected == false) {
       SocketHelper().connectUser();
     }
     _socketIO.on(SocketConstants.getUserLists, (data) {
-      log("Users List: $data");
+      log("Listen ${SocketConstants.getUserLists} => data $data");
       inboxList.clear();
 
       InboxDataModel model = InboxDataModel.fromJson(data);
@@ -73,6 +83,8 @@ class ChatVM extends BaseViewModel {
       inboxStreamController.add(filteredInboxList);
     });
     _socketIO.on(SocketConstants.getMessageList, (data) {
+      log("Listen ${SocketConstants.getMessageList} => data $data");
+
       MessageDataModel model = MessageDataModel.fromJson(data);
       chatItems.clear();
       for (var element in model.list ?? []) {
@@ -103,8 +115,18 @@ class ChatVM extends BaseViewModel {
         blockedUser = false;
       }
     });
+    _socketIO.on(SocketConstants.offerUpdate, (data) {
+      log("Listen ${SocketConstants.offerUpdate} => data $data");
+
+      getMessageList(
+        productId: data['product_id'],
+        receiverId: data['receiver_id'],
+      );
+    });
     _socketIO.on(SocketConstants.sendMessage, (data) {
-      getInboxList();
+      log("Listen ${SocketConstants.sendMessage} => data $data");
+
+      /// getInboxList();
       MessageModel message = MessageModel.fromJson(data);
 
       if (message.senderId != DbHelper.getUserModel()?.id) {
@@ -113,7 +135,7 @@ class ChatVM extends BaseViewModel {
       }
     });
     _socketIO.on(SocketConstants.blockOrReportUser, (data) {
-      log("data => $data");
+      log("Listen ${SocketConstants.blockOrReportUser} => data $data");
       if (data['type'] == 'block') {
         DialogHelper.showToast(message: "You blocked this user successfully");
       }
@@ -129,9 +151,11 @@ class ChatVM extends BaseViewModel {
       notifyListeners();
       //DialogHelper.showToast(message: "You blocked this user successfully");
     });
-    _socketIO.on(SocketConstants.readChatStatus, (data) {});
+    _socketIO.on(SocketConstants.readChatStatus, (data) {
+      log("Listen ${SocketConstants.readChatStatus} => data $data");
+    });
     _socketIO.on(SocketConstants.clearChat, (data) {
-      log("Data => ${SocketConstants.clearChat} listen data $data");
+      log("Listen ${SocketConstants.clearChat} => data $data");
       getInboxList();
       Navigator.pop(context);
       notifyListeners();
@@ -144,8 +168,8 @@ class ChatVM extends BaseViewModel {
       "limit": 10000,
       "page": 1
     };
-
-    log("Get Users Resq: $map");
+    log("Socket Emit => ${SocketConstants.getUserLists} with $map",
+        name: "SOCKET");
     _socketIO.emit(SocketConstants.getUserLists, map);
   }
 
@@ -179,8 +203,26 @@ class ChatVM extends BaseViewModel {
       "limit": 10000,
       "page": 1
     };
-    print("Send message => $map");
+    log("Socket Emit => ${SocketConstants.getMessageList} with $map",
+        name: "SOCKET");
     _socketIO.emit(SocketConstants.getMessageList, map);
+  }
+
+  void updateOfferStatus(
+      {required num? messageId,
+      required num? messageType,
+      required num? productId,
+      required num? receiverId}) {
+    Map<String, dynamic> map = {
+      'message_id': messageId,
+      'message_type': messageType,
+      'receiver_id': receiverId,
+      'product_id': productId,
+      'sender_id': DbHelper.getUserModel()?.id,
+    };
+    log("Socket Emit => ${SocketConstants.offerUpdate} with $map",
+        name: "SOCKET");
+    _socketIO.emit(SocketConstants.offerUpdate, map);
   }
 
   void sendMessage(
@@ -199,7 +241,8 @@ class ChatVM extends BaseViewModel {
       "message": message,
       "message_type": type
     };
-    print("Send message => $map");
+    log("Socket Emit => ${SocketConstants.sendMessage} with $map",
+        name: "SOCKET");
     _socketIO.emit(SocketConstants.sendMessage, map);
 
     chatItems.insert(
@@ -213,6 +256,7 @@ class ChatVM extends BaseViewModel {
           updatedAt: "${DateTime.now()}"),
     );
     messageStreamController.add(chatItems);
+
     DialogHelper.hideLoading();
   }
 
@@ -237,7 +281,7 @@ class ChatVM extends BaseViewModel {
       "type": report ? "report" : "block",
       "reason": reason ?? ''
     };
-    log("Socket call => ${SocketConstants.blockOrReportUser} with $map",
+    log("Socket Emit => ${SocketConstants.blockOrReportUser} with $map",
         name: "SOCKET");
     _socketIO.emit(SocketConstants.blockOrReportUser, map);
   }
@@ -267,6 +311,14 @@ class ChatVM extends BaseViewModel {
               fontSize: 20,
               fontFamily: FontRes.MONTSERRAT_SEMIBOLD),
           onAccept: () {
+            updateOfferStatus(
+              messageId: data.id,
+              messageType: 5,
+              productId: chat?.productId,
+              receiverId: chat?.senderId == DbHelper.getUserModel()?.id
+                  ? chat?.receiverDetail?.id
+                  : chat?.senderDetail?.id,
+            );
             sendMessage(
                 type: 1,
                 receiverId: chat?.senderId == DbHelper.getUserModel()?.id
@@ -277,6 +329,14 @@ class ChatVM extends BaseViewModel {
                     "I am pleased to accept your offer of EGP ${data.message}. Let's close this deal fast");
           },
           onReject: () {
+            updateOfferStatus(
+              messageId: data.id,
+              messageType: 6,
+              productId: chat?.productId,
+              receiverId: chat?.senderId == DbHelper.getUserModel()?.id
+                  ? chat?.receiverDetail?.id
+                  : chat?.senderDetail?.id,
+            );
             sendMessage(
                 type: 1,
                 receiverId: chat?.senderId == DbHelper.getUserModel()?.id
@@ -287,15 +347,16 @@ class ChatVM extends BaseViewModel {
                     "Thank you for your offer of EGP ${data.message}  was hoping for a slightly higher amount. Would you be willing to increase your offer, so, I would be happy to close the deal promptly");
           },
           timeStamp: true,
-          createdAt: DateHelper.getChatTime(
+          createdAt: DateHelper.getTimeAgo(
               DateTime.parse(data.updatedAt ?? '2021-01-01 00:00:00')
-                  .microsecondsSinceEpoch),
+                  .millisecondsSinceEpoch),
           text: data.message ?? '',
           isSender: data.senderId == DbHelper.getUserModel()?.id,
           color: data.senderId == DbHelper.getUserModel()?.id
               ? Colors.black
               : const Color(0xff5A5B55),
         );
+
       case 3:
         return BubbleNormalImage(
             id: "${data.id}",
@@ -309,6 +370,40 @@ class ChatVM extends BaseViewModel {
                 image: "${ApiConstants.imageUrl}/${data.message}",
                 width: 120,
                 height: 150));
+      case 5:
+        return BubbleOfferAcceptedMessage(
+          textStyle: const TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontFamily: FontRes.MONTSERRAT_SEMIBOLD),
+          timeStamp: true,
+          createdAt: DateHelper.getTimeAgo(
+              DateTime.parse(data.updatedAt ?? '2021-01-01 00:00:00')
+                  .millisecondsSinceEpoch),
+          text: data.message ?? '',
+          isSender: data.senderId == DbHelper.getUserModel()?.id,
+          color: data.senderId == DbHelper.getUserModel()?.id
+              ? Colors.black
+              : const Color(0xff5A5B55),
+        );
+
+      case 6:
+        return BubbleOfferAcceptedMessage(
+          isAccepted: false,
+          textStyle: const TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontFamily: FontRes.MONTSERRAT_SEMIBOLD),
+          timeStamp: true,
+          createdAt: DateHelper.getTimeAgo(
+              DateTime.parse(data.updatedAt ?? '2021-01-01 00:00:00')
+                  .millisecondsSinceEpoch),
+          text: data.message ?? '',
+          isSender: data.senderId == DbHelper.getUserModel()?.id,
+          color: data.senderId == DbHelper.getUserModel()?.id
+              ? Colors.black
+              : const Color(0xff5A5B55),
+        );
       default:
         return const SizedBox.shrink();
     }
@@ -331,8 +426,9 @@ class ChatVM extends BaseViewModel {
       "receiver_id": reciver,
       "product_id": product
     };
-    log("Socket call => ${SocketConstants.clearChat} with $map",
+    log("Socket Emit => ${SocketConstants.clearChat} with $map",
         name: "SOCKET");
+
     _socketIO.emit(SocketConstants.clearChat, map);
   }
 }

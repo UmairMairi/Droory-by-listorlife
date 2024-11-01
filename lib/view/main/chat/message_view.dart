@@ -14,23 +14,38 @@ import 'package:list_and_life/widgets/app_error_widget.dart';
 import 'package:list_and_life/widgets/app_loading_widget.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:list_and_life/widgets/image_view.dart';
+import 'package:provider/provider.dart';
 
 import '../../../base/helpers/string_helper.dart';
 import '../../../base/network/api_constants.dart';
 import '../../../chat_bubble/message_bar_with_suggetion.dart';
 
-class MessageView extends BaseView<ChatVM> {
+class MessageView extends StatefulWidget {
   final InboxModel? chat;
   const MessageView({super.key, this.chat});
 
   @override
-  Widget build(BuildContext context, ChatVM viewModel) {
+  State<MessageView> createState() => _MessageViewState();
+}
+
+class _MessageViewState extends State<MessageView> {
+  late ChatVM viewModel;
+  @override
+  void initState() {
+    // TODO: implement initState
+    viewModel = context.read<ChatVM>();
     WidgetsBinding.instance.addPostFrameCallback((d) =>
         viewModel.getMessageList(
-            receiverId: chat?.senderId == DbHelper.getUserModel()?.id
-                ? chat?.receiverDetail?.id
-                : chat?.senderDetail?.id,
-            productId: chat?.productId));
+            receiverId: widget.chat?.senderId == DbHelper.getUserModel()?.id
+                ? widget.chat?.receiverDetail?.id
+                : widget.chat?.senderDetail?.id,
+            productId: widget.chat?.productId));
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -45,21 +60,21 @@ class MessageView extends BaseView<ChatVM> {
                   height: 50,
                   width: 50,
                   image:
-                      "${ApiConstants.imageUrl}/${chat?.productDetail?.image}",
+                      "${ApiConstants.imageUrl}/${widget.chat?.productDetail?.image}",
                 ),
                 ImageView.circle(
                   height: 20,
                   width: 20,
                   borderColor: context.theme.primaryColor,
                   image:
-                      "${ApiConstants.imageUrl}/${chat?.senderId == DbHelper.getUserModel()?.id ? chat?.receiverDetail?.profilePic ?? '' : chat?.senderDetail?.profilePic ?? ''}",
+                      "${ApiConstants.imageUrl}/${widget.chat?.senderId == DbHelper.getUserModel()?.id ? widget.chat?.receiverDetail?.profilePic ?? '' : widget.chat?.senderDetail?.profilePic ?? ''}",
                 ),
               ],
             ),
             const Gap(5),
-            Text(chat?.senderId == DbHelper.getUserModel()?.id
-                ? "${chat?.receiverDetail?.name} ${chat?.receiverDetail?.lastName}"
-                : "${chat?.senderDetail?.name} ${chat?.senderDetail?.lastName}"),
+            Text(widget.chat?.senderId == DbHelper.getUserModel()?.id
+                ? "${widget.chat?.receiverDetail?.name} ${widget.chat?.receiverDetail?.lastName}"
+                : "${widget.chat?.senderDetail?.name} ${widget.chat?.senderDetail?.lastName}"),
           ],
         ),
         actions: [
@@ -82,11 +97,11 @@ class MessageView extends BaseView<ChatVM> {
                               context.pop();
                               viewModel.clearChat(
                                   sender: DbHelper.getUserModel()?.id,
-                                  reciver: chat?.senderId ==
+                                  reciver: widget.chat?.senderId ==
                                           DbHelper.getUserModel()?.id
-                                      ? chat?.receiverDetail?.id
-                                      : chat?.senderDetail?.id,
-                                  product: chat?.productId);
+                                      ? widget.chat?.receiverDetail?.id
+                                      : widget.chat?.senderDetail?.id,
+                                  product: widget.chat?.productId);
                             },
                             lottieIcon: AssetsRes.DELETE_LOTTIE,
                             showCancelButton: true,
@@ -116,7 +131,7 @@ class MessageView extends BaseView<ChatVM> {
                                   report: true,
                                   reason: viewModel.reportTextController.text,
                                   userId:
-                                      "${chat?.senderId == DbHelper.getUserModel()?.id ? chat?.receiverDetail?.id : chat?.senderDetail?.id}");
+                                      "${widget.chat?.senderId == DbHelper.getUserModel()?.id ? widget.chat?.receiverDetail?.id : widget.chat?.senderDetail?.id}");
                             },
                             icon: AssetsRes.IC_REPORT_USER,
                             showCancelButton: true,
@@ -142,7 +157,7 @@ class MessageView extends BaseView<ChatVM> {
                               context.pop();
                               viewModel.reportBlockUser(
                                   userId:
-                                      "${chat?.senderId == DbHelper.getUserModel()?.id ? chat?.receiverDetail?.id : chat?.senderDetail?.id}");
+                                      "${widget.chat?.senderId == DbHelper.getUserModel()?.id ? widget.chat?.receiverDetail?.id : widget.chat?.senderDetail?.id}");
                             },
                             icon: AssetsRes.IC_BLOCK_USER,
                             showCancelButton: true,
@@ -192,7 +207,7 @@ class MessageView extends BaseView<ChatVM> {
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           return viewModel.getBubble(
-                              chat: chat,
+                              chat: widget.chat,
                               data: data[index],
                               type: data[index].messageType);
                         }),
@@ -218,22 +233,22 @@ class MessageView extends BaseView<ChatVM> {
                             viewModel.sendMessage(
                                 message: '$value',
                                 type: 2,
-                                receiverId: chat?.senderId ==
+                                receiverId: widget.chat?.senderId ==
                                         DbHelper.getUserModel()?.id
-                                    ? chat?.receiverDetail?.id
-                                    : chat?.senderDetail?.id,
-                                productId: chat?.productId);
+                                    ? widget.chat?.receiverDetail?.id
+                                    : widget.chat?.senderDetail?.id,
+                                productId: widget.chat?.productId);
                           },
                           textController: viewModel.messageTextController,
                           onSubmitted: (value) {
                             viewModel.sendMessage(
                                 message: value,
                                 type: 1,
-                                receiverId: chat?.senderId ==
+                                receiverId: widget.chat?.senderId ==
                                         DbHelper.getUserModel()?.id
-                                    ? chat?.receiverDetail?.id
-                                    : chat?.senderDetail?.id,
-                                productId: chat?.productId);
+                                    ? widget.chat?.receiverDetail?.id
+                                    : widget.chat?.senderDetail?.id,
+                                productId: widget.chat?.productId);
                             viewModel.messageTextController.clear();
                           },
                           onPickImageClick: () async {
@@ -247,11 +262,11 @@ class MessageView extends BaseView<ChatVM> {
                               viewModel.sendMessage(
                                   message: value,
                                   type: 3,
-                                  receiverId: chat?.senderId ==
+                                  receiverId: widget.chat?.senderId ==
                                           DbHelper.getUserModel()?.id
-                                      ? chat?.receiverDetail?.id
-                                      : chat?.senderDetail?.id,
-                                  productId: chat?.productId);
+                                      ? widget.chat?.receiverDetail?.id
+                                      : widget.chat?.senderDetail?.id,
+                                  productId: widget.chat?.productId);
                             }
                           },
                           onRecordingClick: () {},

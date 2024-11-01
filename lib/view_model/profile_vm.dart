@@ -22,6 +22,8 @@ class ProfileVM extends BaseViewModel {
       TextEditingController(text: DbHelper.getUserModel()?.name);
   TextEditingController lastNameController =
       TextEditingController(text: DbHelper.getUserModel()?.lastName);
+  TextEditingController locationTextController =
+      TextEditingController(text: DbHelper.getUserModel()?.address);
   TextEditingController emailTextController =
       TextEditingController(text: DbHelper.getUserModel()?.email);
   TextEditingController phoneTextController =
@@ -69,6 +71,23 @@ class ProfileVM extends BaseViewModel {
 
   bool get isEmailVerified => _isEmailVerified;
 
+  String _latitude = DbHelper?.getUserModel()?.latitude ?? '';
+  String _longitude = DbHelper?.getUserModel()?.longitude ?? '';
+
+  String get longitude => _longitude;
+
+  set longitude(String value) {
+    _longitude = value;
+    notifyListeners();
+  }
+
+  String get latitude => _latitude;
+
+  set latitude(String value) {
+    _latitude = value;
+    notifyListeners();
+  }
+
   set agreedToTerms(bool value) {
     _agreedToTerms = value;
     notifyListeners();
@@ -82,7 +101,21 @@ class ProfileVM extends BaseViewModel {
   @override
   void onInit() {
     // TODO: implement onInit
-    WidgetsBinding.instance.addPostFrameCallback((call) {
+    WidgetsBinding.instance.addPostFrameCallback((call) async {
+      await context.read<SettingVM>().getProfile();
+      nameTextController =
+          TextEditingController(text: DbHelper.getUserModel()?.name);
+      lastNameController =
+          TextEditingController(text: DbHelper.getUserModel()?.lastName);
+      locationTextController =
+          TextEditingController(text: DbHelper.getUserModel()?.address);
+      emailTextController =
+          TextEditingController(text: DbHelper.getUserModel()?.email);
+      phoneTextController =
+          TextEditingController(text: "${DbHelper.getUserModel()?.phoneNo}");
+      bioTextController =
+          TextEditingController(text: DbHelper.getUserModel()?.bio);
+
       isPhoneVerified = DbHelper.getUserModel()?.phoneVerified != 0;
       isEmailVerified = DbHelper.getUserModel()?.emailVerified != 0;
       communicationChoice = DbHelper.getUserModel()?.communicationChoice ?? '';
@@ -112,6 +145,9 @@ class ProfileVM extends BaseViewModel {
       'phone_no': phoneTextController.text.trim(),
       'country_code': countryCode,
       'communication_choice': communicationChoice,
+      'address': locationTextController.text,
+      'latitude': latitude,
+      'longitude': longitude
     };
 
     if (imagePath.isNotEmpty) {

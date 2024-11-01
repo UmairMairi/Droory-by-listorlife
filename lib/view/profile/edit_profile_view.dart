@@ -15,6 +15,7 @@ import 'package:list_and_life/widgets/image_view.dart';
 
 import '../../base/helpers/string_helper.dart';
 import '../../base/network/api_constants.dart';
+import '../../widgets/app_map_widget.dart';
 import '../../widgets/multi_select_category.dart';
 
 class EditProfileView extends BaseView<ProfileVM> {
@@ -84,6 +85,28 @@ class EditProfileView extends BaseView<ProfileVM> {
               inputType: TextInputType.name,
               inputFormatters: AppTextInputFormatters.withNameFormatter(),
               controller: viewModel.lastNameController,
+            ),
+            const Gap(20),
+            AppTextField(
+              title: StringHelper.location,
+              hint: StringHelper.location,
+              inputType: TextInputType.text,
+              readOnly: true,
+              onTap: () async {
+                Map<String, dynamic>? value = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AppMapWidget()));
+                print(value);
+                if (value != null && value.isNotEmpty) {
+                  viewModel.latitude = "${value['latitude']}";
+                  viewModel.longitude = "${value['longitude']}";
+                  viewModel.locationTextController.text =
+                      "${value['location']}, ${value['city']}, ${value['state']}";
+                }
+              },
+              inputFormatters: AppTextInputFormatters.withNameFormatter(),
+              controller: viewModel.locationTextController,
             ),
             const Gap(20),
             AppTextField(
@@ -158,14 +181,14 @@ class EditProfileView extends BaseView<ProfileVM> {
                   AppTextInputFormatters.withPhoneNumberFormatter(),
               controller: viewModel.phoneTextController,
             ),
-            const Gap(20),
+            /*  const Gap(20),
             AppTextField(
               title: StringHelper.bio,
               hint: StringHelper.writeHere,
               inputType: TextInputType.multiline,
               controller: viewModel.bioTextController,
               lines: 5,
-            ),
+            ),*/
             const Gap(20),
             Text(
               StringHelper.howToConnect,

@@ -7,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/models/inbox_model.dart';
+import 'package:map_launcher/map_launcher.dart';
 import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/res/font_res.dart';
@@ -73,7 +74,6 @@ class ProductDetailView extends BaseView<ProductVM> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   ProductDetailModel? data = snapshot.data;
-                  log("${data?.toJson()}", name: "RAJA JI");
                   data?.productMedias
                       ?.insert(0, ProductMedias(media: data.image));
                   return SingleChildScrollView(
@@ -467,15 +467,26 @@ class ProductDetailView extends BaseView<ProductVM> {
                                         ),
                                         const Gap(25),
                                         InkWell(
-                                          onTap: () {
+                                          onTap: () async {
                                             if (DbHelper.getIsGuest()) {
                                               DialogHelper.showLoginDialog(
                                                   context: context);
                                               return;
                                             }
-                                            print(data?.toJson());
-                                            MapsLauncher.launchQuery(
-                                                data?.nearby ?? '');
+                                            final availableMaps =
+                                                await MapLauncher.installedMaps;
+                                            print(
+                                                availableMaps); // [AvailableMap { mapName: Google Maps, mapType: google }, ...]
+
+                                            await availableMaps.first
+                                                .showMarker(
+                                              coords: Coords(
+                                                  double.parse(
+                                                      "${data?.latitude}"),
+                                                  double.parse(
+                                                      "${data?.longitude}")),
+                                              title: "Ocean Beach",
+                                            );
                                           },
                                           child: Text(
                                             StringHelper.getDirection,
@@ -531,7 +542,7 @@ class ProductDetailView extends BaseView<ProductVM> {
             child: Container(
               alignment: Alignment.center,
               margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              height: 30,
+              height: 35,
               child: CommunicationButtons(
                 data: data, // Pass any additional data required
               ),
@@ -718,8 +729,13 @@ class AddressMapWidget extends StatelessWidget {
         Marker(
             markerId: const MarkerId("1"),
             position: latLng,
-            onTap: () {
-              MapsLauncher.launchCoordinates(latLng.latitude, latLng.longitude);
+            onTap: () async {
+              final availableMaps = await MapLauncher.installedMaps;
+
+              await availableMaps.first.showMarker(
+                coords: Coords(latLng.latitude, latLng.longitude),
+                title: "Ocean Beach",
+              );
             })
       },
       circles: {

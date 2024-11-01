@@ -10,6 +10,13 @@ class ThemeHelper {
       useMaterial3: true,
       colorScheme: lightColorScheme,
       brightness: Brightness.light,
+      scaffoldBackgroundColor: Colors.white, // Scaffold background color
+
+      cardColor: Colors.white, // Card background color
+      listTileTheme: ListTileThemeData(
+        tileColor: Colors.white, // ListTile background color
+      ),
+
       fontFamily: 'Montserrat-Medium',
       popupMenuTheme: PopupMenuThemeData(
         textStyle: const TextStyle(
@@ -20,6 +27,7 @@ class ThemeHelper {
       appBarTheme: const AppBarTheme(
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
+          foregroundColor: Colors.black, // AppBar title color
           centerTitle: true,
           scrolledUnderElevation: 0,
           systemOverlayStyle: SystemUiOverlayStyle(

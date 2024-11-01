@@ -105,9 +105,7 @@ class NotificationService {
       badge: true,
       sound: true,
     );
-    String deviceToken = Platform.isAndroid
-        ? await FirebaseMessaging.instance.getToken() ?? ""
-        : await FirebaseMessaging.instance.getAPNSToken() ?? "";
+    String deviceToken = await FirebaseMessaging.instance.getToken() ?? "";
     debugPrint("fcm Token = $deviceToken");
     _configureSelectNotificationSubject();
 

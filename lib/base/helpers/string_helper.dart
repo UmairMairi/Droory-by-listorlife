@@ -8,6 +8,8 @@ class StringHelper {
   static String amenities = LocaleService.translate('amenities') ?? 'Amenities';
 
   // OnBoarding Screen
+  static String unverifiedToast = LocaleService.translate('unverifiedToast') ??
+      'Before posting any ads, please verify your phone number from your profile.';
   static String next = LocaleService.translate('next') ?? 'Next';
   static String getStarted =
       LocaleService.translate('getStarted') ?? 'Get Started';
@@ -325,7 +327,15 @@ class StringHelper {
   /// Product Screen
   static String cars = LocaleService.translate('cars') ?? "Cars";
   static String owner = LocaleService.translate('owner') ?? "Owner";
+  static String paymentType =
+      LocaleService.translate('paymentType') ?? "Payment Type";
+  static String completionStatus =
+      LocaleService.translate('completionStatus') ?? "Completion Status";
   static String city = LocaleService.translate('city') ?? "City";
+  static String furnishing =
+      LocaleService.translate('furnishing') ?? "Furnishing";
+  static String deliveryTerms =
+      LocaleService.translate('deliveryTerms') ?? "Delivery Terms";
   static String postingDate =
       LocaleService.translate('postingDate') ?? "Posting Date";
   static String soldText = LocaleService.translate('soldText') ?? "sold";
@@ -423,6 +433,9 @@ class StringHelper {
     login = LocaleService.translate('login') ?? 'Log In';
     guestLogin = LocaleService.translate('guestLogin') ?? 'Guest Login';
     continueButton = LocaleService.translate('continueButton') ?? 'Continue';
+    paymentType = LocaleService.translate('paymentType') ?? "Payment Type";
+    completionStatus =
+        LocaleService.translate('completionStatus') ?? 'Completion Status';
     loginWithSocial =
         LocaleService.translate('loginWithSocial') ?? 'Login with Social';
 
@@ -504,6 +517,9 @@ class StringHelper {
     markAsSold = LocaleService.translate('markAsSold') ?? 'Mark as Sold';
     sellFasterNow =
         LocaleService.translate('sellFasterNow') ?? 'Sell Faster Now';
+    furnishing = LocaleService.translate('furnishing') ?? "Furnishing";
+    deliveryTerms =
+        LocaleService.translate('deliveryTerms') ?? "Delivery Terms";
 
     // Filter Screen
     filter = LocaleService.translate('filter') ?? 'Filter';

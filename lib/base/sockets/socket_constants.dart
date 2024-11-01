@@ -10,6 +10,7 @@ class SocketConstants {
   static const String getUserLists = 'get_user_lists';
   static const String getMessageList = 'get_message_lists';
   static const String readChatStatus = 'read_chat';
+  static const String offerUpdate = 'offer_update';
 
   /// Listeners Name =>
 

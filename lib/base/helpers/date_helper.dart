@@ -2,31 +2,46 @@ import 'package:intl/intl.dart';
 import 'package:list_and_life/base/helpers/db_helper.dart';
 
 class DateHelper {
-  static const _locale = 'en';
+  // Make locale dynamic by defining a variable
+  static String _locale = 'en';
+
+  // Add a method to update the locale
+  static void setLocale(String locale) {
+    _locale = locale;
+  }
+
   static const int _secondMillis = 1000;
   static const int _minuteMillis = 60 * _secondMillis;
   static const int _hourMillis = 60 * _minuteMillis;
   static const int _daysMillis = 24 * _hourMillis;
 
-  static final _timeFormat12 = DateFormat("h:mm a", _locale);
-  static final _timeFormat24 = DateFormat("HH:mm:ss", _locale);
-  static final _timeFormat24Post = DateFormat("HH:mm", _locale);
+  static DateFormat get _timeFormat12 => DateFormat("h:mm a", _locale);
+  static DateFormat get _timeFormat24 => DateFormat("HH:mm:ss", _locale);
+  static DateFormat get _timeFormat24Post => DateFormat("HH:mm", _locale);
 
-  static final _dateFormatLog = DateFormat("dd MMM yyyy", _locale);
-  static final dateFormatGetEvent = DateFormat("yyyy-MM-dd", _locale);
-  static final _dateFormatEvent = DateFormat("dd MMM yyyy", _locale);
-  static final _joiningDate = DateFormat("dd MMM yyyy", _locale);
-  static final _dateFormatEventDetail = DateFormat("EEEE, MMM dd", _locale);
-  static final _dateFormatNotification = DateFormat("MMM dd", _locale);
-  static final _expiryMonthCard = DateFormat("MM", _locale);
-  static final _expiryYearCard = DateFormat("dd", _locale);
-  static final _addCardDateFormat = DateFormat("MM/yyyy", _locale);
-  static final _dateFormateWithoutString = DateFormat("yyyy-MM-dd", _locale);
-  static final _dateFormateNoString = DateFormat("dd/MM/yyyy", _locale);
-  static final _walletScreenFormate = DateFormat("MMM dd,yyyy h:mm a", _locale);
-  static final _dateTimeFormat = DateFormat("dd MM yyyy HH:mm", _locale);
-  static final _dateTimeFormatChat = DateFormat("yyyy-MM-dd hh:mm a", _locale);
+  static DateFormat get _dateFormatLog => DateFormat("dd MMM yyyy", _locale);
+  static DateFormat get dateFormatGetEvent => DateFormat("yyyy-MM-dd", _locale);
+  static DateFormat get _dateFormatEvent => DateFormat("dd MMM yyyy", _locale);
+  static DateFormat get _joiningDate => DateFormat("dd MMM yyyy", _locale);
+  static DateFormat get _dateFormatEventDetail =>
+      DateFormat("EEEE, MMM dd", _locale);
+  static DateFormat get _dateFormatNotification =>
+      DateFormat("MMM dd", _locale);
+  static DateFormat get _expiryMonthCard => DateFormat("MM", _locale);
+  static DateFormat get _expiryYearCard => DateFormat("dd", _locale);
+  static DateFormat get _addCardDateFormat => DateFormat("MM/yyyy", _locale);
+  static DateFormat get _dateFormateWithoutString =>
+      DateFormat("yyyy-MM-dd", _locale);
+  static DateFormat get _dateFormateNoString =>
+      DateFormat("dd/MM/yyyy", _locale);
+  static DateFormat get _walletScreenFormate =>
+      DateFormat("MMM dd,yyyy h:mm a", _locale);
+  static DateFormat get _dateTimeFormat =>
+      DateFormat("dd MM yyyy HH:mm", _locale);
+  static DateFormat get _dateTimeFormatChat =>
+      DateFormat("yyyy-MM-dd hh:mm a", _locale);
 
+  // Use this function for formatting dates with custom patterns dynamically
   static DateFormat getDateFormat(String dateFormat) {
     return DateFormat(dateFormat, _locale);
   }
@@ -80,78 +95,6 @@ class DateHelper {
 
   static String convertDateto24(DateTime dateTime) {
     return _timeFormat24.format(dateTime);
-  }
-
-  static String getChatTime(int time) {
-    if (time < 1000000000000) {
-      // if timestamp given in seconds, convert to millis
-      time *= 1000;
-    }
-    var now = DateTime.now().millisecondsSinceEpoch;
-    if (time > now || time <= 0) {
-      return "just now";
-    }
-    final int diff = now - time;
-    if (diff < _minuteMillis) {
-      return "just now";
-    } else if (diff < 2 * _minuteMillis) {
-      return "a minute ago";
-    } else {
-      var date = DateTime.fromMillisecondsSinceEpoch(time);
-      return _timeFormat12.format(date);
-    }
-  }
-
-  static String getTimeAgo(int time) {
-    String lang = DbHelper.getLanguage();
-    if (time < 1000000000000) {
-      // if timestamp given in seconds, convert to millis
-      time *= 1000;
-    }
-    var now = DateTime.now().millisecondsSinceEpoch;
-    if (time > now || time <= 0) {
-      return "just now";
-    }
-    // TODO: localize
-    final int diff = now - time;
-    switch (lang) {
-      case 'en':
-        if (diff < _minuteMillis) {
-          return "just now";
-        } else if (diff < 2 * _minuteMillis) {
-          return "a minute ago";
-        } else if (diff < 50 * _minuteMillis) {
-          return "${(diff / _minuteMillis).floor()} minutes ago";
-        } else if (diff < 90 * _minuteMillis) {
-          return "an hour ago";
-        } else if (diff < 24 * _hourMillis) {
-          return "${(diff / _hourMillis).floor()} hours ago";
-        } else if (diff < 48 * _hourMillis) {
-          return "yesterday";
-        } else {
-          var date = DateTime.fromMillisecondsSinceEpoch(time);
-          return _dateFormatLog.format(date);
-        }
-      case 'ar':
-        if (diff < _minuteMillis) {
-          return "الآن";
-        } else if (diff < 2 * _minuteMillis) {
-          return "منذ دقيقة";
-        } else if (diff < 50 * _minuteMillis) {
-          return "${(diff / _minuteMillis).floor()} منذ دقائق";
-        } else if (diff < 90 * _minuteMillis) {
-          return "منذ ساعة";
-        } else if (diff < 24 * _hourMillis) {
-          return "${(diff / _hourMillis).floor()} منذ ساعات";
-        } else if (diff < 48 * _hourMillis) {
-          return "أمس";
-        } else {
-          var date = DateTime.fromMillisecondsSinceEpoch(time);
-          return _dateFormatLog.format(date);
-        }
-      default:
-        return '';
-    }
   }
 
   static String getDateTimeAgo(DateTime? date) {
@@ -280,6 +223,90 @@ class DateHelper {
     return _joiningDate.format(dateTime!);
   }
 
+  static String getChatTime(int time) {
+    if (time < 1000000000000) {
+      // If timestamp given in seconds, convert to milliseconds
+      time *= 1000;
+    }
+    var now = DateTime.now().millisecondsSinceEpoch;
+    if (time > now || time <= 0) {
+      return _locale == 'ar' ? "الآن" : "just now";
+    }
+    final int diff = now - time;
+    if (diff < _minuteMillis) {
+      return _locale == 'ar' ? "الآن" : "just now";
+    } else if (diff < 2 * _minuteMillis) {
+      return _locale == 'ar' ? "منذ دقيقة" : "a minute ago";
+    } else {
+      var date = DateTime.fromMillisecondsSinceEpoch(time);
+      return _timeFormat12.format(date);
+    }
+  }
+
+  static String getTimeAgo(int time) {
+    if (time < 1000000000000) {
+      // If timestamp given in seconds, convert to milliseconds
+      time *= 1000;
+    }
+    var now = DateTime.now().millisecondsSinceEpoch;
+    if (time > now || time <= 0) {
+      return _locale == 'ar' ? "الآن" : "just now";
+    }
+    final int diff = now - time;
+    switch (_locale) {
+      case 'ar':
+        if (diff < _minuteMillis) {
+          return "الآن";
+        } else if (diff < 2 * _minuteMillis) {
+          return "منذ دقيقة";
+        } else if (diff < 50 * _minuteMillis) {
+          return "منذ ${(diff / _minuteMillis).floor()} دقائق";
+        } else if (diff < 90 * _minuteMillis) {
+          return "منذ ساعة";
+        } else if (diff < 24 * _hourMillis) {
+          return "منذ ${(diff / _hourMillis).floor()} ساعات";
+        } else if (diff < 48 * _hourMillis) {
+          return "أمس";
+        } else {
+          var date = DateTime.fromMillisecondsSinceEpoch(time);
+          return _dateFormatLog.format(date);
+        }
+      default: // English
+        if (diff < _minuteMillis) {
+          return "just now";
+        } else if (diff < 2 * _minuteMillis) {
+          return "a minute ago";
+        } else if (diff < 50 * _minuteMillis) {
+          return "${(diff / _minuteMillis).floor()} minutes ago";
+        } else if (diff < 90 * _minuteMillis) {
+          return "an hour ago";
+        } else if (diff < 24 * _hourMillis) {
+          return "${(diff / _hourMillis).floor()} hours ago";
+        } else if (diff < 48 * _hourMillis) {
+          return "yesterday";
+        } else {
+          var date = DateTime.fromMillisecondsSinceEpoch(time);
+          return _dateFormatLog.format(date);
+        }
+    }
+  }
+
+  static String getFormateDDMMMYYYY(int time) {
+    if (time < 1000000000000) {
+      // if timestamp given in seconds, convert to millis
+      time *= 1000;
+    }
+    var date = DateTime.fromMillisecondsSinceEpoch(time);
+    return _dateFormatLog.format(date);
+  }
+
+  static String getWalletDate(DateTime? time) {
+    if (time == null) {
+      return '';
+    }
+    return _walletScreenFormate.format(time);
+  }
+
   static String expiryMonth(DateTime dateTime) {
     return _expiryMonthCard.format(dateTime);
   }
@@ -344,13 +371,6 @@ class DateHelper {
       return '';
     }
     return _timeFormat12.format(time);
-  }
-
-  static String getWalletDate(DateTime? time) {
-    if (time == null) {
-      return '';
-    }
-    return _walletScreenFormate.format(time);
   }
 
   static bool isTimeBetween(

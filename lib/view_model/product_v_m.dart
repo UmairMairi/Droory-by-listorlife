@@ -20,7 +20,6 @@ class ProductVM extends BaseViewModel {
 
     var response = await BaseClient.handleRequest(apiRequest);
 
-    log("$response", name: "RAJA JI");
     MapResponse<ProductDetailModel> model =
         MapResponse<ProductDetailModel>.fromJson(
             response, (json) => ProductDetailModel.fromJson(json));
@@ -64,108 +63,152 @@ class ProductVM extends BaseViewModel {
 
     // Existing specifications for model, RAM, storage, etc.
     if (data?.modelId != null && data!.modelId != 0) {
-      specs.add(_buildSpecRow(context, 'Model', '${data.model?.name}'));
+      specs.add(_buildSpecRow(context, '${data.model?.name}', '📱', 'Model'));
     }
 
     if (data?.ram != null && data!.ram != 0) {
-      specs.add(_buildSpecRow(context, 'RAM', '${data.ram} GB'));
+      specs.add(_buildSpecRow(context, '${data.ram} GB', '🧠', 'RAM'));
     }
     if (data?.storage != null && data!.storage != 0) {
-      specs.add(_buildSpecRow(context, 'Storage', '${data.storage} GB'));
+      specs.add(_buildSpecRow(context, '${data.storage} GB', '💾', 'Storage'));
     }
     if (data?.screenSize != null && data!.screenSize!.isNotEmpty) {
-      specs.add(_buildSpecRow(context, 'Screen Size', "${data.screenSize}"));
+      specs.add(
+          _buildSpecRow(context, "${data.screenSize}", '📏', 'Screen Size'));
     }
     if (data?.material != null && data!.material!.isNotEmpty) {
-      specs.add(_buildSpecRow(context, 'Material', "${data.material}"));
+      specs.add(_buildSpecRow(context, "${data.material}", '🪵', 'Material'));
     }
     if (data?.itemCondition != null && data!.itemCondition!.isNotEmpty) {
-      specs.add(_buildSpecRow(context, 'Condition', "${data.itemCondition}"));
+      specs.add(
+          _buildSpecRow(context, "${data.itemCondition}", '🔍', 'Condition'));
     }
 
     // Specifications for cars (categoryId == 4)
     if (data?.categoryId == 4) {
       if (data?.transmission != null && data!.transmission!.isNotEmpty) {
-        specs.add(
-            _buildSpecRow(context, 'Transmission', "${data.transmission}"));
+        specs.add(_buildSpecRow(
+            context, "${data.transmission}", '⚙️', 'Transmission'));
       }
       if (data?.kmDriven != null) {
-        specs.add(_buildSpecRow(context, 'KM Driven', '${data?.kmDriven} km'));
+        specs.add(
+            _buildSpecRow(context, '${data?.kmDriven} km', '🚗', 'KM Driven'));
       }
       if (data?.numberOfOwner != null && data!.numberOfOwner != 0) {
         specs.add(_buildSpecRow(
-            context, 'Number of Owners', '${data.numberOfOwner}'));
+            context, '${data.numberOfOwner} Owners', '👤', 'Number of Owners'));
       }
     }
 
-    // New specifications for properties
-    if (data?.propertyFor != null && data!.propertyFor!.isNotEmpty) {
-      specs.add(_buildSpecRow(context, 'Property For', "${data.propertyFor}"));
-    }
-    if (data?.bedrooms != null && data!.bedrooms != 0) {
-      specs.add(_buildSpecRow(context, 'Bedrooms', "${data.bedrooms}"));
-    }
-    if (data?.bathrooms != null && data!.bathrooms != 0) {
-      specs.add(_buildSpecRow(context, 'Bathrooms', "${data.bathrooms}"));
-    }
-    if (data?.furnishedType != null && data!.furnishedType!.isNotEmpty) {
-      specs.add(
-          _buildSpecRow(context, 'Furnished Type', "${data.furnishedType}"));
-    }
-    if (data?.ownership != null && data!.ownership!.isNotEmpty) {
-      specs.add(_buildSpecRow(context, 'Ownership', "${data.ownership}"));
-    }
-    if (data?.paymentType != null && data!.paymentType!.isNotEmpty) {
-      specs.add(_buildSpecRow(context, 'Payment Type', "${data.paymentType}"));
-    }
-    if (data?.completionStatus != null && data!.completionStatus!.isNotEmpty) {
-      specs.add(_buildSpecRow(
-          context, 'Completion Status', "${data.completionStatus}"));
+    if (data?.categoryId == 11) {
+      // New specifications for properties
+      if (data?.propertyFor != null && data!.propertyFor!.isNotEmpty) {
+        specs.add(_buildSpecRow(
+            context, "${data.propertyFor}", '🏠', 'Property For'));
+      }
+      if (data?.bedrooms != null && data!.bedrooms != 0) {
+        specs
+            .add(_buildSpecRow(context, "${data.bedrooms}", '🛏️', 'Bedrooms'));
+      }
+      if (data?.bathrooms != null && data!.bathrooms != 0) {
+        specs.add(
+            _buildSpecRow(context, "${data.bathrooms}", '🚽', 'Bathrooms'));
+      }
+      if (data?.furnishedType != null && data!.furnishedType!.isNotEmpty) {
+        specs.add(_buildSpecRow(
+            context, "${data.furnishedType}", '🛋️', 'Furnished Type'));
+      }
+      if (data?.ownership != null && data!.ownership!.isNotEmpty) {
+        specs.add(
+            _buildSpecRow(context, "${data.ownership}", '📜', 'Ownership'));
+      }
+      if (data?.area != null && data!.area != 0) {
+        specs.add(_buildSpecRow(context, "${data.area}", '📐', 'Area'));
+      }
+      if (data?.paymentType != null && data!.paymentType!.isNotEmpty) {
+        specs.add(_buildSpecRow(
+            context, "${data.paymentType}", '💳', 'Payment Type'));
+      }
+      if (data?.completionStatus != null &&
+          data!.completionStatus!.isNotEmpty) {
+        specs.add(_buildSpecRow(
+            context, "${data.completionStatus}", '✅', 'Completion Status'));
+      }
+      if (data?.deliveryTerm != null && data!.deliveryTerm!.isNotEmpty) {
+        specs.add(_buildSpecRow(
+            context, "${data.deliveryTerm}", '🚚', 'Delivery Term'));
+      }
     }
 
     // Additional Vehicle Specifications for Cars (categoryId == 4)
     if (data?.categoryId == 4) {
       if (data?.year != null && data!.year != 0) {
-        specs.add(_buildSpecRow(context, 'Year', "${data.year}"));
+        specs.add(_buildSpecRow(context, "${data.year}", '📅', 'Year'));
       }
       if (data?.milleage != null && data!.milleage!.isNotEmpty) {
-        specs.add(_buildSpecRow(context, 'Mileage', '${data.milleage} km'));
+        specs.add(
+            _buildSpecRow(context, '${data.milleage} km', '🔋', 'Mileage'));
       }
       if (data?.fuel != null && data!.fuel!.isNotEmpty) {
-        specs.add(_buildSpecRow(context, 'Fuel', '${data.fuel}'));
+        specs.add(_buildSpecRow(context, '${data.fuel}', '⛽', 'Fuel'));
       }
     }
 
     if (data?.nearby != null && data!.nearby!.isNotEmpty) {
       specs.add(_buildSpecRow(
-          context, 'Location', '${data.nearby?.split(',').last}'));
+          context, '${data.nearby?.split(',').last}', '📍', 'Nearby'));
     }
     if (data?.createdAt != null && data!.createdAt!.isNotEmpty) {
       specs.add(_buildSpecRow(
-          context,
-          'Posted At',
-          DateFormat('dd MMM yyyy')
-              .format(DateTime.parse('${data.createdAt}'))));
+        context,
+        DateFormat('dd MMM yyyy').format(DateTime.parse('${data.createdAt}')),
+        '🕒',
+        'Posted',
+      ));
     }
 
-    return specs.isNotEmpty
-        ? [
-            ...specs,
-          ]
-        : [];
+    return specs.isNotEmpty ? [...specs] : [];
   }
 
   Widget _buildSpecRow(
-      BuildContext context, String specName, String specValue) {
+      BuildContext context, String specValue, String symbol, String title) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
-          specName,
-          style: const TextStyle(fontWeight: FontWeight.w800),
+          title,
+          style: const TextStyle(
+            fontSize: 10.0, // Smaller font size for the title
+            fontWeight: FontWeight.w400, // Lighter font weight
+            color: Colors.black54, // Grey color for the title
+            overflow: TextOverflow.ellipsis, // Ensure title does not overflow
+          ),
+          maxLines: 1, // Limit to 1 line
         ),
-        Text(specValue),
+        SizedBox(
+          width: 125,
+          child: Row(
+            children: [
+              Text(
+                symbol,
+                style:
+                    const TextStyle(fontSize: 15.0), // Customize size as needed
+              ),
+              const SizedBox(width: 3), // Space between symbol and text
+              Expanded(
+                child: Text(
+                  specValue,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    overflow: TextOverflow.ellipsis, // Handle overflow
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ), // Space between value and title
       ],
     );
   }
