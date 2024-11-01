@@ -4,10 +4,12 @@ import 'dart:developer';
 import 'dart:io';
 import 'dart:math' as math;
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:list_and_life/base/utils/utils.dart';
 
 import '../helpers/db_helper.dart';
 import '../helpers/dialog_helper.dart';
@@ -105,7 +107,8 @@ class NotificationService {
       badge: true,
       sound: true,
     );
-    String deviceToken = await FirebaseMessaging.instance.getToken() ?? "";
+
+    String? deviceToken = await Utils.getFcmToken();
     debugPrint("fcm Token = $deviceToken");
     _configureSelectNotificationSubject();
 

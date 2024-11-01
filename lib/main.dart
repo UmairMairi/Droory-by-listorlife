@@ -125,4 +125,8 @@ class _MyAppState extends State<MyApp> {
 
 1. social login with gmail > in my priofile > previous login details are showing (Done)
 2. i have added one ad and this ad is showing on my home > user can chat, call  with own produc (Done)
-3.maine animals m ad add ki par specification laptop ki aari h.because it showing previous posted ad details*/
+3.maine animals m ad add ki par specification laptop ki aari h.because it showing previous posted ad details
+
+Android: https://i.diawi.com/4iKjCp
+iOS: https://i.diawi.com/N4p39c
+*/

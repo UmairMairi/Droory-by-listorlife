@@ -61,38 +61,72 @@ class ProductVM extends BaseViewModel {
       {required BuildContext context, ProductDetailModel? data}) {
     List<Widget> specs = [];
 
-    // Existing specifications for model, RAM, storage, etc.
-    if (data?.modelId != null && data!.modelId != 0) {
-      specs.add(_buildSpecRow(context, '${data.model?.name}', '📱', 'Model'));
+    // Electronics Specifications
+    if (data?.categoryId == 1) {
+      if (data?.modelId != null && data!.modelId != 0) {
+        specs.add(_buildSpecRow(context, '${data.model?.name}', '📱', 'Model'));
+      }
+      if (data?.ram != null && data!.ram != 0) {
+        specs.add(_buildSpecRow(context, '${data.ram} GB', '🧠', 'RAM'));
+      }
+      if (data?.storage != null && data!.storage != 0) {
+        specs
+            .add(_buildSpecRow(context, '${data.storage} GB', '💾', 'Storage'));
+      }
+      if (data?.screenSize != null && data!.screenSize!.isNotEmpty) {
+        specs.add(
+            _buildSpecRow(context, "${data.screenSize}", '📏', 'Screen Size'));
+      }
+      if (data?.itemCondition != null && data!.itemCondition!.isNotEmpty) {
+        specs.add(
+            _buildSpecRow(context, "${data.itemCondition}", '🔍', 'Condition'));
+      }
     }
 
-    if (data?.ram != null && data!.ram != 0) {
-      specs.add(_buildSpecRow(context, '${data.ram} GB', '🧠', 'RAM'));
-    }
-    if (data?.storage != null && data!.storage != 0) {
-      specs.add(_buildSpecRow(context, '${data.storage} GB', '💾', 'Storage'));
-    }
-    if (data?.screenSize != null && data!.screenSize!.isNotEmpty) {
-      specs.add(
-          _buildSpecRow(context, "${data.screenSize}", '📏', 'Screen Size'));
-    }
-    if (data?.material != null && data!.material!.isNotEmpty) {
-      specs.add(_buildSpecRow(context, "${data.material}", '🪵', 'Material'));
-    }
-    if (data?.itemCondition != null && data!.itemCondition!.isNotEmpty) {
-      specs.add(
-          _buildSpecRow(context, "${data.itemCondition}", '🔍', 'Condition'));
-    }
-
-    // Specifications for cars (categoryId == 4)
-    if (data?.categoryId == 4) {
-      if (data?.transmission != null && data!.transmission!.isNotEmpty) {
+    // Home & Living Specifications
+    if (data?.categoryId == 2) {
+      if (data?.itemCondition != null && data!.itemCondition!.isNotEmpty) {
         specs.add(_buildSpecRow(
-            context, "${data.transmission}", '⚙️', 'Transmission'));
+            context, "${data.itemCondition}", '🛋️', 'Condition'));
+      }
+      if (data?.material != null && data!.material!.isNotEmpty) {
+        specs.add(_buildSpecRow(context, "${data.material}", '🪵', 'Material'));
+      }
+    }
+
+    // Fashion Specifications
+    if (data?.categoryId == 3) {
+      if (data?.modelId != null && data!.modelId != 0) {
+        specs.add(_buildSpecRow(context, '${data.model?.name}', '👗', 'Model'));
+      }
+      if (data?.itemCondition != null && data!.itemCondition!.isNotEmpty) {
+        specs.add(
+            _buildSpecRow(context, "${data.itemCondition}", '🔍', 'Condition'));
+      }
+    }
+
+    // Vehicles Specifications
+    if (data?.categoryId == 4) {
+      if (data?.modelId != null && data!.modelId != 0) {
+        specs.add(_buildSpecRow(context, '${data.model?.name}', '🚗', 'Model'));
+      }
+      if (data?.year != null && data!.year != 0) {
+        specs.add(_buildSpecRow(context, "${data.year}", '📅', 'Year'));
+      }
+      if (data?.fuel != null && data!.fuel!.isNotEmpty) {
+        specs.add(_buildSpecRow(context, '${data.fuel}', '⛽', 'Fuel'));
+      }
+      if (data?.milleage != null && data!.milleage!.isNotEmpty) {
+        specs.add(
+            _buildSpecRow(context, '${data.milleage} km', '🔋', 'Mileage'));
       }
       if (data?.kmDriven != null) {
         specs.add(
-            _buildSpecRow(context, '${data?.kmDriven} km', '🚗', 'KM Driven'));
+            _buildSpecRow(context, '${data?.kmDriven} km', '🚙', 'KM Driven'));
+      }
+      if (data?.transmission != null && data!.transmission!.isNotEmpty) {
+        specs.add(_buildSpecRow(
+            context, "${data.transmission}", '⚙️', 'Transmission'));
       }
       if (data?.numberOfOwner != null && data!.numberOfOwner != 0) {
         specs.add(_buildSpecRow(
@@ -100,11 +134,70 @@ class ProductVM extends BaseViewModel {
       }
     }
 
+    // Hobbies, Music, Art & Books Specifications
+    if (data?.categoryId == 5) {
+      if (data?.itemCondition != null && data!.itemCondition!.isNotEmpty) {
+        specs.add(
+            _buildSpecRow(context, "${data.itemCondition}", '🎨', 'Condition'));
+      }
+    }
+
+    // Pets Specifications
+    if (data?.categoryId == 6) {
+      if (data?.brand != null && data!.brand!.name!.isNotEmpty) {
+        specs.add(_buildSpecRow(context, "${data.brand?.name}", '🐶', 'Breed'));
+      }
+    }
+
+    // Business & Industrial Specifications
+    if (data?.categoryId == 7) {
+      if (data?.modelId != null && data!.modelId != 0) {
+        specs.add(_buildSpecRow(context, '${data.model?.name}', '🏢', 'Model'));
+      }
+      if (data?.itemCondition != null && data!.itemCondition!.isNotEmpty) {
+        specs.add(
+            _buildSpecRow(context, "${data.itemCondition}", '🔍', 'Condition'));
+      }
+    }
+
+    // Jobs Specifications
+    if (data?.categoryId == 9) {
+      if (data?.positionType != null && data!.positionType!.isNotEmpty) {
+        specs.add(_buildSpecRow(
+            context, "${data.positionType}", '💼', 'Position Type'));
+      }
+      if (data?.salleryPeriod != null && data!.salleryPeriod!.isNotEmpty) {
+        specs.add(_buildSpecRow(
+            context, "${data?.salleryPeriod}", '💰', 'Salary Period'));
+      }
+    }
+
+    // Mobiles & Tablets Specifications
+    if (data?.categoryId == 10) {
+      if (data?.modelId != null && data!.modelId != 0) {
+        specs.add(_buildSpecRow(context, '${data.model?.name}', '📱', 'Model'));
+      }
+      if (data?.ram != null && data!.ram != 0) {
+        specs.add(_buildSpecRow(context, '${data.ram} GB', '🧠', 'RAM'));
+      }
+      if (data?.storage != null && data!.storage != 0) {
+        specs
+            .add(_buildSpecRow(context, '${data.storage} GB', '💾', 'Storage'));
+      }
+      if (data?.itemCondition != null && data!.itemCondition!.isNotEmpty) {
+        specs.add(
+            _buildSpecRow(context, "${data.itemCondition}", '🔍', 'Condition'));
+      }
+    }
+
+    // Real Estate Specifications
     if (data?.categoryId == 11) {
-      // New specifications for properties
       if (data?.propertyFor != null && data!.propertyFor!.isNotEmpty) {
         specs.add(_buildSpecRow(
             context, "${data.propertyFor}", '🏠', 'Property For'));
+      }
+      if (data?.area != null && data!.area != 0) {
+        specs.add(_buildSpecRow(context, "${data.area}", '📏', 'Area'));
       }
       if (data?.bedrooms != null && data!.bedrooms != 0) {
         specs
@@ -122,9 +215,6 @@ class ProductVM extends BaseViewModel {
         specs.add(
             _buildSpecRow(context, "${data.ownership}", '📜', 'Ownership'));
       }
-      if (data?.area != null && data!.area != 0) {
-        specs.add(_buildSpecRow(context, "${data.area}", '📐', 'Area'));
-      }
       if (data?.paymentType != null && data!.paymentType!.isNotEmpty) {
         specs.add(_buildSpecRow(
             context, "${data.paymentType}", '💳', 'Payment Type'));
@@ -140,23 +230,9 @@ class ProductVM extends BaseViewModel {
       }
     }
 
-    // Additional Vehicle Specifications for Cars (categoryId == 4)
-    if (data?.categoryId == 4) {
-      if (data?.year != null && data!.year != 0) {
-        specs.add(_buildSpecRow(context, "${data.year}", '📅', 'Year'));
-      }
-      if (data?.milleage != null && data!.milleage!.isNotEmpty) {
-        specs.add(
-            _buildSpecRow(context, '${data.milleage} km', '🔋', 'Mileage'));
-      }
-      if (data?.fuel != null && data!.fuel!.isNotEmpty) {
-        specs.add(_buildSpecRow(context, '${data.fuel}', '⛽', 'Fuel'));
-      }
-    }
-
+    // Common specifications
     if (data?.nearby != null && data!.nearby!.isNotEmpty) {
-      specs.add(_buildSpecRow(
-          context, '${data.nearby?.split(',').last}', '📍', 'Nearby'));
+      specs.add(_buildSpecRow(context, '${data.nearby}', '📍', 'Location'));
     }
     if (data?.createdAt != null && data!.createdAt!.isNotEmpty) {
       specs.add(_buildSpecRow(

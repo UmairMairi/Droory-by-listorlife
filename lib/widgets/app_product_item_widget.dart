@@ -373,9 +373,12 @@ class AppProductItemWidget extends StatelessWidget {
       }
     }
 
-    return SizedBox(
-        height: 50,
-        child: ListView(scrollDirection: Axis.horizontal, children: specs));
+    if (specs.isNotEmpty) {
+      return SizedBox(
+          height: 50,
+          child: ListView(scrollDirection: Axis.horizontal, children: specs));
+    }
+    return SizedBox.shrink();
   }
 
   Widget _buildSpecRow(BuildContext context, String specValue, String symbol) {

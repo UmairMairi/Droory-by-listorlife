@@ -12,6 +12,7 @@ import 'package:list_and_life/base/helpers/db_helper.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/base/helpers/location_helper.dart';
 import 'package:list_and_life/base/helpers/social_login_helper.dart';
+import 'package:list_and_life/base/utils/utils.dart';
 import 'package:list_and_life/models/common/map_response.dart';
 import 'package:list_and_life/models/user_model.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
@@ -54,8 +55,6 @@ class AuthVM extends BaseViewModel {
   String _communicationChoice =
       DbHelper.getUserModel()?.communicationChoice ?? '';
 
-  final FirebaseMessaging _fcm = FirebaseMessaging.instance;
-
   String countryCode = "+20";
   Country selectedCountry = Country.EG;
 
@@ -90,11 +89,10 @@ class AuthVM extends BaseViewModel {
   }
 
   Future<void> loginApi({bool resend = false}) async {
-    await _fcm.requestPermission();
     Map<String, dynamic> body = {
       'country_code': countryCode,
       'phone_no': phoneTextController.text.trim(),
-      'device_token': await _fcm.getToken(),
+      'device_token': await Utils.getFcmToken(),
       'device_type': Platform.isAndroid ? '1' : '2'
     };
     ApiRequest apiRequest = ApiRequest(
@@ -143,9 +141,8 @@ class AuthVM extends BaseViewModel {
   Future<void> socialLoginApi(
       {required UserCredential user, required int type}) async {
     DialogHelper.showLoading();
-    await _fcm.requestPermission();
     Map<String, dynamic> body = {
-      'device_token': await _fcm.getToken(),
+      'device_token': await Utils.getFcmToken(),
       'device_type': Platform.isAndroid ? '1' : '2',
       'name': user.user?.displayName?.split(' ').first,
       'type': 1,
@@ -181,11 +178,10 @@ class AuthVM extends BaseViewModel {
   }
 
   Future<void> verifyOtpApi() async {
-    await _fcm.requestPermission();
     Map<String, dynamic> body = {
       'country_code': countryCode,
       'phone_no': phoneTextController.text.trim(),
-      'device_token': await _fcm.getToken(),
+      'device_token': await Utils.getFcmToken(),
       'device_type': Platform.isAndroid ? '1' : '2',
       'otp': otpTextController.text.trim()
     };
@@ -236,7 +232,7 @@ class AuthVM extends BaseViewModel {
     Map<String, dynamic> body = {
       'country_code': countryCode,
       'phone_no': phoneTextController.text.trim(),
-      'device_token': await _fcm.getToken(),
+      'device_token': await Utils.getFcmToken(),
       'device_type': Platform.isAndroid ? '1' : '2',
       'name': nameTextController.text.trim(),
       'type': '1',

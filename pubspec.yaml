@@ -97,10 +97,11 @@ dependencies:
   autocomplete_textfield: ^2.0.1
   searchfield: ^1.1.7
   map_launcher: ^3.5.0
-  flutter_svg: ^2.0.10+1
-  path_provider: ^2.1.4
+  flutter_svg: ^2.0.11
+  path_provider: ^2.1.5
   dropdown_button2: ^2.3.9
   rename: ^3.0.2
+  device_info_plus: ^11.1.0
 
 
 dev_dependencies:
