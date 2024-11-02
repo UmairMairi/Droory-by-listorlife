@@ -134,18 +134,10 @@ class ChatVM extends BaseViewModel {
     });
     _socketIO.on(SocketConstants.blockOrReportUser, (data) {
       log("Listen ${SocketConstants.blockOrReportUser} => data $data");
-      if (data['type'] == 'block') {
-        DialogHelper.showToast(message: "You blocked this user successfully");
-      }
 
       if (data['type'] == 'report') {
         DialogHelper.showToast(message: "Your report submitted successfully");
       }
-
-      if (data['type'] == 'unblock') {
-        DialogHelper.showToast(message: "You unblocked this user successfully");
-      }
-
       notifyListeners();
       //DialogHelper.showToast(message: "You blocked this user successfully");
     });

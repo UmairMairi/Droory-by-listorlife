@@ -351,7 +351,7 @@ class AppProductItemWidget extends StatelessWidget {
         specs.add(_buildSpecRow(context, "${data.year}", '📅'));
       }
       if (data?.milleage != null && data!.milleage!.isNotEmpty) {
-        specs.add(_buildSpecRow(context, '${data.milleage} km', '🔋'));
+        specs.add(_buildSpecRow(context, '${data.milleage}', '🔋'));
       }
       if (data?.fuel != null && data!.fuel!.isNotEmpty) {
         specs.add(_buildSpecRow(

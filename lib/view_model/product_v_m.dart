@@ -117,8 +117,7 @@ class ProductVM extends BaseViewModel {
         specs.add(_buildSpecRow(context, '${data.fuel}', '⛽', 'Fuel'));
       }
       if (data?.milleage != null && data!.milleage!.isNotEmpty) {
-        specs.add(
-            _buildSpecRow(context, '${data.milleage} km', '🔋', 'Mileage'));
+        specs.add(_buildSpecRow(context, '${data.milleage}', '🔋', 'Mileage'));
       }
       if (data?.kmDriven != null) {
         specs.add(

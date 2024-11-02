@@ -51,7 +51,9 @@ class _BlockedUsersListState extends State<BlockedUsersList> {
         name: "SOCKET");
     _socketIO.emit(SocketConstants.blockOrReportUser, map);
     DialogHelper.hideLoading();
-    setState(() {});
+    Future.delayed(Duration(milliseconds: 200), () {
+      setState(() {});
+    });
   }
 
   @override
@@ -77,11 +79,14 @@ class _BlockedUsersListState extends State<BlockedUsersList> {
 
                           return Card(
                             child: ListTile(
-                              leading: ImageView.rect(
-                                  image:
-                                      "${ApiConstants.imageUrl}/${item.user?.profilePic}",
+                              leading: ImageView.circle(
+                                  image: item.user?.profilePic
+                                              ?.contains('http') ??
+                                          false
+                                      ? "${item.user?.profilePic}"
+                                      : "${ApiConstants.imageUrl}/${item.user?.profilePic}",
                                   width: 100,
-                                  height: 120),
+                                  height: 100),
                               title: Text(
                                   "${item.user?.name} ${item.user?.lastName}"),
                               trailing: TextButton(

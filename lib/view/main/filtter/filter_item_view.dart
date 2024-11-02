@@ -202,8 +202,10 @@ class _FilterItemViewState extends State<FilterItemView> {
         onLoading: onLoading,
         child: Column(
           children: [
-            getFilterWidget(data: widget.model),
-
+            // getFilterWidget(data: widget.model),
+            SizedBox(
+              height: 20,
+            ),
             if (isLoading) ...{
               ProductListSkeleton(isLoading: isLoading)
             } else ...{
