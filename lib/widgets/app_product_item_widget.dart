@@ -77,10 +77,10 @@ class AppProductItemWidget extends StatelessWidget {
                       decoration: const BoxDecoration(
                           color: Colors.white, shape: BoxShape.circle),
                       child: LikeButton(
-                        isFav: data?.isFavourite == 1,
-                        onTap: () async =>
-                            await onLikeButtonTapped(id: data?.id),
-                      ),
+                          isFav: data?.isFavourite == 1,
+                          onTap: () async => {
+                                await onLikeButtonTapped(id: data?.id),
+                              }),
                     )),
               ],
             ),
@@ -376,7 +376,10 @@ class AppProductItemWidget extends StatelessWidget {
     if (specs.isNotEmpty) {
       return SizedBox(
           height: 50,
-          child: ListView(scrollDirection: Axis.horizontal, children: specs));
+          child: ListView(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              children: specs));
     }
     return SizedBox.shrink();
   }

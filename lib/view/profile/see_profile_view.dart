@@ -205,8 +205,8 @@ class _SeeProfileViewState extends State<SeeProfileView> {
               children: [
                 ImageView.circle(
                   image: "${ApiConstants.imageUrl}/${widget.user?.profilePic}",
-                  height: 70,
-                  width: 70,
+                  height: 60,
+                  width: 60,
                 ),
                 const SizedBox(
                   width: 15,
@@ -243,124 +243,125 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                       const SizedBox(
                         height: 5,
                       ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: widget.user?.emailVerified == 1
-                                ? Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 02,
-                                      vertical: 2,
-                                    ),
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.rectangle,
-                                        borderRadius: BorderRadius.circular(10),
-                                        border:
-                                            Border.all(color: Colors.green)),
-                                    child: Row(
-                                      children: [
-                                        const Icon(
-                                          Icons.verified_rounded,
-                                          size: 15,
-                                          color: Colors.green,
-                                        ),
-                                        const Gap(05),
-                                        Text(
-                                          'Email is verified',
-                                          style: const TextStyle(
-                                              color: Colors.green,
-                                              fontSize: 12),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                : Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 02,
-                                      vertical: 2,
-                                    ),
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.rectangle,
-                                        borderRadius: BorderRadius.circular(10),
-                                        border: Border.all(color: Colors.red)),
-                                    child: Row(
-                                      children: [
-                                        const Icon(
-                                          Icons.cancel,
-                                          size: 15,
-                                          color: Colors.red,
-                                        ),
-                                        const Gap(05),
-                                        Text(
-                                          'Email is unverified',
-                                          style: const TextStyle(
-                                              color: Colors.red, fontSize: 12),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                          ),
-                          Gap(05),
-                          Expanded(
-                            child: widget.user?.phoneVerified == 1
-                                ? Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 02,
-                                      vertical: 2,
-                                    ),
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.rectangle,
-                                        borderRadius: BorderRadius.circular(10),
-                                        border:
-                                            Border.all(color: Colors.green)),
-                                    child: Row(
-                                      children: [
-                                        const Icon(
-                                          Icons.verified_rounded,
-                                          size: 15,
-                                          color: Colors.green,
-                                        ),
-                                        const Gap(05),
-                                        Text(
-                                          'Phone is verified',
-                                          style: const TextStyle(
-                                              color: Colors.green,
-                                              fontSize: 12),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                : Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 02,
-                                      vertical: 2,
-                                    ),
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.rectangle,
-                                        borderRadius: BorderRadius.circular(10),
-                                        border: Border.all(color: Colors.red)),
-                                    child: Row(
-                                      children: [
-                                        const Icon(
-                                          Icons.cancel_rounded,
-                                          size: 15,
-                                          color: Colors.red,
-                                        ),
-                                        const Gap(05),
-                                        Text(
-                                          'Phone is unverified',
-                                          style: const TextStyle(
-                                              color: Colors.red, fontSize: 12),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                          ),
-                        ],
-                      ),
                     ],
                   ),
                 ),
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                widget.user?.phoneVerified == 1
+                    ? Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 2,
+                        ),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.green)),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(
+                              Icons.verified_rounded,
+                              size: 15,
+                              color: Colors.green,
+                            ),
+                            const Gap(05),
+                            Text(
+                              'Phone is verified',
+                              style: const TextStyle(
+                                  color: Colors.green, fontSize: 12),
+                            ),
+                          ],
+                        ),
+                      )
+                    : Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 2,
+                        ),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.red)),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(
+                              Icons.cancel_rounded,
+                              size: 15,
+                              color: Colors.red,
+                            ),
+                            const Gap(05),
+                            Text(
+                              'Phone is unverified',
+                              style: const TextStyle(
+                                  color: Colors.red, fontSize: 12),
+                            ),
+                          ],
+                        ),
+                      ),
+                Gap(05),
+                widget.user?.emailVerified == 1
+                    ? Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 2,
+                        ),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.green)),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(
+                              Icons.verified_rounded,
+                              size: 15,
+                              color: Colors.green,
+                            ),
+                            const Gap(05),
+                            Text(
+                              'Email is verified',
+                              style: const TextStyle(
+                                  color: Colors.green, fontSize: 12),
+                            ),
+                          ],
+                        ),
+                      )
+                    : Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 2,
+                        ),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.red)),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(
+                              Icons.cancel,
+                              size: 15,
+                              color: Colors.red,
+                            ),
+                            const Gap(05),
+                            Text(
+                              'Email is unverified',
+                              style: const TextStyle(
+                                  color: Colors.red, fontSize: 12),
+                            ),
+                          ],
+                        ),
+                      ),
               ],
             ),
             const SizedBox(

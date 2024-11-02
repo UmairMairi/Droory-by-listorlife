@@ -69,6 +69,9 @@ class VerificationProfileView extends BaseView<ProfileVM> {
             AppResendOtpButton(
               seconds: 30,
               onResend: () {
+                viewModel.sendVerificationPhone(
+                    phone: viewModel.phoneTextController.text.trim());
+
                 print('Your new OTp is 1111');
               },
             )

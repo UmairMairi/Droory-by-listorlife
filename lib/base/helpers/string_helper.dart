@@ -9,7 +9,7 @@ class StringHelper {
 
   // OnBoarding Screen
   static String unverifiedToast = LocaleService.translate('unverifiedToast') ??
-      'Before posting any ads, please verify your phone number from your profile.';
+      'Verify your phone number in your profile before posting ads.';
   static String next = LocaleService.translate('next') ?? 'Next';
   static String getStarted =
       LocaleService.translate('getStarted') ?? 'Get Started';
@@ -459,6 +459,10 @@ class StringHelper {
         'Enter the 4-digit code sent to you at';
     otp = LocaleService.translate('otp') ?? 'OTP';
     verifyButton = LocaleService.translate('verifyButton') ?? 'Verify';
+    unverifiedToast = LocaleService.translate('unverifiedToast') ??
+        'Verify your phone number in your profile before posting ads.';
+    next = LocaleService.translate('next') ?? 'Next';
+    getStarted = LocaleService.translate('getStarted') ?? 'Get Started';
 
     // Home Screen
     location = LocaleService.translate('location') ?? 'Location';

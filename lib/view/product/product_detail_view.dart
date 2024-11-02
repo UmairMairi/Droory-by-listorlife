@@ -118,11 +118,19 @@ class ProductDetailView extends BaseView<ProductVM> {
                                 ],
                               ),
                               const Gap(10),
-                              Text(
-                                "${StringHelper.egp} ${data?.price}",
-                                style: context.textTheme.titleLarge
-                                    ?.copyWith(color: Colors.red),
-                              ),
+                              if (data?.categoryId == 9) ...{
+                                Text(
+                                  "${StringHelper.egp} ${data?.salleryFrom} - ${data?.salleryTo}",
+                                  style: context.textTheme.titleLarge
+                                      ?.copyWith(color: Colors.red),
+                                ),
+                              } else ...{
+                                Text(
+                                  "${StringHelper.egp} ${data?.price}",
+                                  style: context.textTheme.titleLarge
+                                      ?.copyWith(color: Colors.red),
+                                ),
+                              },
                               const Gap(10),
                               if (data?.category?.name
                                       ?.toLowerCase()
@@ -452,10 +460,11 @@ class ProductDetailView extends BaseView<ProductVM> {
                                             const Gap(05),
                                             Expanded(
                                               child: Text(
-                                                data?.city ?? '',
+                                                data?.nearby ?? '',
                                                 overflow: TextOverflow.ellipsis,
+                                                maxLines: 5,
                                                 style: context
-                                                    .textTheme.titleLarge,
+                                                    .textTheme.titleMedium,
                                               ),
                                             ),
                                           ],
@@ -501,9 +510,9 @@ class ProductDetailView extends BaseView<ProductVM> {
                                       ],
                                     ),
                                   ),
-                                  const Gap(20),
+                                  const Gap(5),
                                   Expanded(
-                                    flex: 4,
+                                    flex: 3,
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(20),
                                       child: SizedBox(

@@ -57,10 +57,7 @@ class ChatVM extends BaseViewModel {
   @override
   void onReady() {
     // TODO: implement onReady
-    if (!DbHelper.getIsGuest()) {
-      getInboxList();
-      initListeners();
-    }
+
     super.onReady();
   }
 
@@ -114,6 +111,7 @@ class ChatVM extends BaseViewModel {
       } else {
         blockedUser = false;
       }
+      notifyListeners();
     });
     _socketIO.on(SocketConstants.offerUpdate, (data) {
       log("Listen ${SocketConstants.offerUpdate} => data $data");

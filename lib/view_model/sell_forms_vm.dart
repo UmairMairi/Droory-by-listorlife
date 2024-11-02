@@ -215,79 +215,23 @@ class SellFormsVM extends BaseViewModel {
   TextEditingController screenSizeTextController = TextEditingController();
   TextEditingController materialTextController = TextEditingController();
   TextEditingController sizeTextController = TextEditingController();
+  TextEditingController propertyForTextController = TextEditingController();
+  TextEditingController noOfBathroomsTextController = TextEditingController();
+  TextEditingController noOfBedroomsTextController = TextEditingController();
+  TextEditingController furnishingStatusTextController =
+      TextEditingController();
+  TextEditingController ownershipStatusTextController = TextEditingController();
+  TextEditingController paymentTypeTextController = TextEditingController();
+  TextEditingController completionStatusTextController =
+      TextEditingController();
+  TextEditingController deliveryTermTextController = TextEditingController();
+  TextEditingController areaSizeTextController = TextEditingController();
 
   List<String> yearsType = [];
 
   List<String> fuelsType = ['Petrol', 'Diesel', 'Electric', 'Hybrid', 'Gas'];
   String _selectedOption = 'Select';
   String get selectedOption => _selectedOption;
-  String _propertyFor = 'Select';
-  String _noOfBathrooms = 'Select';
-  String _noOfBedrooms = 'Select';
-  String _furnishingStatus = 'Select';
-  String _paymentType = 'Select';
-  String _completionStatus = 'Select';
-  String _deliveryTerm = 'Select';
-
-  set deliveryTerm(String value) {
-    _deliveryTerm = value;
-    notifyListeners();
-  }
-
-  String get deliveryTerm => _deliveryTerm;
-
-  set completionStatus(String value) {
-    _completionStatus = value;
-    notifyListeners();
-  }
-
-  String get completionStatus => _completionStatus;
-
-  set paymentType(String value) {
-    _paymentType = value;
-    notifyListeners();
-  }
-
-  String get paymentType => _paymentType;
-
-  String _ownershipStatus = 'Select';
-
-  set ownershipStatus(String value) {
-    _ownershipStatus = value;
-    notifyListeners();
-  }
-
-  String get ownershipStatus => _ownershipStatus;
-
-  set furnishingStatus(String value) {
-    _furnishingStatus = value;
-    notifyListeners();
-  }
-
-  String get furnishingStatus => _furnishingStatus;
-
-  set noOfBedrooms(String value) {
-    _noOfBedrooms = value;
-    notifyListeners();
-  }
-
-  String get noOfBedrooms => _noOfBedrooms;
-
-  set propertyFor(String value) {
-    _propertyFor = value;
-    notifyListeners();
-  }
-
-  String get propertyFor => _propertyFor;
-
-  TextEditingController areaSizeTextController = TextEditingController();
-
-  set noOfBathrooms(String value) {
-    _noOfBathrooms = value;
-    notifyListeners();
-  }
-
-  String get noOfBathrooms => _noOfBathrooms;
   set selectedOption(String value) {
     _selectedOption = value;
     notifyListeners();
@@ -341,13 +285,16 @@ class SellFormsVM extends BaseViewModel {
     selectedSize = CategoryModel(id: item.sizeId, name: item.fashionSize?.name);
     isEditProduct = true;
     communicationChoice = item.communicationChoice ?? '';
-    propertyFor = item.propertyFor ?? '';
-    noOfBedrooms = item.bedrooms.toString() ?? '';
-    noOfBathrooms = item.bathrooms.toString() ?? '';
-    furnishingStatus = item.furnishedType ?? '';
-    ownershipStatus = item.ownership ?? '';
-    paymentType = item.paymentType ?? '';
+
+    propertyForTextController.text = item.propertyFor ?? '';
+
+    noOfBedroomsTextController.text = item.bedrooms.toString() ?? '';
+    noOfBathroomsTextController.text = item.bathrooms.toString() ?? '';
+    furnishingStatusTextController.text = item.furnishedType ?? '';
+    ownershipStatusTextController.text = item.ownership ?? '';
+    paymentTypeTextController.text = item.paymentType ?? '';
     areaSizeTextController.text = "${item.area ?? ''}";
+    completionStatusTextController.text = item.completionStatus ?? '';
     amenities =
         item.productAmenities?.map((element) => element.amnityId).toList() ??
             [];
@@ -379,13 +326,15 @@ class SellFormsVM extends BaseViewModel {
     screenSizeTextController.clear();
     materialTextController.clear();
     sizeTextController.clear();
-    propertyFor = "Select";
+    propertyForTextController.clear();
     areaSizeTextController.clear();
-    noOfBathrooms = "Select";
-    noOfBathrooms = "Select";
-    furnishingStatus = "Select";
-    ownershipStatus = "Select";
-    paymentType = "Select";
+    noOfBedroomsTextController.clear();
+    noOfBathroomsTextController.clear();
+    furnishingStatusTextController.clear();
+    ownershipStatusTextController.clear();
+    paymentTypeTextController.clear();
+    completionStatusTextController.clear();
+    deliveryTermTextController.clear();
     amenities = [];
     addressTextController.text = DbHelper.getUserModel()?.address ?? '';
   }
@@ -443,6 +392,7 @@ class SellFormsVM extends BaseViewModel {
           : '0',
       "year": yearTextController.text.trim(),
       "fuel": fuelTextController.text.trim(),
+      "milleage": mileageTextController.text.trim(),
       "transmission": transmission == 1 ? 'automatic' : 'manual',
       "km_driven": kmDrivenTextController.text.trim(),
       "number_of_owner": numOfOwnerTextController.text.trim(),
@@ -465,14 +415,18 @@ class SellFormsVM extends BaseViewModel {
       "screen_size": screenSizeTextController.text.trim(),
       "size_id": selectedSize?.id,
       'communication_choice': communicationChoice,
-      'property_for': propertyFor,
-      'bedrooms': noOfBedrooms,
-      'bathrooms': noOfBathrooms,
-      'furnished_type': furnishingStatus,
-      'ownership': ownershipStatus,
-      'payment_type': paymentType.toLowerCase().split(' ')..join('_'),
-      'completion_status': completionStatus.toLowerCase().split(' ')..join('_'),
-      'delivery_term': deliveryTerm.toLowerCase().split(' ')..join('_'),
+      'property_for': propertyForTextController.text,
+      'bedrooms': noOfBedroomsTextController.text,
+      'bathrooms': noOfBathroomsTextController.text,
+      'furnished_type': furnishingStatusTextController.text,
+      'ownership': ownershipStatusTextController.text,
+      'payment_type': paymentTypeTextController.text.toLowerCase().split(' ')
+        ..join('_'),
+      'completion_status':
+          completionStatusTextController.text.toLowerCase().split(' ')
+            ..join('_'),
+      'delivery_term': deliveryTermTextController.text.toLowerCase().split(' ')
+        ..join('_'),
       'selected_amnities': amenities.join(','),
       'area': areaSizeTextController.text
     };
@@ -624,16 +578,20 @@ class SellFormsVM extends BaseViewModel {
       "size_id": selectedSize?.id,
       "delete_img_id": deletedImageIds.join(','),
       'communication_choice': communicationChoice,
-      'property_for': propertyFor,
-      'bedrooms': noOfBedrooms,
-      'bathrooms': noOfBathrooms,
-      'furnished_type': furnishingStatus,
-      'ownership': ownershipStatus,
+      'property_for': propertyForTextController.text,
+      'bedrooms': noOfBedroomsTextController.text,
+      'bathrooms': noOfBathroomsTextController.text,
+      'furnished_type': furnishingStatusTextController.text,
+      'ownership': ownershipStatusTextController.text,
+      'payment_type': paymentTypeTextController.text.toLowerCase().split(' ')
+        ..join('_'),
+      'completion_status':
+          completionStatusTextController.text.toLowerCase().split(' ')
+            ..join('_'),
+      'delivery_term': deliveryTermTextController.text.toLowerCase().split(' ')
+        ..join('_'),
       'selected_amnities': amenities.join(','),
-      'payment_type': paymentType.toLowerCase().split(' ')..join('_'),
-      'area': areaSizeTextController.text,
-      'completion_status': completionStatus.toLowerCase().split(' ')..join('_'),
-      'delivery_term': completionStatus.toLowerCase().split(' ')..join('_'),
+      'area': areaSizeTextController.text
     };
 
     ApiRequest apiRequest = ApiRequest(

@@ -481,7 +481,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
                 FilteringTextInputFormatter.deny(
                     RegExp(viewModel.regexToRemoveEmoji)),
               ],
-              keyboardType: TextInputType.text,
+              keyboardType: TextInputType.number,
               textInputAction: TextInputAction.done,
             ),
           ),
@@ -527,7 +527,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
                 FilteringTextInputFormatter.deny(
                     RegExp(viewModel.regexToRemoveEmoji)),
               ],
-              keyboardType: TextInputType.text,
+              keyboardType: TextInputType.number,
               textInputAction: TextInputAction.done,
             ),
           ),

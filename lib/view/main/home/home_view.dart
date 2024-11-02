@@ -275,6 +275,14 @@ class HomeView extends BaseView<HomeVM> {
                             },
                             child: AppProductItemWidget(
                               data: viewModel.productsList[index],
+                              onLikeTapped: () {
+                                if (viewModel.productsList[index].isFavourite ==
+                                    1) {
+                                  viewModel.productsList[index].isFavourite = 0;
+                                  return;
+                                }
+                                viewModel.productsList[index].isFavourite = 1;
+                              },
                             ),
                           );
                         },

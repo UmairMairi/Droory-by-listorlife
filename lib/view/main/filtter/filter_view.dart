@@ -182,9 +182,9 @@ class _FilterViewState extends State<FilterView> {
                       width: context.width,
                       height: 50,
                       child: TextFormField(
+                          keyboardType: TextInputType.number,
                           textAlign: TextAlign.center,
                           controller: viewModel.startPriceTextController,
-                          keyboardType: TextInputType.text,
                           cursorColor: Colors.black,
                           onChanged: (value) {
                             setState(() {
@@ -233,7 +233,7 @@ class _FilterViewState extends State<FilterView> {
                       width: context.width,
                       height: 50,
                       child: TextFormField(
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.number,
                         textAlign: TextAlign.center,
                         controller: viewModel.endPriceTextController,
                         cursorColor: Colors.black,

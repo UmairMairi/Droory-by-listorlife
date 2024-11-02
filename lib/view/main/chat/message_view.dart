@@ -40,7 +40,6 @@ class _MessageViewState extends State<MessageView> {
                 ? widget.chat?.receiverDetail?.id
                 : widget.chat?.senderDetail?.id,
             productId: widget.chat?.productId));
-
     super.initState();
   }
 
@@ -158,6 +157,14 @@ class _MessageViewState extends State<MessageView> {
                               viewModel.reportBlockUser(
                                   userId:
                                       "${widget.chat?.senderId == DbHelper.getUserModel()?.id ? widget.chat?.receiverDetail?.id : widget.chat?.senderDetail?.id}");
+                              Future.delayed(
+                                  Duration(milliseconds: 500),
+                                  () => viewModel.getMessageList(
+                                      receiverId: widget.chat?.senderId ==
+                                              DbHelper.getUserModel()?.id
+                                          ? widget.chat?.receiverDetail?.id
+                                          : widget.chat?.senderDetail?.id,
+                                      productId: widget.chat?.productId));
                             },
                             icon: AssetsRes.IC_BLOCK_USER,
                             showCancelButton: true,

@@ -215,7 +215,7 @@ class ProfileVM extends BaseViewModel {
     }
     DialogHelper.showToast(message: "Your verification code is 1111");
 
-    DialogHelper.showToast(message: model.message);
+    /// DialogHelper.showToast(message: model.message);
   }
 
   Future<void> verifyOtpApi() async {

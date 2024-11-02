@@ -170,6 +170,10 @@ class ProductVM extends BaseViewModel {
         specs.add(_buildSpecRow(
             context, "${data?.salleryPeriod}", '💰', 'Salary Period'));
       }
+      if (data?.salleryFrom != null && data?.salleryTo != null) {
+        specs.add(_buildSpecRow(context,
+            "${data?.salleryFrom}-${data?.salleryTo}", '💰', 'Salary Range'));
+      }
     }
 
     // Mobiles & Tablets Specifications
@@ -232,7 +236,8 @@ class ProductVM extends BaseViewModel {
 
     // Common specifications
     if (data?.nearby != null && data!.nearby!.isNotEmpty) {
-      specs.add(_buildSpecRow(context, '${data.nearby}', '📍', 'Location'));
+      specs.add(_buildSpecRow(
+          context, '${data.nearby?.split(',').last}', '📍', 'Location'));
     }
     if (data?.createdAt != null && data!.createdAt!.isNotEmpty) {
       specs.add(_buildSpecRow(
@@ -255,35 +260,32 @@ class ProductVM extends BaseViewModel {
         Text(
           title,
           style: const TextStyle(
-            fontSize: 10.0, // Smaller font size for the title
+            fontSize: 9.0, // Smaller font size for the title
             fontWeight: FontWeight.w400, // Lighter font weight
             color: Colors.black54, // Grey color for the title
             overflow: TextOverflow.ellipsis, // Ensure title does not overflow
           ),
           maxLines: 1, // Limit to 1 line
         ),
-        SizedBox(
-          width: 125,
-          child: Row(
-            children: [
-              Text(
-                symbol,
-                style:
-                    const TextStyle(fontSize: 15.0), // Customize size as needed
-              ),
-              const SizedBox(width: 3), // Space between symbol and text
-              Expanded(
-                child: Text(
-                  specValue,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    overflow: TextOverflow.ellipsis, // Handle overflow
-                  ),
+        Row(
+          children: [
+            Text(
+              symbol,
+              style:
+                  const TextStyle(fontSize: 15.0), // Customize size as needed
+            ),
+            const SizedBox(width: 3), // Space between symbol and text
+            Expanded(
+              child: Text(
+                specValue,
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  overflow: TextOverflow.ellipsis, // Handle overflow
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ), // Space between value and title
       ],
     );
