@@ -5,7 +5,8 @@ class StringHelper {
   static String listLife = LocaleService.translate('listLife') ?? 'List & Lift';
   static String howToConnect =
       LocaleService.translate('howToConnect') ?? 'How to connect?';
-  static String amenities = LocaleService.translate('amenities') ?? 'Amenities';
+  static String amenities =
+      LocaleService.translate('amenities') ?? 'Features/Amenities';
 
   // OnBoarding Screen
   static String unverifiedToast = LocaleService.translate('unverifiedToast') ??

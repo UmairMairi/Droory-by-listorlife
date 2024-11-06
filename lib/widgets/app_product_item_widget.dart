@@ -61,7 +61,7 @@ class AppProductItemWidget extends StatelessWidget {
                 CardSwipeWidget(
                   data: data,
                   imagesList: data?.productMedias,
-                  height: 160,
+                  height: 180,
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20),
@@ -71,8 +71,8 @@ class AppProductItemWidget extends StatelessWidget {
                     top: 10,
                     right: 10,
                     child: Container(
-                      padding: const EdgeInsets.all(08),
-                      margin: const EdgeInsets.all(08),
+                      padding: const EdgeInsets.all(5),
+                      margin: const EdgeInsets.all(05),
                       alignment: Alignment.center,
                       decoration: const BoxDecoration(
                           color: Colors.white, shape: BoxShape.circle),
@@ -110,13 +110,16 @@ class AppProductItemWidget extends StatelessWidget {
                     ],
                   ),
                   const Gap(5),
-                  getSpecifications(context: context, data: data),
+
                   Text(
                     data?.description ?? '',
                     maxLines: 1,
                     style: context.bodySmall,
                     overflow: TextOverflow.ellipsis,
                   ),
+                  const Gap(5),
+                  getSpecifications(context: context, data: data),
+
                   const Gap(5),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -303,12 +306,13 @@ class AppProductItemWidget extends StatelessWidget {
                           ),
                         ),
                       ]),*/
-                  if (data?.userId != DbHelper.getUserModel()?.id) ...{
+                  /// =======Buttons=======
+                  /*  if (data?.userId != DbHelper.getUserModel()?.id) ...{
                     CommunicationButtons(
                       data: data, // Pass any additional data required
                     ),
                     const Gap(10),
-                  }
+                  }*/
                 ],
               ),
             )
@@ -363,19 +367,19 @@ class AppProductItemWidget extends StatelessWidget {
     }
     if (data?.categoryId == 11) {
       if (data?.bedrooms != null && data!.bedrooms != 0) {
-        specs.add(_buildSpecRow(context, "${data.bedrooms}", '🛏️'));
+        specs.add(_buildSpecRow(context, "${data.bedrooms} Beds", '🛏️'));
       }
       if (data?.bathrooms != null && data!.bathrooms != 0) {
-        specs.add(_buildSpecRow(context, "${data.bathrooms}", '🚽'));
+        specs.add(_buildSpecRow(context, "${data.bathrooms} Baths", '🚽'));
       }
       if (data?.area != null && data!.area != 0) {
-        specs.add(_buildSpecRow(context, "${data.area}", '📐'));
+        specs.add(_buildSpecRow(context, "${data.area} Sqft", '📐'));
       }
     }
 
     if (specs.isNotEmpty) {
       return SizedBox(
-          height: 50,
+          height: 20,
           child: ListView(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,

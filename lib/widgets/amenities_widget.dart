@@ -31,6 +31,33 @@ class _AmenitiesWidgetState extends State<AmenitiesWidget> {
     // Fetch amenities on init
   }
 
+  String getAmenityEmoji(String amenityName) {
+    // Define a map that links each amenity name to an emoji
+    final Map<String, String> amenityEmojiMap = {
+      "Intercom": "📞",
+      "Security": "🛡️",
+      "Storage": "📦",
+      "Broadband Internet": "🌐",
+      "Garage Parking": "🚗",
+      "Elevator": "🛗",
+      "Landline": "☎️",
+      "Natural Gas": "🔥",
+      "Water Meter": "💧",
+      "Electricity Meter": "⚡",
+      "Pool": "🏊",
+      "Pets Allowed": "🐾",
+      "Maids Room": "🛏️",
+      "Parking": "🚗",
+      "Central A/C and Heating": "❄️🔥",
+      "Private Garden": "🌳",
+      "Installed Kitchen": "🍳",
+      "Balcony": "🌅",
+    };
+
+    // Return the emoji if found in the map, otherwise return a default symbol
+    return amenityEmojiMap[amenityName] ?? "❓"; // "❓" as a default emoji
+  }
+
   // Fetch amenities and set state only once
   Future<void> _fetchAmenities() async {
     try {
@@ -79,8 +106,8 @@ class _AmenitiesWidgetState extends State<AmenitiesWidget> {
         final amenity = _amenities[index];
         return CheckboxListTile(
           title: Text(DbHelper?.getLanguage() == 'en'
-              ? amenity.name ?? ''
-              : amenity.nameAr ?? ''),
+              ? "${getAmenityEmoji(amenity.name ?? '')} ${amenity.name ?? ''}"
+              : "${getAmenityEmoji(amenity.name ?? '')} ${amenity.nameAr ?? ''}"),
           value: amenitiesChecked.contains(amenity.id),
           onChanged: (bool? value) {
             setState(() {

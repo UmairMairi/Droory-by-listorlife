@@ -46,12 +46,12 @@ class _LikeButtonState extends State<LikeButton>
         child: _isFavorite
             ? const Icon(
                 Icons.favorite,
-                size: 30,
+                size: 24,
                 color: Colors.red,
               )
             : const Icon(
                 Icons.favorite,
-                size: 30,
+                size: 24,
                 color: Colors.grey,
               ),
       ),

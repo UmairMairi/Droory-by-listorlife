@@ -49,9 +49,7 @@ class NotificationService {
         AndroidInitializationSettings('@mipmap/ic_launcher');
 
     DarwinInitializationSettings initializationSettingsIOS =
-        DarwinInitializationSettings(
-      onDidReceiveLocalNotification: onDidReceiveLocalNotification,
-    );
+        DarwinInitializationSettings();
 
     InitializationSettings initializationSettings = InitializationSettings(
       android: initializationSettingsAndroid,

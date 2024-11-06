@@ -14,12 +14,9 @@ import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/view_model/product_v_m.dart';
 import 'package:list_and_life/widgets/communication_buttons.dart';
 import 'package:list_and_life/widgets/image_view.dart';
-import 'package:share_plus/share_plus.dart';
-
 import '../../base/helpers/date_helper.dart';
 import '../../base/helpers/db_helper.dart';
 import '../../base/helpers/dialog_helper.dart';
-import '../../base/helpers/dynamic_link_helper.dart';
 import '../../base/helpers/string_helper.dart';
 import '../../routes/app_routes.dart';
 import '../../skeletons/product_detail_skeleton.dart';
@@ -107,6 +104,8 @@ class ProductDetailView extends BaseView<ProductVM> {
                                 style: context.textTheme.titleMedium,
                               ),
                               const Gap(5),
+                              getSpecifications(context: context, data: data),
+                              const Gap(5),
                               Row(
                                 children: [
                                   const Icon(
@@ -132,231 +131,144 @@ class ProductDetailView extends BaseView<ProductVM> {
                                 ),
                               },
                               const Gap(10),
-                              if (data?.category?.name
-                                      ?.toLowerCase()
-                                      .contains(StringHelper.cars) ??
-                                  false) ...{
-                                Container(
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: Colors.grey.withOpacity(0.2),
-                                  ),
-                                  padding: const EdgeInsets.only(
-                                      top: 20, bottom: 20, left: 15, right: 10),
-                                  child: Table(
-                                    columnWidths: const {
-                                      0: FlexColumnWidth(3),
-                                      1: FlexColumnWidth(4),
-                                      2: FlexColumnWidth(4),
-                                    },
-                                    children: [
-                                      TableRow(children: [
-                                        Row(
-                                          children: [
-                                            Image.asset(
-                                              AssetsRes.IC_PETROL_ICON,
-                                              height: 15,
-                                            ),
-                                            const SizedBox(
-                                              width: 3,
-                                            ),
-                                            Text(
-                                              data?.fuel ?? '',
-                                              style:
-                                                  context.textTheme.titleSmall,
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Image.asset(
-                                              AssetsRes.IC_SPEED_ICON,
-                                              width: 17,
-                                            ),
-                                            const SizedBox(
-                                              width: 5,
-                                            ),
-                                            Text(
-                                              "${data?.kmDriven}",
-                                              style:
-                                                  context.textTheme.titleSmall,
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Image.asset(
-                                              AssetsRes.IC_GEAR_ICON,
-                                              height: 13,
-                                            ),
-                                            const SizedBox(
-                                              width: 5,
-                                            ),
-                                            Text(
-                                              '${data?.transmission}',
-                                              style:
-                                                  context.textTheme.titleSmall,
-                                            ),
-                                          ],
-                                        ),
-                                      ]),
-                                      TableRow(children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 20),
-                                          child: Row(
-                                            children: [
-                                              Image.asset(
-                                                AssetsRes.IC_USER_ICON,
-                                                height: 15,
-                                              ),
-                                              const SizedBox(
-                                                width: 5,
-                                              ),
-                                              Text(
-                                                StringHelper.owner,
-                                                style: context
-                                                    .textTheme.titleSmall,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 20),
-                                          child: Row(
-                                            children: [
-                                              Image.asset(
-                                                AssetsRes.IC_LOACTION_ICON,
-                                                height: 15,
-                                              ),
-                                              const SizedBox(
-                                                width: 5,
-                                              ),
-                                              Text(
-                                                StringHelper.city,
-                                                style: context
-                                                    .textTheme.titleSmall,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 20),
-                                          child: Row(
-                                            children: [
-                                              Image.asset(
-                                                AssetsRes.IC_CALENDER_ICON,
-                                                height: 13,
-                                              ),
-                                              const SizedBox(
-                                                width: 5,
-                                              ),
-                                              Text(
-                                                StringHelper.postingDate,
-                                                style: context
-                                                    .textTheme.titleSmall,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ]),
-                                      TableRow(children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 18, top: 5),
-                                          child: Text(
-                                            '${data?.numberOfOwner}',
-                                            style: const TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 18, top: 5),
-                                          child: Text(
-                                            '${data?.city}',
-                                            style: const TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 18, top: 5),
-                                          child: Text(
-                                            DateHelper.joiningDate(
-                                                DateTime.parse(
-                                                    '${data?.createdAt}')),
-                                            style: const TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                        ),
-                                      ]),
-                                    ],
-                                  ),
-                                ),
-                                const Gap(10),
-                              },
-                              if (viewModel
-                                  .getSpecifications(
-                                      context: context, data: data)
-                                  .isNotEmpty) ...{
-                                Text('Specifications',
-                                    style: context.textTheme.titleMedium),
-                                const SizedBox(height: 10),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: Colors.grey.withOpacity(0.2),
-                                  ),
-                                  child: GridView(
-                                    shrinkWrap: true,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    padding: const EdgeInsets.all(10),
-                                    gridDelegate:
-                                        const SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount: 3,
-                                            mainAxisExtent: 50,
-                                            mainAxisSpacing: 5,
-                                            crossAxisSpacing: 20),
-                                    children: viewModel.getSpecifications(
-                                        context: context, data: data),
-                                  ),
-                                ),
-                              },
-                              const Gap(10),
-                              if (data?.categoryId == 11) ...{
-                                Text(
-                                  StringHelper.amenities,
-                                  style: context.textTheme.titleMedium,
-                                ),
-                                const Gap(10),
-                                ListView.builder(
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    itemCount: data?.productAmenities?.length,
-                                    itemBuilder: (context, index) {
-                                      return ListTile(
-                                        title: Text(DbHelper.getLanguage() ==
-                                                'en'
-                                            ? "✧ ${data?.productAmenities?[index].amnity?.name}"
-                                            : "✧ ${data?.productAmenities?[index].amnity?.nameAr}"),
-                                      );
-                                    }),
-                                const Gap(10),
-                              },
+                              Divider(),
                               Text(
                                 StringHelper.description,
                                 style: context.textTheme.titleMedium,
                               ),
                               const Gap(05),
                               Text(data?.description ?? ''),
+                              Divider(),
+                              if (data?.categoryId != 11) ...{
+                                if (viewModel
+                                    .getSpecifications(
+                                        context: context, data: data)
+                                    .isNotEmpty) ...{
+                                  Text('Specifications',
+                                      style: context.textTheme.titleMedium),
+                                  const SizedBox(height: 10),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: Colors.white,
+                                    ),
+                                    child: GridView(
+                                      shrinkWrap: true,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      padding: const EdgeInsets.all(10),
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 3,
+                                              mainAxisExtent: 50,
+                                              mainAxisSpacing: 5,
+                                              crossAxisSpacing: 20),
+                                      children: viewModel.getSpecifications(
+                                          context: context, data: data),
+                                    ),
+                                  ),
+                                }
+                              },
+                              if (data?.categoryId == 11) ...{
+                                Text(
+                                  'Property Information',
+                                  style: context.titleMedium,
+                                ),
+                                Gap(10),
+                                getPropertyInformation(
+                                        context: context, data: data) ??
+                                    SizedBox.shrink(),
+                              },
+                              if (data?.categoryId == 11) ...{
+                                Divider(),
+                                Text(
+                                  StringHelper.amenities,
+                                  style: context.textTheme.titleMedium,
+                                ),
+                                const Gap(10),
+                                ListView.separated(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount:
+                                      data?.productAmenities?.length ?? 0,
+                                  itemBuilder: (context, index) {
+                                    return Text(DbHelper.getLanguage() == 'en'
+                                        ? "${getAmenityEmoji(data?.productAmenities?[index].amnity?.name ?? '')} ${data?.productAmenities?[index].amnity?.name}"
+                                        : "${getAmenityEmoji(data?.productAmenities?[index].amnity?.name ?? '')} ${data?.productAmenities?[index].amnity?.nameAr}");
+                                  },
+                                  separatorBuilder:
+                                      (BuildContext context, int index) {
+                                    return Gap(8);
+                                  },
+                                ),
+                              },
+                              Divider(),
+                              Text(
+                                'Map View',
+                                style: context.titleMedium,
+                              ),
+                              const Gap(5),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    AssetsRes.IC_LOACTION_ICON,
+                                    height: 16,
+                                  ),
+                                  const Gap(05),
+                                  Expanded(
+                                    child: Text(
+                                      data?.nearby ?? '',
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 5,
+                                      style: context.textTheme.bodyMedium,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const Gap(05),
+                              InkWell(
+                                onTap: () async {
+                                  if (DbHelper.getIsGuest()) {
+                                    DialogHelper.showLoginDialog(
+                                        context: context);
+                                    return;
+                                  }
+                                  final availableMaps =
+                                      await MapLauncher.installedMaps;
+                                  print(
+                                      availableMaps); // [AvailableMap { mapName: Google Maps, mapType: google }, ...]
+
+                                  await availableMaps.first.showMarker(
+                                    coords: Coords(
+                                        double.parse("${data?.latitude}"),
+                                        double.parse("${data?.longitude}")),
+                                    title: "Ocean Beach",
+                                  );
+                                },
+                                child: Text(
+                                  StringHelper.getDirection,
+                                  style: context.textTheme.titleSmall?.copyWith(
+                                      color: Colors.red,
+                                      decorationColor: Colors.red,
+                                      decoration: TextDecoration.underline),
+                                ),
+                              ),
+                              const Gap(5),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: SizedBox(
+                                  height: 150,
+                                  width: context.width,
+                                  child: AddressMapWidget(
+                                    latLng: LatLng(
+                                      double.parse(data?.latitude ?? '0'),
+                                      double.parse(data?.longitude ?? '0'),
+                                    ),
+                                  ),
+                                ),
+                              ),
                               const Gap(10),
                               Card(
                                 color: const Color(0xfff5f5f5),
@@ -433,102 +345,6 @@ class ProductDetailView extends BaseView<ProductVM> {
                                     ],
                                   ),
                                 ),
-                              ),
-                              const Gap(20),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Flexible(
-                                    flex: 2,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Image.asset(
-                                              AssetsRes.IC_LOACTION_ICON,
-                                              height: 20,
-                                            ),
-                                            const Gap(05),
-                                            Expanded(
-                                              child: Text(
-                                                data?.nearby ?? '',
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 5,
-                                                style: context
-                                                    .textTheme.titleMedium,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        const Gap(05),
-                                        Text(
-                                          StringHelper.city,
-                                          style: context.textTheme.titleMedium,
-                                        ),
-                                        const Gap(25),
-                                        InkWell(
-                                          onTap: () async {
-                                            if (DbHelper.getIsGuest()) {
-                                              DialogHelper.showLoginDialog(
-                                                  context: context);
-                                              return;
-                                            }
-                                            final availableMaps =
-                                                await MapLauncher.installedMaps;
-                                            print(
-                                                availableMaps); // [AvailableMap { mapName: Google Maps, mapType: google }, ...]
-
-                                            await availableMaps.first
-                                                .showMarker(
-                                              coords: Coords(
-                                                  double.parse(
-                                                      "${data?.latitude}"),
-                                                  double.parse(
-                                                      "${data?.longitude}")),
-                                              title: "Ocean Beach",
-                                            );
-                                          },
-                                          child: Text(
-                                            StringHelper.getDirection,
-                                            style: context.textTheme.titleSmall
-                                                ?.copyWith(
-                                                    color: Colors.red,
-                                                    decorationColor: Colors.red,
-                                                    decoration: TextDecoration
-                                                        .underline),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  const Gap(5),
-                                  Expanded(
-                                    flex: 3,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20),
-                                      child: SizedBox(
-                                        height: 150,
-                                        width: 150,
-                                        child: AddressMapWidget(
-                                          latLng: LatLng(
-                                            double.parse(data?.latitude ?? '0'),
-                                            double.parse(
-                                                data?.longitude ?? '0'),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
                               ),
                               const Gap(30),
                             ],
@@ -705,6 +521,167 @@ class ProductDetailView extends BaseView<ProductVM> {
                   ])*/
             ),
           )
+        ],
+      ),
+    );
+  }
+
+  Widget getSpecifications(
+      {required BuildContext context, ProductDetailModel? data}) {
+    List<Widget> specs = [];
+
+    if (data?.categoryId == 4) {
+      if (data?.year != null && data!.year != 0) {
+        specs.add(_buildSpecRow(context, "${data.year}", '📅'));
+      }
+      if (data?.milleage != null && data!.milleage!.isNotEmpty) {
+        specs.add(_buildSpecRow(context, '${data.milleage}', '🔋'));
+      }
+      if (data?.fuel != null && data!.fuel!.isNotEmpty) {
+        specs.add(_buildSpecRow(
+          context,
+          '${data.fuel}',
+          '⛽',
+        ));
+      }
+    }
+    if (data?.categoryId == 11) {
+      if (data?.bedrooms != null && data!.bedrooms != 0) {
+        specs.add(_buildSpecRow(context, "${data.bedrooms} Beds", '🛏️'));
+      }
+      if (data?.bathrooms != null && data!.bathrooms != 0) {
+        specs.add(_buildSpecRow(context, "${data.bathrooms} Baths", '🚽'));
+      }
+      if (data?.area != null && data!.area != 0) {
+        specs.add(_buildSpecRow(context, "${data.area} Sqft", '📐'));
+      }
+    }
+
+    if (specs.isNotEmpty) {
+      return SizedBox(
+          height: 20,
+          child: ListView(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              children: specs));
+    }
+    return SizedBox.shrink();
+  }
+
+  Widget _buildSpecRow(BuildContext context, String specValue, String symbol) {
+    return SizedBox(
+      width: 100,
+      child: Row(
+        children: [
+          Text(
+            symbol,
+            style: const TextStyle(fontSize: 15.0), // Customize size as needed
+          ),
+          const SizedBox(width: 3), // Space between symbol and text
+          Expanded(
+            child: Text(
+              specValue,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                overflow: TextOverflow.ellipsis, // Handle overflow
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String getAmenityEmoji(String amenityName) {
+    // Define a map that links each amenity name to an emoji
+    final Map<String, String> amenityEmojiMap = {
+      "Intercom": "📞",
+      "Security": "🛡️",
+      "Storage": "📦",
+      "Broadband Internet": "🌐",
+      "Garage Parking": "🚗",
+      "Elevator": "🛗",
+      "Landline": "☎️",
+      "Natural Gas": "🔥",
+      "Water Meter": "💧",
+      "Electricity Meter": "⚡",
+      "Pool": "🏊",
+      "Pets Allowed": "🐾",
+      "Maids Room": "🛏️",
+      "Parking": "🚗",
+      "Central A/C and Heating": "❄️🔥",
+      "Private Garden": "🌳",
+      "Installed Kitchen": "🍳",
+      "Balcony": "🌅",
+    };
+
+    // Return the emoji if found in the map, otherwise return a default symbol
+    return amenityEmojiMap[amenityName] ?? "❓"; // "❓" as a default emoji
+  }
+
+  getPropertyInformation(
+      {required BuildContext context, ProductDetailModel? data}) {
+    {
+      List<Widget> specs = [];
+
+      if (data?.propertyFor != null && data!.propertyFor!.isNotEmpty) {
+        specs.add(_buildInfoRow(
+            context, "${data.propertyFor?.capitalized}", '🏠', 'Property For'));
+      }
+      if (data?.area != null && data!.area != 0) {
+        specs.add(_buildInfoRow(context, "${data.area} sqft", '📏', 'Area'));
+      }
+      if (data?.bedrooms != null && data!.bedrooms != 0) {
+        specs
+            .add(_buildInfoRow(context, "${data.bedrooms}", '🛏️', 'Bedrooms'));
+      }
+      if (data?.bathrooms != null && data!.bathrooms != 0) {
+        specs.add(
+            _buildInfoRow(context, "${data.bathrooms}", '🚽', 'Bathrooms'));
+      }
+      if (data?.furnishedType != null && data!.furnishedType!.isNotEmpty) {
+        specs.add(_buildInfoRow(context, "${data.furnishedType?.capitalized}",
+            '🛋️', 'Furnished Type'));
+      }
+      if (data?.ownership != null && data!.ownership!.isNotEmpty) {
+        specs.add(_buildInfoRow(
+            context, "${data.ownership?.capitalized}", '📜', 'Ownership'));
+      }
+      if (data?.paymentType != null && data!.paymentType!.isNotEmpty) {
+        specs.add(_buildInfoRow(
+            context, "${data.paymentType?.capitalized}", '💳', 'Payment Type'));
+      }
+      if (data?.completionStatus != null &&
+          data!.completionStatus!.isNotEmpty) {
+        specs.add(_buildInfoRow(context,
+            "${data.completionStatus?.capitalized}", '✅', 'Completion Status'));
+      }
+      if (data?.deliveryTerm != null && data!.deliveryTerm!.isNotEmpty) {
+        specs.add(_buildInfoRow(context, "${data.deliveryTerm?.capitalized}",
+            '🚚', 'Delivery Term'));
+      }
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: specs,
+      );
+    }
+  }
+
+  Widget _buildInfoRow(
+      BuildContext context, String label, String icon, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            value,
+            style: context.titleSmall,
+          ),
+          Text(label, style: TextStyle(fontWeight: FontWeight.w500)),
         ],
       ),
     );
