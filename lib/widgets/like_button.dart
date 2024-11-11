@@ -54,7 +54,7 @@ class _LikeButtonState extends State<LikeButton>
                 : const Icon(
                     Icons.favorite_border_outlined,
                     size: 30,
-                    color: Colors.white54,
+                    color: Colors.white,
                   )),
       ),
     );

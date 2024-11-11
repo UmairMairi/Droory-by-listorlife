@@ -102,7 +102,7 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget>
               onPressed: _goToPreviousPage,
               icon: Icon(
                 Icons.arrow_back_ios,
-                color: Colors.white54,
+                color: Colors.white,
               ),
             ),
           ),
@@ -112,7 +112,7 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget>
               onPressed: _goToNextPage,
               icon: Icon(
                 Icons.arrow_forward_ios,
-                color: Colors.white54,
+                color: Colors.white,
               ),
             ),
           ),

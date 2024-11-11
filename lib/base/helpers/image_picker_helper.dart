@@ -213,7 +213,8 @@ class ImagePickerHelper {
     XFile? path = await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (path != null && isCropping) {
-      String? croppedPath = await cropSelectedImage(path.path, isCircle);
+      String? croppedPath =
+          await cropSelectedImage(path.path, isCircle: isCircle);
       return croppedPath;
     }
     return path?.path;
@@ -237,28 +238,40 @@ class ImagePickerHelper {
       {bool isCropping = false, bool isCircle = false}) async {
     XFile? path = await ImagePicker().pickImage(source: ImageSource.camera);
     if (path != null && isCropping) {
-      String? croppedPath = await cropSelectedImage(path.path, isCircle);
+      String? croppedPath =
+          await cropSelectedImage(path.path, isCircle: isCircle);
       return croppedPath;
     }
     return path?.path;
   }
 
-  /// Takes image input
+  /// Takes image input and provides all available crop styles
   static Future<String?> cropSelectedImage(
-      String imageFile, bool isCircle) async {
+    String imageFile, {
+    bool isCircle = false,
+    int compressQuality = 60, // Adjustable compression quality
+    int maxWidth = 1024,
+    int maxHeight = 1920,
+  }) async {
     CroppedFile? croppedFile;
     croppedFile = await ImageCropper().cropImage(
       sourcePath: imageFile,
-      compressQuality: 60,
-      maxWidth: 1024,
-      maxHeight: 1920,
-      aspectRatio: const CropAspectRatio(ratioX: 7, ratioY: 4),
+      compressQuality: compressQuality,
+      maxWidth: maxWidth,
+      maxHeight: maxHeight,
       uiSettings: [
         AndroidUiSettings(
           toolbarTitle: 'Crop Image',
           toolbarColor: Colors.black,
           toolbarWidgetColor: Colors.white,
           hideBottomControls: true,
+          aspectRatioPresets: [
+            CropAspectRatioPreset.original,
+            CropAspectRatioPreset.square,
+            CropAspectRatioPreset.ratio3x2,
+            CropAspectRatioPreset.ratio4x3,
+            CropAspectRatioPreset.ratio16x9,
+          ],
           cropStyle: isCircle ? CropStyle.circle : CropStyle.rectangle,
         ),
         IOSUiSettings(
@@ -266,9 +279,17 @@ class ImagePickerHelper {
           rotateButtonsHidden: true,
           aspectRatioLockEnabled: true,
           hidesNavigationBar: true,
+          aspectRatioPresets: [
+            CropAspectRatioPreset.original,
+            CropAspectRatioPreset.square,
+            CropAspectRatioPreset.ratio3x2,
+            CropAspectRatioPreset.ratio4x3,
+            CropAspectRatioPreset.ratio16x9,
+          ],
           aspectRatioLockDimensionSwapEnabled: true,
           cropStyle: isCircle ? CropStyle.circle : CropStyle.rectangle,
           showCancelConfirmationDialog: true,
+          // Allows switching between aspect ratios
         ),
       ],
     );

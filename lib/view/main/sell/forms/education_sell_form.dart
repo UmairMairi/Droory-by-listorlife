@@ -66,13 +66,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                   width: double.infinity,
                   height: 220,
                   decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          offset: const Offset(0, 1),
-                          blurRadius: 6,
-                        ),
-                      ],
+                      border: Border.all(color: Colors.black),
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10)),
                   child: viewModel.mainImagePath.isNotEmpty
@@ -111,13 +105,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                           width: 100,
                           height: 80,
                           decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                offset: const Offset(0, 1),
-                                blurRadius: 6,
-                              ),
-                            ],
+                            border: Border.all(color: Colors.black),
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -162,13 +150,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                         width: 120,
                         height: 80,
                         decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              offset: const Offset(0, 1),
-                              blurRadius: 6,
-                            ),
-                          ],
+                          border: Border.all(color: Colors.black),
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -363,57 +345,55 @@ class EducationSellForm extends BaseView<SellFormsVM> {
               if (viewModel.isEditProduct) ...{
                 GestureDetector(
                   onTap: () {
-                    if (viewModel.formKey.currentState?.validate() ?? false) {
-                      if (viewModel.mainImagePath.isEmpty) {
-                        DialogHelper.showToast(
-                            message: StringHelper.pleaseUploadMainImage);
-                        return;
-                      }
-                      if (viewModel.imagesList.isEmpty) {
-                        DialogHelper.showToast(
-                            message:
-                                StringHelper.pleaseUploadAddAtLeastOneImage);
-                        return;
-                      }
-                      if (viewModel.educationTypeTextController.text
-                          .trim()
-                          .isEmpty) {
-                        DialogHelper.showToast(
-                            message: StringHelper.pleaseSelectEducationType);
-                        return;
-                      }
-
-                      if (viewModel.adTitleTextController.text.trim().isEmpty) {
-                        DialogHelper.showToast(
-                            message: StringHelper.adTitleIsRequired);
-                        return;
-                      }
-                      if (viewModel.descriptionTextController.text
-                          .trim()
-                          .isEmpty) {
-                        DialogHelper.showToast(
-                            message: StringHelper.descriptionIsRequired);
-                        return;
-                      }
-                      if (viewModel.addressTextController.text.trim().isEmpty) {
-                        DialogHelper.showToast(
-                            message: StringHelper.locationIsRequired);
-                        return;
-                      }
-                      if (viewModel.priceTextController.text.trim().isEmpty) {
-                        DialogHelper.showToast(
-                            message: StringHelper.priceIsRequired);
-                        return;
-                      }
-                      DialogHelper.showLoading();
-                      viewModel.editProduct(
-                          productId: item?.id,
-                          category: category,
-                          subCategory: subCategory,
-                          subSubCategory: subSubCategory,
-                          brand: viewModel.selectedBrand,
-                          models: viewModel.selectedModel);
+                    viewModel.formKey.currentState?.validate();
+                    if (viewModel.mainImagePath.isEmpty) {
+                      DialogHelper.showToast(
+                          message: StringHelper.pleaseUploadMainImage);
+                      return;
                     }
+                    if (viewModel.imagesList.isEmpty) {
+                      DialogHelper.showToast(
+                          message: StringHelper.pleaseUploadAddAtLeastOneImage);
+                      return;
+                    }
+                    if (viewModel.educationTypeTextController.text
+                        .trim()
+                        .isEmpty) {
+                      DialogHelper.showToast(
+                          message: StringHelper.pleaseSelectEducationType);
+                      return;
+                    }
+
+                    if (viewModel.adTitleTextController.text.trim().isEmpty) {
+                      DialogHelper.showToast(
+                          message: StringHelper.adTitleIsRequired);
+                      return;
+                    }
+                    if (viewModel.descriptionTextController.text
+                        .trim()
+                        .isEmpty) {
+                      DialogHelper.showToast(
+                          message: StringHelper.descriptionIsRequired);
+                      return;
+                    }
+                    if (viewModel.addressTextController.text.trim().isEmpty) {
+                      DialogHelper.showToast(
+                          message: StringHelper.locationIsRequired);
+                      return;
+                    }
+                    if (viewModel.priceTextController.text.trim().isEmpty) {
+                      DialogHelper.showToast(
+                          message: StringHelper.priceIsRequired);
+                      return;
+                    }
+                    DialogHelper.showLoading();
+                    viewModel.editProduct(
+                        productId: item?.id,
+                        category: category,
+                        subCategory: subCategory,
+                        subSubCategory: subSubCategory,
+                        brand: viewModel.selectedBrand,
+                        models: viewModel.selectedModel);
                   },
                   child: Container(
                     width: double.infinity,
@@ -435,56 +415,55 @@ class EducationSellForm extends BaseView<SellFormsVM> {
               } else ...{
                 GestureDetector(
                   onTap: () {
-                    if (viewModel.formKey.currentState?.validate() ?? false) {
-                      if (viewModel.mainImagePath.isEmpty) {
-                        DialogHelper.showToast(
-                            message: StringHelper.pleaseUploadMainImage);
-                        return;
-                      }
-                      if (viewModel.imagesList.isEmpty) {
-                        DialogHelper.showToast(
-                            message:
-                                StringHelper.pleaseUploadAddAtLeastOneImage);
-                        return;
-                      }
-                      if (viewModel.educationTypeTextController.text
-                          .trim()
-                          .isEmpty) {
-                        DialogHelper.showToast(
-                            message: StringHelper.pleaseSelectEducationType);
-                        return;
-                      }
+                    viewModel.formKey.currentState?.validate();
 
-                      if (viewModel.adTitleTextController.text.trim().isEmpty) {
-                        DialogHelper.showToast(
-                            message: StringHelper.adTitleIsRequired);
-                        return;
-                      }
-                      if (viewModel.descriptionTextController.text
-                          .trim()
-                          .isEmpty) {
-                        DialogHelper.showToast(
-                            message: StringHelper.descriptionIsRequired);
-                        return;
-                      }
-                      if (viewModel.addressTextController.text.trim().isEmpty) {
-                        DialogHelper.showToast(
-                            message: StringHelper.locationIsRequired);
-                        return;
-                      }
-                      if (viewModel.priceTextController.text.trim().isEmpty) {
-                        DialogHelper.showToast(
-                            message: StringHelper.priceIsRequired);
-                        return;
-                      }
-                      DialogHelper.showLoading();
-                      viewModel.addProduct(
-                          category: category,
-                          subCategory: subCategory,
-                          subSubCategory: subSubCategory,
-                          brand: viewModel.selectedBrand,
-                          models: viewModel.selectedModel);
+                    if (viewModel.mainImagePath.isEmpty) {
+                      DialogHelper.showToast(
+                          message: StringHelper.pleaseUploadMainImage);
+                      return;
                     }
+                    if (viewModel.imagesList.isEmpty) {
+                      DialogHelper.showToast(
+                          message: StringHelper.pleaseUploadAddAtLeastOneImage);
+                      return;
+                    }
+                    if (viewModel.educationTypeTextController.text
+                        .trim()
+                        .isEmpty) {
+                      DialogHelper.showToast(
+                          message: StringHelper.pleaseSelectEducationType);
+                      return;
+                    }
+
+                    if (viewModel.adTitleTextController.text.trim().isEmpty) {
+                      DialogHelper.showToast(
+                          message: StringHelper.adTitleIsRequired);
+                      return;
+                    }
+                    if (viewModel.descriptionTextController.text
+                        .trim()
+                        .isEmpty) {
+                      DialogHelper.showToast(
+                          message: StringHelper.descriptionIsRequired);
+                      return;
+                    }
+                    if (viewModel.addressTextController.text.trim().isEmpty) {
+                      DialogHelper.showToast(
+                          message: StringHelper.locationIsRequired);
+                      return;
+                    }
+                    if (viewModel.priceTextController.text.trim().isEmpty) {
+                      DialogHelper.showToast(
+                          message: StringHelper.priceIsRequired);
+                      return;
+                    }
+                    DialogHelper.showLoading();
+                    viewModel.addProduct(
+                        category: category,
+                        subCategory: subCategory,
+                        subSubCategory: subSubCategory,
+                        brand: viewModel.selectedBrand,
+                        models: viewModel.selectedModel);
                   },
                   child: Container(
                     width: double.infinity,

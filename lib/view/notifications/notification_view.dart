@@ -2,12 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/base/network/api_request.dart';
 import 'package:list_and_life/base/network/base_client.dart';
 import 'package:list_and_life/models/common/map_response.dart';
 import 'package:list_and_life/models/notification_data_model.dart';
+import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/skeletons/blocked_users_skeleton.dart';
 import 'package:list_and_life/widgets/app_empty_notification_wiidget.dart';
@@ -16,6 +18,7 @@ import 'package:list_and_life/widgets/image_view.dart';
 
 import '../../base/helpers/date_helper.dart';
 import '../../base/helpers/string_helper.dart';
+import '../../routes/app_routes.dart';
 
 class NotificationView extends StatefulWidget {
   const NotificationView({super.key});
@@ -69,6 +72,13 @@ class _NotificationViewState extends State<NotificationView> {
                                   image: AssetsRes.IC_NOTIFICATION,
                                   width: 50,
                                   height: 50),
+                              onTap: () {
+                                if (notifications[index].productId != null) {
+                                  context.push(Routes.myProduct,
+                                      extra: ProductDetailModel(
+                                          id: notifications[index].productId));
+                                }
+                              },
                               title: Text(notifications[index].title ?? ''),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,

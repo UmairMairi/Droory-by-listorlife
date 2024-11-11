@@ -98,7 +98,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                         context.pop();
                                       },
                                       icon: Icon(Icons.arrow_back,
-                                          color: Colors.white54)),
+                                          color: Colors.white)),
                                 )),
                             Positioned(
                                 top: 0,
@@ -118,7 +118,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                   child: IconButton(
                                       onPressed: () {},
                                       icon: Icon(Icons.share,
-                                          color: Colors.white54)),
+                                          color: Colors.white)),
                                 )),
                           ],
                         ),
@@ -220,36 +220,37 @@ class ProductDetailView extends BaseView<ProductVM> {
                                   StringHelper.amenities,
                                   style: context.textTheme.titleMedium,
                                 ),
-                                const Gap(10),
-                                ListView.separated(
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemCount:
+                                Gap(10),
+                                Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: List.generate(
                                       data?.productAmenities?.length ?? 0,
-                                  itemBuilder: (context, index) {
-                                    return Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        getAmenityIcon(data
-                                                ?.productAmenities?[index]
-                                                .amnity
-                                                ?.name ??
-                                            ''),
-                                        Gap(05),
-                                        Text(DbHelper.getLanguage() == 'en'
-                                            ? "${data?.productAmenities?[index].amnity?.name}"
-                                            : "${data?.productAmenities?[index].amnity?.nameAr}"),
-                                      ],
+                                      (index) {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 5.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          getAmenityIcon(data
+                                                  ?.productAmenities?[index]
+                                                  .amnity
+                                                  ?.name ??
+                                              ''),
+                                          Gap(05),
+                                          Text(DbHelper.getLanguage() == 'en'
+                                              ? "${data?.productAmenities?[index].amnity?.name}"
+                                              : "${data?.productAmenities?[index].amnity?.nameAr}"),
+                                        ],
+                                      ),
                                     );
-                                  },
-                                  separatorBuilder:
-                                      (BuildContext context, int index) {
-                                    return Gap(8);
-                                  },
+                                  }),
                                 ),
                               },
                               Divider(),

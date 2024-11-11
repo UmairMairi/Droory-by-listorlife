@@ -29,14 +29,14 @@ class DialogHelper {
   }
 
   /// Show Toast
-  static showToast({required String? message, bool error = false}) {
+  static showToast({required String? message, bool error = true}) {
     if (message == null) {
       return;
     }
     log("Toast message => $message");
     toastification.show(
       description: Text(message),
-      alignment: Alignment.bottomCenter,
+      alignment: Alignment.topRight,
       icon: const Icon(Icons.notifications),
       style: ToastificationStyle.minimal,
       type: error ? ToastificationType.error : ToastificationType.success,

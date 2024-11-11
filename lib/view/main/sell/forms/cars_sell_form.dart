@@ -669,64 +669,61 @@ class CarsSellForm extends BaseView<SellFormsVM> {
               if (viewModel.isEditProduct) ...{
                 GestureDetector(
                   onTap: () {
-                    if (viewModel.formKey.currentState?.validate() ?? false) {
-                      if (viewModel.mainImagePath.isEmpty) {
-                        DialogHelper.showToast(
-                            message: StringHelper.pleaseUploadMainImage);
-                        return;
-                      }
-                      if (viewModel.imagesList.isEmpty) {
-                        DialogHelper.showToast(
-                            message:
-                                StringHelper.pleaseUploadAddAtLeastOneImage);
-                        return;
-                      }
+                    viewModel.formKey.currentState?.validate();
 
-                      if (viewModel.yearTextController.text.trim().isEmpty) {
-                        DialogHelper.showToast(
-                            message: StringHelper.yearIsRequired);
-                        return;
-                      }
-
-                      if (viewModel.kmDrivenTextController.text
-                          .trim()
-                          .isEmpty) {
-                        DialogHelper.showToast(
-                            message: StringHelper.kMDrivenIsRequired);
-                        return;
-                      }
-
-                      if (viewModel.adTitleTextController.text.trim().isEmpty) {
-                        DialogHelper.showToast(
-                            message: StringHelper.adTitleIsRequired);
-                        return;
-                      }
-                      if (viewModel.descriptionTextController.text
-                          .trim()
-                          .isEmpty) {
-                        DialogHelper.showToast(
-                            message: StringHelper.describeWhatYouAreSelling);
-                        return;
-                      }
-                      if (viewModel.addressTextController.text.trim().isEmpty) {
-                        DialogHelper.showToast(
-                            message: StringHelper.locationIsRequired);
-                        return;
-                      }
-                      if (viewModel.priceTextController.text.trim().isEmpty) {
-                        DialogHelper.showToast(
-                            message: StringHelper.priceIsRequired);
-                        return;
-                      }
-                      DialogHelper.showLoading();
-                      viewModel.editProduct(
-                          productId: item?.id,
-                          category: category,
-                          subCategory: subCategory,
-                          subSubCategory: subSubCategory,
-                          brand: viewModel.selectedBrand,
-                          models: viewModel.selectedModel);
+                    if (viewModel.mainImagePath.isEmpty) {
+                      DialogHelper.showToast(
+                          message: StringHelper.pleaseUploadMainImage);
+                      return;
                     }
+                    if (viewModel.imagesList.isEmpty) {
+                      DialogHelper.showToast(
+                          message: StringHelper.pleaseUploadAddAtLeastOneImage);
+                      return;
+                    }
+
+                    if (viewModel.yearTextController.text.trim().isEmpty) {
+                      DialogHelper.showToast(
+                          message: StringHelper.yearIsRequired);
+                      return;
+                    }
+
+                    if (viewModel.kmDrivenTextController.text.trim().isEmpty) {
+                      DialogHelper.showToast(
+                          message: StringHelper.kMDrivenIsRequired);
+                      return;
+                    }
+
+                    if (viewModel.adTitleTextController.text.trim().isEmpty) {
+                      DialogHelper.showToast(
+                          message: StringHelper.adTitleIsRequired);
+                      return;
+                    }
+                    if (viewModel.descriptionTextController.text
+                        .trim()
+                        .isEmpty) {
+                      DialogHelper.showToast(
+                          message: StringHelper.describeWhatYouAreSelling);
+                      return;
+                    }
+                    if (viewModel.addressTextController.text.trim().isEmpty) {
+                      DialogHelper.showToast(
+                          message: StringHelper.locationIsRequired);
+                      return;
+                    }
+                    if (viewModel.priceTextController.text.trim().isEmpty) {
+                      DialogHelper.showToast(
+                          message: StringHelper.priceIsRequired);
+                      return;
+                    }
+                    DialogHelper.showLoading();
+                    viewModel.editProduct(
+                        productId: item?.id,
+                        category: category,
+                        subCategory: subCategory,
+                        subSubCategory: subSubCategory,
+                        brand: viewModel.selectedBrand,
+                        models: viewModel.selectedModel);
                   },
                   child: Container(
                     width: double.infinity,
@@ -748,63 +745,59 @@ class CarsSellForm extends BaseView<SellFormsVM> {
               } else ...{
                 GestureDetector(
                   onTap: () {
-                    if (viewModel.formKey.currentState?.validate() ?? false) {
-                      if (viewModel.mainImagePath.isEmpty) {
-                        DialogHelper.showToast(
-                            message: StringHelper.pleaseUploadMainImage);
-                        return;
-                      }
-                      if (viewModel.imagesList.isEmpty) {
-                        DialogHelper.showToast(
-                            message:
-                                StringHelper.pleaseUploadAddAtLeastOneImage);
-                        return;
-                      }
-
-                      if (viewModel.yearTextController.text.trim().isEmpty) {
-                        DialogHelper.showToast(
-                            message: StringHelper.yearIsRequired);
-                        return;
-                      }
-
-                      if (viewModel.kmDrivenTextController.text
-                          .trim()
-                          .isEmpty) {
-                        DialogHelper.showToast(
-                            message: StringHelper.kMDrivenIsRequired);
-                        return;
-                      }
-
-                      if (viewModel.adTitleTextController.text.trim().isEmpty) {
-                        DialogHelper.showToast(
-                            message: StringHelper.adTitleIsRequired);
-                        return;
-                      }
-                      if (viewModel.descriptionTextController.text
-                          .trim()
-                          .isEmpty) {
-                        DialogHelper.showToast(
-                            message: StringHelper.describeWhatYouAreSelling);
-                        return;
-                      }
-                      if (viewModel.addressTextController.text.trim().isEmpty) {
-                        DialogHelper.showToast(
-                            message: StringHelper.locationIsRequired);
-                        return;
-                      }
-                      if (viewModel.priceTextController.text.trim().isEmpty) {
-                        DialogHelper.showToast(
-                            message: StringHelper.priceIsRequired);
-                        return;
-                      }
-                      DialogHelper.showLoading();
-                      viewModel.addProduct(
-                          category: category,
-                          subCategory: subCategory,
-                          subSubCategory: subSubCategory,
-                          brand: viewModel.selectedBrand,
-                          models: viewModel.selectedModel);
+                    viewModel.formKey.currentState?.validate();
+                    if (viewModel.mainImagePath.isEmpty) {
+                      DialogHelper.showToast(
+                          message: StringHelper.pleaseUploadMainImage);
+                      return;
                     }
+                    if (viewModel.imagesList.isEmpty) {
+                      DialogHelper.showToast(
+                          message: StringHelper.pleaseUploadAddAtLeastOneImage);
+                      return;
+                    }
+
+                    if (viewModel.yearTextController.text.trim().isEmpty) {
+                      DialogHelper.showToast(
+                          message: StringHelper.yearIsRequired);
+                      return;
+                    }
+
+                    if (viewModel.kmDrivenTextController.text.trim().isEmpty) {
+                      DialogHelper.showToast(
+                          message: StringHelper.kMDrivenIsRequired);
+                      return;
+                    }
+
+                    if (viewModel.adTitleTextController.text.trim().isEmpty) {
+                      DialogHelper.showToast(
+                          message: StringHelper.adTitleIsRequired);
+                      return;
+                    }
+                    if (viewModel.descriptionTextController.text
+                        .trim()
+                        .isEmpty) {
+                      DialogHelper.showToast(
+                          message: StringHelper.describeWhatYouAreSelling);
+                      return;
+                    }
+                    if (viewModel.addressTextController.text.trim().isEmpty) {
+                      DialogHelper.showToast(
+                          message: StringHelper.locationIsRequired);
+                      return;
+                    }
+                    if (viewModel.priceTextController.text.trim().isEmpty) {
+                      DialogHelper.showToast(
+                          message: StringHelper.priceIsRequired);
+                      return;
+                    }
+                    DialogHelper.showLoading();
+                    viewModel.addProduct(
+                        category: category,
+                        subCategory: subCategory,
+                        subSubCategory: subSubCategory,
+                        brand: viewModel.selectedBrand,
+                        models: viewModel.selectedModel);
                   },
                   child: Container(
                     width: double.infinity,

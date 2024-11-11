@@ -58,13 +58,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
                 width: double.infinity,
                 height: 220,
                 decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        offset: const Offset(0, 1),
-                        blurRadius: 6,
-                      ),
-                    ],
+                    border: Border.all(color: Colors.black),
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10)),
                 child: viewModel.mainImagePath.isNotEmpty
@@ -102,13 +96,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
                         width: 100,
                         height: 80,
                         decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              offset: const Offset(0, 1),
-                              blurRadius: 6,
-                            ),
-                          ],
+                          border: Border.all(color: Colors.black),
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -153,13 +141,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
                       width: 120,
                       height: 80,
                       decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            offset: const Offset(0, 1),
-                            blurRadius: 6,
-                          ),
-                        ],
+                        border: Border.all(color: Colors.black),
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -378,67 +360,63 @@ class JobSellForm extends BaseView<SellFormsVM> {
             if (viewModel.isEditProduct) ...{
               GestureDetector(
                 onTap: () {
-                  if (viewModel.formKey.currentState?.validate() ?? false) {
-                    if (viewModel.mainImagePath.isEmpty) {
-                      DialogHelper.showToast(
-                          message: StringHelper.pleaseUploadMainImage);
-                      return;
-                    }
-                    if (viewModel.imagesList.isEmpty) {
-                      DialogHelper.showToast(
-                          message: StringHelper.pleaseUploadAddAtLeastOneImage);
-                      return;
-                    }
-                    if (viewModel.jobPositionTextController.text
-                        .trim()
-                        .isEmpty) {
-                      DialogHelper.showToast(
-                          message: StringHelper.pleasesSelectPositionType);
-                      return;
-                    }
-                    if (viewModel.jobSalaryTextController.text.trim().isEmpty) {
-                      DialogHelper.showToast(
-                          message: StringHelper.pleaseSelectSalaryPeriod);
-                      return;
-                    }
-                    if (viewModel.jobSalaryFromController.text.trim().isEmpty) {
-                      DialogHelper.showToast(
-                          message: StringHelper.pleaseSelectSalaryForm);
-                      return;
-                    }
+                  viewModel.formKey.currentState?.validate();
 
-                    if (viewModel.jobSalaryToController.text.trim().isEmpty) {
-                      DialogHelper.showToast(
-                          message: StringHelper.pleaseSelectSalaryTo);
-                      return;
-                    }
-
-                    if (viewModel.adTitleTextController.text.trim().isEmpty) {
-                      DialogHelper.showToast(
-                          message: StringHelper.adTitleIsRequired);
-                      return;
-                    }
-                    if (viewModel.descriptionTextController.text
-                        .trim()
-                        .isEmpty) {
-                      DialogHelper.showToast(
-                          message: StringHelper.descriptionIsRequired);
-                      return;
-                    }
-                    if (viewModel.addressTextController.text.trim().isEmpty) {
-                      DialogHelper.showToast(
-                          message: StringHelper.locationIsRequired);
-                      return;
-                    }
-                    DialogHelper.showLoading();
-                    viewModel.editProduct(
-                        productId: item?.id,
-                        category: category,
-                        subCategory: subCategory,
-                        subSubCategory: subSubCategory,
-                        brand: viewModel.selectedBrand,
-                        models: viewModel.selectedModel);
+                  if (viewModel.mainImagePath.isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.pleaseUploadMainImage);
+                    return;
                   }
+                  if (viewModel.imagesList.isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.pleaseUploadAddAtLeastOneImage);
+                    return;
+                  }
+                  if (viewModel.jobPositionTextController.text.trim().isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.pleasesSelectPositionType);
+                    return;
+                  }
+                  if (viewModel.jobSalaryTextController.text.trim().isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.pleaseSelectSalaryPeriod);
+                    return;
+                  }
+                  if (viewModel.jobSalaryFromController.text.trim().isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.pleaseSelectSalaryForm);
+                    return;
+                  }
+
+                  if (viewModel.jobSalaryToController.text.trim().isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.pleaseSelectSalaryTo);
+                    return;
+                  }
+
+                  if (viewModel.adTitleTextController.text.trim().isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.adTitleIsRequired);
+                    return;
+                  }
+                  if (viewModel.descriptionTextController.text.trim().isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.descriptionIsRequired);
+                    return;
+                  }
+                  if (viewModel.addressTextController.text.trim().isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.locationIsRequired);
+                    return;
+                  }
+                  DialogHelper.showLoading();
+                  viewModel.editProduct(
+                      productId: item?.id,
+                      category: category,
+                      subCategory: subCategory,
+                      subSubCategory: subSubCategory,
+                      brand: viewModel.selectedBrand,
+                      models: viewModel.selectedModel);
                 },
                 child: Container(
                   width: double.infinity,
@@ -460,66 +438,62 @@ class JobSellForm extends BaseView<SellFormsVM> {
             } else ...{
               GestureDetector(
                 onTap: () {
-                  if (viewModel.formKey.currentState?.validate() ?? false) {
-                    if (viewModel.mainImagePath.isEmpty) {
-                      DialogHelper.showToast(
-                          message: StringHelper.pleaseUploadMainImage);
-                      return;
-                    }
-                    if (viewModel.imagesList.isEmpty) {
-                      DialogHelper.showToast(
-                          message: StringHelper.pleaseUploadAddAtLeastOneImage);
-                      return;
-                    }
-                    if (viewModel.jobPositionTextController.text
-                        .trim()
-                        .isEmpty) {
-                      DialogHelper.showToast(
-                          message: StringHelper.pleasesSelectPositionType);
-                      return;
-                    }
-                    if (viewModel.jobSalaryTextController.text.trim().isEmpty) {
-                      DialogHelper.showToast(
-                          message: StringHelper.pleaseSelectSalaryPeriod);
-                      return;
-                    }
-                    if (viewModel.jobSalaryFromController.text.trim().isEmpty) {
-                      DialogHelper.showToast(
-                          message: StringHelper.pleaseSelectSalaryForm);
-                      return;
-                    }
+                  viewModel.formKey.currentState?.validate();
 
-                    if (viewModel.jobSalaryToController.text.trim().isEmpty) {
-                      DialogHelper.showToast(
-                          message: StringHelper.pleaseSelectSalaryTo);
-                      return;
-                    }
-
-                    if (viewModel.adTitleTextController.text.trim().isEmpty) {
-                      DialogHelper.showToast(
-                          message: StringHelper.adTitleIsRequired);
-                      return;
-                    }
-                    if (viewModel.descriptionTextController.text
-                        .trim()
-                        .isEmpty) {
-                      DialogHelper.showToast(
-                          message: StringHelper.descriptionIsRequired);
-                      return;
-                    }
-                    if (viewModel.addressTextController.text.trim().isEmpty) {
-                      DialogHelper.showToast(
-                          message: StringHelper.locationIsRequired);
-                      return;
-                    }
-                    DialogHelper.showLoading();
-                    viewModel.addProduct(
-                        category: category,
-                        subCategory: subCategory,
-                        subSubCategory: subSubCategory,
-                        brand: viewModel.selectedBrand,
-                        models: viewModel.selectedModel);
+                  if (viewModel.mainImagePath.isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.pleaseUploadMainImage);
+                    return;
                   }
+                  if (viewModel.imagesList.isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.pleaseUploadAddAtLeastOneImage);
+                    return;
+                  }
+                  if (viewModel.jobPositionTextController.text.trim().isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.pleasesSelectPositionType);
+                    return;
+                  }
+                  if (viewModel.jobSalaryTextController.text.trim().isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.pleaseSelectSalaryPeriod);
+                    return;
+                  }
+                  if (viewModel.jobSalaryFromController.text.trim().isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.pleaseSelectSalaryForm);
+                    return;
+                  }
+
+                  if (viewModel.jobSalaryToController.text.trim().isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.pleaseSelectSalaryTo);
+                    return;
+                  }
+
+                  if (viewModel.adTitleTextController.text.trim().isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.adTitleIsRequired);
+                    return;
+                  }
+                  if (viewModel.descriptionTextController.text.trim().isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.descriptionIsRequired);
+                    return;
+                  }
+                  if (viewModel.addressTextController.text.trim().isEmpty) {
+                    DialogHelper.showToast(
+                        message: StringHelper.locationIsRequired);
+                    return;
+                  }
+                  DialogHelper.showLoading();
+                  viewModel.addProduct(
+                      category: category,
+                      subCategory: subCategory,
+                      subSubCategory: subSubCategory,
+                      brand: viewModel.selectedBrand,
+                      models: viewModel.selectedModel);
                 },
                 child: Container(
                   width: double.infinity,

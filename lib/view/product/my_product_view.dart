@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/date_helper.dart';
 import 'package:list_and_life/base/helpers/db_helper.dart';
@@ -17,6 +18,7 @@ import '../../res/assets_res.dart';
 import '../../view_model/my_ads_v_m.dart';
 import '../../widgets/app_elevated_button.dart';
 import '../../widgets/card_swipe_widget.dart';
+import '../../widgets/like_button.dart';
 
 class MyProductView extends BaseView<ProductVM> {
   final ProductDetailModel? data;
@@ -25,19 +27,19 @@ class MyProductView extends BaseView<ProductVM> {
   @override
   Widget build(BuildContext context, ProductVM viewModel) {
     return Scaffold(
-      appBar: AppBar(
+      /*appBar: AppBar(
         title: const Text('Details'),
         centerTitle: true,
         actions: [
           IconButton(
             onPressed: () async {
-              /*   final dynamicLink =
+              */ /*   final dynamicLink =
                   await DynamicLinkHelper.createDynamicLink("${data?.id}");
               debugPrint(dynamicLink.toString());
 
               Share.share(
                   'Hello, Please check this useful product on following link \n$dynamicLink',
-                  subject: 'Check this issue');*/
+                  subject: 'Check this issue');*/ /*
 
               DialogHelper.showToast(message: "Coming Soon");
             },
@@ -72,7 +74,7 @@ class MyProductView extends BaseView<ProductVM> {
             ],
           )
         ],
-      ),
+      ),*/
       body: FutureBuilder<ProductDetailModel?>(
           future: viewModel.getProductDetails(id: data?.id),
           builder: (context, snapshot) {
@@ -85,14 +87,75 @@ class MyProductView extends BaseView<ProductVM> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    CardSwipeWidget(
-                      height: 300,
-                      data: data,
-                      imagesList: data?.productMedias?.toList(),
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
-                      ),
+                    Stack(
+                      children: [
+                        CardSwipeWidget(
+                          height: 300,
+                          data: data,
+                          imagesList: data?.productMedias,
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(20),
+                          ),
+                        ),
+                        Positioned(
+                            top: 0,
+                            left: 0,
+                            child: SafeArea(
+                              child: IconButton(
+                                  onPressed: () {
+                                    context.pop();
+                                  },
+                                  icon: Icon(Icons.arrow_back,
+                                      color: Colors.white)),
+                            )),
+                        Positioned(
+                            top: 0,
+                            right: 50,
+                            child: SafeArea(
+                              child: IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(Icons.share, color: Colors.white)),
+                            )),
+                        Positioned(
+                            top: 0,
+                            right: 10,
+                            child: SafeArea(
+                              child: PopupMenuButton<int>(
+                                icon: const Icon(
+                                  Icons.more_vert_outlined,
+                                  color: Colors.white,
+                                ),
+                                offset: const Offset(0, 40),
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(15.0))),
+                                onSelected: (int value) {
+                                  var vm = context.read<MyAdsVM>();
+
+                                  vm.handelPopupMenuItemClick(
+                                      context: context,
+                                      index: value,
+                                      item: data);
+                                },
+                                itemBuilder: (BuildContext context) =>
+                                    <PopupMenuEntry<int>>[
+                                  PopupMenuItem(
+                                    value: 1,
+                                    child: Text(StringHelper.edit),
+                                  ),
+                                  PopupMenuItem(
+                                    value: 2,
+                                    child: Text(StringHelper.deactivate),
+                                  ),
+                                  PopupMenuItem(
+                                    value: 3,
+                                    child: Text(StringHelper.remove),
+                                  ),
+                                ],
+                              ),
+                            )),
+                      ],
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
@@ -136,165 +199,6 @@ class MyProductView extends BaseView<ProductVM> {
                             ),
                           },
                           const Gap(10),
-                          if (data?.category?.name
-                                  ?.contains(StringHelper.cars) ??
-                              false) ...{
-                            Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.grey.withOpacity(0.2),
-                              ),
-                              padding: const EdgeInsets.only(
-                                  top: 20, bottom: 20, left: 15, right: 10),
-                              child: Table(
-                                columnWidths: const {
-                                  0: FlexColumnWidth(3),
-                                  1: FlexColumnWidth(4),
-                                  2: FlexColumnWidth(4),
-                                },
-                                children: [
-                                  TableRow(children: [
-                                    Row(
-                                      children: [
-                                        Image.asset(
-                                          AssetsRes.IC_PETROL_ICON,
-                                          height: 15,
-                                        ),
-                                        const SizedBox(
-                                          width: 3,
-                                        ),
-                                        Text(
-                                          data?.fuel ?? '',
-                                          style: context.textTheme.titleSmall,
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Image.asset(
-                                          AssetsRes.IC_SPEED_ICON,
-                                          width: 17,
-                                        ),
-                                        const SizedBox(
-                                          width: 5,
-                                        ),
-                                        Text(
-                                          "${data?.kmDriven}",
-                                          style: context.textTheme.titleSmall,
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Image.asset(
-                                          AssetsRes.IC_GEAR_ICON,
-                                          height: 13,
-                                        ),
-                                        const SizedBox(
-                                          width: 5,
-                                        ),
-                                        Text(
-                                          '${data?.transmission}',
-                                          style: context.textTheme.titleSmall,
-                                        ),
-                                      ],
-                                    ),
-                                  ]),
-                                  TableRow(children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 20),
-                                      child: Row(
-                                        children: [
-                                          Image.asset(
-                                            AssetsRes.IC_USER_ICON,
-                                            height: 15,
-                                          ),
-                                          const SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text(
-                                            StringHelper.owner,
-                                            style: context.textTheme.titleSmall,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 20),
-                                      child: Row(
-                                        children: [
-                                          Image.asset(
-                                            AssetsRes.IC_LOACTION_ICON,
-                                            height: 15,
-                                          ),
-                                          const SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text(
-                                            StringHelper.city,
-                                            style: context.textTheme.titleSmall,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 20),
-                                      child: Row(
-                                        children: [
-                                          Image.asset(
-                                            AssetsRes.IC_CALENDER_ICON,
-                                            height: 13,
-                                          ),
-                                          const SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text(
-                                            StringHelper.postingDate,
-                                            style: context.textTheme.titleSmall,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ]),
-                                  TableRow(children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 18, top: 5),
-                                      child: Text(
-                                        '${data?.numberOfOwner}',
-                                        style: const TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 18, top: 5),
-                                      child: Text(
-                                        '${data?.city}',
-                                        style: const TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 18, top: 5),
-                                      child: Text(
-                                        DateHelper.joiningDate(DateTime.parse(
-                                            '${data?.createdAt}')),
-                                        style: const TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ),
-                                  ]),
-                                ],
-                              ),
-                            ),
-                            const Gap(10),
-                          },
                           data?.sellStatus != StringHelper.soldText
                               ? Row(
                                   children: [
@@ -327,6 +231,35 @@ class MyProductView extends BaseView<ProductVM> {
                                       ),
                                     ),
                                     const Gap(10),
+                                    Expanded(
+                                      child: InkWell(
+                                        onTap: () async {
+                                          var vm = context.read<MyAdsVM>();
+
+                                          vm.navigateToEditProduct(
+                                              context: context, item: data);
+                                        },
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 08),
+                                          decoration: BoxDecoration(
+                                            color: Colors.black54,
+                                            borderRadius:
+                                                BorderRadius.circular(08),
+                                          ),
+                                          child: Text(
+                                            StringHelper.edit,
+                                            style: context.textTheme.labelLarge
+                                                ?.copyWith(
+                                                    color: Colors.white,
+                                                    fontSize: 12,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                     /*Expanded(
                                       child: Container(
                                         alignment: Alignment.center,
@@ -355,51 +288,83 @@ class MyProductView extends BaseView<ProductVM> {
                                   width: 100,
                                   backgroundColor: Colors.grey,
                                 ),
-                          const Gap(10),
-                          if (viewModel
-                              .getSpecifications(context: context, data: data)
-                              .isNotEmpty) ...{
-                            Text('Specifications',
-                                style: context.textTheme.titleMedium),
-                            const SizedBox(height: 10),
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.grey.withOpacity(0.2),
+                          Divider(),
+                          if (data?.categoryId != 11) ...{
+                            if (viewModel
+                                .getSpecifications(context: context, data: data)
+                                .isNotEmpty) ...{
+                              Text('Specifications',
+                                  style: context.textTheme.titleMedium),
+                              const SizedBox(height: 10),
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.white,
+                                ),
+                                child: GridView(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  padding: const EdgeInsets.all(10),
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 3,
+                                          mainAxisExtent: 50,
+                                          mainAxisSpacing: 5,
+                                          crossAxisSpacing: 20),
+                                  children: viewModel.getSpecifications(
+                                      context: context, data: data),
+                                ),
                               ),
-                              child: GridView(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                padding: const EdgeInsets.all(10),
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 3,
-                                        mainAxisExtent: 40,
-                                        mainAxisSpacing: 5,
-                                        crossAxisSpacing: 5),
-                                children: viewModel.getSpecifications(
-                                    context: context, data: data),
-                              ),
-                            ),
+                            }
                           },
-                          const Gap(10),
                           if (data?.categoryId == 11) ...{
+                            Text(
+                              'Property Information',
+                              style: context.titleMedium,
+                            ),
+                            Gap(10),
+                            getPropertyInformation(
+                                    context: context, data: data) ??
+                                SizedBox.shrink(),
+                          },
+                          if (data?.categoryId == 11) ...{
+                            Divider(),
                             Text(
                               StringHelper.amenities,
                               style: context.textTheme.titleMedium,
                             ),
-                            const Gap(10),
-                            ListView.builder(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemCount: data?.productAmenities?.length,
-                                itemBuilder: (context, index) {
-                                  return Text(DbHelper.getLanguage() == 'en'
-                                      ? "✧ ${data?.productAmenities?[index].amnity?.name}"
-                                      : "✧ ${data?.productAmenities?[index].amnity?.nameAr}");
-                                }),
-                            const Gap(10),
+                            Gap(10),
+                            Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: List.generate(
+                                  data?.productAmenities?.length ?? 0, (index) {
+                                return Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 5.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      getAmenityIcon(data
+                                              ?.productAmenities?[index]
+                                              .amnity
+                                              ?.name ??
+                                          ''),
+                                      Gap(05),
+                                      Text(DbHelper.getLanguage() == 'en'
+                                          ? "${data?.productAmenities?[index].amnity?.name}"
+                                          : "${data?.productAmenities?[index].amnity?.nameAr}"),
+                                    ],
+                                  ),
+                                );
+                              }),
+                            ),
                           },
+                          Divider(),
                           Text(
                             StringHelper.description,
                             style: context.textTheme.titleMedium,
@@ -421,6 +386,104 @@ class MyProductView extends BaseView<ProductVM> {
               isLoading: snapshot.connectionState == ConnectionState.waiting,
             );
           }),
+    );
+  }
+
+  getPropertyInformation(
+      {required BuildContext context, ProductDetailModel? data}) {
+    {
+      List<Widget> specs = [];
+
+      if (data?.propertyFor != null && data!.propertyFor!.isNotEmpty) {
+        specs.add(_buildInfoRow(
+            context, "${data.propertyFor?.capitalized}", '🏠', 'Property For'));
+      }
+      if (data?.area != null && data!.area != 0) {
+        specs.add(_buildInfoRow(context, "${data.area} sqft", '📏', 'Area'));
+      }
+      if (data?.bedrooms != null && data!.bedrooms != 0) {
+        specs
+            .add(_buildInfoRow(context, "${data.bedrooms}", '🛏️', 'Bedrooms'));
+      }
+      if (data?.bathrooms != null && data!.bathrooms != 0) {
+        specs.add(
+            _buildInfoRow(context, "${data.bathrooms}", '🚽', 'Bathrooms'));
+      }
+      if (data?.furnishedType != null && data!.furnishedType!.isNotEmpty) {
+        specs.add(_buildInfoRow(context, "${data.furnishedType?.capitalized}",
+            '🛋️', 'Furnished Type'));
+      }
+      if (data?.ownership != null && data!.ownership!.isNotEmpty) {
+        specs.add(_buildInfoRow(
+            context, "${data.ownership?.capitalized}", '📜', 'Ownership'));
+      }
+      if (data?.paymentType != null && data!.paymentType!.isNotEmpty) {
+        specs.add(_buildInfoRow(
+            context, "${data.paymentType?.capitalized}", '💳', 'Payment Type'));
+      }
+      if (data?.completionStatus != null &&
+          data!.completionStatus!.isNotEmpty) {
+        specs.add(_buildInfoRow(context,
+            "${data.completionStatus?.capitalized}", '✅', 'Completion Status'));
+      }
+      if (data?.deliveryTerm != null && data!.deliveryTerm!.isNotEmpty) {
+        specs.add(_buildInfoRow(context, "${data.deliveryTerm?.capitalized}",
+            '🚚', 'Delivery Term'));
+      }
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: specs,
+      );
+    }
+  }
+
+  Widget _buildInfoRow(
+      BuildContext context, String label, String icon, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            value,
+            style: context.titleSmall,
+          ),
+          Text(label, style: TextStyle(fontWeight: FontWeight.w500)),
+        ],
+      ),
+    );
+  }
+
+  Icon getAmenityIcon(String amenityName) {
+    // Define a map that links each amenity name to an icon
+    final Map<String, IconData> amenityIconMap = {
+      "Intercom": Icons.phone,
+      "Security": Icons.security,
+      "Storage": Icons.store_mall_directory,
+      "Broadband Internet": Icons.wifi,
+      "Garage Parking": Icons.local_parking,
+      "Elevator": Icons.elevator,
+      "Landline": Icons.phone_in_talk,
+      "Natural Gas": Icons.local_fire_department,
+      "Water Meter": Icons.water_drop,
+      "Electricity Meter": Icons.bolt,
+      "Pool": Icons.pool,
+      "Pets Allowed": Icons.pets,
+      "Maids Room": Icons.bed,
+      "Parking": Icons.directions_car,
+      "Central A/C and Heating":
+          Icons.ac_unit, // Can use separate icons if needed
+      "Private Garden": Icons.grass,
+      "Installed Kitchen": Icons.kitchen,
+      "Balcony": Icons.balcony,
+    };
+
+    // Return the icon if found in the map, otherwise return a default icon
+    return Icon(
+      amenityIconMap[amenityName] ?? Icons.help_outline,
+      color: Colors.blueGrey, // "help_outline" as a default icon
     );
   }
 }
