@@ -94,7 +94,7 @@ class CompleteProfileView extends BaseView<AuthVM> {
             AppTextField(
               title: StringHelper.firstName,
               hint: StringHelper.enter,
-              inputType: TextInputType.name,
+              keyboardType: TextInputType.name,
               controller: viewModel.nameTextController,
               inputFormatters: AppTextInputFormatters.withNameFormatter(),
             ),
@@ -102,7 +102,7 @@ class CompleteProfileView extends BaseView<AuthVM> {
             AppTextField(
               title: StringHelper.lastName,
               hint: StringHelper.enter,
-              inputType: TextInputType.name,
+              keyboardType: TextInputType.name,
               controller: viewModel.lNameTextController,
               inputFormatters: AppTextInputFormatters.withNameFormatter(),
             ),
@@ -110,7 +110,7 @@ class CompleteProfileView extends BaseView<AuthVM> {
             AppTextField(
               title: StringHelper.location,
               hint: StringHelper.location,
-              inputType: TextInputType.text,
+              keyboardType: TextInputType.text,
               readOnly: true,
               onTap: () async {
                 Map<String, dynamic>? value = await Navigator.push(
@@ -132,7 +132,7 @@ class CompleteProfileView extends BaseView<AuthVM> {
             AppTextField(
               title: StringHelper.email,
               hint: StringHelper.enter,
-              inputType: TextInputType.emailAddress,
+              keyboardType: TextInputType.emailAddress,
               controller: viewModel.emailTextController,
               inputFormatters: AppTextInputFormatters.withEmailFormatter(),
             ),

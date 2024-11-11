@@ -14,6 +14,7 @@ import '../../../../models/category_model.dart';
 import '../../../../models/prodect_detail_model.dart';
 import '../../../../view_model/sell_forms_vm.dart';
 import '../../../../widgets/app_map_widget.dart';
+import '../../../../widgets/app_text_field.dart';
 
 class CommonSellForm extends BaseView<SellFormsVM> {
   final String? type;
@@ -34,196 +35,159 @@ class CommonSellForm extends BaseView<SellFormsVM> {
 
   @override
   Widget build(BuildContext context, SellFormsVM viewModel) {
-    return KeyboardActions(
-      config: KeyboardActionsConfig(
-          keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
-          keyboardBarColor: Colors.grey[200],
-          actions: [
-            KeyboardActionsItem(
-              focusNode: viewModel.priceText,
-            ),
-          ]),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              StringHelper.uploadImages,
-              style: context.textTheme.titleMedium,
-            ),
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 10),
-              width: double.infinity,
-              height: 220,
-              decoration: BoxDecoration(boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  offset: const Offset(0, 1),
-                  blurRadius: 6,
-                ),
-              ], color: Colors.white, borderRadius: BorderRadius.circular(10)),
-              child: GestureDetector(
-                  onTap: () async {
-                    viewModel.mainImagePath =
-                        await ImagePickerHelper.openImagePicker(
+    return Form(
+      key: viewModel.formKey,
+      child: KeyboardActions(
+        config: KeyboardActionsConfig(
+            keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
+            keyboardBarColor: Colors.grey[200],
+            actions: [
+              KeyboardActionsItem(
+                focusNode: viewModel.priceText,
+              ),
+            ]),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                StringHelper.uploadImages,
+                style: context.textTheme.titleMedium,
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 10),
+                width: double.infinity,
+                height: 300,
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10)),
+                child: GestureDetector(
+                    onTap: () async {
+                      viewModel.mainImagePath =
+                          await ImagePickerHelper.openImagePicker(
+                                  context: context, isCropping: true) ??
+                              '';
+                    },
+                    child: ImageView.rect(
+                        image: viewModel.mainImagePath,
+                        borderRadius: 10,
+                        width: context.width,
+                        fit: BoxFit.fill,
+                        placeholder: AssetsRes.IC_CAMERA,
+                        height: 220)),
+              ),
+              Wrap(
+                children:
+                    List.generate(viewModel.imagesList.length + 1, (index) {
+                  if (index < viewModel.imagesList.length) {
+                    return Stack(
+                      alignment: Alignment.topRight,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.all(10),
+                          width: 100,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: ImageView.rect(
+                              image: viewModel.imagesList[index].media ?? '',
+                              height: 80,
+                              width: 120),
+                        ),
+                        Container(
+                          decoration: const BoxDecoration(
+                              color: Colors.white, shape: BoxShape.circle),
+                          child: InkWell(
+                            onTap: () {
+                              viewModel.removeImage(index,
+                                  data: viewModel.imagesList[index]);
+                            },
+                            child: const Icon(
+                              Icons.cancel,
+                              color: Colors.red,
+                            ),
+                          ),
+                        )
+                      ],
+                    );
+                  } else {
+                    return GestureDetector(
+                      onTap: () async {
+                        var image = await ImagePickerHelper.openImagePicker(
                                 context: context, isCropping: true) ??
                             '';
-                  },
-                  child: ImageView.rect(
-                      image: viewModel.mainImagePath,
-                      borderRadius: 10,
-                      width: context.width,
-                      placeholder: AssetsRes.IC_CAMERA,
-                      height: 220)),
-            ),
-            Wrap(
-              children: List.generate(viewModel.imagesList.length + 1, (index) {
-                if (index < viewModel.imagesList.length) {
-                  return Stack(
-                    alignment: Alignment.topRight,
-                    children: [
-                      Container(
+                        if (image.isNotEmpty) {
+                          viewModel.addImage(image);
+                        }
+                      },
+                      child: Container(
                         margin: const EdgeInsets.all(10),
-                        width: 100,
+                        width: 120,
                         height: 80,
                         decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              offset: const Offset(0, 1),
-                              blurRadius: 6,
-                            ),
-                          ],
+                          border: Border.all(color: Colors.black),
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: ImageView.rect(
-                            image: viewModel.imagesList[index].media ?? '',
-                            height: 80,
-                            width: 120),
-                      ),
-                      Container(
-                        decoration: const BoxDecoration(
-                            color: Colors.white, shape: BoxShape.circle),
-                        child: InkWell(
-                          onTap: () {
-                            viewModel.removeImage(index,
-                                data: viewModel.imagesList[index]);
-                          },
-                          child: const Icon(
-                            Icons.cancel,
-                            color: Colors.red,
-                          ),
-                        ),
-                      )
-                    ],
-                  );
-                } else {
-                  return GestureDetector(
-                    onTap: () async {
-                      var image = await ImagePickerHelper.openImagePicker(
-                              context: context, isCropping: true) ??
-                          '';
-                      if (image.isNotEmpty) {
-                        viewModel.addImage(image);
-                      }
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.all(10),
-                      width: 120,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            offset: const Offset(0, 1),
-                            blurRadius: 6,
-                          ),
-                        ],
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.add),
-                          SizedBox(
-                            height: 2,
-                          ),
-                          Text(
-                            StringHelper.add,
-                            style: TextStyle(
-                              fontSize: 14,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.add),
+                            SizedBox(
+                              height: 2,
                             ),
-                          ),
-                        ],
+                            Text(
+                              StringHelper.add,
+                              style: TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                }
-              }),
-            ),
-            if (brands?.isNotEmpty ?? false) ...{
-              RichText(
-                  text: TextSpan(children: [
-                TextSpan(
-                  text: StringHelper.brand,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      color: Colors.black),
-                ),
-              ])),
-              Container(
-                margin: const EdgeInsets.only(top: 10, bottom: 15),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(100),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      offset: const Offset(0, 1),
-                      blurRadius: 6,
-                    ),
-                  ],
-                ),
-                child: TextFormField(
+                    );
+                  }
+                }),
+              ),
+              if (brands?.isNotEmpty ?? false) ...{
+                AppTextField(
+                  title: StringHelper.brand,
+                  titleColor: Colors.black,
+                  hint: StringHelper.select,
+                  hintStyle:
+                      const TextStyle(color: Color(0xffACACAC), fontSize: 14),
                   controller: viewModel.brandTextController,
                   readOnly: true,
                   cursorColor: Colors.black,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.only(
-                      left: 20,
+                  fillColor: Colors.white,
+                  borderSideColor: Colors.grey.withOpacity(0.5),
+                  contentPadding: const EdgeInsets.only(left: 20),
+                  elevation: 6, // Optional for shadow effect
+                  suffix: PopupMenuButton<CategoryModel>(
+                    clipBehavior: Clip.hardEdge,
+                    icon: const Icon(
+                      Icons.arrow_drop_down,
+                      color: Colors.black,
                     ),
-                    hintText: StringHelper.select,
-                    hintStyle:
-                        const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    ),
-                    suffixIcon: PopupMenuButton(
-                      clipBehavior: Clip.hardEdge,
-                      icon: const Icon(
-                        Icons.arrow_drop_down,
-                        color: Colors.black,
-                      ),
-                      onSelected: (CategoryModel value) {
-                        DialogHelper.showLoading();
-                        viewModel.getModels(brandId: value.id);
-                        viewModel.selectedBrand = value;
-                        viewModel.brandTextController.text = value.name ?? '';
-                        viewModel.getModels(brandId: value.id);
-                      },
-                      itemBuilder: (BuildContext context) {
-                        return brands!.map((option) {
-                          return PopupMenuItem(
-                            value: option,
-                            child: Text(option.name ?? ''),
-                          );
-                        }).toList();
-                      },
-                    ),
+                    onSelected: (CategoryModel value) {
+                      DialogHelper.showLoading();
+                      viewModel.getModels(brandId: value.id);
+                      viewModel.selectedBrand = value;
+                      viewModel.brandTextController.text = value.name ?? '';
+                    },
+                    itemBuilder: (BuildContext context) {
+                      return brands!.map((option) {
+                        return PopupMenuItem(
+                          value: option,
+                          child: Text(option.name ?? ''),
+                        );
+                      }).toList();
+                    },
                   ),
                   inputFormatters: [
                     FilteringTextInputFormatter.deny(
@@ -232,63 +196,32 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                   keyboardType: TextInputType.text,
                   textInputAction: TextInputAction.done,
                 ),
-              ),
-              RichText(
-                  text: TextSpan(children: [
-                TextSpan(
-                  text: StringHelper.models,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      color: Colors.black),
-                ),
-              ])),
-              Container(
-                margin: const EdgeInsets.only(top: 10, bottom: 15),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(100),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      offset: const Offset(0, 1),
-                      blurRadius: 6,
-                    ),
-                  ],
-                ),
-                child: TextFormField(
+                AppTextField(
+                  title: StringHelper.models,
                   controller: viewModel.modelTextController,
                   readOnly: true,
                   cursorColor: Colors.black,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.only(
-                      left: 20,
+                  hint: StringHelper.select,
+                  hintStyle:
+                      const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  suffix: PopupMenuButton<CategoryModel>(
+                    clipBehavior: Clip.hardEdge,
+                    icon: const Icon(
+                      Icons.arrow_drop_down,
+                      color: Colors.black,
                     ),
-                    hintText: StringHelper.select,
-                    hintStyle:
-                        const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    ),
-                    suffixIcon: PopupMenuButton<CategoryModel>(
-                      clipBehavior: Clip.hardEdge,
-                      icon: const Icon(
-                        Icons.arrow_drop_down,
-                        color: Colors.black,
-                      ),
-                      onSelected: (value) {
-                        viewModel.selectedModel = value;
-                        viewModel.modelTextController.text = value.name ?? '';
-                      },
-                      itemBuilder: (BuildContext context) {
-                        return viewModel.allModels.map((option) {
-                          return PopupMenuItem(
-                            value: option,
-                            child: Text(option?.name ?? ''),
-                          );
-                        }).toList();
-                      },
-                    ),
+                    onSelected: (value) {
+                      viewModel.selectedModel = value;
+                      viewModel.modelTextController.text = value.name ?? '';
+                    },
+                    itemBuilder: (BuildContext context) {
+                      return viewModel.allModels.map((option) {
+                        return PopupMenuItem(
+                          value: option,
+                          child: Text(option?.name ?? ''),
+                        );
+                      }).toList();
+                    },
                   ),
                   inputFormatters: [
                     FilteringTextInputFormatter.deny(
@@ -296,78 +229,47 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                   ],
                   keyboardType: TextInputType.text,
                   textInputAction: TextInputAction.done,
-                ),
-              ),
-            },
-            if (category?.name?.toLowerCase() == "fashion") ...{
-              FutureBuilder<List<CategoryModel>>(
-                future: viewModel.getSizeOptions("${subSubCategory?.id}"),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    List<CategoryModel> sizeOptions = snapshot.data ?? [];
+                )
+              },
+              if (category?.name?.toLowerCase() == "fashion") ...{
+                FutureBuilder<List<CategoryModel>>(
+                  future: viewModel.getSizeOptions("${subSubCategory?.id}"),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      List<CategoryModel> sizeOptions = snapshot.data ?? [];
 
-                    if (sizeOptions.isNotEmpty) {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          RichText(
-                              text: TextSpan(children: [
-                            TextSpan(
-                              text: StringHelper.size,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 14,
-                                  color: Colors.black),
-                            ),
-                          ])),
-                          Container(
-                            margin: const EdgeInsets.only(top: 10, bottom: 20),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  offset: const Offset(0, 1),
-                                  blurRadius: 6,
-                                ),
-                              ],
-                            ),
-                            child: TextFormField(
+                      if (sizeOptions.isNotEmpty) {
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            AppTextField(
+                              title: StringHelper.size,
                               controller: viewModel.sizeTextController,
                               readOnly: true,
                               cursorColor: Colors.black,
-                              decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.only(
-                                  left: 20,
+                              hint: StringHelper.select,
+                              hintStyle: const TextStyle(
+                                  color: Color(0xffACACAC), fontSize: 14),
+                              suffix: PopupMenuButton<CategoryModel>(
+                                clipBehavior: Clip.hardEdge,
+                                icon: const Icon(
+                                  Icons.arrow_drop_down,
+                                  color: Colors.black,
                                 ),
-                                hintText: StringHelper.select,
-                                hintStyle: const TextStyle(
-                                    color: Color(0xffACACAC), fontSize: 14),
-                                border: const OutlineInputBorder(
-                                  borderSide: BorderSide.none,
-                                ),
-                                suffixIcon: PopupMenuButton<CategoryModel>(
-                                  clipBehavior: Clip.hardEdge,
-                                  icon: const Icon(
-                                    Icons.arrow_drop_down,
-                                    color: Colors.black,
-                                  ),
-                                  onSelected: (value) {
-                                    viewModel.selectedModel = value;
-                                    viewModel.sizeTextController.text =
-                                        value.name ?? '';
-                                  },
-                                  itemBuilder: (BuildContext context) {
-                                    return sizeOptions.map((option) {
-                                      return PopupMenuItem(
-                                        value: option,
-                                        child: Text(option.name ?? ''),
-                                      );
-                                    }).toList();
-                                  },
-                                ),
+                                onSelected: (value) {
+                                  viewModel.selectedModel = value;
+                                  viewModel.sizeTextController.text =
+                                      value.name ?? '';
+                                },
+                                itemBuilder: (BuildContext context) {
+                                  return sizeOptions.map((option) {
+                                    return PopupMenuItem(
+                                      value: option,
+                                      child: Text(option.name ?? ''),
+                                    );
+                                  }).toList();
+                                },
                               ),
                               inputFormatters: [
                                 FilteringTextInputFormatter.deny(
@@ -375,150 +277,119 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                               ],
                               keyboardType: TextInputType.text,
                               textInputAction: TextInputAction.done,
-                            ),
-                          ),
-                        ],
-                      );
+                            )
+                          ],
+                        );
+                      }
                     }
-                  }
-                  if (snapshot.hasError) {
-                    return const SizedBox.shrink();
-                  }
+                    if (snapshot.hasError) {
+                      return const SizedBox.shrink();
+                    }
 
-                  return const SizedBox.shrink();
-                },
+                    return const SizedBox.shrink();
+                  },
+                ),
+              },
+              Text(
+                StringHelper.itemCondition,
+                style: context.textTheme.titleMedium,
               ),
-            },
-            Text(
-              StringHelper.itemCondition,
-              style: context.textTheme.titleMedium,
-            ),
-            Row(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    viewModel.currentIndex = 1;
-                  },
-                  child: Container(
-                    width: 105,
-                    height: 42,
-                    margin: const EdgeInsets.only(top: 10, right: 10),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          color: viewModel.currentIndex == 1
-                              ? Colors.transparent
-                              : Colors.grey.withOpacity(0.5)),
-                      color: viewModel.currentIndex == 1
-                          ? Colors.black
-                          : const Color(0xffFCFCFD),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Center(
-                        child: Text(
-                      StringHelper.newText,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      viewModel.currentIndex = 1;
+                    },
+                    child: Container(
+                      width: 105,
+                      height: 42,
+                      margin: const EdgeInsets.only(top: 10, right: 10),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: viewModel.currentIndex == 1
+                                ? Colors.transparent
+                                : Colors.grey.withOpacity(0.5)),
                         color: viewModel.currentIndex == 1
-                            ? Colors.white
-                            : Colors.black,
+                            ? Colors.black
+                            : const Color(0xffFCFCFD),
+                        borderRadius: BorderRadius.circular(5),
                       ),
-                    )),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    viewModel.currentIndex = 2;
-                  },
-                  child: Container(
-                    width: 105,
-                    height: 42,
-                    margin: const EdgeInsets.only(top: 10, left: 10),
-                    decoration: BoxDecoration(
-                      color: viewModel.currentIndex == 2
-                          ? Colors.black
-                          : const Color(0xffFCFCFD),
-                      border: Border.all(
-                          color: viewModel.currentIndex == 2
-                              ? Colors.transparent
-                              : Colors.grey.withOpacity(0.5)),
-                      borderRadius: BorderRadius.circular(5),
+                      child: Center(
+                          child: Text(
+                        StringHelper.newText,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          color: viewModel.currentIndex == 1
+                              ? Colors.white
+                              : Colors.black,
+                        ),
+                      )),
                     ),
-                    child: Center(
-                        child: Text(
-                      StringHelper.used,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      viewModel.currentIndex = 2;
+                    },
+                    child: Container(
+                      width: 105,
+                      height: 42,
+                      margin: const EdgeInsets.only(top: 10, left: 10),
+                      decoration: BoxDecoration(
                         color: viewModel.currentIndex == 2
-                            ? Colors.white
-                            : Colors.black,
+                            ? Colors.black
+                            : const Color(0xffFCFCFD),
+                        border: Border.all(
+                            color: viewModel.currentIndex == 2
+                                ? Colors.transparent
+                                : Colors.grey.withOpacity(0.5)),
+                        borderRadius: BorderRadius.circular(5),
                       ),
-                    )),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 25,
-            ),
-            if (category?.id == 1) ...{
-              /// RAM SPECIFICATION
-              RichText(
-                  text: TextSpan(children: [
-                TextSpan(
-                  text: StringHelper.ram,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      color: Colors.black),
-                ),
-              ])),
-              Container(
-                margin: const EdgeInsets.only(top: 10, bottom: 15),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(100),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      offset: const Offset(0, 1),
-                      blurRadius: 6,
+                      child: Center(
+                          child: Text(
+                        StringHelper.used,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          color: viewModel.currentIndex == 2
+                              ? Colors.white
+                              : Colors.black,
+                        ),
+                      )),
                     ),
-                  ],
-                ),
-                child: TextFormField(
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 25,
+              ),
+              if (category?.id == 1) ...{
+                /// RAM SPECIFICATION
+                AppTextField(
+                  title: StringHelper.ram,
                   controller: viewModel.ramTextController,
                   readOnly: true,
                   cursorColor: Colors.black,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.only(
-                      left: 20,
+                  hint: StringHelper.select,
+                  hintStyle:
+                      const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  suffix: PopupMenuButton<String>(
+                    clipBehavior: Clip.hardEdge,
+                    icon: const Icon(
+                      Icons.arrow_drop_down,
+                      color: Colors.black,
                     ),
-                    hintText: StringHelper.select,
-                    hintStyle:
-                        const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    ),
-                    suffixIcon: PopupMenuButton<String>(
-                      clipBehavior: Clip.hardEdge,
-                      icon: const Icon(
-                        Icons.arrow_drop_down,
-                        color: Colors.black,
-                      ),
-                      onSelected: (value) {
-                        viewModel.ramTextController.text = value ?? '';
-                      },
-                      itemBuilder: (BuildContext context) {
-                        return viewModel.ramOptions.map((option) {
-                          return PopupMenuItem(
-                            value: option,
-                            child: Text(option ?? ''),
-                          );
-                        }).toList();
-                      },
-                    ),
+                    onSelected: (value) {
+                      viewModel.ramTextController.text = value ?? '';
+                    },
+                    itemBuilder: (BuildContext context) {
+                      return viewModel.ramOptions.map((option) {
+                        return PopupMenuItem(
+                          value: option,
+                          child: Text(option ?? ''),
+                        );
+                      }).toList();
+                    },
                   ),
                   inputFormatters: [
                     FilteringTextInputFormatter.deny(
@@ -527,64 +398,33 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                   keyboardType: TextInputType.text,
                   textInputAction: TextInputAction.done,
                 ),
-              ),
 
-              /// STORAGE SPECIFICATION
-              RichText(
-                  text: TextSpan(children: [
-                TextSpan(
-                  text: StringHelper.strong,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      color: Colors.black),
-                ),
-              ])),
-              Container(
-                margin: const EdgeInsets.only(top: 10, bottom: 15),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(100),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      offset: const Offset(0, 1),
-                      blurRadius: 6,
-                    ),
-                  ],
-                ),
-                child: TextFormField(
+                /// STORAGE SPECIFICATION
+                AppTextField(
+                  title: StringHelper.strong,
                   controller: viewModel.storageTextController,
                   readOnly: true,
                   cursorColor: Colors.black,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.only(
-                      left: 20,
+                  hint: StringHelper.select,
+                  hintStyle:
+                      const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  suffix: PopupMenuButton<String>(
+                    clipBehavior: Clip.hardEdge,
+                    icon: const Icon(
+                      Icons.arrow_drop_down,
+                      color: Colors.black,
                     ),
-                    hintText: StringHelper.select,
-                    hintStyle:
-                        const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    ),
-                    suffixIcon: PopupMenuButton<String>(
-                      clipBehavior: Clip.hardEdge,
-                      icon: const Icon(
-                        Icons.arrow_drop_down,
-                        color: Colors.black,
-                      ),
-                      onSelected: (value) {
-                        viewModel.storageTextController.text = value ?? '';
-                      },
-                      itemBuilder: (BuildContext context) {
-                        return viewModel.storageOptions.map((option) {
-                          return PopupMenuItem(
-                            value: option,
-                            child: Text(option ?? ''),
-                          );
-                        }).toList();
-                      },
-                    ),
+                    onSelected: (value) {
+                      viewModel.storageTextController.text = value ?? '';
+                    },
+                    itemBuilder: (BuildContext context) {
+                      return viewModel.storageOptions.map((option) {
+                        return PopupMenuItem(
+                          value: option,
+                          child: Text(option ?? ''),
+                        );
+                      }).toList();
+                    },
                   ),
                   inputFormatters: [
                     FilteringTextInputFormatter.deny(
@@ -593,64 +433,33 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                   keyboardType: TextInputType.text,
                   textInputAction: TextInputAction.done,
                 ),
-              ),
 
-              /// SCREEN SIZE SPECIFICATION
-              RichText(
-                  text: TextSpan(children: [
-                TextSpan(
-                  text: StringHelper.screenSize,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      color: Colors.black),
-                ),
-              ])),
-              Container(
-                margin: const EdgeInsets.only(top: 10, bottom: 15),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(100),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      offset: const Offset(0, 1),
-                      blurRadius: 6,
-                    ),
-                  ],
-                ),
-                child: TextFormField(
+                /// SCREEN SIZE SPECIFICATION
+                AppTextField(
+                  title: StringHelper.screenSize,
                   controller: viewModel.screenSizeTextController,
                   readOnly: true,
                   cursorColor: Colors.black,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.only(
-                      left: 20,
+                  hint: StringHelper.select,
+                  hintStyle:
+                      const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  suffix: PopupMenuButton<String>(
+                    clipBehavior: Clip.hardEdge,
+                    icon: const Icon(
+                      Icons.arrow_drop_down,
+                      color: Colors.black,
                     ),
-                    hintText: StringHelper.select,
-                    hintStyle:
-                        const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    ),
-                    suffixIcon: PopupMenuButton<String>(
-                      clipBehavior: Clip.hardEdge,
-                      icon: const Icon(
-                        Icons.arrow_drop_down,
-                        color: Colors.black,
-                      ),
-                      onSelected: (value) {
-                        viewModel.screenSizeTextController.text = value ?? '';
-                      },
-                      itemBuilder: (BuildContext context) {
-                        return viewModel.screenSizeOptions.map((option) {
-                          return PopupMenuItem(
-                            value: option,
-                            child: Text(option ?? ''),
-                          );
-                        }).toList();
-                      },
-                    ),
+                    onSelected: (value) {
+                      viewModel.screenSizeTextController.text = value ?? '';
+                    },
+                    itemBuilder: (BuildContext context) {
+                      return viewModel.screenSizeOptions.map((option) {
+                        return PopupMenuItem(
+                          value: option,
+                          child: Text(option ?? ''),
+                        );
+                      }).toList();
+                    },
                   ),
                   inputFormatters: [
                     FilteringTextInputFormatter.deny(
@@ -659,64 +468,34 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                   keyboardType: TextInputType.text,
                   textInputAction: TextInputAction.done,
                 ),
-              ),
-            },
-            if (category?.id == 2 || subCategory?.subCategoryId == 4) ...{
-              RichText(
-                  text: TextSpan(children: [
-                TextSpan(
-                  text: StringHelper.material,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      color: Colors.black),
-                ),
-              ])),
-              Container(
-                margin: const EdgeInsets.only(top: 10, bottom: 20),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      offset: const Offset(0, 1),
-                      blurRadius: 6,
-                    ),
-                  ],
-                ),
-                child: TextFormField(
+              },
+              if (category?.id == 2 || subCategory?.subCategoryId == 4) ...{
+                /// MATERIAL SPECIFICATION
+                AppTextField(
+                  title: StringHelper.material,
                   controller: viewModel.materialTextController,
                   readOnly: true,
                   cursorColor: Colors.black,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.only(
-                      left: 20,
+                  hint: StringHelper.select,
+                  hintStyle:
+                      const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  suffix: PopupMenuButton<String>(
+                    clipBehavior: Clip.hardEdge,
+                    icon: const Icon(
+                      Icons.arrow_drop_down,
+                      color: Colors.black,
                     ),
-                    hintText: StringHelper.select,
-                    hintStyle:
-                        const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    ),
-                    suffixIcon: PopupMenuButton<String>(
-                      clipBehavior: Clip.hardEdge,
-                      icon: const Icon(
-                        Icons.arrow_drop_down,
-                        color: Colors.black,
-                      ),
-                      onSelected: (value) {
-                        viewModel.materialTextController.text = value ?? '';
-                      },
-                      itemBuilder: (BuildContext context) {
-                        return viewModel.materialOptions.map((option) {
-                          return PopupMenuItem(
-                            value: option,
-                            child: Text(option ?? ''),
-                          );
-                        }).toList();
-                      },
-                    ),
+                    onSelected: (value) {
+                      viewModel.materialTextController.text = value ?? '';
+                    },
+                    itemBuilder: (BuildContext context) {
+                      return viewModel.materialOptions.map((option) {
+                        return PopupMenuItem(
+                          value: option,
+                          child: Text(option ?? ''),
+                        );
+                      }).toList();
+                    },
                   ),
                   inputFormatters: [
                     FilteringTextInputFormatter.deny(
@@ -725,45 +504,18 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                   keyboardType: TextInputType.text,
                   textInputAction: TextInputAction.done,
                 ),
-              ),
-            },
-            RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                text: StringHelper.adTitle,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Colors.black),
-              ),
-            ])),
-            Container(
-              margin: const EdgeInsets.only(top: 10, bottom: 20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    offset: const Offset(0, 1),
-                    blurRadius: 6,
-                  ),
-                ],
-              ),
-              child: TextFormField(
+              },
+
+              /// Ad Title Section
+              AppTextField(
+                title: StringHelper.adTitle,
+                controller: viewModel.adTitleTextController,
                 maxLines: 4,
                 minLines: 1,
-                controller: viewModel.adTitleTextController,
                 cursorColor: Colors.black,
-                decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                    hintText: StringHelper.enter,
-                    hintStyle:
-                        TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    )),
+                hint: StringHelper.enter,
+                hintStyle:
+                    const TextStyle(color: Color(0xffACACAC), fontSize: 14),
                 inputFormatters: [
                   FilteringTextInputFormatter.deny(
                       RegExp(viewModel.regexToRemoveEmoji)),
@@ -771,43 +523,16 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.done,
               ),
-            ),
-            RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                text: StringHelper.describeWhatYouAreSelling,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Colors.black),
-              ),
-            ])),
-            Container(
-              margin: const EdgeInsets.only(top: 10, bottom: 20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    offset: const Offset(0, 1),
-                    blurRadius: 6,
-                  ),
-                ],
-              ),
-              child: TextFormField(
+
+              /// Description Section
+              AppTextField(
+                title: StringHelper.describeWhatYouAreSelling,
                 controller: viewModel.descriptionTextController,
                 maxLines: 4,
                 cursorColor: Colors.black,
-                decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                    hintText: StringHelper.enter,
-                    hintStyle:
-                        TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    )),
+                hint: StringHelper.enter,
+                hintStyle:
+                    const TextStyle(color: Color(0xffACACAC), fontSize: 14),
                 inputFormatters: [
                   FilteringTextInputFormatter.deny(
                       RegExp(viewModel.regexToRemoveEmoji)),
@@ -815,31 +540,10 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.done,
               ),
-            ),
-            RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                text: StringHelper.location,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Colors.black),
-              ),
-            ])),
-            Container(
-              margin: const EdgeInsets.only(top: 10, bottom: 20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    offset: const Offset(0, 1),
-                    blurRadius: 6,
-                  ),
-                ],
-              ),
-              child: TextFormField(
+
+              /// Location Section
+              AppTextField(
+                title: StringHelper.location,
                 controller: viewModel.addressTextController,
                 maxLines: 2,
                 minLines: 1,
@@ -849,7 +553,6 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => const AppMapWidget()));
-                  print(value);
                   if (value != null && value.isNotEmpty) {
                     viewModel.state = value['state'];
                     viewModel.city = value['city'];
@@ -858,17 +561,10 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                         "${value['location']}, ${value['city']}, ${value['state']}";
                   }
                 },
-                cursorColor: Colors.black,
-                decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                    hintText: StringHelper.select,
-                    suffixIcon: Icon(Icons.location_on),
-                    hintStyle:
-                        TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    )),
+                hint: StringHelper.select,
+                suffix: const Icon(Icons.location_on),
+                hintStyle:
+                    const TextStyle(color: Color(0xffACACAC), fontSize: 14),
                 inputFormatters: [
                   FilteringTextInputFormatter.deny(
                       RegExp(viewModel.regexToRemoveEmoji)),
@@ -876,43 +572,16 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.done,
               ),
-            ),
-            RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                text: StringHelper.priceEgp,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Colors.black),
-              ),
-            ])),
-            Container(
-              margin: const EdgeInsets.only(top: 10, bottom: 20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(100),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    offset: const Offset(0, 1),
-                    blurRadius: 6,
-                  ),
-                ],
-              ),
-              child: TextFormField(
+
+              /// Price Section
+              AppTextField(
+                title: StringHelper.priceEgp,
                 controller: viewModel.priceTextController,
                 cursorColor: Colors.black,
                 focusNode: viewModel.priceText,
-                decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                    hintText: StringHelper.enterPrice,
-                    hintStyle:
-                        TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    )),
+                hint: StringHelper.enterPrice,
+                hintStyle:
+                    const TextStyle(color: Color(0xffACACAC), fontSize: 14),
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(8),
                   FilteringTextInputFormatter.deny(
@@ -922,140 +591,151 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                 keyboardType: TextInputType.number,
                 textInputAction: TextInputAction.done,
               ),
-            ),
-            Text(
-              StringHelper.howToConnect,
-              style: context.textTheme.titleSmall,
-            ),
-            MultiSelectCategory(
-              onSelectedCommunicationChoice: (CommunicationChoice value) {
-                viewModel.communicationChoice = value.name;
+
+              Text(
+                StringHelper.howToConnect,
+                style: context.textTheme.titleSmall,
+              ),
+              MultiSelectCategory(
+                onSelectedCommunicationChoice: (CommunicationChoice value) {
+                  viewModel.communicationChoice = value.name;
+                },
+              ),
+              if (viewModel.isEditProduct) ...{
+                GestureDetector(
+                  onTap: () {
+                    if (viewModel.formKey.currentState?.validate() ?? false) {
+                      if (viewModel.mainImagePath.isEmpty) {
+                        DialogHelper.showToast(
+                            message: StringHelper.pleaseUploadMainImage);
+                        return;
+                      }
+                      if (viewModel.imagesList.isEmpty) {
+                        DialogHelper.showToast(
+                            message:
+                                StringHelper.pleaseUploadAddAtLeastOneImage);
+                        return;
+                      }
+
+                      if (viewModel.adTitleTextController.text.trim().isEmpty) {
+                        DialogHelper.showToast(
+                            message: StringHelper.adTitleIsRequired);
+                        return;
+                      }
+                      if (viewModel.descriptionTextController.text
+                          .trim()
+                          .isEmpty) {
+                        DialogHelper.showToast(
+                            message: StringHelper.descriptionIsRequired);
+                        return;
+                      }
+                      if (viewModel.addressTextController.text.trim().isEmpty) {
+                        DialogHelper.showToast(
+                            message: StringHelper.locationIsRequired);
+                        return;
+                      }
+                      if (viewModel.priceTextController.text.trim().isEmpty) {
+                        DialogHelper.showToast(
+                            message: StringHelper.priceIsRequired);
+                        return;
+                      }
+                      DialogHelper.showLoading();
+                      viewModel.editProduct(
+                          productId: item?.id,
+                          category: category,
+                          subCategory: subCategory,
+                          subSubCategory: subSubCategory,
+                          brand: viewModel.selectedBrand,
+                          models: viewModel.selectedModel);
+                    }
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    margin: const EdgeInsets.symmetric(vertical: 20),
+                    decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(100)),
+                    child: Text(
+                      StringHelper.updateNow,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ),
+              } else ...{
+                GestureDetector(
+                  onTap: () {
+                    if (viewModel.formKey.currentState?.validate() ?? false) {
+                      if (viewModel.mainImagePath.isEmpty) {
+                        DialogHelper.showToast(
+                            message: StringHelper.pleaseUploadMainImage);
+                        return;
+                      }
+                      if (viewModel.imagesList.isEmpty) {
+                        DialogHelper.showToast(
+                            message:
+                                StringHelper.pleaseUploadAddAtLeastOneImage);
+                        return;
+                      }
+
+                      if (viewModel.adTitleTextController.text.trim().isEmpty) {
+                        DialogHelper.showToast(
+                            message: StringHelper.adTitleIsRequired);
+                        return;
+                      }
+                      if (viewModel.descriptionTextController.text
+                          .trim()
+                          .isEmpty) {
+                        DialogHelper.showToast(
+                            message: StringHelper.descriptionIsRequired);
+                        return;
+                      }
+                      if (viewModel.addressTextController.text.trim().isEmpty) {
+                        DialogHelper.showToast(
+                            message: StringHelper.locationIsRequired);
+                        return;
+                      }
+                      if (viewModel.priceTextController.text.trim().isEmpty) {
+                        DialogHelper.showToast(
+                            message: StringHelper.priceIsRequired);
+                        return;
+                      }
+                      DialogHelper.showLoading();
+                      viewModel.addProduct(
+                          category: category,
+                          subCategory: subCategory,
+                          subSubCategory: subSubCategory,
+                          brand: viewModel.selectedBrand,
+                          models: viewModel.selectedModel);
+                    }
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    margin: const EdgeInsets.symmetric(vertical: 20),
+                    decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(100)),
+                    child: Text(
+                      StringHelper.postNow,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ),
               },
-            ),
-            if (viewModel.isEditProduct) ...{
-              GestureDetector(
-                onTap: () {
-                  if (viewModel.mainImagePath.isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.pleaseUploadMainImage);
-                    return;
-                  }
-                  if (viewModel.imagesList.isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.pleaseUploadAddAtLeastOneImage);
-                    return;
-                  }
-
-                  if (viewModel.adTitleTextController.text.trim().isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.adTitleIsRequired);
-                    return;
-                  }
-                  if (viewModel.descriptionTextController.text.trim().isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.descriptionIsRequired);
-                    return;
-                  }
-                  if (viewModel.addressTextController.text.trim().isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.locationIsRequired);
-                    return;
-                  }
-                  if (viewModel.priceTextController.text.trim().isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.priceIsRequired);
-                    return;
-                  }
-                  DialogHelper.showLoading();
-                  viewModel.editProduct(
-                      productId: item?.id,
-                      category: category,
-                      subCategory: subCategory,
-                      subSubCategory: subSubCategory,
-                      brand: viewModel.selectedBrand,
-                      models: viewModel.selectedModel);
-                },
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(vertical: 15),
-                  margin: const EdgeInsets.symmetric(vertical: 20),
-                  decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(100)),
-                  child: Text(
-                    StringHelper.updateNow,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600),
-                  ),
-                ),
-              ),
-            } else ...{
-              GestureDetector(
-                onTap: () {
-                  if (viewModel.mainImagePath.isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.pleaseUploadMainImage);
-                    return;
-                  }
-                  if (viewModel.imagesList.isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.pleaseUploadAddAtLeastOneImage);
-                    return;
-                  }
-
-                  if (viewModel.adTitleTextController.text.trim().isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.adTitleIsRequired);
-                    return;
-                  }
-                  if (viewModel.descriptionTextController.text.trim().isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.descriptionIsRequired);
-                    return;
-                  }
-                  if (viewModel.addressTextController.text.trim().isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.locationIsRequired);
-                    return;
-                  }
-                  if (viewModel.priceTextController.text.trim().isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.priceIsRequired);
-                    return;
-                  }
-                  DialogHelper.showLoading();
-                  viewModel.addProduct(
-                      category: category,
-                      subCategory: subCategory,
-                      subSubCategory: subSubCategory,
-                      brand: viewModel.selectedBrand,
-                      models: viewModel.selectedModel);
-                },
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(vertical: 15),
-                  margin: const EdgeInsets.symmetric(vertical: 20),
-                  decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(100)),
-                  child: Text(
-                    StringHelper.postNow,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600),
-                  ),
-                ),
-              ),
-            },
-            const SizedBox(
-              height: 30,
-            )
-          ],
+              const SizedBox(
+                height: 30,
+              )
+            ],
+          ),
         ),
       ),
     );

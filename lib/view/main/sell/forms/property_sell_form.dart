@@ -13,6 +13,7 @@ import '../../../../models/category_model.dart';
 import '../../../../models/prodect_detail_model.dart';
 import '../../../../view_model/sell_forms_vm.dart';
 import '../../../../widgets/app_map_widget.dart';
+import '../../../../widgets/app_text_field.dart';
 
 class PropertySellForm extends BaseView<SellFormsVM> {
   final String? type;
@@ -164,768 +165,393 @@ class PropertySellForm extends BaseView<SellFormsVM> {
             const SizedBox(
               height: 25,
             ),
-            RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                text: StringHelper.adTitle,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Colors.black),
-              ),
-            ])),
-            Container(
-              margin: const EdgeInsets.only(top: 10, bottom: 20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    offset: const Offset(0, 1),
-                    blurRadius: 6,
-                  ),
-                ],
-              ),
-              child: TextFormField(
-                maxLines: 4,
-                minLines: 1,
-                controller: viewModel.adTitleTextController,
-                cursorColor: Colors.black,
-                decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                    hintText: StringHelper.enter,
-                    hintStyle:
-                        TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    )),
-                inputFormatters: [
-                  FilteringTextInputFormatter.deny(
-                      RegExp(viewModel.regexToRemoveEmoji)),
-                ],
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.done,
-              ),
-            ),
-            RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                text: StringHelper.propertyType,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Colors.black),
-              ),
-            ])),
-            Container(
-              margin: const EdgeInsets.only(top: 10, bottom: 20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    offset: const Offset(0, 1),
-                    blurRadius: 6,
-                  ),
-                ],
-              ),
-              child: TextFormField(
-                maxLines: 4,
-                minLines: 1,
-                readOnly: true,
-                controller: viewModel.propertyForTextController,
-                cursorColor: Colors.black,
-                decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                    hintText: StringHelper.select,
-                    hintStyle:
-                        TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    ),
-                    suffixIcon: PopupMenuButton(
-                      clipBehavior: Clip.hardEdge,
-                      icon: const Icon(
-                        Icons.arrow_drop_down,
-                        color: Colors.black,
-                      ),
-                      onSelected: (String value) {
-                        viewModel.propertyForTextController.text = value;
-                      },
-                      itemBuilder: (BuildContext context) {
-                        return ['Sell', 'Rent'].map((option) {
-                          return PopupMenuItem(
-                            value: option,
-                            child: Text(option ?? ''),
-                          );
-                        }).toList();
-                      },
-                    )),
-                inputFormatters: [
-                  FilteringTextInputFormatter.deny(
-                      RegExp(viewModel.regexToRemoveEmoji)),
-                ],
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.done,
-              ),
-            ),
-            RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                text: StringHelper.areaSize,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Colors.black),
-              ),
-            ])),
-            Container(
-              margin: const EdgeInsets.only(top: 10, bottom: 20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    offset: const Offset(0, 1),
-                    blurRadius: 6,
-                  ),
-                ],
-              ),
-              child: TextFormField(
-                maxLines: 4,
-                minLines: 1,
-                controller: viewModel.areaSizeTextController,
-                cursorColor: Colors.black,
-                decoration: InputDecoration(
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                  hintText: StringHelper.enter,
-                  hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                  ),
+            // Field 1: Ad Title
+            AppTextField(
+              title: StringHelper.adTitle,
+              hint: StringHelper.enter,
+              controller: viewModel.adTitleTextController,
+              maxLines: 4,
+              minLines: 1,
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+              inputFormatters: [
+                FilteringTextInputFormatter.deny(
+                  RegExp(viewModel.regexToRemoveEmoji),
                 ),
-                inputFormatters: [
-                  FilteringTextInputFormatter.deny(
-                      RegExp(viewModel.regexToRemoveEmoji)),
-                ],
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.done,
-              ),
+              ],
+              keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.done,
+              fillColor: Colors.white,
+              borderSideColor: Colors.transparent,
+              elevation: 6,
             ),
-            RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                text: 'No Of Bedrooms',
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Colors.black),
-              ),
-            ])),
-            Container(
-              margin: const EdgeInsets.only(top: 10, bottom: 20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    offset: const Offset(0, 1),
-                    blurRadius: 6,
-                  ),
-                ],
-              ),
-              child: TextFormField(
-                maxLines: 4,
-                minLines: 1,
-                readOnly: true,
-                controller: viewModel.noOfBedroomsTextController,
-                cursorColor: Colors.black,
-                decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                    hintText: StringHelper.select,
-                    hintStyle:
-                        TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    ),
-                    suffixIcon: PopupMenuButton(
-                      clipBehavior: Clip.hardEdge,
-                      icon: const Icon(
-                        Icons.arrow_drop_down,
-                        color: Colors.black,
-                      ),
-                      onSelected: (String value) {
-                        viewModel.noOfBedroomsTextController.text = '$value';
-                      },
-                      itemBuilder: (BuildContext context) {
-                        return ['1', '2', '3', '4', '5', '6', '7', '7+']
-                            .map((option) {
-                          return PopupMenuItem(
-                            value: option,
-                            child: Text('$option Bedrooms'),
-                          );
-                        }).toList();
-                      },
-                    )),
-                inputFormatters: [
-                  FilteringTextInputFormatter.deny(
-                      RegExp(viewModel.regexToRemoveEmoji)),
-                ],
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.done,
-              ),
-            ),
-            RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                text: StringHelper.noOfBathrooms,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Colors.black),
-              ),
-            ])),
-            Container(
-              margin: const EdgeInsets.only(top: 10, bottom: 20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    offset: const Offset(0, 1),
-                    blurRadius: 6,
-                  ),
-                ],
-              ),
-              child: TextFormField(
-                maxLines: 4,
-                minLines: 1,
-                readOnly: true,
-                controller: viewModel.noOfBathroomsTextController,
-                cursorColor: Colors.black,
-                decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                    hintText: StringHelper.select,
-                    hintStyle:
-                        TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    ),
-                    suffixIcon: PopupMenuButton(
-                      clipBehavior: Clip.hardEdge,
-                      icon: const Icon(
-                        Icons.arrow_drop_down,
-                        color: Colors.black,
-                      ),
-                      onSelected: (String value) {
-                        viewModel.noOfBathroomsTextController.text = "$value";
-                      },
-                      itemBuilder: (BuildContext context) {
-                        return ['1', '2', '3', '4', '5', '6', '7', '7+']
-                            .map((option) {
-                          return PopupMenuItem(
-                            value: option,
-                            child: Text('$option Bathrooms'),
-                          );
-                        }).toList();
-                      },
-                    )),
-                inputFormatters: [
-                  FilteringTextInputFormatter.deny(
-                      RegExp(viewModel.regexToRemoveEmoji)),
-                ],
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.done,
-              ),
-            ),
-            RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                text: StringHelper.furnishing,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Colors.black),
-              ),
-            ])),
-            Container(
-              margin: const EdgeInsets.only(top: 10, bottom: 20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    offset: const Offset(0, 1),
-                    blurRadius: 6,
-                  ),
-                ],
-              ),
-              child: TextFormField(
-                maxLines: 4,
-                minLines: 1,
-                readOnly: true,
-                controller: viewModel.furnishingStatusTextController,
-                cursorColor: Colors.black,
-                decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                    hintText: StringHelper.select,
-                    hintStyle:
-                        TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    ),
-                    suffixIcon: PopupMenuButton(
-                      clipBehavior: Clip.hardEdge,
-                      icon: const Icon(
-                        Icons.arrow_drop_down,
-                        color: Colors.black,
-                      ),
-                      onSelected: (String value) {
-                        viewModel.furnishingStatusTextController.text = value;
-                      },
-                      itemBuilder: (BuildContext context) {
-                        return ['Furnished', 'Unfurnished', 'Semi Furnished']
-                            .map((option) {
-                          return PopupMenuItem(
-                            value: option,
-                            child: Text(option ?? ''),
-                          );
-                        }).toList();
-                      },
-                    )),
-                inputFormatters: [
-                  FilteringTextInputFormatter.deny(
-                      RegExp(viewModel.regexToRemoveEmoji)),
-                ],
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.done,
-              ),
-            ),
-            RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                text: StringHelper.owner,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Colors.black),
-              ),
-            ])),
-            Container(
-              margin: const EdgeInsets.only(top: 10, bottom: 20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    offset: const Offset(0, 1),
-                    blurRadius: 6,
-                  ),
-                ],
-              ),
-              child: TextFormField(
-                maxLines: 4,
-                minLines: 1,
-                readOnly: true,
-                controller: viewModel.ownershipStatusTextController,
-                cursorColor: Colors.black,
-                decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                    hintText: StringHelper.select,
-                    hintStyle:
-                        TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    ),
-                    suffixIcon: PopupMenuButton(
-                      clipBehavior: Clip.hardEdge,
-                      icon: const Icon(
-                        Icons.arrow_drop_down,
-                        color: Colors.black,
-                      ),
-                      onSelected: (String value) {
-                        viewModel.ownershipStatusTextController.text = value;
-                      },
-                      itemBuilder: (BuildContext context) {
-                        return ['Primary', 'Resell'].map((option) {
-                          return PopupMenuItem(
-                            value: option,
-                            child: Text(option ?? ''),
-                          );
-                        }).toList();
-                      },
-                    )),
-                inputFormatters: [
-                  FilteringTextInputFormatter.deny(
-                      RegExp(viewModel.regexToRemoveEmoji)),
-                ],
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.done,
-              ),
-            ),
-            RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                text: StringHelper.paymentType,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Colors.black),
-              ),
-            ])),
-            Container(
-              margin: const EdgeInsets.only(top: 10, bottom: 20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    offset: const Offset(0, 1),
-                    blurRadius: 6,
-                  ),
-                ],
-              ),
-              child: TextFormField(
-                maxLines: 4,
-                minLines: 1,
-                readOnly: true,
-                controller: viewModel.paymentTypeTextController,
-                cursorColor: Colors.black,
-                decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                    hintText: StringHelper.select,
-                    hintStyle:
-                        TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    ),
-                    suffixIcon: PopupMenuButton(
-                      clipBehavior: Clip.hardEdge,
-                      icon: const Icon(
-                        Icons.arrow_drop_down,
-                        color: Colors.black,
-                      ),
-                      onSelected: (String value) {
-                        viewModel.paymentTypeTextController.text = value;
-                      },
-                      itemBuilder: (BuildContext context) {
-                        return ['Installment', 'Cash or Installment', 'cash']
-                            .map((option) {
-                          return PopupMenuItem(
-                            value: option,
-                            child: Text(option ?? ''),
-                          );
-                        }).toList();
-                      },
-                    )),
-                inputFormatters: [
-                  FilteringTextInputFormatter.deny(
-                      RegExp(viewModel.regexToRemoveEmoji)),
-                ],
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.done,
-              ),
-            ),
-            RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                text: StringHelper.completionStatus,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Colors.black),
-              ),
-            ])),
-            Container(
-              margin: const EdgeInsets.only(top: 10, bottom: 20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    offset: const Offset(0, 1),
-                    blurRadius: 6,
-                  ),
-                ],
-              ),
-              child: TextFormField(
-                maxLines: 4,
-                minLines: 1,
-                readOnly: true,
-                controller: viewModel.completionStatusTextController,
-                cursorColor: Colors.black,
-                decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                    hintText: StringHelper.select,
-                    hintStyle:
-                        TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    ),
-                    suffixIcon: PopupMenuButton(
-                      clipBehavior: Clip.hardEdge,
-                      icon: const Icon(
-                        Icons.arrow_drop_down,
-                        color: Colors.black,
-                      ),
-                      onSelected: (String value) {
-                        viewModel.completionStatusTextController.text = value;
-                      },
-                      itemBuilder: (BuildContext context) {
-                        return ['Ready', 'Off Plan'].map((option) {
-                          return PopupMenuItem(
-                            value: option,
-                            child: Text(option ?? ''),
-                          );
-                        }).toList();
-                      },
-                    )),
-                inputFormatters: [
-                  FilteringTextInputFormatter.deny(
-                      RegExp(viewModel.regexToRemoveEmoji)),
-                ],
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.done,
-              ),
-            ),
-            RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                text: StringHelper.deliveryTerms,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Colors.black),
-              ),
-            ])),
-            Container(
-              margin: const EdgeInsets.only(top: 10, bottom: 20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    offset: const Offset(0, 1),
-                    blurRadius: 6,
-                  ),
-                ],
-              ),
-              child: TextFormField(
-                maxLines: 4,
-                minLines: 1,
-                readOnly: true,
-                controller: viewModel.deliveryTermTextController,
-                cursorColor: Colors.black,
-                decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                    hintText: StringHelper.select,
-                    hintStyle:
-                        TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    ),
-                    suffixIcon: PopupMenuButton(
-                      clipBehavior: Clip.hardEdge,
-                      icon: const Icon(
-                        Icons.arrow_drop_down,
-                        color: Colors.black,
-                      ),
-                      onSelected: (String value) {
-                        viewModel.deliveryTermTextController.text = value;
-                      },
-                      itemBuilder: (BuildContext context) {
-                        return [
-                          'Finished',
-                          'Not Finished',
-                          'Core and sell',
-                          'Semi finished'
-                        ].map((option) {
-                          return PopupMenuItem(
-                            value: option,
-                            child: Text(option ?? ''),
-                          );
-                        }).toList();
-                      },
-                    )),
-                inputFormatters: [
-                  FilteringTextInputFormatter.deny(
-                      RegExp(viewModel.regexToRemoveEmoji)),
-                ],
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.done,
-              ),
-            ),
-            RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                text: StringHelper.describeWhatYouAreSelling,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Colors.black),
-              ),
-            ])),
-            Container(
-              margin: const EdgeInsets.only(top: 10, bottom: 20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    offset: const Offset(0, 1),
-                    blurRadius: 6,
-                  ),
-                ],
-              ),
-              child: TextFormField(
-                controller: viewModel.descriptionTextController,
-                maxLines: 4,
-                cursorColor: Colors.black,
-                decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                    hintText: StringHelper.enter,
-                    hintStyle:
-                        TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    )),
-                inputFormatters: [
-                  FilteringTextInputFormatter.deny(
-                      RegExp(viewModel.regexToRemoveEmoji)),
-                ],
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.done,
-              ),
-            ),
-            RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                text: StringHelper.location,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Colors.black),
-              ),
-            ])),
-            Container(
-              margin: const EdgeInsets.only(top: 10, bottom: 20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    offset: const Offset(0, 1),
-                    blurRadius: 6,
-                  ),
-                ],
-              ),
-              child: TextFormField(
-                controller: viewModel.addressTextController,
-                maxLines: 2,
-                minLines: 1,
-                readOnly: true,
-                onTap: () async {
-                  Map<String, dynamic>? value = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const AppMapWidget()));
-                  print(value);
-                  if (value != null && value.isNotEmpty) {
-                    viewModel.state = value['state'];
-                    viewModel.city = value['city'];
-                    viewModel.country = value['country'];
-                    viewModel.addressTextController.text =
-                        "${value['location']}, ${value['city']}, ${value['state']}";
-                  }
+
+// Field 2: Property Type
+            AppTextField(
+              title: StringHelper.propertyType,
+              hint: StringHelper.select,
+              controller: viewModel.propertyForTextController,
+              readOnly: true,
+              suffix: PopupMenuButton<String>(
+                clipBehavior: Clip.hardEdge,
+                icon: const Icon(
+                  Icons.arrow_drop_down,
+                  color: Colors.black,
+                ),
+                onSelected: (String value) {
+                  viewModel.propertyForTextController.text = value;
                 },
-                cursorColor: Colors.black,
-                decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                    hintText: StringHelper.select,
-                    suffixIcon: Icon(Icons.location_on),
-                    hintStyle:
-                        TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    )),
-                inputFormatters: [
-                  FilteringTextInputFormatter.deny(
-                      RegExp(viewModel.regexToRemoveEmoji)),
-                ],
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.done,
+                itemBuilder: (BuildContext context) {
+                  return ['Sell', 'Rent'].map((option) {
+                    return PopupMenuItem(
+                      value: option,
+                      child: Text(option),
+                    );
+                  }).toList();
+                },
               ),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+              inputFormatters: [
+                FilteringTextInputFormatter.deny(
+                  RegExp(viewModel.regexToRemoveEmoji),
+                ),
+              ],
+              keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.done,
+              fillColor: Colors.white,
+              borderSideColor: Colors.transparent,
+              elevation: 6,
             ),
-            RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                text: StringHelper.priceEgp,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Colors.black),
-              ),
-            ])),
-            Container(
-              margin: const EdgeInsets.only(top: 10, bottom: 20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(100),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    offset: const Offset(0, 1),
-                    blurRadius: 6,
-                  ),
-                ],
-              ),
-              child: TextFormField(
-                controller: viewModel.priceTextController,
-                cursorColor: Colors.black,
-                focusNode: viewModel.priceText,
-                decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                    hintText: StringHelper.enterPrice,
-                    hintStyle:
-                        TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    )),
-                inputFormatters: [
-                  LengthLimitingTextInputFormatter(8),
-                  FilteringTextInputFormatter.deny(
-                      RegExp(viewModel.regexToRemoveEmoji)),
-                  FilteringTextInputFormatter.digitsOnly,
-                ],
-                keyboardType: TextInputType.number,
-                textInputAction: TextInputAction.done,
-              ),
+
+// Field 3: Area Size
+            AppTextField(
+              title: StringHelper.areaSize,
+              hint: StringHelper.enter,
+              controller: viewModel.areaSizeTextController,
+              maxLines: 4,
+              minLines: 1,
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+              inputFormatters: [
+                FilteringTextInputFormatter.deny(
+                  RegExp(viewModel.regexToRemoveEmoji),
+                ),
+              ],
+              keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.done,
+              fillColor: Colors.white,
+              borderSideColor: Colors.transparent,
+              elevation: 6,
             ),
+
+// Field 4: No Of Bedrooms
+            AppTextField(
+              title: 'No Of Bedrooms',
+              hint: StringHelper.enter,
+              controller: viewModel.noOfBedroomsTextController,
+              maxLines: 1,
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+              inputFormatters: [
+                FilteringTextInputFormatter.deny(
+                  RegExp(viewModel.regexToRemoveEmoji),
+                ),
+              ],
+              keyboardType: TextInputType.number,
+              textInputAction: TextInputAction.done,
+              fillColor: Colors.white,
+              borderSideColor: Colors.transparent,
+              elevation: 6,
+            ),
+
+            // Field 1: No Of Bathrooms
+            AppTextField(
+              title: StringHelper.noOfBathrooms,
+              hint: StringHelper.select,
+              controller: viewModel.noOfBathroomsTextController,
+              readOnly: true,
+              suffix: PopupMenuButton<String>(
+                clipBehavior: Clip.hardEdge,
+                icon: const Icon(
+                  Icons.arrow_drop_down,
+                  color: Colors.black,
+                ),
+                onSelected: (String value) {
+                  viewModel.noOfBathroomsTextController.text = "$value";
+                },
+                itemBuilder: (BuildContext context) {
+                  return ['1', '2', '3', '4', '5', '6', '7', '7+']
+                      .map((option) {
+                    return PopupMenuItem(
+                      value: option,
+                      child: Text('$option Bathrooms'),
+                    );
+                  }).toList();
+                },
+              ),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+              inputFormatters: [
+                FilteringTextInputFormatter.deny(
+                  RegExp(viewModel.regexToRemoveEmoji),
+                ),
+              ],
+              keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.done,
+              fillColor: Colors.white,
+              borderSideColor: Colors.transparent,
+              elevation: 6,
+            ),
+
+// Field 2: Furnishing Status
+            AppTextField(
+              title: StringHelper.furnishing,
+              hint: StringHelper.select,
+              controller: viewModel.furnishingStatusTextController,
+              readOnly: true,
+              suffix: PopupMenuButton<String>(
+                clipBehavior: Clip.hardEdge,
+                icon: const Icon(
+                  Icons.arrow_drop_down,
+                  color: Colors.black,
+                ),
+                onSelected: (String value) {
+                  viewModel.furnishingStatusTextController.text = value;
+                },
+                itemBuilder: (BuildContext context) {
+                  return ['Furnished', 'Unfurnished', 'Semi Furnished']
+                      .map((option) {
+                    return PopupMenuItem(
+                      value: option,
+                      child: Text(option),
+                    );
+                  }).toList();
+                },
+              ),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+              inputFormatters: [
+                FilteringTextInputFormatter.deny(
+                  RegExp(viewModel.regexToRemoveEmoji),
+                ),
+              ],
+              keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.done,
+              fillColor: Colors.white,
+              borderSideColor: Colors.transparent,
+              elevation: 6,
+            ),
+
+// Field 3: Ownership Status
+            AppTextField(
+              title: StringHelper.owner,
+              hint: StringHelper.select,
+              controller: viewModel.ownershipStatusTextController,
+              readOnly: true,
+              suffix: PopupMenuButton<String>(
+                clipBehavior: Clip.hardEdge,
+                icon: const Icon(
+                  Icons.arrow_drop_down,
+                  color: Colors.black,
+                ),
+                onSelected: (String value) {
+                  viewModel.ownershipStatusTextController.text = value;
+                },
+                itemBuilder: (BuildContext context) {
+                  return ['Primary', 'Resell'].map((option) {
+                    return PopupMenuItem(
+                      value: option,
+                      child: Text(option),
+                    );
+                  }).toList();
+                },
+              ),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+              inputFormatters: [
+                FilteringTextInputFormatter.deny(
+                  RegExp(viewModel.regexToRemoveEmoji),
+                ),
+              ],
+              keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.done,
+              fillColor: Colors.white,
+              borderSideColor: Colors.transparent,
+              elevation: 6,
+            ),
+
+// Field 4: Payment Type
+            AppTextField(
+              title: StringHelper.paymentType,
+              hint: StringHelper.select,
+              controller: viewModel.paymentTypeTextController,
+              readOnly: true,
+              suffix: PopupMenuButton<String>(
+                clipBehavior: Clip.hardEdge,
+                icon: const Icon(
+                  Icons.arrow_drop_down,
+                  color: Colors.black,
+                ),
+                onSelected: (String value) {
+                  viewModel.paymentTypeTextController.text = value;
+                },
+                itemBuilder: (BuildContext context) {
+                  return ['Installment', 'Cash or Installment', 'cash']
+                      .map((option) {
+                    return PopupMenuItem(
+                      value: option,
+                      child: Text(option),
+                    );
+                  }).toList();
+                },
+              ),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+              inputFormatters: [
+                FilteringTextInputFormatter.deny(
+                  RegExp(viewModel.regexToRemoveEmoji),
+                ),
+              ],
+              keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.done,
+              fillColor: Colors.white,
+              borderSideColor: Colors.transparent,
+              elevation: 6,
+            ),
+
+// Field 5: Completion Status
+            AppTextField(
+              title: StringHelper.completionStatus,
+              hint: StringHelper.select,
+              controller: viewModel.completionStatusTextController,
+              readOnly: true,
+              suffix: PopupMenuButton<String>(
+                clipBehavior: Clip.hardEdge,
+                icon: const Icon(
+                  Icons.arrow_drop_down,
+                  color: Colors.black,
+                ),
+                onSelected: (String value) {
+                  viewModel.completionStatusTextController.text = value;
+                },
+                itemBuilder: (BuildContext context) {
+                  return ['Ready', 'Off Plan'].map((option) {
+                    return PopupMenuItem(
+                      value: option,
+                      child: Text(option),
+                    );
+                  }).toList();
+                },
+              ),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+              inputFormatters: [
+                FilteringTextInputFormatter.deny(
+                  RegExp(viewModel.regexToRemoveEmoji),
+                ),
+              ],
+              keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.done,
+              fillColor: Colors.white,
+              borderSideColor: Colors.transparent,
+              elevation: 6,
+            ),
+
+            AppTextField(
+              title: StringHelper.deliveryTerms,
+              controller: viewModel.deliveryTermTextController,
+              hint: StringHelper.select,
+              readOnly: true,
+              suffix: PopupMenuButton<String>(
+                clipBehavior: Clip.hardEdge,
+                icon: const Icon(
+                  Icons.arrow_drop_down,
+                  color: Colors.black,
+                ),
+                onSelected: (String value) {
+                  viewModel.deliveryTermTextController.text = value;
+                },
+                itemBuilder: (BuildContext context) {
+                  return [
+                    'Finished',
+                    'Not Finished',
+                    'Core and sell',
+                    'Semi finished'
+                  ].map((option) {
+                    return PopupMenuItem(
+                      value: option,
+                      child: Text(option),
+                    );
+                  }).toList();
+                },
+              ),
+              inputFormatters: [
+                FilteringTextInputFormatter.deny(
+                    RegExp(viewModel.regexToRemoveEmoji)),
+              ],
+              maxLines: 4,
+              minLines: 1,
+              keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.done,
+            ),
+
+            AppTextField(
+              title: StringHelper.describeWhatYouAreSelling,
+              controller: viewModel.descriptionTextController,
+              hint: StringHelper.enter,
+              maxLines: 4,
+              inputFormatters: [
+                FilteringTextInputFormatter.deny(
+                    RegExp(viewModel.regexToRemoveEmoji)),
+              ],
+              keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.done,
+            ),
+
+            AppTextField(
+              title: StringHelper.location,
+              controller: viewModel.addressTextController,
+              hint: StringHelper.select,
+              readOnly: true,
+              onTap: () async {
+                Map<String, dynamic>? value = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AppMapWidget()));
+                if (value != null && value.isNotEmpty) {
+                  viewModel.state = value['state'];
+                  viewModel.city = value['city'];
+                  viewModel.country = value['country'];
+                  viewModel.addressTextController.text =
+                      "${value['location']}, ${value['city']}, ${value['state']}";
+                }
+              },
+              suffix: Icon(Icons.location_on),
+              inputFormatters: [
+                FilteringTextInputFormatter.deny(
+                    RegExp(viewModel.regexToRemoveEmoji)),
+              ],
+              maxLines: 2,
+              minLines: 1,
+              keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.done,
+            ),
+
+            AppTextField(
+              title: StringHelper.priceEgp,
+              controller: viewModel.priceTextController,
+              hint: StringHelper.enterPrice,
+              maxLength: 8,
+              inputFormatters: [
+                FilteringTextInputFormatter.deny(
+                    RegExp(viewModel.regexToRemoveEmoji)),
+                FilteringTextInputFormatter.digitsOnly,
+              ],
+              keyboardType: TextInputType.number,
+              textInputAction: TextInputAction.done,
+            ),
+
             AmenitiesWidget(
                 amenitiesChecked: viewModel.amenities,
                 selectedAmenities: (List<int?> selectedIds) {

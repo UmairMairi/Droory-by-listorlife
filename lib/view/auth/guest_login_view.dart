@@ -64,7 +64,7 @@ class GuestLoginView extends BaseView<AuthVM> {
               inputFormatters:
                   AppTextInputFormatters.withPhoneNumberFormatter(),
               controller: viewModel.phoneTextController,
-              inputType: TextInputType.phone,
+              keyboardType: TextInputType.phone,
               prefix: CountryPicker(
                   selectedCountry: viewModel.selectedCountry,
                   dense: true,

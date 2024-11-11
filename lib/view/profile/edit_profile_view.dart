@@ -74,7 +74,7 @@ class EditProfileView extends BaseView<ProfileVM> {
             AppTextField(
               title: StringHelper.firstName,
               hint: StringHelper.firstName,
-              inputType: TextInputType.name,
+              keyboardType: TextInputType.name,
               inputFormatters: AppTextInputFormatters.withNameFormatter(),
               controller: viewModel.nameTextController,
             ),
@@ -82,7 +82,7 @@ class EditProfileView extends BaseView<ProfileVM> {
             AppTextField(
               title: StringHelper.lastName,
               hint: StringHelper.lastName,
-              inputType: TextInputType.name,
+              keyboardType: TextInputType.name,
               inputFormatters: AppTextInputFormatters.withNameFormatter(),
               controller: viewModel.lastNameController,
             ),
@@ -90,7 +90,7 @@ class EditProfileView extends BaseView<ProfileVM> {
             AppTextField(
               title: StringHelper.location,
               hint: StringHelper.location,
-              inputType: TextInputType.text,
+              keyboardType: TextInputType.text,
               readOnly: true,
               onTap: () async {
                 Map<String, dynamic>? value = await Navigator.push(
@@ -112,7 +112,7 @@ class EditProfileView extends BaseView<ProfileVM> {
             AppTextField(
               title: StringHelper.email,
               hint: StringHelper.email,
-              inputType: TextInputType.emailAddress,
+              keyboardType: TextInputType.emailAddress,
               readOnly: false,
               inputFormatters: AppTextInputFormatters.withEmailFormatter(),
               controller: viewModel.emailTextController,
@@ -176,7 +176,7 @@ class EditProfileView extends BaseView<ProfileVM> {
                   showCurrencyISO: false,
                   onChanged: (country) => viewModel.updateCountry(country)),
               focusNode: viewModel.nodeText,
-              inputType: TextInputType.phone,
+              keyboardType: TextInputType.phone,
               inputFormatters:
                   AppTextInputFormatters.withPhoneNumberFormatter(),
               controller: viewModel.phoneTextController,

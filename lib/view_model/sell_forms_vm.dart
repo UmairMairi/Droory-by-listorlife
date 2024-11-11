@@ -18,6 +18,7 @@ import '../base/base_view_model.dart';
 import '../view/main/sell/forms/post_added_final_view.dart';
 
 class SellFormsVM extends BaseViewModel {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   var regexToRemoveEmoji =
       r'(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])';
   int _currentIndex = 1;

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:list_and_life/widgets/multi_select_category.dart';
 
 import '../../../../base/helpers/dialog_helper.dart';
@@ -39,1090 +40,795 @@ class CarsSellForm extends BaseView<SellFormsVM> {
       viewModel.yearsType.add((currentYear - i).toString());
     }
 
-    return KeyboardActions(
-      config: KeyboardActionsConfig(
-          keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
-          keyboardBarColor: Colors.grey[200],
-          actions: [
-            KeyboardActionsItem(
-              focusNode: viewModel.priceText,
-            ),
-            KeyboardActionsItem(
-              focusNode: viewModel.ownerText,
-            ),
-            KeyboardActionsItem(
-              focusNode: viewModel.yearText,
-            ),
-            KeyboardActionsItem(
-              focusNode: viewModel.kmDrivenText,
-            ),
-          ]),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              StringHelper.uploadImages,
-              style: context.textTheme.titleMedium,
-            ),
-            GestureDetector(
-              onTap: () async {
-                viewModel.mainImagePath =
-                    await ImagePickerHelper.openImagePicker(
-                            context: context, isCropping: true) ??
-                        '';
-              },
-              child: Container(
-                margin: const EdgeInsets.symmetric(vertical: 10),
-                width: double.infinity,
-                height: 220,
-                decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        offset: const Offset(0, 1),
-                        blurRadius: 6,
-                      ),
-                    ],
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10)),
-                child: ImagePickerHelper.isLoading
-                    ? Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          CupertinoActivityIndicator(),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text('Upload'),
-                        ],
-                      )
-                    : ImageView.rect(
-                        image: viewModel.mainImagePath,
-                        borderRadius: 10,
-                        width: context.width,
-                        placeholder: AssetsRes.IC_CAMERA,
-                        height: 220),
+    return Form(
+      key: viewModel.formKey,
+      child: KeyboardActions(
+        config: KeyboardActionsConfig(
+            keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
+            keyboardBarColor: Colors.grey[200],
+            actions: [
+              KeyboardActionsItem(
+                focusNode: viewModel.priceText,
               ),
-            ),
-            Wrap(
-              children: List.generate(viewModel.imagesList.length + 1, (index) {
-                if (index < viewModel.imagesList.length) {
-                  return Stack(
-                    alignment: Alignment.topRight,
-                    children: [
-                      Container(
+              KeyboardActionsItem(
+                focusNode: viewModel.ownerText,
+              ),
+              KeyboardActionsItem(
+                focusNode: viewModel.yearText,
+              ),
+              KeyboardActionsItem(
+                focusNode: viewModel.kmDrivenText,
+              ),
+            ]),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                StringHelper.uploadImages,
+                style: context.textTheme.titleMedium,
+              ),
+              GestureDetector(
+                onTap: () async {
+                  viewModel.mainImagePath =
+                      await ImagePickerHelper.openImagePicker(
+                              context: context, isCropping: true) ??
+                          '';
+                },
+                child: Container(
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  width: double.infinity,
+                  height: 220,
+                  decoration: BoxDecoration(
+                      border: Border.all(),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: ImagePickerHelper.isLoading
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            CupertinoActivityIndicator(),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text('Upload'),
+                          ],
+                        )
+                      : ImageView.rect(
+                          image: viewModel.mainImagePath,
+                          borderRadius: 10,
+                          width: context.width,
+                          placeholder: AssetsRes.IC_CAMERA,
+                          height: 220),
+                ),
+              ),
+              Wrap(
+                children:
+                    List.generate(viewModel.imagesList.length + 1, (index) {
+                  if (index < viewModel.imagesList.length) {
+                    return Stack(
+                      alignment: Alignment.topRight,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.all(10),
+                          width: 100,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: ImageView.rect(
+                              image: viewModel.imagesList[index].media ?? '',
+                              fit: BoxFit.contain,
+                              height: 80,
+                              width: 100,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          decoration: const BoxDecoration(
+                              color: Colors.white, shape: BoxShape.circle),
+                          child: InkWell(
+                            onTap: () {
+                              viewModel.removeImage(index,
+                                  data: viewModel.imagesList[index]);
+                              /* viewModel.deletedImageIds.add(value)*/
+                            },
+                            child: const Icon(
+                              Icons.cancel,
+                              color: Colors.red,
+                            ),
+                          ),
+                        )
+                      ],
+                    );
+                  } else {
+                    return GestureDetector(
+                      onTap: () async {
+                        var image = await ImagePickerHelper.openImagePicker(
+                                context: context, isCropping: true) ??
+                            '';
+                        if (image.isNotEmpty) {
+                          viewModel.addImage(image);
+                        }
+                      },
+                      child: Container(
                         margin: const EdgeInsets.all(10),
-                        width: 100,
+                        width: 120,
                         height: 80,
                         decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              offset: const Offset(0, 1),
-                              blurRadius: 6,
-                            ),
-                          ],
+                          border: Border.all(color: Colors.black),
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: ImageView.rect(
-                            image: viewModel.imagesList[index].media ?? '',
-                            fit: BoxFit.contain,
-                            height: 80,
-                            width: 100,
-                          ),
+                        child: const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.add),
+                            SizedBox(
+                              height: 2,
+                            ),
+                            Text(
+                              "Add",
+                              style: TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      Container(
-                        decoration: const BoxDecoration(
-                            color: Colors.white, shape: BoxShape.circle),
-                        child: InkWell(
-                          onTap: () {
-                            viewModel.removeImage(index,
-                                data: viewModel.imagesList[index]);
-                            /* viewModel.deletedImageIds.add(value)*/
-                          },
-                          child: const Icon(
-                            Icons.cancel,
-                            color: Colors.red,
-                          ),
-                        ),
-                      )
-                    ],
-                  );
-                } else {
-                  return GestureDetector(
-                    onTap: () async {
-                      var image = await ImagePickerHelper.openImagePicker(
-                              context: context, isCropping: true) ??
-                          '';
-                      if (image.isNotEmpty) {
-                        viewModel.addImage(image);
-                      }
+                    );
+                  }
+                }),
+              ),
+              Text(
+                StringHelper.itemCondition,
+                style: context.textTheme.titleMedium,
+              ),
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      viewModel.currentIndex = 1;
                     },
                     child: Container(
-                      margin: const EdgeInsets.all(10),
-                      width: 120,
-                      height: 80,
+                      width: 105,
+                      height: 42,
+                      margin: const EdgeInsets.only(top: 10, right: 10),
                       decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            offset: const Offset(0, 1),
-                            blurRadius: 6,
-                          ),
-                        ],
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.add),
-                          SizedBox(
-                            height: 2,
-                          ),
-                          Text(
-                            "Add",
-                            style: TextStyle(
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }
-              }),
-            ),
-            Text(
-              StringHelper.itemCondition,
-              style: context.textTheme.titleMedium,
-            ),
-            Row(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    viewModel.currentIndex = 1;
-                  },
-                  child: Container(
-                    width: 105,
-                    height: 42,
-                    margin: const EdgeInsets.only(top: 10, right: 10),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          color: viewModel.currentIndex == 1
-                              ? Colors.transparent
-                              : Colors.grey.withOpacity(0.5)),
-                      color: viewModel.currentIndex == 1
-                          ? Colors.black
-                          : const Color(0xffFCFCFD),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Center(
-                        child: Text(
-                      StringHelper.newText,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
+                        border: Border.all(
+                            color: viewModel.currentIndex == 1
+                                ? Colors.transparent
+                                : Colors.grey.withOpacity(0.5)),
                         color: viewModel.currentIndex == 1
-                            ? Colors.white
-                            : Colors.black,
+                            ? Colors.black
+                            : const Color(0xffFCFCFD),
+                        borderRadius: BorderRadius.circular(5),
                       ),
-                    )),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    viewModel.currentIndex = 2;
-                  },
-                  child: Container(
-                    width: 105,
-                    height: 42,
-                    margin: const EdgeInsets.only(top: 10, left: 10),
-                    decoration: BoxDecoration(
-                      color: viewModel.currentIndex == 2
-                          ? Colors.black
-                          : const Color(0xffFCFCFD),
-                      border: Border.all(
-                          color: viewModel.currentIndex == 2
-                              ? Colors.transparent
-                              : Colors.grey.withOpacity(0.5)),
-                      borderRadius: BorderRadius.circular(5),
+                      child: Center(
+                          child: Text(
+                        StringHelper.newText,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          color: viewModel.currentIndex == 1
+                              ? Colors.white
+                              : Colors.black,
+                        ),
+                      )),
                     ),
-                    child: Center(
-                        child: Text(
-                      StringHelper.used,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      viewModel.currentIndex = 2;
+                    },
+                    child: Container(
+                      width: 105,
+                      height: 42,
+                      margin: const EdgeInsets.only(top: 10, left: 10),
+                      decoration: BoxDecoration(
                         color: viewModel.currentIndex == 2
-                            ? Colors.white
-                            : Colors.black,
+                            ? Colors.black
+                            : const Color(0xffFCFCFD),
+                        border: Border.all(
+                            color: viewModel.currentIndex == 2
+                                ? Colors.transparent
+                                : Colors.grey.withOpacity(0.5)),
+                        borderRadius: BorderRadius.circular(5),
                       ),
-                    )),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 25,
-            ),
-            if (brands?.isNotEmpty ?? false) ...{
-              RichText(
-                  text: TextSpan(children: [
-                TextSpan(
-                  text: StringHelper.brand,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      color: Colors.black),
-                ),
-              ])),
-              Container(
-                margin: const EdgeInsets.only(top: 10, bottom: 15),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(100),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      offset: const Offset(0, 1),
-                      blurRadius: 6,
+                      child: Center(
+                          child: Text(
+                        StringHelper.used,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          color: viewModel.currentIndex == 2
+                              ? Colors.white
+                              : Colors.black,
+                        ),
+                      )),
                     ),
-                  ],
-                ),
-                child: TextFormField(
-                  controller: viewModel.brandTextController,
-                  readOnly: true,
-                  cursorColor: Colors.black,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "This field is mandatory";
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.only(
-                      left: 20,
-                    ),
-                    hintText: StringHelper.select,
-                    hintStyle:
-                        const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    ),
-                    suffixIcon: PopupMenuButton(
-                      clipBehavior: Clip.hardEdge,
-                      icon: const Icon(
-                        Icons.arrow_drop_down,
-                        color: Colors.black,
-                      ),
-                      onSelected: (CategoryModel value) {
-                        DialogHelper.showLoading();
-                        viewModel.getModels(brandId: value.id);
-                        viewModel.selectedBrand = value;
-                        viewModel.brandTextController.text = value.name ?? '';
-                        viewModel.getModels(brandId: value.id);
-                      },
-                      itemBuilder: (BuildContext context) {
-                        return brands!.map((option) {
-                          return PopupMenuItem(
-                            value: option,
-                            child: Text(option.name ?? ''),
-                          );
-                        }).toList();
-                      },
-                    ),
-                  ),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.deny(
-                        RegExp(viewModel.regexToRemoveEmoji)),
-                  ],
-                  keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.done,
-                ),
-              ),
-              RichText(
-                  text: TextSpan(children: [
-                TextSpan(
-                  text: StringHelper.models,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                      color: Colors.black),
-                ),
-              ])),
-              Container(
-                margin: const EdgeInsets.only(top: 10, bottom: 15),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(100),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      offset: const Offset(0, 1),
-                      blurRadius: 6,
-                    ),
-                  ],
-                ),
-                child: TextFormField(
-                  controller: viewModel.modelTextController,
-                  readOnly: true,
-                  cursorColor: Colors.black,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.only(
-                      left: 20,
-                    ),
-                    hintText: StringHelper.select,
-                    hintStyle:
-                        const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    ),
-                    suffixIcon: PopupMenuButton<CategoryModel>(
-                      clipBehavior: Clip.hardEdge,
-                      icon: const Icon(
-                        Icons.arrow_drop_down,
-                        color: Colors.black,
-                      ),
-                      onSelected: (value) {
-                        viewModel.selectedModel = value;
-                        viewModel.modelTextController.text = value.name ?? '';
-                      },
-                      itemBuilder: (BuildContext context) {
-                        return viewModel.allModels.map((option) {
-                          return PopupMenuItem(
-                            value: option,
-                            child: Text(option?.name ?? ''),
-                          );
-                        }).toList();
-                      },
-                    ),
-                  ),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.deny(
-                        RegExp(viewModel.regexToRemoveEmoji)),
-                  ],
-                  keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.done,
-                ),
-              ),
-            },
-            RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                text: StringHelper.year,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Colors.black),
-              ),
-            ])),
-            Container(
-              margin: const EdgeInsets.only(top: 10, bottom: 15),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(100),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    offset: const Offset(0, 1),
-                    blurRadius: 6,
                   ),
                 ],
               ),
-              child: TextFormField(
-                controller: viewModel.yearTextController,
-                readOnly: true,
-                focusNode: viewModel.yearText,
-                cursorColor: Colors.black,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.only(
-                    left: 20,
-                  ),
-                  hintText: StringHelper.enter,
-                  suffixIcon: PopupMenuButton<String>(
-                    icon: const Icon(Icons.arrow_drop_down),
-                    onSelected: (value) {
-                      viewModel.yearTextController.text = value ?? '';
+              const SizedBox(
+                height: 25,
+              ),
+              if (brands?.isNotEmpty ?? false) ...{
+                AppTextField(
+                  title: StringHelper.brand,
+                  controller: viewModel.brandTextController,
+                  readOnly: true,
+                  suffix: PopupMenuButton(
+                    clipBehavior: Clip.hardEdge,
+                    icon: const Icon(
+                      Icons.arrow_drop_down,
+                      color: Colors.black,
+                    ),
+                    onSelected: (CategoryModel value) {
+                      DialogHelper.showLoading();
+                      viewModel.getModels(brandId: value.id);
+                      viewModel.selectedBrand = value;
+                      viewModel.brandTextController.text = value.name ?? '';
+                      viewModel.getModels(brandId: value.id);
                     },
                     itemBuilder: (BuildContext context) {
-                      return viewModel.yearsType.map((option) {
+                      return brands!.map((option) {
                         return PopupMenuItem(
                           value: option,
-                          child: Text(option),
+                          child: Text(option.name ?? ''),
                         );
                       }).toList();
                     },
                   ),
+                  hint: StringHelper.select,
                   hintStyle:
                       const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                  border: const OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                  ),
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.done,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.deny(
+                        RegExp(viewModel.regexToRemoveEmoji)),
+                  ],
                 ),
-                inputFormatters: [
-                  LengthLimitingTextInputFormatter(4),
-                  FilteringTextInputFormatter.digitsOnly,
-                  FilteringTextInputFormatter.deny(
-                      RegExp(viewModel.regexToRemoveEmoji)),
-                ],
-                keyboardType: TextInputType.number,
-                textInputAction: TextInputAction.done,
-              ),
-            ),
-            RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                text: StringHelper.fuel,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Colors.black),
-              ),
-            ])),
-            Container(
-              margin: const EdgeInsets.only(top: 10, bottom: 20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(100),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    offset: const Offset(0, 1),
-                    blurRadius: 6,
-                  ),
-                ],
-              ),
-              child: TextFormField(
-                controller: viewModel.fuelTextController,
-                cursorColor: Colors.black,
-                readOnly: true,
-                decoration: InputDecoration(
-                    suffixIcon: PopupMenuButton<String>(
-                      icon: const Icon(Icons.arrow_drop_down),
-                      onSelected: (value) {
-                        viewModel.fuelTextController.text = value ?? '';
-                      },
-                      itemBuilder: (BuildContext context) {
-                        return viewModel.fuelsType.map((option) {
-                          return PopupMenuItem(
-                            value: option,
-                            child: Text(option),
-                          );
-                        }).toList();
-                      },
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 25, vertical: 18),
-                    hintText: StringHelper.enter,
-                    hintStyle:
-                        const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    )),
-                inputFormatters: [
-                  FilteringTextInputFormatter.deny(
-                      RegExp(viewModel.regexToRemoveEmoji)),
-                ],
-                textInputAction: TextInputAction.done,
-              ),
-            ),
-            RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                text: StringHelper.mileage,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Colors.black),
-              ),
-            ])),
-            Container(
-              margin: const EdgeInsets.only(top: 10, bottom: 20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(100),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    offset: const Offset(0, 1),
-                    blurRadius: 6,
-                  ),
-                ],
-              ),
-              child: TextFormField(
-                controller: viewModel.mileageTextController,
-                readOnly: true,
-                cursorColor: Colors.black,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.only(
-                    left: 20,
-                  ),
-                  hintText: StringHelper.enter,
+                AppTextField(
+                  title: StringHelper.models,
+                  titleColor: Colors.black,
+                  controller: viewModel.modelTextController,
+                  readOnly: true,
+                  hint: StringHelper.select,
                   hintStyle:
                       const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                  border: const OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                  ),
-                  suffixIcon: PopupMenuButton<String>(
+                  fillColor: Colors.white,
+                  contentPadding: const EdgeInsets.only(left: 20),
+                  suffix: PopupMenuButton<CategoryModel>(
                     clipBehavior: Clip.hardEdge,
                     icon: const Icon(
                       Icons.arrow_drop_down,
                       color: Colors.black,
                     ),
                     onSelected: (value) {
-                      viewModel.mileageTextController.text = value;
+                      viewModel.selectedModel = value;
+                      viewModel.modelTextController.text = value.name ?? '';
                     },
                     itemBuilder: (BuildContext context) {
-                      return viewModel.mileageRanges.map((option) {
+                      return viewModel.allModels.map((option) {
                         return PopupMenuItem(
                           value: option,
-                          child: Text(option ?? ''),
+                          child: Text(option?.name ?? ''),
                         );
                       }).toList();
                     },
                   ),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.deny(
+                      RegExp(viewModel.regexToRemoveEmoji),
+                    ),
+                  ],
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.done,
+                )
+              },
+              AppTextField(
+                title: StringHelper.year,
+                titleColor: Colors.black,
+                controller: viewModel.yearTextController,
+                readOnly: true,
+                focusNode: viewModel.yearText,
+                hint: StringHelper.enter,
+                hintStyle:
+                    const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                fillColor: Colors.white,
+                contentPadding: const EdgeInsets.only(left: 20),
+                suffix: PopupMenuButton<String>(
+                  icon: const Icon(Icons.arrow_drop_down),
+                  onSelected: (value) {
+                    viewModel.yearTextController.text = value ?? '';
+                  },
+                  itemBuilder: (BuildContext context) {
+                    return viewModel.yearsType.map((option) {
+                      return PopupMenuItem(
+                        value: option,
+                        child: Text(option),
+                      );
+                    }).toList();
+                  },
                 ),
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(4),
                   FilteringTextInputFormatter.digitsOnly,
                   FilteringTextInputFormatter.deny(
-                      RegExp(viewModel.regexToRemoveEmoji)),
+                    RegExp(viewModel.regexToRemoveEmoji),
+                  ),
                 ],
                 keyboardType: TextInputType.number,
                 textInputAction: TextInputAction.done,
               ),
-            ),
-            RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                text: StringHelper.transmission,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Colors.black),
-              ),
-            ])),
-            Row(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    viewModel.transmission = 1;
+              AppTextField(
+                title: StringHelper.fuel,
+                titleColor: Colors.black,
+                controller: viewModel.fuelTextController,
+                readOnly: true,
+                hint: StringHelper.enter,
+                hintStyle:
+                    const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                fillColor: Colors.white,
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+                suffix: PopupMenuButton<String>(
+                  icon: const Icon(Icons.arrow_drop_down),
+                  onSelected: (value) {
+                    viewModel.fuelTextController.text = value ?? '';
                   },
-                  child: Container(
-                    width: 130,
-                    height: 50,
-                    margin: const EdgeInsets.only(top: 10, right: 10),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          color: viewModel.transmission == 1
-                              ? Colors.transparent
-                              : Colors.grey.withOpacity(0.5)),
-                      color: viewModel.transmission == 1
-                          ? Colors.black
-                          : Colors.white,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Center(
-                        child: Text(
-                      StringHelper.automatic,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
+                  itemBuilder: (BuildContext context) {
+                    return viewModel.fuelsType.map((option) {
+                      return PopupMenuItem(
+                        value: option,
+                        child: Text(option),
+                      );
+                    }).toList();
+                  },
+                ),
+                inputFormatters: [
+                  FilteringTextInputFormatter.deny(
+                    RegExp(viewModel.regexToRemoveEmoji),
+                  ),
+                ],
+                textInputAction: TextInputAction.done,
+              ),
+              AppTextField(
+                title: StringHelper.mileage,
+                titleColor: Colors.black,
+                controller: viewModel.mileageTextController,
+                readOnly: true,
+                hint: StringHelper.enter,
+                hintStyle:
+                    const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                fillColor: Colors.white,
+                contentPadding: const EdgeInsets.only(left: 20),
+                suffix: PopupMenuButton<String>(
+                  clipBehavior: Clip.hardEdge,
+                  icon: const Icon(
+                    Icons.arrow_drop_down,
+                    color: Colors.black,
+                  ),
+                  onSelected: (value) {
+                    viewModel.mileageTextController.text = value;
+                  },
+                  itemBuilder: (BuildContext context) {
+                    return viewModel.mileageRanges.map((option) {
+                      return PopupMenuItem(
+                        value: option,
+                        child: Text(option ?? ''),
+                      );
+                    }).toList();
+                  },
+                ),
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(4),
+                  FilteringTextInputFormatter.digitsOnly,
+                  FilteringTextInputFormatter.deny(
+                    RegExp(viewModel.regexToRemoveEmoji),
+                  ),
+                ],
+                keyboardType: TextInputType.number,
+                textInputAction: TextInputAction.done,
+              ),
+              RichText(
+                  text: TextSpan(children: [
+                TextSpan(
+                  text: StringHelper.transmission,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                      color: Colors.black),
+                ),
+              ])),
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      viewModel.transmission = 1;
+                    },
+                    child: Container(
+                      width: 130,
+                      height: 50,
+                      margin: const EdgeInsets.only(top: 10, right: 10),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: viewModel.transmission == 1
+                                ? Colors.transparent
+                                : Colors.grey.withOpacity(0.5)),
                         color: viewModel.transmission == 1
-                            ? Colors.white
-                            : Colors.black,
+                            ? Colors.black
+                            : Colors.white,
+                        borderRadius: BorderRadius.circular(5),
                       ),
-                    )),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    viewModel.transmission = 2;
-                  },
-                  child: Container(
-                    width: 130,
-                    height: 50,
-                    margin: const EdgeInsets.only(top: 10, left: 10),
-                    decoration: BoxDecoration(
-                      color: viewModel.transmission == 2
-                          ? Colors.black
-                          : Colors.white,
-                      border: Border.all(
-                          color: viewModel.transmission == 2
-                              ? Colors.transparent
-                              : Colors.grey.withOpacity(0.5)),
-                      borderRadius: BorderRadius.circular(5),
+                      child: Center(
+                          child: Text(
+                        StringHelper.automatic,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          color: viewModel.transmission == 1
+                              ? Colors.white
+                              : Colors.black,
+                        ),
+                      )),
                     ),
-                    child: Center(
-                        child: Text(
-                      StringHelper.manual,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
-                        color: viewModel.transmission == 2
-                            ? Colors.white
-                            : Colors.black,
-                      ),
-                    )),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                text: StringHelper.kmDriven,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Colors.black),
-              ),
-            ])),
-            Container(
-              margin: const EdgeInsets.only(top: 10, bottom: 15),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(100),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    offset: const Offset(0, 1),
-                    blurRadius: 6,
+                  GestureDetector(
+                    onTap: () {
+                      viewModel.transmission = 2;
+                    },
+                    child: Container(
+                      width: 130,
+                      height: 50,
+                      margin: const EdgeInsets.only(top: 10, left: 10),
+                      decoration: BoxDecoration(
+                        color: viewModel.transmission == 2
+                            ? Colors.black
+                            : Colors.white,
+                        border: Border.all(
+                            color: viewModel.transmission == 2
+                                ? Colors.transparent
+                                : Colors.grey.withOpacity(0.5)),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Center(
+                          child: Text(
+                        StringHelper.manual,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          color: viewModel.transmission == 2
+                              ? Colors.white
+                              : Colors.black,
+                        ),
+                      )),
+                    ),
                   ),
                 ],
               ),
-              child: TextFormField(
+              const SizedBox(
+                height: 20,
+              ),
+              AppTextField(
+                title: StringHelper.kmDriven,
+                titleColor: Colors.black,
                 controller: viewModel.kmDrivenTextController,
-                readOnly: false,
                 focusNode: viewModel.kmDrivenText,
-                cursorColor: Colors.black,
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(
-                    left: 20,
-                  ),
-                  hintText: StringHelper.enter,
-                  hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                  ),
-                ),
+                readOnly: false,
+                hint: StringHelper.enter,
+                hintStyle:
+                    const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                fillColor: Colors.white,
+                contentPadding: const EdgeInsets.only(left: 20),
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(10),
                   FilteringTextInputFormatter.digitsOnly,
                   FilteringTextInputFormatter.deny(
-                      RegExp(viewModel.regexToRemoveEmoji)),
+                    RegExp(viewModel.regexToRemoveEmoji),
+                  ),
                 ],
                 keyboardType: TextInputType.number,
                 textInputAction: TextInputAction.done,
               ),
-            ),
-            RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                text: StringHelper.noOfOwners,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Colors.black),
-              ),
-            ])),
-            Container(
-              margin: const EdgeInsets.only(top: 10, bottom: 20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(100),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    offset: const Offset(0, 1),
-                    blurRadius: 6,
-                  ),
-                ],
-              ),
-              child: TextFormField(
+              AppTextField(
+                title: StringHelper.noOfOwners,
+                titleColor: Colors.black,
                 controller: viewModel.numOfOwnerTextController,
-                cursorColor: Colors.black,
                 focusNode: viewModel.ownerText,
-                decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                    hintText: StringHelper.enter,
-                    hintStyle:
-                        TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    )),
+                hint: StringHelper.enter,
+                hintStyle:
+                    const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                fillColor: Colors.white,
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
                 inputFormatters: [
                   FilteringTextInputFormatter.deny(
-                      RegExp(viewModel.regexToRemoveEmoji)),
+                    RegExp(viewModel.regexToRemoveEmoji),
+                  ),
                   FilteringTextInputFormatter.digitsOnly,
                 ],
                 keyboardType: TextInputType.number,
                 textInputAction: TextInputAction.done,
               ),
-            ),
-            RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                text: StringHelper.adTitle,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Colors.black),
-              ),
-            ])),
-            Container(
-              margin: const EdgeInsets.only(top: 10, bottom: 20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    offset: const Offset(0, 1),
-                    blurRadius: 6,
-                  ),
-                ],
-              ),
-              child: TextFormField(
+              AppTextField(
+                title: StringHelper.adTitle,
+                titleColor: Colors.black,
+                controller: viewModel.adTitleTextController,
+                hint: StringHelper.enter,
+                hintStyle:
+                    const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                fillColor: Colors.white,
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
                 maxLines: 4,
                 minLines: 1,
-                controller: viewModel.adTitleTextController,
-                cursorColor: Colors.black,
-                decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                    hintText: StringHelper.enter,
-                    hintStyle:
-                        TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    )),
                 inputFormatters: [
                   FilteringTextInputFormatter.deny(
-                      RegExp(viewModel.regexToRemoveEmoji)),
+                    RegExp(viewModel.regexToRemoveEmoji),
+                  ),
                 ],
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.done,
               ),
-            ),
-            RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                text: StringHelper.describeWhatYouAreSelling,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Colors.black),
-              ),
-            ])),
-            Container(
-              margin: const EdgeInsets.only(top: 10, bottom: 20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    offset: const Offset(0, 1),
-                    blurRadius: 6,
-                  ),
-                ],
-              ),
-              child: TextFormField(
-                controller: viewModel.descriptionTextController,
-                maxLines: 4,
-                cursorColor: Colors.black,
-                decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                    hintText: StringHelper.enter,
-                    hintStyle:
-                        TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    )),
+              AppTextField(
+                title: StringHelper.describeWhatYouAreSelling, // Title text
+                titleColor: Colors.black, // Title color
+                controller:
+                    viewModel.descriptionTextController, // Text controller
+                hint: StringHelper.enter, // Hint text for the field
+                hintStyle: const TextStyle(
+                    color: Color(0xffACACAC),
+                    fontSize: 14), // Style for the hint text
+                fillColor: Colors.white, // Background color for the text field
+                contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 25,
+                    vertical: 18), // Padding for content inside the field
+                maxLines: 4, // Maximum number of lines for the text field
                 inputFormatters: [
                   FilteringTextInputFormatter.deny(
-                      RegExp(viewModel.regexToRemoveEmoji)),
-                ],
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.done,
-              ),
-            ),
-            RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                text: StringHelper.location,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Colors.black),
-              ),
-            ])),
-            Container(
-              margin: const EdgeInsets.only(top: 10, bottom: 20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    offset: const Offset(0, 1),
-                    blurRadius: 6,
+                    RegExp(viewModel.regexToRemoveEmoji), // Block emoji input
                   ),
                 ],
+                textInputAction: TextInputAction.done, // Keyboard action button
+                keyboardType: TextInputType.text,
               ),
-              child: TextFormField(
+              AppTextField(
+                title: StringHelper.location,
+                titleColor: Colors.black,
                 controller: viewModel.addressTextController,
+                hint: StringHelper.select,
+                hintStyle:
+                    const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                fillColor: Colors.white,
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
                 maxLines: 2,
                 minLines: 1,
                 readOnly: true,
+                suffix: const Icon(Icons.location_on),
                 onTap: () async {
                   Map<String, dynamic>? value = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const AppMapWidget()));
-
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AppMapWidget(),
+                    ),
+                  );
                   if (value != null && value.isNotEmpty) {
                     viewModel.addressTextController.text =
                         "${value['location']}, ${value['city']}, ${value['state']}";
                   }
                 },
-                cursorColor: Colors.black,
-                decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                    hintText: StringHelper.select,
-                    suffixIcon: Icon(Icons.location_on),
-                    hintStyle:
-                        TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    )),
                 inputFormatters: [
                   FilteringTextInputFormatter.deny(
-                      RegExp(viewModel.regexToRemoveEmoji)),
-                ],
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.done,
-              ),
-            ),
-            RichText(
-                text: TextSpan(children: [
-              TextSpan(
-                text: StringHelper.priceEgp,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Colors.black),
-              ),
-            ])),
-            Container(
-              margin: const EdgeInsets.only(top: 10, bottom: 20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(100),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    offset: const Offset(0, 1),
-                    blurRadius: 6,
+                    RegExp(viewModel.regexToRemoveEmoji),
                   ),
                 ],
+                textInputAction: TextInputAction.done,
               ),
-              child: TextFormField(
+              // Price TextField
+              AppTextField(
+                title: StringHelper.priceEgp,
+                titleColor: Colors.black,
                 controller: viewModel.priceTextController,
-                cursorColor: Colors.black,
-                focusNode: viewModel.priceText,
-                decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                    hintText: StringHelper.enterPrice,
-                    hintStyle:
-                        TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    )),
+                hint: StringHelper.enterPrice,
+                hintStyle:
+                    const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                fillColor: Colors.white,
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+                maxLines: 1,
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(8),
                   FilteringTextInputFormatter.deny(
-                      RegExp(viewModel.regexToRemoveEmoji)),
+                    RegExp(viewModel.regexToRemoveEmoji),
+                  ),
                   FilteringTextInputFormatter.digitsOnly,
                 ],
                 keyboardType: TextInputType.number,
                 textInputAction: TextInputAction.done,
               ),
-            ),
-            Text(
-              StringHelper.howToConnect,
-              style: context.textTheme.titleSmall,
-            ),
-            MultiSelectCategory(
-              onSelectedCommunicationChoice: (CommunicationChoice value) {
-                viewModel.communicationChoice = value.name;
+              Text(
+                StringHelper.howToConnect,
+                style: context.textTheme.titleSmall,
+              ),
+              MultiSelectCategory(
+                onSelectedCommunicationChoice: (CommunicationChoice value) {
+                  viewModel.communicationChoice = value.name;
+                },
+              ),
+              if (viewModel.isEditProduct) ...{
+                GestureDetector(
+                  onTap: () {
+                    if (viewModel.formKey.currentState?.validate() ?? false) {
+                      if (viewModel.mainImagePath.isEmpty) {
+                        DialogHelper.showToast(
+                            message: StringHelper.pleaseUploadMainImage);
+                        return;
+                      }
+                      if (viewModel.imagesList.isEmpty) {
+                        DialogHelper.showToast(
+                            message:
+                                StringHelper.pleaseUploadAddAtLeastOneImage);
+                        return;
+                      }
+
+                      if (viewModel.yearTextController.text.trim().isEmpty) {
+                        DialogHelper.showToast(
+                            message: StringHelper.yearIsRequired);
+                        return;
+                      }
+
+                      if (viewModel.kmDrivenTextController.text
+                          .trim()
+                          .isEmpty) {
+                        DialogHelper.showToast(
+                            message: StringHelper.kMDrivenIsRequired);
+                        return;
+                      }
+
+                      if (viewModel.adTitleTextController.text.trim().isEmpty) {
+                        DialogHelper.showToast(
+                            message: StringHelper.adTitleIsRequired);
+                        return;
+                      }
+                      if (viewModel.descriptionTextController.text
+                          .trim()
+                          .isEmpty) {
+                        DialogHelper.showToast(
+                            message: StringHelper.describeWhatYouAreSelling);
+                        return;
+                      }
+                      if (viewModel.addressTextController.text.trim().isEmpty) {
+                        DialogHelper.showToast(
+                            message: StringHelper.locationIsRequired);
+                        return;
+                      }
+                      if (viewModel.priceTextController.text.trim().isEmpty) {
+                        DialogHelper.showToast(
+                            message: StringHelper.priceIsRequired);
+                        return;
+                      }
+                      DialogHelper.showLoading();
+                      viewModel.editProduct(
+                          productId: item?.id,
+                          category: category,
+                          subCategory: subCategory,
+                          subSubCategory: subSubCategory,
+                          brand: viewModel.selectedBrand,
+                          models: viewModel.selectedModel);
+                    }
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    margin: const EdgeInsets.symmetric(vertical: 20),
+                    decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(100)),
+                    child: Text(
+                      StringHelper.updateNow,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ),
+              } else ...{
+                GestureDetector(
+                  onTap: () {
+                    if (viewModel.formKey.currentState?.validate() ?? false) {
+                      if (viewModel.mainImagePath.isEmpty) {
+                        DialogHelper.showToast(
+                            message: StringHelper.pleaseUploadMainImage);
+                        return;
+                      }
+                      if (viewModel.imagesList.isEmpty) {
+                        DialogHelper.showToast(
+                            message:
+                                StringHelper.pleaseUploadAddAtLeastOneImage);
+                        return;
+                      }
+
+                      if (viewModel.yearTextController.text.trim().isEmpty) {
+                        DialogHelper.showToast(
+                            message: StringHelper.yearIsRequired);
+                        return;
+                      }
+
+                      if (viewModel.kmDrivenTextController.text
+                          .trim()
+                          .isEmpty) {
+                        DialogHelper.showToast(
+                            message: StringHelper.kMDrivenIsRequired);
+                        return;
+                      }
+
+                      if (viewModel.adTitleTextController.text.trim().isEmpty) {
+                        DialogHelper.showToast(
+                            message: StringHelper.adTitleIsRequired);
+                        return;
+                      }
+                      if (viewModel.descriptionTextController.text
+                          .trim()
+                          .isEmpty) {
+                        DialogHelper.showToast(
+                            message: StringHelper.describeWhatYouAreSelling);
+                        return;
+                      }
+                      if (viewModel.addressTextController.text.trim().isEmpty) {
+                        DialogHelper.showToast(
+                            message: StringHelper.locationIsRequired);
+                        return;
+                      }
+                      if (viewModel.priceTextController.text.trim().isEmpty) {
+                        DialogHelper.showToast(
+                            message: StringHelper.priceIsRequired);
+                        return;
+                      }
+                      DialogHelper.showLoading();
+                      viewModel.addProduct(
+                          category: category,
+                          subCategory: subCategory,
+                          subSubCategory: subSubCategory,
+                          brand: viewModel.selectedBrand,
+                          models: viewModel.selectedModel);
+                    }
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    margin: const EdgeInsets.symmetric(vertical: 20),
+                    decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(100)),
+                    child: Text(
+                      StringHelper.postNow,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ),
               },
-            ),
-            if (viewModel.isEditProduct) ...{
-              GestureDetector(
-                onTap: () {
-                  if (viewModel.mainImagePath.isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.pleaseUploadMainImage);
-                    return;
-                  }
-                  if (viewModel.imagesList.isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.pleaseUploadAddAtLeastOneImage);
-                    return;
-                  }
-
-                  if (viewModel.yearTextController.text.trim().isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.yearIsRequired);
-                    return;
-                  }
-
-                  if (viewModel.kmDrivenTextController.text.trim().isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.kMDrivenIsRequired);
-                    return;
-                  }
-
-                  if (viewModel.adTitleTextController.text.trim().isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.adTitleIsRequired);
-                    return;
-                  }
-                  if (viewModel.descriptionTextController.text.trim().isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.describeWhatYouAreSelling);
-                    return;
-                  }
-                  if (viewModel.addressTextController.text.trim().isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.locationIsRequired);
-                    return;
-                  }
-                  if (viewModel.priceTextController.text.trim().isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.priceIsRequired);
-                    return;
-                  }
-                  DialogHelper.showLoading();
-                  viewModel.editProduct(
-                      productId: item?.id,
-                      category: category,
-                      subCategory: subCategory,
-                      subSubCategory: subSubCategory,
-                      brand: viewModel.selectedBrand,
-                      models: viewModel.selectedModel);
-                },
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(vertical: 15),
-                  margin: const EdgeInsets.symmetric(vertical: 20),
-                  decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(100)),
-                  child: Text(
-                    StringHelper.updateNow,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600),
-                  ),
-                ),
-              ),
-            } else ...{
-              GestureDetector(
-                onTap: () {
-                  if (viewModel.mainImagePath.isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.pleaseUploadMainImage);
-                    return;
-                  }
-                  if (viewModel.imagesList.isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.pleaseUploadAddAtLeastOneImage);
-                    return;
-                  }
-
-                  if (viewModel.yearTextController.text.trim().isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.yearIsRequired);
-                    return;
-                  }
-
-                  if (viewModel.kmDrivenTextController.text.trim().isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.kMDrivenIsRequired);
-                    return;
-                  }
-
-                  if (viewModel.adTitleTextController.text.trim().isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.adTitleIsRequired);
-                    return;
-                  }
-                  if (viewModel.descriptionTextController.text.trim().isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.describeWhatYouAreSelling);
-                    return;
-                  }
-                  if (viewModel.addressTextController.text.trim().isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.locationIsRequired);
-                    return;
-                  }
-                  if (viewModel.priceTextController.text.trim().isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.priceIsRequired);
-                    return;
-                  }
-                  DialogHelper.showLoading();
-                  viewModel.addProduct(
-                      category: category,
-                      subCategory: subCategory,
-                      subSubCategory: subSubCategory,
-                      brand: viewModel.selectedBrand,
-                      models: viewModel.selectedModel);
-                },
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(vertical: 15),
-                  margin: const EdgeInsets.symmetric(vertical: 20),
-                  decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(100)),
-                  child: Text(
-                    StringHelper.postNow,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600),
-                  ),
-                ),
-              ),
-            },
-            const SizedBox(
-              height: 30,
-            )
-          ],
+              const SizedBox(
+                height: 30,
+              )
+            ],
+          ),
         ),
       ),
     );

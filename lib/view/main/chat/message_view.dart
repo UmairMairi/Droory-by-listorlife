@@ -137,7 +137,7 @@ class _MessageViewState extends State<MessageView> {
                             isTextDescription: false,
                             content: AppTextField(
                               controller: viewModel.reportTextController,
-                              lines: 4,
+                              maxLines: 4,
                               hint: StringHelper.reason,
                             ),
                             cancelButtonText: StringHelper.no,

@@ -20,7 +20,7 @@ class AddCardScreen extends StatelessWidget {
             AppTextField(
               title: StringHelper.nameOnCard,
               hint: StringHelper.enter,
-              inputType: TextInputType.name,
+              keyboardType: TextInputType.name,
               inputFormatters: AppTextInputFormatters.withNameFormatter(),
             ),
             const SizedBox(
@@ -29,7 +29,7 @@ class AddCardScreen extends StatelessWidget {
             AppTextField(
               title: StringHelper.cardNumber,
               hint: StringHelper.enter,
-              inputType: TextInputType.number,
+              keyboardType: TextInputType.number,
               inputFormatters: AppTextInputFormatters.withCardFormatter(),
             ),
             const SizedBox(
@@ -41,7 +41,7 @@ class AddCardScreen extends StatelessWidget {
                   child: AppTextField(
                     title: StringHelper.expDate,
                     hint: StringHelper.enter,
-                    inputType: TextInputType.number,
+                    keyboardType: TextInputType.number,
                     inputFormatters:
                         AppTextInputFormatters.withExpiryDateFormatter(),
                   ),
@@ -52,7 +52,7 @@ class AddCardScreen extends StatelessWidget {
                 Expanded(
                   child: AppTextField(
                     title: StringHelper.cvv,
-                    inputType: TextInputType.name,
+                    keyboardType: TextInputType.name,
                     inputFormatters: AppTextInputFormatters.withCVVFormatter(),
                     hint: StringHelper.enter,
                   ),

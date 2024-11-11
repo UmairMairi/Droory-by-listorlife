@@ -1,40 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:list_and_life/base/base.dart';
 
 class AppTextField extends StatelessWidget {
   final String? title;
   final String? hint;
-  final bool menditry;
-  final int? lines;
+  final bool? isMandatory;
+  final int? maxLines;
+  final int? minLines;
   final Widget? titleWidget;
   final TextEditingController? controller;
   final FormFieldValidator<String>? validator;
-  final TextInputType? inputType;
-  final TextInputAction? action;
-  final TextAlign? textAlign;
+  final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
+  final TextAlign textAlign;
   final Widget? suffix;
-  final bool? password;
-  final double? vPadding;
-  final EdgeInsetsGeometry? hPadding;
+  final bool? isPassword;
+  final double? verticalPadding;
+  final EdgeInsetsGeometry? horizontalPadding;
   final bool isExpanded;
   final Color? fillColor;
   final Color? borderSideColor;
-  final double? sizedBoxWidth;
+  final double? iconSpacing;
   final FocusNode? focusNode;
   final Function(String)? onChanged;
-  final bool? isMendotary;
   final double? width;
-  final onSuffixTap;
   final bool? isDropDownShowing;
-  final String? placeHolderText;
+  final String? placeholderText;
   final String? errorText;
   final Widget? prefix;
   final int? maxLength;
   final Function(bool)? onPrefixTap;
   final String? prefixText;
-  final bool? editabled;
+  final bool? isEditable;
   final int? elevation;
+  final EdgeInsetsGeometry? contentPadding;
   final TextStyle? hintStyle;
   final bool readOnly;
   final EdgeInsetsGeometry? padding;
@@ -42,112 +41,165 @@ class AppTextField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final bool? enableCopyPaste;
   final VoidCallback? onTap;
-  final bool animation;
-
+  final bool showAnimation;
+  final bool? autofocus;
+  final TextCapitalization? textCapitalization;
+  final Brightness? keyboardAppearance;
+  final EdgeInsets scrollPadding;
+  final TextDirection? textDirection;
+  final bool? autocorrect;
+  final ToolbarOptions? toolbarOptions;
+  final MaxLengthEnforcement? maxLengthEnforcement;
+  final GlobalKey<FormState>? formKey;
+  final Color? cursorColor;
   const AppTextField({
     super.key,
     this.title,
-    this.animation = true,
-    this.onTap,
     this.hint,
-    this.elevation,
-    this.vPadding,
-    this.onChanged,
-    this.lines,
+    this.contentPadding = const EdgeInsets.symmetric(
+        horizontal: 10.0), // Default padding added here
+    this.isMandatory = false,
+    this.maxLines,
+    this.minLines,
     this.titleWidget,
-    this.action,
-    this.inputType,
-    this.validator,
-    this.password,
-    this.suffix,
-    this.inputFormatters,
-    this.textAlign,
-    this.sizedBoxWidth,
-    this.fillColor,
-    this.isExpanded = true,
-    this.hPadding,
-    this.borderSideColor,
     this.controller,
+    this.validator,
+    this.keyboardType,
+    this.textInputAction,
+    this.textAlign = TextAlign.start,
+    this.suffix,
+    this.isPassword = false,
+    this.verticalPadding = 15.0,
+    this.horizontalPadding,
+    this.isExpanded = true,
+    this.fillColor,
+    this.borderSideColor,
+    this.iconSpacing,
     this.focusNode,
-    this.isMendotary,
+    this.onChanged,
     this.width,
-    this.onSuffixTap,
     this.isDropDownShowing = false,
-    this.placeHolderText,
+    this.placeholderText,
     this.errorText,
     this.prefix,
     this.maxLength,
     this.onPrefixTap,
     this.prefixText,
-    this.editabled,
+    this.isEditable = true,
+    this.elevation,
+    this.hintStyle,
     this.readOnly = false,
-    this.menditry = false,
     this.padding,
     this.titleColor,
-    this.hintStyle,
+    this.inputFormatters,
     this.enableCopyPaste = true,
+    this.onTap,
+    this.showAnimation = true,
+    this.autofocus = false,
+    this.textCapitalization = TextCapitalization.none,
+    this.keyboardAppearance,
+    this.scrollPadding = const EdgeInsets.all(20.0),
+    this.textDirection,
+    this.autocorrect = true,
+    this.toolbarOptions,
+    this.maxLengthEnforcement,
+    this.formKey,
+    this.cursorColor,
   });
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title ?? '',
-          style: context.textTheme.titleSmall,
-        ),
-        const SizedBox(
-          height: 6,
-        ),
+        if (title != null) ...[
+          Text(
+            title!,
+            style: TextStyle(
+              color:
+                  titleColor ?? Theme.of(context).textTheme.titleSmall?.color,
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 6),
+        ],
         TextFormField(
           autovalidateMode: AutovalidateMode.onUserInteraction,
           controller: controller,
-          keyboardType: inputType,
+          keyboardType: keyboardType,
+          autofocus: autofocus!,
+          textCapitalization: textCapitalization!,
+          keyboardAppearance: keyboardAppearance,
+          scrollPadding: scrollPadding,
+          textDirection: textDirection,
+          autocorrect: autocorrect!,
+          toolbarOptions: toolbarOptions,
+          maxLengthEnforcement: maxLengthEnforcement,
           readOnly: readOnly,
           onTap: onTap,
-          cursorColor: titleColor ?? Colors.black,
-          maxLines: password == true ? 1 : lines,
-          obscureText: password == true,
+          cursorColor: cursorColor ?? Colors.black,
+          maxLines: isPassword == true ? 1 : maxLines,
+          minLines: minLines,
+          obscureText: isPassword == true,
           validator: validator ??
               (value) {
                 if (value == null || value.isEmpty) {
-                  return "This field is mandatory";
+                  return "*This field is required";
                 }
                 return null;
-              }, // Use validator if provided
+              },
           maxLength: maxLength,
-          textAlign: textAlign ?? TextAlign.start,
+          textAlign: textAlign,
           focusNode: focusNode,
-          enabled: editabled ?? true,
-          textInputAction: action ?? TextInputAction.done,
-          textAlignVertical: TextAlignVertical.center,
+          enabled: isEditable,
+          textInputAction: textInputAction ?? TextInputAction.done,
           onChanged: onChanged,
           inputFormatters: inputFormatters,
-          enableInteractiveSelection: enableCopyPaste ?? false,
-          style: context.textTheme.bodyMedium,
+          enableInteractiveSelection: enableCopyPaste!,
+          style: Theme.of(context).textTheme.bodyMedium,
           decoration: InputDecoration(
-            hintText: (hint ?? '').isNotEmpty ? capitalize(hint ?? '') : "",
+            hintText: hint != null ? capitalize(hint!) : "",
             counterText: "",
-            hintStyle: hintStyle,
+            hintStyle: hintStyle ?? TextStyle(color: Colors.grey.shade500),
             errorText: errorText,
-            filled: false,
+            filled: fillColor != null,
+            fillColor: fillColor,
             errorMaxLines: 2,
             prefixIcon: prefix,
             prefixIconColor: Theme.of(context).colorScheme.primary,
-            border: OutlineInputBorder(),
-            suffixIconColor: Theme.of(context).colorScheme.primary,
             suffixIcon: suffix,
-            contentPadding: const EdgeInsets.symmetric(vertical: 15.0),
+            suffixIconColor: Theme.of(context).colorScheme.primary,
+            contentPadding: contentPadding,
+            border: OutlineInputBorder(
+              borderSide:
+                  BorderSide(color: borderSideColor ?? Colors.grey.shade300),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide:
+                  BorderSide(color: borderSideColor ?? Colors.grey.shade300),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide:
+                  BorderSide(color: borderSideColor ?? Colors.grey.shade300),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.red),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
           ),
         ),
+        const SizedBox(height: 6),
       ],
     );
   }
 
   String capitalize(String value) {
-    if (value.trim().isEmpty) return "";
-    return "${value[0].toUpperCase()}${value.substring(1).toLowerCase()}";
+    return value.isNotEmpty
+        ? "${value[0].toUpperCase()}${value.substring(1).toLowerCase()}"
+        : "";
   }
 }
