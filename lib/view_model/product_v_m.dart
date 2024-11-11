@@ -64,22 +64,24 @@ class ProductVM extends BaseViewModel {
     // Electronics Specifications
     if (data?.categoryId == 1) {
       if (data?.modelId != null && data!.modelId != 0) {
-        specs.add(_buildSpecRow(context, '${data.model?.name}', '📱', 'Model'));
+        specs.add(_buildSpecRow(
+            context, '${data.model?.name}', Icons.smartphone, 'Model'));
       }
       if (data?.ram != null && data!.ram != 0) {
-        specs.add(_buildSpecRow(context, '${data.ram} GB', '🧠', 'RAM'));
+        specs
+            .add(_buildSpecRow(context, '${data.ram} GB', Icons.memory, 'RAM'));
       }
       if (data?.storage != null && data!.storage != 0) {
-        specs
-            .add(_buildSpecRow(context, '${data.storage} GB', '💾', 'Storage'));
+        specs.add(_buildSpecRow(
+            context, '${data.storage} GB', Icons.sd_storage, 'Storage'));
       }
       if (data?.screenSize != null && data!.screenSize!.isNotEmpty) {
-        specs.add(
-            _buildSpecRow(context, "${data.screenSize}", '📏', 'Screen Size'));
+        specs.add(_buildSpecRow(
+            context, "${data.screenSize}", Icons.aspect_ratio, 'Screen Size'));
       }
       if (data?.itemCondition != null && data!.itemCondition!.isNotEmpty) {
-        specs.add(
-            _buildSpecRow(context, "${data.itemCondition}", '🔍', 'Condition'));
+        specs.add(_buildSpecRow(context, "${data.itemCondition}",
+            Icons.verified_user, 'Condition'));
       }
     }
 
@@ -87,75 +89,83 @@ class ProductVM extends BaseViewModel {
     if (data?.categoryId == 2) {
       if (data?.itemCondition != null && data!.itemCondition!.isNotEmpty) {
         specs.add(_buildSpecRow(
-            context, "${data.itemCondition}", '🛋️', 'Condition'));
+            context, "${data.itemCondition}", Icons.chair, 'Condition'));
       }
       if (data?.material != null && data!.material!.isNotEmpty) {
-        specs.add(_buildSpecRow(context, "${data.material}", '🪵', 'Material'));
+        specs.add(_buildSpecRow(
+            context, "${data.material}", Icons.inbox, 'Material'));
       }
     }
 
     // Fashion Specifications
     if (data?.categoryId == 3) {
       if (data?.modelId != null && data!.modelId != 0) {
-        specs.add(_buildSpecRow(context, '${data.model?.name}', '👗', 'Model'));
+        specs.add(_buildSpecRow(
+            context, '${data.model?.name}', Icons.checkroom, 'Model'));
       }
       if (data?.itemCondition != null && data!.itemCondition!.isNotEmpty) {
-        specs.add(
-            _buildSpecRow(context, "${data.itemCondition}", '🔍', 'Condition'));
+        specs.add(_buildSpecRow(
+            context, "${data.itemCondition}", Icons.visibility, 'Condition'));
       }
     }
 
     // Vehicles Specifications
     if (data?.categoryId == 4) {
       if (data?.modelId != null && data!.modelId != 0) {
-        specs.add(_buildSpecRow(context, '${data.model?.name}', '🚗', 'Model'));
+        specs.add(_buildSpecRow(
+            context, '${data.model?.name}', Icons.directions_car, 'Model'));
       }
       if (data?.year != null && data!.year != 0) {
-        specs.add(_buildSpecRow(context, "${data.year}", '📅', 'Year'));
+        specs.add(_buildSpecRow(
+            context, "${data.year}", Icons.calendar_today, 'Year'));
       }
       if (data?.fuel != null && data!.fuel!.isNotEmpty) {
-        specs.add(_buildSpecRow(context, '${data.fuel}', '⛽', 'Fuel'));
+        specs.add(_buildSpecRow(
+            context, '${data.fuel}', Icons.local_gas_station, 'Fuel'));
       }
       if (data?.milleage != null && data!.milleage!.isNotEmpty) {
-        specs.add(_buildSpecRow(context, '${data.milleage}', '🔋', 'Mileage'));
+        specs.add(_buildSpecRow(
+            context, '${data.milleage}', Icons.battery_full, 'Mileage'));
       }
       if (data?.kmDriven != null) {
-        specs.add(
-            _buildSpecRow(context, '${data?.kmDriven} km', '🚙', 'KM Driven'));
+        specs.add(_buildSpecRow(
+            context, '${data?.kmDriven} km', Icons.speed, 'KM Driven'));
       }
       if (data?.transmission != null && data!.transmission!.isNotEmpty) {
         specs.add(_buildSpecRow(
-            context, "${data.transmission}", '⚙️', 'Transmission'));
+            context, "${data.transmission}", Icons.autorenew, 'Transmission'));
       }
       if (data?.numberOfOwner != null && data!.numberOfOwner != 0) {
-        specs.add(_buildSpecRow(
-            context, '${data.numberOfOwner} Owners', '👤', 'Number of Owners'));
+        specs.add(_buildSpecRow(context, '${data.numberOfOwner} Owners',
+            Icons.account_circle, 'Number of Owners'));
       }
     }
 
     // Hobbies, Music, Art & Books Specifications
     if (data?.categoryId == 5) {
       if (data?.itemCondition != null && data!.itemCondition!.isNotEmpty) {
-        specs.add(
-            _buildSpecRow(context, "${data.itemCondition}", '🎨', 'Condition'));
+        specs.add(_buildSpecRow(
+            context, "${data.itemCondition}", Icons.art_track, 'Condition'));
       }
     }
 
     // Pets Specifications
     if (data?.categoryId == 6) {
       if (data?.brand != null && data!.brand!.name!.isNotEmpty) {
-        specs.add(_buildSpecRow(context, "${data.brand?.name}", '🐶', 'Breed'));
+        specs.add(
+            _buildSpecRow(context, "${data.brand?.name}", Icons.pets, 'Breed'));
       }
     }
 
     // Business & Industrial Specifications
     if (data?.categoryId == 7) {
       if (data?.modelId != null && data!.modelId != 0) {
-        specs.add(_buildSpecRow(context, '${data.model?.name}', '🏢', 'Model'));
+        specs.add(_buildSpecRow(
+            context, '${data.model?.name}', Icons.business, 'Model'));
       }
       if (data?.itemCondition != null && data!.itemCondition!.isNotEmpty) {
-        specs.add(
-            _buildSpecRow(context, "${data.itemCondition}", '🔍', 'Condition'));
+        specs.add(_buildSpecRow(context, "${data.itemCondition}",
+            Icons.visibility_off, 'Condition'));
       }
     }
 
@@ -163,33 +173,38 @@ class ProductVM extends BaseViewModel {
     if (data?.categoryId == 9) {
       if (data?.positionType != null && data!.positionType!.isNotEmpty) {
         specs.add(_buildSpecRow(
-            context, "${data.positionType}", '💼', 'Position Type'));
+            context, "${data.positionType}", Icons.work, 'Position Type'));
       }
       if (data?.salleryPeriod != null && data!.salleryPeriod!.isNotEmpty) {
-        specs.add(_buildSpecRow(
-            context, "${data?.salleryPeriod}", '💰', 'Salary Period'));
+        specs.add(_buildSpecRow(context, "${data?.salleryPeriod}",
+            Icons.attach_money, 'Salary Period'));
       }
       if (data?.salleryFrom != null && data?.salleryTo != null) {
-        specs.add(_buildSpecRow(context,
-            "${data?.salleryFrom}-${data?.salleryTo}", '💰', 'Salary Range'));
+        specs.add(_buildSpecRow(
+            context,
+            "${data?.salleryFrom}-${data?.salleryTo}",
+            Icons.attach_money,
+            'Salary Range'));
       }
     }
 
     // Mobiles & Tablets Specifications
     if (data?.categoryId == 10) {
       if (data?.modelId != null && data!.modelId != 0) {
-        specs.add(_buildSpecRow(context, '${data.model?.name}', '📱', 'Model'));
+        specs.add(
+            _buildSpecRow(context, '${data.model}', Icons.tablet_mac, 'Model'));
       }
       if (data?.ram != null && data!.ram != 0) {
-        specs.add(_buildSpecRow(context, '${data.ram} GB', '🧠', 'RAM'));
+        specs
+            .add(_buildSpecRow(context, '${data.ram} GB', Icons.memory, 'RAM'));
       }
       if (data?.storage != null && data!.storage != 0) {
-        specs
-            .add(_buildSpecRow(context, '${data.storage} GB', '💾', 'Storage'));
+        specs.add(_buildSpecRow(
+            context, '${data.storage} GB', Icons.sd_storage, 'Storage'));
       }
       if (data?.itemCondition != null && data!.itemCondition!.isNotEmpty) {
-        specs.add(
-            _buildSpecRow(context, "${data.itemCondition}", '🔍', 'Condition'));
+        specs.add(_buildSpecRow(
+            context, "${data.itemCondition}", Icons.visibility, 'Condition'));
       }
     }
 
@@ -197,52 +212,53 @@ class ProductVM extends BaseViewModel {
     if (data?.categoryId == 11) {
       if (data?.propertyFor != null && data!.propertyFor!.isNotEmpty) {
         specs.add(_buildSpecRow(
-            context, "${data.propertyFor}", '🏠', 'Property For'));
+            context, "${data.propertyFor}", Icons.house, 'Property For'));
       }
       if (data?.area != null && data!.area != 0) {
-        specs.add(_buildSpecRow(context, "${data.area}", '📏', 'Area'));
+        specs.add(
+            _buildSpecRow(context, "${data.area}", Icons.straighten, 'Area'));
       }
       if (data?.bedrooms != null && data!.bedrooms != 0) {
-        specs
-            .add(_buildSpecRow(context, "${data.bedrooms}", '🛏️', 'Bedrooms'));
+        specs.add(
+            _buildSpecRow(context, "${data.bedrooms}", Icons.bed, 'Bedrooms'));
       }
       if (data?.bathrooms != null && data!.bathrooms != 0) {
-        specs.add(
-            _buildSpecRow(context, "${data.bathrooms}", '🚽', 'Bathrooms'));
+        specs.add(_buildSpecRow(
+            context, "${data.bathrooms}", Icons.bathtub, 'Bathrooms'));
       }
       if (data?.furnishedType != null && data!.furnishedType!.isNotEmpty) {
         specs.add(_buildSpecRow(
-            context, "${data.furnishedType}", '🛋️', 'Furnished Type'));
+            context, "${data.furnishedType}", Icons.chair, 'Furnished Type'));
       }
       if (data?.ownership != null && data!.ownership!.isNotEmpty) {
-        specs.add(
-            _buildSpecRow(context, "${data.ownership}", '📜', 'Ownership'));
+        specs.add(_buildSpecRow(
+            context, "${data.ownership}", Icons.account_balance, 'Ownership'));
       }
       if (data?.paymentType != null && data!.paymentType!.isNotEmpty) {
         specs.add(_buildSpecRow(
-            context, "${data.paymentType}", '💳', 'Payment Type'));
+            context, "${data.paymentType}", Icons.payment, 'Payment Type'));
       }
       if (data?.completionStatus != null &&
           data!.completionStatus!.isNotEmpty) {
-        specs.add(_buildSpecRow(
-            context, "${data.completionStatus}", '✅', 'Completion Status'));
+        specs.add(_buildSpecRow(context, "${data.completionStatus}",
+            Icons.check_circle, 'Completion Status'));
       }
       if (data?.deliveryTerm != null && data!.deliveryTerm!.isNotEmpty) {
-        specs.add(_buildSpecRow(
-            context, "${data.deliveryTerm}", '🚚', 'Delivery Term'));
+        specs.add(_buildSpecRow(context, "${data.deliveryTerm}",
+            Icons.local_shipping, 'Delivery Term'));
       }
     }
 
     // Common specifications
     if (data?.nearby != null && data!.nearby!.isNotEmpty) {
-      specs.add(_buildSpecRow(
-          context, '${data.nearby?.split(',').last}', '📍', 'Location'));
+      specs.add(_buildSpecRow(context, '${data.nearby?.split(',').last}',
+          Icons.location_on, 'Location'));
     }
     if (data?.createdAt != null && data!.createdAt!.isNotEmpty) {
       specs.add(_buildSpecRow(
         context,
         DateFormat('dd MMM yyyy').format(DateTime.parse('${data.createdAt}')),
-        '🕒',
+        Icons.access_time,
         'Posted',
       ));
     }
@@ -251,7 +267,7 @@ class ProductVM extends BaseViewModel {
   }
 
   Widget _buildSpecRow(
-      BuildContext context, String specValue, String symbol, String title) {
+      BuildContext context, String specValue, IconData icon, String title) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -259,33 +275,33 @@ class ProductVM extends BaseViewModel {
         Text(
           title,
           style: const TextStyle(
-            fontSize: 9.0, // Smaller font size for the title
-            fontWeight: FontWeight.w400, // Lighter font weight
-            color: Colors.black54, // Grey color for the title
-            overflow: TextOverflow.ellipsis, // Ensure title does not overflow
+            fontSize: 10.0,
+            fontWeight: FontWeight.w400,
+            color: Colors.black54,
+            overflow: TextOverflow.ellipsis,
           ),
-          maxLines: 1, // Limit to 1 line
+          maxLines: 1,
         ),
         Row(
           children: [
-            Text(
-              symbol,
-              style:
-                  const TextStyle(fontSize: 15.0), // Customize size as needed
+            Icon(
+              icon,
+              color: Colors.blueGrey, // Set icon color to grey
+              size: 20, // Set icon size as needed
             ),
-            const SizedBox(width: 3), // Space between symbol and text
+            const SizedBox(width: 3),
             Expanded(
               child: Text(
                 specValue,
                 style: const TextStyle(
-                  fontSize: 12,
+                  fontSize: 14,
                   fontWeight: FontWeight.w600,
-                  overflow: TextOverflow.ellipsis, // Handle overflow
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ),
           ],
-        ), // Space between value and title
+        ),
       ],
     );
   }

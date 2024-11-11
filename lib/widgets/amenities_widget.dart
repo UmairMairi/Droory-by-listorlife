@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:list_and_life/base/helpers/db_helper.dart';
 import 'package:list_and_life/base/helpers/string_helper.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
@@ -31,31 +32,35 @@ class _AmenitiesWidgetState extends State<AmenitiesWidget> {
     // Fetch amenities on init
   }
 
-  String getAmenityEmoji(String amenityName) {
-    // Define a map that links each amenity name to an emoji
-    final Map<String, String> amenityEmojiMap = {
-      "Intercom": "📞",
-      "Security": "🛡️",
-      "Storage": "📦",
-      "Broadband Internet": "🌐",
-      "Garage Parking": "🚗",
-      "Elevator": "🛗",
-      "Landline": "☎️",
-      "Natural Gas": "🔥",
-      "Water Meter": "💧",
-      "Electricity Meter": "⚡",
-      "Pool": "🏊",
-      "Pets Allowed": "🐾",
-      "Maids Room": "🛏️",
-      "Parking": "🚗",
-      "Central A/C and Heating": "❄️🔥",
-      "Private Garden": "🌳",
-      "Installed Kitchen": "🍳",
-      "Balcony": "🌅",
+  Icon getAmenityIcon(String amenityName) {
+    // Define a map that links each amenity name to an icon
+    final Map<String, IconData> amenityIconMap = {
+      "Intercom": Icons.phone,
+      "Security": Icons.security,
+      "Storage": Icons.store_mall_directory,
+      "Broadband Internet": Icons.wifi,
+      "Garage Parking": Icons.local_parking,
+      "Elevator": Icons.elevator,
+      "Landline": Icons.phone_in_talk,
+      "Natural Gas": Icons.local_fire_department,
+      "Water Meter": Icons.water_drop,
+      "Electricity Meter": Icons.bolt,
+      "Pool": Icons.pool,
+      "Pets Allowed": Icons.pets,
+      "Maids Room": Icons.bed,
+      "Parking": Icons.directions_car,
+      "Central A/C and Heating":
+          Icons.ac_unit, // Can use separate icons if needed
+      "Private Garden": Icons.grass,
+      "Installed Kitchen": Icons.kitchen,
+      "Balcony": Icons.balcony,
     };
 
-    // Return the emoji if found in the map, otherwise return a default symbol
-    return amenityEmojiMap[amenityName] ?? "❓"; // "❓" as a default emoji
+    // Return the icon if found in the map, otherwise return a default icon
+    return Icon(
+      amenityIconMap[amenityName] ??
+          Icons.help_outline, // "help_outline" as a default icon
+    );
   }
 
   // Fetch amenities and set state only once
@@ -105,9 +110,18 @@ class _AmenitiesWidgetState extends State<AmenitiesWidget> {
       itemBuilder: (context, index) {
         final amenity = _amenities[index];
         return CheckboxListTile(
-          title: Text(DbHelper?.getLanguage() == 'en'
-              ? "${getAmenityEmoji(amenity.name ?? '')} ${amenity.name ?? ''}"
-              : "${getAmenityEmoji(amenity.name ?? '')} ${amenity.nameAr ?? ''}"),
+          title: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              getAmenityIcon(amenity.name ?? ''),
+              Gap(05),
+              Text(DbHelper?.getLanguage() == 'en'
+                  ? "${amenity.name ?? ''}"
+                  : "${amenity.nameAr ?? ''}"),
+            ],
+          ),
           value: amenitiesChecked.contains(amenity.id),
           onChanged: (bool? value) {
             setState(() {

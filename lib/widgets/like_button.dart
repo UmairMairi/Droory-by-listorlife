@@ -43,17 +43,19 @@ class _LikeButtonState extends State<LikeButton>
       child: ScaleTransition(
         scale: Tween(begin: 0.7, end: 1.0).animate(
             CurvedAnimation(parent: _controller, curve: Curves.easeOut)),
-        child: _isFavorite
-            ? const Icon(
-                Icons.favorite,
-                size: 24,
-                color: Colors.red,
-              )
-            : const Icon(
-                Icons.favorite,
-                size: 24,
-                color: Colors.grey,
-              ),
+        child: Padding(
+            padding: EdgeInsets.all(5),
+            child: _isFavorite
+                ? const Icon(
+                    Icons.favorite,
+                    size: 30,
+                    color: Colors.red,
+                  )
+                : const Icon(
+                    Icons.favorite_border_outlined,
+                    size: 30,
+                    color: Colors.white54,
+                  )),
       ),
     );
   }

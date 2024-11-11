@@ -86,7 +86,7 @@ class MyProductView extends BaseView<ProductVM> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     CardSwipeWidget(
-                      height: 220,
+                      height: 300,
                       data: data,
                       imagesList: data?.productMedias?.toList(),
                       borderRadius: const BorderRadius.only(

@@ -43,6 +43,7 @@ class AppTextField extends StatelessWidget {
   final bool? enableCopyPaste;
   final VoidCallback? onTap;
   final bool animation;
+
   const AppTextField({
     super.key,
     this.title,
@@ -98,61 +99,47 @@ class AppTextField extends StatelessWidget {
           style: context.textTheme.titleSmall,
         ),
         const SizedBox(
-          height: 06,
+          height: 6,
         ),
-        Container(
-          alignment: Alignment.center,
-          width: width ?? MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.3), // Shadow color
-                spreadRadius: 1, // Spread radius
-                blurRadius: 3, // Blur radius
-                offset: const Offset(0, 2), // Offset from the top
-              ),
-            ],
-          ),
-          padding:
-              const EdgeInsets.symmetric(horizontal: 10.0), // Adjusted padding
-          child: TextFormField(
-            autovalidateMode: AutovalidateMode.disabled,
-            controller: controller,
-            keyboardType: inputType,
-            readOnly: readOnly,
-            onTap: onTap,
-            cursorColor: titleColor ?? Colors.black,
-            maxLines: password == true ? 1 : lines,
-            obscureText: lines == null ? password == true : false,
-            validator: validator ?? validator,
-            maxLength: maxLength,
-            textAlign: textAlign ?? TextAlign.start,
-            focusNode: focusNode,
-            enabled: editabled ?? true,
-            textInputAction: action ?? TextInputAction.done,
-            textAlignVertical:
-                TextAlignVertical.center, // Center text vertically
-            onChanged: onChanged,
-            inputFormatters: inputFormatters,
-            enableInteractiveSelection: enableCopyPaste ?? false,
-            style: context.textTheme.bodyMedium,
-            decoration: InputDecoration(
-              hintText: (hint ?? '').isNotEmpty ? capitalize(hint ?? '') : "",
-              counterText: "",
-              hintStyle: hintStyle,
-              errorText: errorText,
-              filled: false,
-              errorMaxLines: 2,
-              prefixIcon: prefix,
-              prefixIconColor: Theme.of(context).colorScheme.primary,
-              border: InputBorder.none,
-              suffixIconColor: Theme.of(context).colorScheme.primary,
-              suffixIcon: suffix,
-              contentPadding: const EdgeInsets.symmetric(
-                  vertical: 15.0), // Ensure vertical centering
-            ),
+        TextFormField(
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          controller: controller,
+          keyboardType: inputType,
+          readOnly: readOnly,
+          onTap: onTap,
+          cursorColor: titleColor ?? Colors.black,
+          maxLines: password == true ? 1 : lines,
+          obscureText: password == true,
+          validator: validator ??
+              (value) {
+                if (value == null || value.isEmpty) {
+                  return "This field is mandatory";
+                }
+                return null;
+              }, // Use validator if provided
+          maxLength: maxLength,
+          textAlign: textAlign ?? TextAlign.start,
+          focusNode: focusNode,
+          enabled: editabled ?? true,
+          textInputAction: action ?? TextInputAction.done,
+          textAlignVertical: TextAlignVertical.center,
+          onChanged: onChanged,
+          inputFormatters: inputFormatters,
+          enableInteractiveSelection: enableCopyPaste ?? false,
+          style: context.textTheme.bodyMedium,
+          decoration: InputDecoration(
+            hintText: (hint ?? '').isNotEmpty ? capitalize(hint ?? '') : "",
+            counterText: "",
+            hintStyle: hintStyle,
+            errorText: errorText,
+            filled: false,
+            errorMaxLines: 2,
+            prefixIcon: prefix,
+            prefixIconColor: Theme.of(context).colorScheme.primary,
+            border: OutlineInputBorder(),
+            suffixIconColor: Theme.of(context).colorScheme.primary,
+            suffixIcon: suffix,
+            contentPadding: const EdgeInsets.symmetric(vertical: 15.0),
           ),
         ),
       ],

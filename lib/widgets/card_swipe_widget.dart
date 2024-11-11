@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
@@ -13,12 +11,13 @@ class CardSwipeWidget extends StatefulWidget {
   final ProductDetailModel? data;
   final List<ProductMedias>? imagesList;
   final BorderRadiusGeometry? borderRadius;
-  const CardSwipeWidget(
-      {super.key,
-      required this.data,
-      this.height,
-      this.imagesList,
-      this.borderRadius});
+  const CardSwipeWidget({
+    super.key,
+    required this.data,
+    this.height,
+    this.imagesList,
+    this.borderRadius,
+  });
 
   @override
   State<CardSwipeWidget> createState() => _CardSwipeWidgetState();
@@ -27,59 +26,97 @@ class CardSwipeWidget extends StatefulWidget {
 class _CardSwipeWidgetState extends State<CardSwipeWidget>
     with AutomaticKeepAliveClientMixin<CardSwipeWidget> {
   List<String?> bannerImages = [];
-
   int _currentPage = 0;
   late PageController _pageController;
 
   @override
   void initState() {
-    // TODO: implement initState
-
+    super.initState();
     bannerImages.insert(0, widget.data?.image);
 
     bannerImages =
         widget.data?.productMedias?.map((element) => element.media).toList() ??
             [];
-
     _pageController = PageController(initialPage: _currentPage);
-    super.initState();
   }
 
   @override
   void dispose() {
     _pageController.dispose();
-
     super.dispose();
+  }
+
+  void _goToPreviousPage() {
+    setState(() {
+      if (_currentPage == 0) {
+        _currentPage = bannerImages.length - 1; // Go to last page if at first
+      } else {
+        _currentPage--;
+      }
+      _pageController.jumpToPage(_currentPage);
+    });
+  }
+
+  void _goToNextPage() {
+    setState(() {
+      if (_currentPage == bannerImages.length - 1) {
+        _currentPage = 0; // Go to first page if at last
+      } else {
+        _currentPage++;
+      }
+      _pageController.jumpToPage(_currentPage);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return SizedBox(
-      height: widget.height ?? 220,
+      height: widget.height ?? 250,
       width: context.width,
       child: Stack(
-        alignment: Alignment.bottomCenter,
+        alignment: Alignment.center,
         children: [
-          PageView(
+          PageView.builder(
             controller: _pageController,
+            physics: NeverScrollableScrollPhysics(),
             onPageChanged: (index) {
               setState(() {
                 _currentPage = index;
               });
             },
-            children: List.generate(bannerImages.length, (index) {
-              return ClipRRect(
-                  child: ImageView.rect(
+            itemCount: bannerImages.length,
+            itemBuilder: (context, index) {
+              return ImageView.rect(
                 image: "${ApiConstants.imageUrl}/${bannerImages[index]}",
                 placeholder: AssetsRes.IC_IMAGE_PLACEHOLDER,
                 width: context.width,
                 height: widget.height ?? 220,
-                fit: BoxFit.cover,
-              ));
-            }),
+                fit: BoxFit.fill,
+              );
+            },
           ),
-          _buildDots(context: context),
+          Positioned(
+            left: 0,
+            child: IconButton(
+              onPressed: _goToPreviousPage,
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.white54,
+              ),
+            ),
+          ),
+          Positioned(
+            right: 0,
+            child: IconButton(
+              onPressed: _goToNextPage,
+              icon: Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.white54,
+              ),
+            ),
+          ),
+          Positioned(bottom: 0, child: _buildDots(context: context)),
         ],
       ),
     );
@@ -108,6 +145,5 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget>
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }

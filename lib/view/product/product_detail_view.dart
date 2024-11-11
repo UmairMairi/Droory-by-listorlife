@@ -31,7 +31,7 @@ class ProductDetailView extends BaseView<ProductVM> {
   @override
   Widget build(BuildContext context, ProductVM viewModel) {
     return Scaffold(
-      appBar: AppBar(
+      /*appBar: AppBar(
         title: Text(StringHelper.details),
         centerTitle: true,
         actions: [
@@ -43,15 +43,15 @@ class ProductDetailView extends BaseView<ProductVM> {
           ),
           InkWell(
             onTap: () async {
-              /*  final dynamicLink =
-                  await DynamicLinkHelper.createDynamicLink("${data?.id}");
-              debugPrint(dynamicLink.toString());
-
-              Share.share(
-                  'Hello, Please check this useful product on following link \n$dynamicLink',
-                  subject: 'Check this issue');*/
-
-              DialogHelper.showToast(message: "Coming Soon");
+              // final dynamicLink =
+              //           await DynamicLinkHelper.createDynamicLink("${data?.id}");
+              //       debugPrint(dynamicLink.toString());
+              //
+              //       Share.share(
+              //           'Hello, Please check this useful product on following link \n$dynamicLink',
+              //           subject: 'Check this issue');
+              //
+              //       DialogHelper.showToast(message: "Coming Soon");
             },
             child: Container(
               padding: const EdgeInsets.all(08),
@@ -63,7 +63,7 @@ class ProductDetailView extends BaseView<ProductVM> {
             ),
           ),
         ],
-      ),
+      ),*/
       body: Stack(
         children: [
           FutureBuilder<ProductDetailModel?>(
@@ -78,14 +78,49 @@ class ProductDetailView extends BaseView<ProductVM> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        CardSwipeWidget(
-                          height: 220,
-                          data: data,
-                          imagesList: data?.productMedias,
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20),
-                          ),
+                        Stack(
+                          children: [
+                            CardSwipeWidget(
+                              height: 300,
+                              data: data,
+                              imagesList: data?.productMedias,
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20),
+                              ),
+                            ),
+                            Positioned(
+                                top: 0,
+                                left: 0,
+                                child: SafeArea(
+                                  child: IconButton(
+                                      onPressed: () {
+                                        context.pop();
+                                      },
+                                      icon: Icon(Icons.arrow_back,
+                                          color: Colors.white54)),
+                                )),
+                            Positioned(
+                                top: 0,
+                                right: 50,
+                                child: SafeArea(
+                                  child: LikeButton(
+                                      isFav: data?.isFavourite == 1,
+                                      onTap: () async => {
+                                            await viewModel.onLikeButtonTapped(
+                                                id: data?.id)
+                                          }),
+                                )),
+                            Positioned(
+                                top: 0,
+                                right: 10,
+                                child: SafeArea(
+                                  child: IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(Icons.share,
+                                          color: Colors.white54)),
+                                )),
+                          ],
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
@@ -192,9 +227,24 @@ class ProductDetailView extends BaseView<ProductVM> {
                                   itemCount:
                                       data?.productAmenities?.length ?? 0,
                                   itemBuilder: (context, index) {
-                                    return Text(DbHelper.getLanguage() == 'en'
-                                        ? "${getAmenityEmoji(data?.productAmenities?[index].amnity?.name ?? '')} ${data?.productAmenities?[index].amnity?.name}"
-                                        : "${getAmenityEmoji(data?.productAmenities?[index].amnity?.name ?? '')} ${data?.productAmenities?[index].amnity?.nameAr}");
+                                    return Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        getAmenityIcon(data
+                                                ?.productAmenities?[index]
+                                                .amnity
+                                                ?.name ??
+                                            ''),
+                                        Gap(05),
+                                        Text(DbHelper.getLanguage() == 'en'
+                                            ? "${data?.productAmenities?[index].amnity?.name}"
+                                            : "${data?.productAmenities?[index].amnity?.nameAr}"),
+                                      ],
+                                    );
                                   },
                                   separatorBuilder:
                                       (BuildContext context, int index) {
@@ -526,65 +576,79 @@ class ProductDetailView extends BaseView<ProductVM> {
     );
   }
 
-  Widget getSpecifications(
-      {required BuildContext context, ProductDetailModel? data}) {
+  Widget getSpecifications({
+    required BuildContext context,
+    ProductDetailModel? data,
+  }) {
     List<Widget> specs = [];
 
     if (data?.categoryId == 4) {
+      // Vehicles category
       if (data?.year != null && data!.year != 0) {
-        specs.add(_buildSpecRow(context, "${data.year}", '📅'));
+        specs.add(_buildSpecRow(
+            context, "${data.year}", Icons.event)); // Icon for year
       }
       if (data?.milleage != null && data!.milleage!.isNotEmpty) {
-        specs.add(_buildSpecRow(context, '${data.milleage}', '🔋'));
+        specs.add(_buildSpecRow(
+            context, '${data.milleage}', Icons.speed)); // Icon for mileage
       }
       if (data?.fuel != null && data!.fuel!.isNotEmpty) {
         specs.add(_buildSpecRow(
-          context,
-          '${data.fuel}',
-          '⛽',
-        ));
+            context, '${data.fuel}', Icons.local_gas_station)); // Icon for fuel
       }
     }
+
     if (data?.categoryId == 11) {
+      // Real Estate category
       if (data?.bedrooms != null && data!.bedrooms != 0) {
-        specs.add(_buildSpecRow(context, "${data.bedrooms} Beds", '🛏️'));
+        specs.add(_buildSpecRow(context, "${data.bedrooms} Beds",
+            Icons.king_bed)); // Icon for bedrooms
       }
       if (data?.bathrooms != null && data!.bathrooms != 0) {
-        specs.add(_buildSpecRow(context, "${data.bathrooms} Baths", '🚽'));
+        specs.add(_buildSpecRow(context, "${data.bathrooms} Baths",
+            Icons.bathtub)); // Icon for bathrooms
       }
       if (data?.area != null && data!.area != 0) {
-        specs.add(_buildSpecRow(context, "${data.area} Sqft", '📐'));
+        specs.add(_buildSpecRow(
+            context, "${data.area} Sqft", Icons.square_foot)); // Icon for area
       }
     }
 
     if (specs.isNotEmpty) {
       return SizedBox(
-          height: 20,
-          child: ListView(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              children: specs));
+        height: 20,
+        child: ListView(
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          children: specs,
+        ),
+      );
     }
     return SizedBox.shrink();
   }
 
-  Widget _buildSpecRow(BuildContext context, String specValue, String symbol) {
+  Widget _buildSpecRow(BuildContext context, String specValue, IconData icon) {
     return SizedBox(
       width: 100,
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            symbol,
-            style: const TextStyle(fontSize: 15.0), // Customize size as needed
+          Icon(
+            icon,
+            size: 16.0, // A slightly larger, professional size
+            color: Colors.blueGrey, // Neutral color for professionalism
           ),
-          const SizedBox(width: 3), // Space between symbol and text
+          const SizedBox(width: 4), // Slightly increased spacing for balance
           Expanded(
             child: Text(
               specValue,
               style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                overflow: TextOverflow.ellipsis, // Handle overflow
+                color: Colors.black87, // Darker font color for readability
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ),
@@ -593,31 +657,35 @@ class ProductDetailView extends BaseView<ProductVM> {
     );
   }
 
-  String getAmenityEmoji(String amenityName) {
-    // Define a map that links each amenity name to an emoji
-    final Map<String, String> amenityEmojiMap = {
-      "Intercom": "📞",
-      "Security": "🛡️",
-      "Storage": "📦",
-      "Broadband Internet": "🌐",
-      "Garage Parking": "🚗",
-      "Elevator": "🛗",
-      "Landline": "☎️",
-      "Natural Gas": "🔥",
-      "Water Meter": "💧",
-      "Electricity Meter": "⚡",
-      "Pool": "🏊",
-      "Pets Allowed": "🐾",
-      "Maids Room": "🛏️",
-      "Parking": "🚗",
-      "Central A/C and Heating": "❄️🔥",
-      "Private Garden": "🌳",
-      "Installed Kitchen": "🍳",
-      "Balcony": "🌅",
+  Icon getAmenityIcon(String amenityName) {
+    // Define a map that links each amenity name to an icon
+    final Map<String, IconData> amenityIconMap = {
+      "Intercom": Icons.phone,
+      "Security": Icons.security,
+      "Storage": Icons.store_mall_directory,
+      "Broadband Internet": Icons.wifi,
+      "Garage Parking": Icons.local_parking,
+      "Elevator": Icons.elevator,
+      "Landline": Icons.phone_in_talk,
+      "Natural Gas": Icons.local_fire_department,
+      "Water Meter": Icons.water_drop,
+      "Electricity Meter": Icons.bolt,
+      "Pool": Icons.pool,
+      "Pets Allowed": Icons.pets,
+      "Maids Room": Icons.bed,
+      "Parking": Icons.directions_car,
+      "Central A/C and Heating":
+          Icons.ac_unit, // Can use separate icons if needed
+      "Private Garden": Icons.grass,
+      "Installed Kitchen": Icons.kitchen,
+      "Balcony": Icons.balcony,
     };
 
-    // Return the emoji if found in the map, otherwise return a default symbol
-    return amenityEmojiMap[amenityName] ?? "❓"; // "❓" as a default emoji
+    // Return the icon if found in the map, otherwise return a default icon
+    return Icon(
+      amenityIconMap[amenityName] ?? Icons.help_outline,
+      color: Colors.blueGrey, // "help_outline" as a default icon
+    );
   }
 
   getPropertyInformation(

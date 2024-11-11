@@ -61,7 +61,7 @@ class AppProductItemWidget extends StatelessWidget {
                 CardSwipeWidget(
                   data: data,
                   imagesList: data?.productMedias,
-                  height: 180,
+                  height: 220,
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20),
@@ -70,18 +70,11 @@ class AppProductItemWidget extends StatelessWidget {
                 Positioned(
                     top: 10,
                     right: 10,
-                    child: Container(
-                      padding: const EdgeInsets.all(5),
-                      margin: const EdgeInsets.all(05),
-                      alignment: Alignment.center,
-                      decoration: const BoxDecoration(
-                          color: Colors.white, shape: BoxShape.circle),
-                      child: LikeButton(
-                          isFav: data?.isFavourite == 1,
-                          onTap: () async => {
-                                await onLikeButtonTapped(id: data?.id),
-                              }),
-                    )),
+                    child: LikeButton(
+                        isFav: data?.isFavourite == 1,
+                        onTap: () async => {
+                              await onLikeButtonTapped(id: data?.id),
+                            })),
               ],
             ),
             Padding(
@@ -346,65 +339,76 @@ class AppProductItemWidget extends StatelessWidget {
     log("Fav Message => ${model.message}");
   }
 
-  Widget getSpecifications(
-      {required BuildContext context, ProductDetailModel? data}) {
+  Widget getSpecifications({
+    required BuildContext context,
+    ProductDetailModel? data,
+  }) {
     List<Widget> specs = [];
 
     if (data?.categoryId == 4) {
+      // Vehicles category
       if (data?.year != null && data!.year != 0) {
-        specs.add(_buildSpecRow(context, "${data.year}", '📅'));
+        specs.add(_buildSpecRow(
+            context, "${data.year}", Icons.event)); // Icon for year
       }
       if (data?.milleage != null && data!.milleage!.isNotEmpty) {
-        specs.add(_buildSpecRow(context, '${data.milleage}', '🔋'));
+        specs.add(_buildSpecRow(
+            context, '${data.milleage}', Icons.speed)); // Icon for mileage
       }
       if (data?.fuel != null && data!.fuel!.isNotEmpty) {
         specs.add(_buildSpecRow(
-          context,
-          '${data.fuel}',
-          '⛽',
-        ));
+            context, '${data.fuel}', Icons.local_gas_station)); // Icon for fuel
       }
     }
+
     if (data?.categoryId == 11) {
+      // Real Estate category
       if (data?.bedrooms != null && data!.bedrooms != 0) {
-        specs.add(_buildSpecRow(context, "${data.bedrooms} Beds", '🛏️'));
+        specs.add(_buildSpecRow(context, "${data.bedrooms} Beds",
+            Icons.king_bed)); // Icon for bedrooms
       }
       if (data?.bathrooms != null && data!.bathrooms != 0) {
-        specs.add(_buildSpecRow(context, "${data.bathrooms} Baths", '🚽'));
+        specs.add(_buildSpecRow(context, "${data.bathrooms} Baths",
+            Icons.bathtub)); // Icon for bathrooms
       }
       if (data?.area != null && data!.area != 0) {
-        specs.add(_buildSpecRow(context, "${data.area} Sqft", '📐'));
+        specs.add(_buildSpecRow(
+            context, "${data.area} Sqft", Icons.square_foot)); // Icon for area
       }
     }
 
     if (specs.isNotEmpty) {
       return SizedBox(
-          height: 20,
-          child: ListView(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              children: specs));
+        height: 20,
+        child: ListView(
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          children: specs,
+        ),
+      );
     }
     return SizedBox.shrink();
   }
 
-  Widget _buildSpecRow(BuildContext context, String specValue, String symbol) {
+  Widget _buildSpecRow(BuildContext context, String specValue, IconData icon) {
     return SizedBox(
       width: 100,
       child: Row(
         children: [
-          Text(
-            symbol,
-            style: const TextStyle(fontSize: 15.0), // Customize size as needed
+          Icon(
+            icon,
+            size: 16.0, // A slightly larger, professional size
+            color: Colors.blueGrey, // Neutral color for professionalism
           ),
-          const SizedBox(width: 3), // Space between symbol and text
+          const SizedBox(width: 4), // Slightly increased spacing for balance
           Expanded(
             child: Text(
               specValue,
               style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                overflow: TextOverflow.ellipsis, // Handle overflow
+                color: Colors.black87, // Darker font color for readability
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ),

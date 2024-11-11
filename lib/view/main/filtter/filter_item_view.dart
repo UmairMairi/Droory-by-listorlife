@@ -219,6 +219,8 @@ class _FilterItemViewState extends State<FilterItemView> {
                         horizontal: 20, vertical: 10),
                     itemCount: productsList.length,
                     itemBuilder: (context, index) {
+                      log("${productsList[index].toJson()}",
+                          name: "Item- $index");
                       return GestureDetector(
                         onTap: () {
                           if (productsList[index].userId ==

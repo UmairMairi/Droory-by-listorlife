@@ -302,6 +302,12 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                   controller: viewModel.brandTextController,
                   readOnly: true,
                   cursorColor: Colors.black,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "This field is mandatory";
+                    }
+                    return null;
+                  },
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.only(
                       left: 20,
