@@ -641,6 +641,15 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                 titleColor: Colors.black,
                 controller: viewModel.priceTextController,
                 hint: StringHelper.enterPrice,
+                validator: (value) {
+                  if (value == null ||
+                      value.isEmpty ||
+                      int.parse(value) < 1000) {
+                    return '* The minimum valid price is EGP 1000';
+                  }
+
+                  return null;
+                },
                 hintStyle:
                     const TextStyle(color: Color(0xffACACAC), fontSize: 14),
                 fillColor: Colors.white,
