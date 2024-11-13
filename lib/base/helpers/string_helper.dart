@@ -420,6 +420,9 @@ class StringHelper {
   static String rejectedAds =
       LocaleService.translate('rejectedAds') ?? 'Rejected Ads';
 
+  static String lookingFor =
+      LocaleService.translate('lookingFor') ?? 'Looking For';
+
   static void refresh() {
     // Main Screen
     listLife = LocaleService.translate('listLife') ?? 'List & Lift';
@@ -765,6 +768,7 @@ class StringHelper {
     liveAds = LocaleService.translate('liveAds') ?? 'Live Ads';
     underReview = LocaleService.translate('underReview') ?? 'Under Review';
     rejectedAds = LocaleService.translate('rejectedAds') ?? 'Rejected Ads';
+    lookingFor = LocaleService.translate('lookingFor') ?? 'Looking For';
     call = LocaleService.translate('call') ?? 'Call';
     chat = LocaleService.translate('chat') ?? 'Chat';
     whatsapp = LocaleService.translate('whatsapp') ?? 'Whatsapp';

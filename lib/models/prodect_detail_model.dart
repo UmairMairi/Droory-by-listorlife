@@ -18,6 +18,7 @@ class ProductDetailModel {
   String? educationType;
   String? salleryFrom;
   String? salleryTo;
+  String? approvalDate;
   String? price;
   String? description;
   num? year;
@@ -85,6 +86,7 @@ class ProductDetailModel {
     this.educationType,
     this.salleryFrom,
     this.salleryTo,
+    this.approvalDate,
     this.price,
     this.description,
     this.year,
@@ -145,6 +147,7 @@ class ProductDetailModel {
     brandId = json['brand_id'];
     modelId = json['model_id'];
     name = json['name'];
+    approvalDate = json['approval_date'];
     image = json['image'];
     itemCondition = json['item_condition'];
     positionType = json['position_type'];
@@ -247,6 +250,7 @@ class ProductDetailModel {
     data['price'] = price;
     data['description'] = description;
     data['year'] = year;
+    data['approval_date'] = approvalDate;
     data['fuel'] = fuel;
     data['material'] = material;
     data['ram'] = ram;

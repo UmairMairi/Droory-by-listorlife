@@ -8,13 +8,18 @@ class AssetsRes {
 
   static const String PLUGIN_NAME = 'list_and_life';
   static const String PLUGIN_VERSION = '1.0.0+1';
-  static const String IC_BUSSINESS_ICON = 'assets/category/ic_bussiness_icon.png';
-  static const String IC_ELECTRONICS_ICONS = 'assets/category/ic_electronics_icons.png';
+  static const String IC_BUSSINESS_ICON =
+      'assets/category/ic_bussiness_icon.png';
+  static const String IC_ELECTRONICS_ICONS =
+      'assets/category/ic_electronics_icons.png';
   static const String IC_FASHION = 'assets/category/ic_fashion.png';
   static const String IC_HOBBY_ICONS = 'assets/category/ic_hobby_icons.png';
-  static const String IC_HOME_AND_LIVING_ICON = 'assets/category/ic_home_and_living_icon.png';
-  static const String IC_HOME_APPLIANCES = 'assets/category/ic_home_appliances.png';
-  static const String IC_HOME_DECOR_GARDEN = 'assets/category/ic_home_decor_garden.png';
+  static const String IC_HOME_AND_LIVING_ICON =
+      'assets/category/ic_home_and_living_icon.png';
+  static const String IC_HOME_APPLIANCES =
+      'assets/category/ic_home_appliances.png';
+  static const String IC_HOME_DECOR_GARDEN =
+      'assets/category/ic_home_decor_garden.png';
   static const String IC_JOBS_ICON = 'assets/category/ic_jobs_icon.png';
   static const String IC_PETS_ICON = 'assets/category/ic_pets_icon.png';
   static const String IC_PHONE_ICON = 'assets/category/ic_phone_icon.png';
@@ -34,13 +39,18 @@ class AssetsRes {
   static const String DUMMY_CHAT_IMAGE5 = 'assets/dummy/dummy_chat_image5.png';
   static const String DUMMY_CHAT_IMAGE6 = 'assets/dummy/dummy_chat_image6.png';
   static const String DUMMY_CIRCLE_MAP = 'assets/dummy/dummy_circle_map.png';
-  static const String DUMMY_IPHONE_IMAGE1 = 'assets/dummy/dummy_iphone_image1.jpg';
-  static const String DUMMY_IPHONE_IMAGE2 = 'assets/dummy/dummy_iphone_image2.jpg';
-  static const String DUMMY_IPHONE_IMAGE3 = 'assets/dummy/dummy_iphone_image3.jpg';
-  static const String DUMMY_IPHONE_IMAGE4 = 'assets/dummy/dummy_iphone_image4.jpg';
+  static const String DUMMY_IPHONE_IMAGE1 =
+      'assets/dummy/dummy_iphone_image1.jpg';
+  static const String DUMMY_IPHONE_IMAGE2 =
+      'assets/dummy/dummy_iphone_image2.jpg';
+  static const String DUMMY_IPHONE_IMAGE3 =
+      'assets/dummy/dummy_iphone_image3.jpg';
+  static const String DUMMY_IPHONE_IMAGE4 =
+      'assets/dummy/dummy_iphone_image4.jpg';
   static const String DUMMY_MAP_IMAGE = 'assets/dummy/dummy_map_image.png';
   static const String DUMMY_PROFILE = 'assets/dummy/dummy_profile.png';
-  static const String IC_ACCESSORIES_IMAGE = 'assets/icons/ic_accessories_image.png';
+  static const String IC_ACCESSORIES_IMAGE =
+      'assets/icons/ic_accessories_image.png';
   static const String IC_APPLE_ICON = 'assets/icons/ic_apple_icon.png';
   static const String IC_APPLE_LOGO = 'assets/icons/ic_apple_logo.png';
   static const String IC_BELL_ICON = 'assets/icons/ic_bell_icon.png';
@@ -57,9 +67,12 @@ class AssetsRes {
   static const String IC_CAT_LAPTOP = 'assets/icons/ic_cat_laptop.png';
   static const String IC_CAT_MOBILE = 'assets/icons/ic_cat_mobile.png';
   static const String IC_CHAT_ICON = 'assets/icons/ic_chat_icon.png';
-  static const String IC_CLOTHES_CAT_IMGE = 'assets/icons/ic_clothes_cat_imge.png';
+  static const String IC_CLOTHES_CAT_IMGE =
+      'assets/icons/ic_clothes_cat_imge.png';
+  static const String IC_COMMENT_ICON = 'assets/icons/ic_comment_icon.png';
   static const String IC_COMMUNICATION = 'assets/icons/ic_communication.png';
-  static const String IC_CONGRATULATION_IMAGE = 'assets/icons/ic_congratulation_image.png';
+  static const String IC_CONGRATULATION_IMAGE =
+      'assets/icons/ic_congratulation_image.png';
   static const String IC_CONTACT_MAIL = 'assets/icons/ic_contact_mail.png';
   static const String IC_CONTACT_US = 'assets/icons/ic_contact_us.png';
   static const String IC_DELETE_ACCOUNT = 'assets/icons/ic_delete_account.png';
@@ -68,21 +81,25 @@ class AssetsRes {
   static const String IC_FACEBOOK = 'assets/icons/ic_facebook.png';
   static const String IC_FAQ = 'assets/icons/ic_faq.png';
   static const String IC_FILTER_ICON = 'assets/icons/ic_filter_icon.png';
-  static const String IC_FURNITURE_CAT_IMGE = 'assets/icons/ic_furniture_cat_imge.png';
+  static const String IC_FURNITURE_CAT_IMGE =
+      'assets/icons/ic_furniture_cat_imge.png';
   static const String IC_GEAR_ICON = 'assets/icons/ic_gear_icon.png';
   static const String IC_GOOGLE_ICON = 'assets/icons/ic_google_icon.png';
   static const String IC_GOOGLE_LOGO = 'assets/icons/ic_google_logo.png';
-  static const String IC_IMAGE_PLACEHOLDER = 'assets/icons/ic_image_placeholder.png';
+  static const String IC_IMAGE_PLACEHOLDER =
+      'assets/icons/ic_image_placeholder.png';
   static const String IC_ITEM_LOCATION = 'assets/icons/ic_item_location.png';
   static const String IC_LANG_CHANGE = 'assets/icons/ic_lang_change.png';
-  static const String IC_LAPTOP_CAT_IMGE = 'assets/icons/ic_laptop_cat_imge.png';
+  static const String IC_LAPTOP_CAT_IMGE =
+      'assets/icons/ic_laptop_cat_imge.png';
   static const String IC_LINKEDIN = 'assets/icons/ic_linkedin.png';
   static const String IC_LOACTION_ICON = 'assets/icons/ic_loaction_icon.png';
   static const String IC_LOCATION_PIN = 'assets/icons/ic_location_pin.png';
   static const String IC_LOCK_LOGIN = 'assets/icons/ic_lock_login.png';
   static const String IC_LOGOUT = 'assets/icons/ic_logout.png';
   static const String IC_LOGOUT_ICON = 'assets/icons/ic_logout_icon.png';
-  static const String IC_MOBILE_CAT_IMGE = 'assets/icons/ic_mobile_cat_imge.png';
+  static const String IC_MOBILE_CAT_IMGE =
+      'assets/icons/ic_mobile_cat_imge.png';
   static const String IC_NO_WIFI = 'assets/icons/ic_no_wifi.png';
   static const String IC_NOTIFICATION = 'assets/icons/ic_notification.png';
   static const String IC_PETROL_ICON = 'assets/icons/ic_petrol_icon.png';
@@ -99,23 +116,32 @@ class AssetsRes {
   static const String IC_WALLET_ICON = 'assets/icons/ic_wallet_icon.png';
   static const String IC_WHATSAPP_ICON = 'assets/icons/ic_whatsapp_icon.png';
   static const String APP_LOGO = 'assets/images/app_logo.png';
-  static const String LOCATION_PERMISSION_ILLUSTRATIONS = 'assets/images/location_permission_illustrations.png';
+  static const String LOCATION_PERMISSION_ILLUSTRATIONS =
+      'assets/images/location_permission_illustrations.png';
   static const String ON_BOARD_FIRST = 'assets/images/on_board_first.png';
   static const String ON_BOARD_SECOND = 'assets/images/on_board_second.png';
   static const String ON_BOARD_THIRD = 'assets/images/on_board_third.png';
   static const String SPLASH = 'assets/images/splash.png';
   static const String AR = 'assets/lang/ar.json';
   static const String EN = 'assets/lang/en.json';
-  static const String AUTH_REQUIRED_LOTTIE = 'assets/lottie_jsons/auth_required_lottie.json';
+  static const String AUTH_REQUIRED_LOTTIE =
+      'assets/lottie_jsons/auth_required_lottie.json';
   static const String DELETE_LOTTIE = 'assets/lottie_jsons/delete_lottie.json';
   static const String EMPTY_LOTTIE = 'assets/lottie_jsons/empty_lottie.json';
   static const String ERROR_LOTTIE = 'assets/lottie_jsons/error_lottie.json';
-  static const String LOGOUT_LOTTIE_FILE = 'assets/lottie_jsons/logout_lottie_file.json';
-  static const String NO_IMAGE_LOTTIE = 'assets/lottie_jsons/no_image_lottie.json';
-  static const String NO_NOTIFICATION_LOTTIE = 'assets/lottie_jsons/no_notification_lottie.json';
-  static const String PAGE_NOT_FOUND = 'assets/lottie_jsons/page_not_found.json';
-  static const String SIGNOUT_ANIMATION = 'assets/lottie_jsons/signout_animation.json';
-  static const String TICK_MARK_LOTTIE = 'assets/lottie_jsons/tick_mark_lottie.json';
+  static const String LOGOUT_LOTTIE_FILE =
+      'assets/lottie_jsons/logout_lottie_file.json';
+  static const String NO_IMAGE_LOTTIE =
+      'assets/lottie_jsons/no_image_lottie.json';
+  static const String NO_NOTIFICATION_LOTTIE =
+      'assets/lottie_jsons/no_notification_lottie.json';
+  static const String PAGE_NOT_FOUND =
+      'assets/lottie_jsons/page_not_found.json';
+  static const String SIGNOUT_ANIMATION =
+      'assets/lottie_jsons/signout_animation.json';
+  static const String TICK_MARK_LOTTIE =
+      'assets/lottie_jsons/tick_mark_lottie.json';
   static const String TIMEUP_LOTTIE = 'assets/lottie_jsons/timeup_lottie.json';
-  static const String VERIFY_OTP_LOTTIE = 'assets/lottie_jsons/verify_otp_lottie.json';
+  static const String VERIFY_OTP_LOTTIE =
+      'assets/lottie_jsons/verify_otp_lottie.json';
 }

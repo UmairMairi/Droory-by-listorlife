@@ -16,12 +16,14 @@ class ImageView extends StatelessWidget {
   final BoxFit? fit;
   final String? placeholder;
   final bool isCircle;
+  final VoidCallback? onTap;
 
   const ImageView.circle({
     super.key,
     required this.image,
     required this.width,
     required this.height,
+    this.onTap,
     this.progressSize,
     this.placeholder,
     this.borderWidth,
@@ -37,6 +39,7 @@ class ImageView extends StatelessWidget {
     required this.image,
     required this.width,
     required this.height,
+    this.onTap,
     this.progressSize,
     this.placeholder,
     this.borderWidth,
@@ -49,11 +52,14 @@ class ImageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: height,
-      width: width,
-      decoration: _buildDecoration(),
-      child: _buildImage(),
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        height: height,
+        width: width,
+        decoration: _buildDecoration(),
+        child: _buildImage(),
+      ),
     );
   }
 

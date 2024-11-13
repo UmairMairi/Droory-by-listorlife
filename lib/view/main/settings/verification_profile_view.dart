@@ -10,12 +10,15 @@ import 'package:list_and_life/view_model/profile_vm.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/app_otp_widget.dart';
 import 'package:list_and_life/widgets/app_resend_otp_button.dart';
+import 'package:provider/provider.dart';
 
-class VerificationProfileView extends BaseView<ProfileVM> {
-  const VerificationProfileView({super.key});
+class VerificationProfileView extends StatelessWidget {
+  final String? phoneNo;
+  const VerificationProfileView({super.key, required this.phoneNo});
 
   @override
-  Widget build(BuildContext context, ProfileVM viewModel) {
+  Widget build(BuildContext context) {
+    ProfileVM viewModel = context.read<ProfileVM>();
     return Scaffold(
       appBar: AppBar(
         title: Text(StringHelper.verification),
@@ -34,7 +37,7 @@ class VerificationProfileView extends BaseView<ProfileVM> {
             ),
             const Flexible(child: Gap(80)),
             Text(
-              '${StringHelper.enterThe4DigitCode} \n${viewModel.countryCode}-${viewModel.phoneTextController.text.trim()}',
+              '${StringHelper.enterThe4DigitCode} \n+20-${phoneNo?.trim()}',
               style: context.textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
@@ -59,7 +62,8 @@ class VerificationProfileView extends BaseView<ProfileVM> {
                   return;
                 }
                 DialogHelper.showLoading();
-                viewModel.verifyOtpApi();
+                viewModel.verifyOtpApi(
+                    phoneNo: phoneNo, otp: viewModel.otpTextController.text);
 
                 /*context.go(Routes.completeProfile);*/
               },
@@ -69,8 +73,7 @@ class VerificationProfileView extends BaseView<ProfileVM> {
             AppResendOtpButton(
               seconds: 30,
               onResend: () {
-                viewModel.sendVerificationPhone(
-                    phone: viewModel.phoneTextController.text.trim());
+                viewModel.sendVerificationPhone(phone: phoneNo);
 
                 print('Your new OTp is 1111');
               },

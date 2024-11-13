@@ -25,6 +25,7 @@ import '../view/auth/login_view.dart';
 import '../view/auth/verification_view.dart';
 import '../view/error/not_found_view.dart';
 import '../view/main/filtter/filter_item_view.dart';
+import '../view/main/home/sub_category_view.dart';
 import '../view/main/main_view.dart';
 import '../view/main/sell/forms/post_added_final_view.dart';
 import '../view/main/settings/blocked_users_list.dart';
@@ -73,7 +74,11 @@ class AppPages {
       GoRoute(
         path: Routes.verifyProfile,
         pageBuilder: (context, state) {
-          return getPage(child: const VerificationProfileView(), state: state);
+          return getPage(
+              child: VerificationProfileView(
+                phoneNo: state.extra as String,
+              ),
+              state: state);
         },
       ),
       GoRoute(
@@ -216,6 +221,14 @@ class AppPages {
           return getPage(
               child:
                   SellSubCategoryView(category: state.extra as CategoryModel?),
+              state: state);
+        },
+      ),
+      GoRoute(
+        path: Routes.subCategoryView,
+        pageBuilder: (context, state) {
+          return getPage(
+              child: SubCategoryView(category: state.extra as CategoryModel?),
               state: state);
         },
       ),

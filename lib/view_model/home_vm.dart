@@ -266,4 +266,17 @@ class HomeVM extends BaseViewModel {
 
     return model.body ?? [];
   }
+
+  Future<List<CategoryModel>> getSubCategoryListApi(
+      {CategoryModel? category}) async {
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.getSubCategoriesUrl(id: "${category?.id}"),
+        requestType: RequestType.get);
+
+    var response = await BaseClient.handleRequest(apiRequest);
+
+    ListResponse<CategoryModel> model = ListResponse<CategoryModel>.fromJson(
+        response, (json) => CategoryModel.fromJson(json));
+    return model.body ?? [];
+  }
 }

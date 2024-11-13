@@ -169,9 +169,23 @@ class MyProductView extends BaseView<ProductVM> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(
-                            data?.name ?? '',
-                            style: context.textTheme.titleMedium,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  data?.name ?? '',
+                                  style: context.textTheme.titleMedium,
+                                ),
+                              ),
+                              if (data?.sellStatus !=
+                                  StringHelper.sold.toLowerCase()) ...{
+                                viewModel.getRemainDays(item: data)
+                              }
+                            ],
                           ),
                           const Gap(5),
                           Row(

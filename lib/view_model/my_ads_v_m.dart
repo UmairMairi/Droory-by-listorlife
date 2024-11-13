@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/models/category_model.dart';
@@ -329,5 +330,37 @@ class MyAdsVM extends BaseViewModel {
           backgroundColor: Colors.red, // Red for Expired Ads
         );
     }
+  }
+
+  Widget getRemainDays({required ProductDetailModel item}) {
+    String approvalDateString = item.approvalDate ?? '';
+
+    if (approvalDateString.isNotEmpty) {
+      DateTime approvalDate =
+          DateFormat("yyyy-MM-dd").parse(approvalDateString);
+
+      // Calculate the expiration date by adding 30 days
+      DateTime expirationDate = approvalDate.add(Duration(days: 30));
+
+      // Calculate the difference in days from today
+      DateTime today = DateTime.now();
+      int remainingDays = expirationDate.difference(today).inDays;
+
+      // Check if the date is expired
+      if (remainingDays <= 0) {
+        return Text(
+          'Expired',
+          style: TextStyle(
+              color: Colors.red, fontWeight: FontWeight.bold, fontSize: 12),
+        );
+      } else {
+        return Text(
+          'Ad Expired in : $remainingDays Days',
+          style: TextStyle(
+              color: Colors.green, fontWeight: FontWeight.w800, fontSize: 12),
+        );
+      }
+    }
+    return SizedBox.shrink();
   }
 }

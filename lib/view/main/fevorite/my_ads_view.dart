@@ -377,9 +377,28 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              viewModel.getStatus(
-                                                  data: viewModel
-                                                      .productsList[index]),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  viewModel.getStatus(
+                                                      data: viewModel
+                                                          .productsList[index]),
+                                                  if (viewModel
+                                                          .productsList[index]
+                                                          .sellStatus !=
+                                                      StringHelper.sold
+                                                          .toLowerCase()) ...{
+                                                    viewModel.getRemainDays(
+                                                        item: viewModel
+                                                                .productsList[
+                                                            index])
+                                                  }
+                                                ],
+                                              ),
                                               const Gap(10),
                                               viewModel.productsList[index]
                                                           .sellStatus !=

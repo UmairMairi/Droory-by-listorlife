@@ -42,7 +42,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            /*Text(
               StringHelper.uploadImages,
               style: context.textTheme.titleMedium,
             ),
@@ -164,6 +164,30 @@ class JobSellForm extends BaseView<SellFormsVM> {
                   );
                 }
               }),
+            ),*/
+            AppTextField(
+              title: StringHelper.lookingFor,
+              controller: viewModel.lookingForController,
+              hint: StringHelper.select,
+              readOnly: true,
+              suffix: PopupMenuButton<String?>(
+                icon: const Icon(Icons.arrow_drop_down, color: Colors.black),
+                onSelected: (String? value) {
+                  viewModel.lookingForController.text = value ?? '';
+                },
+                itemBuilder: (context) {
+                  return ['I am looking job', 'I am hiring'].map((option) {
+                    return PopupMenuItem(
+                      value: option,
+                      child: Text(option),
+                    );
+                  }).toList();
+                },
+              ),
+              inputFormatters: [
+                FilteringTextInputFormatter.deny(
+                    RegExp(viewModel.regexToRemoveEmoji)),
+              ],
             ),
             if (brands?.isNotEmpty ?? false) ...{
               AppTextField(
@@ -362,7 +386,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
                 onTap: () {
                   viewModel.formKey.currentState?.validate();
 
-                  if (viewModel.mainImagePath.isEmpty) {
+                  /* if (viewModel.mainImagePath.isEmpty) {
                     DialogHelper.showToast(
                         message: StringHelper.pleaseUploadMainImage);
                     return;
@@ -371,7 +395,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
                     DialogHelper.showToast(
                         message: StringHelper.pleaseUploadAddAtLeastOneImage);
                     return;
-                  }
+                  }*/
                   if (viewModel.jobPositionTextController.text.trim().isEmpty) {
                     DialogHelper.showToast(
                         message: StringHelper.pleasesSelectPositionType);
@@ -440,7 +464,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
                 onTap: () {
                   viewModel.formKey.currentState?.validate();
 
-                  if (viewModel.mainImagePath.isEmpty) {
+                  /*  if (viewModel.mainImagePath.isEmpty) {
                     DialogHelper.showToast(
                         message: StringHelper.pleaseUploadMainImage);
                     return;
@@ -449,7 +473,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
                     DialogHelper.showToast(
                         message: StringHelper.pleaseUploadAddAtLeastOneImage);
                     return;
-                  }
+                  }*/
                   if (viewModel.jobPositionTextController.text.trim().isEmpty) {
                     DialogHelper.showToast(
                         message: StringHelper.pleasesSelectPositionType);

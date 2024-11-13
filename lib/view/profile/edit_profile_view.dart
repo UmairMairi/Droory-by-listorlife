@@ -202,7 +202,7 @@ class EditProfileView extends BaseView<ProfileVM> {
             const Gap(30),
             AppElevatedButton(
               width: context.width,
-              onTap: () {
+              onTap: () async {
                 if (viewModel.nameTextController.text.trim().isEmpty) {
                   DialogHelper.showToast(
                       message: FormFieldErrors.firstNameRequired);
@@ -222,8 +222,19 @@ class EditProfileView extends BaseView<ProfileVM> {
                   DialogHelper.showToast(message: FormFieldErrors.invalidEmail);
                   return;
                 }
+                if (viewModel.phoneTextController.text !=
+                    DbHelper?.getUserModel()?.phoneNo) {
+                  viewModel.sendVerificationPhone(
+                      phone: viewModel.phoneTextController.text);
+                  return;
+                }
+                if (viewModel.emailTextController.text !=
+                    DbHelper?.getUserModel()?.email) {
+                  await viewModel.sendVerificationMail(
+                      email: viewModel.emailTextController.text);
+                }
                 DialogHelper.showLoading();
-                viewModel.updateProfileApi();
+                await viewModel.updateProfileApi();
               },
               title: StringHelper.update,
             ),

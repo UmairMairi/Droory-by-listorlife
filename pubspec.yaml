@@ -181,6 +181,7 @@ flutter:
     - assets/icons/ic_cat_mobile.png
     - assets/icons/ic_chat_icon.png
     - assets/icons/ic_clothes_cat_imge.png
+    - assets/icons/ic_comment_icon.png
     - assets/icons/ic_communication.png
     - assets/icons/ic_congratulation_image.png
     - assets/icons/ic_contact_mail.png

@@ -151,11 +151,16 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                   } else {
                     return GestureDetector(
                       onTap: () async {
-                        var image = await ImagePickerHelper.openImagePicker(
-                                context: context, isCropping: true) ??
-                            '';
-                        if (image.isNotEmpty) {
-                          viewModel.addImage(image);
+                        if (viewModel.imagesList.length < 12) {
+                          var image = await ImagePickerHelper.openImagePicker(
+                                  context: context, isCropping: true) ??
+                              '';
+                          if (image.isNotEmpty) {
+                            viewModel.addImage(image);
+                          }
+                        } else {
+                          DialogHelper.showToast(
+                              message: "You have reached at maximum limit");
                         }
                       },
                       child: Container(

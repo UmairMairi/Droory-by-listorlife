@@ -11,11 +11,14 @@ import 'package:google_places_flutter/model/prediction.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/location_helper.dart';
 import 'package:list_and_life/models/filter_model.dart';
+import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/skeletons/product_list_skeleton.dart';
 import 'package:list_and_life/view_model/home_vm.dart';
+import 'package:list_and_life/widgets/app_search_view.dart';
 import 'package:list_and_life/widgets/app_search_widget.dart';
+import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:searchfield/searchfield.dart';
 
@@ -105,6 +108,22 @@ class HomeView extends BaseView<HomeVM> {
             child: Row(
               children: [
                 Expanded(
+                    child: AppTextField(
+                  hint: 'Search...',
+                  readOnly: true,
+                  validator: (value) {},
+                  controller: viewModel.searchController,
+                  onTap: () async {
+                    String? value = await getSearchedData(context,
+                        query: viewModel.searchController.text);
+                    viewModel.searchController.text = value ?? '';
+                    viewModel.onSearchChanged(value ?? '');
+                    // Perform the search or navigate to the results page
+                  },
+                  prefix: Icon(Icons.search),
+                )),
+
+                /* Expanded(
                   child: AppAutoCompleteTextField<String>(
                     onChanged: (search) => viewModel.onSearchChanged(search),
                     suggestions: viewModel.searchQueryesList
@@ -131,20 +150,20 @@ class HomeView extends BaseView<HomeVM> {
                     },
                     suggestionToString: (String category) => category,
                   ),
-                ),
+                ),*/
                 const Gap(10),
                 InkWell(
                   onTap: () {
                     context.push(Routes.filter);
                   },
                   child: Container(
-                    padding: const EdgeInsets.all(15),
+                    padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                         color: const Color(0xffd5d5d5),
                         borderRadius: BorderRadius.circular(8)),
                     child: Image.asset(
                       AssetsRes.IC_FILTER_ICON,
-                      height: 25,
+                      height: 24,
                     ),
                   ),
                 ),
@@ -189,13 +208,15 @@ class HomeView extends BaseView<HomeVM> {
                                 width: 80,
                                 child: GestureDetector(
                                   onTap: () {
-                                    context.push(Routes.filterDetails,
+                                    context.push(Routes.subCategoryView,
+                                        extra: categoryItems[index]);
+                                    /*context.push(Routes.filterDetails,
                                         extra: FilterModel(
                                           categoryId:
                                               "${categoryItems[index].id}",
                                           latitude: "${viewModel.latitude}",
                                           longitude: "${viewModel.longitude}",
-                                        ));
+                                        ));*/
                                   },
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -297,6 +318,21 @@ class HomeView extends BaseView<HomeVM> {
         ),
       ),
     );
+  }
+
+  Future<String>? getSearchedData(BuildContext context, {String? query}) async {
+    var value = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => AppSearchView(
+                  value: query,
+                )));
+
+    if (value != null) {
+      return value.name ?? '';
+    }
+
+    return '';
   }
 }
 

@@ -199,6 +199,7 @@ class SellFormsVM extends BaseViewModel {
   TextEditingController jobSalaryTextController = TextEditingController();
   TextEditingController jobSalaryFromController = TextEditingController();
   TextEditingController jobSalaryToController = TextEditingController();
+  TextEditingController lookingForController = TextEditingController();
   TextEditingController brandTextController = TextEditingController();
   TextEditingController modelTextController = TextEditingController();
   TextEditingController mileageTextController = TextEditingController();

@@ -174,7 +174,7 @@ class ProfileVM extends BaseViewModel {
     if (context.mounted) context.pop();
   }
 
-  void sendVerificationMail({required String email}) async {
+  Future<void> sendVerificationMail({required String email}) async {
     if (email.isEmpty) {
       DialogHelper.showToast(message: "Please enter email address");
       return;
@@ -194,8 +194,8 @@ class ProfileVM extends BaseViewModel {
     DialogHelper.showToast(message: model.message);
   }
 
-  void sendVerificationPhone({required String phone}) async {
-    if (phone.isEmpty) {
+  void sendVerificationPhone({required String? phone}) async {
+    if (phone?.isEmpty ?? false) {
       DialogHelper.showToast(message: "Please enter phone number");
       return;
     }
@@ -209,7 +209,7 @@ class ProfileVM extends BaseViewModel {
     MapResponse model = MapResponse.fromJson(response, (json) => null);
     DialogHelper.hideLoading();
     if (context.mounted) {
-      context.push(Routes.verifyProfile);
+      context.push(Routes.verifyProfile, extra: phoneTextController.text);
     } else {
       AppPages.rootNavigatorKey.currentContext?.push(Routes.verifyProfile);
     }
@@ -218,11 +218,12 @@ class ProfileVM extends BaseViewModel {
     /// DialogHelper.showToast(message: model.message);
   }
 
-  Future<void> verifyOtpApi() async {
+  Future<void> verifyOtpApi(
+      {required String? phoneNo, required String? otp}) async {
     Map<String, dynamic> body = {
-      'country_code': countryCode,
-      'phone_no': phoneTextController.text.trim(),
-      'otp': otpTextController.text.trim()
+      'country_code': "+20",
+      'phone_no': phoneNo,
+      'otp': otp
     };
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.verifyOtpMobileUrl(),
@@ -234,7 +235,7 @@ class ProfileVM extends BaseViewModel {
     MapResponse<UserModel> model =
         MapResponse.fromJson(response, (json) => UserModel.fromJson(json));
     DialogHelper.hideLoading();
-    updateProfileApi();
+    await updateProfileApi();
     if (context.mounted) {
       context.pop();
     } else {

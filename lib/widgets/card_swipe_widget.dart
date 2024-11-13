@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/widgets/image_view.dart';
+import 'package:list_and_life/widgets/image_zoom_screen.dart';
 
 import '../res/assets_res.dart';
 
@@ -89,10 +91,16 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget>
             itemBuilder: (context, index) {
               return ImageView.rect(
                 image: "${ApiConstants.imageUrl}/${bannerImages[index]}",
-                placeholder: AssetsRes.IC_IMAGE_PLACEHOLDER,
+                placeholder: AssetsRes.APP_LOGO,
                 width: context.width,
                 height: widget.height ?? 220,
                 fit: BoxFit.fill,
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ImageZoomScreen(
+                            imageUrl:
+                                "${ApiConstants.imageUrl}/${bannerImages[index]}"))),
               );
             },
           ),

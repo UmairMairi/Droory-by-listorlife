@@ -146,6 +146,11 @@ class AppProductItemWidget extends StatelessWidget {
                     ],
                   ),
                   const Gap(10),
+                  CommunicationButtons2(
+                    data: data,
+                  ),
+                  const Gap(10),
+
                   /*Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

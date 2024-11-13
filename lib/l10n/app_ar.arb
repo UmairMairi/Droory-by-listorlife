@@ -216,7 +216,8 @@
    "furnishing": "تأثيث",
    "paymentType": "نوع الدفع",
    "completionStatus": "حالة الإكمال",
-   "deliveryTerms": "شروط التسليم"
+   "deliveryTerms": "شروط التسليم",
+   "lookingFor": "شروط التسليم"
 
 
 }
