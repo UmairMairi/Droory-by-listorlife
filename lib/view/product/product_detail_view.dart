@@ -22,6 +22,7 @@ import '../../routes/app_routes.dart';
 import '../../skeletons/product_detail_skeleton.dart';
 import '../../widgets/app_error_widget.dart';
 import '../../widgets/card_swipe_widget.dart';
+import '../../widgets/common_grid_view.dart';
 import '../../widgets/like_button.dart';
 
 class ProductDetailView extends BaseView<ProductVM> {
@@ -31,6 +32,7 @@ class ProductDetailView extends BaseView<ProductVM> {
   @override
   Widget build(BuildContext context, ProductVM viewModel) {
     return Scaffold(
+      appBar: !viewModel.isAppBarVisible?AppBar(backgroundColor: Colors.transparent,automaticallyImplyLeading: false,toolbarHeight: 0,elevation: 0,):null,
       /*appBar: AppBar(
         title: Text(StringHelper.details),
         centerTitle: true,
@@ -74,6 +76,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                   data?.productMedias
                       ?.insert(0, ProductMedias(media: data.image));
                   return SingleChildScrollView(
+                    controller: viewModel.scrollController,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -221,37 +224,75 @@ class ProductDetailView extends BaseView<ProductVM> {
                                   style: context.textTheme.titleMedium,
                                 ),
                                 Gap(10),
-                                Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: List.generate(
-                                      data?.productAmenities?.length ?? 0,
-                                      (index) {
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 5.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisSize: MainAxisSize.min,
+                                Visibility(
+                                  visible: false,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: List.generate(
+                                        data?.productAmenities?.length ?? 0,
+                                            (index) {
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 5.0),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                getAmenityIcon(data
+                                                    ?.productAmenities?[index]
+                                                    .amnity
+                                                    ?.name ??
+                                                    ''),
+                                                Gap(05),
+                                                Text(DbHelper.getLanguage() == 'en'
+                                                    ? "${data?.productAmenities?[index].amnity?.name}"
+                                                    : "${data?.productAmenities?[index].amnity?.nameAr}"),
+                                              ],
+                                            ),
+                                          );
+                                        }),
+                                  ),
+                                ),
+                                CommonGridView(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  //mainAxisExtent: 120,
+                                  crossAxisCount: 3,
+                                  childAspectRatio: 16/16,
+                                  itemCount: data?.productAmenities?.length ?? 0,
+                                  itemBuilder: (BuildContext context, int index) {
+                                  return Card(
+                                    color: Colors.grey.shade300,
+                                    elevation: 0,
+                                    margin: EdgeInsets.zero,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
                                           getAmenityIcon(data
-                                                  ?.productAmenities?[index]
-                                                  .amnity
-                                                  ?.name ??
+                                              ?.productAmenities?[index]
+                                              .amnity
+                                              ?.name ??
                                               ''),
                                           Gap(05),
                                           Text(DbHelper.getLanguage() == 'en'
                                               ? "${data?.productAmenities?[index].amnity?.name}"
-                                              : "${data?.productAmenities?[index].amnity?.nameAr}"),
+                                              : "${data?.productAmenities?[index].amnity?.nameAr}",textAlign: TextAlign.center,),
                                         ],
                                       ),
-                                    );
-                                  }),
-                                ),
+                                    ),
+                                  );
+                                },)
                               },
                               Divider(),
                               Text(

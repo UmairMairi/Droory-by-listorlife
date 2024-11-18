@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:list_and_life/base/base.dart';
@@ -13,6 +14,33 @@ import 'package:list_and_life/models/prodect_detail_model.dart';
 import '../base/helpers/dialog_helper.dart';
 
 class ProductVM extends BaseViewModel {
+
+  final ScrollController scrollController = ScrollController();
+  bool isAppBarVisible = true;
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    scrollController.addListener(_onScroll);
+    super.onInit();
+  }
+
+
+
+  void _onScroll() {
+    if (scrollController.position.userScrollDirection == ScrollDirection.reverse) {
+      if (isAppBarVisible) {
+          isAppBarVisible = false;
+      }
+    } else if (scrollController.position.userScrollDirection ==
+        ScrollDirection.forward) {
+      if (!isAppBarVisible) {
+          isAppBarVisible = true;
+      }
+    }
+    notifyListeners();
+  }
+
   Future<ProductDetailModel?> getProductDetails({num? id}) async {
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.getProductUrl(id: '$id'),
@@ -176,7 +204,7 @@ class ProductVM extends BaseViewModel {
             context, "${data.positionType}", Icons.work, 'Position Type'));
       }
       if (data?.salleryPeriod != null && data!.salleryPeriod!.isNotEmpty) {
-        specs.add(_buildSpecRow(context, "${data?.salleryPeriod}",
+        specs.add(_buildSpecRow(context, "${data.salleryPeriod}",
             Icons.attach_money, 'Salary Period'));
       }
       if (data?.salleryFrom != null && data?.salleryTo != null) {
