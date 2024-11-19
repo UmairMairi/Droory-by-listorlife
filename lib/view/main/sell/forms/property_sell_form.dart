@@ -32,6 +32,7 @@ class PropertySellForm extends BaseView<SellFormsVM> {
       this.brands});
   @override
   Widget build(BuildContext context, SellFormsVM viewModel) {
+    print("object==> ${subCategory?.id}");
     return Form(
       key: viewModel.formKey,
       child: KeyboardActions(
@@ -214,6 +215,118 @@ class PropertySellForm extends BaseView<SellFormsVM> {
                 fillColor: Colors.white,
                 elevation: 6,
               ),
+
+              /*// Field :  Type
+              AppTextField(
+                title: StringHelper.type,
+                hint: StringHelper.select,
+                controller: viewModel.propertyForTypeTextController,
+                readOnly: true,
+                suffix: PopupMenuButton<String>(
+                  clipBehavior: Clip.hardEdge,
+                  icon: const Icon(
+                    Icons.arrow_drop_down,
+                    color: Colors.black,
+                  ),
+                  onSelected: (String value) {
+                    viewModel.propertyForTypeTextController.text = value;
+                  },
+                  itemBuilder: (BuildContext context) {
+                    return ["Apartment", "Duplex", "Penthouse", "Studio", "Hotel" "Apartment", "Roof"].map((option) {
+                      return PopupMenuItem(
+                        value: option,
+                        child: Text(option),
+                      );
+                    }).toList();
+                  },
+                ),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+                inputFormatters: [
+                  FilteringTextInputFormatter.deny(
+                    RegExp(viewModel.regexToRemoveEmoji),
+                  ),
+                ],
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.done,
+                fillColor: Colors.white,
+                elevation: 6,
+              ),
+
+              // Field :  level
+              AppTextField(
+                title: StringHelper.level,
+                hint: StringHelper.select,
+                controller: viewModel.propertyLevelTextController,
+                readOnly: true,
+                suffix: PopupMenuButton<String>(
+                  clipBehavior: Clip.hardEdge,
+                  icon: const Icon(
+                    Icons.arrow_drop_down,
+                    color: Colors.black,
+                  ),
+                  onSelected: (String value) {
+                    viewModel.propertyLevelTextController.text = value;
+                  },
+                  itemBuilder: (BuildContext context) {
+                    return ["Ground", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+", "Last Floor"].map((option) {
+                      return PopupMenuItem(
+                        value: option,
+                        child: Text(option),
+                      );
+                    }).toList();
+                  },
+                ),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+                inputFormatters: [
+                  FilteringTextInputFormatter.deny(
+                    RegExp(viewModel.regexToRemoveEmoji),
+                  ),
+                ],
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.done,
+                fillColor: Colors.white,
+                elevation: 6,
+              ),
+
+              // Field :  building age
+              AppTextField(
+                title: StringHelper.buildingAge,
+                hint: StringHelper.select,
+                controller: viewModel.propertyAgeTextController,
+                readOnly: true,
+                suffix: PopupMenuButton<String>(
+                  clipBehavior: Clip.hardEdge,
+                  icon: const Icon(
+                    Icons.arrow_drop_down,
+                    color: Colors.black,
+                  ),
+                  onSelected: (String value) {
+                    viewModel.propertyAgeTextController.text = value;
+                  },
+                  itemBuilder: (BuildContext context) {
+                    return ["Under Construction", "0-11 months", "1-4 years", "5-9 years", "10-19 years", "20+ years"].map((option) {
+                      return PopupMenuItem(
+                        value: option,
+                        child: Text(option),
+                      );
+                    }).toList();
+                  },
+                ),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+                inputFormatters: [
+                  FilteringTextInputFormatter.deny(
+                    RegExp(viewModel.regexToRemoveEmoji),
+                  ),
+                ],
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.done,
+                fillColor: Colors.white,
+                elevation: 6,
+              ),
+*/
 
               // Field 3: Area Size
               AppTextField(
@@ -753,6 +866,114 @@ class PropertySellForm extends BaseView<SellFormsVM> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget commonWidget(dynamic subCatId,SellFormsVM viewModel){
+    switch(subCatId){
+      default:
+        return Container();
+    }
+  }
+
+  Widget apartments(SellFormsVM viewModel){
+    return Column(
+      children: [
+
+        // Field 1: Ad Title
+        AppTextField(
+          title: StringHelper.adTitle,
+          hint: StringHelper.enter,
+          controller: viewModel.adTitleTextController,
+          maxLines: 4,
+          minLines: 1,
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+              RegExp(viewModel.regexToRemoveEmoji),
+            ),
+          ],
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          fillColor: Colors.white,
+          elevation: 6,
+        ),
+
+        // Field 2: Property Type
+        AppTextField(
+          title: StringHelper.propertyType,
+          hint: StringHelper.select,
+          controller: viewModel.propertyForTextController,
+          readOnly: true,
+          suffix: PopupMenuButton<String>(
+            clipBehavior: Clip.hardEdge,
+            icon: const Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+            ),
+            onSelected: (String value) {
+              viewModel.propertyForTextController.text = value;
+            },
+            itemBuilder: (BuildContext context) {
+              return ['Sell', 'Rent'].map((option) {
+                return PopupMenuItem(
+                  value: option,
+                  child: Text(option),
+                );
+              }).toList();
+            },
+          ),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+              RegExp(viewModel.regexToRemoveEmoji),
+            ),
+          ],
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          fillColor: Colors.white,
+          elevation: 6,
+        ),
+
+        // Field :  Type
+        AppTextField(
+          title: StringHelper.type,
+          hint: StringHelper.select,
+          controller: viewModel.propertyForTypeTextController,
+          readOnly: true,
+          suffix: PopupMenuButton<String>(
+            clipBehavior: Clip.hardEdge,
+            icon: const Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+            ),
+            onSelected: (String value) {
+              viewModel.propertyForTypeTextController.text = value;
+            },
+            itemBuilder: (BuildContext context) {
+              return ["Apartment", "Duplex", "Penthouse", "Studio", "Hotel" "Apartment", "Roof"].map((option) {
+                return PopupMenuItem(
+                  value: option,
+                  child: Text(option),
+                );
+              }).toList();
+            },
+          ),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+              RegExp(viewModel.regexToRemoveEmoji),
+            ),
+          ],
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          fillColor: Colors.white,
+          elevation: 6,
+        ),
+      ],
     );
   }
 }

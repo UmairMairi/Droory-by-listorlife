@@ -1,6 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
+import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/base/network/api_request.dart';
 import 'package:list_and_life/base/network/base_client.dart';
@@ -10,8 +13,14 @@ import 'package:list_and_life/models/prodect_detail_model.dart';
 import 'package:list_and_life/widgets/app_empty_widget.dart';
 import 'package:list_and_life/widgets/app_loading_widget.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
+import 'package:list_and_life/widgets/common_grid_view.dart';
 
+import '../base/helpers/db_helper.dart';
 import '../models/search_item_model.dart';
+import '../res/assets_res.dart';
+import '../routes/app_routes.dart';
+import 'app_product_item_widget.dart';
+import 'image_view.dart';
 
 class AppSearchView extends StatefulWidget {
   final String? value;
@@ -92,7 +101,9 @@ class _AppSearchViewState extends State<AppSearchView> {
                   });
                 },
                 prefix: Icon(Icons.search),
-                validator: (value) {},
+                validator: (value) {
+                  return null;
+                },
                 hint: "Search...",
               ),
             ),
@@ -132,29 +143,14 @@ class _AppSearchViewState extends State<AppSearchView> {
                       }
 
                       // Combine categories and products in a single list
-                      return ListView.builder(
-                        itemCount: categories.length + products.length,
-                        itemBuilder: (context, index) {
-                          if (index < categories.length) {
-                            final category = categories[index];
-                            return ListTile(
-                              leading: Icon(Icons.search),
-                              title: Text(category?.name ?? "No name"),
-                              onTap: () {
-                                Navigator.pop(context, category);
-                              },
-                            );
-                          } else {
-                            final product = products[index - categories.length];
-                            return ListTile(
-                              leading: Icon(Icons.search),
-                              title: Text(product.name ?? "No name"),
-                              onTap: () {
-                                Navigator.pop(context, product);
-                              },
-                            );
-                          }
-                        },
+                      return SingleChildScrollView(
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        child: Column(
+                          children: [
+                            categoryWidget(context, categories),
+                            productWidget(context, products)
+                          ],
+                        ),
                       );
                     },
                   );
@@ -164,6 +160,122 @@ class _AppSearchViewState extends State<AppSearchView> {
           ],
         ),
       ),
+    );
+  }
+
+
+
+  Widget oldData(BuildContext context, List<CategoryModel?> categories, List<ProductDetailModel> products) {
+     return ListView.builder(
+      shrinkWrap: true,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      itemCount: categories.length + products.length,
+      itemBuilder: (context, index) {
+        if (index < categories.length) {
+          final category = categories[index];
+          return ListTile(
+            leading: Icon(Icons.search),
+            title: Text(category?.name ?? "No name"),
+            onTap: () {
+              Navigator.pop(context, category);
+            },
+          );
+        } else {
+          final product = products[index - categories.length];
+          return ListTile(
+            leading: Icon(Icons.search),
+            title: Text(product.name ?? "No name"),
+            onTap: () {
+              Navigator.pop(context, product);
+            },
+          );
+        }
+      },
+    );
+  }
+
+  Widget categoryWidget(BuildContext context, List<CategoryModel?> categories,) {
+    return CommonGridView(
+        shrinkWrap: true,
+        mainAxisExtent: 90,
+        crossAxisCount: 3,
+        padding: EdgeInsets.zero,
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: categories.length, itemBuilder: (context,index){
+      final category = categories[index];
+      return GestureDetector(
+        onTap: () {
+          context.push(Routes.subCategoryView,
+              extra: category);
+        },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment:
+          CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CircleAvatar(
+              backgroundColor: Colors.white70,
+              radius: 30,
+              child: ImageView.rect(
+                image:
+                "${ApiConstants.imageUrl}/${category?.image??""}",
+                height: 35,
+                placeholder:
+                AssetsRes.IC_IMAGE_PLACEHOLDER,
+                width: 35,
+                fit: BoxFit.contain,
+              ),
+            ),
+            const Gap(10),
+            Text(
+              DbHelper.getLanguage() == 'en'
+                  ? category?.name ?? ''
+                  : category?.nameAr ?? '',
+              style: context.textTheme.labelSmall
+                  ?.copyWith(
+                  color: Colors.black,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
+      );
+    });
+  }
+  Widget productWidget(BuildContext context, List<ProductDetailModel> products) {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      padding: EdgeInsets.symmetric(vertical: 10),
+      itemCount: products.length,
+      itemBuilder: (context, index) {
+        final product = products[index];
+        return GestureDetector(
+          onTap: () {
+            if (product.userId ==
+                DbHelper.getUserModel()?.id) {
+              context.push(Routes.myProduct,
+                  extra: product);
+              return;
+            }
+
+            context.push(Routes.productDetails,
+                extra: product);
+          },
+          child: AppProductItemWidget(
+            data: product,
+            onLikeTapped: () {
+              if (product.isFavourite == 1) {
+                product.isFavourite = 0;
+                return;
+              }
+              product.isFavourite = 1;
+            },
+          ),
+        );
+      },
     );
   }
 }

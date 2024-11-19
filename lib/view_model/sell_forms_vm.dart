@@ -218,6 +218,9 @@ class SellFormsVM extends BaseViewModel {
   TextEditingController materialTextController = TextEditingController();
   TextEditingController sizeTextController = TextEditingController();
   TextEditingController propertyForTextController = TextEditingController();
+  TextEditingController propertyForTypeTextController = TextEditingController();
+  TextEditingController propertyLevelTextController = TextEditingController();
+  TextEditingController propertyAgeTextController = TextEditingController();
   TextEditingController noOfBathroomsTextController = TextEditingController();
   TextEditingController noOfBedroomsTextController = TextEditingController();
   TextEditingController furnishingStatusTextController =
@@ -329,6 +332,7 @@ class SellFormsVM extends BaseViewModel {
     materialTextController.clear();
     sizeTextController.clear();
     propertyForTextController.clear();
+    propertyForTypeTextController.clear();
     areaSizeTextController.clear();
     noOfBedroomsTextController.clear();
     noOfBathroomsTextController.clear();

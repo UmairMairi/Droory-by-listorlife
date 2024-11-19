@@ -257,6 +257,8 @@ class StringHelper {
   static String editProduct =
       LocaleService.translate('editProduct') ?? "Edit Product";
   static String type = LocaleService.translate('type') ?? "Type";
+  static String level = LocaleService.translate('level') ?? "Level";
+  static String buildingAge = LocaleService.translate('buildingAge') ?? "Building Age";
   static String positionType =
       LocaleService.translate('positionType') ?? "Position Type";
   static String salaryPeriod =
