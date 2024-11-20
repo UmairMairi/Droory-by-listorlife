@@ -163,6 +163,46 @@ class SellFormsVM extends BaseViewModel {
     notifyListeners();
   }
 
+  String _currentPropertyType = "Sell";
+  String get currentPropertyType => _currentPropertyType;
+
+  set currentPropertyType(String index) {
+    _currentPropertyType = index;
+    notifyListeners();
+  }
+
+  String _currentFurnishing = "";
+  String get currentFurnishing => _currentFurnishing;
+
+  set currentFurnishing(String index) {
+    _currentFurnishing = index;
+    notifyListeners();
+  }
+
+  String _currentPaymentOption= "";
+  String get currentPaymentOption => _currentPaymentOption;
+
+  set currentPaymentOption(String index) {
+    _currentPaymentOption = index;
+    notifyListeners();
+  }
+
+  String _currentCompletion = "";
+  String get currentCompletion => _currentCompletion;
+
+  set currentCompletion(String index) {
+    _currentCompletion = index;
+    notifyListeners();
+  }
+
+  String _currentDeliveryTerm = "";
+  String get currentDeliveryTerm => _currentDeliveryTerm;
+
+  set currentDeliveryTerm(String index) {
+    _currentDeliveryTerm = index;
+    notifyListeners();
+  }
+
   int get transmission => _transmission;
 
   set transmission(int value) {
@@ -211,6 +251,7 @@ class SellFormsVM extends BaseViewModel {
   TextEditingController adTitleTextController = TextEditingController();
   TextEditingController descriptionTextController = TextEditingController();
   TextEditingController priceTextController = TextEditingController();
+  TextEditingController depositTextController = TextEditingController();
   TextEditingController addressTextController = TextEditingController();
   TextEditingController ramTextController = TextEditingController();
   TextEditingController storageTextController = TextEditingController();
@@ -219,7 +260,6 @@ class SellFormsVM extends BaseViewModel {
   TextEditingController sizeTextController = TextEditingController();
   TextEditingController propertyForTextController = TextEditingController();
   TextEditingController propertyForTypeTextController = TextEditingController();
-  TextEditingController propertyLevelTextController = TextEditingController();
   TextEditingController propertyAgeTextController = TextEditingController();
   TextEditingController noOfBathroomsTextController = TextEditingController();
   TextEditingController noOfBedroomsTextController = TextEditingController();
@@ -227,10 +267,14 @@ class SellFormsVM extends BaseViewModel {
       TextEditingController();
   TextEditingController ownershipStatusTextController = TextEditingController();
   TextEditingController paymentTypeTextController = TextEditingController();
+  TextEditingController listedByTextController = TextEditingController();
+  TextEditingController rentalTermsTextController = TextEditingController();
   TextEditingController completionStatusTextController =
       TextEditingController();
   TextEditingController deliveryTermTextController = TextEditingController();
   TextEditingController areaSizeTextController = TextEditingController();
+  TextEditingController insuranceTextController = TextEditingController();
+  TextEditingController levelTextController = TextEditingController();
 
   List<String> yearsType = [];
 
@@ -292,6 +336,7 @@ class SellFormsVM extends BaseViewModel {
     communicationChoice = item.communicationChoice ?? '';
 
     propertyForTextController.text = item.propertyFor ?? '';
+    currentPropertyType = item.propertyFor ?? '';
 
     noOfBedroomsTextController.text = item.bedrooms.toString() ?? '';
     noOfBathroomsTextController.text = item.bathrooms.toString() ?? '';
