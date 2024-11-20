@@ -179,6 +179,14 @@ class SellFormsVM extends BaseViewModel {
     notifyListeners();
   }
 
+  String _currentAccessToUtilities = "";
+  String get currentAccessToUtilities => _currentAccessToUtilities;
+
+  set currentAccessToUtilities(String index) {
+    _currentAccessToUtilities = index;
+    notifyListeners();
+  }
+
   String _currentPaymentOption= "";
   String get currentPaymentOption => _currentPaymentOption;
 
@@ -265,10 +273,14 @@ class SellFormsVM extends BaseViewModel {
   TextEditingController noOfBedroomsTextController = TextEditingController();
   TextEditingController furnishingStatusTextController =
       TextEditingController();
+
+  TextEditingController accessToUtilitiesTextController =
+      TextEditingController();
   TextEditingController ownershipStatusTextController = TextEditingController();
   TextEditingController paymentTypeTextController = TextEditingController();
   TextEditingController listedByTextController = TextEditingController();
   TextEditingController rentalTermsTextController = TextEditingController();
+  TextEditingController rentalPriceTextController = TextEditingController();
   TextEditingController completionStatusTextController =
       TextEditingController();
   TextEditingController deliveryTermTextController = TextEditingController();

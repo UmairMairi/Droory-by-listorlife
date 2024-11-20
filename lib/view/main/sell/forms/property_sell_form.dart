@@ -10,7 +10,10 @@ import '../../../../models/category_model.dart';
 import '../../../../models/prodect_detail_model.dart';
 import '../../../../view_model/sell_forms_vm.dart';
 import 'property_form/apartment_form.dart';
+import 'property_form/business_form.dart';
 import 'property_form/default_form.dart';
+import 'property_form/land_form.dart';
+import 'property_form/vacation_form.dart';
 import 'property_form/villa_form.dart';
 
 class PropertySellForm extends BaseView<SellFormsVM> {
@@ -174,6 +177,12 @@ class PropertySellForm extends BaseView<SellFormsVM> {
         return ApartmentForm(viewModel: viewModel,type: type,brands: brands,category: category,item: item,subCategory: subCategory,subSubCategory: subSubCategory,);
       case 84:
         return VillaForm(viewModel: viewModel,type: type,brands: brands,category: category,item: item,subCategory: subCategory,subSubCategory: subSubCategory,);
+     case 87:
+        return BusinessForm(viewModel: viewModel,type: type,brands: brands,category: category,item: item,subCategory: subCategory,subSubCategory: subSubCategory,);
+     case 88:
+        return VacationForm(viewModel: viewModel,type: type,brands: brands,category: category,item: item,subCategory: subCategory,subSubCategory: subSubCategory,);
+        case 90:
+        return LandForm(viewModel: viewModel,type: type,brands: brands,category: category,item: item,subCategory: subCategory,subSubCategory: subSubCategory,);
       default:
         return DefaultForm(viewModel: viewModel,type: type,brands: brands,category: category,item: item,subCategory: subCategory,subSubCategory: subSubCategory,);
     }
