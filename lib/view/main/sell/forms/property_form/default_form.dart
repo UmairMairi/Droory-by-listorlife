@@ -6,7 +6,7 @@ import 'package:list_and_life/base/base.dart';
 import '../../../../../base/helpers/dialog_helper.dart';
 import '../../../../../base/helpers/string_helper.dart';
 import '../../../../../models/category_model.dart';
-import '../../../../../models/prodect_detail_model.dart';
+import '../../../../../models/product_detail_model.dart';
 import '../../../../../view_model/sell_forms_vm.dart';
 import '../../../../../widgets/amenities_widget.dart';
 import '../../../../../widgets/app_map_widget.dart';

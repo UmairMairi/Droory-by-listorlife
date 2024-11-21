@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:list_and_life/models/prodect_detail_model.dart';
+import 'package:list_and_life/models/product_detail_model.dart';
 import 'package:list_and_life/skeletons/product_list_skeleton.dart';
 import 'package:list_and_life/widgets/app_empty_widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';

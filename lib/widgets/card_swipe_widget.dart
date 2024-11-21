@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
-import 'package:list_and_life/models/prodect_detail_model.dart';
+import 'package:list_and_life/models/product_detail_model.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 import 'package:list_and_life/widgets/image_zoom_screen.dart';
 

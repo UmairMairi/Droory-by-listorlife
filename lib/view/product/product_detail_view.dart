@@ -8,7 +8,7 @@ import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/models/inbox_model.dart';
 import 'package:map_launcher/map_launcher.dart';
-import 'package:list_and_life/models/prodect_detail_model.dart';
+import 'package:list_and_life/models/product_detail_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/view_model/product_v_m.dart';

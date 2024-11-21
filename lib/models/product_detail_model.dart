@@ -70,6 +70,16 @@ class ProductDetailModel {
   String? deliveryTerm;
   dynamic area;
 
+  String? accessToUtilities;
+  String? insurance;
+  String? deposit;
+  String? rentalTerm;
+  String? rentalPrice;
+  String? listedBy;
+  String? buildingAge;
+  String? level;
+  String? type;
+
   ProductDetailModel({
     this.id,
     this.userId,
@@ -136,6 +146,15 @@ class ProductDetailModel {
     this.paymentType,
     this.completionStatus,
     this.deliveryTerm,
+    this.accessToUtilities,
+    this.insurance,
+    this.deposit,
+    this.rentalTerm,
+    this.rentalPrice,
+    this.listedBy,
+    this.buildingAge,
+    this.level,
+    this.type,
   });
 
   ProductDetailModel.fromJson(Map<String, dynamic> json) {
@@ -186,6 +205,7 @@ class ProductDetailModel {
     communicationChoice = json['communication_choice'];
     favouritesCount = json['favourites_count'];
     countViews = json['count_views'];
+
     // Deserialize the new productAmenities field
     if (json['product_medias'] != null) {
       productMedias = <ProductMedias>[];
@@ -227,6 +247,15 @@ class ProductDetailModel {
     paymentType = json['payment_type'];
     completionStatus = json['completion_status'];
     deliveryTerm = json['delivery_term'];
+    accessToUtilities = json['access_to_utilities'];
+    insurance = json['insurance'];
+    deposit = json['deposit'];
+    rentalTerm = json['rental_term'];
+    rentalPrice = json['rental_price'];
+    listedBy = json['listed_by'];
+    buildingAge = json['building_age'];
+    level = json['level'];
+    type = json['type'];
   }
 
   Map<String, dynamic> toJson() {
@@ -277,6 +306,7 @@ class ProductDetailModel {
     data['count_views'] = countViews;
     data['communication_choice'] = communicationChoice;
 
+
     // Serialize the new productAmenities field
     if (productAmenities != null) {
       data['product_amnities'] =
@@ -317,7 +347,15 @@ class ProductDetailModel {
     data['payment_type'] = paymentType;
     data['completion_status'] = completionStatus;
     data['delivery_term'] = deliveryTerm;
-
+    data['access_to_utilities'] = accessToUtilities;
+    data['insurance'] = insurance;
+    data['deposit'] = deposit;
+    data['rental_term'] = rentalTerm;
+    data['rental_price'] = rentalPrice;
+    data['listed_by'] = listedBy;
+    data['building_age'] = buildingAge;
+    data['level'] = level;
+    data['type'] = type;
     return data;
   }
 }

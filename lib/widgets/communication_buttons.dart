@@ -7,7 +7,7 @@ import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/base/network/api_request.dart';
 import 'package:list_and_life/base/network/base_client.dart';
 import 'package:list_and_life/models/inbox_model.dart';
-import 'package:list_and_life/models/prodect_detail_model.dart';
+import 'package:list_and_life/models/product_detail_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
 
 import '../routes/app_routes.dart';

@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/date_helper.dart';
 import 'package:list_and_life/base/helpers/db_helper.dart';
-import 'package:list_and_life/models/prodect_detail_model.dart';
+import 'package:list_and_life/models/product_detail_model.dart';
 import 'package:list_and_life/skeletons/my_product_skeleton.dart';
 import 'package:list_and_life/view_model/product_v_m.dart';
 import 'package:list_and_life/widgets/app_error_widget.dart';

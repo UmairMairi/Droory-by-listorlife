@@ -18,7 +18,7 @@ import '../base/network/api_request.dart';
 import '../base/network/base_client.dart';
 import '../models/common/map_response.dart';
 import '../models/home_list_model.dart';
-import '../models/prodect_detail_model.dart';
+import '../models/product_detail_model.dart';
 import '../view/main/sell/forms/sell_form_view.dart';
 import '../widgets/app_elevated_button.dart';
 

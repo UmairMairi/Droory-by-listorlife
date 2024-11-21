@@ -21,7 +21,7 @@ import '../../../models/common/list_response.dart';
 import '../../../models/common/map_response.dart';
 import '../../../models/filter_model.dart';
 import '../../../models/home_list_model.dart';
-import '../../../models/prodect_detail_model.dart';
+import '../../../models/product_detail_model.dart';
 import '../../../res/assets_res.dart';
 import '../../../routes/app_routes.dart';
 import '../../../skeletons/product_list_skeleton.dart';

@@ -7,7 +7,7 @@ import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/base/network/api_request.dart';
 import 'package:list_and_life/base/network/base_client.dart';
 import 'package:list_and_life/models/common/map_response.dart';
-import 'package:list_and_life/models/prodect_detail_model.dart';
+import 'package:list_and_life/models/product_detail_model.dart';
 import 'package:list_and_life/models/user_model.dart';
 import 'package:list_and_life/providers/language_provider.dart';
 import 'package:list_and_life/view_model/chat_vm.dart';

@@ -7,7 +7,7 @@ import 'package:list_and_life/widgets/image_view.dart';
 import '../../../../base/helpers/image_picker_helper.dart';
 import '../../../../base/helpers/string_helper.dart';
 import '../../../../models/category_model.dart';
-import '../../../../models/prodect_detail_model.dart';
+import '../../../../models/product_detail_model.dart';
 import '../../../../view_model/sell_forms_vm.dart';
 import 'property_form/apartment_form.dart';
 import 'property_form/business_form.dart';

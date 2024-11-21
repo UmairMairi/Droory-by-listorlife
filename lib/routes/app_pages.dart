@@ -4,7 +4,7 @@ import 'package:list_and_life/base/helpers/db_helper.dart';
 import 'package:list_and_life/models/category_model.dart';
 import 'package:list_and_life/models/filter_model.dart';
 import 'package:list_and_life/models/inbox_model.dart';
-import 'package:list_and_life/models/prodect_detail_model.dart';
+import 'package:list_and_life/models/product_detail_model.dart';
 import 'package:list_and_life/models/user_model.dart';
 import 'package:list_and_life/view/contact_us/contact_u_s_view.dart';
 import 'package:list_and_life/view/contact_us/faq_view.dart';

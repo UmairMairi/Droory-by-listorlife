@@ -7,7 +7,7 @@ import 'package:list_and_life/base/base.dart';
 import '../../../../../base/helpers/dialog_helper.dart';
 import '../../../../../base/helpers/string_helper.dart';
 import '../../../../../models/category_model.dart';
-import '../../../../../models/prodect_detail_model.dart';
+import '../../../../../models/product_detail_model.dart';
 import '../../../../../view_model/sell_forms_vm.dart';
 import '../../../../../widgets/amenities_widget.dart';
 import '../../../../../widgets/app_map_widget.dart';
@@ -212,7 +212,7 @@ class VacationForm extends StatelessWidget {
         AppTextField(
           title: "No Of Bedrooms",
           hint: StringHelper.select,
-          controller: viewModel.noOfBathroomsTextController,
+          controller: viewModel.noOfBedroomsTextController,
           readOnly: true,
           suffix: PopupMenuButton<String>(
             clipBehavior: Clip.hardEdge,
@@ -221,7 +221,7 @@ class VacationForm extends StatelessWidget {
               color: Colors.black,
             ),
             onSelected: (String value) {
-              viewModel.noOfBathroomsTextController.text = value;
+              viewModel.noOfBedroomsTextController.text = value;
             },
             itemBuilder: (BuildContext context) {
               return ["Studio", "1", "2", "3", "4", "5", "6+"].map((option) {
@@ -607,6 +607,11 @@ class VacationForm extends StatelessWidget {
                     message: StringHelper.adTitleIsRequired);
                 return;
               }
+              if (viewModel.propertyForTypeTextController.text.isEmpty) {
+                DialogHelper.showToast(
+                    message: 'Please select Type');
+                return;
+              }
               if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.ownershipStatusTextController.text.isEmpty) {
                 DialogHelper.showToast(
                     message: 'Please select Ownership');
@@ -635,14 +640,19 @@ class VacationForm extends StatelessWidget {
                     message: 'Please select Furnishing');
                 return;
               }
-              if (viewModel.levelTextController.text.isEmpty) {
+              if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.levelTextController.text.isEmpty) {
                 DialogHelper.showToast(
                     message: 'Please select level');
                 return;
               }
-              if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.propertyAgeTextController.text.isEmpty) {
+              if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.deliveryTermTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select building age');
+                    message: 'Please select delivery term');
+                return;
+              }
+              if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.completionStatusTextController.text.isEmpty) {
+                DialogHelper.showToast(
+                    message: 'Please select completion status');
                 return;
               }
               if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.paymentTypeTextController.text.isEmpty) {
@@ -650,9 +660,9 @@ class VacationForm extends StatelessWidget {
                     message: 'Please select payment type');
                 return;
               }
-              if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.listedByTextController.text.isEmpty) {
+              if (viewModel.currentPropertyType.toLowerCase() == "rent" && viewModel.rentalPriceTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select listed by');
+                    message: 'Please enter rental price');
                 return;
               }
               if (viewModel.addressTextController.text.trim().isEmpty) {
@@ -663,6 +673,11 @@ class VacationForm extends StatelessWidget {
               if (viewModel.priceTextController.text.trim().isEmpty) {
                 DialogHelper.showToast(
                     message: StringHelper.priceIsRequired);
+                return;
+              }
+              if (viewModel.currentPropertyType.toLowerCase() == "rent" && viewModel.depositTextController.text.isEmpty) {
+                DialogHelper.showToast(
+                    message: 'Please enter deposit');
                 return;
               }
               if (viewModel.descriptionTextController.text.trim().isEmpty) {
@@ -702,6 +717,11 @@ class VacationForm extends StatelessWidget {
           GestureDetector(
             onTap: () {
               viewModel.formKey.currentState?.validate();
+              if (viewModel.mainImagePath.isEmpty) {
+                DialogHelper.showToast(
+                    message: StringHelper.pleaseUploadMainImage);
+                return;
+              }
               if (viewModel.imagesList.isEmpty) {
                 DialogHelper.showToast(
                     message: StringHelper.pleaseUploadAddAtLeastOneImage);
@@ -715,6 +735,11 @@ class VacationForm extends StatelessWidget {
               if (viewModel.adTitleTextController.text.trim().isEmpty) {
                 DialogHelper.showToast(
                     message: StringHelper.adTitleIsRequired);
+                return;
+              }
+              if (viewModel.propertyForTypeTextController.text.isEmpty) {
+                DialogHelper.showToast(
+                    message: 'Please select Type');
                 return;
               }
               if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.ownershipStatusTextController.text.isEmpty) {
@@ -745,14 +770,19 @@ class VacationForm extends StatelessWidget {
                     message: 'Please select Furnishing');
                 return;
               }
-              if (viewModel.levelTextController.text.isEmpty) {
+              if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.levelTextController.text.isEmpty) {
                 DialogHelper.showToast(
                     message: 'Please select level');
                 return;
               }
-              if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.propertyAgeTextController.text.isEmpty) {
+              if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.deliveryTermTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select building age');
+                    message: 'Please select delivery term');
+                return;
+              }
+              if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.completionStatusTextController.text.isEmpty) {
+                DialogHelper.showToast(
+                    message: 'Please select completion status');
                 return;
               }
               if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.paymentTypeTextController.text.isEmpty) {
@@ -760,9 +790,9 @@ class VacationForm extends StatelessWidget {
                     message: 'Please select payment type');
                 return;
               }
-              if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.listedByTextController.text.isEmpty) {
+              if (viewModel.currentPropertyType.toLowerCase() == "rent" && viewModel.rentalPriceTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select listed by');
+                    message: 'Please enter rental price');
                 return;
               }
               if (viewModel.addressTextController.text.trim().isEmpty) {
@@ -775,11 +805,17 @@ class VacationForm extends StatelessWidget {
                     message: StringHelper.priceIsRequired);
                 return;
               }
+              if (viewModel.currentPropertyType.toLowerCase() == "rent" && viewModel.depositTextController.text.isEmpty) {
+                DialogHelper.showToast(
+                    message: 'Please enter deposit');
+                return;
+              }
               if (viewModel.descriptionTextController.text.trim().isEmpty) {
                 DialogHelper.showToast(
                     message: StringHelper.descriptionIsRequired);
                 return;
               }
+
               DialogHelper.showLoading();
               viewModel.addProduct(
                   category: category,

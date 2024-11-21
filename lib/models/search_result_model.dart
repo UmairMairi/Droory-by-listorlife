@@ -1,5 +1,5 @@
 import 'package:list_and_life/models/category_model.dart';
-import 'package:list_and_life/models/prodect_detail_model.dart';
+import 'package:list_and_life/models/product_detail_model.dart';
 
 class SearchResultModel {
   List<ProductDetailModel>? products;

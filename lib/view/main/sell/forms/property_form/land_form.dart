@@ -5,7 +5,7 @@ import 'package:list_and_life/base/base.dart';
 import '../../../../../base/helpers/dialog_helper.dart';
 import '../../../../../base/helpers/string_helper.dart';
 import '../../../../../models/category_model.dart';
-import '../../../../../models/prodect_detail_model.dart';
+import '../../../../../models/product_detail_model.dart';
 import '../../../../../view_model/sell_forms_vm.dart';
 import '../../../../../widgets/amenities_widget.dart';
 import '../../../../../widgets/app_map_widget.dart';
@@ -308,9 +308,9 @@ class LandForm extends StatelessWidget {
                     message: StringHelper.adTitleIsRequired);
                 return;
               }
-              if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.ownershipStatusTextController.text.isEmpty) {
+              if (viewModel.propertyForTypeTextController.text.trim().isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Ownership');
+                    message: "Please select type");
                 return;
               }
               if (viewModel.areaSizeTextController.text.trim().isEmpty) {
@@ -318,42 +318,18 @@ class LandForm extends StatelessWidget {
                     message: 'Please add area of Property');
                 return;
               }
-              if (viewModel.currentPropertyType.toLowerCase() == "rent" && viewModel.insuranceTextController.text.isEmpty) {
-                DialogHelper.showToast(message: 'Please enter insurance');
+              if (viewModel.accessToUtilitiesTextController.text.isEmpty) {
+                DialogHelper.showToast(message: 'Please enter access of utilities');
                 return;
               }
-              if (viewModel.noOfBedroomsTextController.text.isEmpty) {
-                DialogHelper.showToast(message: 'Please select Bedrooms');
-                return;
-              }
-              if (viewModel.noOfBathroomsTextController.text.isEmpty) {
-                DialogHelper.showToast(
-                    message: 'Please select Bathrooms');
-                return;
-              }
-              if (viewModel.furnishingStatusTextController.text.isEmpty) {
-                DialogHelper.showToast(
-                    message: 'Please select Furnishing');
-                return;
-              }
-              if (viewModel.levelTextController.text.isEmpty) {
-                DialogHelper.showToast(
-                    message: 'Please select level');
-                return;
-              }
-              if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.propertyAgeTextController.text.isEmpty) {
-                DialogHelper.showToast(
-                    message: 'Please select building age');
-                return;
-              }
-              if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.paymentTypeTextController.text.isEmpty) {
+              if (viewModel.paymentTypeTextController.text.isEmpty) {
                 DialogHelper.showToast(
                     message: 'Please select payment type');
                 return;
               }
-              if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.listedByTextController.text.isEmpty) {
+              if (viewModel.currentPropertyType.toLowerCase() == "rent" &&viewModel.rentalTermsTextController.text.trim().isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select listed by');
+                    message: "Please select rental terms");
                 return;
               }
               if (viewModel.addressTextController.text.trim().isEmpty) {
@@ -371,7 +347,6 @@ class LandForm extends StatelessWidget {
                     message: StringHelper.descriptionIsRequired);
                 return;
               }
-
               DialogHelper.showLoading();
               viewModel.editProduct(
                   productId: item?.id,
@@ -403,6 +378,12 @@ class LandForm extends StatelessWidget {
           GestureDetector(
             onTap: () {
               viewModel.formKey.currentState?.validate();
+
+              if (viewModel.mainImagePath.isEmpty) {
+                DialogHelper.showToast(
+                    message: StringHelper.pleaseUploadMainImage);
+                return;
+              }
               if (viewModel.imagesList.isEmpty) {
                 DialogHelper.showToast(
                     message: StringHelper.pleaseUploadAddAtLeastOneImage);
@@ -418,9 +399,9 @@ class LandForm extends StatelessWidget {
                     message: StringHelper.adTitleIsRequired);
                 return;
               }
-              if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.ownershipStatusTextController.text.isEmpty) {
+              if (viewModel.propertyForTypeTextController.text.trim().isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Ownership');
+                    message: "Please select type");
                 return;
               }
               if (viewModel.areaSizeTextController.text.trim().isEmpty) {
@@ -428,42 +409,18 @@ class LandForm extends StatelessWidget {
                     message: 'Please add area of Property');
                 return;
               }
-              if (viewModel.currentPropertyType.toLowerCase() == "rent" && viewModel.insuranceTextController.text.isEmpty) {
-                DialogHelper.showToast(message: 'Please enter insurance');
+              if (viewModel.accessToUtilitiesTextController.text.isEmpty) {
+                DialogHelper.showToast(message: 'Please enter access of utilities');
                 return;
               }
-              if (viewModel.noOfBedroomsTextController.text.isEmpty) {
-                DialogHelper.showToast(message: 'Please select Bedrooms');
-                return;
-              }
-              if (viewModel.noOfBathroomsTextController.text.isEmpty) {
-                DialogHelper.showToast(
-                    message: 'Please select Bathrooms');
-                return;
-              }
-              if (viewModel.furnishingStatusTextController.text.isEmpty) {
-                DialogHelper.showToast(
-                    message: 'Please select Furnishing');
-                return;
-              }
-              if (viewModel.levelTextController.text.isEmpty) {
-                DialogHelper.showToast(
-                    message: 'Please select level');
-                return;
-              }
-              if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.propertyAgeTextController.text.isEmpty) {
-                DialogHelper.showToast(
-                    message: 'Please select building age');
-                return;
-              }
-              if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.paymentTypeTextController.text.isEmpty) {
+              if (viewModel.paymentTypeTextController.text.isEmpty) {
                 DialogHelper.showToast(
                     message: 'Please select payment type');
                 return;
               }
-              if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.listedByTextController.text.isEmpty) {
+              if (viewModel.currentPropertyType.toLowerCase() == "rent" &&viewModel.rentalTermsTextController.text.trim().isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select listed by');
+                    message: "Please select rental terms");
                 return;
               }
               if (viewModel.addressTextController.text.trim().isEmpty) {

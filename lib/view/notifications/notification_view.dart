@@ -9,7 +9,7 @@ import 'package:list_and_life/base/network/api_request.dart';
 import 'package:list_and_life/base/network/base_client.dart';
 import 'package:list_and_life/models/common/map_response.dart';
 import 'package:list_and_life/models/notification_data_model.dart';
-import 'package:list_and_life/models/prodect_detail_model.dart';
+import 'package:list_and_life/models/product_detail_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/skeletons/blocked_users_skeleton.dart';
 import 'package:list_and_life/widgets/app_empty_notification_wiidget.dart';

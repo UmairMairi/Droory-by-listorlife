@@ -12,7 +12,7 @@ import 'package:list_and_life/models/amnites_model.dart';
 import 'package:list_and_life/models/category_model.dart';
 import 'package:list_and_life/models/common/list_response.dart';
 import 'package:list_and_life/models/common/map_response.dart';
-import 'package:list_and_life/models/prodect_detail_model.dart';
+import 'package:list_and_life/models/product_detail_model.dart';
 
 import '../base/base_view_model.dart';
 import '../view/main/sell/forms/post_added_final_view.dart';
@@ -350,19 +350,44 @@ class SellFormsVM extends BaseViewModel {
     propertyForTextController.text = item.propertyFor ?? '';
     currentPropertyType = item.propertyFor ?? '';
 
-    noOfBedroomsTextController.text = item.bedrooms.toString() ?? '';
-    noOfBathroomsTextController.text = item.bathrooms.toString() ?? '';
+    noOfBedroomsTextController.text = "${item.bedrooms ?? ''}";
+    noOfBathroomsTextController.text = "${item.bathrooms ?? ''}";
+
+    levelTextController.text = item.level ?? '';
+    propertyAgeTextController.text = item.buildingAge ?? '';
+    depositTextController.text = item.deposit ?? '';
+    insuranceTextController.text = item.insurance ?? '';
+    rentalTermsTextController.text = item.rentalTerm ?? '';
+    rentalPriceTextController.text = item.rentalPrice ?? '';
+    listedByTextController.text = item.listedBy ?? '';
+    propertyForTypeTextController.text = item.type ?? '';
+
     furnishingStatusTextController.text = item.furnishedType ?? '';
+    currentFurnishing = item.furnishedType ?? '';
     ownershipStatusTextController.text = item.ownership ?? '';
     paymentTypeTextController.text = item.paymentType ?? '';
+    currentPaymentOption= item.paymentType ?? '';
+
+    accessToUtilitiesTextController.text = item.paymentType ?? '';
+    currentAccessToUtilities= item.accessToUtilities ?? '';
+
     areaSizeTextController.text = "${item.area ?? ''}";
+
     completionStatusTextController.text = item.completionStatus ?? '';
+    currentCompletion = item.completionStatus ?? '';
+
     amenities =
         item.productAmenities?.map((element) => element.amnityId).toList() ??
             [];
   }
 
   void resetTextFields() {
+    currentPropertyType = "Sell";
+    currentFurnishing = "";
+    currentAccessToUtilities = "";
+    currentPaymentOption = "";
+    currentCompletion = "";
+    currentDeliveryTerm = "";
     currentIndex = 1;
     transmission = 0;
     mainImagePath = "";
@@ -491,7 +516,16 @@ class SellFormsVM extends BaseViewModel {
       'delivery_term': deliveryTermTextController.text.toLowerCase().split(' ')
         ..join('_'),
       'selected_amnities': amenities.join(','),
-      'area': areaSizeTextController.text
+      'area': areaSizeTextController.text,
+      'type': propertyForTypeTextController.text.trim(),
+      'level': levelTextController.text.trim(),
+      'building_age': propertyAgeTextController.text.trim(),
+      'listed_by': listedByTextController.text.trim(),
+      'rental_price': rentalPriceTextController.text.trim(),
+      'rental_term': rentalTermsTextController.text.trim(),
+      'deposit': depositTextController.text.trim(),
+      'insurance': insuranceTextController.text.trim(),
+      'access_to_utilities': accessToUtilitiesTextController.text.trim(),
     };
     // dea26a54c91ab44f8faf73b88c85e26d88980b90
     ApiRequest apiRequest = ApiRequest(
@@ -654,7 +688,17 @@ class SellFormsVM extends BaseViewModel {
       'delivery_term': deliveryTermTextController.text.toLowerCase().split(' ')
         ..join('_'),
       'selected_amnities': amenities.join(','),
-      'area': areaSizeTextController.text
+      'area': areaSizeTextController.text,
+      'type': propertyForTypeTextController.text.trim(),
+      'level': levelTextController.text.trim(),
+      'building_age': propertyAgeTextController.text.trim(),
+      'listed_by': listedByTextController.text.trim(),
+      'rental_price': rentalPriceTextController.text.trim(),
+      'rental_term': rentalTermsTextController.text.trim(),
+      'deposit': depositTextController.text.trim(),
+      'insurance': insuranceTextController.text.trim(),
+      'access_to_utilities': accessToUtilitiesTextController.text.trim(),
+
     };
 
     ApiRequest apiRequest = ApiRequest(

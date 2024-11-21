@@ -15,7 +15,7 @@ import '../../../../base/network/api_constants.dart';
 import '../../../../base/network/api_request.dart';
 import '../../../../base/network/base_client.dart';
 import '../../../../models/common/list_response.dart';
-import '../../../../models/prodect_detail_model.dart';
+import '../../../../models/product_detail_model.dart';
 import '../../../../skeletons/sell_form_skeleton.dart';
 import '../../../../view_model/sell_forms_vm.dart';
 import 'education_sell_form.dart';
