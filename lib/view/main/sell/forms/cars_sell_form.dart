@@ -713,6 +713,12 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                           message: StringHelper.adTitleIsRequired);
                       return;
                     }
+                    if (viewModel.adTitleTextController.text.trim().length < 10) {
+                      DialogHelper.showToast(
+                        message: "Ad title must be at least 10 characters long.",
+                      );
+                      return;
+                    }
                     if (viewModel.descriptionTextController.text
                         .trim()
                         .isEmpty) {

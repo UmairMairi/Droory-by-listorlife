@@ -669,6 +669,12 @@ class ApartmentForm extends StatelessWidget {
                     message: StringHelper.adTitleIsRequired);
                 return;
               }
+              if (viewModel.adTitleTextController.text.trim().length < 10) {
+                DialogHelper.showToast(
+                  message: "Ad title must be at least 10 characters long.",
+                );
+                return;
+              }
               if (viewModel.propertyForTypeTextController.text.trim().isEmpty) {
                 DialogHelper.showToast(
                     message: "Please select type");
@@ -787,6 +793,12 @@ class ApartmentForm extends StatelessWidget {
               if (viewModel.adTitleTextController.text.trim().isEmpty) {
                 DialogHelper.showToast(
                     message: StringHelper.adTitleIsRequired);
+                return;
+              }
+              if (viewModel.adTitleTextController.text.trim().length < 10) {
+                DialogHelper.showToast(
+                  message: "Ad title must be at least 10 characters long.",
+                );
                 return;
               }
               if (viewModel.propertyForTypeTextController.text.trim().isEmpty) {

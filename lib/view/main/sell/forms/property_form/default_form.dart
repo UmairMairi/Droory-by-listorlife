@@ -441,7 +441,12 @@ class DefaultForm extends StatelessWidget {
                     message: StringHelper.adTitleIsRequired);
                 return;
               }
-
+              if (viewModel.adTitleTextController.text.trim().length < 10) {
+                DialogHelper.showToast(
+                  message: "Ad title must be at least 10 characters long.",
+                );
+                return;
+              }
               if (viewModel.propertyForTextController.text.isEmpty) {
                 DialogHelper.showToast(
                     message: 'Please select Property Type');
@@ -539,7 +544,12 @@ class DefaultForm extends StatelessWidget {
                     message: StringHelper.adTitleIsRequired);
                 return;
               }
-
+              if (viewModel.adTitleTextController.text.trim().length < 10) {
+                DialogHelper.showToast(
+                  message: "Ad title must be at least 10 characters long.",
+                );
+                return;
+              }
               if (viewModel.propertyForTextController.text.isEmpty) {
                 DialogHelper.showToast(
                     message: 'Please select Property Type');

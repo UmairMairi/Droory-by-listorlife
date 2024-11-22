@@ -607,6 +607,12 @@ class VacationForm extends StatelessWidget {
                     message: StringHelper.adTitleIsRequired);
                 return;
               }
+              if (viewModel.adTitleTextController.text.trim().length < 10) {
+                DialogHelper.showToast(
+                  message: "Ad title must be at least 10 characters long.",
+                );
+                return;
+              }
               if (viewModel.propertyForTypeTextController.text.isEmpty) {
                 DialogHelper.showToast(
                     message: 'Please select Type');
