@@ -147,7 +147,42 @@ class BusinessForm extends StatelessWidget {
           fillColor: Colors.white,
           elevation: 6,
         ),
-
+        AppTextField(
+          title: StringHelper.level,
+          hint: StringHelper.select,
+          controller: viewModel.levelTextController,
+          readOnly: true,
+          suffix: PopupMenuButton<String>(
+            clipBehavior: Clip.hardEdge,
+            icon: const Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+            ),
+            onSelected: (String value) {
+              viewModel.levelTextController.text = value;
+            },
+            itemBuilder: (BuildContext context) {
+              return ["Ground", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+", "Last Floor"]
+                  .map((option) {
+                return PopupMenuItem(
+                  value: option,
+                  child: Text(option),
+                );
+              }).toList();
+            },
+          ),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+              RegExp(viewModel.regexToRemoveEmoji),
+            ),
+          ],
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          fillColor: Colors.white,
+          elevation: 6,
+        ),
         AppTextField(
           title: "No Of Bedrooms",
           hint: StringHelper.select,
@@ -336,7 +371,45 @@ class BusinessForm extends StatelessWidget {
             elevation: 6,
           ),
         ),
-
+        Visibility(
+          visible: viewModel.currentPropertyType.toLowerCase() == "rent",
+          child: AppTextField(
+            title: "Rental Term",
+            hint: StringHelper.select,
+            controller: viewModel.rentalTermsTextController,
+            readOnly: true,
+            suffix: PopupMenuButton<String>(
+              clipBehavior: Clip.hardEdge,
+              icon: const Icon(
+                Icons.arrow_drop_down,
+                color: Colors.black,
+              ),
+              onSelected: (String value) {
+                viewModel.rentalTermsTextController.text = value;
+              },
+              itemBuilder: (BuildContext context) {
+                return ['Daily', 'Weekly', 'Monthly', 'Yearly']
+                    .map((option) {
+                  return PopupMenuItem(
+                    value: option,
+                    child: Text(option),
+                  );
+                }).toList();
+              },
+            ),
+            contentPadding:
+            const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(
+                RegExp(viewModel.regexToRemoveEmoji),
+              ),
+            ],
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.done,
+            fillColor: Colors.white,
+            elevation: 6,
+          ),
+        ),
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() == "rent",
           child: AppTextField(

@@ -36,6 +36,8 @@ class FilterView extends StatefulWidget {
 
 class _FilterViewState extends State<FilterView> {
   SfRangeValues values = const SfRangeValues(00, 20000);
+  SfRangeValues downValues = const SfRangeValues(00, 20000);
+  SfRangeValues areaValues = const SfRangeValues(00, 20000);
   FilterModel filter = FilterModel();
   List<CategoryModel> categoriesList = [];
   List<CategoryModel> subCategoriesList = [];
@@ -121,6 +123,7 @@ class _FilterViewState extends State<FilterView> {
                           vertical: 8, horizontal: 32),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: Colors.grey),
                         color: viewModel.selectedIndex == 0
                             ? Colors.black
                             : Colors.white,
@@ -321,6 +324,8 @@ class _FilterViewState extends State<FilterView> {
                     getSubCategory(id: "${value.id}");
                     viewModel.categoryTextController.text = value.name ?? '';
                     filter.categoryId = "${value.id}";
+                    filter.subcategoryId = "";
+                    viewModel.currentPropertyType = "Sell";
                     brands.clear();
                     allModels.clear();
                     viewModel.brandsTextController.clear();
@@ -360,9 +365,11 @@ class _FilterViewState extends State<FilterView> {
                       viewModel.subCategoryTextController.text =
                           value.name ?? '';
                       filter.subcategoryId = "${value.id}";
+                      viewModel.currentPropertyType = "Sell";
                       DialogHelper.showLoading();
                       brands.clear();
                       allModels.clear();
+                      viewModel.propertyForTextController.clear();
                       viewModel.brandsTextController.clear();
                       viewModel.modelTextController.clear();
                       await getBrands(id: "${filter.subcategoryId}");
@@ -381,6 +388,9 @@ class _FilterViewState extends State<FilterView> {
                   height: 10,
                 ),
               },
+              Visibility(
+                  visible: subCategoriesList.isNotEmpty && (filter.subcategoryId??"").isNotEmpty,
+                  child:commonWidget(context,filter.subcategoryId,viewModel)),
               if (brands.isNotEmpty) ...{
                 AppTextField(
                   title:
@@ -597,12 +607,14 @@ class _FilterViewState extends State<FilterView> {
                   height: 10,
                 ),
               },
-              if (filter.categoryId == '11') ...{
-                AmenitiesWidget(
+              if (filter.categoryId == '11' && (filter.subcategoryId??"").isNotEmpty) ...{
+                Visibility(
+                    visible:filter.subcategoryId != "90" ,
+                    child:AmenitiesWidget(
                   selectedAmenities: (List<int?> ids) {
-                    filter?.selectedAmnities = ids.join(',');
+                    filter.selectedAmnities = ids.join(',');
                   },
-                )
+                ))
               },
               if (filter.categoryId == '9') ...{
                 AppTextField(
@@ -771,6 +783,24 @@ class _FilterViewState extends State<FilterView> {
                   filter.year = viewModel.yearTextController.text.trim();
                   filter.fuel = viewModel.fuelTextController.text.trim();
 
+                  filter.propertyFor = viewModel.propertyForTextController.text.trim();
+                  filter.bedrooms = viewModel.noOfBedroomsTextController.text.trim();
+                  filter.bathrooms = viewModel.noOfBathroomsTextController.text.trim();
+                  filter.furnishedType = viewModel.furnishingStatusTextController.text.trim();
+                  filter.ownership = viewModel.ownershipStatusTextController.text.trim();
+                  filter.paymentType = viewModel.paymentTypeTextController.text.trim();
+                  filter.completionStatus = viewModel.completionStatusTextController.text.trim();
+                  filter.deliveryTerm = viewModel.deliveryTermTextController.text.trim();
+                  filter.type = viewModel.propertyForTypeTextController.text.trim();
+                  filter.level = viewModel.levelTextController.text.trim();
+                  filter.listedBy = viewModel.listedByTextController.text.trim();
+                  filter.rentalTerm = viewModel.rentalTermsTextController.text.trim();
+                  filter.accessToUtilities = viewModel.accessToUtilitiesTextController.text.trim();
+                  filter.minDownPrice = viewModel.startDownPriceTextController.text.trim();
+                  filter.maxDownPrice = viewModel.endDownPriceTextController.text.trim();
+                  filter.maxAreaSize = viewModel.startAreaTextController.text.trim();
+                  filter.minAreaSize = viewModel.endAreaTextController.text.trim();
+
                   filter.minKmDriven =
                       viewModel.kmDrivenTextController.text.trim();
                   context.pushReplacement(Routes.filterDetails, extra: filter);
@@ -864,6 +894,37 @@ class _FilterViewState extends State<FilterView> {
     vm.sortByTextController.clear();
     vm.postedWithinTextController.clear();
     vm.brandsTextController.clear();
+    vm.propertyForTextController.clear();
+    vm.currentPropertyType = "Sell";
+    vm.noOfBathroomsTextController.clear();
+    vm.noOfBedroomsTextController.clear();
+    vm.furnishingStatusTextController.clear();
+    vm.accessToUtilitiesTextController.clear();
+    vm.ownershipStatusTextController.clear();
+    vm.paymentTypeTextController.clear();
+    vm.listedByTextController.clear();
+    vm.rentalTermsTextController.clear();
+    vm.completionStatusTextController.clear();
+    vm.deliveryTermTextController.clear();
+    vm.levelTextController.clear();
+    downValues = SfRangeValues(
+        int.parse(vm.startDownPriceTextController.text.isEmpty
+            ? '0'
+            : vm.startDownPriceTextController.text),
+        int.parse(vm.endDownPriceTextController.text.isEmpty
+            ? '20000'
+            : vm.endDownPriceTextController.text));
+    areaValues = SfRangeValues(
+        int.parse(vm.startAreaTextController.text.isEmpty
+            ? '0'
+            : vm.startAreaTextController.text),
+        int.parse(vm.endAreaTextController.text.isEmpty
+            ? '20000'
+            : vm.endAreaTextController.text));
+    vm.startDownPriceTextController.text = '0';
+    vm.endDownPriceTextController.text = '20000';
+    vm.startAreaTextController.text = '0';
+    vm.endAreaTextController.text = '20000';
     setState(() {});
   }
 
@@ -956,4 +1017,2732 @@ class _FilterViewState extends State<FilterView> {
         break;
     }
   }
+
+
+  Widget commonWidget(BuildContext context, String? subcategoryId,HomeVM viewModel){
+    debugPrint("subCatId ====> $subcategoryId");
+    switch(subcategoryId){
+      case "83":
+        return apartmentWidget(viewModel);
+        case "84":
+        return villaWidget(viewModel);
+        case "87":
+        return businessWidget(viewModel);
+        case "88":
+        return vacationWidget(viewModel);
+        case "90":
+        return landWidget(viewModel);
+        default:
+        return Container();
+    }
+  }
+  Widget apartmentWidget(HomeVM viewModel) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AppTextField(
+          title: StringHelper.propertyType,
+          hint: StringHelper.select,
+          controller: viewModel.propertyForTextController,
+          readOnly: true,
+          suffix: PopupMenuButton<String>(
+            clipBehavior: Clip.hardEdge,
+            icon: const Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+            ),
+            onSelected: (String value) {
+              viewModel.currentPropertyType = value;
+              viewModel.propertyForTextController.text = value;
+            },
+            itemBuilder: (BuildContext context) {
+              return ['Sell', 'Rent'].map((option) {
+                return PopupMenuItem(
+                  value: option,
+                  child: Text(option),
+                );
+              }).toList();
+            },
+          ),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+              RegExp(viewModel.regexToRemoveEmoji),
+            ),
+          ],
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          fillColor: Colors.white,
+          elevation: 6,
+        ),
+
+        AppTextField(
+          title: StringHelper.type,
+          hint: StringHelper.select,
+          controller: viewModel.propertyForTypeTextController,
+          readOnly: true,
+          suffix: PopupMenuButton<String>(
+            clipBehavior: Clip.hardEdge,
+            icon: const Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+            ),
+            onSelected: (String value) {
+              viewModel.propertyForTypeTextController.text = value;
+            },
+            itemBuilder: (BuildContext context) {
+              return ["Apartment", "Duplex", "Penthouse", "Studio", "Hotel" "Apartment", "Roof"].map((option) {
+                return PopupMenuItem(
+                  value: option,
+                  child: Text(option),
+                );
+              }).toList();
+            },
+          ),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+              RegExp(viewModel.regexToRemoveEmoji),
+            ),
+          ],
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          fillColor: Colors.white,
+          elevation: 6,
+        ),
+
+        Visibility(
+          visible: viewModel.currentPropertyType.toLowerCase() != "rent",
+          child: AppTextField(
+            title: StringHelper.owner,
+            hint: StringHelper.select,
+            controller: viewModel.ownershipStatusTextController,
+            readOnly: true,
+            suffix: PopupMenuButton<String>(
+              clipBehavior: Clip.hardEdge,
+              icon: const Icon(
+                Icons.arrow_drop_down,
+                color: Colors.black,
+              ),
+              onSelected: (String value) {
+                viewModel.ownershipStatusTextController.text = value;
+              },
+              itemBuilder: (BuildContext context) {
+                return ['Primary', 'Resell'].map((option) {
+                  return PopupMenuItem(
+                    value: option,
+                    child: Text(option),
+                  );
+                }).toList();
+              },
+            ),
+            contentPadding:
+            const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(
+                RegExp(viewModel.regexToRemoveEmoji),
+              ),
+            ],
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.done,
+            fillColor: Colors.white,
+            elevation: 6,
+          ),
+        ),
+        if(viewModel.currentPropertyType.toLowerCase() != "rent")...{
+          Text(
+            "Down Payment",
+            style: context.textTheme.titleSmall,
+          ),
+          const Gap(10),
+          Row(
+            children: [
+              Expanded(
+                child: SizedBox(
+                  width: context.width,
+                  height: 50,
+                  child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      textAlign: TextAlign.center,
+                      controller: viewModel.startDownPriceTextController,
+                      cursorColor: Colors.black,
+                      onChanged: (value) {
+                        setState(() {
+                          if (value.isEmpty) {
+                            downValues = SfRangeValues(
+                                0,
+                                int.parse(
+                                    viewModel.endDownPriceTextController.text));
+                            return;
+                          }
+
+                          downValues = SfRangeValues(
+                              int.parse(
+                                  viewModel.startDownPriceTextController.text),
+                              int.parse(
+                                  viewModel.endDownPriceTextController.text));
+                        });
+                      },
+                      decoration: InputDecoration(
+                          fillColor: const Color(0xffFCFCFD),
+                          hintText: StringHelper.egp0,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                            const BorderSide(color: Color(0xffEFEFEF)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                            const BorderSide(color: Color(0xffEFEFEF)),
+                          ))),
+                ),
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              Text(
+                StringHelper.to,
+                style: context.textTheme.titleSmall,
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              Expanded(
+                child: SizedBox(
+                  width: context.width,
+                  height: 50,
+                  child: TextFormField(
+                    keyboardType: TextInputType.number,
+                    textAlign: TextAlign.center,
+                    controller: viewModel.endDownPriceTextController,
+                    cursorColor: Colors.black,
+                    onChanged: (value) {
+                      setState(() {
+                        if (value.isEmpty) {
+                          downValues = SfRangeValues(
+                              int.parse(
+                                  viewModel.startDownPriceTextController.text),
+                              20000);
+                          return;
+                        }
+
+                        downValues = SfRangeValues(
+                            int.parse(
+                                viewModel.startDownPriceTextController.text),
+                            int.parse(
+                                viewModel.endDownPriceTextController.text));
+                      });
+                    },
+                    decoration: InputDecoration(
+                        fillColor: const Color(0xffFCFCFD),
+                        hintText: "EGP0",
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                            const BorderSide(color: Color(0xffEFEFEF))),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(
+                                color: Color(0xffEFEFEF)))),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          StatefulBuilder(builder: (context, setState) {
+            return SfRangeSlider(
+              min: 0,
+              max: 20000,
+              values: downValues,
+              inactiveColor: Colors.grey,
+              activeColor: const Color(0xffFF385C),
+              showLabels: true,
+              interval: 20000,
+              labelFormatterCallback:
+                  (dynamic actualValue, String formattedText) {
+                return actualValue == 19999
+                    ? ' $formattedText+'
+                    : ' $formattedText';
+              },
+              onChanged: (SfRangeValues newValues) {
+                viewModel.startDownPriceTextController.text =
+                "${newValues.start.round()}";
+                viewModel.endDownPriceTextController.text =
+                "${newValues.end.round()}";
+                setState(() {
+                  downValues = newValues;
+                });
+              },
+            );
+          }),
+          Gap(10),
+        },
+        Text(
+          StringHelper.areaSize,
+          style: context.textTheme.titleSmall,
+        ),
+        const Gap(10),
+        Row(
+          children: [
+            Expanded(
+              child: SizedBox(
+                width: context.width,
+                height: 50,
+                child: TextFormField(
+                    keyboardType: TextInputType.number,
+                    textAlign: TextAlign.center,
+                    controller: viewModel.startAreaTextController,
+                    cursorColor: Colors.black,
+                    onChanged: (value) {
+                      setState(() {
+                        if (value.isEmpty) {
+                          areaValues = SfRangeValues(
+                              0,
+                              int.parse(
+                                  viewModel.endAreaTextController.text));
+                          return;
+                        }
+
+                        areaValues = SfRangeValues(
+                            int.parse(
+                                viewModel.startAreaTextController.text),
+                            int.parse(
+                                viewModel.endAreaTextController.text));
+                      });
+                    },
+                    decoration: InputDecoration(
+                        fillColor: const Color(0xffFCFCFD),
+                        hintText: StringHelper.egp0,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                          const BorderSide(color: Color(0xffEFEFEF)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                          const BorderSide(color: Color(0xffEFEFEF)),
+                        ))),
+              ),
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            Text(
+              StringHelper.to,
+              style: context.textTheme.titleSmall,
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            Expanded(
+              child: SizedBox(
+                width: context.width,
+                height: 50,
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  textAlign: TextAlign.center,
+                  controller: viewModel.endAreaTextController,
+                  cursorColor: Colors.black,
+                  onChanged: (value) {
+                    setState(() {
+                      if (value.isEmpty) {
+                        areaValues = SfRangeValues(
+                            int.parse(
+                                viewModel.startAreaTextController.text),
+                            20000);
+                        return;
+                      }
+
+                      areaValues = SfRangeValues(
+                          int.parse(
+                              viewModel.startAreaTextController.text),
+                          int.parse(
+                              viewModel.endAreaTextController.text));
+                    });
+                  },
+                  decoration: InputDecoration(
+                      fillColor: const Color(0xffFCFCFD),
+                      hintText: "0",
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                          const BorderSide(color: Color(0xffEFEFEF))),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                              color: Color(0xffEFEFEF)))),
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 15,
+        ),
+        StatefulBuilder(builder: (context, setState) {
+          return SfRangeSlider(
+            min: 0,
+            max: 20000,
+            values: areaValues,
+            inactiveColor: Colors.grey,
+            activeColor: const Color(0xffFF385C),
+            showLabels: true,
+            interval: 20000,
+            labelFormatterCallback:
+                (dynamic actualValue, String formattedText) {
+              return actualValue == 19999
+                  ? ' $formattedText+'
+                  : ' $formattedText';
+            },
+            onChanged: (SfRangeValues newValues) {
+              viewModel.startAreaTextController.text =
+              "${newValues.start.round()}";
+              viewModel.endAreaTextController.text =
+              "${newValues.end.round()}";
+              setState(() {
+                areaValues = newValues;
+              });
+            },
+          );
+        }),
+        Gap(10),
+
+        AppTextField(
+          title: "No Of Bedrooms",
+          hint: StringHelper.select,
+          controller: viewModel.noOfBedroomsTextController,
+          readOnly: true,
+          suffix: PopupMenuButton<String>(
+            clipBehavior: Clip.hardEdge,
+            icon: const Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+            ),
+            onSelected: (String value) {
+              viewModel.noOfBedroomsTextController.text = value;
+            },
+            itemBuilder: (BuildContext context) {
+              return ["Studio", "1", "2", "3", "4", "5", "6+"].map((option) {
+                return PopupMenuItem(
+                  value: option,
+                  child: Text(option),
+                );
+              }).toList();
+            },
+          ),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+              RegExp(viewModel.regexToRemoveEmoji),
+            ),
+          ],
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          fillColor: Colors.white,
+          elevation: 6,
+        ),
+
+        AppTextField(
+          title: StringHelper.noOfBathrooms,
+          hint: StringHelper.select,
+          controller: viewModel.noOfBathroomsTextController,
+          readOnly: true,
+          suffix: PopupMenuButton<String>(
+            clipBehavior: Clip.hardEdge,
+            icon: const Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+            ),
+            onSelected: (String value) {
+              viewModel.noOfBathroomsTextController.text = value;
+            },
+            itemBuilder: (BuildContext context) {
+              return ['1', '2', '3', '4', '5', '6', '7', '7+']
+                  .map((option) {
+                return PopupMenuItem(
+                  value: option,
+                  child: Text('$option Bathrooms'),
+                );
+              }).toList();
+            },
+          ),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+              RegExp(viewModel.regexToRemoveEmoji),
+            ),
+          ],
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          fillColor: Colors.white,
+          elevation: 6,
+        ),
+
+        AppTextField(
+          title: StringHelper.furnishing,
+          hint: StringHelper.select,
+          controller: viewModel.furnishingStatusTextController,
+          readOnly: true,
+          suffix: PopupMenuButton<String>(
+            clipBehavior: Clip.hardEdge,
+            icon: const Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+            ),
+            onSelected: (String value) {
+              viewModel.furnishingStatusTextController.text = value;
+            },
+            itemBuilder: (BuildContext context) {
+              return ['Furnished', 'Unfurnished', 'Semi Furnished']
+                  .map((option) {
+                return PopupMenuItem(
+                  value: option,
+                  child: Text(option),
+                );
+              }).toList();
+            },
+          ),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+              RegExp(viewModel.regexToRemoveEmoji),
+            ),
+          ],
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          fillColor: Colors.white,
+          elevation: 6,
+        ),
+
+        AppTextField(
+          title: StringHelper.level,
+          hint: StringHelper.select,
+          controller: viewModel.levelTextController,
+          readOnly: true,
+          suffix: PopupMenuButton<String>(
+            clipBehavior: Clip.hardEdge,
+            icon: const Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+            ),
+            onSelected: (String value) {
+              viewModel.levelTextController.text = value;
+            },
+            itemBuilder: (BuildContext context) {
+              return ["Ground", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+", "Last Floor"]
+                  .map((option) {
+                return PopupMenuItem(
+                  value: option,
+                  child: Text(option),
+                );
+              }).toList();
+            },
+          ),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+              RegExp(viewModel.regexToRemoveEmoji),
+            ),
+          ],
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          fillColor: Colors.white,
+          elevation: 6,
+        ),
+
+        Visibility(
+          visible: viewModel.currentPropertyType.toLowerCase() != "rent",
+          child: AppTextField(
+            title: StringHelper.completionStatus,
+            hint: StringHelper.select,
+            controller: viewModel.completionStatusTextController,
+            readOnly: true,
+            suffix: PopupMenuButton<String>(
+              clipBehavior: Clip.hardEdge,
+              icon: const Icon(
+                Icons.arrow_drop_down,
+                color: Colors.black,
+              ),
+              onSelected: (String value) {
+                viewModel.completionStatusTextController.text = value;
+              },
+              itemBuilder: (BuildContext context) {
+                return ['Ready', 'Off Plan'].map((option) {
+                  return PopupMenuItem(
+                    value: option,
+                    child: Text(option),
+                  );
+                }).toList();
+              },
+            ),
+            contentPadding:
+            const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(
+                RegExp(viewModel.regexToRemoveEmoji),
+              ),
+            ],
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.done,
+            fillColor: Colors.white,
+            elevation: 6,
+          ),
+        ),
+
+        Visibility(
+          visible: viewModel.currentPropertyType.toLowerCase() != "rent",
+          child: AppTextField(
+            title: StringHelper.paymentType,
+            hint: StringHelper.select,
+            controller: viewModel.paymentTypeTextController,
+            readOnly: true,
+            suffix: PopupMenuButton<String>(
+              clipBehavior: Clip.hardEdge,
+              icon: const Icon(
+                Icons.arrow_drop_down,
+                color: Colors.black,
+              ),
+              onSelected: (String value) {
+                viewModel.paymentTypeTextController.text = value;
+              },
+              itemBuilder: (BuildContext context) {
+                return ['Installment', 'Cash or Installment', 'cash']
+                    .map((option) {
+                  return PopupMenuItem(
+                    value: option,
+                    child: Text(option),
+                  );
+                }).toList();
+              },
+            ),
+            contentPadding:
+            const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(
+                RegExp(viewModel.regexToRemoveEmoji),
+              ),
+            ],
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.done,
+            fillColor: Colors.white,
+            elevation: 6,
+          ),
+        ),
+
+        Visibility(
+          visible: viewModel.currentPropertyType.toLowerCase() != "rent",
+          child: AppTextField(
+            title: "Listed By",
+            hint: StringHelper.select,
+            controller: viewModel.listedByTextController,
+            readOnly: true,
+            suffix: PopupMenuButton<String>(
+              clipBehavior: Clip.hardEdge,
+              icon: const Icon(
+                Icons.arrow_drop_down,
+                color: Colors.black,
+              ),
+              onSelected: (String value) {
+                viewModel.listedByTextController.text = value;
+              },
+              itemBuilder: (BuildContext context) {
+                return ['Agent', 'Landlord']
+                    .map((option) {
+                  return PopupMenuItem(
+                    value: option,
+                    child: Text(option),
+                  );
+                }).toList();
+              },
+            ),
+            contentPadding:
+            const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(
+                RegExp(viewModel.regexToRemoveEmoji),
+              ),
+            ],
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.done,
+            fillColor: Colors.white,
+            elevation: 6,
+          ),
+        ),
+
+
+      ],
+    );
+  }
+  Widget vacationWidget(HomeVM viewModel) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AppTextField(
+          title: StringHelper.propertyType,
+          hint: StringHelper.select,
+          controller: viewModel.propertyForTextController,
+          readOnly: true,
+          suffix: PopupMenuButton<String>(
+            clipBehavior: Clip.hardEdge,
+            icon: const Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+            ),
+            onSelected: (String value) {
+              viewModel.currentPropertyType = value;
+              viewModel.propertyForTextController.text = value;
+            },
+            itemBuilder: (BuildContext context) {
+              return ['Sell', 'Rent'].map((option) {
+                return PopupMenuItem(
+                  value: option,
+                  child: Text(option),
+                );
+              }).toList();
+            },
+          ),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+              RegExp(viewModel.regexToRemoveEmoji),
+            ),
+          ],
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          fillColor: Colors.white,
+          elevation: 6,
+        ),
+
+        AppTextField(
+          title: StringHelper.type,
+          hint: StringHelper.select,
+          controller: viewModel.propertyForTypeTextController,
+          readOnly: true,
+          suffix: PopupMenuButton<String>(
+            clipBehavior: Clip.hardEdge,
+            icon: const Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+            ),
+            onSelected: (String value) {
+              viewModel.propertyForTypeTextController.text = value;
+            },
+            itemBuilder: (BuildContext context) {
+              return ["Chalet", "Duplex", "Penthouse", "Standalone Villa", "Studio", "Townhouse Twin house", "Cabin"].map((option) {
+                return PopupMenuItem(
+                  value: option,
+                  child: Text(option),
+                );
+              }).toList();
+            },
+          ),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+              RegExp(viewModel.regexToRemoveEmoji),
+            ),
+          ],
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          fillColor: Colors.white,
+          elevation: 6,
+        ),
+
+        Visibility(
+          visible: viewModel.currentPropertyType.toLowerCase() != "rent",
+          child: AppTextField(
+            title: StringHelper.owner,
+            hint: StringHelper.select,
+            controller: viewModel.ownershipStatusTextController,
+            readOnly: true,
+            suffix: PopupMenuButton<String>(
+              clipBehavior: Clip.hardEdge,
+              icon: const Icon(
+                Icons.arrow_drop_down,
+                color: Colors.black,
+              ),
+              onSelected: (String value) {
+                viewModel.ownershipStatusTextController.text = value;
+              },
+              itemBuilder: (BuildContext context) {
+                return ['Primary', 'Resell'].map((option) {
+                  return PopupMenuItem(
+                    value: option,
+                    child: Text(option),
+                  );
+                }).toList();
+              },
+            ),
+            contentPadding:
+            const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(
+                RegExp(viewModel.regexToRemoveEmoji),
+              ),
+            ],
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.done,
+            fillColor: Colors.white,
+            elevation: 6,
+          ),
+        ),
+        if(viewModel.currentPropertyType.toLowerCase() != "rent")...{
+          Text(
+            "Down Payment",
+            style: context.textTheme.titleSmall,
+          ),
+          const Gap(10),
+          Row(
+            children: [
+              Expanded(
+                child: SizedBox(
+                  width: context.width,
+                  height: 50,
+                  child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      textAlign: TextAlign.center,
+                      controller: viewModel.startDownPriceTextController,
+                      cursorColor: Colors.black,
+                      onChanged: (value) {
+                        setState(() {
+                          if (value.isEmpty) {
+                            downValues = SfRangeValues(
+                                0,
+                                int.parse(
+                                    viewModel.endDownPriceTextController.text));
+                            return;
+                          }
+
+                          downValues = SfRangeValues(
+                              int.parse(
+                                  viewModel.startDownPriceTextController.text),
+                              int.parse(
+                                  viewModel.endDownPriceTextController.text));
+                        });
+                      },
+                      decoration: InputDecoration(
+                          fillColor: const Color(0xffFCFCFD),
+                          hintText: StringHelper.egp0,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                            const BorderSide(color: Color(0xffEFEFEF)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                            const BorderSide(color: Color(0xffEFEFEF)),
+                          ))),
+                ),
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              Text(
+                StringHelper.to,
+                style: context.textTheme.titleSmall,
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              Expanded(
+                child: SizedBox(
+                  width: context.width,
+                  height: 50,
+                  child: TextFormField(
+                    keyboardType: TextInputType.number,
+                    textAlign: TextAlign.center,
+                    controller: viewModel.endDownPriceTextController,
+                    cursorColor: Colors.black,
+                    onChanged: (value) {
+                      setState(() {
+                        if (value.isEmpty) {
+                          downValues = SfRangeValues(
+                              int.parse(
+                                  viewModel.startDownPriceTextController.text),
+                              20000);
+                          return;
+                        }
+
+                        downValues = SfRangeValues(
+                            int.parse(
+                                viewModel.startDownPriceTextController.text),
+                            int.parse(
+                                viewModel.endDownPriceTextController.text));
+                      });
+                    },
+                    decoration: InputDecoration(
+                        fillColor: const Color(0xffFCFCFD),
+                        hintText: "EGP0",
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                            const BorderSide(color: Color(0xffEFEFEF))),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(
+                                color: Color(0xffEFEFEF)))),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          StatefulBuilder(builder: (context, setState) {
+            return SfRangeSlider(
+              min: 0,
+              max: 20000,
+              values: downValues,
+              inactiveColor: Colors.grey,
+              activeColor: const Color(0xffFF385C),
+              showLabels: true,
+              interval: 20000,
+              labelFormatterCallback:
+                  (dynamic actualValue, String formattedText) {
+                return actualValue == 19999
+                    ? ' $formattedText+'
+                    : ' $formattedText';
+              },
+              onChanged: (SfRangeValues newValues) {
+                viewModel.startDownPriceTextController.text =
+                "${newValues.start.round()}";
+                viewModel.endDownPriceTextController.text =
+                "${newValues.end.round()}";
+                setState(() {
+                  downValues = newValues;
+                });
+              },
+            );
+          }),
+          Gap(10),
+        },
+        Text(
+          StringHelper.areaSize,
+          style: context.textTheme.titleSmall,
+        ),
+        const Gap(10),
+        Row(
+          children: [
+            Expanded(
+              child: SizedBox(
+                width: context.width,
+                height: 50,
+                child: TextFormField(
+                    keyboardType: TextInputType.number,
+                    textAlign: TextAlign.center,
+                    controller: viewModel.startAreaTextController,
+                    cursorColor: Colors.black,
+                    onChanged: (value) {
+                      setState(() {
+                        if (value.isEmpty) {
+                          areaValues = SfRangeValues(
+                              0,
+                              int.parse(
+                                  viewModel.endAreaTextController.text));
+                          return;
+                        }
+
+                        areaValues = SfRangeValues(
+                            int.parse(
+                                viewModel.startAreaTextController.text),
+                            int.parse(
+                                viewModel.endAreaTextController.text));
+                      });
+                    },
+                    decoration: InputDecoration(
+                        fillColor: const Color(0xffFCFCFD),
+                        hintText: StringHelper.egp0,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                          const BorderSide(color: Color(0xffEFEFEF)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                          const BorderSide(color: Color(0xffEFEFEF)),
+                        ))),
+              ),
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            Text(
+              StringHelper.to,
+              style: context.textTheme.titleSmall,
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            Expanded(
+              child: SizedBox(
+                width: context.width,
+                height: 50,
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  textAlign: TextAlign.center,
+                  controller: viewModel.endAreaTextController,
+                  cursorColor: Colors.black,
+                  onChanged: (value) {
+                    setState(() {
+                      if (value.isEmpty) {
+                        areaValues = SfRangeValues(
+                            int.parse(
+                                viewModel.startAreaTextController.text),
+                            20000);
+                        return;
+                      }
+
+                      areaValues = SfRangeValues(
+                          int.parse(
+                              viewModel.startAreaTextController.text),
+                          int.parse(
+                              viewModel.endAreaTextController.text));
+                    });
+                  },
+                  decoration: InputDecoration(
+                      fillColor: const Color(0xffFCFCFD),
+                      hintText: "0",
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                          const BorderSide(color: Color(0xffEFEFEF))),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                              color: Color(0xffEFEFEF)))),
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 15,
+        ),
+        StatefulBuilder(builder: (context, setState) {
+          return SfRangeSlider(
+            min: 0,
+            max: 20000,
+            values: areaValues,
+            inactiveColor: Colors.grey,
+            activeColor: const Color(0xffFF385C),
+            showLabels: true,
+            interval: 20000,
+            labelFormatterCallback:
+                (dynamic actualValue, String formattedText) {
+              return actualValue == 19999
+                  ? ' $formattedText+'
+                  : ' $formattedText';
+            },
+            onChanged: (SfRangeValues newValues) {
+              viewModel.startAreaTextController.text =
+              "${newValues.start.round()}";
+              viewModel.endAreaTextController.text =
+              "${newValues.end.round()}";
+              setState(() {
+                areaValues = newValues;
+              });
+            },
+          );
+        }),
+        Gap(10),
+
+        AppTextField(
+          title: "No Of Bedrooms",
+          hint: StringHelper.select,
+          controller: viewModel.noOfBedroomsTextController,
+          readOnly: true,
+          suffix: PopupMenuButton<String>(
+            clipBehavior: Clip.hardEdge,
+            icon: const Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+            ),
+            onSelected: (String value) {
+              viewModel.noOfBedroomsTextController.text = value;
+            },
+            itemBuilder: (BuildContext context) {
+              return ["Studio", "1", "2", "3", "4", "5", "6+"].map((option) {
+                return PopupMenuItem(
+                  value: option,
+                  child: Text(option),
+                );
+              }).toList();
+            },
+          ),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+              RegExp(viewModel.regexToRemoveEmoji),
+            ),
+          ],
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          fillColor: Colors.white,
+          elevation: 6,
+        ),
+
+        AppTextField(
+          title: StringHelper.noOfBathrooms,
+          hint: StringHelper.select,
+          controller: viewModel.noOfBathroomsTextController,
+          readOnly: true,
+          suffix: PopupMenuButton<String>(
+            clipBehavior: Clip.hardEdge,
+            icon: const Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+            ),
+            onSelected: (String value) {
+              viewModel.noOfBathroomsTextController.text = value;
+            },
+            itemBuilder: (BuildContext context) {
+              return ['1', '2', '3', '4', '5', '6', '7', '7+']
+                  .map((option) {
+                return PopupMenuItem(
+                  value: option,
+                  child: Text('$option Bathrooms'),
+                );
+              }).toList();
+            },
+          ),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+              RegExp(viewModel.regexToRemoveEmoji),
+            ),
+          ],
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          fillColor: Colors.white,
+          elevation: 6,
+        ),
+
+        AppTextField(
+          title: StringHelper.furnishing,
+          hint: StringHelper.select,
+          controller: viewModel.furnishingStatusTextController,
+          readOnly: true,
+          suffix: PopupMenuButton<String>(
+            clipBehavior: Clip.hardEdge,
+            icon: const Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+            ),
+            onSelected: (String value) {
+              viewModel.furnishingStatusTextController.text = value;
+            },
+            itemBuilder: (BuildContext context) {
+              return ['Yes','No']
+                  .map((option) {
+                return PopupMenuItem(
+                  value: option,
+                  child: Text(option),
+                );
+              }).toList();
+            },
+          ),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+              RegExp(viewModel.regexToRemoveEmoji),
+            ),
+          ],
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          fillColor: Colors.white,
+          elevation: 6,
+        ),
+
+        AppTextField(
+          title: StringHelper.level,
+          hint: StringHelper.select,
+          controller: viewModel.levelTextController,
+          readOnly: true,
+          suffix: PopupMenuButton<String>(
+            clipBehavior: Clip.hardEdge,
+            icon: const Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+            ),
+            onSelected: (String value) {
+              viewModel.levelTextController.text = value;
+            },
+            itemBuilder: (BuildContext context) {
+              return ["Ground", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+", "Last Floor"]
+                  .map((option) {
+                return PopupMenuItem(
+                  value: option,
+                  child: Text(option),
+                );
+              }).toList();
+            },
+          ),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+              RegExp(viewModel.regexToRemoveEmoji),
+            ),
+          ],
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          fillColor: Colors.white,
+          elevation: 6,
+        ),
+
+        Visibility(
+          visible: viewModel.currentPropertyType.toLowerCase() != "rent",
+          child: AppTextField(
+            title: StringHelper.completionStatus,
+            hint: StringHelper.select,
+            controller: viewModel.completionStatusTextController,
+            readOnly: true,
+            suffix: PopupMenuButton<String>(
+              clipBehavior: Clip.hardEdge,
+              icon: const Icon(
+                Icons.arrow_drop_down,
+                color: Colors.black,
+              ),
+              onSelected: (String value) {
+                viewModel.completionStatusTextController.text = value;
+              },
+              itemBuilder: (BuildContext context) {
+                return ['Ready', 'Off Plan'].map((option) {
+                  return PopupMenuItem(
+                    value: option,
+                    child: Text(option),
+                  );
+                }).toList();
+              },
+            ),
+            contentPadding:
+            const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(
+                RegExp(viewModel.regexToRemoveEmoji),
+              ),
+            ],
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.done,
+            fillColor: Colors.white,
+            elevation: 6,
+          ),
+        ),
+
+        Visibility(
+          visible: viewModel.currentPropertyType.toLowerCase() != "rent",
+          child: AppTextField(
+            title: StringHelper.paymentType,
+            hint: StringHelper.select,
+            controller: viewModel.paymentTypeTextController,
+            readOnly: true,
+            suffix: PopupMenuButton<String>(
+              clipBehavior: Clip.hardEdge,
+              icon: const Icon(
+                Icons.arrow_drop_down,
+                color: Colors.black,
+              ),
+              onSelected: (String value) {
+                viewModel.paymentTypeTextController.text = value;
+              },
+              itemBuilder: (BuildContext context) {
+                return ['Installment', 'Cash or Installment', 'cash']
+                    .map((option) {
+                  return PopupMenuItem(
+                    value: option,
+                    child: Text(option),
+                  );
+                }).toList();
+              },
+            ),
+            contentPadding:
+            const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(
+                RegExp(viewModel.regexToRemoveEmoji),
+              ),
+            ],
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.done,
+            fillColor: Colors.white,
+            elevation: 6,
+          ),
+        ),
+
+
+        Visibility(
+          visible: viewModel.currentPropertyType.toLowerCase() != "rent",
+          child: AppTextField(
+            title: "Delivery Term",
+            hint: StringHelper.select,
+            controller: viewModel.deliveryTermTextController,
+            readOnly: true,
+            suffix: PopupMenuButton<String>(
+              clipBehavior: Clip.hardEdge,
+              icon: const Icon(
+                Icons.arrow_drop_down,
+                color: Colors.black,
+              ),
+              onSelected: (String value) {
+                viewModel.deliveryTermTextController.text = value;
+              },
+              itemBuilder: (BuildContext context) {
+                return ['Move-in Ready','Under Construction','Shell and Core','Semi-Finished']
+                    .map((option) {
+                  return PopupMenuItem(
+                    value: option,
+                    child: Text(option),
+                  );
+                }).toList();
+              },
+            ),
+            contentPadding:
+            const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(
+                RegExp(viewModel.regexToRemoveEmoji),
+              ),
+            ],
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.done,
+            fillColor: Colors.white,
+            elevation: 6,
+          ),
+        ),
+
+        Visibility(
+          visible: viewModel.currentPropertyType.toLowerCase() == "rent",
+          child: AppTextField(
+            title: "Rental Term",
+            hint: StringHelper.select,
+            controller: viewModel.rentalTermsTextController,
+            readOnly: true,
+            suffix: PopupMenuButton<String>(
+              clipBehavior: Clip.hardEdge,
+              icon: const Icon(
+                Icons.arrow_drop_down,
+                color: Colors.black,
+              ),
+              onSelected: (String value) {
+                viewModel.rentalTermsTextController.text = value;
+              },
+              itemBuilder: (BuildContext context) {
+                return ['Daily', 'Weekly', 'Monthly', 'Yearly']
+                    .map((option) {
+                  return PopupMenuItem(
+                    value: option,
+                    child: Text(option),
+                  );
+                }).toList();
+              },
+            ),
+            contentPadding:
+            const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(
+                RegExp(viewModel.regexToRemoveEmoji),
+              ),
+            ],
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.done,
+            fillColor: Colors.white,
+            elevation: 6,
+          ),
+        ),
+      ],
+    );
+  }
+  Widget villaWidget(HomeVM viewModel) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AppTextField(
+          title: StringHelper.propertyType,
+          hint: StringHelper.select,
+          controller: viewModel.propertyForTextController,
+          readOnly: true,
+          suffix: PopupMenuButton<String>(
+            clipBehavior: Clip.hardEdge,
+            icon: const Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+            ),
+            onSelected: (String value) {
+              viewModel.currentPropertyType = value;
+              viewModel.propertyForTextController.text = value;
+            },
+            itemBuilder: (BuildContext context) {
+              return ['Sell', 'Rent'].map((option) {
+                return PopupMenuItem(
+                  value: option,
+                  child: Text(option),
+                );
+              }).toList();
+            },
+          ),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+              RegExp(viewModel.regexToRemoveEmoji),
+            ),
+          ],
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          fillColor: Colors.white,
+          elevation: 6,
+        ),
+
+        AppTextField(
+          title: StringHelper.type,
+          hint: StringHelper.select,
+          controller: viewModel.propertyForTypeTextController,
+          readOnly: true,
+          suffix: PopupMenuButton<String>(
+            clipBehavior: Clip.hardEdge,
+            icon: const Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+            ),
+            onSelected: (String value) {
+              viewModel.propertyForTypeTextController.text = value;
+            },
+            itemBuilder: (BuildContext context) {
+              return ["Stand Alone","Townhouse","Twin House","I-Villa","Mansion"].map((option) {
+                return PopupMenuItem(
+                  value: option,
+                  child: Text(option),
+                );
+              }).toList();
+            },
+          ),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+              RegExp(viewModel.regexToRemoveEmoji),
+            ),
+          ],
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          fillColor: Colors.white,
+          elevation: 6,
+        ),
+
+
+        if(viewModel.currentPropertyType.toLowerCase() != "rent")...{
+          Text(
+            "Down Payment",
+            style: context.textTheme.titleSmall,
+          ),
+          const Gap(10),
+          Row(
+            children: [
+              Expanded(
+                child: SizedBox(
+                  width: context.width,
+                  height: 50,
+                  child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      textAlign: TextAlign.center,
+                      controller: viewModel.startDownPriceTextController,
+                      cursorColor: Colors.black,
+                      onChanged: (value) {
+                        setState(() {
+                          if (value.isEmpty) {
+                            downValues = SfRangeValues(
+                                0,
+                                int.parse(
+                                    viewModel.endDownPriceTextController.text));
+                            return;
+                          }
+
+                          downValues = SfRangeValues(
+                              int.parse(
+                                  viewModel.startDownPriceTextController.text),
+                              int.parse(
+                                  viewModel.endDownPriceTextController.text));
+                        });
+                      },
+                      decoration: InputDecoration(
+                          fillColor: const Color(0xffFCFCFD),
+                          hintText: StringHelper.egp0,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                            const BorderSide(color: Color(0xffEFEFEF)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                            const BorderSide(color: Color(0xffEFEFEF)),
+                          ))),
+                ),
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              Text(
+                StringHelper.to,
+                style: context.textTheme.titleSmall,
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              Expanded(
+                child: SizedBox(
+                  width: context.width,
+                  height: 50,
+                  child: TextFormField(
+                    keyboardType: TextInputType.number,
+                    textAlign: TextAlign.center,
+                    controller: viewModel.endDownPriceTextController,
+                    cursorColor: Colors.black,
+                    onChanged: (value) {
+                      setState(() {
+                        if (value.isEmpty) {
+                          downValues = SfRangeValues(
+                              int.parse(
+                                  viewModel.startDownPriceTextController.text),
+                              20000);
+                          return;
+                        }
+
+                        downValues = SfRangeValues(
+                            int.parse(
+                                viewModel.startDownPriceTextController.text),
+                            int.parse(
+                                viewModel.endDownPriceTextController.text));
+                      });
+                    },
+                    decoration: InputDecoration(
+                        fillColor: const Color(0xffFCFCFD),
+                        hintText: "EGP0",
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide:
+                            const BorderSide(color: Color(0xffEFEFEF))),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(
+                                color: Color(0xffEFEFEF)))),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          StatefulBuilder(builder: (context, setState) {
+            return SfRangeSlider(
+              min: 0,
+              max: 20000,
+              values: downValues,
+              inactiveColor: Colors.grey,
+              activeColor: const Color(0xffFF385C),
+              showLabels: true,
+              interval: 20000,
+              labelFormatterCallback:
+                  (dynamic actualValue, String formattedText) {
+                return actualValue == 19999
+                    ? ' $formattedText+'
+                    : ' $formattedText';
+              },
+              onChanged: (SfRangeValues newValues) {
+                viewModel.startDownPriceTextController.text =
+                "${newValues.start.round()}";
+                viewModel.endDownPriceTextController.text =
+                "${newValues.end.round()}";
+                setState(() {
+                  downValues = newValues;
+                });
+              },
+            );
+          }),
+          Gap(10),
+        },
+
+        Text(
+          StringHelper.areaSize,
+          style: context.textTheme.titleSmall,
+        ),
+        const Gap(10),
+        Row(
+          children: [
+            Expanded(
+              child: SizedBox(
+                width: context.width,
+                height: 50,
+                child: TextFormField(
+                    keyboardType: TextInputType.number,
+                    textAlign: TextAlign.center,
+                    controller: viewModel.startAreaTextController,
+                    cursorColor: Colors.black,
+                    onChanged: (value) {
+                      setState(() {
+                        if (value.isEmpty) {
+                          areaValues = SfRangeValues(
+                              0,
+                              int.parse(
+                                  viewModel.endAreaTextController.text));
+                          return;
+                        }
+
+                        areaValues = SfRangeValues(
+                            int.parse(
+                                viewModel.startAreaTextController.text),
+                            int.parse(
+                                viewModel.endAreaTextController.text));
+                      });
+                    },
+                    decoration: InputDecoration(
+                        fillColor: const Color(0xffFCFCFD),
+                        hintText: StringHelper.egp0,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                          const BorderSide(color: Color(0xffEFEFEF)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                          const BorderSide(color: Color(0xffEFEFEF)),
+                        ))),
+              ),
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            Text(
+              StringHelper.to,
+              style: context.textTheme.titleSmall,
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            Expanded(
+              child: SizedBox(
+                width: context.width,
+                height: 50,
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  textAlign: TextAlign.center,
+                  controller: viewModel.endAreaTextController,
+                  cursorColor: Colors.black,
+                  onChanged: (value) {
+                    setState(() {
+                      if (value.isEmpty) {
+                        areaValues = SfRangeValues(
+                            int.parse(
+                                viewModel.startAreaTextController.text),
+                            20000);
+                        return;
+                      }
+
+                      areaValues = SfRangeValues(
+                          int.parse(
+                              viewModel.startAreaTextController.text),
+                          int.parse(
+                              viewModel.endAreaTextController.text));
+                    });
+                  },
+                  decoration: InputDecoration(
+                      fillColor: const Color(0xffFCFCFD),
+                      hintText: "0",
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                          const BorderSide(color: Color(0xffEFEFEF))),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                              color: Color(0xffEFEFEF)))),
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 15,
+        ),
+        StatefulBuilder(builder: (context, setState) {
+          return SfRangeSlider(
+            min: 0,
+            max: 20000,
+            values: areaValues,
+            inactiveColor: Colors.grey,
+            activeColor: const Color(0xffFF385C),
+            showLabels: true,
+            interval: 20000,
+            labelFormatterCallback:
+                (dynamic actualValue, String formattedText) {
+              return actualValue == 19999
+                  ? ' $formattedText+'
+                  : ' $formattedText';
+            },
+            onChanged: (SfRangeValues newValues) {
+              viewModel.startAreaTextController.text =
+              "${newValues.start.round()}";
+              viewModel.endAreaTextController.text =
+              "${newValues.end.round()}";
+              setState(() {
+                areaValues = newValues;
+              });
+            },
+          );
+        }),
+        Gap(10),
+
+        AppTextField(
+          title: "No Of Bedrooms",
+          hint: StringHelper.select,
+          controller: viewModel.noOfBedroomsTextController,
+          readOnly: true,
+          suffix: PopupMenuButton<String>(
+            clipBehavior: Clip.hardEdge,
+            icon: const Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+            ),
+            onSelected: (String value) {
+              viewModel.noOfBedroomsTextController.text = value;
+            },
+            itemBuilder: (BuildContext context) {
+              return ["Studio", "1", "2", "3", "4", "5", "6+"].map((option) {
+                return PopupMenuItem(
+                  value: option,
+                  child: Text(option),
+                );
+              }).toList();
+            },
+          ),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+              RegExp(viewModel.regexToRemoveEmoji),
+            ),
+          ],
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          fillColor: Colors.white,
+          elevation: 6,
+        ),
+
+        AppTextField(
+          title: StringHelper.noOfBathrooms,
+          hint: StringHelper.select,
+          controller: viewModel.noOfBathroomsTextController,
+          readOnly: true,
+          suffix: PopupMenuButton<String>(
+            clipBehavior: Clip.hardEdge,
+            icon: const Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+            ),
+            onSelected: (String value) {
+              viewModel.noOfBathroomsTextController.text = value;
+            },
+            itemBuilder: (BuildContext context) {
+              return ['1', '2', '3', '4', '5', '6', '7', '7+']
+                  .map((option) {
+                return PopupMenuItem(
+                  value: option,
+                  child: Text('$option Bathrooms'),
+                );
+              }).toList();
+            },
+          ),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+              RegExp(viewModel.regexToRemoveEmoji),
+            ),
+          ],
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          fillColor: Colors.white,
+          elevation: 6,
+        ),
+
+        AppTextField(
+          title: StringHelper.furnishing,
+          hint: StringHelper.select,
+          controller: viewModel.furnishingStatusTextController,
+          readOnly: true,
+          suffix: PopupMenuButton<String>(
+            clipBehavior: Clip.hardEdge,
+            icon: const Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+            ),
+            onSelected: (String value) {
+              viewModel.furnishingStatusTextController.text = value;
+            },
+            itemBuilder: (BuildContext context) {
+              return ['Furnished', 'Unfurnished', 'Semi Furnished']
+                  .map((option) {
+                return PopupMenuItem(
+                  value: option,
+                  child: Text(option),
+                );
+              }).toList();
+            },
+          ),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+              RegExp(viewModel.regexToRemoveEmoji),
+            ),
+          ],
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          fillColor: Colors.white,
+          elevation: 6,
+        ),
+        
+        Visibility(
+          visible: viewModel.currentPropertyType.toLowerCase() != "rent",
+          child: AppTextField(
+            title: StringHelper.completionStatus,
+            hint: StringHelper.select,
+            controller: viewModel.completionStatusTextController,
+            readOnly: true,
+            suffix: PopupMenuButton<String>(
+              clipBehavior: Clip.hardEdge,
+              icon: const Icon(
+                Icons.arrow_drop_down,
+                color: Colors.black,
+              ),
+              onSelected: (String value) {
+                viewModel.completionStatusTextController.text = value;
+              },
+              itemBuilder: (BuildContext context) {
+                return ['Ready', 'Off Plan'].map((option) {
+                  return PopupMenuItem(
+                    value: option,
+                    child: Text(option),
+                  );
+                }).toList();
+              },
+            ),
+            contentPadding:
+            const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(
+                RegExp(viewModel.regexToRemoveEmoji),
+              ),
+            ],
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.done,
+            fillColor: Colors.white,
+            elevation: 6,
+          ),
+        ),
+
+        Visibility(
+          visible: viewModel.currentPropertyType.toLowerCase() != "rent",
+          child: AppTextField(
+            title: StringHelper.paymentType,
+            hint: StringHelper.select,
+            controller: viewModel.paymentTypeTextController,
+            readOnly: true,
+            suffix: PopupMenuButton<String>(
+              clipBehavior: Clip.hardEdge,
+              icon: const Icon(
+                Icons.arrow_drop_down,
+                color: Colors.black,
+              ),
+              onSelected: (String value) {
+                viewModel.paymentTypeTextController.text = value;
+              },
+              itemBuilder: (BuildContext context) {
+                return ['Installment', 'Cash or Installment', 'cash']
+                    .map((option) {
+                  return PopupMenuItem(
+                    value: option,
+                    child: Text(option),
+                  );
+                }).toList();
+              },
+            ),
+            contentPadding:
+            const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(
+                RegExp(viewModel.regexToRemoveEmoji),
+              ),
+            ],
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.done,
+            fillColor: Colors.white,
+            elevation: 6,
+          ),
+        ),
+
+        Visibility(
+          visible: viewModel.currentPropertyType.toLowerCase() != "rent",
+          child: AppTextField(
+            title: "Delivery Term",
+            hint: StringHelper.select,
+            controller: viewModel.deliveryTermTextController,
+            readOnly: true,
+            suffix: PopupMenuButton<String>(
+              clipBehavior: Clip.hardEdge,
+              icon: const Icon(
+                Icons.arrow_drop_down,
+                color: Colors.black,
+              ),
+              onSelected: (String value) {
+                viewModel.deliveryTermTextController.text = value;
+              },
+              itemBuilder: (BuildContext context) {
+                return ['Move-in Ready','Under Construction','Shell and Core','Semi-Finished']
+                    .map((option) {
+                  return PopupMenuItem(
+                    value: option,
+                    child: Text(option),
+                  );
+                }).toList();
+              },
+            ),
+            contentPadding:
+            const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(
+                RegExp(viewModel.regexToRemoveEmoji),
+              ),
+            ],
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.done,
+            fillColor: Colors.white,
+            elevation: 6,
+          ),
+        ),
+        
+        Visibility(
+          visible: viewModel.currentPropertyType.toLowerCase() == "rent",
+          child: AppTextField(
+            title: "Rental Term",
+            hint: StringHelper.select,
+            controller: viewModel.rentalTermsTextController,
+            readOnly: true,
+            suffix: PopupMenuButton<String>(
+              clipBehavior: Clip.hardEdge,
+              icon: const Icon(
+                Icons.arrow_drop_down,
+                color: Colors.black,
+              ),
+              onSelected: (String value) {
+                viewModel.rentalTermsTextController.text = value;
+              },
+              itemBuilder: (BuildContext context) {
+                return ['Daily', 'Weekly', 'Monthly', 'Yearly']
+                    .map((option) {
+                  return PopupMenuItem(
+                    value: option,
+                    child: Text(option),
+                  );
+                }).toList();
+              },
+            ),
+            contentPadding:
+            const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(
+                RegExp(viewModel.regexToRemoveEmoji),
+              ),
+            ],
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.done,
+            fillColor: Colors.white,
+            elevation: 6,
+          ),
+        ),
+      ],
+    );
+  }
+  Widget businessWidget(HomeVM viewModel) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AppTextField(
+          title: StringHelper.propertyType,
+          hint: StringHelper.select,
+          controller: viewModel.propertyForTextController,
+          readOnly: true,
+          suffix: PopupMenuButton<String>(
+            clipBehavior: Clip.hardEdge,
+            icon: const Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+            ),
+            onSelected: (String value) {
+              viewModel.currentPropertyType = value;
+              viewModel.propertyForTextController.text = value;
+            },
+            itemBuilder: (BuildContext context) {
+              return ['Sell', 'Rent'].map((option) {
+                return PopupMenuItem(
+                  value: option,
+                  child: Text(option),
+                );
+              }).toList();
+            },
+          ),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+              RegExp(viewModel.regexToRemoveEmoji),
+            ),
+          ],
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          fillColor: Colors.white,
+          elevation: 6,
+        ),
+
+        AppTextField(
+          title: StringHelper.type,
+          hint: StringHelper.select,
+          controller: viewModel.propertyForTypeTextController,
+          readOnly: true,
+          suffix: PopupMenuButton<String>(
+            clipBehavior: Clip.hardEdge,
+            icon: const Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+            ),
+            onSelected: (String value) {
+              viewModel.propertyForTypeTextController.text = value;
+            },
+            itemBuilder: (BuildContext context) {
+              return ["Factory", "Full building", "Garage", "Warehouse", "Clinic", "Restraunt/ cafe", "Offices", "Factory", "Pharmacy", "Medical facility", "Showroom", "Hotel/ motel", "Gas station", "Storage facility", "other"].map((option) {
+                return PopupMenuItem(
+                  value: option,
+                  child: Text(option),
+                );
+              }).toList();
+            },
+          ),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+              RegExp(viewModel.regexToRemoveEmoji),
+            ),
+          ],
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          fillColor: Colors.white,
+          elevation: 6,
+        ),
+
+        Text(
+          StringHelper.areaSize,
+          style: context.textTheme.titleSmall,
+        ),
+        const Gap(10),
+        Row(
+          children: [
+            Expanded(
+              child: SizedBox(
+                width: context.width,
+                height: 50,
+                child: TextFormField(
+                    keyboardType: TextInputType.number,
+                    textAlign: TextAlign.center,
+                    controller: viewModel.startAreaTextController,
+                    cursorColor: Colors.black,
+                    onChanged: (value) {
+                      setState(() {
+                        if (value.isEmpty) {
+                          areaValues = SfRangeValues(
+                              0,
+                              int.parse(
+                                  viewModel.endAreaTextController.text));
+                          return;
+                        }
+
+                        areaValues = SfRangeValues(
+                            int.parse(
+                                viewModel.startAreaTextController.text),
+                            int.parse(
+                                viewModel.endAreaTextController.text));
+                      });
+                    },
+                    decoration: InputDecoration(
+                        fillColor: const Color(0xffFCFCFD),
+                        hintText: StringHelper.egp0,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                          const BorderSide(color: Color(0xffEFEFEF)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                          const BorderSide(color: Color(0xffEFEFEF)),
+                        ))),
+              ),
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            Text(
+              StringHelper.to,
+              style: context.textTheme.titleSmall,
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            Expanded(
+              child: SizedBox(
+                width: context.width,
+                height: 50,
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  textAlign: TextAlign.center,
+                  controller: viewModel.endAreaTextController,
+                  cursorColor: Colors.black,
+                  onChanged: (value) {
+                    setState(() {
+                      if (value.isEmpty) {
+                        areaValues = SfRangeValues(
+                            int.parse(
+                                viewModel.startAreaTextController.text),
+                            20000);
+                        return;
+                      }
+
+                      areaValues = SfRangeValues(
+                          int.parse(
+                              viewModel.startAreaTextController.text),
+                          int.parse(
+                              viewModel.endAreaTextController.text));
+                    });
+                  },
+                  decoration: InputDecoration(
+                      fillColor: const Color(0xffFCFCFD),
+                      hintText: "0",
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                          const BorderSide(color: Color(0xffEFEFEF))),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                              color: Color(0xffEFEFEF)))),
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 15,
+        ),
+        StatefulBuilder(builder: (context, setState) {
+          return SfRangeSlider(
+            min: 0,
+            max: 20000,
+            values: areaValues,
+            inactiveColor: Colors.grey,
+            activeColor: const Color(0xffFF385C),
+            showLabels: true,
+            interval: 20000,
+            labelFormatterCallback:
+                (dynamic actualValue, String formattedText) {
+              return actualValue == 19999
+                  ? ' $formattedText+'
+                  : ' $formattedText';
+            },
+            onChanged: (SfRangeValues newValues) {
+              viewModel.startAreaTextController.text =
+              "${newValues.start.round()}";
+              viewModel.endAreaTextController.text =
+              "${newValues.end.round()}";
+              setState(() {
+                areaValues = newValues;
+              });
+            },
+          );
+        }),
+        Gap(10),
+
+        AppTextField(
+          title: "No Of Bedrooms",
+          hint: StringHelper.select,
+          controller: viewModel.noOfBedroomsTextController,
+          readOnly: true,
+          suffix: PopupMenuButton<String>(
+            clipBehavior: Clip.hardEdge,
+            icon: const Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+            ),
+            onSelected: (String value) {
+              viewModel.noOfBedroomsTextController.text = value;
+            },
+            itemBuilder: (BuildContext context) {
+              return ["Studio", "1", "2", "3", "4", "5", "6+"].map((option) {
+                return PopupMenuItem(
+                  value: option,
+                  child: Text(option),
+                );
+              }).toList();
+            },
+          ),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+              RegExp(viewModel.regexToRemoveEmoji),
+            ),
+          ],
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          fillColor: Colors.white,
+          elevation: 6,
+        ),
+
+        AppTextField(
+          title: StringHelper.noOfBathrooms,
+          hint: StringHelper.select,
+          controller: viewModel.noOfBathroomsTextController,
+          readOnly: true,
+          suffix: PopupMenuButton<String>(
+            clipBehavior: Clip.hardEdge,
+            icon: const Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+            ),
+            onSelected: (String value) {
+              viewModel.noOfBathroomsTextController.text = value;
+            },
+            itemBuilder: (BuildContext context) {
+              return ['1', '2', '3', '4', '5', '6', '7', '7+']
+                  .map((option) {
+                return PopupMenuItem(
+                  value: option,
+                  child: Text('$option Bathrooms'),
+                );
+              }).toList();
+            },
+          ),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+              RegExp(viewModel.regexToRemoveEmoji),
+            ),
+          ],
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          fillColor: Colors.white,
+          elevation: 6,
+        ),
+
+        AppTextField(
+          title: StringHelper.level,
+          hint: StringHelper.select,
+          controller: viewModel.levelTextController,
+          readOnly: true,
+          suffix: PopupMenuButton<String>(
+            clipBehavior: Clip.hardEdge,
+            icon: const Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+            ),
+            onSelected: (String value) {
+              viewModel.levelTextController.text = value;
+            },
+            itemBuilder: (BuildContext context) {
+              return ["Ground", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+", "Last Floor"]
+                  .map((option) {
+                return PopupMenuItem(
+                  value: option,
+                  child: Text(option),
+                );
+              }).toList();
+            },
+          ),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+              RegExp(viewModel.regexToRemoveEmoji),
+            ),
+          ],
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          fillColor: Colors.white,
+          elevation: 6,
+        ),
+
+        AppTextField(
+          title: StringHelper.furnishing,
+          hint: StringHelper.select,
+          controller: viewModel.furnishingStatusTextController,
+          readOnly: true,
+          suffix: PopupMenuButton<String>(
+            clipBehavior: Clip.hardEdge,
+            icon: const Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+            ),
+            onSelected: (String value) {
+              viewModel.furnishingStatusTextController.text = value;
+            },
+            itemBuilder: (BuildContext context) {
+              return ["Yes","No"]
+                  .map((option) {
+                return PopupMenuItem(
+                  value: option,
+                  child: Text(option),
+                );
+              }).toList();
+            },
+          ),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+              RegExp(viewModel.regexToRemoveEmoji),
+            ),
+          ],
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          fillColor: Colors.white,
+          elevation: 6,
+        ),
+        
+        Visibility(
+          visible: viewModel.currentPropertyType.toLowerCase() != "rent",
+          child: AppTextField(
+            title: StringHelper.completionStatus,
+            hint: StringHelper.select,
+            controller: viewModel.completionStatusTextController,
+            readOnly: true,
+            suffix: PopupMenuButton<String>(
+              clipBehavior: Clip.hardEdge,
+              icon: const Icon(
+                Icons.arrow_drop_down,
+                color: Colors.black,
+              ),
+              onSelected: (String value) {
+                viewModel.completionStatusTextController.text = value;
+              },
+              itemBuilder: (BuildContext context) {
+                return ['Ready', 'Off Plan'].map((option) {
+                  return PopupMenuItem(
+                    value: option,
+                    child: Text(option),
+                  );
+                }).toList();
+              },
+            ),
+            contentPadding:
+            const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(
+                RegExp(viewModel.regexToRemoveEmoji),
+              ),
+            ],
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.done,
+            fillColor: Colors.white,
+            elevation: 6,
+          ),
+        ),
+
+        Visibility(
+          visible: viewModel.currentPropertyType.toLowerCase() != "rent",
+          child: AppTextField(
+            title: StringHelper.paymentType,
+            hint: StringHelper.select,
+            controller: viewModel.paymentTypeTextController,
+            readOnly: true,
+            suffix: PopupMenuButton<String>(
+              clipBehavior: Clip.hardEdge,
+              icon: const Icon(
+                Icons.arrow_drop_down,
+                color: Colors.black,
+              ),
+              onSelected: (String value) {
+                viewModel.paymentTypeTextController.text = value;
+              },
+              itemBuilder: (BuildContext context) {
+                return ['Installment', 'Cash or Installment', 'cash']
+                    .map((option) {
+                  return PopupMenuItem(
+                    value: option,
+                    child: Text(option),
+                  );
+                }).toList();
+              },
+            ),
+            contentPadding:
+            const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(
+                RegExp(viewModel.regexToRemoveEmoji),
+              ),
+            ],
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.done,
+            fillColor: Colors.white,
+            elevation: 6,
+          ),
+        ),
+        
+        Visibility(
+          visible: viewModel.currentPropertyType.toLowerCase() == "rent",
+          child: AppTextField(
+            title: "Rental Term",
+            hint: StringHelper.select,
+            controller: viewModel.rentalTermsTextController,
+            readOnly: true,
+            suffix: PopupMenuButton<String>(
+              clipBehavior: Clip.hardEdge,
+              icon: const Icon(
+                Icons.arrow_drop_down,
+                color: Colors.black,
+              ),
+              onSelected: (String value) {
+                viewModel.rentalTermsTextController.text = value;
+              },
+              itemBuilder: (BuildContext context) {
+                return ['Daily', 'Weekly', 'Monthly', 'Yearly']
+                    .map((option) {
+                  return PopupMenuItem(
+                    value: option,
+                    child: Text(option),
+                  );
+                }).toList();
+              },
+            ),
+            contentPadding:
+            const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(
+                RegExp(viewModel.regexToRemoveEmoji),
+              ),
+            ],
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.done,
+            fillColor: Colors.white,
+            elevation: 6,
+          ),
+        ),
+      ],
+    );
+  }
+  Widget landWidget(HomeVM viewModel) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AppTextField(
+          title: StringHelper.propertyType,
+          hint: StringHelper.select,
+          controller: viewModel.propertyForTextController,
+          readOnly: true,
+          suffix: PopupMenuButton<String>(
+            clipBehavior: Clip.hardEdge,
+            icon: const Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+            ),
+            onSelected: (String value) {
+              viewModel.currentPropertyType = value;
+              viewModel.propertyForTextController.text = value;
+            },
+            itemBuilder: (BuildContext context) {
+              return ['Sell', 'Rent'].map((option) {
+                return PopupMenuItem(
+                  value: option,
+                  child: Text(option),
+                );
+              }).toList();
+            },
+          ),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+              RegExp(viewModel.regexToRemoveEmoji),
+            ),
+          ],
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          fillColor: Colors.white,
+          elevation: 6,
+        ),
+
+        AppTextField(
+          title: StringHelper.type,
+          hint: StringHelper.select,
+          controller: viewModel.propertyForTypeTextController,
+          readOnly: true,
+          suffix: PopupMenuButton<String>(
+            clipBehavior: Clip.hardEdge,
+            icon: const Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+            ),
+            onSelected: (String value) {
+              viewModel.propertyForTypeTextController.text = value;
+            },
+            itemBuilder: (BuildContext context) {
+              return ["Agricultural Land","Commercial Land","Residential Land","Industrial Land","Mixed-Use Land","Farm Land"].map((option) {
+                return PopupMenuItem(
+                  value: option,
+                  child: Text(option),
+                );
+              }).toList();
+            },
+          ),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+              RegExp(viewModel.regexToRemoveEmoji),
+            ),
+          ],
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          fillColor: Colors.white,
+          elevation: 6,
+        ),
+
+        Text(
+          StringHelper.areaSize,
+          style: context.textTheme.titleSmall,
+        ),
+        const Gap(10),
+        Row(
+          children: [
+            Expanded(
+              child: SizedBox(
+                width: context.width,
+                height: 50,
+                child: TextFormField(
+                    keyboardType: TextInputType.number,
+                    textAlign: TextAlign.center,
+                    controller: viewModel.startAreaTextController,
+                    cursorColor: Colors.black,
+                    onChanged: (value) {
+                      setState(() {
+                        if (value.isEmpty) {
+                          areaValues = SfRangeValues(
+                              0,
+                              int.parse(
+                                  viewModel.endAreaTextController.text));
+                          return;
+                        }
+
+                        areaValues = SfRangeValues(
+                            int.parse(
+                                viewModel.startAreaTextController.text),
+                            int.parse(
+                                viewModel.endAreaTextController.text));
+                      });
+                    },
+                    decoration: InputDecoration(
+                        fillColor: const Color(0xffFCFCFD),
+                        hintText: StringHelper.egp0,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                          const BorderSide(color: Color(0xffEFEFEF)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                          const BorderSide(color: Color(0xffEFEFEF)),
+                        ))),
+              ),
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            Text(
+              StringHelper.to,
+              style: context.textTheme.titleSmall,
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            Expanded(
+              child: SizedBox(
+                width: context.width,
+                height: 50,
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  textAlign: TextAlign.center,
+                  controller: viewModel.endAreaTextController,
+                  cursorColor: Colors.black,
+                  onChanged: (value) {
+                    setState(() {
+                      if (value.isEmpty) {
+                        areaValues = SfRangeValues(
+                            int.parse(
+                                viewModel.startAreaTextController.text),
+                            20000);
+                        return;
+                      }
+
+                      areaValues = SfRangeValues(
+                          int.parse(
+                              viewModel.startAreaTextController.text),
+                          int.parse(
+                              viewModel.endAreaTextController.text));
+                    });
+                  },
+                  decoration: InputDecoration(
+                      fillColor: const Color(0xffFCFCFD),
+                      hintText: "0",
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                          const BorderSide(color: Color(0xffEFEFEF))),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                              color: Color(0xffEFEFEF)))),
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 15,
+        ),
+        StatefulBuilder(builder: (context, setState) {
+          return SfRangeSlider(
+            min: 0,
+            max: 20000,
+            values: areaValues,
+            inactiveColor: Colors.grey,
+            activeColor: const Color(0xffFF385C),
+            showLabels: true,
+            interval: 20000,
+            labelFormatterCallback:
+                (dynamic actualValue, String formattedText) {
+              return actualValue == 19999
+                  ? ' $formattedText+'
+                  : ' $formattedText';
+            },
+            onChanged: (SfRangeValues newValues) {
+              viewModel.startAreaTextController.text =
+              "${newValues.start.round()}";
+              viewModel.endAreaTextController.text =
+              "${newValues.end.round()}";
+              setState(() {
+                areaValues = newValues;
+              });
+            },
+          );
+        }),
+        Gap(10),
+        AppTextField(
+          title:"Access to Utilities",
+          hint: StringHelper.select,
+          controller: viewModel.accessToUtilitiesTextController,
+          readOnly: true,
+          suffix: PopupMenuButton<String>(
+            clipBehavior: Clip.hardEdge,
+            icon: const Icon(
+              Icons.arrow_drop_down,
+              color: Colors.black,
+            ),
+            onSelected: (String value) {
+              viewModel.accessToUtilitiesTextController.text = value;
+            },
+            itemBuilder: (BuildContext context) {
+              return ['Water Supply','Electricity','Gas','Sewage System','Road Access'].map((option) {
+                return PopupMenuItem(
+                  value: option,
+                  child: Text(option),
+                );
+              }).toList();
+            },
+          ),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+              RegExp(viewModel.regexToRemoveEmoji),
+            ),
+          ],
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          fillColor: Colors.white,
+          elevation: 6,
+        ),
+        Visibility(
+          visible: viewModel.currentPropertyType.toLowerCase() == "rent",
+          child: AppTextField(
+            title: "Rental Term",
+            hint: StringHelper.select,
+            controller: viewModel.rentalTermsTextController,
+            readOnly: true,
+            suffix: PopupMenuButton<String>(
+              clipBehavior: Clip.hardEdge,
+              icon: const Icon(
+                Icons.arrow_drop_down,
+                color: Colors.black,
+              ),
+              onSelected: (String value) {
+                viewModel.rentalTermsTextController.text = value;
+              },
+              itemBuilder: (BuildContext context) {
+                return ['Daily', 'Weekly', 'Monthly', 'Yearly']
+                    .map((option) {
+                  return PopupMenuItem(
+                    value: option,
+                    child: Text(option),
+                  );
+                }).toList();
+              },
+            ),
+            contentPadding:
+            const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(
+                RegExp(viewModel.regexToRemoveEmoji),
+              ),
+            ],
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.done,
+            fillColor: Colors.white,
+            elevation: 6,
+          ),
+        ),
+      ],
+    );
+  }
+
 }

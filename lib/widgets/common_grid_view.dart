@@ -32,7 +32,7 @@ class CommonGridView extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.builder(
       itemCount: itemCount,
-      padding: padding,
+      padding: padding??EdgeInsets.zero,
       physics: physics,
       scrollDirection: scrollDirection,
       shrinkWrap: shrinkWrap,

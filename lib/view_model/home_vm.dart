@@ -119,6 +119,7 @@ class HomeVM extends BaseViewModel {
       TextEditingController(text: '0');
   TextEditingController endPriceTextController =
       TextEditingController(text: '20000');
+
   TextEditingController locationTextController = TextEditingController();
   TextEditingController categoryTextController = TextEditingController();
   TextEditingController subCategoryTextController = TextEditingController();
@@ -279,4 +280,45 @@ class HomeVM extends BaseViewModel {
         response, (json) => CategoryModel.fromJson(json));
     return model.body ?? [];
   }
+
+
+  /// new text controllers
+  TextEditingController propertyForTextController = TextEditingController();
+  TextEditingController propertyForTypeTextController = TextEditingController();
+  TextEditingController noOfBathroomsTextController = TextEditingController();
+  TextEditingController noOfBedroomsTextController = TextEditingController();
+  TextEditingController furnishingStatusTextController =
+  TextEditingController();
+
+  TextEditingController accessToUtilitiesTextController =
+  TextEditingController();
+  TextEditingController ownershipStatusTextController = TextEditingController();
+  TextEditingController paymentTypeTextController = TextEditingController();
+  TextEditingController listedByTextController = TextEditingController();
+  TextEditingController rentalTermsTextController = TextEditingController();
+  TextEditingController completionStatusTextController =
+  TextEditingController();
+  TextEditingController deliveryTermTextController = TextEditingController();
+  TextEditingController levelTextController = TextEditingController();
+
+  TextEditingController startDownPriceTextController =
+  TextEditingController(text: '0');
+  TextEditingController endDownPriceTextController =
+  TextEditingController(text: '20000');
+
+  TextEditingController startAreaTextController =
+  TextEditingController(text: '0');
+  TextEditingController endAreaTextController =
+  TextEditingController(text: '20000');
+  String _currentPropertyType = "Sell";
+  String get currentPropertyType => _currentPropertyType;
+
+  set currentPropertyType(String index) {
+    _currentPropertyType = index;
+    notifyListeners();
+  }
+  var regexToRemoveEmoji =
+      r'(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])';
+
+
 }

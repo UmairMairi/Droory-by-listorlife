@@ -18,6 +18,7 @@ import '../../res/assets_res.dart';
 import '../../view_model/my_ads_v_m.dart';
 import '../../widgets/app_elevated_button.dart';
 import '../../widgets/card_swipe_widget.dart';
+import '../../widgets/common_grid_view.dart';
 import '../../widgets/like_button.dart';
 
 class MyProductView extends BaseView<ProductVM> {
@@ -27,6 +28,8 @@ class MyProductView extends BaseView<ProductVM> {
   @override
   Widget build(BuildContext context, ProductVM viewModel) {
     return Scaffold(
+      appBar: !viewModel.isAppBarVisible?AppBar(backgroundColor: Colors.transparent,automaticallyImplyLeading: false,toolbarHeight: 0,elevation: 0,):null,
+
       /*appBar: AppBar(
         title: const Text('Details'),
         centerTitle: true,
@@ -83,9 +86,11 @@ class MyProductView extends BaseView<ProductVM> {
               data?.productMedias?.insert(0, ProductMedias(media: data.image));
 
               return SingleChildScrollView(
+                controller: viewModel.scrollController,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Stack(
                       children: [
@@ -348,7 +353,9 @@ class MyProductView extends BaseView<ProductVM> {
                               style: context.textTheme.titleMedium,
                             ),
                             Gap(10),
-                            Column(
+                            Visibility(
+                              visible: false,
+                                child:Column(
                               mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -376,7 +383,43 @@ class MyProductView extends BaseView<ProductVM> {
                                   ),
                                 );
                               }),
-                            ),
+                            )),
+                            CommonGridView(
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              //mainAxisExtent: 120,
+                              crossAxisCount: 3,
+                              childAspectRatio: 16/16,
+                              itemCount: data?.productAmenities?.length ?? 0,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Card(
+                                  color: Colors.grey.shade300,
+                                  elevation: 0,
+                                  margin: EdgeInsets.zero,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        getAmenityIcon(data
+                                            ?.productAmenities?[index]
+                                            .amnity
+                                            ?.name ??
+                                            ''),
+                                        Gap(05),
+                                        Text(DbHelper.getLanguage() == 'en'
+                                            ? "${data?.productAmenities?[index].amnity?.name}"
+                                            : "${data?.productAmenities?[index].amnity?.nameAr}",textAlign: TextAlign.center,),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },)
                           },
                           Divider(),
                           Text(

@@ -27,6 +27,26 @@ class FilterModel {
   String? modelId;
   String? selectedAmnities;
 
+  //new keys
+  String? propertyFor;
+  String? bedrooms;
+  String? bathrooms;
+  String? furnishedType;
+  String? ownership;
+  String? paymentType;
+  String? completionStatus;
+  String? deliveryTerm;
+  String? type;
+  String? level;
+  String? buildingAge;
+  String? listedBy;
+  String? rentalTerm;
+  String? accessToUtilities;
+  String? minDownPrice;
+  String? maxDownPrice;
+  String? maxAreaSize;
+  String? minAreaSize;
+
   FilterModel({
     this.limit,
     this.page,
@@ -55,6 +75,24 @@ class FilterModel {
     this.transmission,
     this.modelId,
     this.selectedAmnities,
+    this.propertyFor,
+    this.bedrooms,
+    this.bathrooms,
+    this.furnishedType,
+    this.ownership,
+    this.paymentType,
+    this.completionStatus,
+    this.deliveryTerm,
+    this.type,
+    this.level,
+    this.buildingAge,
+    this.listedBy,
+    this.rentalTerm,
+    this.accessToUtilities,
+    this.minDownPrice,
+    this.maxDownPrice,
+    this.maxAreaSize,
+    this.minAreaSize,
   });
 
   Map<String, String?> toMap() {
@@ -86,6 +124,24 @@ class FilterModel {
       'transmission': transmission,
       'model_id': modelId,
       'selected_amnities': selectedAmnities,
+      'property_for': propertyFor,
+      'bedrooms': bedrooms,
+      'bathrooms': bathrooms,
+      'furnished_type': furnishedType,
+      'ownership': ownership,
+      'payment_type': paymentType,
+      'completion_status': completionStatus,
+      'delivery_term': deliveryTerm,
+      'type': type,
+      'level': level,
+      'building_age': buildingAge,
+      'listed_by': listedBy,
+      'rental_term': rentalTerm,
+      'access_to_utilities': accessToUtilities,
+      'min_down_price': minDownPrice,
+      'max_down_price': maxDownPrice,
+      'max_area_size': maxAreaSize,
+      'min_area_size': minAreaSize
     };
   }
 
@@ -117,6 +173,24 @@ class FilterModel {
     String? transmission,
     String? modelId,
     String? selectedAmnities,
+    String? propertyFor,
+    String? bedrooms,
+    String? bathrooms,
+    String? furnishedType,
+    String? ownership,
+    String? paymentType,
+    String? completionStatus,
+    String? deliveryTerm,
+    String? type,
+    String? level,
+    String? buildingAge,
+    String? listedBy,
+    String? rentalTerm,
+    String? accessToUtilities,
+    String? minDownPrice,
+    String? maxDownPrice,
+    String? maxAreaSize,
+    String? minAreaSize,
   }) {
     return FilterModel(
       limit: limit ?? this.limit,
@@ -146,6 +220,25 @@ class FilterModel {
       transmission: transmission ?? this.transmission,
       modelId: modelId ?? this.modelId,
       selectedAmnities: selectedAmnities ?? this.selectedAmnities,
+      propertyFor: propertyFor ?? this.propertyFor,
+      bedrooms: bedrooms ?? this.bedrooms,
+      bathrooms: bathrooms ?? this.bathrooms,
+      furnishedType: furnishedType ?? this.furnishedType,
+      ownership: ownership ?? this.ownership,
+      paymentType: paymentType ?? this.paymentType,
+      completionStatus: completionStatus ?? this.completionStatus,
+      deliveryTerm: deliveryTerm ?? this.deliveryTerm,
+      level: level ?? this.level,
+      type: type ?? this.type,
+      buildingAge: buildingAge ?? this.buildingAge,
+      listedBy: listedBy ?? this.listedBy,
+      rentalTerm: rentalTerm ?? this.rentalTerm,
+      accessToUtilities: accessToUtilities ?? this.accessToUtilities,
+      minDownPrice: minDownPrice ?? this.minDownPrice,
+      maxDownPrice: maxDownPrice ?? this.maxDownPrice,
+      maxAreaSize: maxAreaSize ?? this.maxAreaSize,
+      minAreaSize: minAreaSize ?? this.minAreaSize,
+
     );
   }
 }

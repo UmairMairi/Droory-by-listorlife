@@ -434,6 +434,45 @@ class VacationForm extends StatelessWidget {
             elevation: 6,
           ),
         ),
+        Visibility(
+          visible: viewModel.currentPropertyType.toLowerCase() == "rent",
+          child: AppTextField(
+            title: "Rental Term",
+            hint: StringHelper.select,
+            controller: viewModel.rentalTermsTextController,
+            readOnly: true,
+            suffix: PopupMenuButton<String>(
+              clipBehavior: Clip.hardEdge,
+              icon: const Icon(
+                Icons.arrow_drop_down,
+                color: Colors.black,
+              ),
+              onSelected: (String value) {
+                viewModel.rentalTermsTextController.text = value;
+              },
+              itemBuilder: (BuildContext context) {
+                return ['Daily', 'Weekly', 'Monthly', 'Yearly']
+                    .map((option) {
+                  return PopupMenuItem(
+                    value: option,
+                    child: Text(option),
+                  );
+                }).toList();
+              },
+            ),
+            contentPadding:
+            const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(
+                RegExp(viewModel.regexToRemoveEmoji),
+              ),
+            ],
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.done,
+            fillColor: Colors.white,
+            elevation: 6,
+          ),
+        ),
 
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() != "rent",
