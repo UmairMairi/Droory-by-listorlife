@@ -24,6 +24,9 @@ class ApiConstants {
   static String getProductUrl({String? id}) => "$_baseUrl/get/product/$id";
   static String addProductsUrl() => "$_baseUrl/add/products";
   static String editProductsUrl() => "$_baseUrl/edit/product";
+  static String storeSearchesUrl() => "$_baseUrl/store/searches";
+  static String getSearchesUrl() => "$_baseUrl/get/searches";
+  static String deleteSearchesUrl() => "$_baseUrl/delete/searches";
   static String getProductsUrl(
           {int? limit = 10,
           int? page = 1,

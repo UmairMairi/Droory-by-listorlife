@@ -42,6 +42,7 @@ class CategoryModel {
     data['status'] = status;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
+    data.removeWhere((key, value) => value == "" || value == null);
     return data;
   }
 }

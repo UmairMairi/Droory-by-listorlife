@@ -40,6 +40,9 @@ class _AppSearchViewState extends State<AppSearchView> {
   @override
   void initState() {
     textEditingController.text = widget.value ?? '';
+    if(!DbHelper.getIsGuest()){
+      getSearches();
+    }
     searchItem(text: widget.value ?? '');
     super.initState();
   }
@@ -66,6 +69,43 @@ class _AppSearchViewState extends State<AppSearchView> {
           .add(model.body?.categories ?? []); // Send data to stream if found
     } catch (e) {
       _productStreamController.addError("Failed to fetch search results.");
+    }
+  }
+  Future<void> getSearches() async {
+    try {
+      ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.getSearchesUrl(),
+        requestType: RequestType.get,
+      );
+
+      var response = await BaseClient.handleRequest(apiRequest);
+      MapResponse<SearchItemModel> model = MapResponse.fromJson(
+          response, (json) => SearchItemModel.fromJson(json));
+
+      _productStreamController
+          .add(model.body?.products ?? []); // Send data to stream if found
+      _categoryStreamController
+          .add(model.body?.categories ?? []); // Send data to stream if found
+    } catch (e) {
+      _productStreamController.addError("Failed to fetch search results.");
+    }
+  }
+  Future<void> storeSearches({CategoryModel? categoryModel, ProductDetailModel? productData}) async {
+    var body = categoryModel ?? productData;
+    try {
+      ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.storeSearchesUrl(),
+        requestType: RequestType.post,
+        body: {"obj":body},
+      );
+      var response = await BaseClient.handleRequest(apiRequest);
+      MapResponse<Object> model = MapResponse.fromJson(
+          response, (json) => SearchItemModel.fromJson(json));
+      if(model.body!=null){
+        getSearches();
+      }
+    } catch (e) {
+     debugPrint("Failed to fetch search results.");
     }
   }
 
@@ -205,6 +245,9 @@ class _AppSearchViewState extends State<AppSearchView> {
       final category = categories[index];
       return GestureDetector(
         onTap: () {
+          if(!DbHelper.getIsGuest()){
+            storeSearches(categoryModel: category);
+          }
           context.push(Routes.subCategoryView,
               extra: category);
         },
@@ -254,6 +297,9 @@ class _AppSearchViewState extends State<AppSearchView> {
         final product = products[index];
         return GestureDetector(
           onTap: () {
+            if(!DbHelper.getIsGuest()){
+              storeSearches(productData:product);
+            }
             if (product.userId ==
                 DbHelper.getUserModel()?.id) {
               context.push(Routes.myProduct,
