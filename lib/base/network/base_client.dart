@@ -86,7 +86,7 @@ class BaseClient {
 
   static Future<dynamic> _handlePutRequest(
       ApiRequest apiRequest, Map<String, dynamic> headers) async {
-    var data;
+    dynamic data;
     switch (apiRequest.bodyType) {
       case BodyType.raw:
         data = apiRequest.body;
@@ -119,7 +119,7 @@ class BaseClient {
 
   static Future<dynamic> _handlePostRequest(
       ApiRequest apiRequest, Map<String, dynamic> headers) async {
-    var data;
+    dynamic data;
     switch (apiRequest.bodyType) {
       case BodyType.raw:
         data = apiRequest.body;

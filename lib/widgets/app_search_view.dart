@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -16,6 +17,7 @@ import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:list_and_life/widgets/common_grid_view.dart';
 
 import '../base/helpers/db_helper.dart';
+import '../models/common/list_response.dart';
 import '../models/search_item_model.dart';
 import '../res/assets_res.dart';
 import '../routes/app_routes.dart';
@@ -31,6 +33,10 @@ class AppSearchView extends StatefulWidget {
 }
 
 class _AppSearchViewState extends State<AppSearchView> {
+
+  final StreamController<List<SearchHistoryModel>?> _searchHistoryStreamController =
+      StreamController<List<SearchHistoryModel>?>();
+
   final StreamController<List<ProductDetailModel>?> _productStreamController =
       StreamController<List<ProductDetailModel>?>();
   final StreamController<List<CategoryModel?>> _categoryStreamController =
@@ -40,10 +46,11 @@ class _AppSearchViewState extends State<AppSearchView> {
   @override
   void initState() {
     textEditingController.text = widget.value ?? '';
+
+    searchItem(text: widget.value ?? '');
     if(!DbHelper.getIsGuest()){
       getSearches();
     }
-    searchItem(text: widget.value ?? '');
     super.initState();
   }
 
@@ -71,6 +78,7 @@ class _AppSearchViewState extends State<AppSearchView> {
       _productStreamController.addError("Failed to fetch search results.");
     }
   }
+
   Future<void> getSearches() async {
     try {
       ApiRequest apiRequest = ApiRequest(
@@ -79,24 +87,47 @@ class _AppSearchViewState extends State<AppSearchView> {
       );
 
       var response = await BaseClient.handleRequest(apiRequest);
-      MapResponse<SearchItemModel> model = MapResponse.fromJson(
-          response, (json) => SearchItemModel.fromJson(json));
-
-      _productStreamController
-          .add(model.body?.products ?? []); // Send data to stream if found
-      _categoryStreamController
-          .add(model.body?.categories ?? []); // Send data to stream if found
+      ListResponse<SearchHistoryModel> model = ListResponse.fromJson(
+          response, (json) => SearchHistoryModel.fromJson(json));
+      _searchHistoryStreamController.add(model.body ?? []);
     } catch (e) {
-      _productStreamController.addError("Failed to fetch search results.");
+      _searchHistoryStreamController.addError("Failed to fetch search results.");
     }
   }
-  Future<void> storeSearches({CategoryModel? categoryModel, ProductDetailModel? productData}) async {
-    var body = categoryModel ?? productData;
+
+  Future<void> storeSearches({dynamic id,dynamic name,dynamic type}) async {
+    Map<String,dynamic> body = {
+      "id": id,
+      "name":name,
+      "type":type
+    };
     try {
       ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.storeSearchesUrl(),
         requestType: RequestType.post,
-        body: {"obj":body},
+        body: {"obj":jsonEncode(body)},
+      );
+      var response = await BaseClient.handleRequest(apiRequest);
+      MapResponse<Object> model = MapResponse.fromJson(
+          response, (json) => SearchItemModel.fromJson(json));
+      if(model.body!=null){
+        getSearches();
+      }
+    } catch (e) {
+     debugPrint("Failed to fetch search results.");
+    }
+  }
+
+  Future<void> deleteSearches({dynamic searchId}) async {
+    Map<String,dynamic> body = {};
+    if(searchId !=null){
+      body["search_id"] = searchId;
+    }
+
+    try {
+      ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.deleteSearchesUrl(),
+        requestType: RequestType.get,
       );
       var response = await BaseClient.handleRequest(apiRequest);
       MapResponse<Object> model = MapResponse.fromJson(
@@ -115,6 +146,7 @@ class _AppSearchViewState extends State<AppSearchView> {
     _productStreamController
         .close(); // Close the stream controller to prevent memory leaks
     _categoryStreamController.close();
+    _searchHistoryStreamController.close();
     super.dispose();
   }
 
@@ -147,6 +179,7 @@ class _AppSearchViewState extends State<AppSearchView> {
                 hint: "Search...",
               ),
             ),
+            searchHistoryWidget(context),
             Expanded(
               child: StreamBuilder<List<CategoryModel?>>(
                 stream: _categoryStreamController.stream,
@@ -246,7 +279,13 @@ class _AppSearchViewState extends State<AppSearchView> {
       return GestureDetector(
         onTap: () {
           if(!DbHelper.getIsGuest()){
-            storeSearches(categoryModel: category);
+            storeSearches(
+                id: category?.id,
+                name: DbHelper.getLanguage() == 'en'
+                ? category?.name ?? ''
+                : category?.nameAr ?? '',
+              type: "category"
+            );
           }
           context.push(Routes.subCategoryView,
               extra: category);
@@ -287,6 +326,7 @@ class _AppSearchViewState extends State<AppSearchView> {
       );
     });
   }
+
   Widget productWidget(BuildContext context, List<ProductDetailModel> products) {
     return ListView.builder(
       shrinkWrap: true,
@@ -298,7 +338,11 @@ class _AppSearchViewState extends State<AppSearchView> {
         return GestureDetector(
           onTap: () {
             if(!DbHelper.getIsGuest()){
-              storeSearches(productData:product);
+              storeSearches(
+                  id: product.id,
+                  name: product.name ?? '',
+                  type: "product"
+              );
             }
             if (product.userId ==
                 DbHelper.getUserModel()?.id) {
@@ -319,6 +363,96 @@ class _AppSearchViewState extends State<AppSearchView> {
               }
               product.isFavourite = 1;
             },
+          ),
+        );
+      },
+    );
+  }
+
+  searchHistoryWidget(context) {
+    return StreamBuilder<List<SearchHistoryModel>?>(
+      stream: _searchHistoryStreamController.stream,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting ) {
+          return Container(); // Show loading widget
+        }
+        if (snapshot.hasError) {
+          return Center(
+            child: Text("Error loading data"),
+          );
+        }
+
+        final categories = snapshot.data ?? [];
+
+        if (categories.isEmpty ) {
+          return Container();
+        }
+
+        return Flexible(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Recent Search",
+                      style: context.textTheme.titleSmall,
+                      textAlign: TextAlign.center,
+                    ),
+                    GestureDetector(
+                      onTap: (){
+                        deleteSearches();
+                      },
+                      child: Text("Clear All",
+                        style: context.textTheme.titleSmall,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
+                ),
+                Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.start,
+                  alignment: WrapAlignment.start,
+                  spacing: 8.0,
+                  runSpacing: 8.0,
+                  children: categories.map(
+                        (item) => Visibility(
+                      visible: (item.searchData?.name??"").isNotEmpty,
+                      child: GestureDetector(
+                        onTap: (){
+                          if(item.searchData?.type == "category"){
+                            CategoryModel category = CategoryModel(id: item.searchData?.id,name: item.searchData?.name);
+                            context.push(Routes.subCategoryView,
+                                extra: category);
+                            return;
+                          }
+                          if(item.searchData?.type == "product"){
+                            ProductDetailModel product = ProductDetailModel(id: item.searchData?.id,name: item.searchData?.name);
+                            if (item.userId == DbHelper.getUserModel()?.id) {
+                              context.push(Routes.myProduct,
+                                  extra: product);
+                              return;
+                            }
+
+                            context.push(Routes.productDetails,
+                                extra: product);
+                            return;
+                          }
+                        },
+                        child: Chip(
+                          label: Text(item.searchData?.name??"",
+                            style: context.textTheme.titleSmall,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ).toList(),
+                ),
+              ],
+            ),
           ),
         );
       },

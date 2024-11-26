@@ -33,3 +33,58 @@ class SearchItemModel {
     return data;
   }
 }
+
+
+
+class SearchHistoryModel {
+  int? id;
+  int? userId;
+  SearchData? searchData;
+  String? createdAt;
+  String? updatedAt;
+
+  SearchHistoryModel(
+      {this.id, this.userId, this.searchData, this.createdAt, this.updatedAt});
+
+  SearchHistoryModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userId = json['user_id'];
+    searchData = json['obj'] != null ? new SearchData.fromJson(json['obj']) : null;
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['user_id'] = this.userId;
+    if (this.searchData != null) {
+      data['obj'] = this.searchData!.toJson();
+    }
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    return data;
+  }
+}
+
+class SearchData {
+  int? id;
+  String? name;
+  String? type;
+
+  SearchData({this.id, this.name, this.type});
+
+  SearchData.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    type = json['type'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['type'] = this.type;
+    return data;
+  }
+}

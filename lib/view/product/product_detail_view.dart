@@ -38,15 +38,15 @@ class ProductDetailView extends BaseView<ProductVM> {
         centerTitle: true,
         actions: [
           LikeButton(
-            isFav: data?.isFavourite == 1,
+            isFav: productData?.isFavourite == 1,
             onTap: () async {
-              await viewModel.onLikeButtonTapped(id: data?.id);
+              await viewModel.onLikeButtonTapped(id: productData?.id);
             },
           ),
           InkWell(
             onTap: () async {
               // final dynamicLink =
-              //           await DynamicLinkHelper.createDynamicLink("${data?.id}");
+              //           await DynamicLinkHelper.createDynamicLink("${productData?.id}");
               //       debugPrint(dynamicLink.toString());
               //
               //       Share.share(
@@ -72,9 +72,9 @@ class ProductDetailView extends BaseView<ProductVM> {
               future: viewModel.getProductDetails(id: data?.id),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  ProductDetailModel? data = snapshot.data;
-                  data?.productMedias
-                      ?.insert(0, ProductMedias(media: data.image));
+                  ProductDetailModel? productData = snapshot.data;
+                  productData?.productMedias
+                      ?.insert(0, ProductMedias(media: productData.image));
                   return SingleChildScrollView(
                     controller: viewModel.scrollController,
                     child: Column(
@@ -85,8 +85,8 @@ class ProductDetailView extends BaseView<ProductVM> {
                           children: [
                             CardSwipeWidget(
                               height: 300,
-                              data: data,
-                              imagesList: data?.productMedias,
+                              data: productData,
+                              imagesList: productData?.productMedias,
                               borderRadius: const BorderRadius.only(
                                 topLeft: Radius.circular(20),
                                 topRight: Radius.circular(20),
@@ -108,10 +108,10 @@ class ProductDetailView extends BaseView<ProductVM> {
                                 right: 50,
                                 child: SafeArea(
                                   child: LikeButton(
-                                      isFav: data?.isFavourite == 1,
+                                      isFav: productData?.isFavourite == 1,
                                       onTap: () async => {
                                             await viewModel.onLikeButtonTapped(
-                                                id: data?.id)
+                                                id: productData?.id)
                                           }),
                                 )),
                             Positioned(
@@ -138,11 +138,11 @@ class ProductDetailView extends BaseView<ProductVM> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                "${data?.name}",
+                                "${productData?.name}",
                                 style: context.textTheme.titleMedium,
                               ),
                               const Gap(5),
-                              getSpecifications(context: context, data: data),
+                              getSpecifications(context: context, productData: productData),
                               const Gap(5),
                               Row(
                                 children: [
@@ -151,19 +151,19 @@ class ProductDetailView extends BaseView<ProductVM> {
                                     size: 16,
                                   ),
                                   const Gap(05),
-                                  Text(data?.nearby ?? ''),
+                                  Text(productData?.nearby ?? ''),
                                 ],
                               ),
                               const Gap(10),
-                              if (data?.categoryId == 9) ...{
+                              if (productData?.categoryId == 9) ...{
                                 Text(
-                                  "${StringHelper.egp} ${data?.salleryFrom} - ${data?.salleryTo}",
+                                  "${StringHelper.egp} ${productData?.salleryFrom} - ${productData?.salleryTo}",
                                   style: context.textTheme.titleLarge
                                       ?.copyWith(color: Colors.red),
                                 ),
                               } else ...{
                                 Text(
-                                  "${StringHelper.egp} ${data?.price}",
+                                  "${StringHelper.egp} ${productData?.price}",
                                   style: context.textTheme.titleLarge
                                       ?.copyWith(color: Colors.red),
                                 ),
@@ -175,12 +175,12 @@ class ProductDetailView extends BaseView<ProductVM> {
                                 style: context.textTheme.titleMedium,
                               ),
                               const Gap(05),
-                              Text(data?.description ?? ''),
+                              Text(productData?.description ?? ''),
                               Divider(),
-                              if (data?.categoryId != 11) ...{
+                              if (productData?.categoryId != 11) ...{
                                 if (viewModel
                                     .getSpecifications(
-                                        context: context, data: data)
+                                        context: context, data: productData)
                                     .isNotEmpty) ...{
                                   Text('Specifications',
                                       style: context.textTheme.titleMedium),
@@ -202,22 +202,22 @@ class ProductDetailView extends BaseView<ProductVM> {
                                               mainAxisSpacing: 5,
                                               crossAxisSpacing: 20),
                                       children: viewModel.getSpecifications(
-                                          context: context, data: data),
+                                          context: context, data: productData),
                                     ),
                                   ),
                                 }
                               },
-                              if (data?.categoryId == 11) ...{
+                              if (productData?.categoryId == 11) ...{
                                 Text(
                                   'Property Information',
                                   style: context.titleMedium,
                                 ),
                                 Gap(10),
                                 getPropertyInformation(
-                                        context: context, data: data) ??
+                                        context: context, productData: productData) ??
                                     SizedBox.shrink(),
                               },
-                              if (data?.categoryId == 11) ...{
+                              if (productData?.categoryId == 11) ...{
                                 Divider(),
                                 Text(
                                   StringHelper.amenities,
@@ -231,7 +231,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: List.generate(
-                                        data?.productAmenities?.length ?? 0,
+                                        productData?.productAmenities?.length ?? 0,
                                             (index) {
                                           return Padding(
                                             padding: const EdgeInsets.symmetric(
@@ -243,15 +243,15 @@ class ProductDetailView extends BaseView<ProductVM> {
                                               CrossAxisAlignment.start,
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
-                                                getAmenityIcon(data
+                                                getAmenityIcon(productData
                                                     ?.productAmenities?[index]
                                                     .amnity
                                                     ?.name ??
                                                     ''),
                                                 Gap(05),
                                                 Text(DbHelper.getLanguage() == 'en'
-                                                    ? "${data?.productAmenities?[index].amnity?.name}"
-                                                    : "${data?.productAmenities?[index].amnity?.nameAr}"),
+                                                    ? "${productData?.productAmenities?[index].amnity?.name}"
+                                                    : "${productData?.productAmenities?[index].amnity?.nameAr}"),
                                               ],
                                             ),
                                           );
@@ -264,7 +264,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                   //mainAxisExtent: 120,
                                   crossAxisCount: 3,
                                   childAspectRatio: 16/16,
-                                  itemCount: data?.productAmenities?.length ?? 0,
+                                  itemCount: productData?.productAmenities?.length ?? 0,
                                   itemBuilder: (BuildContext context, int index) {
                                   return Card(
                                     color: Colors.grey.shade300,
@@ -279,15 +279,15 @@ class ProductDetailView extends BaseView<ProductVM> {
                                         crossAxisAlignment: CrossAxisAlignment.center,
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
-                                          getAmenityIcon(data
+                                          getAmenityIcon(productData
                                               ?.productAmenities?[index]
                                               .amnity
                                               ?.name ??
                                               ''),
                                           Gap(05),
                                           Text(DbHelper.getLanguage() == 'en'
-                                              ? "${data?.productAmenities?[index].amnity?.name}"
-                                              : "${data?.productAmenities?[index].amnity?.nameAr}",textAlign: TextAlign.center,),
+                                              ? "${productData?.productAmenities?[index].amnity?.name}"
+                                              : "${productData?.productAmenities?[index].amnity?.nameAr}",textAlign: TextAlign.center,),
                                         ],
                                       ),
                                     ),
@@ -311,7 +311,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                   const Gap(05),
                                   Expanded(
                                     child: Text(
-                                      data?.nearby ?? '',
+                                      productData?.nearby ?? '',
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 5,
                                       style: context.textTheme.bodyMedium,
@@ -334,8 +334,8 @@ class ProductDetailView extends BaseView<ProductVM> {
 
                                   await availableMaps.first.showMarker(
                                     coords: Coords(
-                                        double.parse("${data?.latitude}"),
-                                        double.parse("${data?.longitude}")),
+                                        double.parse("${productData?.latitude}"),
+                                        double.parse("${productData?.longitude}")),
                                     title: "Ocean Beach",
                                   );
                                 },
@@ -355,8 +355,8 @@ class ProductDetailView extends BaseView<ProductVM> {
                                   width: context.width,
                                   child: AddressMapWidget(
                                     latLng: LatLng(
-                                      double.parse(data?.latitude ?? '0'),
-                                      double.parse(data?.longitude ?? '0'),
+                                      double.parse(productData?.latitude ?? '0'),
+                                      double.parse(productData?.longitude ?? '0'),
                                     ),
                                   ),
                                 ),
@@ -374,7 +374,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                     children: [
                                       ImageView.circle(
                                           image:
-                                              "${ApiConstants.imageUrl}/${data?.user?.profilePic}",
+                                              "${ApiConstants.imageUrl}/${productData?.user?.profilePic}",
                                           width: 80,
                                           height: 80),
                                       /*const CircleAvatar(
@@ -395,14 +395,14 @@ class ProductDetailView extends BaseView<ProductVM> {
                                                 ?.copyWith(color: Colors.grey),
                                           ),
                                           Text(
-                                            "${data?.user?.name} ${data?.user?.lastName}",
+                                            "${productData?.user?.name} ${productData?.user?.lastName}",
                                             style: context.textTheme.titleLarge
                                                 ?.copyWith(
                                                     fontFamily: FontRes
                                                         .MONTSERRAT_SEMIBOLD),
                                           ),
                                           Text(
-                                            '${StringHelper.postedOn} ${DateHelper.joiningDate(DateTime.parse('${data?.createdAt}'))}',
+                                            '${StringHelper.postedOn} ${DateHelper.joiningDate(DateTime.parse('${productData?.createdAt}'))}',
                                             style: context.textTheme.titleSmall
                                                 ?.copyWith(color: Colors.grey),
                                           ),
@@ -415,10 +415,10 @@ class ProductDetailView extends BaseView<ProductVM> {
                                                 return;
                                               }
 
-                                              data?.user?.id = data.userId;
+                                              productData?.user?.id = productData.userId;
 
                                               context.push(Routes.seeProfile,
-                                                  extra: data?.user);
+                                                  extra: productData?.user);
                                             },
                                             child: Text(
                                               StringHelper.seeProfile,
@@ -620,39 +620,39 @@ class ProductDetailView extends BaseView<ProductVM> {
 
   Widget getSpecifications({
     required BuildContext context,
-    ProductDetailModel? data,
+    ProductDetailModel? productData,
   }) {
     List<Widget> specs = [];
 
-    if (data?.categoryId == 4) {
+    if (productData?.categoryId == 4) {
       // Vehicles category
-      if (data?.year != null && data!.year != 0) {
+      if (productData?.year != null && productData!.year != 0) {
         specs.add(_buildSpecRow(
-            context, "${data.year}", Icons.event)); // Icon for year
+            context, "${productData.year}", Icons.event)); // Icon for year
       }
-      if (data?.milleage != null && data!.milleage!.isNotEmpty) {
+      if (productData?.milleage != null && productData!.milleage!.isNotEmpty) {
         specs.add(_buildSpecRow(
-            context, '${data.milleage}', Icons.speed)); // Icon for mileage
+            context, '${productData.milleage}', Icons.speed)); // Icon for mileage
       }
-      if (data?.fuel != null && data!.fuel!.isNotEmpty) {
+      if (productData?.fuel != null && productData!.fuel!.isNotEmpty) {
         specs.add(_buildSpecRow(
-            context, '${data.fuel}', Icons.local_gas_station)); // Icon for fuel
+            context, '${productData.fuel}', Icons.local_gas_station)); // Icon for fuel
       }
     }
 
-    if (data?.categoryId == 11) {
+    if (productData?.categoryId == 11) {
       // Real Estate category
-      if (data?.bedrooms != null && data!.bedrooms != 0) {
-        specs.add(_buildSpecRow(context, "${data.bedrooms} Beds",
+      if (productData?.bedrooms != null && productData!.bedrooms != 0) {
+        specs.add(_buildSpecRow(context, "${productData.bedrooms} Beds",
             Icons.king_bed)); // Icon for bedrooms
       }
-      if (data?.bathrooms != null && data!.bathrooms != 0) {
-        specs.add(_buildSpecRow(context, "${data.bathrooms} Baths",
+      if (productData?.bathrooms != null && productData!.bathrooms != 0) {
+        specs.add(_buildSpecRow(context, "${productData.bathrooms} Baths",
             Icons.bathtub)); // Icon for bathrooms
       }
-      if (data?.area != null && data!.area != 0) {
+      if (productData?.area != null && productData!.area != 0) {
         specs.add(_buildSpecRow(
-            context, "${data.area} Sqft", Icons.square_foot)); // Icon for area
+            context, "${productData.area} Sqft", Icons.square_foot)); // Icon for area
       }
     }
 
@@ -731,44 +731,44 @@ class ProductDetailView extends BaseView<ProductVM> {
   }
 
   getPropertyInformation(
-      {required BuildContext context, ProductDetailModel? data}) {
+      {required BuildContext context, ProductDetailModel? productData}) {
     {
       List<Widget> specs = [];
 
-      if (data?.propertyFor != null && data!.propertyFor!.isNotEmpty) {
+      if (productData?.propertyFor != null && productData!.propertyFor!.isNotEmpty) {
         specs.add(_buildInfoRow(
-            context, "${data.propertyFor?.capitalized}", '🏠', 'Property For'));
+            context, "${productData.propertyFor?.capitalized}", '🏠', 'Property For'));
       }
-      if (data?.area != null && data!.area != 0) {
-        specs.add(_buildInfoRow(context, "${data.area} sqft", '📏', 'Area'));
+      if (productData?.area != null && productData!.area != 0) {
+        specs.add(_buildInfoRow(context, "${productData.area} sqft", '📏', 'Area'));
       }
-      if (data?.bedrooms != null && data!.bedrooms != 0) {
+      if (productData?.bedrooms != null && productData!.bedrooms != 0) {
         specs
-            .add(_buildInfoRow(context, "${data.bedrooms}", '🛏️', 'Bedrooms'));
+            .add(_buildInfoRow(context, "${productData.bedrooms}", '🛏️', 'Bedrooms'));
       }
-      if (data?.bathrooms != null && data!.bathrooms != 0) {
+      if (productData?.bathrooms != null && productData!.bathrooms != 0) {
         specs.add(
-            _buildInfoRow(context, "${data.bathrooms}", '🚽', 'Bathrooms'));
+            _buildInfoRow(context, "${productData.bathrooms}", '🚽', 'Bathrooms'));
       }
-      if (data?.furnishedType != null && data!.furnishedType!.isNotEmpty) {
-        specs.add(_buildInfoRow(context, "${data.furnishedType?.capitalized}",
+      if (productData?.furnishedType != null && productData!.furnishedType!.isNotEmpty) {
+        specs.add(_buildInfoRow(context, "${productData.furnishedType?.capitalized}",
             '🛋️', 'Furnished Type'));
       }
-      if (data?.ownership != null && data!.ownership!.isNotEmpty) {
+      if (productData?.ownership != null && productData!.ownership!.isNotEmpty) {
         specs.add(_buildInfoRow(
-            context, "${data.ownership?.capitalized}", '📜', 'Ownership'));
+            context, "${productData.ownership?.capitalized}", '📜', 'Ownership'));
       }
-      if (data?.paymentType != null && data!.paymentType!.isNotEmpty) {
+      if (productData?.paymentType != null && productData!.paymentType!.isNotEmpty) {
         specs.add(_buildInfoRow(
-            context, "${data.paymentType?.capitalized}", '💳', 'Payment Type'));
+            context, "${productData.paymentType?.capitalized}", '💳', 'Payment Type'));
       }
-      if (data?.completionStatus != null &&
-          data!.completionStatus!.isNotEmpty) {
+      if (productData?.completionStatus != null &&
+          productData!.completionStatus!.isNotEmpty) {
         specs.add(_buildInfoRow(context,
-            "${data.completionStatus?.capitalized}", '✅', 'Completion Status'));
+            "${productData.completionStatus?.capitalized}", '✅', 'Completion Status'));
       }
-      if (data?.deliveryTerm != null && data!.deliveryTerm!.isNotEmpty) {
-        specs.add(_buildInfoRow(context, "${data.deliveryTerm?.capitalized}",
+      if (productData?.deliveryTerm != null && productData!.deliveryTerm!.isNotEmpty) {
+        specs.add(_buildInfoRow(context, "${productData.deliveryTerm?.capitalized}",
             '🚚', 'Delivery Term'));
       }
       return Column(
