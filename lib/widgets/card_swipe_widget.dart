@@ -13,12 +13,15 @@ class CardSwipeWidget extends StatefulWidget {
   final ProductDetailModel? data;
   final List<ProductMedias>? imagesList;
   final BorderRadiusGeometry? borderRadius;
+  final String? screenType;
+
   const CardSwipeWidget({
     super.key,
     required this.data,
     this.height,
     this.imagesList,
     this.borderRadius,
+    this.screenType,
   });
 
   @override
@@ -100,14 +103,17 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget>
                     MaterialPageRoute(
                         builder: (context) => ImageViewer(
                             galleryItems:bannerImages))),*/
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ImageViewer(
-                          pageController: _pageController,
-                            initialIndex: index,
-                            galleryItems:bannerImages))),
-              );
+                onTap: () {
+                  if((widget.screenType??"").isEmpty) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ImageViewer(
+                                pageController: _pageController,
+                                initialIndex: index,
+                                galleryItems: bannerImages)));
+                  }
+                  });
             },
           ),
           Positioned(
@@ -135,6 +141,34 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget>
       ),
     );
   }
+
+/*
+  Widget _buildDots({required BuildContext context}) {
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: List.generate(
+          bannerImages.length.clamp(0, 10), // Limit to a maximum of 10
+              (index) {
+            return Container(
+              margin: const EdgeInsets.symmetric(horizontal: 5),
+              width: 10,
+              height: 10,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: _currentPage == index
+                    ? Theme.of(context).primaryColor
+                    : Colors.grey.withOpacity(0.8),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+*/
+
 
   Widget _buildDots({required BuildContext context}) {
     return Padding(

@@ -222,17 +222,17 @@ class EditProfileView extends BaseView<ProfileVM> {
                   DialogHelper.showToast(message: FormFieldErrors.invalidEmail);
                   return;
                 }
-                if (viewModel.phoneTextController.text !=
-                    DbHelper?.getUserModel()?.phoneNo) {
+                if (viewModel.emailTextController.text != DbHelper.getUserModel()?.email) {
+                   viewModel.sendVerificationMail(
+                      email: viewModel.emailTextController.text);
+                  return;
+                }
+                if (viewModel.phoneTextController.text != DbHelper.getUserModel()?.phoneNo) {
                   viewModel.sendVerificationPhone(
                       phone: viewModel.phoneTextController.text);
                   return;
                 }
-                if (viewModel.emailTextController.text !=
-                    DbHelper?.getUserModel()?.email) {
-                  await viewModel.sendVerificationMail(
-                      email: viewModel.emailTextController.text);
-                }
+
                 DialogHelper.showLoading();
                 await viewModel.updateProfileApi();
               },

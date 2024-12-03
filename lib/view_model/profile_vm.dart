@@ -194,7 +194,7 @@ class ProfileVM extends BaseViewModel {
     DialogHelper.showToast(message: model.message);
   }
 
-  void sendVerificationPhone({required String? phone}) async {
+  Future<void> sendVerificationPhone({required String? phone}) async {
     if (phone?.isEmpty ?? false) {
       DialogHelper.showToast(message: "Please enter phone number");
       return;

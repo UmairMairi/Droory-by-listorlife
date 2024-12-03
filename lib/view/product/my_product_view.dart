@@ -390,7 +390,11 @@ class MyProductView extends BaseView<ProductVM> {
                               //mainAxisExtent: 120,
                               crossAxisCount: 3,
                               childAspectRatio: 16/16,
-                              itemCount: data?.productAmenities?.length ?? 0,
+                              itemCount: viewModel.showAll
+                                  ? data?.productAmenities?.length ?? 0
+                                  : (data?.productAmenities?.length ?? 0) < 5
+                                  ? data?.productAmenities?.length ?? 0
+                                  : 5,
                               itemBuilder: (BuildContext context, int index) {
                                 return Card(
                                   color: Colors.grey.shade300,
@@ -419,7 +423,20 @@ class MyProductView extends BaseView<ProductVM> {
                                     ),
                                   ),
                                 );
-                              },)
+                              },),
+                            Gap(10),
+                            Visibility(
+                                visible: (data?.productAmenities?.length ?? 0) > 5,
+                                child:GestureDetector(
+                                onTap: (){
+                                  viewModel.showAll = !viewModel.showAll;
+                                },
+                                child:Align(
+                                    alignment: Alignment.topRight,
+                                    child:Text(
+                                      viewModel.showAll ? "See Less" : "See More",
+                                      style: context.textTheme.titleSmall,
+                                    )))),
                           },
                           Divider(),
                           Text(

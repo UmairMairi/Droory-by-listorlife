@@ -17,10 +17,17 @@ class ProductVM extends BaseViewModel {
 
   final ScrollController scrollController = ScrollController();
   bool isAppBarVisible = true;
+  bool _showAll = false; // Initial state to show less
+  bool get showAll => _showAll;
+  set showAll(bool value) {
+    _showAll = value;
+    notifyListeners(); // Notify listeners when state changes
+  }
 
   @override
   void onInit() {
     // TODO: implement onInit
+    showAll = false;
     scrollController.addListener(_onScroll);
     super.onInit();
   }

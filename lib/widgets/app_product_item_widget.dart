@@ -59,6 +59,7 @@ class AppProductItemWidget extends StatelessWidget {
             Stack(
               children: [
                 CardSwipeWidget(
+                  screenType: "home",
                   data: data,
                   imagesList: data?.productMedias,
                   height: 220,

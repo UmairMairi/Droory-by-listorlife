@@ -145,13 +145,17 @@ class ProductDetailView extends BaseView<ProductVM> {
                               getSpecifications(context: context, productData: productData),
                               const Gap(5),
                               Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Icon(
-                                    Icons.location_on,
-                                    size: 16,
+                                  Padding(
+                                    padding: const EdgeInsets.only(top:8.0),
+                                    child: const Icon(
+                                      Icons.location_on,
+                                      size: 16,
+                                    ),
                                   ),
                                   const Gap(05),
-                                  Text(productData?.nearby ?? ''),
+                                  Flexible(child: Text(productData?.nearby ?? '')),
                                 ],
                               ),
                               const Gap(10),
@@ -264,7 +268,11 @@ class ProductDetailView extends BaseView<ProductVM> {
                                   //mainAxisExtent: 120,
                                   crossAxisCount: 3,
                                   childAspectRatio: 16/16,
-                                  itemCount: productData?.productAmenities?.length ?? 0,
+                                  itemCount: viewModel.showAll
+                                      ? productData?.productAmenities?.length ?? 0
+                                      : (productData?.productAmenities?.length ?? 0) < 5
+                                      ? productData?.productAmenities?.length ?? 0
+                                      : 5,
                                   itemBuilder: (BuildContext context, int index) {
                                   return Card(
                                     color: Colors.grey.shade300,
@@ -292,7 +300,20 @@ class ProductDetailView extends BaseView<ProductVM> {
                                       ),
                                     ),
                                   );
-                                },)
+                                },),
+                                Gap(10),
+                                Visibility(
+                                    visible: (productData?.productAmenities?.length ?? 0) > 5,
+                                    child:GestureDetector(
+                                        onTap: (){
+                                          viewModel.showAll = !viewModel.showAll;
+                                        },
+                                        child:Align(
+                                            alignment: Alignment.topRight,
+                                            child:Text(
+                                              viewModel.showAll ? "See Less" : "See More",
+                                              style: context.textTheme.titleSmall,
+                                            )))),
                               },
                               Divider(),
                               Text(

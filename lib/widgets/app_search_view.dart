@@ -164,7 +164,7 @@ class _AppSearchViewState extends State<AppSearchView> {
               title: AppTextField(
                 controller: textEditingController,
                 onChanged: (String data) {
-                  if (_debounce?.isActive ?? false) _debounce!.cancel();
+                  if (_debounce?.isActive ?? false) _debounce?.cancel();
 
                   // Set a new debounce timer
                   _debounce = Timer(const Duration(milliseconds: 300), () {
@@ -179,65 +179,74 @@ class _AppSearchViewState extends State<AppSearchView> {
                 hint: "Search...",
               ),
             ),
-            searchHistoryWidget(context),
             Expanded(
-              child: StreamBuilder<List<CategoryModel?>>(
-                stream: _categoryStreamController.stream,
-                builder: (context, categorySnapshot) {
-                  return StreamBuilder<List<ProductDetailModel>?>(
-                    stream: _productStreamController.stream,
-                    builder: (context, productSnapshot) {
-                      if (categorySnapshot.connectionState ==
-                              ConnectionState.waiting ||
-                          productSnapshot.connectionState ==
-                              ConnectionState.waiting) {
-                        return AppLoadingWidget(); // Show loading widget
-                      }
-                      if (categorySnapshot.hasError ||
-                          productSnapshot.hasError) {
-                        return Center(
-                          child: Text("Error loading data"),
-                        );
-                      }
-
-                      final categories = categorySnapshot.data ?? [];
-                      final products = productSnapshot.data ?? [];
-
-                      if (categories.isEmpty && products.isEmpty) {
-                        return Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              AppEmptyWidget(),
-                              Text("No results found."),
-                            ],
-                          ),
-                        );
-                      }
-
-                      // Combine categories and products in a single list
-                      return SingleChildScrollView(
-                        physics: ClampingScrollPhysics(),
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                        child: Column(
-                          children: [
-                            categoryWidget(context, categories),
-                            productWidget(context, products)
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                },
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: [
+                    searchHistoryWidget(context),
+                    searchedDataWidget(context)
+                  ],
+                ),
               ),
-            ),
+            )
           ],
         ),
       ),
     );
   }
 
+  searchedDataWidget(BuildContext context){
+    return StreamBuilder<List<CategoryModel?>>(
+      stream: _categoryStreamController.stream,
+      builder: (context, categorySnapshot) {
+        return StreamBuilder<List<ProductDetailModel>?>(
+          stream: _productStreamController.stream,
+          builder: (context, productSnapshot) {
+            return _buildStreamState(context, categorySnapshot, productSnapshot);
+          },
+        );
+      },
+    );
+  }
 
+  Widget _buildStreamState(
+      BuildContext context,
+      AsyncSnapshot<List<CategoryModel?>> categorySnapshot,
+      AsyncSnapshot<List<ProductDetailModel>?> productSnapshot,
+      ) {
+    if (categorySnapshot.connectionState == ConnectionState.waiting ||
+        productSnapshot.connectionState == ConnectionState.waiting) {
+      return AppLoadingWidget(); // Show loading widget
+    }
+
+    if (categorySnapshot.hasError || productSnapshot.hasError) {
+      return Center(
+        child: Text("Error loading data", style: TextStyle(color: Colors.red)),
+      );
+    }
+
+    final categories = categorySnapshot.data ?? [];
+    final products = productSnapshot.data ?? [];
+
+    if (categories.isEmpty && products.isEmpty) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          AppEmptyWidget(),
+          Text("No results found."),
+        ],
+      );
+    }
+
+    return Column(
+      children: [
+        categoryWidget(context, categories),
+        SizedBox(height: 20,),
+        productWidget(context, products),
+      ],
+    );
+  }
 
   Widget oldData(BuildContext context, List<CategoryModel?> categories, List<ProductDetailModel> products) {
      return ListView.builder(
@@ -329,10 +338,9 @@ class _AppSearchViewState extends State<AppSearchView> {
   }
 
   Widget productWidget(BuildContext context, List<ProductDetailModel> products) {
-    return ListView.builder(
+    return ListView.separated(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
-      padding: EdgeInsets.symmetric(vertical: 10),
       itemCount: products.length,
       itemBuilder: (context, index) {
         final product = products[index];
@@ -366,7 +374,9 @@ class _AppSearchViewState extends State<AppSearchView> {
             },
           ),
         );
-      },
+      }, separatorBuilder: (BuildContext context, int index) {
+      return const Gap(20);
+    },
     );
   }
 
@@ -389,72 +399,67 @@ class _AppSearchViewState extends State<AppSearchView> {
           return Container();
         }
 
-        return Flexible(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Recent Search",
-                      style: context.textTheme.titleSmall,
-                      textAlign: TextAlign.center,
-                    ),
-                    GestureDetector(
-                      onTap: (){
-                        deleteSearches();
-                      },
-                      child: Text("Clear All",
+                Text("Recent Search",
+                  style: context.textTheme.titleSmall,
+                  textAlign: TextAlign.center,
+                ),
+                GestureDetector(
+                  onTap: (){
+                    deleteSearches();
+                  },
+                  child: Text("Clear All",
+                    style: context.textTheme.titleSmall,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            ),
+            Wrap(
+              crossAxisAlignment: WrapCrossAlignment.start,
+              alignment: WrapAlignment.start,
+              spacing: 8.0,
+              runSpacing: 8.0,
+              children: categories.map(
+                    (item) => Visibility(
+                  visible: (item.searchData?.name??"").isNotEmpty,
+                  child: GestureDetector(
+                    onTap: (){
+                      if(item.searchData?.type == "category"){
+                        CategoryModel category = CategoryModel(id: item.searchData?.id,name: item.searchData?.name);
+                        context.push(Routes.subCategoryView,
+                            extra: category);
+                        return;
+                      }
+                      if(item.searchData?.type == "product"){
+                        ProductDetailModel product = ProductDetailModel(id: item.searchData?.id,name: item.searchData?.name);
+                        if (item.userId == DbHelper.getUserModel()?.id) {
+                          context.push(Routes.myProduct,
+                              extra: product);
+                          return;
+                        }
+
+                        context.push(Routes.productDetails,
+                            extra: product);
+                        return;
+                      }
+                    },
+                    child: Chip(
+                      label: Text(item.searchData?.name??"",
                         style: context.textTheme.titleSmall,
                         textAlign: TextAlign.center,
                       ),
                     ),
-                  ],
+                  ),
                 ),
-                Wrap(
-                  crossAxisAlignment: WrapCrossAlignment.start,
-                  alignment: WrapAlignment.start,
-                  spacing: 8.0,
-                  runSpacing: 8.0,
-                  children: categories.map(
-                        (item) => Visibility(
-                      visible: (item.searchData?.name??"").isNotEmpty,
-                      child: GestureDetector(
-                        onTap: (){
-                          if(item.searchData?.type == "category"){
-                            CategoryModel category = CategoryModel(id: item.searchData?.id,name: item.searchData?.name);
-                            context.push(Routes.subCategoryView,
-                                extra: category);
-                            return;
-                          }
-                          if(item.searchData?.type == "product"){
-                            ProductDetailModel product = ProductDetailModel(id: item.searchData?.id,name: item.searchData?.name);
-                            if (item.userId == DbHelper.getUserModel()?.id) {
-                              context.push(Routes.myProduct,
-                                  extra: product);
-                              return;
-                            }
-
-                            context.push(Routes.productDetails,
-                                extra: product);
-                            return;
-                          }
-                        },
-                        child: Chip(
-                          label: Text(item.searchData?.name??"",
-                            style: context.textTheme.titleSmall,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ).toList(),
-                ),
-              ],
+              ).toList(),
             ),
-          ),
+          ],
         );
       },
     );
