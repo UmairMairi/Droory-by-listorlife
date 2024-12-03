@@ -95,12 +95,18 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget>
                 width: context.width,
                 height: widget.height ?? 220,
                 fit: BoxFit.fill,
+                /*onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ImageViewer(
+                            galleryItems:bannerImages))),*/
                 onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => ImageZoomScreen(
-                            imageUrl:
-                                "${ApiConstants.imageUrl}/${bannerImages[index]}"))),
+                        builder: (context) => ImageViewer(
+                          pageController: _pageController,
+                            initialIndex: index,
+                            galleryItems:bannerImages))),
               );
             },
           ),

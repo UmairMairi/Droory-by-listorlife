@@ -17,6 +17,7 @@ class ProductListSkeleton extends StatelessWidget {
       enabled: isLoading,
       child: ListView.separated(
         itemCount: 5,
+        physics: NeverScrollableScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 20),
         shrinkWrap: true,
         itemBuilder: (context, index) {

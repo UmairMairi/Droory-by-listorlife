@@ -185,6 +185,7 @@ class HomeView extends BaseView<HomeVM> {
         onRefresh: viewModel.onRefresh,
         onLoading: viewModel.onLoading,
         child: SingleChildScrollView(
+          physics: ClampingScrollPhysics(),
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -203,6 +204,7 @@ class HomeView extends BaseView<HomeVM> {
                             itemCount: categoryItems.length,
                             scrollDirection: Axis.horizontal,
                             shrinkWrap: true,
+                            physics: ClampingScrollPhysics(),
                             itemBuilder: (context, index) {
                               return SizedBox(
                                 width: 80,

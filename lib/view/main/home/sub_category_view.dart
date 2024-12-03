@@ -26,7 +26,7 @@ class SubCategoryView extends BaseView<HomeVM> {
             if (snapshot.hasData) {
               List<CategoryModel> subCategoriesList =
                   snapshot.data?.reversed.toList() ?? [];
-
+              subCategoriesList.insert(0, CategoryModel(name: "See All"));
               return ListView.separated(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -36,7 +36,7 @@ class SubCategoryView extends BaseView<HomeVM> {
                         context.push(Routes.filterDetails,
                             extra: FilterModel(
                               categoryId: "${category?.id}",
-                              subcategoryId: "${subCategoriesList[index].id}",
+                              subcategoryId: "${subCategoriesList[index].id??""}",
                               latitude: "${viewModel.latitude}",
                               longitude: "${viewModel.longitude}",
                             ));

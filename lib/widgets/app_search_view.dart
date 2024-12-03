@@ -217,6 +217,7 @@ class _AppSearchViewState extends State<AppSearchView> {
 
                       // Combine categories and products in a single list
                       return SingleChildScrollView(
+                        physics: ClampingScrollPhysics(),
                         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                         child: Column(
                           children: [
