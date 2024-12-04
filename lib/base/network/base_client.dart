@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http_parser/http_parser.dart';
@@ -23,6 +24,14 @@ class BaseClient {
   static Future<dynamic> handleRequest(ApiRequest apiRequest) async {
     _dio.options.followRedirects = false;
     _dio.options.connectTimeout = const Duration(seconds: 20);
+    (_dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
+      final client = HttpClient(
+        context: SecurityContext(withTrustedRoots: false),
+      );
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+      return client;
+    };
     _dio.interceptors.clear();
     _dio.interceptors.add(AppExceptions());
 
