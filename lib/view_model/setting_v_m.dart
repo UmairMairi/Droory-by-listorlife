@@ -31,6 +31,27 @@ class SettingVM extends BaseViewModel {
     notifyListeners();
   }
 
+  bool _isAccountSettings = false;
+  bool get isAccountSettings => _isAccountSettings;
+  set isAccountSettings(bool value) {
+    _isAccountSettings = value;
+    notifyListeners();
+  }
+
+  bool _isSupport = false;
+  bool get isSupport => _isSupport;
+  set isSupport(bool value) {
+    _isSupport = value;
+    notifyListeners();
+  }
+
+  bool _isAppSetting = false;
+  bool get isAppSetting => _isAppSetting;
+  set isAppSetting(bool value) {
+    _isAppSetting = value;
+    notifyListeners();
+  }
+
   @override
   void onInit() {
     DbHelper.box.listenKey('isGuest', (value) {

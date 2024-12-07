@@ -37,41 +37,44 @@ class VacationForm extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AppTextField(
-          title: StringHelper.propertyType,
-          hint: StringHelper.select,
-          controller: viewModel.propertyForTextController,
-          readOnly: true,
-          suffix: PopupMenuButton<String>(
-            clipBehavior: Clip.hardEdge,
-            icon: const Icon(
-              Icons.arrow_drop_down,
-              color: Colors.black,
+        Visibility(
+          visible: false,
+          child: AppTextField(
+            title: StringHelper.propertyType,
+            hint: StringHelper.select,
+            controller: viewModel.propertyForTextController,
+            readOnly: true,
+            suffix: PopupMenuButton<String>(
+              clipBehavior: Clip.hardEdge,
+              icon: const Icon(
+                Icons.arrow_drop_down,
+                color: Colors.black,
+              ),
+              onSelected: (String value) {
+                viewModel.currentPropertyType = value;
+                viewModel.propertyForTextController.text = value;
+              },
+              itemBuilder: (BuildContext context) {
+                return ['Sell', 'Rent'].map((option) {
+                  return PopupMenuItem(
+                    value: option,
+                    child: Text(option),
+                  );
+                }).toList();
+              },
             ),
-            onSelected: (String value) {
-              viewModel.currentPropertyType = value;
-              viewModel.propertyForTextController.text = value;
-            },
-            itemBuilder: (BuildContext context) {
-              return ['Sell', 'Rent'].map((option) {
-                return PopupMenuItem(
-                  value: option,
-                  child: Text(option),
-                );
-              }).toList();
-            },
+            contentPadding:
+            const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(
+                RegExp(viewModel.regexToRemoveEmoji),
+              ),
+            ],
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.done,
+            fillColor: Colors.white,
+            elevation: 6,
           ),
-          contentPadding:
-          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-          inputFormatters: [
-            FilteringTextInputFormatter.deny(
-              RegExp(viewModel.regexToRemoveEmoji),
-            ),
-          ],
-          keyboardType: TextInputType.text,
-          textInputAction: TextInputAction.done,
-          fillColor: Colors.white,
-          elevation: 6,
         ),
 
         AppTextField(

@@ -138,7 +138,7 @@ class PetsSellForm extends BaseView<SellFormsVM> {
                   } else {
                     return GestureDetector(
                       onTap: () async {
-                        if (viewModel.imagesList.length < 12) {
+                        if (viewModel.imagesList.length < 10) {
                           var image = await ImagePickerHelper.openImagePicker(
                                   context: context, isCropping: true) ??
                               '';

@@ -157,7 +157,7 @@ class _SellFormViewState extends State<SellFormView> {
           item: widget.item,
         );
       case 'real estate':
-        return PropertySellForm(
+        return PropertyType(
           type: widget.type,
           category: widget.category,
           subSubCategory: widget.subSubCategory,
@@ -165,6 +165,14 @@ class _SellFormViewState extends State<SellFormView> {
           subCategory: widget.subCategory,
           item: widget.item,
         );
+        // return PropertySellForm(
+        //   type: widget.type,
+        //   category: widget.category,
+        //   subSubCategory: widget.subSubCategory,
+        //   brands: brands,
+        //   subCategory: widget.subCategory,
+        //   item: widget.item,
+        // );
       default:
         return CommonSellForm(
           type: widget.type,
