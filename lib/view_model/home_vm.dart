@@ -191,7 +191,7 @@ class HomeVM extends BaseViewModel {
   @override
   void onClose() {
     // TODO: implement onClose
-    refreshController.dispose();
+    //refreshController.dispose();
     super.onClose();
   }
 
