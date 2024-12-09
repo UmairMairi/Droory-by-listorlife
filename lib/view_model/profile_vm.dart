@@ -137,6 +137,12 @@ class ProfileVM extends BaseViewModel {
   }
 
   Future<void> updateProfileApi() async {
+    var communication = "";
+    if(communicationChoice == "none" || communicationChoice.isEmpty){
+      communication = "chat";
+    }else{
+      communication = communicationChoice;
+    }
     Map<String, dynamic> body = {
       'name': nameTextController.text.trim(),
       'last_name': lastNameController.text.trim(),
@@ -144,7 +150,7 @@ class ProfileVM extends BaseViewModel {
       'bio': bioTextController.text.trim(),
       'phone_no': phoneTextController.text.trim(),
       'country_code': countryCode,
-      'communication_choice': communicationChoice,
+      'communication_choice': communication,
       'address': locationTextController.text,
       'latitude': latitude,
       'longitude': longitude

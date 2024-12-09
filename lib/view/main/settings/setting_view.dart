@@ -1021,45 +1021,39 @@ class CustomExpansionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          label,
-          style: context.titleMedium,
-        ),
-        ExpansionTile(
-          dense: true,
-          shape: const RoundedRectangleBorder(),
-          tilePadding: EdgeInsets.zero,
-          childrenPadding: const EdgeInsets.symmetric(horizontal: 10),
-          expandedAlignment: Alignment.topLeft,
-          title: Text(
-            title,
-            style: context.titleMedium,
+    return ExpansionTile(
+      dense: true,
+      shape: const RoundedRectangleBorder(),
+      tilePadding: EdgeInsets.zero,
+      title: Text(
+        label,
+        style: context.titleMedium,
+      ),
+      subtitle: Text(
+        title,
+        style: context.titleSmall,
+      ),
+      trailing: Icon(
+        isExpanded ? Icons.keyboard_arrow_down : Icons.arrow_forward_ios,
+        size: isExpanded ? 25 : 15,
+        color: Colors.grey,
+      ),
+      childrenPadding: const EdgeInsets.symmetric(horizontal: 10),
+      expandedAlignment: Alignment.topLeft,
+      onExpansionChanged: onExpansionChanged,
+      children: List.generate(items.length, (index) {
+        final item = items[index];
+        return InkWell(
+          onTap: item.onTap,
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 10.0),
+            child: SettingItemView(
+              item: item,
+              widget: widget,
+            ),
           ),
-          onExpansionChanged: onExpansionChanged,
-          trailing: Icon(
-            isExpanded ? Icons.keyboard_arrow_down : Icons.arrow_forward_ios,
-            size: isExpanded ? 25 : 15,
-            color: Colors.grey,
-          ),
-          children: List.generate(items.length, (index) {
-            final item = items[index];
-            return InkWell(
-              onTap: item.onTap,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 10.0),
-                child: SettingItemView(
-                  item: item,
-                  widget: widget,
-                ),
-              ),
-            );
-          }),
-        ),
-      ],
+        );
+      }),
     );
   }
 }

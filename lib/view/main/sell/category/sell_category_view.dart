@@ -18,6 +18,7 @@ class SellCategoryView extends BaseView<SellVM> {
 
   @override
   Widget build(BuildContext context, SellVM viewModel) {
+    print("DbHelper.getIsGuest() ${DbHelper.getIsGuest()}");
     return Scaffold(
       appBar: AppBar(
         title: Text(StringHelper.sell),

@@ -13,9 +13,18 @@ import 'package:list_and_life/view/main/sell/sub_sub_category/sell_sub_sub_categ
 import 'package:list_and_life/view_model/sell_forms_vm.dart';
 import 'package:provider/provider.dart';
 
+import '../base/helpers/db_helper.dart';
 import '../view/main/sell/forms/sell_form_view.dart';
 
 class SellVM extends BaseViewModel {
+
+  bool _isGuest = DbHelper.getIsGuest();
+
+  bool get isGuest => _isGuest;
+  set isGuest(bool value) {
+    _isGuest = value;
+    notifyListeners();
+  }
   void handelSellCat({required CategoryModel item}) {
     if (context.mounted) {
       context.push(Routes.sellSubCategoryView, extra: item);

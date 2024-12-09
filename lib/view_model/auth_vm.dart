@@ -220,6 +220,12 @@ class AuthVM extends BaseViewModel {
   }
 
   Future<void> completeProfileApi() async {
+    var communication = "";
+    if(communicationChoice == "none" || communicationChoice.isEmpty){
+      communication = "chat";
+    }else{
+      communication = communicationChoice;
+    }
     // If no image is selected, generate a default image with the first name's letter
     if (imagePath.isEmpty) {
       imagePath = await generateAndSaveDefaultAvatar(
@@ -238,7 +244,7 @@ class AuthVM extends BaseViewModel {
       'type': '1',
       'last_name': lNameTextController.text.trim(),
       'email': emailTextController.text.trim(),
-      'communication_choice': communicationChoice,
+      'communication_choice': communication,
       'profile_pic': await BaseClient.getMultipartImage(path: imagePath)
     };
 

@@ -24,15 +24,6 @@ class BaseClient {
   static Future<dynamic> handleRequest(ApiRequest apiRequest) async {
     _dio.options.followRedirects = false;
     _dio.options.connectTimeout = const Duration(seconds: 30);
-    _dio.options.receiveTimeout = const Duration(seconds: 30);
-    // (_dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
-    //   final client = HttpClient(
-    //     context: SecurityContext(withTrustedRoots: false),
-    //   );
-    //   client.badCertificateCallback =
-    //       (X509Certificate cert, String host, int port) => true;
-    //   return client;
-    // };
     _dio.interceptors.clear();
     _dio.interceptors.add(AppExceptions());
 
