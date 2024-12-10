@@ -171,6 +171,7 @@ class SellFormsVM extends BaseViewModel {
     notifyListeners();
   }
 
+  int productStatus = 0;
   String _currentFurnishing = "";
   String get currentFurnishing => _currentFurnishing;
 
@@ -298,6 +299,8 @@ class SellFormsVM extends BaseViewModel {
     notifyListeners();
   }
 
+
+
   void updateTextFieldsItems({ProductDetailModel? item}) async {
     if (item == null) {
       resetTextFields();
@@ -323,6 +326,7 @@ class SellFormsVM extends BaseViewModel {
     descriptionTextController.text = item.description ?? '';
     addressTextController.text = "${item.nearby}";
     priceTextController.text = item.price ?? '';
+    productStatus = (item.status??0).toInt();
     currentIndex =
         (item.itemCondition?.toLowerCase().contains('used') ?? false) ? 2 : 1;
     brandTextController.text = item.brand?.name ?? '';
@@ -379,6 +383,7 @@ class SellFormsVM extends BaseViewModel {
     amenities =
         item.productAmenities?.map((element) => element.amnityId).toList() ??
             [];
+
   }
 
   void resetTextFields() {
@@ -700,6 +705,10 @@ class SellFormsVM extends BaseViewModel {
       'access_to_utilities': accessToUtilitiesTextController.text.trim(),
 
     };
+
+    if(productStatus == 2){
+      body['status'] = 0;
+    }
 
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.editProductsUrl(),
