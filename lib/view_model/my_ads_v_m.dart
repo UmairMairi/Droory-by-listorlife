@@ -78,7 +78,7 @@ class MyAdsVM extends BaseViewModel {
 
   @override
   void onClose() {
-    refreshController.dispose();
+    //refreshController.dispose();
     super.onClose();
   }
 
