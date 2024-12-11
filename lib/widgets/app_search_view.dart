@@ -153,32 +153,51 @@ class _AppSearchViewState extends State<AppSearchView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: AppTextField(
+          controller: textEditingController,
+          onChanged: (String data) {
+            if (_debounce?.isActive ?? false) _debounce?.cancel();
+
+            // Set a new debounce timer
+            _debounce = Timer(const Duration(milliseconds: 300), () {
+              searchItem(
+                  text: data); // Trigger search after debounce delay
+            });
+          },
+          prefix: Icon(Icons.search),
+          validator: (value) {
+            return null;
+          },
+          hint: "Search...",
+        ),
+      ),
       body: SafeArea(
         child: Column(
           children: [
-            ListTile(
-              leading: GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Icon(Icons.arrow_back),
-              ),
-              title: AppTextField(
-                controller: textEditingController,
-                onChanged: (String data) {
-                  if (_debounce?.isActive ?? false) _debounce?.cancel();
-
-                  // Set a new debounce timer
-                  _debounce = Timer(const Duration(milliseconds: 300), () {
-                    searchItem(
-                        text: data); // Trigger search after debounce delay
-                  });
-                },
-                prefix: Icon(Icons.search),
-                validator: (value) {
-                  return null;
-                },
-                hint: "Search...",
-              ),
-            ),
+            // ListTile(
+            //   leading: GestureDetector(
+            //     onTap: () => Navigator.pop(context),
+            //     child: Icon(Icons.arrow_back_ios),
+            //   ),
+            //   title: AppTextField(
+            //     controller: textEditingController,
+            //     onChanged: (String data) {
+            //       if (_debounce?.isActive ?? false) _debounce?.cancel();
+            //
+            //       // Set a new debounce timer
+            //       _debounce = Timer(const Duration(milliseconds: 300), () {
+            //         searchItem(
+            //             text: data); // Trigger search after debounce delay
+            //       });
+            //     },
+            //     prefix: Icon(Icons.search),
+            //     validator: (value) {
+            //       return null;
+            //     },
+            //     hint: "Search...",
+            //   ),
+            // ),
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(horizontal: 20),

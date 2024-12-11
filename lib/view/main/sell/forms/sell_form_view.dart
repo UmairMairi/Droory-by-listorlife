@@ -23,6 +23,7 @@ import 'job_sell_form.dart';
 
 class SellFormView extends StatefulWidget {
   final String? type;
+  final String? screenType;
   final CategoryModel? category;
   final CategoryModel? subCategory;
   final CategoryModel? subSubCategory;
@@ -33,6 +34,7 @@ class SellFormView extends StatefulWidget {
       required this.category,
       required this.subCategory,
       this.subSubCategory,
+      this.screenType,
       this.item,
       required this.type});
 
@@ -66,9 +68,9 @@ class _SellFormViewState extends State<SellFormView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: widget.screenType == null?AppBar(
         title: Text(StringHelper.includeSomeDetails),
-      ),
+      ):null,
       body: FutureBuilder<List<CategoryModel>>(
           future: getBrands(data: widget.subCategory),
           builder: (context, snapshot) {
@@ -157,6 +159,16 @@ class _SellFormViewState extends State<SellFormView> {
           item: widget.item,
         );
       case 'real estate':
+        if(widget.screenType != null){
+          return PropertySellForm(
+            type: widget.type,
+            category: widget.category,
+            subSubCategory: widget.subSubCategory,
+            brands: brands,
+            subCategory: widget.subCategory,
+            item: widget.item,
+          );
+        }
         return PropertyType(
           type: widget.type,
           category: widget.category,
@@ -165,14 +177,7 @@ class _SellFormViewState extends State<SellFormView> {
           subCategory: widget.subCategory,
           item: widget.item,
         );
-        // return PropertySellForm(
-        //   type: widget.type,
-        //   category: widget.category,
-        //   subSubCategory: widget.subSubCategory,
-        //   brands: brands,
-        //   subCategory: widget.subCategory,
-        //   item: widget.item,
-        // );
+
       default:
         return CommonSellForm(
           type: widget.type,

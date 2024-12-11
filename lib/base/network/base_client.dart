@@ -23,7 +23,7 @@ class BaseClient {
 
   static Future<dynamic> handleRequest(ApiRequest apiRequest) async {
     _dio.options.followRedirects = false;
-    _dio.options.connectTimeout = const Duration(seconds: 30);
+    _dio.options.connectTimeout = const Duration(seconds: 20);
     _dio.interceptors.clear();
     _dio.interceptors.add(AppExceptions());
 

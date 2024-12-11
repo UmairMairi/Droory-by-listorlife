@@ -95,7 +95,7 @@ class MyProductView extends BaseView<ProductVM> {
                     Stack(
                       children: [
                         CardSwipeWidget(
-                          height: 300,
+                          height: 400,
                           data: data,
                           imagesList: data?.productMedias,
                           borderRadius: const BorderRadius.only(
@@ -111,7 +111,8 @@ class MyProductView extends BaseView<ProductVM> {
                                   onPressed: () {
                                     context.pop();
                                   },
-                                  icon: Icon(Icons.arrow_back,
+                                  icon: Icon(Icons.arrow_back_ios,
+                                      textDirection: TextDirection.ltr,
                                       color: Colors.white)),
                             )),
                         Positioned(

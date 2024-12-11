@@ -14,6 +14,7 @@ class CardSwipeWidget extends StatefulWidget {
   final List<ProductMedias>? imagesList;
   final BorderRadiusGeometry? borderRadius;
   final String? screenType;
+  final BoxFit? fit;
 
   const CardSwipeWidget({
     super.key,
@@ -21,7 +22,7 @@ class CardSwipeWidget extends StatefulWidget {
     this.height,
     this.imagesList,
     this.borderRadius,
-    this.screenType,
+    this.screenType, this.fit,
   });
 
   @override
@@ -97,7 +98,7 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget>
                 placeholder: AssetsRes.APP_LOGO,
                 width: context.width,
                 height: widget.height ?? 220,
-                fit: BoxFit.fill,
+                fit: widget.fit??BoxFit.fill,
                 /*onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -122,6 +123,7 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget>
               onPressed: _goToPreviousPage,
               icon: Icon(
                 Icons.arrow_back_ios,
+                textDirection: TextDirection.ltr,
                 color: Colors.white,
               ),
             ),
@@ -132,6 +134,7 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget>
               onPressed: _goToNextPage,
               icon: Icon(
                 Icons.arrow_forward_ios,
+                textDirection: TextDirection.ltr,
                 color: Colors.white,
               ),
             ),

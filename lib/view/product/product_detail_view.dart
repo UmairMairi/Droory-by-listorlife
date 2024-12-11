@@ -84,8 +84,9 @@ class ProductDetailView extends BaseView<ProductVM> {
                         Stack(
                           children: [
                             CardSwipeWidget(
-                              height: 300,
+                              height: 400,
                               data: productData,
+                              fit: BoxFit.fill,
                               imagesList: productData?.productMedias,
                               borderRadius: const BorderRadius.only(
                                 topLeft: Radius.circular(20),
@@ -100,7 +101,8 @@ class ProductDetailView extends BaseView<ProductVM> {
                                       onPressed: () {
                                         context.pop();
                                       },
-                                      icon: Icon(Icons.arrow_back,
+                                      icon: Icon(Icons.arrow_back_ios,
+                                          textDirection: TextDirection.ltr,
                                           color: Colors.white)),
                                 )),
                             Positioned(

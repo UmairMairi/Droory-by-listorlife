@@ -231,6 +231,7 @@ class MyAdsVM extends BaseViewModel {
         context,
         MaterialPageRoute(
             builder: (context) => SellFormView(
+              screenType: "edit",
                   category: category,
                   subSubCategory: subSubCategory,
                   subCategory: subCategory,

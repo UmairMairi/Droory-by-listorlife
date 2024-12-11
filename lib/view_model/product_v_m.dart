@@ -27,12 +27,17 @@ class ProductVM extends BaseViewModel {
   @override
   void onInit() {
     // TODO: implement onInit
-    showAll = false;
+
     scrollController.addListener(_onScroll);
     super.onInit();
   }
 
 
+  @override
+  void onReady() {
+    showAll = false;
+    super.onReady();
+  }
 
   void _onScroll() {
     if (scrollController.position.userScrollDirection == ScrollDirection.reverse) {
