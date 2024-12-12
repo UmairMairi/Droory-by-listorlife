@@ -463,11 +463,15 @@ class SellFormsVM extends BaseViewModel {
       LocationHelper.showPopupAddProduct(context, () {});
       return;
     }
-
+    String mainImage = "";
     final List<String> images = [];
-    String mainImage = await BaseClient.uploadImage(imagePath: mainImagePath);
-    for (var element in imagesList) {
-      images.add(await BaseClient.uploadImage(imagePath: element.media ?? ''));
+    if(mainImagePath.isNotEmpty) {
+       mainImage = await BaseClient.uploadImage(imagePath: mainImagePath);
+    }
+    if(imagesList.isNotEmpty) {
+      for (var element in imagesList) {
+        images.add(await BaseClient.uploadImage(imagePath: element.media ?? ''));
+      }
     }
     Map<String, dynamic> body = {
       "category_id": category?.id,
@@ -628,15 +632,18 @@ class SellFormsVM extends BaseViewModel {
       LocationHelper.showPopupAddProduct(context, () {});
       return;
     }
-
+    String mainImage = "";
     final List<String> images = [];
-    String mainImage = mainImagePath.contains('http')
+    if(mainImagePath.isNotEmpty) {
+      mainImage = mainImagePath.contains('http')
         ? mainImagePath.split('/').last
         : await BaseClient.uploadImage(imagePath: mainImagePath);
-    for (var element in imagesList) {
-      if (!element.media!.contains('http')) {
-        images
-            .add(await BaseClient.uploadImage(imagePath: element.media ?? ''));
+    }
+    if(imagesList.isNotEmpty) {
+      for (var element in imagesList) {
+        if (!element.media!.contains('http')) {
+          images.add(await BaseClient.uploadImage(imagePath: element.media ?? ''));
+        }
       }
     }
 

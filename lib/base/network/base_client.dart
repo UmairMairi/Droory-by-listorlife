@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:dio/io.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http_parser/http_parser.dart';
@@ -152,7 +151,7 @@ class BaseClient {
     // You can customize error handling here
     if (error is DioException) {
       if (error.response != null) {
-        DialogHelper.showToast(message: error.response!.data['message']);
+        DialogHelper.showToast(message: error.response?.data['message']??"");
         return error.response!;
       }
       DialogHelper.showToast(message: error.toString());
