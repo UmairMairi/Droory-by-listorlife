@@ -4,7 +4,6 @@ import 'dart:ui';
 
 import 'package:ccp_dialog/country_picker/flutter_country_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
@@ -23,8 +22,6 @@ import 'package:list_and_life/routes/app_routes.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../base/helpers/image_picker_helper.dart';
-import '../base/helpers/string_helper.dart';
-import '../widgets/app_text_field.dart';
 
 class AuthVM extends BaseViewModel {
   TextEditingController phoneTextController = TextEditingController();

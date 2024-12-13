@@ -59,7 +59,7 @@ class NotificationService {
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onDidReceiveNotificationResponse:
             (NotificationResponse notificationResponse) async {
-      print(notificationResponse.payload);
+              debugPrint(notificationResponse.payload);
 
       NotificationEntity? notificationEntity =
           DbHelper.convertStringToNotificationEntity(
@@ -131,7 +131,7 @@ class NotificationService {
       return null;
     }
 
-    print(payload);
+    debugPrint(payload);
     NotificationEntity? entity =
         DbHelper.convertStringToNotificationEntity(payload);
     debugPrint(
@@ -204,7 +204,7 @@ class NotificationService {
   void pushNextScreenFromForeground(
       NotificationEntity? notificationEntity) async {
     // Utils.showLoader();
-    print("Notificaion data => ${notificationEntity?.toJson()}");
+    debugPrint("Notificaion data => ${notificationEntity?.toJson()}");
 
     /*  switch ("${notificationEntity.entityName}") {
       case 'MESSAGE':
@@ -291,10 +291,10 @@ class NotificationService {
       );
 
       // Handle the response
-      print(response.data);
+      debugPrint(response.data);
     } on DioException catch (e) {
       // Handle error
-      print('Error: $e');
+      debugPrint('Error: $e');
     }
     DialogHelper.hideLoading();
   }

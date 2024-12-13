@@ -71,8 +71,8 @@ class ProfileVM extends BaseViewModel {
 
   bool get isEmailVerified => _isEmailVerified;
 
-  String _latitude = DbHelper?.getUserModel()?.latitude ?? '';
-  String _longitude = DbHelper?.getUserModel()?.longitude ?? '';
+  String _latitude = DbHelper.getUserModel()?.latitude ?? '';
+  String _longitude = DbHelper.getUserModel()?.longitude ?? '';
 
   String get longitude => _longitude;
 
@@ -213,6 +213,7 @@ class ProfileVM extends BaseViewModel {
         body: {'country_code': '+20', 'phone_no': phone});
     var response = await BaseClient.handleRequest(apiRequest);
     MapResponse model = MapResponse.fromJson(response, (json) => null);
+    debugPrint("$model");
     DialogHelper.hideLoading();
     if (context.mounted) {
       context.push(Routes.verifyProfile, extra: phoneTextController.text);

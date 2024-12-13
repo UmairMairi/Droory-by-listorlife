@@ -136,7 +136,7 @@ class DefaultForm extends StatelessWidget {
               color: Colors.black,
             ),
             onSelected: (String value) {
-              viewModel.noOfBathroomsTextController.text = "$value";
+              viewModel.noOfBathroomsTextController.text = value;
             },
             itemBuilder: (BuildContext context) {
               return ['1', '2', '3', '4', '5', '6', '7', '7+']
@@ -408,9 +408,9 @@ class DefaultForm extends StatelessWidget {
         AmenitiesWidget(
             amenitiesChecked: viewModel.amenities,
             selectedAmenities: (List<int?> selectedIds) {
-              print(selectedIds);
+              debugPrint("$selectedIds");
               viewModel.amenities = selectedIds;
-              print(viewModel.amenities);
+              debugPrint("${viewModel.amenities}");
             }),
         Text(
           StringHelper.howToConnect,

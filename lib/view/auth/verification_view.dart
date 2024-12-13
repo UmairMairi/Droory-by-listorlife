@@ -44,7 +44,7 @@ class VerificationView extends BaseView<AuthVM> {
               onOtpEntered: (otp) {
                 // Handle OTP entered
                 viewModel.otpTextController.text = otp;
-                print("Entered OTP: $otp");
+                debugPrint("Entered OTP: $otp");
               },
             ),
             AppElevatedButton(

@@ -61,11 +61,9 @@ class MessageBar extends StatelessWidget {
                         size: 24,
                       ),
                       Expanded(
-                        child: Container(
-                          child: Text(
-                            'Re : $replyingTo',
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                        child: Text(
+                          'Re : $replyingTo',
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       InkWell(

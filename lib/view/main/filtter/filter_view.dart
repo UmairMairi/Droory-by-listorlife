@@ -84,7 +84,7 @@ class _FilterViewState extends State<FilterView> {
         ListResponse.fromJson(response, (json) => CategoryModel.fromJson(json));
     DialogHelper.hideLoading();
     allModels = model.body ?? [];
-    print("response ~--> $response");
+    debugPrint("response ~--> $response");
     setState(() {});
   }
 
@@ -569,7 +569,7 @@ class _FilterViewState extends State<FilterView> {
                   suffix: PopupMenuButton<String>(
                     icon: const Icon(Icons.arrow_drop_down),
                     onSelected: (value) {
-                      viewModel.transmissionTextController.text = value ?? '';
+                      viewModel.transmissionTextController.text = value;
                       filter.transmission = value.toLowerCase();
                     },
                     itemBuilder: (BuildContext context) {
@@ -699,7 +699,7 @@ class _FilterViewState extends State<FilterView> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => const AppMapWidget()));
-                  print(value);
+                  debugPrint("$value");
                   if (value != null && value.isNotEmpty) {
                     viewModel.locationTextController.text =
                         "${value['location']}, ${value['city']}, ${value['state']}";

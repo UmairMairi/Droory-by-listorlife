@@ -12,7 +12,7 @@ class HtmlText extends StatelessWidget {
       data: html,
       onLinkTap: (url, map, element) {
         if (url != null) {
-          print("Opening $url...");
+          debugPrint("Opening $url...");
           // Use url_launcher package or other method to open the link
         }
       },

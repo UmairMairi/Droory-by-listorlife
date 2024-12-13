@@ -8,7 +8,6 @@ import 'package:list_and_life/base/helpers/location_helper.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/base/network/api_request.dart';
 import 'package:list_and_life/base/network/base_client.dart';
-import 'package:list_and_life/models/amnites_model.dart';
 import 'package:list_and_life/models/category_model.dart';
 import 'package:list_and_life/models/common/list_response.dart';
 import 'package:list_and_life/models/common/map_response.dart';
@@ -600,7 +599,7 @@ class SellFormsVM extends BaseViewModel {
         ListResponse.fromJson(response, (json) => CategoryModel.fromJson(json));
     DialogHelper.hideLoading();
     allModels = model.body ?? [];
-    print("response ~--> $response");
+    debugPrint("response ~--> $response");
   }
 
   Future<List<CategoryModel>> getSizeOptions(String id) async {

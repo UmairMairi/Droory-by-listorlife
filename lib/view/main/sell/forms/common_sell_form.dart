@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
@@ -385,13 +384,13 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                       color: Colors.black,
                     ),
                     onSelected: (value) {
-                      viewModel.ramTextController.text = value ?? '';
+                      viewModel.ramTextController.text = value;
                     },
                     itemBuilder: (BuildContext context) {
                       return viewModel.ramOptions.map((option) {
                         return PopupMenuItem(
                           value: option,
-                          child: Text(option ?? ''),
+                          child: Text(option),
                         );
                       }).toList();
                     },
@@ -420,13 +419,13 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                       color: Colors.black,
                     ),
                     onSelected: (value) {
-                      viewModel.storageTextController.text = value ?? '';
+                      viewModel.storageTextController.text = value;
                     },
                     itemBuilder: (BuildContext context) {
                       return viewModel.storageOptions.map((option) {
                         return PopupMenuItem(
                           value: option,
-                          child: Text(option ?? ''),
+                          child: Text(option),
                         );
                       }).toList();
                     },
@@ -455,13 +454,13 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                       color: Colors.black,
                     ),
                     onSelected: (value) {
-                      viewModel.screenSizeTextController.text = value ?? '';
+                      viewModel.screenSizeTextController.text = value;
                     },
                     itemBuilder: (BuildContext context) {
                       return viewModel.screenSizeOptions.map((option) {
                         return PopupMenuItem(
                           value: option,
-                          child: Text(option ?? ''),
+                          child: Text(option),
                         );
                       }).toList();
                     },
@@ -491,13 +490,13 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                       color: Colors.black,
                     ),
                     onSelected: (value) {
-                      viewModel.materialTextController.text = value ?? '';
+                      viewModel.materialTextController.text = value;
                     },
                     itemBuilder: (BuildContext context) {
                       return viewModel.materialOptions.map((option) {
                         return PopupMenuItem(
                           value: option,
-                          child: Text(option ?? ''),
+                          child: Text(option),
                         );
                       }).toList();
                     },

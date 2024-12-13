@@ -117,9 +117,9 @@ class _AmenitiesWidgetState extends State<AmenitiesWidget> {
             children: [
               getAmenityIcon(amenity.name ?? ''),
               Gap(05),
-              Text(DbHelper?.getLanguage() == 'en'
-                  ? "${amenity.name ?? ''}"
-                  : "${amenity.nameAr ?? ''}"),
+              Text(DbHelper.getLanguage() == 'en'
+                  ? amenity.name ?? ''
+                  : amenity.nameAr ?? ''),
             ],
           ),
           value: amenitiesChecked.contains(amenity.id),

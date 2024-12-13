@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -10,22 +9,17 @@ import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/location_helper.dart';
-import 'package:list_and_life/models/filter_model.dart';
-import 'package:list_and_life/models/product_detail_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/skeletons/product_list_skeleton.dart';
 import 'package:list_and_life/view_model/home_vm.dart';
 import 'package:list_and_life/widgets/app_search_view.dart';
-import 'package:list_and_life/widgets/app_search_widget.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:searchfield/searchfield.dart';
 
 import '../../../base/helpers/db_helper.dart';
 import '../../../base/helpers/string_helper.dart';
 import '../../../base/network/api_constants.dart';
-import '../../../base/notification/notification_service.dart';
 import '../../../models/category_model.dart';
 import '../../../skeletons/home_category_skelton.dart';
 import '../../../widgets/app_empty_widget.dart';
@@ -349,7 +343,7 @@ class LocationSearchPopup extends StatefulWidget {
 
 class _LocationSearchPopupState extends State<LocationSearchPopup> {
   TextEditingController searchController = TextEditingController();
-  List<String> searchHistory = DbHelper.getLocationSearchHistory() ?? [];
+  List<String> searchHistory = DbHelper.getLocationSearchHistory();
 
   double lat = 30.0444, lng = 31.2357;
 

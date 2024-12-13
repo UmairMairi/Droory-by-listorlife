@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:list_and_life/base/sockets/socket_constants.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:socket_io_client/socket_io_client.dart' as io;
 
 import '../helpers/db_helper.dart';
 
@@ -10,14 +10,14 @@ class SocketHelper {
 
   factory SocketHelper() => _singleton;
 
-  late IO.Socket _socketIO;
+  late io.Socket _socketIO;
 
   bool isConnected = false, isUserConnected = false;
 
   void init() {
-    _socketIO = IO.io(
+    _socketIO = io.io(
         SocketConstants.socketUrl,
-        IO.OptionBuilder()
+        io.OptionBuilder()
             .setTransports(['websocket']) // for Flutter or Dart VM
             .enableAutoConnect()
             .enableForceNew()
@@ -57,7 +57,7 @@ class SocketHelper {
     });
   }
 
-  IO.Socket getSocket() => _socketIO;
+  io.Socket getSocket() => _socketIO;
   //--------------------------------Connect User Emitter -------------------------//
 
   connectUser() {

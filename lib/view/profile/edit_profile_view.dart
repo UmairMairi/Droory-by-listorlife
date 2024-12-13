@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:ccp_dialog/country_picker/flutter_country_picker.dart';
 import 'package:flutter/material.dart';
@@ -97,7 +96,7 @@ class EditProfileView extends BaseView<ProfileVM> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => const AppMapWidget()));
-                print(value);
+                debugPrint("$value");
                 if (value != null && value.isNotEmpty) {
                   viewModel.latitude = "${value['latitude']}";
                   viewModel.longitude = "${value['longitude']}";

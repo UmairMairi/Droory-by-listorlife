@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:list_and_life/base/base_view.dart';
 import 'package:list_and_life/base/extensions/context_extension.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/base/helpers/string_helper.dart';
@@ -48,7 +47,7 @@ class VerificationProfileView extends StatelessWidget {
               onOtpEntered: (otp) {
                 // Handle OTP entered
                 viewModel.otpTextController.text = otp;
-                print("Entered OTP: $otp");
+                debugPrint("Entered OTP: $otp");
               },
             ),
             AppElevatedButton(
@@ -75,7 +74,7 @@ class VerificationProfileView extends StatelessWidget {
               onResend: () {
                 viewModel.sendVerificationPhone(phone: phoneNo);
 
-                print('Your new OTp is 1111');
+                debugPrint('Your new OTp is 1111');
               },
             )
           ],

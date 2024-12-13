@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -354,7 +353,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                 suffix: PopupMenuButton<String>(
                   icon: const Icon(Icons.arrow_drop_down),
                   onSelected: (value) {
-                    viewModel.yearTextController.text = value ?? '';
+                    viewModel.yearTextController.text = value;
                   },
                   itemBuilder: (BuildContext context) {
                     return viewModel.yearsType.map((option) {
@@ -389,7 +388,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                 suffix: PopupMenuButton<String>(
                   icon: const Icon(Icons.arrow_drop_down),
                   onSelected: (value) {
-                    viewModel.fuelTextController.text = value ?? '';
+                    viewModel.fuelTextController.text = value;
                   },
                   itemBuilder: (BuildContext context) {
                     return viewModel.fuelsType.map((option) {
@@ -430,7 +429,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                     return viewModel.mileageRanges.map((option) {
                       return PopupMenuItem(
                         value: option,
-                        child: Text(option ?? ''),
+                        child: Text(option),
                       );
                     }).toList();
                   },

@@ -2,24 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/base/helpers/date_helper.dart';
 import 'package:list_and_life/base/helpers/db_helper.dart';
 import 'package:list_and_life/models/product_detail_model.dart';
 import 'package:list_and_life/skeletons/my_product_skeleton.dart';
 import 'package:list_and_life/view_model/product_v_m.dart';
 import 'package:list_and_life/widgets/app_error_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:share_plus/share_plus.dart';
 
 import '../../base/helpers/dialog_helper.dart';
-import '../../base/helpers/dynamic_link_helper.dart';
 import '../../base/helpers/string_helper.dart';
-import '../../res/assets_res.dart';
 import '../../view_model/my_ads_v_m.dart';
 import '../../widgets/app_elevated_button.dart';
 import '../../widgets/card_swipe_widget.dart';
 import '../../widgets/common_grid_view.dart';
-import '../../widgets/like_button.dart';
 
 class MyProductView extends BaseView<ProductVM> {
   final ProductDetailModel? data;

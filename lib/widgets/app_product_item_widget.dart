@@ -2,28 +2,19 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/base/base_view.dart';
 import 'package:list_and_life/base/helpers/date_helper.dart';
-import 'package:list_and_life/base/helpers/dialog_helper.dart';
-import 'package:list_and_life/base/helpers/string_helper.dart';
 import 'package:list_and_life/models/product_detail_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/res/font_res.dart';
-import 'package:list_and_life/view_model/product_v_m.dart';
 import 'package:list_and_life/widgets/card_swipe_widget.dart';
 import 'package:list_and_life/widgets/communication_buttons.dart';
 import 'package:list_and_life/widgets/like_button.dart';
-import 'package:provider/provider.dart';
 
-import '../base/helpers/db_helper.dart';
 import '../models/common/map_response.dart';
-import '../models/inbox_model.dart';
 import '../base/network/api_constants.dart';
 import '../base/network/api_request.dart';
 import '../base/network/base_client.dart';
-import '../routes/app_routes.dart';
 
 class AppProductItemWidget extends StatelessWidget {
   final ProductDetailModel? data;
