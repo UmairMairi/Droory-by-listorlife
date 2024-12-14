@@ -390,15 +390,15 @@ class AmenitiesProductModel {
     id = json['id'];
     amnityId = json['amnity_id'];
     amnity =
-        json['amnity'] != null ? new Amnity.fromJson(json['amnity']) : null;
+        json['amnity'] != null ? Amnity.fromJson(json['amnity']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['amnity_id'] = this.amnityId;
-    if (this.amnity != null) {
-      data['amnity'] = this.amnity!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['amnity_id'] = amnityId;
+    if (amnity != null) {
+      data['amnity'] = amnity!.toJson();
     }
     return data;
   }
@@ -418,10 +418,10 @@ class Amnity {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['name_ar'] = this.nameAr;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['name_ar'] = nameAr;
     return data;
   }
 }

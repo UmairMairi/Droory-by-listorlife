@@ -57,9 +57,9 @@ class LocationHelper {
   static Future<String> getAddressFromCoordinates(
       double latitude, double longitude) async {
     try {
-      List<Placemark> placemarks =
+      List<Placemark> placeMarks =
           await placemarkFromCoordinates(latitude, longitude);
-      Placemark place = placemarks.first;
+      Placemark place = placeMarks.first;
       return "${place.name},${place.locality}, ${place.administrativeArea}, ${place.country}";
     } catch (e) {
       return "Unable to get address for the provided coordinates.";
@@ -76,7 +76,7 @@ class LocationHelper {
         return false;
       }
     } catch (e) {
-      print("Error: $e");
+      debugPrint("Error: $e");
     }
     return false;
   }
@@ -148,7 +148,7 @@ class LocationHelper {
         );
       }
     } catch (e) {
-      print("Error: $e");
+      debugPrint("Error: $e");
     }
     return null;
   }
@@ -179,7 +179,7 @@ class LocationHelper {
         headingAccuracy: 0.0,
       );
     } catch (e) {
-      print("Error: $e");
+      debugPrint("Error: $e");
     }
     return null;
   }

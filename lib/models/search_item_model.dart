@@ -11,24 +11,24 @@ class SearchItemModel {
     if (json['products'] != null) {
       products = <ProductDetailModel>[];
       json['products'].forEach((v) {
-        products!.add(new ProductDetailModel.fromJson(v));
+        products!.add(ProductDetailModel.fromJson(v));
       });
     }
     if (json['categories'] != null) {
       categories = <CategoryModel>[];
       json['categories'].forEach((v) {
-        categories!.add(new CategoryModel.fromJson(v));
+        categories!.add(CategoryModel.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.products != null) {
-      data['products'] = this.products!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (products != null) {
+      data['products'] = products!.map((v) => v.toJson()).toList();
     }
-    if (this.categories != null) {
-      data['categories'] = this.categories!.map((v) => v.toJson()).toList();
+    if (categories != null) {
+      data['categories'] = categories!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -49,20 +49,20 @@ class SearchHistoryModel {
   SearchHistoryModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userId = json['user_id'];
-    searchData = json['obj'] != null ? new SearchData.fromJson(json['obj']) : null;
+    searchData = json['obj'] != null ? SearchData.fromJson(json['obj']) : null;
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['user_id'] = this.userId;
-    if (this.searchData != null) {
-      data['obj'] = this.searchData!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['user_id'] = userId;
+    if (searchData != null) {
+      data['obj'] = searchData!.toJson();
     }
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }
@@ -81,10 +81,10 @@ class SearchData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['type'] = this.type;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['type'] = type;
     return data;
   }
 }

@@ -6,8 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/models/category_model.dart';
-import 'package:list_and_life/view_model/sell_forms_vm.dart';
-import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../base/helpers/date_helper.dart';
@@ -155,7 +153,7 @@ class MyAdsVM extends BaseViewModel {
         body: body);
 
     var response = await BaseClient.handleRequest(apiRequest);
-    print(response);
+    debugPrint("$response");
     MapResponse model = MapResponse.fromJson(response, (json) => null);
     DialogHelper.showToast(message: model.message);
     DialogHelper.hideLoading();

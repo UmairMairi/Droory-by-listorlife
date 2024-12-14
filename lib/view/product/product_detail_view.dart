@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -6,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
-import 'package:list_and_life/models/inbox_model.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:list_and_life/models/product_detail_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
@@ -352,8 +350,8 @@ class ProductDetailView extends BaseView<ProductVM> {
                                   }
                                   final availableMaps =
                                       await MapLauncher.installedMaps;
-                                  print(
-                                      availableMaps); // [AvailableMap { mapName: Google Maps, mapType: google }, ...]
+                                  debugPrint(
+                                      "$availableMaps"); // [AvailableMap { mapName: Google Maps, mapType: google }, ...]
 
                                   await availableMaps.first.showMarker(
                                     coords: Coords(

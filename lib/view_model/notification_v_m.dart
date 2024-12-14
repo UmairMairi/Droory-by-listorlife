@@ -1,7 +1,5 @@
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/res/assets_res.dart';
 
-import '../models/setting_item_model.dart';
 
 class NotificationVM extends BaseViewModel {
   /*

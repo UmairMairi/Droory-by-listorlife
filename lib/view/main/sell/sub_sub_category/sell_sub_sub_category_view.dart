@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:list_and_life/base/base.dart';
-import 'package:list_and_life/base/base_view.dart';
 import 'package:list_and_life/models/category_model.dart';
 import 'package:list_and_life/view_model/sell_forms_vm.dart';
 import 'package:provider/provider.dart';

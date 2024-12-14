@@ -16,9 +16,9 @@ class CommunicationButtons extends StatelessWidget {
   final ProductDetailModel? data;
 
   const CommunicationButtons({
-    Key? key,
+    super.key,
     required this.data,
-  }) : super(key: key);
+  });
 
   // Map the string values to generate corresponding buttons
   List<Widget> _buildButtons(BuildContext context) {
@@ -165,6 +165,7 @@ class CommunicationButtons extends StatelessWidget {
         url: ApiConstants.callOnUrl(productId: productId),
         requestType: RequestType.get);
     var response = await BaseClient.handleRequest(apiRequest);
+    debugPrint("$response");
     DialogHelper.hideLoading();
   }
 }
@@ -320,6 +321,7 @@ class CommunicationButtons2 extends StatelessWidget {
         url: ApiConstants.callOnUrl(productId: productId),
         requestType: RequestType.get);
     var response = await BaseClient.handleRequest(apiRequest);
+    debugPrint("$response");
     DialogHelper.hideLoading();
   }
 }
