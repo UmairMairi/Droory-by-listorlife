@@ -1,66 +1,34 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
-
-class CommonPopupMenuButton<T> extends StatelessWidget {
-  final Icon icon;
-  final List<T> options;
-  final Function(T) onSelected;
-  final BoxConstraints constraints;
-  final String Function(T) displayLabel; // Converts T to String for display
-
-  const CommonPopupMenuButton({
-    super.key,
-    required this.icon,
-    required this.options,
-    required this.onSelected,
-    required this.displayLabel,
-    this.constraints = const BoxConstraints(
-      maxWidth: double.infinity,
-      minWidth: double.infinity,
-    ),
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return PopupMenuButton<T>(
-      constraints: constraints,
-      clipBehavior: Clip.hardEdge,
-      icon: icon,
-      onSelected: onSelected,
-      itemBuilder: (BuildContext context) {
-        return options.map((option) {
-          return PopupMenuItem<T>(
-            value: option,
-            child: Text(displayLabel(option)),
-          );
-        }).toList();
-      },
-    );
-  }
-}
+import '../base/helpers/string_helper.dart';
 
 class CommonDropdown<T> extends StatelessWidget {
   final List<T> options;
-  final Function(T?)? onChanged;
-  final T displayLabel;
-  final String? hintText;
+  final Function(T?)? onSelected;
+  final Widget Function(BuildContext, T, bool, void Function())?
+      listItemBuilder;
+  final Widget Function(BuildContext, T, bool)? headerBuilder;
+  final String? hint;
   final Color? borderSideColor;
   final TextStyle? hintStyle;
   final String? Function(T?)? validator;
   final String? title;
   final Color? titleColor;
+  final T? initialItem;
 
   const CommonDropdown(
       {super.key,
       required this.options,
-      required this.onChanged,
-      this.hintText,
+      required this.onSelected,
+      this.hint,
       this.borderSideColor,
-      required this.displayLabel,
       this.hintStyle,
       this.validator,
       this.title,
-      this.titleColor});
+      this.titleColor,
+      this.listItemBuilder,
+      this.initialItem,
+      this.headerBuilder});
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +37,7 @@ class CommonDropdown<T> extends StatelessWidget {
       children: [
         if (title != null) ...[
           Text(
-            title!,
+            title ?? "",
             style: TextStyle(
               color:
                   titleColor ?? Theme.of(context).textTheme.titleSmall?.color,
@@ -80,10 +48,13 @@ class CommonDropdown<T> extends StatelessWidget {
           const SizedBox(height: 6),
         ],
         CustomDropdown<T>(
-            hintText: hintText ?? "",
+            hintText: (hint ?? "").isNotEmpty ? hint : StringHelper.select,
             items: options,
+            initialItem: initialItem,
+            headerBuilder: headerBuilder,
             excludeSelected: false,
-            onChanged: onChanged,
+            onChanged: onSelected,
+            listItemBuilder: listItemBuilder,
             validator: validator ??
                 (value) {
                   if (value == null) {
@@ -97,11 +68,12 @@ class CommonDropdown<T> extends StatelessWidget {
               closedBorderRadius: BorderRadius.circular(8.0),
               closedErrorBorder: Border.all(color: Colors.red),
               closedErrorBorderRadius: BorderRadius.circular(8.0),
-              hintStyle: hintStyle ?? TextStyle(color: Colors.grey.shade500),
+              hintStyle: hintStyle ?? TextStyle(color:(hint ?? "").isNotEmpty?Colors.black: Colors.grey.shade500),
               expandedBorder:
                   Border.all(color: borderSideColor ?? Colors.grey.shade300),
               expandedBorderRadius: BorderRadius.circular(8.0),
             )),
+        const SizedBox(height: 6),
       ],
     );
   }

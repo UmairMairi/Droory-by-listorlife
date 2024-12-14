@@ -42,16 +42,22 @@ class NoInternetPage extends StatelessWidget {
               const SizedBox(
                 height: 15,
               ),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.6,
-                padding: const EdgeInsets.all(10),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    color: context.theme.primaryColor,
-                    borderRadius: BorderRadius.circular(20)),
-                child: Text(
-                  'Refresh',
-                  style: context.titleMedium?.copyWith(color: Colors.white),
+              GestureDetector(
+                  onTap: () async {
+                    Navigator.pop(context);
+                    await callBack(apiRequest);
+                  },
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  padding: const EdgeInsets.all(10),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: context.theme.primaryColor,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Text(
+                    'Refresh',
+                    style: context.titleMedium?.copyWith(color: Colors.white),
+                  ),
                 ),
               )
             ],

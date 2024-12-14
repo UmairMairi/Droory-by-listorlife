@@ -16,6 +16,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../base/helpers/db_helper.dart';
 import '../../../base/helpers/string_helper.dart';
+import '../../../res/assets_res.dart';
 import '../../../view_model/my_ads_v_m.dart';
 import '../../../widgets/unauthorised_view.dart';
 
@@ -210,6 +211,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                               Expanded(
                                                   flex: 6,
                                                   child: ImageView.rect(
+                                                    placeholder: AssetsRes.APP_LOGO,
                                                     image:
                                                         "${ApiConstants.imageUrl}/${viewModel.productsList[index].image}",
                                                     width: 250,

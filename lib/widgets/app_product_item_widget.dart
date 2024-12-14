@@ -35,7 +35,9 @@ class AppProductItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    data?.productMedias?.insert(0, ProductMedias(media: data?.image));
+    if((data?.image??"").isNotEmpty) {
+      data?.productMedias?.insert(0, ProductMedias(media: data?.image));
+    }
     return InkWell(
       onTap: onItemTapped,
       child: Container(
@@ -62,7 +64,7 @@ class AppProductItemWidget extends StatelessWidget {
                   screenType: "home",
                   data: data,
                   imagesList: data?.productMedias,
-                  height: 220,
+                  height: 300,
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20),

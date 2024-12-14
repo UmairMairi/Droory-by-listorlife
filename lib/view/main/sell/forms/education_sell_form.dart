@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
+import 'package:list_and_life/widgets/common_dropdown.dart';
 import 'package:list_and_life/widgets/multi_select_category.dart';
 
 import '../../../../base/helpers/dialog_helper.dart';
@@ -179,95 +180,142 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                   }
                 }),
               ),
-              AppTextField(
+              CommonDropdown(
                 title: StringHelper.type,
-                controller: viewModel.educationTypeTextController,
-                readOnly: true,
-                hint: StringHelper.select,
-                suffix: PopupMenuButton<String>(
-                  clipBehavior: Clip.hardEdge,
-                  icon: const Icon(
-                    Icons.arrow_drop_down,
-                    color: Colors.black,
-                  ),
-                  onSelected: (String value) {
-                    viewModel.educationTypeTextController.text = value;
-                  },
-                  itemBuilder: (BuildContext context) {
-                    return viewModel.educationList.map((option) {
-                      return PopupMenuItem<String>(
-                        value: option,
-                        child: Text(option),
-                      );
-                    }).toList();
-                  },
-                ),
-                hintStyle:
-                    const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                inputFormatters: [
-                  FilteringTextInputFormatter.deny(
-                      RegExp(viewModel.regexToRemoveEmoji)),
-                ],
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.done,
+                hint: viewModel.educationTypeTextController.text,
+                onSelected: (String? value) {
+                  viewModel.educationTypeTextController.text = value??"";
+                },
+                options: viewModel.educationList,
+                // readOnly: true,
+                // hint: StringHelper.select,
+                // suffix: PopupMenuButton<String>(
+                //   clipBehavior: Clip.hardEdge,
+                //   icon: const Icon(
+                //     Icons.arrow_drop_down,
+                //     color: Colors.black,
+                //   ),
+                //   onSelected: (String value) {
+                //     viewModel.educationTypeTextController.text = value;
+                //   },
+                //   itemBuilder: (BuildContext context) {
+                //     return viewModel.educationList.map((option) {
+                //       return PopupMenuItem<String>(
+                //         value: option,
+                //         child: Text(option),
+                //       );
+                //     }).toList();
+                //   },
+                // ),
+                // hintStyle:
+                //     const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                // inputFormatters: [
+                //   FilteringTextInputFormatter.deny(
+                //       RegExp(viewModel.regexToRemoveEmoji)),
+                // ],
+                // keyboardType: TextInputType.text,
+                // textInputAction: TextInputAction.done,
               ),
               // Brand Dropdown Field
               if (brands?.isNotEmpty ?? false) ...{
-                AppTextField(
+                CommonDropdown<CategoryModel?>(
                   title: StringHelper.brand,
-                  controller: viewModel.brandTextController,
-                  hint: StringHelper.select,
-                  readOnly: true,
-                  suffix: PopupMenuButton<CategoryModel>(
-                    icon:
-                        const Icon(Icons.arrow_drop_down, color: Colors.black),
-                    onSelected: (CategoryModel value) {
-                      DialogHelper.showLoading();
-                      viewModel.selectedBrand = value;
-                      viewModel.brandTextController.text = value.name ?? '';
-                      viewModel.getModels(brandId: value.id);
-                    },
-                    itemBuilder: (context) {
-                      return brands!.map((option) {
-                        return PopupMenuItem(
-                          value: option,
-                          child: Text(option.name ?? ''),
-                        );
-                      }).toList();
-                    },
-                  ),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.deny(
-                        RegExp(viewModel.regexToRemoveEmoji)),
-                  ],
+                  hint: viewModel.brandTextController.text,
+                  listItemBuilder: (context,model,selected,fxn){
+                    return Text(model?.name ?? '');
+                  },
+                  headerBuilder: (context, selectedItem, enabled) {
+                    return Text(selectedItem?.name??"");
+                  },
+                  options: brands??[],
+                  onSelected: (CategoryModel? value) {
+                    DialogHelper.showLoading();
+                    viewModel.getModels(brandId: value?.id);
+                    viewModel.selectedBrand = value;
+                    viewModel.brandTextController.text = value?.name ?? '';
+                  },
+                  // readOnly: true,
+                  // suffix: PopupMenuButton(
+                  //   clipBehavior: Clip.hardEdge,
+                  //   icon: const Icon(
+                  //     Icons.arrow_drop_down,
+                  //     color: Colors.black,
+                  //   ),
+                  //   onSelected: (CategoryModel value) {
+                  //     DialogHelper.showLoading();
+                  //     viewModel.getModels(brandId: value.id);
+                  //     viewModel.selectedBrand = value;
+                  //     viewModel.brandTextController.text = value.name ?? '';
+                  //     viewModel.getModels(brandId: value.id);
+                  //   },
+                  //   itemBuilder: (BuildContext context) {
+                  //     return brands!.map((option) {
+                  //       return PopupMenuItem(
+                  //         value: option,
+                  //         child: Text(option.name ?? ''),
+                  //       );
+                  //     }).toList();
+                  //   },
+                  // ),
+                  // hint: StringHelper.select,
+                  // hintStyle:
+                  //     const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  // keyboardType: TextInputType.text,
+                  // textInputAction: TextInputAction.done,
+                  // inputFormatters: [
+                  //   FilteringTextInputFormatter.deny(
+                  //       RegExp(viewModel.regexToRemoveEmoji)),
+                  // ],
                 ),
 
                 // Model Dropdown Field
-                AppTextField(
+                CommonDropdown<CategoryModel?>(
                   title: StringHelper.models,
-                  controller: viewModel.modelTextController,
-                  hint: StringHelper.models,
-                  readOnly: true,
-                  suffix: PopupMenuButton<CategoryModel>(
-                    icon:
-                        const Icon(Icons.arrow_drop_down, color: Colors.black),
-                    onSelected: (value) {
-                      viewModel.selectedModel = value;
-                      viewModel.modelTextController.text = value.name ?? '';
-                    },
-                    itemBuilder: (context) {
-                      return viewModel.allModels.map((option) {
-                        return PopupMenuItem(
-                          value: option,
-                          child: Text(option?.name ?? ''),
-                        );
-                      }).toList();
-                    },
-                  ),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.deny(
-                        RegExp(viewModel.regexToRemoveEmoji)),
-                  ],
+                  titleColor: Colors.black,
+                  hint: viewModel.modelTextController.text,
+                  //readOnly: true,
+                  //hint: StringHelper.select,
+                  listItemBuilder: (context,model,selected,fxn){
+                    return Text(model?.name ?? '');
+                  },
+                  headerBuilder: (context, selectedItem, enabled) {
+                    return Text(selectedItem?.name??"");
+                  },
+                  onSelected: (value) {
+                    viewModel.selectedModel = value;
+                    viewModel.modelTextController.text = value?.name ?? '';
+                  },
+                  options: viewModel.allModels,
+                  // hintStyle:
+                  //     const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  // fillColor: Colors.white,
+                  // contentPadding: const EdgeInsets.only(left: 20),
+                  // suffix: PopupMenuButton<CategoryModel>(
+                  //   clipBehavior: Clip.hardEdge,
+                  //   icon: const Icon(
+                  //     Icons.arrow_drop_down,
+                  //     color: Colors.black,
+                  //   ),
+                  //   onSelected: (value) {
+                  //     viewModel.selectedModel = value;
+                  //     viewModel.modelTextController.text = value.name ?? '';
+                  //   },
+                  //   itemBuilder: (BuildContext context) {
+                  //     return viewModel.allModels.map((option) {
+                  //       return PopupMenuItem(
+                  //         value: option,
+                  //         child: Text(option?.name ?? ''),
+                  //       );
+                  //     }).toList();
+                  //   },
+                  // ),
+                  // inputFormatters: [
+                  //   FilteringTextInputFormatter.deny(
+                  //     RegExp(viewModel.regexToRemoveEmoji),
+                  //   ),
+                  // ],
+                  // keyboardType: TextInputType.text,
+                  // textInputAction: TextInputAction.done,
                 ),
               },
 
@@ -343,6 +391,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                 style: context.textTheme.titleSmall,
               ),
               MultiSelectCategory(
+                choiceString: viewModel.communicationChoice,
                 onSelectedCommunicationChoice: (CommunicationChoice value) {
                   viewModel.communicationChoice = value.name;
                 },

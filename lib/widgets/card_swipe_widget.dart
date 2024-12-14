@@ -22,7 +22,8 @@ class CardSwipeWidget extends StatefulWidget {
     this.height,
     this.imagesList,
     this.borderRadius,
-    this.screenType, this.fit,
+    this.screenType,
+    this.fit,
   });
 
   @override
@@ -38,11 +39,21 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget>
   @override
   void initState() {
     super.initState();
-    bannerImages.insert(0, widget.data?.image);
+    if ((widget.data?.image ?? "").isNotEmpty) {
+      bannerImages.insert(0, widget.data?.image);
+    }
+    var productImages = widget.data?.productMedias ?? [];
+    if (productImages.isNotEmpty) {
+      for (var element in productImages) {
+        if ((element.media ?? "").isNotEmpty) {
+          bannerImages.add(element.media);
+        }
+      }
+      // bannerImages =
+      //     widget.data?.productMedias?.map((element) => element.media??"").toList() ??
+      //         [];
+    }
 
-    bannerImages =
-        widget.data?.productMedias?.map((element) => element.media).toList() ??
-            [];
     _pageController = PageController(initialPage: _currentPage);
   }
 
@@ -80,68 +91,77 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget>
     return SizedBox(
       height: widget.height ?? 250,
       width: context.width,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          PageView.builder(
-            controller: _pageController,
-            physics: NeverScrollableScrollPhysics(),
-            onPageChanged: (index) {
-              setState(() {
-                _currentPage = index;
-              });
-            },
-            itemCount: bannerImages.length,
-            itemBuilder: (context, index) {
-              return ImageView.rect(
-                image: "${ApiConstants.imageUrl}/${bannerImages[index]}",
-                placeholder: AssetsRes.APP_LOGO,
-                width: context.width,
-                height: widget.height ?? 220,
-                fit: widget.fit??BoxFit.fill,
-                /*onTap: () => Navigator.push(
+      child: bannerImages.isNotEmpty
+          ? Stack(
+              alignment: Alignment.center,
+              children: [
+                PageView.builder(
+                  controller: _pageController,
+                  physics: NeverScrollableScrollPhysics(),
+                  onPageChanged: (index) {
+                    setState(() {
+                      _currentPage = index;
+                    });
+                  },
+                  itemCount: bannerImages.length,
+                  itemBuilder: (context, index) {
+                    return ImageView.rect(
+                        image:
+                            "${ApiConstants.imageUrl}/${bannerImages[index]}",
+                        placeholder: AssetsRes.APP_LOGO,
+                        width: context.width,
+                        height: widget.height ?? 220,
+                        fit: widget.fit ?? BoxFit.cover,
+                        /*onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => ImageViewer(
                             galleryItems:bannerImages))),*/
-                onTap: () {
-                  if((widget.screenType??"").isEmpty) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ImageViewer(
-                                pageController: _pageController,
-                                initialIndex: index,
-                                galleryItems: bannerImages)));
-                  }
-                  });
-            },
-          ),
-          Positioned(
-            left: 0,
-            child: IconButton(
-              onPressed: _goToPreviousPage,
-              icon: Icon(
-                Icons.arrow_back_ios,
-                textDirection: TextDirection.ltr,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          Positioned(
-            right: 0,
-            child: IconButton(
-              onPressed: _goToNextPage,
-              icon: Icon(
-                Icons.arrow_forward_ios,
-                textDirection: TextDirection.ltr,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          Positioned(bottom: 0, child: _buildDots(context: context)),
-        ],
-      ),
+                        onTap: () {
+                          if ((widget.screenType ?? "").isEmpty) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ImageViewer(
+                                        pageController: _pageController,
+                                        initialIndex: index,
+                                        galleryItems: bannerImages)));
+                          }
+                        });
+                  },
+                ),
+                Positioned(
+                  left: 0,
+                  child: IconButton(
+                    onPressed: _goToPreviousPage,
+                    icon: Icon(
+                      Icons.arrow_back_ios,
+                      textDirection: TextDirection.ltr,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Positioned(
+                  right: 0,
+                  child: IconButton(
+                    onPressed: _goToNextPage,
+                    icon: Icon(
+                      Icons.arrow_forward_ios,
+                      textDirection: TextDirection.ltr,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                Positioned(bottom: 0, child: _buildDots(context: context)),
+              ],
+            )
+          : ImageView.rect(
+              image: "",
+              placeholder: AssetsRes.APP_LOGO,
+              width: context.width,
+              height: widget.height ?? 220,
+              fit: widget.fit ?? BoxFit.cover,
+              onTap: () {}),
     );
   }
 
@@ -171,7 +191,6 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget>
     );
   }
 */
-
 
   Widget _buildDots({required BuildContext context}) {
     return Padding(

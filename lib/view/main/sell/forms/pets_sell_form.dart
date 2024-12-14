@@ -14,6 +14,7 @@ import '../../../../models/category_model.dart';
 import '../../../../models/product_detail_model.dart';
 import '../../../../view_model/sell_forms_vm.dart';
 import '../../../../widgets/app_map_widget.dart';
+import '../../../../widgets/common_dropdown.dart';
 import '../../../../widgets/image_view.dart';
 
 class PetsSellForm extends BaseView<SellFormsVM> {
@@ -180,43 +181,56 @@ class PetsSellForm extends BaseView<SellFormsVM> {
                 }),
               ),
               if (brands?.isNotEmpty ?? false)
-                AppTextField(
+                CommonDropdown<CategoryModel?>(
                   title: StringHelper.brand,
-                  hint: StringHelper.select,
-                  readOnly: true,
-                  controller: viewModel.brandTextController,
-                  suffix: PopupMenuButton(
-                    constraints:
-                        const BoxConstraints.expand(width: 200, height: 500),
-                    clipBehavior: Clip.hardEdge,
-                    icon: const Icon(
-                      Icons.arrow_drop_down,
-                      color: Colors.black,
-                    ),
-                    onSelected: (CategoryModel value) {
-                      viewModel.selectedBrand = value;
-                      viewModel.brandTextController.text = value.name ?? '';
-                    },
-                    itemBuilder: (BuildContext context) {
-                      return brands!.map((option) {
-                        return PopupMenuItem(
-                          value: option,
-                          child: Text(option.name ?? ''),
-                        );
-                      }).toList();
-                    },
-                  ),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.deny(
-                      RegExp(viewModel.regexToRemoveEmoji),
-                    ),
-                  ],
-                  keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.done,
-                  fillColor: Colors.white,
-                  contentPadding: const EdgeInsets.only(left: 20),
-                  elevation: 6,
+                  hint: viewModel.brandTextController.text,
+                  listItemBuilder: (context,model,selected,fxn){
+                    return Text(model?.name ?? '');
+                  },
+                  headerBuilder: (context, selectedItem, enabled) {
+                    return Text(selectedItem?.name??"");
+                  },
+                  options: brands??[],
+                  onSelected: (CategoryModel? value) {
+                    DialogHelper.showLoading();
+                    viewModel.getModels(brandId: value?.id);
+                    viewModel.selectedBrand = value;
+                    viewModel.brandTextController.text = value?.name ?? '';
+                  },
+                  // readOnly: true,
+                  // suffix: PopupMenuButton(
+                  //   clipBehavior: Clip.hardEdge,
+                  //   icon: const Icon(
+                  //     Icons.arrow_drop_down,
+                  //     color: Colors.black,
+                  //   ),
+                  //   onSelected: (CategoryModel value) {
+                  //     DialogHelper.showLoading();
+                  //     viewModel.getModels(brandId: value.id);
+                  //     viewModel.selectedBrand = value;
+                  //     viewModel.brandTextController.text = value.name ?? '';
+                  //     viewModel.getModels(brandId: value.id);
+                  //   },
+                  //   itemBuilder: (BuildContext context) {
+                  //     return brands!.map((option) {
+                  //       return PopupMenuItem(
+                  //         value: option,
+                  //         child: Text(option.name ?? ''),
+                  //       );
+                  //     }).toList();
+                  //   },
+                  // ),
+                  // hint: StringHelper.select,
+                  // hintStyle:
+                  //     const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  // keyboardType: TextInputType.text,
+                  // textInputAction: TextInputAction.done,
+                  // inputFormatters: [
+                  //   FilteringTextInputFormatter.deny(
+                  //       RegExp(viewModel.regexToRemoveEmoji)),
+                  // ],
                 ),
+
               const SizedBox(
                 height: 25,
               ),
@@ -319,6 +333,7 @@ class PetsSellForm extends BaseView<SellFormsVM> {
                 style: context.textTheme.titleSmall,
               ),
               MultiSelectCategory(
+                choiceString: viewModel.communicationChoice,
                 onSelectedCommunicationChoice: (CommunicationChoice value) {
                   viewModel.communicationChoice = value.name;
                 },

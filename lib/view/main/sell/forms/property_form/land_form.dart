@@ -10,6 +10,7 @@ import '../../../../../view_model/sell_forms_vm.dart';
 import '../../../../../widgets/amenities_widget.dart';
 import '../../../../../widgets/app_map_widget.dart';
 import '../../../../../widgets/app_text_field.dart';
+import '../../../../../widgets/common_dropdown.dart';
 import '../../../../../widgets/multi_select_category.dart';
 
 class LandForm extends StatelessWidget {
@@ -94,40 +95,44 @@ class LandForm extends StatelessWidget {
           elevation: 6,
         ),
 
-        AppTextField(
+        CommonDropdown(
           title: StringHelper.type,
-          hint: StringHelper.select,
-          controller: viewModel.propertyForTypeTextController,
-          readOnly: true,
-          suffix: PopupMenuButton<String>(
-            clipBehavior: Clip.hardEdge,
-            icon: const Icon(
-              Icons.arrow_drop_down,
-              color: Colors.black,
-            ),
-            onSelected: (String value) {
-              viewModel.propertyForTypeTextController.text = value;
-            },
-            itemBuilder: (BuildContext context) {
-              return ["Agricultural Land","Commercial Land","Residential Land","Industrial Land","Mixed-Use Land","Farm Land"].map((option) {
-                return PopupMenuItem(
-                  value: option,
-                  child: Text(option),
-                );
-              }).toList();
-            },
-          ),
-          contentPadding:
-          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-          inputFormatters: [
-            FilteringTextInputFormatter.deny(
-              RegExp(viewModel.regexToRemoveEmoji),
-            ),
-          ],
-          keyboardType: TextInputType.text,
-          textInputAction: TextInputAction.done,
-          fillColor: Colors.white,
-          elevation: 6,
+          //hint: StringHelper.select,
+          hint: viewModel.propertyForTypeTextController.text,
+          onSelected: (String? value) {
+            viewModel.propertyForTypeTextController.text = value??"";
+          },
+          options: ["Agricultural Land","Commercial Land","Residential Land","Industrial Land","Mixed-Use Land","Farm Land"],
+          // readOnly: true,
+          // suffix: PopupMenuButton<String>(
+          //   clipBehavior: Clip.hardEdge,
+          //   icon: const Icon(
+          //     Icons.arrow_drop_down,
+          //     color: Colors.black,
+          //   ),
+          //   onSelected: (String value) {
+          //     viewModel.propertyForTypeTextController.text = value;
+          //   },
+          //   itemBuilder: (BuildContext context) {
+          //     return ["Agricultural Land","Commercial Land","Residential Land","Industrial Land","Mixed-Use Land","Farm Land"].map((option) {
+          //       return PopupMenuItem(
+          //         value: option,
+          //         child: Text(option),
+          //       );
+          //     }).toList();
+          //   },
+          // ),
+          // contentPadding:
+          // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          // inputFormatters: [
+          //   FilteringTextInputFormatter.deny(
+          //     RegExp(viewModel.regexToRemoveEmoji),
+          //   ),
+          // ],
+          // keyboardType: TextInputType.text,
+          // textInputAction: TextInputAction.done,
+          // fillColor: Colors.white,
+          // elevation: 6,
         ),
 
         AppTextField(
@@ -156,41 +161,45 @@ class LandForm extends StatelessWidget {
 
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() == "rent",
-          child: AppTextField(
+          child: CommonDropdown(
             title: "Rental Term",
-            hint: StringHelper.select,
-            controller: viewModel.rentalTermsTextController,
-            readOnly: true,
-            suffix: PopupMenuButton<String>(
-              clipBehavior: Clip.hardEdge,
-              icon: const Icon(
-                Icons.arrow_drop_down,
-                color: Colors.black,
-              ),
-              onSelected: (String value) {
-                viewModel.rentalTermsTextController.text = value;
-              },
-              itemBuilder: (BuildContext context) {
-                return ['Daily', 'Weekly', 'Monthly', 'Yearly']
-                    .map((option) {
-                  return PopupMenuItem(
-                    value: option,
-                    child: Text(option),
-                  );
-                }).toList();
-              },
-            ),
-            contentPadding:
-            const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-            inputFormatters: [
-              FilteringTextInputFormatter.deny(
-                RegExp(viewModel.regexToRemoveEmoji),
-              ),
-            ],
-            keyboardType: TextInputType.text,
-            textInputAction: TextInputAction.done,
-            fillColor: Colors.white,
-            elevation: 6,
+            //hint: StringHelper.select,
+            hint: viewModel.rentalTermsTextController.text,
+            onSelected: (String? value) {
+              viewModel.rentalTermsTextController.text = value??"";
+            },
+            options: ['Daily', 'Weekly', 'Monthly', 'Yearly'],
+            // readOnly: true,
+            // suffix: PopupMenuButton<String>(
+            //   clipBehavior: Clip.hardEdge,
+            //   icon: const Icon(
+            //     Icons.arrow_drop_down,
+            //     color: Colors.black,
+            //   ),
+            //   onSelected: (String value) {
+            //     viewModel.rentalTermsTextController.text = value;
+            //   },
+            //   itemBuilder: (BuildContext context) {
+            //     return ['Daily', 'Weekly', 'Monthly', 'Yearly']
+            //         .map((option) {
+            //       return PopupMenuItem(
+            //         value: option,
+            //         child: Text(option),
+            //       );
+            //     }).toList();
+            //   },
+            // ),
+            // contentPadding:
+            // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+            // inputFormatters: [
+            //   FilteringTextInputFormatter.deny(
+            //     RegExp(viewModel.regexToRemoveEmoji),
+            //   ),
+            // ],
+            // keyboardType: TextInputType.text,
+            // textInputAction: TextInputAction.done,
+            // fillColor: Colors.white,
+            // elevation: 6,
           ),
         ),
 
@@ -283,6 +292,7 @@ class LandForm extends StatelessWidget {
         ),
 
         MultiSelectCategory(
+          choiceString: viewModel.communicationChoice,
           onSelectedCommunicationChoice: (CommunicationChoice value) {
             viewModel.communicationChoice = value.name;
           },

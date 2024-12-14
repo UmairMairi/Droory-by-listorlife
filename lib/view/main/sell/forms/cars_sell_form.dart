@@ -16,6 +16,7 @@ import '../../../../models/product_detail_model.dart';
 import '../../../../res/assets_res.dart';
 import '../../../../view_model/sell_forms_vm.dart';
 import '../../../../widgets/app_map_widget.dart';
+import '../../../../widgets/common_dropdown.dart';
 import '../../../../widgets/image_view.dart';
 
 class CarsSellForm extends BaseView<SellFormsVM> {
@@ -84,20 +85,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                       border: Border.all(),
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10)),
-                  child: ImagePickerHelper.isLoading
-                      ? Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            CupertinoActivityIndicator(),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text('Upload'),
-                          ],
-                        )
-                      : ImageView.rect(
+                  child:ImageView.rect(
                           image: viewModel.mainImagePath,
                           borderRadius: 10,
                           width: context.width,
@@ -266,184 +254,220 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                 height: 25,
               ),
               if (brands?.isNotEmpty ?? false) ...{
-                AppTextField(
+                CommonDropdown<CategoryModel?>(
                   title: StringHelper.brand,
-                  controller: viewModel.brandTextController,
-                  readOnly: true,
-                  suffix: PopupMenuButton(
-                    clipBehavior: Clip.hardEdge,
-                    icon: const Icon(
-                      Icons.arrow_drop_down,
-                      color: Colors.black,
-                    ),
-                    onSelected: (CategoryModel value) {
-                      DialogHelper.showLoading();
-                      viewModel.getModels(brandId: value.id);
-                      viewModel.selectedBrand = value;
-                      viewModel.brandTextController.text = value.name ?? '';
-                      viewModel.getModels(brandId: value.id);
-                    },
-                    itemBuilder: (BuildContext context) {
-                      return brands!.map((option) {
-                        return PopupMenuItem(
-                          value: option,
-                          child: Text(option.name ?? ''),
-                        );
-                      }).toList();
-                    },
-                  ),
-                  hint: StringHelper.select,
-                  hintStyle:
-                      const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                  keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.done,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.deny(
-                        RegExp(viewModel.regexToRemoveEmoji)),
-                  ],
+                  hint: viewModel.brandTextController.text,
+                  listItemBuilder: (context,model,selected,fxn){
+                    return Text(model?.name ?? '');
+                  },
+                  headerBuilder: (context, selectedItem, enabled) {
+                    return Text(selectedItem?.name??"");
+                  },
+                  options: brands??[],
+                  onSelected: (CategoryModel? value) {
+                    DialogHelper.showLoading();
+                    viewModel.getModels(brandId: value?.id);
+                    viewModel.selectedBrand = value;
+                    viewModel.brandTextController.text = value?.name ?? '';
+                  },
+                  // readOnly: true,
+                  // suffix: PopupMenuButton(
+                  //   clipBehavior: Clip.hardEdge,
+                  //   icon: const Icon(
+                  //     Icons.arrow_drop_down,
+                  //     color: Colors.black,
+                  //   ),
+                  //   onSelected: (CategoryModel value) {
+                  //     DialogHelper.showLoading();
+                  //     viewModel.getModels(brandId: value.id);
+                  //     viewModel.selectedBrand = value;
+                  //     viewModel.brandTextController.text = value.name ?? '';
+                  //     viewModel.getModels(brandId: value.id);
+                  //   },
+                  //   itemBuilder: (BuildContext context) {
+                  //     return brands!.map((option) {
+                  //       return PopupMenuItem(
+                  //         value: option,
+                  //         child: Text(option.name ?? ''),
+                  //       );
+                  //     }).toList();
+                  //   },
+                  // ),
+                  // hint: StringHelper.select,
+                  // hintStyle:
+                  //     const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  // keyboardType: TextInputType.text,
+                  // textInputAction: TextInputAction.done,
+                  // inputFormatters: [
+                  //   FilteringTextInputFormatter.deny(
+                  //       RegExp(viewModel.regexToRemoveEmoji)),
+                  // ],
                 ),
-                AppTextField(
+                CommonDropdown<CategoryModel?>(
                   title: StringHelper.models,
                   titleColor: Colors.black,
-                  controller: viewModel.modelTextController,
-                  readOnly: true,
-                  hint: StringHelper.select,
-                  hintStyle:
-                      const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                  fillColor: Colors.white,
-                  contentPadding: const EdgeInsets.only(left: 20),
-                  suffix: PopupMenuButton<CategoryModel>(
-                    clipBehavior: Clip.hardEdge,
-                    icon: const Icon(
-                      Icons.arrow_drop_down,
-                      color: Colors.black,
-                    ),
-                    onSelected: (value) {
-                      viewModel.selectedModel = value;
-                      viewModel.modelTextController.text = value.name ?? '';
-                    },
-                    itemBuilder: (BuildContext context) {
-                      return viewModel.allModels.map((option) {
-                        return PopupMenuItem(
-                          value: option,
-                          child: Text(option?.name ?? ''),
-                        );
-                      }).toList();
-                    },
-                  ),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.deny(
-                      RegExp(viewModel.regexToRemoveEmoji),
-                    ),
-                  ],
-                  keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.done,
+                  hint: viewModel.modelTextController.text,
+                  //readOnly: true,
+                  //hint: StringHelper.select,
+                  listItemBuilder: (context,model,selected,fxn){
+                    return Text(model?.name ?? '');
+                  },
+                  headerBuilder: (context, selectedItem, enabled) {
+                    return Text(selectedItem?.name??"");
+                  },
+                  onSelected: (value) {
+                    viewModel.selectedModel = value;
+                    viewModel.modelTextController.text = value?.name ?? '';
+                  },
+                  options: viewModel.allModels,
+                  // hintStyle:
+                  //     const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  // fillColor: Colors.white,
+                  // contentPadding: const EdgeInsets.only(left: 20),
+                  // suffix: PopupMenuButton<CategoryModel>(
+                  //   clipBehavior: Clip.hardEdge,
+                  //   icon: const Icon(
+                  //     Icons.arrow_drop_down,
+                  //     color: Colors.black,
+                  //   ),
+                  //   onSelected: (value) {
+                  //     viewModel.selectedModel = value;
+                  //     viewModel.modelTextController.text = value.name ?? '';
+                  //   },
+                  //   itemBuilder: (BuildContext context) {
+                  //     return viewModel.allModels.map((option) {
+                  //       return PopupMenuItem(
+                  //         value: option,
+                  //         child: Text(option?.name ?? ''),
+                  //       );
+                  //     }).toList();
+                  //   },
+                  // ),
+                  // inputFormatters: [
+                  //   FilteringTextInputFormatter.deny(
+                  //     RegExp(viewModel.regexToRemoveEmoji),
+                  //   ),
+                  // ],
+                  // keyboardType: TextInputType.text,
+                  // textInputAction: TextInputAction.done,
                 )
               },
-              AppTextField(
+              CommonDropdown(
                 title: StringHelper.year,
                 titleColor: Colors.black,
-                controller: viewModel.yearTextController,
-                readOnly: true,
-                focusNode: viewModel.yearText,
-                hint: StringHelper.enter,
-                hintStyle:
-                    const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                fillColor: Colors.white,
-                contentPadding: const EdgeInsets.only(left: 20),
-                suffix: PopupMenuButton<String>(
-                  icon: const Icon(Icons.arrow_drop_down),
-                  onSelected: (value) {
-                    viewModel.yearTextController.text = value ?? '';
-                  },
-                  itemBuilder: (BuildContext context) {
-                    return viewModel.yearsType.map((option) {
-                      return PopupMenuItem(
-                        value: option,
-                        child: Text(option),
-                      );
-                    }).toList();
-                  },
-                ),
-                inputFormatters: [
-                  LengthLimitingTextInputFormatter(4),
-                  FilteringTextInputFormatter.digitsOnly,
-                  FilteringTextInputFormatter.deny(
-                    RegExp(viewModel.regexToRemoveEmoji),
-                  ),
-                ],
-                keyboardType: TextInputType.number,
-                textInputAction: TextInputAction.done,
+                hint: viewModel.yearTextController.text,
+                onSelected: (String? value) {
+                  viewModel.yearTextController.text = value ?? '';
+                },
+                options: viewModel.yearsType,
+                // readOnly: true,
+                // focusNode: viewModel.yearText,
+                // hint: StringHelper.enter,
+                // hintStyle:
+                //     const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                // fillColor: Colors.white,
+                // contentPadding: const EdgeInsets.only(left: 20),
+                // suffix: PopupMenuButton<String>(
+                //   icon: const Icon(Icons.arrow_drop_down),
+                //   onSelected: (value) {
+                //     viewModel.yearTextController.text = value ?? '';
+                //   },
+                //   itemBuilder: (BuildContext context) {
+                //     return viewModel.yearsType.map((option) {
+                //       return PopupMenuItem(
+                //         value: option,
+                //         child: Text(option),
+                //       );
+                //     }).toList();
+                //   },
+                // ),
+                // inputFormatters: [
+                //   LengthLimitingTextInputFormatter(4),
+                //   FilteringTextInputFormatter.digitsOnly,
+                //   FilteringTextInputFormatter.deny(
+                //     RegExp(viewModel.regexToRemoveEmoji),
+                //   ),
+                // ],
+                // keyboardType: TextInputType.number,
+                // textInputAction: TextInputAction.done,
               ),
-              AppTextField(
+              CommonDropdown(
                 title: StringHelper.fuel,
                 titleColor: Colors.black,
-                controller: viewModel.fuelTextController,
-                readOnly: true,
-                hint: StringHelper.enter,
-                hintStyle:
-                    const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                fillColor: Colors.white,
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                suffix: PopupMenuButton<String>(
-                  icon: const Icon(Icons.arrow_drop_down),
-                  onSelected: (value) {
-                    viewModel.fuelTextController.text = value ?? '';
-                  },
-                  itemBuilder: (BuildContext context) {
-                    return viewModel.fuelsType.map((option) {
-                      return PopupMenuItem(
-                        value: option,
-                        child: Text(option),
-                      );
-                    }).toList();
-                  },
-                ),
-                inputFormatters: [
-                  FilteringTextInputFormatter.deny(
-                    RegExp(viewModel.regexToRemoveEmoji),
-                  ),
-                ],
-                textInputAction: TextInputAction.done,
+                hint: viewModel.fuelTextController.text,
+                onSelected: (String? value) {
+                  viewModel.fuelTextController.text = value ?? '';
+                },
+                options: viewModel.fuelsType,
+                // readOnly: true,
+                // hint: StringHelper.enter,
+                // hintStyle:
+                //     const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                // fillColor: Colors.white,
+                // contentPadding:
+                //     const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+                // suffix: PopupMenuButton<String>(
+                //   icon: const Icon(Icons.arrow_drop_down),
+                //   onSelected: (value) {
+                //     viewModel.fuelTextController.text = value ?? '';
+                //   },
+                //   itemBuilder: (BuildContext context) {
+                //     return viewModel.fuelsType.map((option) {
+                //       return PopupMenuItem(
+                //         value: option,
+                //         child: Text(option),
+                //       );
+                //     }).toList();
+                //   },
+                // ),
+                // inputFormatters: [
+                //   FilteringTextInputFormatter.deny(
+                //     RegExp(viewModel.regexToRemoveEmoji),
+                //   ),
+                // ],
+                // textInputAction: TextInputAction.done,
               ),
-              AppTextField(
+              CommonDropdown(
                 title: StringHelper.mileage,
                 titleColor: Colors.black,
-                controller: viewModel.mileageTextController,
-                readOnly: true,
-                hint: StringHelper.enter,
-                hintStyle:
-                    const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                fillColor: Colors.white,
-                contentPadding: const EdgeInsets.only(left: 20),
-                suffix: PopupMenuButton<String>(
-                  clipBehavior: Clip.hardEdge,
-                  icon: const Icon(
-                    Icons.arrow_drop_down,
-                    color: Colors.black,
-                  ),
-                  onSelected: (value) {
-                    viewModel.mileageTextController.text = value;
-                  },
-                  itemBuilder: (BuildContext context) {
-                    return viewModel.mileageRanges.map((option) {
-                      return PopupMenuItem(
-                        value: option,
-                        child: Text(option ?? ''),
-                      );
-                    }).toList();
-                  },
-                ),
-                inputFormatters: [
-                  LengthLimitingTextInputFormatter(4),
-                  FilteringTextInputFormatter.digitsOnly,
-                  FilteringTextInputFormatter.deny(
-                    RegExp(viewModel.regexToRemoveEmoji),
-                  ),
-                ],
-                keyboardType: TextInputType.number,
-                textInputAction: TextInputAction.done,
+                hint: viewModel.mileageTextController.text,
+                onSelected: (String? value) {
+                  viewModel.mileageTextController.text = value??"";
+                },
+                options: viewModel.mileageRanges,
+                // readOnly: true,
+                // hint: StringHelper.enter,
+                // hintStyle:
+                //     const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                // fillColor: Colors.white,
+                // contentPadding: const EdgeInsets.only(left: 20),
+                // suffix: PopupMenuButton<String>(
+                //   clipBehavior: Clip.hardEdge,
+                //   icon: const Icon(
+                //     Icons.arrow_drop_down,
+                //     color: Colors.black,
+                //   ),
+                //   onSelected: (value) {
+                //     viewModel.mileageTextController.text = value;
+                //   },
+                //   itemBuilder: (BuildContext context) {
+                //     return viewModel.mileageRanges.map((option) {
+                //       return PopupMenuItem(
+                //         value: option,
+                //         child: Text(option ?? ''),
+                //       );
+                //     }).toList();
+                //   },
+                // ),
+                // inputFormatters: [
+                //   LengthLimitingTextInputFormatter(4),
+                //   FilteringTextInputFormatter.digitsOnly,
+                //   FilteringTextInputFormatter.deny(
+                //     RegExp(viewModel.regexToRemoveEmoji),
+                //   ),
+                // ],
+                // keyboardType: TextInputType.number,
+                // textInputAction: TextInputAction.done,
               ),
               RichText(
                   text: TextSpan(children: [
@@ -676,6 +700,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                 style: context.textTheme.titleSmall,
               ),
               MultiSelectCategory(
+                choiceString: viewModel.communicationChoice,
                 onSelectedCommunicationChoice: (CommunicationChoice value) {
                   viewModel.communicationChoice = value.name;
                 },

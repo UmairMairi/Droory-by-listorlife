@@ -95,7 +95,7 @@ class MyProductView extends BaseView<ProductVM> {
                     Stack(
                       children: [
                         CardSwipeWidget(
-                          height: 400,
+                          height: 350,
                           data: data,
                           imagesList: data?.productMedias,
                           borderRadius: const BorderRadius.only(

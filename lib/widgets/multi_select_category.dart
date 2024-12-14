@@ -15,10 +15,12 @@ enum CommunicationChoice {
 class MultiSelectCategory extends StatefulWidget {
   final ValueChanged<CommunicationChoice> onSelectedCommunicationChoice;
   final bool inDialog;
+  final String? choiceString;
   const MultiSelectCategory(
       {super.key,
       required this.onSelectedCommunicationChoice,
-      this.inDialog = false});
+      this.inDialog = false,
+        this.choiceString});
 
   @override
   State<MultiSelectCategory> createState() => _MultiSelectCategoryState();
@@ -32,8 +34,12 @@ class _MultiSelectCategoryState extends State<MultiSelectCategory> {
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((callback) {
-      updateSelectedCategories(
+      if((widget.choiceString??"").isNotEmpty){
+        updateSelectedCategories(widget.choiceString??"");
+      }else {
+        updateSelectedCategories(
           DbHelper.getUserModel()?.communicationChoice ?? '');
+      }
     });
     super.initState();
   }

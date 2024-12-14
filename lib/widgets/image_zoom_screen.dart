@@ -56,6 +56,7 @@ class ImageViewer extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         physics: ClampingScrollPhysics(),
+        padding: EdgeInsets.only(bottom: 30),
         child: StaggeredGrid.count(
           crossAxisCount: 2,
           mainAxisSpacing: 4.0,
@@ -70,7 +71,7 @@ class ImageViewer extends StatelessWidget {
                   placeholder: AssetsRes.APP_LOGO,
                   width: context.width,
                   height: 220,
-                  fit: BoxFit.fill,
+                  fit: BoxFit.cover,
                 ));
           }), // Spacing between columns
         ),

@@ -12,6 +12,7 @@ import '../../../../../view_model/sell_forms_vm.dart';
 import '../../../../../widgets/amenities_widget.dart';
 import '../../../../../widgets/app_map_widget.dart';
 import '../../../../../widgets/app_text_field.dart';
+import '../../../../../widgets/common_dropdown.dart';
 import '../../../../../widgets/multi_select_category.dart';
 
 class VacationForm extends StatelessWidget {
@@ -96,78 +97,86 @@ class VacationForm extends StatelessWidget {
           elevation: 6,
         ),
 
-        AppTextField(
+        CommonDropdown(
           title: StringHelper.type,
-          hint: StringHelper.select,
-          controller: viewModel.propertyForTypeTextController,
-          readOnly: true,
-          suffix: PopupMenuButton<String>(
-            clipBehavior: Clip.hardEdge,
-            icon: const Icon(
-              Icons.arrow_drop_down,
-              color: Colors.black,
-            ),
-            onSelected: (String value) {
-              viewModel.propertyForTypeTextController.text = value;
-            },
-            itemBuilder: (BuildContext context) {
-              return ["Chalet", "Duplex", "Penthouse", "Standalone Villa", "Studio", "Townhouse Twin house", "Cabin"].map((option) {
-                return PopupMenuItem(
-                  value: option,
-                  child: Text(option),
-                );
-              }).toList();
-            },
-          ),
-          contentPadding:
-          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-          inputFormatters: [
-            FilteringTextInputFormatter.deny(
-              RegExp(viewModel.regexToRemoveEmoji),
-            ),
-          ],
-          keyboardType: TextInputType.text,
-          textInputAction: TextInputAction.done,
-          fillColor: Colors.white,
-          elevation: 6,
+          //hint: StringHelper.select,
+          hint: viewModel.propertyForTypeTextController.text,
+          onSelected: (String? value) {
+            viewModel.propertyForTypeTextController.text = value??"";
+          },
+          options: ["Chalet", "Duplex", "Penthouse", "Standalone Villa", "Studio", "Townhouse Twin house", "Cabin"],
+          // readOnly: true,
+          // suffix: PopupMenuButton<String>(
+          //   clipBehavior: Clip.hardEdge,
+          //   icon: const Icon(
+          //     Icons.arrow_drop_down,
+          //     color: Colors.black,
+          //   ),
+          //   onSelected: (String value) {
+          //     viewModel.propertyForTypeTextController.text = value;
+          //   },
+          //   itemBuilder: (BuildContext context) {
+          //     return ["Chalet", "Duplex", "Penthouse", "Standalone Villa", "Studio", "Townhouse Twin house", "Cabin"].map((option) {
+          //       return PopupMenuItem(
+          //         value: option,
+          //         child: Text(option),
+          //       );
+          //     }).toList();
+          //   },
+          // ),
+          // contentPadding:
+          // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          // inputFormatters: [
+          //   FilteringTextInputFormatter.deny(
+          //     RegExp(viewModel.regexToRemoveEmoji),
+          //   ),
+          // ],
+          // keyboardType: TextInputType.text,
+          // textInputAction: TextInputAction.done,
+          // fillColor: Colors.white,
+          // elevation: 6,
         ),
 
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() != "rent",
-          child: AppTextField(
+          child: CommonDropdown(
             title: StringHelper.owner,
-            hint: StringHelper.select,
-            controller: viewModel.ownershipStatusTextController,
-            readOnly: true,
-            suffix: PopupMenuButton<String>(
-              clipBehavior: Clip.hardEdge,
-              icon: const Icon(
-                Icons.arrow_drop_down,
-                color: Colors.black,
-              ),
-              onSelected: (String value) {
-                viewModel.ownershipStatusTextController.text = value;
-              },
-              itemBuilder: (BuildContext context) {
-                return ['Primary', 'Resell'].map((option) {
-                  return PopupMenuItem(
-                    value: option,
-                    child: Text(option),
-                  );
-                }).toList();
-              },
-            ),
-            contentPadding:
-            const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-            inputFormatters: [
-              FilteringTextInputFormatter.deny(
-                RegExp(viewModel.regexToRemoveEmoji),
-              ),
-            ],
-            keyboardType: TextInputType.text,
-            textInputAction: TextInputAction.done,
-            fillColor: Colors.white,
-            elevation: 6,
+            //hint: StringHelper.select,
+            hint: viewModel.ownershipStatusTextController.text,
+            onSelected: (String? value) {
+              viewModel.ownershipStatusTextController.text = value??"";
+            },
+            options: ['Primary', 'Resell'],
+            // readOnly: true,
+            // suffix: PopupMenuButton<String>(
+            //   clipBehavior: Clip.hardEdge,
+            //   icon: const Icon(
+            //     Icons.arrow_drop_down,
+            //     color: Colors.black,
+            //   ),
+            //   onSelected: (String value) {
+            //     viewModel.ownershipStatusTextController.text = value;
+            //   },
+            //   itemBuilder: (BuildContext context) {
+            //     return ['Primary', 'Resell'].map((option) {
+            //       return PopupMenuItem(
+            //         value: option,
+            //         child: Text(option),
+            //       );
+            //     }).toList();
+            //   },
+            // ),
+            // contentPadding:
+            // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+            // inputFormatters: [
+            //   FilteringTextInputFormatter.deny(
+            //     RegExp(viewModel.regexToRemoveEmoji),
+            //   ),
+            // ],
+            // keyboardType: TextInputType.text,
+            // textInputAction: TextInputAction.done,
+            // fillColor: Colors.white,
+            // elevation: 6,
           ),
         ),
 
@@ -212,308 +221,340 @@ class VacationForm extends StatelessWidget {
           ),
         ),
 
-        AppTextField(
+        CommonDropdown(
           title: "No Of Bedrooms",
-          hint: StringHelper.select,
-          controller: viewModel.noOfBedroomsTextController,
-          readOnly: true,
-          suffix: PopupMenuButton<String>(
-            clipBehavior: Clip.hardEdge,
-            icon: const Icon(
-              Icons.arrow_drop_down,
-              color: Colors.black,
-            ),
-            onSelected: (String value) {
-              viewModel.noOfBedroomsTextController.text = value;
-            },
-            itemBuilder: (BuildContext context) {
-              return ["Studio", "1", "2", "3", "4", "5", "6+"].map((option) {
-                return PopupMenuItem(
-                  value: option,
-                  child: Text(option),
-                );
-              }).toList();
-            },
-          ),
-          contentPadding:
-          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-          inputFormatters: [
-            FilteringTextInputFormatter.deny(
-              RegExp(viewModel.regexToRemoveEmoji),
-            ),
-          ],
-          keyboardType: TextInputType.text,
-          textInputAction: TextInputAction.done,
-          fillColor: Colors.white,
-          elevation: 6,
+          //hint: StringHelper.select,
+          hint: viewModel.noOfBedroomsTextController.text,
+          onSelected: (String? value) {
+            viewModel.noOfBedroomsTextController.text = value??"";
+          },
+          options: ["Studio", "1", "2", "3", "4", "5", "6+"],
+          // readOnly: true,
+          // suffix: PopupMenuButton<String>(
+          //   clipBehavior: Clip.hardEdge,
+          //   icon: const Icon(
+          //     Icons.arrow_drop_down,
+          //     color: Colors.black,
+          //   ),
+          //   onSelected: (String value) {
+          //     viewModel.noOfBedroomsTextController.text = value;
+          //   },
+          //   itemBuilder: (BuildContext context) {
+          //     return ["Studio", "1", "2", "3", "4", "5", "6+"].map((option) {
+          //       return PopupMenuItem(
+          //         value: option,
+          //         child: Text(option),
+          //       );
+          //     }).toList();
+          //   },
+          // ),
+          // contentPadding:
+          // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          // inputFormatters: [
+          //   FilteringTextInputFormatter.deny(
+          //     RegExp(viewModel.regexToRemoveEmoji),
+          //   ),
+          // ],
+          // keyboardType: TextInputType.text,
+          // textInputAction: TextInputAction.done,
+          // fillColor: Colors.white,
+          // elevation: 6,
         ),
 
-        AppTextField(
+        CommonDropdown(
           title: StringHelper.noOfBathrooms,
-          hint: StringHelper.select,
-          controller: viewModel.noOfBathroomsTextController,
-          readOnly: true,
-          suffix: PopupMenuButton<String>(
-            clipBehavior: Clip.hardEdge,
-            icon: const Icon(
-              Icons.arrow_drop_down,
-              color: Colors.black,
-            ),
-            onSelected: (String value) {
-              viewModel.noOfBathroomsTextController.text = value;
-            },
-            itemBuilder: (BuildContext context) {
-              return ['1', '2', '3', '4', '5', '6', '7', '7+']
-                  .map((option) {
-                return PopupMenuItem(
-                  value: option,
-                  child: Text('$option Bathrooms'),
-                );
-              }).toList();
-            },
-          ),
-          contentPadding:
-          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-          inputFormatters: [
-            FilteringTextInputFormatter.deny(
-              RegExp(viewModel.regexToRemoveEmoji),
-            ),
-          ],
-          keyboardType: TextInputType.text,
-          textInputAction: TextInputAction.done,
-          fillColor: Colors.white,
-          elevation: 6,
+          //hint: StringHelper.select,
+          hint: viewModel.noOfBathroomsTextController.text,
+          onSelected: (String? value) {
+            viewModel.noOfBathroomsTextController.text = value??"";
+          },
+          options: ['1', '2', '3', '4', '5', '6', '7', '7+'],
+          // readOnly: true,
+          // suffix: PopupMenuButton<String>(
+          //   clipBehavior: Clip.hardEdge,
+          //   icon: const Icon(
+          //     Icons.arrow_drop_down,
+          //     color: Colors.black,
+          //   ),
+          //   onSelected: (String value) {
+          //     viewModel.noOfBathroomsTextController.text = value;
+          //   },
+          //   itemBuilder: (BuildContext context) {
+          //     return ['1', '2', '3', '4', '5', '6', '7', '7+']
+          //         .map((option) {
+          //       return PopupMenuItem(
+          //         value: option,
+          //         child: Text('$option Bathrooms'),
+          //       );
+          //     }).toList();
+          //   },
+          // ),
+          // contentPadding:
+          // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          // inputFormatters: [
+          //   FilteringTextInputFormatter.deny(
+          //     RegExp(viewModel.regexToRemoveEmoji),
+          //   ),
+          // ],
+          // keyboardType: TextInputType.text,
+          // textInputAction: TextInputAction.done,
+          // fillColor: Colors.white,
+          // elevation: 6,
         ),
 
-        AppTextField(
+        CommonDropdown(
           title: StringHelper.furnishing,
-          hint: StringHelper.select,
-          controller: viewModel.furnishingStatusTextController,
-          readOnly: true,
-          suffix: PopupMenuButton<String>(
-            clipBehavior: Clip.hardEdge,
-            icon: const Icon(
-              Icons.arrow_drop_down,
-              color: Colors.black,
-            ),
-            onSelected: (String value) {
-              viewModel.furnishingStatusTextController.text = value;
-            },
-            itemBuilder: (BuildContext context) {
-              return ['Yes','No']
-                  .map((option) {
-                return PopupMenuItem(
-                  value: option,
-                  child: Text(option),
-                );
-              }).toList();
-            },
-          ),
-          contentPadding:
-          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-          inputFormatters: [
-            FilteringTextInputFormatter.deny(
-              RegExp(viewModel.regexToRemoveEmoji),
-            ),
-          ],
-          keyboardType: TextInputType.text,
-          textInputAction: TextInputAction.done,
-          fillColor: Colors.white,
-          elevation: 6,
+          //hint: StringHelper.select,
+          hint: viewModel.furnishingStatusTextController.text,
+          onSelected: (String? value) {
+            viewModel.furnishingStatusTextController.text = value??"";
+          },
+          options: ['Yes','No'],
+          // readOnly: true,
+          // suffix: PopupMenuButton<String>(
+          //   clipBehavior: Clip.hardEdge,
+          //   icon: const Icon(
+          //     Icons.arrow_drop_down,
+          //     color: Colors.black,
+          //   ),
+          //   onSelected: (String value) {
+          //     viewModel.furnishingStatusTextController.text = value;
+          //   },
+          //   itemBuilder: (BuildContext context) {
+          //     return ['Yes','No']
+          //         .map((option) {
+          //       return PopupMenuItem(
+          //         value: option,
+          //         child: Text(option),
+          //       );
+          //     }).toList();
+          //   },
+          // ),
+          // contentPadding:
+          // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          // inputFormatters: [
+          //   FilteringTextInputFormatter.deny(
+          //     RegExp(viewModel.regexToRemoveEmoji),
+          //   ),
+          // ],
+          // keyboardType: TextInputType.text,
+          // textInputAction: TextInputAction.done,
+          // fillColor: Colors.white,
+          // elevation: 6,
         ),
 
-        AppTextField(
+        CommonDropdown(
           title: StringHelper.level,
-          hint: StringHelper.select,
-          controller: viewModel.levelTextController,
-          readOnly: true,
-          suffix: PopupMenuButton<String>(
-            clipBehavior: Clip.hardEdge,
-            icon: const Icon(
-              Icons.arrow_drop_down,
-              color: Colors.black,
-            ),
-            onSelected: (String value) {
-              viewModel.levelTextController.text = value;
-            },
-            itemBuilder: (BuildContext context) {
-              return ["Ground", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+", "Last Floor"]
-                  .map((option) {
-                return PopupMenuItem(
-                  value: option,
-                  child: Text(option),
-                );
-              }).toList();
-            },
-          ),
-          contentPadding:
-          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-          inputFormatters: [
-            FilteringTextInputFormatter.deny(
-              RegExp(viewModel.regexToRemoveEmoji),
-            ),
-          ],
-          keyboardType: TextInputType.text,
-          textInputAction: TextInputAction.done,
-          fillColor: Colors.white,
-          elevation: 6,
+          //hint: StringHelper.select,
+          hint: viewModel.levelTextController.text,
+          onSelected: (String? value) {
+            viewModel.levelTextController.text = value??"";
+          },
+          options: ["Ground", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+", "Last Floor"],
+          // readOnly: true,
+          // suffix: PopupMenuButton<String>(
+          //   clipBehavior: Clip.hardEdge,
+          //   icon: const Icon(
+          //     Icons.arrow_drop_down,
+          //     color: Colors.black,
+          //   ),
+          //   onSelected: (String value) {
+          //     viewModel.levelTextController.text = value;
+          //   },
+          //   itemBuilder: (BuildContext context) {
+          //     return ["Ground", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+", "Last Floor"]
+          //         .map((option) {
+          //       return PopupMenuItem(
+          //         value: option,
+          //         child: Text(option),
+          //       );
+          //     }).toList();
+          //   },
+          // ),
+          // contentPadding:
+          // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          // inputFormatters: [
+          //   FilteringTextInputFormatter.deny(
+          //     RegExp(viewModel.regexToRemoveEmoji),
+          //   ),
+          // ],
+          // keyboardType: TextInputType.text,
+          // textInputAction: TextInputAction.done,
+          // fillColor: Colors.white,
+          // elevation: 6,
         ),
 
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() != "rent",
-          child: AppTextField(
+          child: CommonDropdown(
             title: "Delivery Term",
-            hint: StringHelper.select,
-            controller: viewModel.deliveryTermTextController,
-            readOnly: true,
-            suffix: PopupMenuButton<String>(
-              clipBehavior: Clip.hardEdge,
-              icon: const Icon(
-                Icons.arrow_drop_down,
-                color: Colors.black,
-              ),
-              onSelected: (String value) {
-                viewModel.deliveryTermTextController.text = value;
-              },
-              itemBuilder: (BuildContext context) {
-                return ["Move-in Ready","Under Construction","Shell and Core","Semi-Finished"]
-                    .map((option) {
-                  return PopupMenuItem(
-                    value: option,
-                    child: Text(option),
-                  );
-                }).toList();
-              },
-            ),
-            contentPadding:
-            const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-            inputFormatters: [
-              FilteringTextInputFormatter.deny(
-                RegExp(viewModel.regexToRemoveEmoji),
-              ),
-            ],
-            keyboardType: TextInputType.text,
-            textInputAction: TextInputAction.done,
-            fillColor: Colors.white,
-            elevation: 6,
+            //hint: StringHelper.select,
+            hint: viewModel.deliveryTermTextController.text,
+            onSelected: (String? value) {
+              viewModel.deliveryTermTextController.text = value??"";
+            },
+            options: ["Move-in Ready","Under Construction","Shell and Core","Semi-Finished"],
+            // readOnly: true,
+            // suffix: PopupMenuButton<String>(
+            //   clipBehavior: Clip.hardEdge,
+            //   icon: const Icon(
+            //     Icons.arrow_drop_down,
+            //     color: Colors.black,
+            //   ),
+            //   onSelected: (String value) {
+            //     viewModel.deliveryTermTextController.text = value;
+            //   },
+            //   itemBuilder: (BuildContext context) {
+            //     return ["Move-in Ready","Under Construction","Shell and Core","Semi-Finished"]
+            //         .map((option) {
+            //       return PopupMenuItem(
+            //         value: option,
+            //         child: Text(option),
+            //       );
+            //     }).toList();
+            //   },
+            // ),
+            // contentPadding:
+            // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+            // inputFormatters: [
+            //   FilteringTextInputFormatter.deny(
+            //     RegExp(viewModel.regexToRemoveEmoji),
+            //   ),
+            // ],
+            // keyboardType: TextInputType.text,
+            // textInputAction: TextInputAction.done,
+            // fillColor: Colors.white,
+            // elevation: 6,
           ),
         ),
 
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() != "rent",
-          child: AppTextField(
+          child: CommonDropdown(
             title: StringHelper.completionStatus,
-            hint: StringHelper.select,
-            controller: viewModel.completionStatusTextController,
-            readOnly: true,
-            suffix: PopupMenuButton<String>(
-              clipBehavior: Clip.hardEdge,
-              icon: const Icon(
-                Icons.arrow_drop_down,
-                color: Colors.black,
-              ),
-              onSelected: (String value) {
-                viewModel.completionStatusTextController.text = value;
-              },
-              itemBuilder: (BuildContext context) {
-                return ['Ready', 'Off Plan'].map((option) {
-                  return PopupMenuItem(
-                    value: option,
-                    child: Text(option),
-                  );
-                }).toList();
-              },
-            ),
-            contentPadding:
-            const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-            inputFormatters: [
-              FilteringTextInputFormatter.deny(
-                RegExp(viewModel.regexToRemoveEmoji),
-              ),
-            ],
-            keyboardType: TextInputType.text,
-            textInputAction: TextInputAction.done,
-            fillColor: Colors.white,
-            elevation: 6,
+            //hint: StringHelper.select,
+            hint: viewModel.completionStatusTextController.text,
+            onSelected: (String? value) {
+              viewModel.completionStatusTextController.text = value??"";
+            },
+            options: ['Ready', 'Off Plan'],
+            // readOnly: true,
+            // suffix: PopupMenuButton<String>(
+            //   clipBehavior: Clip.hardEdge,
+            //   icon: const Icon(
+            //     Icons.arrow_drop_down,
+            //     color: Colors.black,
+            //   ),
+            //   onSelected: (String value) {
+            //     viewModel.completionStatusTextController.text = value;
+            //   },
+            //   itemBuilder: (BuildContext context) {
+            //     return ['Ready', 'Off Plan'].map((option) {
+            //       return PopupMenuItem(
+            //         value: option,
+            //         child: Text(option),
+            //       );
+            //     }).toList();
+            //   },
+            // ),
+            // contentPadding:
+            // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+            // inputFormatters: [
+            //   FilteringTextInputFormatter.deny(
+            //     RegExp(viewModel.regexToRemoveEmoji),
+            //   ),
+            // ],
+            // keyboardType: TextInputType.text,
+            // textInputAction: TextInputAction.done,
+            // fillColor: Colors.white,
+            // elevation: 6,
           ),
         ),
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() == "rent",
-          child: AppTextField(
+          child: CommonDropdown(
             title: "Rental Term",
-            hint: StringHelper.select,
-            controller: viewModel.rentalTermsTextController,
-            readOnly: true,
-            suffix: PopupMenuButton<String>(
-              clipBehavior: Clip.hardEdge,
-              icon: const Icon(
-                Icons.arrow_drop_down,
-                color: Colors.black,
-              ),
-              onSelected: (String value) {
-                viewModel.rentalTermsTextController.text = value;
-              },
-              itemBuilder: (BuildContext context) {
-                return ['Daily', 'Weekly', 'Monthly', 'Yearly']
-                    .map((option) {
-                  return PopupMenuItem(
-                    value: option,
-                    child: Text(option),
-                  );
-                }).toList();
-              },
-            ),
-            contentPadding:
-            const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-            inputFormatters: [
-              FilteringTextInputFormatter.deny(
-                RegExp(viewModel.regexToRemoveEmoji),
-              ),
-            ],
-            keyboardType: TextInputType.text,
-            textInputAction: TextInputAction.done,
-            fillColor: Colors.white,
-            elevation: 6,
+            //hint: StringHelper.select,
+            hint: viewModel.rentalTermsTextController.text,
+            onSelected: (String? value) {
+              viewModel.rentalTermsTextController.text = value??"";
+            },
+            options: ['Daily', 'Weekly', 'Monthly', 'Yearly'],
+            // readOnly: true,
+            // suffix: PopupMenuButton<String>(
+            //   clipBehavior: Clip.hardEdge,
+            //   icon: const Icon(
+            //     Icons.arrow_drop_down,
+            //     color: Colors.black,
+            //   ),
+            //   onSelected: (String value) {
+            //     viewModel.rentalTermsTextController.text = value;
+            //   },
+            //   itemBuilder: (BuildContext context) {
+            //     return ['Daily', 'Weekly', 'Monthly', 'Yearly']
+            //         .map((option) {
+            //       return PopupMenuItem(
+            //         value: option,
+            //         child: Text(option),
+            //       );
+            //     }).toList();
+            //   },
+            // ),
+            // contentPadding:
+            // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+            // inputFormatters: [
+            //   FilteringTextInputFormatter.deny(
+            //     RegExp(viewModel.regexToRemoveEmoji),
+            //   ),
+            // ],
+            // keyboardType: TextInputType.text,
+            // textInputAction: TextInputAction.done,
+            // fillColor: Colors.white,
+            // elevation: 6,
           ),
         ),
 
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() != "rent",
-          child: AppTextField(
+          child: CommonDropdown(
             title: StringHelper.paymentType,
-            hint: StringHelper.select,
-            controller: viewModel.paymentTypeTextController,
-            readOnly: true,
-            suffix: PopupMenuButton<String>(
-              clipBehavior: Clip.hardEdge,
-              icon: const Icon(
-                Icons.arrow_drop_down,
-                color: Colors.black,
-              ),
-              onSelected: (String value) {
-                viewModel.paymentTypeTextController.text = value;
-              },
-              itemBuilder: (BuildContext context) {
-                return ['Installment', 'Cash or Installment', 'cash']
-                    .map((option) {
-                  return PopupMenuItem(
-                    value: option,
-                    child: Text(option),
-                  );
-                }).toList();
-              },
-            ),
-            contentPadding:
-            const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-            inputFormatters: [
-              FilteringTextInputFormatter.deny(
-                RegExp(viewModel.regexToRemoveEmoji),
-              ),
-            ],
-            keyboardType: TextInputType.text,
-            textInputAction: TextInputAction.done,
-            fillColor: Colors.white,
-            elevation: 6,
+            //hint: StringHelper.select,
+            hint: viewModel.paymentTypeTextController.text,
+            onSelected: (String? value) {
+              viewModel.paymentTypeTextController.text = value??"";
+            },
+            options: ['Installment', 'Cash or Installment', 'cash'],
+            // readOnly: true,
+            // suffix: PopupMenuButton<String>(
+            //   clipBehavior: Clip.hardEdge,
+            //   icon: const Icon(
+            //     Icons.arrow_drop_down,
+            //     color: Colors.black,
+            //   ),
+            //   onSelected: (String value) {
+            //     viewModel.paymentTypeTextController.text = value;
+            //   },
+            //   itemBuilder: (BuildContext context) {
+            //     return ['Installment', 'Cash or Installment', 'cash']
+            //         .map((option) {
+            //       return PopupMenuItem(
+            //         value: option,
+            //         child: Text(option),
+            //       );
+            //     }).toList();
+            //   },
+            // ),
+            // contentPadding:
+            // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+            // inputFormatters: [
+            //   FilteringTextInputFormatter.deny(
+            //     RegExp(viewModel.regexToRemoveEmoji),
+            //   ),
+            // ],
+            // keyboardType: TextInputType.text,
+            // textInputAction: TextInputAction.done,
+            // fillColor: Colors.white,
+            // elevation: 6,
           ),
         ),
 
@@ -621,6 +662,7 @@ class VacationForm extends StatelessWidget {
         ),
 
         MultiSelectCategory(
+          choiceString: viewModel.communicationChoice,
           onSelectedCommunicationChoice: (CommunicationChoice value) {
             viewModel.communicationChoice = value.name;
           },

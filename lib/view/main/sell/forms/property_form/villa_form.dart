@@ -10,6 +10,7 @@ import '../../../../../view_model/sell_forms_vm.dart';
 import '../../../../../widgets/amenities_widget.dart';
 import '../../../../../widgets/app_map_widget.dart';
 import '../../../../../widgets/app_text_field.dart';
+import '../../../../../widgets/common_dropdown.dart';
 import '../../../../../widgets/multi_select_category.dart';
 
 class VillaForm extends StatelessWidget {
@@ -94,40 +95,46 @@ class VillaForm extends StatelessWidget {
           elevation: 6,
         ),
 
-        AppTextField(
+        CommonDropdown(
           title: StringHelper.type,
-          hint: StringHelper.select,
-          controller: viewModel.propertyForTypeTextController,
-          readOnly: true,
-          suffix: PopupMenuButton<String>(
-            clipBehavior: Clip.hardEdge,
-            icon: const Icon(
-              Icons.arrow_drop_down,
-              color: Colors.black,
-            ),
-            onSelected: (String value) {
-              viewModel.propertyForTypeTextController.text = value;
-            },
-            itemBuilder: (BuildContext context) {
-              return ["Stand Alone","Townhouse","Twin House","I-Villa","Mansion"].map((option) {
-                return PopupMenuItem(
-                  value: option,
-                  child: Text(option),
-                );
-              }).toList();
-            },
-          ),
-          contentPadding:
-          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-          inputFormatters: [
-            FilteringTextInputFormatter.deny(
-              RegExp(viewModel.regexToRemoveEmoji),
-            ),
-          ],
-          keyboardType: TextInputType.text,
-          textInputAction: TextInputAction.done,
-          fillColor: Colors.white,
-          elevation: 6,
+          //hint: StringHelper.select,
+          hint: viewModel.propertyForTypeTextController.text,
+          onSelected: (String? value) {
+            debugPrint("value ==111=> $value");
+            viewModel.propertyForTypeTextController.text = value??"";
+            debugPrint("value ==222=> ${viewModel.propertyForTypeTextController.text}");
+          },
+          options: ["Stand Alone","Townhouse","Twin House","I-Villa","Mansion"],
+          // readOnly: true,
+          // suffix: PopupMenuButton<String>(
+          //   clipBehavior: Clip.hardEdge,
+          //   icon: const Icon(
+          //     Icons.arrow_drop_down,
+          //     color: Colors.black,
+          //   ),
+          //   onSelected: (String value) {
+          //     viewModel.propertyForTypeTextController.text = value;
+          //   },
+          //   itemBuilder: (BuildContext context) {
+          //     return ["Stand Alone","Townhouse","Twin House","I-Villa","Mansion"].map((option) {
+          //       return PopupMenuItem(
+          //         value: option,
+          //         child: Text(option),
+          //       );
+          //     }).toList();
+          //   },
+          // ),
+          // contentPadding:
+          // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          // inputFormatters: [
+          //   FilteringTextInputFormatter.deny(
+          //     RegExp(viewModel.regexToRemoveEmoji),
+          //   ),
+          // ],
+          // keyboardType: TextInputType.text,
+          // textInputAction: TextInputAction.done,
+          // fillColor: Colors.white,
+          // elevation: 6,
         ),
 
         AppTextField(
@@ -171,113 +178,125 @@ class VillaForm extends StatelessWidget {
           ),
         ),
 
-        AppTextField(
+        CommonDropdown(
           title: "No Of Bedrooms",
-          hint: StringHelper.select,
-          controller: viewModel.noOfBedroomsTextController,
-          readOnly: true,
-          suffix: PopupMenuButton<String>(
-            clipBehavior: Clip.hardEdge,
-            icon: const Icon(
-              Icons.arrow_drop_down,
-              color: Colors.black,
-            ),
-            onSelected: (String value) {
-              viewModel.noOfBedroomsTextController.text = value;
-            },
-            itemBuilder: (BuildContext context) {
-              return ["Studio", "1", "2", "3", "4", "5", "6+"].map((option) {
-                return PopupMenuItem(
-                  value: option,
-                  child: Text(option),
-                );
-              }).toList();
-            },
-          ),
-          contentPadding:
-          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-          inputFormatters: [
-            FilteringTextInputFormatter.deny(
-              RegExp(viewModel.regexToRemoveEmoji),
-            ),
-          ],
-          keyboardType: TextInputType.text,
-          textInputAction: TextInputAction.done,
-          fillColor: Colors.white,
-          elevation: 6,
+          //hint: StringHelper.select,
+          hint: viewModel.noOfBedroomsTextController.text,
+          onSelected: (String? value) {
+            viewModel.noOfBedroomsTextController.text = value??"";
+          },
+          options: ["Studio", "1", "2", "3", "4", "5", "6+"],
+          // readOnly: true,
+          // suffix: PopupMenuButton<String>(
+          //   clipBehavior: Clip.hardEdge,
+          //   icon: const Icon(
+          //     Icons.arrow_drop_down,
+          //     color: Colors.black,
+          //   ),
+          //   onSelected: (String value) {
+          //     viewModel.noOfBedroomsTextController.text = value;
+          //   },
+          //   itemBuilder: (BuildContext context) {
+          //     return ["Studio", "1", "2", "3", "4", "5", "6+"].map((option) {
+          //       return PopupMenuItem(
+          //         value: option,
+          //         child: Text(option),
+          //       );
+          //     }).toList();
+          //   },
+          // ),
+          // contentPadding:
+          // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          // inputFormatters: [
+          //   FilteringTextInputFormatter.deny(
+          //     RegExp(viewModel.regexToRemoveEmoji),
+          //   ),
+          // ],
+          // keyboardType: TextInputType.text,
+          // textInputAction: TextInputAction.done,
+          // fillColor: Colors.white,
+          // elevation: 6,
         ),
 
-        AppTextField(
+        CommonDropdown(
           title: StringHelper.noOfBathrooms,
-          hint: StringHelper.select,
-          controller: viewModel.noOfBathroomsTextController,
-          readOnly: true,
-          suffix: PopupMenuButton<String>(
-            clipBehavior: Clip.hardEdge,
-            icon: const Icon(
-              Icons.arrow_drop_down,
-              color: Colors.black,
-            ),
-            onSelected: (String value) {
-              viewModel.noOfBathroomsTextController.text = value;
-            },
-            itemBuilder: (BuildContext context) {
-              return ['1', '2', '3', '4', '5', '6', '7', '7+']
-                  .map((option) {
-                return PopupMenuItem(
-                  value: option,
-                  child: Text('$option Bathrooms'),
-                );
-              }).toList();
-            },
-          ),
-          contentPadding:
-          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-          inputFormatters: [
-            FilteringTextInputFormatter.deny(
-              RegExp(viewModel.regexToRemoveEmoji),
-            ),
-          ],
-          keyboardType: TextInputType.text,
-          textInputAction: TextInputAction.done,
-          fillColor: Colors.white,
-          elevation: 6,
+          //hint: StringHelper.select,
+          hint: viewModel.noOfBathroomsTextController.text,
+          onSelected: (String? value) {
+            viewModel.noOfBathroomsTextController.text = value??"";
+          },
+          options: ['1', '2', '3', '4', '5', '6', '7', '7+'],
+          // readOnly: true,
+          // suffix: PopupMenuButton<String>(
+          //   clipBehavior: Clip.hardEdge,
+          //   icon: const Icon(
+          //     Icons.arrow_drop_down,
+          //     color: Colors.black,
+          //   ),
+          //   onSelected: (String value) {
+          //     viewModel.noOfBathroomsTextController.text = value;
+          //   },
+          //   itemBuilder: (BuildContext context) {
+          //     return ['1', '2', '3', '4', '5', '6', '7', '7+']
+          //         .map((option) {
+          //       return PopupMenuItem(
+          //         value: option,
+          //         child: Text('$option Bathrooms'),
+          //       );
+          //     }).toList();
+          //   },
+          // ),
+          // contentPadding:
+          // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          // inputFormatters: [
+          //   FilteringTextInputFormatter.deny(
+          //     RegExp(viewModel.regexToRemoveEmoji),
+          //   ),
+          // ],
+          // keyboardType: TextInputType.text,
+          // textInputAction: TextInputAction.done,
+          // fillColor: Colors.white,
+          // elevation: 6,
         ),
-        AppTextField(
+        CommonDropdown(
           title: StringHelper.level,
-          hint: StringHelper.select,
-          controller: viewModel.levelTextController,
-          readOnly: true,
-          suffix: PopupMenuButton<String>(
-            clipBehavior: Clip.hardEdge,
-            icon: const Icon(
-              Icons.arrow_drop_down,
-              color: Colors.black,
-            ),
-            onSelected: (String value) {
-              viewModel.levelTextController.text = value;
-            },
-            itemBuilder: (BuildContext context) {
-              return ["Ground", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+", "Last Floor"]
-                  .map((option) {
-                return PopupMenuItem(
-                  value: option,
-                  child: Text(option),
-                );
-              }).toList();
-            },
-          ),
-          contentPadding:
-          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-          inputFormatters: [
-            FilteringTextInputFormatter.deny(
-              RegExp(viewModel.regexToRemoveEmoji),
-            ),
-          ],
-          keyboardType: TextInputType.text,
-          textInputAction: TextInputAction.done,
-          fillColor: Colors.white,
-          elevation: 6,
+          //hint: StringHelper.select,
+          hint: viewModel.levelTextController.text,
+          onSelected: (String? value) {
+            viewModel.levelTextController.text = value??"";
+          },
+          options: ["Ground", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+", "Last Floor"],
+          // readOnly: true,
+          // suffix: PopupMenuButton<String>(
+          //   clipBehavior: Clip.hardEdge,
+          //   icon: const Icon(
+          //     Icons.arrow_drop_down,
+          //     color: Colors.black,
+          //   ),
+          //   onSelected: (String value) {
+          //     viewModel.levelTextController.text = value;
+          //   },
+          //   itemBuilder: (BuildContext context) {
+          //     return ["Ground", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+", "Last Floor"]
+          //         .map((option) {
+          //       return PopupMenuItem(
+          //         value: option,
+          //         child: Text(option),
+          //       );
+          //     }).toList();
+          //   },
+          // ),
+          // contentPadding:
+          // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          // inputFormatters: [
+          //   FilteringTextInputFormatter.deny(
+          //     RegExp(viewModel.regexToRemoveEmoji),
+          //   ),
+          // ],
+          // keyboardType: TextInputType.text,
+          // textInputAction: TextInputAction.done,
+          // fillColor: Colors.white,
+          // elevation: 6,
         ),
         furnishedWidget(context),
 
@@ -295,41 +314,45 @@ class VillaForm extends StatelessWidget {
 
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() == "rent",
-          child: AppTextField(
+          child: CommonDropdown(
             title: "Rental Term",
-            hint: StringHelper.select,
-            controller: viewModel.rentalTermsTextController,
-            readOnly: true,
-            suffix: PopupMenuButton<String>(
-              clipBehavior: Clip.hardEdge,
-              icon: const Icon(
-                Icons.arrow_drop_down,
-                color: Colors.black,
-              ),
-              onSelected: (String value) {
-                viewModel.rentalTermsTextController.text = value;
-              },
-              itemBuilder: (BuildContext context) {
-                return ['Daily', 'Weekly', 'Monthly', 'Yearly']
-                    .map((option) {
-                  return PopupMenuItem(
-                    value: option,
-                    child: Text(option),
-                  );
-                }).toList();
-              },
-            ),
-            contentPadding:
-            const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-            inputFormatters: [
-              FilteringTextInputFormatter.deny(
-                RegExp(viewModel.regexToRemoveEmoji),
-              ),
-            ],
-            keyboardType: TextInputType.text,
-            textInputAction: TextInputAction.done,
-            fillColor: Colors.white,
-            elevation: 6,
+            //hint: StringHelper.select,
+            hint: viewModel.rentalTermsTextController.text,
+            onSelected: (String? value) {
+              viewModel.rentalTermsTextController.text = value??"";
+            },
+            options: ['Daily', 'Weekly', 'Monthly', 'Yearly'],
+            // readOnly: true,
+            // suffix: PopupMenuButton<String>(
+            //   clipBehavior: Clip.hardEdge,
+            //   icon: const Icon(
+            //     Icons.arrow_drop_down,
+            //     color: Colors.black,
+            //   ),
+            //   onSelected: (String value) {
+            //     viewModel.rentalTermsTextController.text = value;
+            //   },
+            //   itemBuilder: (BuildContext context) {
+            //     return ['Daily', 'Weekly', 'Monthly', 'Yearly']
+            //         .map((option) {
+            //       return PopupMenuItem(
+            //         value: option,
+            //         child: Text(option),
+            //       );
+            //     }).toList();
+            //   },
+            // ),
+            // contentPadding:
+            // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+            // inputFormatters: [
+            //   FilteringTextInputFormatter.deny(
+            //     RegExp(viewModel.regexToRemoveEmoji),
+            //   ),
+            // ],
+            // keyboardType: TextInputType.text,
+            // textInputAction: TextInputAction.done,
+            // fillColor: Colors.white,
+            // elevation: 6,
           ),
         ),
 
@@ -420,6 +443,7 @@ class VillaForm extends StatelessWidget {
         ),
 
         MultiSelectCategory(
+          choiceString: viewModel.communicationChoice,
           onSelectedCommunicationChoice: (CommunicationChoice value) {
             viewModel.communicationChoice = value.name;
           },

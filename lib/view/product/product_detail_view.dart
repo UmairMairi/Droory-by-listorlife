@@ -84,7 +84,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                         Stack(
                           children: [
                             CardSwipeWidget(
-                              height: 400,
+                              height: 350,
                               data: productData,
                               fit: BoxFit.fill,
                               imagesList: productData?.productMedias,

@@ -15,6 +15,7 @@ import '../../../../models/product_detail_model.dart';
 import '../../../../view_model/sell_forms_vm.dart';
 import '../../../../widgets/app_map_widget.dart';
 import '../../../../widgets/app_text_field.dart';
+import '../../../../widgets/common_dropdown.dart';
 
 class CommonSellForm extends BaseView<SellFormsVM> {
   final String? type;
@@ -160,80 +161,102 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                 }),
               ),
               if (brands?.isNotEmpty ?? false) ...{
-                AppTextField(
+                CommonDropdown<CategoryModel?>(
                   title: StringHelper.brand,
-                  titleColor: Colors.black,
-                  hint: StringHelper.select,
-                  hintStyle:
-                      const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                  controller: viewModel.brandTextController,
-                  readOnly: true,
-                  cursorColor: Colors.black,
-                  fillColor: Colors.white,
-                  borderSideColor: Colors.grey.withOpacity(0.5),
-                  contentPadding: const EdgeInsets.only(left: 20),
-                  elevation: 6, // Optional for shadow effect
-                  suffix: PopupMenuButton<CategoryModel>(
-                    clipBehavior: Clip.hardEdge,
-                    icon: const Icon(
-                      Icons.arrow_drop_down,
-                      color: Colors.black,
-                    ),
-                    onSelected: (CategoryModel value) {
-                      DialogHelper.showLoading();
-                      viewModel.getModels(brandId: value.id);
-                      viewModel.selectedBrand = value;
-                      viewModel.brandTextController.text = value.name ?? '';
-                    },
-                    itemBuilder: (BuildContext context) {
-                      return brands!.map((option) {
-                        return PopupMenuItem(
-                          value: option,
-                          child: Text(option.name ?? ''),
-                        );
-                      }).toList();
-                    },
-                  ),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.deny(
-                        RegExp(viewModel.regexToRemoveEmoji)),
-                  ],
-                  keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.done,
+                  hint: viewModel.brandTextController.text,
+                  listItemBuilder: (context,model,selected,fxn){
+                    return Text(model?.name ?? '');
+                  },
+                  headerBuilder: (context, selectedItem, enabled) {
+                    return Text(selectedItem?.name??"");
+                  },
+                  options: brands??[],
+                  onSelected: (CategoryModel? value) {
+                    DialogHelper.showLoading();
+                    viewModel.getModels(brandId: value?.id);
+                    viewModel.selectedBrand = value;
+                    viewModel.brandTextController.text = value?.name ?? '';
+                  },
+                  // readOnly: true,
+                  // suffix: PopupMenuButton(
+                  //   clipBehavior: Clip.hardEdge,
+                  //   icon: const Icon(
+                  //     Icons.arrow_drop_down,
+                  //     color: Colors.black,
+                  //   ),
+                  //   onSelected: (CategoryModel value) {
+                  //     DialogHelper.showLoading();
+                  //     viewModel.getModels(brandId: value.id);
+                  //     viewModel.selectedBrand = value;
+                  //     viewModel.brandTextController.text = value.name ?? '';
+                  //     viewModel.getModels(brandId: value.id);
+                  //   },
+                  //   itemBuilder: (BuildContext context) {
+                  //     return brands!.map((option) {
+                  //       return PopupMenuItem(
+                  //         value: option,
+                  //         child: Text(option.name ?? ''),
+                  //       );
+                  //     }).toList();
+                  //   },
+                  // ),
+                  // hint: StringHelper.select,
+                  // hintStyle:
+                  //     const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  // keyboardType: TextInputType.text,
+                  // textInputAction: TextInputAction.done,
+                  // inputFormatters: [
+                  //   FilteringTextInputFormatter.deny(
+                  //       RegExp(viewModel.regexToRemoveEmoji)),
+                  // ],
                 ),
-                AppTextField(
+                CommonDropdown<CategoryModel?>(
                   title: StringHelper.models,
-                  controller: viewModel.modelTextController,
-                  readOnly: true,
-                  cursorColor: Colors.black,
-                  hint: StringHelper.select,
-                  hintStyle:
-                      const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                  suffix: PopupMenuButton<CategoryModel>(
-                    clipBehavior: Clip.hardEdge,
-                    icon: const Icon(
-                      Icons.arrow_drop_down,
-                      color: Colors.black,
-                    ),
-                    onSelected: (value) {
-                      viewModel.selectedModel = value;
-                      viewModel.modelTextController.text = value.name ?? '';
-                    },
-                    itemBuilder: (BuildContext context) {
-                      return viewModel.allModels.map((option) {
-                        return PopupMenuItem(
-                          value: option,
-                          child: Text(option?.name ?? ''),
-                        );
-                      }).toList();
-                    },
-                  ),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.deny(
-                        RegExp(viewModel.regexToRemoveEmoji)),
-                  ],
-                  keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.done,
+                  titleColor: Colors.black,
+                  hint: viewModel.modelTextController.text,
+                  //readOnly: true,
+                  //hint: StringHelper.select,
+                  listItemBuilder: (context,model,selected,fxn){
+                    return Text(model?.name ?? '');
+                  },
+                  headerBuilder: (context, selectedItem, enabled) {
+                    return Text(selectedItem?.name??"");
+                  },
+                  onSelected: (value) {
+                    viewModel.selectedModel = value;
+                    viewModel.modelTextController.text = value?.name ?? '';
+                  },
+                  options: viewModel.allModels,
+                  // hintStyle:
+                  //     const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  // fillColor: Colors.white,
+                  // contentPadding: const EdgeInsets.only(left: 20),
+                  // suffix: PopupMenuButton<CategoryModel>(
+                  //   clipBehavior: Clip.hardEdge,
+                  //   icon: const Icon(
+                  //     Icons.arrow_drop_down,
+                  //     color: Colors.black,
+                  //   ),
+                  //   onSelected: (value) {
+                  //     viewModel.selectedModel = value;
+                  //     viewModel.modelTextController.text = value.name ?? '';
+                  //   },
+                  //   itemBuilder: (BuildContext context) {
+                  //     return viewModel.allModels.map((option) {
+                  //       return PopupMenuItem(
+                  //         value: option,
+                  //         child: Text(option?.name ?? ''),
+                  //       );
+                  //     }).toList();
+                  //   },
+                  // ),
+                  // inputFormatters: [
+                  //   FilteringTextInputFormatter.deny(
+                  //     RegExp(viewModel.regexToRemoveEmoji),
+                  //   ),
+                  // ],
+                  // keyboardType: TextInputType.text,
+                  // textInputAction: TextInputAction.done,
                 )
               },
               if (category?.name?.toLowerCase() == "fashion") ...{
@@ -248,40 +271,53 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            AppTextField(
+
+                            CommonDropdown<CategoryModel?>(
                               title: StringHelper.size,
-                              controller: viewModel.sizeTextController,
-                              readOnly: true,
-                              cursorColor: Colors.black,
-                              hint: StringHelper.select,
-                              hintStyle: const TextStyle(
-                                  color: Color(0xffACACAC), fontSize: 14),
-                              suffix: PopupMenuButton<CategoryModel>(
-                                clipBehavior: Clip.hardEdge,
-                                icon: const Icon(
-                                  Icons.arrow_drop_down,
-                                  color: Colors.black,
-                                ),
-                                onSelected: (value) {
-                                  viewModel.selectedModel = value;
-                                  viewModel.sizeTextController.text =
-                                      value.name ?? '';
-                                },
-                                itemBuilder: (BuildContext context) {
-                                  return sizeOptions.map((option) {
-                                    return PopupMenuItem(
-                                      value: option,
-                                      child: Text(option.name ?? ''),
-                                    );
-                                  }).toList();
-                                },
-                              ),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.deny(
-                                    RegExp(viewModel.regexToRemoveEmoji)),
-                              ],
-                              keyboardType: TextInputType.text,
-                              textInputAction: TextInputAction.done,
+                              hint: viewModel.sizeTextController.text,
+                              onSelected: (CategoryModel? value) {
+                                viewModel.selectedModel = value;
+                                viewModel.sizeTextController.text =
+                                    value?.name ?? '';
+                              },
+                              options: sizeOptions,
+                              listItemBuilder: (context,model,selected,fxn){
+                                return Text(model?.name ?? '');
+                              },
+                              headerBuilder: (context, selectedItem, enabled) {
+                                return Text(selectedItem?.name??"");
+                              },
+                              // readOnly: true,
+                              // cursorColor: Colors.black,
+                              // hint: StringHelper.select,
+                              // hintStyle: const TextStyle(
+                              //     color: Color(0xffACACAC), fontSize: 14),
+                              // suffix: PopupMenuButton<CategoryModel>(
+                              //   clipBehavior: Clip.hardEdge,
+                              //   icon: const Icon(
+                              //     Icons.arrow_drop_down,
+                              //     color: Colors.black,
+                              //   ),
+                              //   onSelected: (value) {
+                              //     viewModel.selectedModel = value;
+                              //     viewModel.sizeTextController.text =
+                              //         value.name ?? '';
+                              //   },
+                              //   itemBuilder: (BuildContext context) {
+                              //     return sizeOptions.map((option) {
+                              //       return PopupMenuItem(
+                              //         value: option,
+                              //         child: Text(option.name ?? ''),
+                              //       );
+                              //     }).toList();
+                              //   },
+                              // ),
+                              // inputFormatters: [
+                              //   FilteringTextInputFormatter.deny(
+                              //       RegExp(viewModel.regexToRemoveEmoji)),
+                              // ],
+                              // keyboardType: TextInputType.text,
+                              // textInputAction: TextInputAction.done,
                             )
                           ],
                         );
@@ -370,144 +406,160 @@ class CommonSellForm extends BaseView<SellFormsVM> {
               ),
               if (category?.id == 1) ...{
                 /// RAM SPECIFICATION
-                AppTextField(
+                CommonDropdown(
                   title: StringHelper.ram,
-                  controller: viewModel.ramTextController,
-                  readOnly: true,
-                  cursorColor: Colors.black,
-                  hint: StringHelper.select,
-                  hintStyle:
-                      const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                  suffix: PopupMenuButton<String>(
-                    clipBehavior: Clip.hardEdge,
-                    icon: const Icon(
-                      Icons.arrow_drop_down,
-                      color: Colors.black,
-                    ),
-                    onSelected: (value) {
-                      viewModel.ramTextController.text = value ?? '';
-                    },
-                    itemBuilder: (BuildContext context) {
-                      return viewModel.ramOptions.map((option) {
-                        return PopupMenuItem(
-                          value: option,
-                          child: Text(option ?? ''),
-                        );
-                      }).toList();
-                    },
-                  ),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.deny(
-                        RegExp(viewModel.regexToRemoveEmoji)),
-                  ],
-                  keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.done,
+                  hint: viewModel.ramTextController.text,
+                  onSelected: (String? value) {
+                    viewModel.ramTextController.text = value ?? '';
+                  },
+                  options: viewModel.ramOptions,
+                  // readOnly: true,
+                  // cursorColor: Colors.black,
+                  // hint: StringHelper.select,
+                  // hintStyle:
+                  //     const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  // suffix: PopupMenuButton<String>(
+                  //   clipBehavior: Clip.hardEdge,
+                  //   icon: const Icon(
+                  //     Icons.arrow_drop_down,
+                  //     color: Colors.black,
+                  //   ),
+                  //   onSelected: (value) {
+                  //     viewModel.ramTextController.text = value ?? '';
+                  //   },
+                  //   itemBuilder: (BuildContext context) {
+                  //     return viewModel.ramOptions.map((option) {
+                  //       return PopupMenuItem(
+                  //         value: option,
+                  //         child: Text(option ?? ''),
+                  //       );
+                  //     }).toList();
+                  //   },
+                  // ),
+                  // inputFormatters: [
+                  //   FilteringTextInputFormatter.deny(
+                  //       RegExp(viewModel.regexToRemoveEmoji)),
+                  // ],
+                  // keyboardType: TextInputType.text,
+                  // textInputAction: TextInputAction.done,
                 ),
 
                 /// STORAGE SPECIFICATION
-                AppTextField(
+                CommonDropdown(
                   title: StringHelper.strong,
-                  controller: viewModel.storageTextController,
-                  readOnly: true,
-                  cursorColor: Colors.black,
-                  hint: StringHelper.select,
-                  hintStyle:
-                      const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                  suffix: PopupMenuButton<String>(
-                    clipBehavior: Clip.hardEdge,
-                    icon: const Icon(
-                      Icons.arrow_drop_down,
-                      color: Colors.black,
-                    ),
-                    onSelected: (value) {
-                      viewModel.storageTextController.text = value ?? '';
-                    },
-                    itemBuilder: (BuildContext context) {
-                      return viewModel.storageOptions.map((option) {
-                        return PopupMenuItem(
-                          value: option,
-                          child: Text(option ?? ''),
-                        );
-                      }).toList();
-                    },
-                  ),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.deny(
-                        RegExp(viewModel.regexToRemoveEmoji)),
-                  ],
-                  keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.done,
+                  hint: viewModel.storageTextController.text,
+                  onSelected: (String? value) {
+                    viewModel.storageTextController.text = value ?? '';
+                  },
+                  options: viewModel.storageOptions,
+                  // readOnly: true,
+                  // cursorColor: Colors.black,
+                  // hint: StringHelper.select,
+                  // hintStyle:
+                  //     const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  // suffix: PopupMenuButton<String>(
+                  //   clipBehavior: Clip.hardEdge,
+                  //   icon: const Icon(
+                  //     Icons.arrow_drop_down,
+                  //     color: Colors.black,
+                  //   ),
+                  //   onSelected: (value) {
+                  //     viewModel.storageTextController.text = value ?? '';
+                  //   },
+                  //   itemBuilder: (BuildContext context) {
+                  //     return viewModel.storageOptions.map((option) {
+                  //       return PopupMenuItem(
+                  //         value: option,
+                  //         child: Text(option ?? ''),
+                  //       );
+                  //     }).toList();
+                  //   },
+                  // ),
+                  // inputFormatters: [
+                  //   FilteringTextInputFormatter.deny(
+                  //       RegExp(viewModel.regexToRemoveEmoji)),
+                  // ],
+                  // keyboardType: TextInputType.text,
+                  // textInputAction: TextInputAction.done,
                 ),
 
                 /// SCREEN SIZE SPECIFICATION
-                AppTextField(
+                CommonDropdown(
                   title: StringHelper.screenSize,
-                  controller: viewModel.screenSizeTextController,
-                  readOnly: true,
-                  cursorColor: Colors.black,
-                  hint: StringHelper.select,
-                  hintStyle:
-                      const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                  suffix: PopupMenuButton<String>(
-                    clipBehavior: Clip.hardEdge,
-                    icon: const Icon(
-                      Icons.arrow_drop_down,
-                      color: Colors.black,
-                    ),
-                    onSelected: (value) {
-                      viewModel.screenSizeTextController.text = value ?? '';
-                    },
-                    itemBuilder: (BuildContext context) {
-                      return viewModel.screenSizeOptions.map((option) {
-                        return PopupMenuItem(
-                          value: option,
-                          child: Text(option ?? ''),
-                        );
-                      }).toList();
-                    },
-                  ),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.deny(
-                        RegExp(viewModel.regexToRemoveEmoji)),
-                  ],
-                  keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.done,
+                  hint: viewModel.screenSizeTextController.text,
+                  onSelected: (String? value) {
+                    viewModel.screenSizeTextController.text = value ?? '';
+                  },
+                  options: viewModel.screenSizeOptions,
+                  // readOnly: true,
+                  // cursorColor: Colors.black,
+                  // hint: StringHelper.select,
+                  // hintStyle:
+                  //     const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  // suffix: PopupMenuButton<String>(
+                  //   clipBehavior: Clip.hardEdge,
+                  //   icon: const Icon(
+                  //     Icons.arrow_drop_down,
+                  //     color: Colors.black,
+                  //   ),
+                  //   onSelected: (value) {
+                  //     viewModel.screenSizeTextController.text = value ?? '';
+                  //   },
+                  //   itemBuilder: (BuildContext context) {
+                  //     return viewModel.screenSizeOptions.map((option) {
+                  //       return PopupMenuItem(
+                  //         value: option,
+                  //         child: Text(option ?? ''),
+                  //       );
+                  //     }).toList();
+                  //   },
+                  // ),
+                  // inputFormatters: [
+                  //   FilteringTextInputFormatter.deny(
+                  //       RegExp(viewModel.regexToRemoveEmoji)),
+                  // ],
+                  // keyboardType: TextInputType.text,
+                  // textInputAction: TextInputAction.done,
                 ),
               },
               if (category?.id == 2 || subCategory?.subCategoryId == 4) ...{
                 /// MATERIAL SPECIFICATION
-                AppTextField(
+                CommonDropdown(
                   title: StringHelper.material,
-                  controller: viewModel.materialTextController,
-                  readOnly: true,
-                  cursorColor: Colors.black,
-                  hint: StringHelper.select,
-                  hintStyle:
-                      const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                  suffix: PopupMenuButton<String>(
-                    clipBehavior: Clip.hardEdge,
-                    icon: const Icon(
-                      Icons.arrow_drop_down,
-                      color: Colors.black,
-                    ),
-                    onSelected: (value) {
-                      viewModel.materialTextController.text = value ?? '';
-                    },
-                    itemBuilder: (BuildContext context) {
-                      return viewModel.materialOptions.map((option) {
-                        return PopupMenuItem(
-                          value: option,
-                          child: Text(option ?? ''),
-                        );
-                      }).toList();
-                    },
-                  ),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.deny(
-                        RegExp(viewModel.regexToRemoveEmoji)),
-                  ],
-                  keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.done,
+                  hint: viewModel.materialTextController.text,
+                  onSelected: (String? value) {
+                    viewModel.materialTextController.text = value ?? '';
+                  },
+                  options: viewModel.materialOptions,
+                  // readOnly: true,
+                  // cursorColor: Colors.black,
+                  // hint: StringHelper.select,
+                  // hintStyle:
+                  //     const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  // suffix: PopupMenuButton<String>(
+                  //   clipBehavior: Clip.hardEdge,
+                  //   icon: const Icon(
+                  //     Icons.arrow_drop_down,
+                  //     color: Colors.black,
+                  //   ),
+                  //   onSelected: (value) {
+                  //     viewModel.materialTextController.text = value ?? '';
+                  //   },
+                  //   itemBuilder: (BuildContext context) {
+                  //     return viewModel.materialOptions.map((option) {
+                  //       return PopupMenuItem(
+                  //         value: option,
+                  //         child: Text(option ?? ''),
+                  //       );
+                  //     }).toList();
+                  //   },
+                  // ),
+                  // inputFormatters: [
+                  //   FilteringTextInputFormatter.deny(
+                  //       RegExp(viewModel.regexToRemoveEmoji)),
+                  // ],
+                  // keyboardType: TextInputType.text,
+                  // textInputAction: TextInputAction.done,
                 ),
               },
 
@@ -602,6 +654,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                 style: context.textTheme.titleSmall,
               ),
               MultiSelectCategory(
+                choiceString: viewModel.communicationChoice,
                 onSelectedCommunicationChoice: (CommunicationChoice value) {
                   viewModel.communicationChoice = value.name;
                 },
