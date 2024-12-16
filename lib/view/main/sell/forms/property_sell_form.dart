@@ -34,48 +34,53 @@ class PropertyType extends BaseView<SellFormsVM> {
   @override
   Widget build(BuildContext context, SellFormsVM viewModel) {
     var propertyType = ["Rent","Sell"];
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            StringHelper.propertyType,
-            style: context.titleMedium,
-          ),
-          ListView.separated(
-            shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-              itemBuilder: (context, index) {
-                return ListTile(
-                  onTap: () {
-                    viewModel.currentPropertyType = propertyType[index];
-                    viewModel.propertyForTextController.text = propertyType[index];
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => PropertySellForm(
-                          type: type,
-                          category: category,
-                          subSubCategory: subSubCategory,
-                          brands: brands,
-                          subCategory: subCategory,
-                          item: item,
-                        )));
-                  },
-                  title: Text(
-                    propertyType[index],
-                    style: context.textTheme.titleSmall,
-                  ),
-                  trailing: const Icon(Icons.arrow_forward_ios),
-                );
-              },
-              separatorBuilder: (context, index) {
-                return const Divider();
-              },
-              itemCount: propertyType.length),
-        ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(StringHelper.includeSomeDetails),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              StringHelper.propertyType,
+              style: context.titleMedium,
+            ),
+            ListView.separated(
+              shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    onTap: () {
+                      viewModel.currentPropertyType = propertyType[index];
+                      viewModel.propertyForTextController.text = propertyType[index];
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PropertySellForm(
+                            type: type,
+                            category: category,
+                            subSubCategory: subSubCategory,
+                            brands: brands,
+                            subCategory: subCategory,
+                            item: item,
+                          )));
+                    },
+                    title: Text(
+                      propertyType[index],
+                      style: context.textTheme.titleSmall,
+                    ),
+                    trailing: const Icon(Icons.arrow_forward_ios),
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return const Divider();
+                },
+                itemCount: propertyType.length),
+          ],
+        ),
       ),
     );
   }

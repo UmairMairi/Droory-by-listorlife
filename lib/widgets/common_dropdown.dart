@@ -55,13 +55,13 @@ class CommonDropdown<T> extends StatelessWidget {
             excludeSelected: false,
             onChanged: onSelected,
             listItemBuilder: listItemBuilder,
-            validator: validator ??
-                (value) {
-                  if (value == null) {
-                    return "*This field is required";
-                  }
-                  return null;
-                },
+            // validator: validator ??
+            //     (value) {
+            //       if (value == null) {
+            //         return "*This field is required";
+            //       }
+            //       return null;
+            //     },
             decoration: CustomDropdownDecoration(
               closedBorder:
                   Border.all(color: borderSideColor ?? Colors.grey.shade300),

@@ -45,7 +45,7 @@ class SellFormView extends StatefulWidget {
 class _SellFormViewState extends State<SellFormView> {
   @override
   void initState() {
-    log("${widget.type}", name: "PRINT");
+    log("${widget.type}" "${widget.screenType}", name: "PRINT");
     WidgetsBinding.instance.addPostFrameCallback((callback) {
       context.read<SellFormsVM>().updateTextFieldsItems(item: widget.item);
     });
@@ -68,7 +68,7 @@ class _SellFormViewState extends State<SellFormView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: widget.screenType == null?AppBar(
+      appBar:  widget.type != 'real estate'?AppBar(
         title: Text(StringHelper.includeSomeDetails),
       ):null,
       body: FutureBuilder<List<CategoryModel>>(

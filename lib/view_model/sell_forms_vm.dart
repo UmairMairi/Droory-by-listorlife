@@ -334,7 +334,7 @@ class SellFormsVM extends BaseViewModel {
     storageTextController.text = "${item.storage ?? ''} GB";
     screenSizeTextController.text = item.screenSize ?? '5.5"';
     jobPositionTextController.text = item.positionType ?? '';
-    jobSalaryTextController.text = item.salleryFrom ?? '';
+    jobSalaryTextController.text = item.salleryPeriod ?? '';
     jobSalaryFromController.text = item.salleryFrom ?? '';
     jobSalaryToController.text = item.salleryTo ?? '';
     mileageTextController.text = item.milleage ?? '';

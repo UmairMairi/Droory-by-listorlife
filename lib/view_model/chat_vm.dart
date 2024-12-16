@@ -159,8 +159,13 @@ class ChatVM extends BaseViewModel {
     });
     _socketIO.on(SocketConstants.clearChat, (data) {
       log("Listen ${SocketConstants.clearChat} => data $data");
+      //{sender_id: 64, receiver_id: 88, product_id: 107}
+      getMessageList(
+        productId: data['product_id'],
+        receiverId: data['receiver_id'],
+      );
+      //Navigator.pop(context);
       getInboxList();
-      Navigator.pop(context);
       notifyListeners();
     });
   }
