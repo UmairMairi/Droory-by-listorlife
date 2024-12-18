@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:avatar_glow/avatar_glow.dart';
-import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
@@ -9,6 +8,8 @@ import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/routes/app_pages.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:lottie/lottie.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:toastification/toastification.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:loader_overlay/loader_overlay.dart';
@@ -57,9 +58,9 @@ class DialogHelper {
       required String message,
       String? title,
       VoidCallback? onTap}) {
-    CoolAlert.show(
+    QuickAlert.show(
       context: context,
-      type: CoolAlertType.success,
+      type: QuickAlertType.success,
       text: message,
       title: title,
       confirmBtnColor: context.theme.primaryColor,
@@ -72,9 +73,9 @@ class DialogHelper {
       {required BuildContext context,
       required String message,
       VoidCallback? onTap}) {
-    CoolAlert.show(
+    QuickAlert.show(
       context: context,
-      type: CoolAlertType.error,
+      type: QuickAlertType.error,
       text: message,
       onConfirmBtnTap: onTap,
     );
@@ -83,11 +84,11 @@ class DialogHelper {
   /// Location service enable Dialog
   static void showLocationServiceEnable(
       {String? message, VoidCallback? onTap}) {
-    CoolAlert.show(
+    QuickAlert.show(
       context: AppPages.rootNavigatorKey.currentContext!,
       title: "Location Services",
       showCancelBtn: true,
-      type: CoolAlertType.info,
+      type: QuickAlertType.info,
       text: message,
       onConfirmBtnTap: onTap,
     );

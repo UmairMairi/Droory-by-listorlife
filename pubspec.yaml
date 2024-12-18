@@ -54,12 +54,13 @@ dependencies:
   toastification: ^2.3.0
   loader_overlay: ^4.0.3
   permission_handler: ^11.3.1
-  cool_alert:
-    git: https://github.com/alok2811/flutter_cool_alert.git
+  quickalert: ^1.1.0
+#  cool_alert:
+#    git: https://github.com/alok2811/flutter_cool_alert.git
   geolocator: ^13.0.2
   geocoding: ^3.0.0
   image_picker: 1.1.2
-  image_cropper: ^8.0.2
+  image_cropper: ^8.1.0
   persistent_bottom_nav_bar_plus: ^5.1.1
   dots_indicator: ^3.0.0
   pin_code_fields: ^8.0.1
