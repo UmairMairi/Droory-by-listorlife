@@ -14,6 +14,7 @@ import 'package:list_and_life/widgets/amenities_widget.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/app_outline_button.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
+import 'package:list_and_life/widgets/common_dropdown.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
@@ -309,80 +310,123 @@ class _FilterViewState extends State<FilterView> {
               const SizedBox(
                 height: 10,
               ),
-              AppTextField(
+              CommonDropdown<CategoryModel?>(
                 title: StringHelper.category,
-                hint: StringHelper.selectCategory,
-                controller: viewModel.categoryTextController,
-                readOnly: true,
-                suffix: PopupMenuButton(
-                  icon: const Icon(Icons.arrow_drop_down),
-                  onSelected: (value) {
-                    setState(() {
-                      filtersCat = getFiltersByCategory(value.id);
-                    });
+                hint: viewModel.categoryTextController.text,
+                listItemBuilder: (context,model,selected,fxn){
+                  return Text(model?.name ?? '');
+                },
+                headerBuilder: (context, selectedItem, enabled) {
+                  return Text(selectedItem?.name??"");
+                },
+                options: categoriesList,
+                onSelected: (CategoryModel? value) {
+                  setState(() {
+                    filtersCat = getFiltersByCategory(value?.id);
+                  });
 
-                    getSubCategory(id: "${value.id}");
-                    viewModel.categoryTextController.text = value.name ?? '';
-                    filter.categoryId = "${value.id}";
-                    filter.subcategoryId = "";
-                    viewModel.currentPropertyType = "Sell";
-                    brands.clear();
-                    allModels.clear();
-                    viewModel.brandsTextController.clear();
-                    viewModel.modelTextController.clear();
-                    viewModel.subCategoryTextController.clear();
-                  },
-                  itemBuilder: (BuildContext context) {
-                    return categoriesList.map((option) {
-                      return PopupMenuItem(
-                        value: option,
-                        child: Text(option.name ?? ''),
-                      );
-                    }).toList();
-                  },
-                ),
+                  getSubCategory(id: "${value?.id}");
+                  viewModel.categoryTextController.text = value?.name ?? '';
+                  filter.categoryId = "${value?.id}";
+                  filter.subcategoryId = "";
+                  viewModel.currentPropertyType = "Sell";
+                  brands.clear();
+                  allModels.clear();
+                  viewModel.brandsTextController.clear();
+                  viewModel.modelTextController.clear();
+                  viewModel.subCategoryTextController.clear();
+                },
+                //hint: StringHelper.selectCategory,
+                // readOnly: true,
+                // suffix: PopupMenuButton(
+                //   icon: const Icon(Icons.arrow_drop_down),
+                //   onSelected: (value) {
+                //     setState(() {
+                //       filtersCat = getFiltersByCategory(value.id);
+                //     });
+                //
+                //     getSubCategory(id: "${value.id}");
+                //     viewModel.categoryTextController.text = value.name ?? '';
+                //     filter.categoryId = "${value.id}";
+                //     filter.subcategoryId = "";
+                //     viewModel.currentPropertyType = "Sell";
+                //     brands.clear();
+                //     allModels.clear();
+                //     viewModel.brandsTextController.clear();
+                //     viewModel.modelTextController.clear();
+                //     viewModel.subCategoryTextController.clear();
+                //   },
+                //   itemBuilder: (BuildContext context) {
+                //     return categoriesList.map((option) {
+                //       return PopupMenuItem(
+                //         value: option,
+                //         child: Text(option.name ?? ''),
+                //       );
+                //     }).toList();
+                //   },
+                // ),
               ),
               const SizedBox(
                 height: 10,
               ),
               if (subCategoriesList.isNotEmpty) ...{
-                AppTextField(
+                CommonDropdown<CategoryModel?>(
                   title: filter.categoryId == '8'
                       ? 'Select Services'
                       : filter.categoryId == '9'
                           ? 'Job Type'
                           : StringHelper.subCategory,
-                  hint: filter.categoryId == '8'
+                  hint: viewModel.subCategoryTextController.text.trim().isEmpty?filter.categoryId == '8'
                       ? 'Select Services'
                       : filter.categoryId == '9'
                           ? 'Select Job Type'
-                          : StringHelper.selectSubCategory,
-                  controller: viewModel.subCategoryTextController,
-                  readOnly: true,
-                  suffix: PopupMenuButton(
-                    icon: const Icon(Icons.arrow_drop_down),
-                    onSelected: (value) async {
-                      viewModel.subCategoryTextController.text =
-                          value.name ?? '';
-                      filter.subcategoryId = "${value.id}";
-                      viewModel.currentPropertyType = "Sell";
-                      DialogHelper.showLoading();
-                      brands.clear();
-                      allModels.clear();
-                      viewModel.propertyForTextController.clear();
-                      viewModel.brandsTextController.clear();
-                      viewModel.modelTextController.clear();
-                      await getBrands(id: "${filter.subcategoryId}");
-                    },
-                    itemBuilder: (BuildContext context) {
-                      return subCategoriesList.map((option) {
-                        return PopupMenuItem(
-                          value: option,
-                          child: Text(option.name ?? ''),
-                        );
-                      }).toList();
-                    },
-                  ),
+                          : StringHelper.selectSubCategory:viewModel.subCategoryTextController.text,
+                  onSelected: (CategoryModel? value) async {
+                    viewModel.subCategoryTextController.text =
+                        value?.name ?? '';
+                    filter.subcategoryId = "${value?.id}";
+                    viewModel.currentPropertyType = "Sell";
+                    DialogHelper.showLoading();
+                    brands.clear();
+                    allModels.clear();
+                    viewModel.propertyForTextController.clear();
+                    viewModel.brandsTextController.clear();
+                    viewModel.modelTextController.clear();
+                    await getBrands(id: "${filter.subcategoryId}");
+                  },
+                  listItemBuilder: (context,model,selected,fxn){
+                    return Text(model?.name ?? '');
+                  },
+                  headerBuilder: (context, selectedItem, enabled) {
+                    return Text(selectedItem?.name??"");
+                  },
+                  options: subCategoriesList,
+                  // controller: viewModel.subCategoryTextController,
+                  // readOnly: true,
+                  // suffix: PopupMenuButton(
+                  //   icon: const Icon(Icons.arrow_drop_down),
+                  //   onSelected: (value) async {
+                  //     viewModel.subCategoryTextController.text =
+                  //         value.name ?? '';
+                  //     filter.subcategoryId = "${value.id}";
+                  //     viewModel.currentPropertyType = "Sell";
+                  //     DialogHelper.showLoading();
+                  //     brands.clear();
+                  //     allModels.clear();
+                  //     viewModel.propertyForTextController.clear();
+                  //     viewModel.brandsTextController.clear();
+                  //     viewModel.modelTextController.clear();
+                  //     await getBrands(id: "${filter.subcategoryId}");
+                  //   },
+                  //   itemBuilder: (BuildContext context) {
+                  //     return subCategoriesList.map((option) {
+                  //       return PopupMenuItem(
+                  //         value: option,
+                  //         child: Text(option.name ?? ''),
+                  //       );
+                  //     }).toList();
+                  //   },
+                  // ),
                 ),
                 const SizedBox(
                   height: 10,
@@ -392,56 +436,80 @@ class _FilterViewState extends State<FilterView> {
                   visible: subCategoriesList.isNotEmpty && (filter.subcategoryId??"").isNotEmpty,
                   child:commonWidget(context,filter.subcategoryId,viewModel)),
               if (brands.isNotEmpty) ...{
-                AppTextField(
+                CommonDropdown<CategoryModel?>(
                   title:
                       filter.categoryId == '6' ? 'Breed' : StringHelper.brand,
-                  hint: filter.categoryId == '6'
+                  hint: viewModel.brandsTextController.text.trim().isEmpty?filter.categoryId == '6'
                       ? 'Select Breeds'
-                      : StringHelper.selectBrands,
-                  controller: viewModel.brandsTextController,
-                  readOnly: true,
-                  suffix: PopupMenuButton(
-                    icon: const Icon(Icons.arrow_drop_down),
-                    onSelected: (value) async {
-                      viewModel.brandsTextController.text = value.name ?? '';
-                      filter.brandId = "${value.id}";
-                      viewModel.modelTextController.clear();
-                      await getModels(brandId: int.parse("${filter.brandId}"));
-                    },
-                    itemBuilder: (BuildContext context) {
-                      return brands.map((option) {
-                        return PopupMenuItem(
-                          value: option,
-                          child: Text(option.name ?? ''),
-                        );
-                      }).toList();
-                    },
-                  ),
+                      : StringHelper.selectBrands:viewModel.brandsTextController.text,
+                  onSelected: (CategoryModel? value) async {
+                    viewModel.brandsTextController.text = value?.name ?? '';
+                    filter.brandId = "${value?.id}";
+                    viewModel.modelTextController.clear();
+                    await getModels(brandId: int.parse("${filter.brandId}"));
+                  },
+                  options: brands,
+                  listItemBuilder: (context,model,selected,fxn){
+                    return Text(model?.name ?? '');
+                  },
+                  headerBuilder: (context, selectedItem, enabled) {
+                    return Text(selectedItem?.name??"");
+                  },
+                  // controller: viewModel.brandsTextController,
+                  // readOnly: true,
+                  // suffix: PopupMenuButton(
+                  //   icon: const Icon(Icons.arrow_drop_down),
+                  //   onSelected: (value) async {
+                  //     viewModel.brandsTextController.text = value.name ?? '';
+                  //     filter.brandId = "${value.id}";
+                  //     viewModel.modelTextController.clear();
+                  //     await getModels(brandId: int.parse("${filter.brandId}"));
+                  //   },
+                  //   itemBuilder: (BuildContext context) {
+                  //     return brands.map((option) {
+                  //       return PopupMenuItem(
+                  //         value: option,
+                  //         child: Text(option.name ?? ''),
+                  //       );
+                  //     }).toList();
+                  //   },
+                  // ),
                 ),
                 const SizedBox(
                   height: 10,
                 ),
                 filter.categoryId == '6'
-                    ? AppTextField(
+                    ? CommonDropdown<CategoryModel?>(
                         title: 'Gender',
-                        hint: 'Select Gender',
-                        controller: viewModel.genderTextController,
-                        readOnly: true,
-                        suffix: PopupMenuButton(
-                          icon: const Icon(Icons.arrow_drop_down),
-                          onSelected: (value) {
-                            viewModel.genderTextController.text =
-                                value.name ?? '';
-                          },
-                          itemBuilder: (BuildContext context) {
-                            return genders.map((option) {
-                              return PopupMenuItem(
-                                value: option,
-                                child: Text(option.name ?? ''),
-                              );
-                            }).toList();
-                          },
-                        ),
+                        hint:viewModel.genderTextController.text.trim().isEmpty? 'Select Gender':viewModel.genderTextController.text,
+                  onSelected: (CategoryModel? value) {
+                    viewModel.genderTextController.text =
+                        value?.name ?? '';
+                  },
+                  listItemBuilder: (context,model,selected,fxn){
+                    return Text(model?.name ?? '');
+                  },
+                  headerBuilder: (context, selectedItem, enabled) {
+                    return Text(selectedItem?.name??"");
+                  },
+                  options: genders,
+                  // controller: viewModel.genderTextController,
+                  //       readOnly: true,
+                  //       suffix: PopupMenuButton(
+                  //         icon: const Icon(Icons.arrow_drop_down),
+                  //         onSelected: (value) {
+                  //           viewModel.genderTextController.text =
+                  //               value.name ?? '';
+                  //         },
+                  //         itemBuilder: (BuildContext context) {
+                  //           return genders.map((option) {
+                  //             return PopupMenuItem(
+                  //               value: option,
+                  //               child: Text(option.name ?? ''),
+                  //             );
+                  //           }).toList();
+                  //         },
+                  //       ),
                       )
                     : const SizedBox.shrink(),
                 const SizedBox(
@@ -449,144 +517,174 @@ class _FilterViewState extends State<FilterView> {
                 ),
               },
               if (allModels.isNotEmpty) ...{
-                AppTextField(
+                CommonDropdown<CategoryModel?>(
                   title: StringHelper.models,
-                  hint: 'Select Model',
-                  readOnly: true,
-                  controller: viewModel.modelTextController,
-                  suffix: PopupMenuButton(
-                    icon: const Icon(Icons.arrow_drop_down),
-                    onSelected: (value) {
-                      viewModel.modelTextController.text = value.name ?? '';
-                      filter.modelId = value.id.toString();
-                    },
-                    itemBuilder: (BuildContext context) {
-                      return allModels.map((option) {
-                        return PopupMenuItem(
-                          value: option,
-                          child: Text(option.name ?? ''),
-                        );
-                      }).toList();
-                    },
-                  ),
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(4),
-                    FilteringTextInputFormatter.digitsOnly,
-                  ],
-                  keyboardType: TextInputType.number,
-                  textInputAction: TextInputAction.done,
+                  hint: viewModel.modelTextController.text.trim().isEmpty?'Select Model':viewModel.modelTextController.text,
+                  onSelected: (value) {
+                    viewModel.modelTextController.text = value?.name ?? '';
+                    filter.modelId = "${value?.id}";
+                  },
+                  options: allModels,
+                  listItemBuilder: (context,model,selected,fxn){
+                    return Text(model?.name ?? '');
+                  },
+                  headerBuilder: (context, selectedItem, enabled) {
+                    return Text(selectedItem?.name??"");
+                  },
+                  // readOnly: true,
+                  // controller: viewModel.modelTextController,
+                  // suffix: PopupMenuButton(
+                  //   icon: const Icon(Icons.arrow_drop_down),
+                  //   onSelected: (value) {
+                  //     viewModel.modelTextController.text = value.name ?? '';
+                  //     filter.modelId = value.id.toString();
+                  //   },
+                  //   itemBuilder: (BuildContext context) {
+                  //     return allModels.map((option) {
+                  //       return PopupMenuItem(
+                  //         value: option,
+                  //         child: Text(option.name ?? ''),
+                  //       );
+                  //     }).toList();
+                  //   },
+                  // ),
+                  // inputFormatters: [
+                  //   LengthLimitingTextInputFormatter(4),
+                  //   FilteringTextInputFormatter.digitsOnly,
+                  // ],
+                  // keyboardType: TextInputType.number,
+                  // textInputAction: TextInputAction.done,
                 ),
                 const Gap(10),
               },
               if (filter.categoryId == '4') ...{
-                AppTextField(
+                CommonDropdown(
                   title: StringHelper.year,
-                  hint: 'Select Year',
-                  readOnly: true,
-                  controller: viewModel.yearTextController,
-                  suffix: PopupMenuButton<String>(
-                    icon: const Icon(Icons.arrow_drop_down),
-                    onSelected: (value) {
-                      viewModel.yearTextController.text = value ?? '';
-                      filter.year = value;
-                    },
-                    itemBuilder: (BuildContext context) {
-                      return yearsType.map((option) {
-                        return PopupMenuItem(
-                          value: option,
-                          child: Text(option),
-                        );
-                      }).toList();
-                    },
-                  ),
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(4),
-                    FilteringTextInputFormatter.digitsOnly,
-                  ],
-                  keyboardType: TextInputType.number,
-                  textInputAction: TextInputAction.done,
+                  hint: viewModel.yearTextController.text.isEmpty?'Select Year':viewModel.yearTextController.text,
+                  onSelected: (value) {
+                    viewModel.yearTextController.text = value ?? '';
+                    filter.year = value;
+                  },
+                  options: yearsType,
+                  // readOnly: true,
+                  // controller: viewModel.yearTextController,
+                  // suffix: PopupMenuButton<String>(
+                  //   icon: const Icon(Icons.arrow_drop_down),
+                  //   onSelected: (value) {
+                  //     viewModel.yearTextController.text = value ?? '';
+                  //     filter.year = value;
+                  //   },
+                  //   itemBuilder: (BuildContext context) {
+                  //     return yearsType.map((option) {
+                  //       return PopupMenuItem(
+                  //         value: option,
+                  //         child: Text(option),
+                  //       );
+                  //     }).toList();
+                  //   },
+                  // ),
+                  // inputFormatters: [
+                  //   LengthLimitingTextInputFormatter(4),
+                  //   FilteringTextInputFormatter.digitsOnly,
+                  // ],
+                  // keyboardType: TextInputType.number,
+                  // textInputAction: TextInputAction.done,
                 ),
                 const SizedBox(
                   height: 10,
                 ),
-                AppTextField(
+                CommonDropdown(
                   title: StringHelper.fuel,
-                  hint: StringHelper.enter,
-                  controller: viewModel.fuelTextController,
-                  textInputAction: TextInputAction.done,
-                  readOnly: true,
-                  suffix: PopupMenuButton<String>(
-                    icon: const Icon(Icons.arrow_drop_down),
-                    onSelected: (value) {
-                      viewModel.fuelTextController.text = value ?? '';
-                      filter.fuel = value;
-                    },
-                    itemBuilder: (BuildContext context) {
-                      return fuelsType.map((option) {
-                        return PopupMenuItem(
-                          value: option,
-                          child: Text(option),
-                        );
-                      }).toList();
-                    },
-                  ),
+                  hint: viewModel.fuelTextController.text,
+                  onSelected: (value) {
+                    viewModel.fuelTextController.text = value ?? '';
+                    filter.fuel = value;
+                  },
+                  options: fuelsType,
+                  //hint: StringHelper.enter,
+                  // textInputAction: TextInputAction.done,
+                  // readOnly: true,
+                  // suffix: PopupMenuButton<String>(
+                  //   icon: const Icon(Icons.arrow_drop_down),
+                  //   onSelected: (value) {
+                  //     viewModel.fuelTextController.text = value ?? '';
+                  //     filter.fuel = value;
+                  //   },
+                  //   itemBuilder: (BuildContext context) {
+                  //     return fuelsType.map((option) {
+                  //       return PopupMenuItem(
+                  //         value: option,
+                  //         child: Text(option),
+                  //       );
+                  //     }).toList();
+                  //   },
+                  // ),
                 ),
                 const SizedBox(
                   height: 10,
                 ),
-                AppTextField(
+                CommonDropdown(
                   title: StringHelper.mileage,
-                  hint: StringHelper.select,
-                  controller: viewModel.mileageTextController,
-                  readOnly: true,
-                  suffix: PopupMenuButton<String>(
-                    clipBehavior: Clip.hardEdge,
-                    icon: const Icon(
-                      Icons.arrow_drop_down,
-                      color: Colors.black,
-                    ),
-                    onSelected: (value) {
-                      viewModel.mileageTextController.text = value;
-                    },
-                    itemBuilder: (BuildContext context) {
-                      return viewModel.mileageRanges.map((option) {
-                        return PopupMenuItem(
-                          value: option,
-                          child: Text(option ?? ''),
-                        );
-                      }).toList();
-                    },
-                  ),
+                  hint: viewModel.mileageTextController.text,
+                  onSelected: (value) {
+                    viewModel.mileageTextController.text = value??"";
+                  },
+                  options: viewModel.mileageRanges,
+                  // hint: StringHelper.select,
+                  // readOnly: true,
+                  // suffix: PopupMenuButton<String>(
+                  //   clipBehavior: Clip.hardEdge,
+                  //   icon: const Icon(
+                  //     Icons.arrow_drop_down,
+                  //     color: Colors.black,
+                  //   ),
+                  //   onSelected: (value) {
+                  //     viewModel.mileageTextController.text = value;
+                  //   },
+                  //   itemBuilder: (BuildContext context) {
+                  //     return viewModel.mileageRanges.map((option) {
+                  //       return PopupMenuItem(
+                  //         value: option,
+                  //         child: Text(option ?? ''),
+                  //       );
+                  //     }).toList();
+                  //   },
+                  // ),
                 ),
                 const SizedBox(
                   height: 10,
                 ),
-                AppTextField(
+                CommonDropdown(
                   title: StringHelper.transmission,
-                  hint: 'Select Transmission',
-                  readOnly: true,
-                  controller: viewModel.transmissionTextController,
-                  suffix: PopupMenuButton<String>(
-                    icon: const Icon(Icons.arrow_drop_down),
-                    onSelected: (value) {
-                      viewModel.transmissionTextController.text = value;
-                      filter.transmission = value.toLowerCase();
-                    },
-                    itemBuilder: (BuildContext context) {
-                      return transmissionType.map((option) {
-                        return PopupMenuItem(
-                          value: option,
-                          child: Text(option),
-                        );
-                      }).toList();
-                    },
-                  ),
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(4),
-                    FilteringTextInputFormatter.digitsOnly,
-                  ],
-                  keyboardType: TextInputType.number,
-                  textInputAction: TextInputAction.done,
+                  hint: viewModel.transmissionTextController.text.isEmpty?'Select Transmission':viewModel.transmissionTextController.text,
+                  onSelected: (value) {
+                    viewModel.transmissionTextController.text = value??"";
+                    filter.transmission = value?.toLowerCase();
+                  },
+                  options: transmissionType,
+                  // readOnly: true,
+                  // controller: viewModel.transmissionTextController,
+                  // suffix: PopupMenuButton<String>(
+                  //   icon: const Icon(Icons.arrow_drop_down),
+                  //   onSelected: (value) {
+                  //     viewModel.transmissionTextController.text = value;
+                  //     filter.transmission = value.toLowerCase();
+                  //   },
+                  //   itemBuilder: (BuildContext context) {
+                  //     return transmissionType.map((option) {
+                  //       return PopupMenuItem(
+                  //         value: option,
+                  //         child: Text(option),
+                  //       );
+                  //     }).toList();
+                  //   },
+                  // ),
+                  // inputFormatters: [
+                  //   LengthLimitingTextInputFormatter(4),
+                  //   FilteringTextInputFormatter.digitsOnly,
+                  // ],
+                  // keyboardType: TextInputType.number,
+                  // textInputAction: TextInputAction.done,
                 ),
                 const SizedBox(
                   height: 10,
@@ -617,54 +715,62 @@ class _FilterViewState extends State<FilterView> {
                 ))
               },
               if (filter.categoryId == '9') ...{
-                AppTextField(
+                CommonDropdown(
                   title: StringHelper.positionType,
-                  hint: StringHelper.select,
-                  controller: viewModel.jobPositionTextController,
-                  readOnly: true,
-                  suffix: PopupMenuButton(
-                    clipBehavior: Clip.hardEdge,
-                    icon: const Icon(
-                      Icons.arrow_drop_down,
-                      color: Colors.black,
-                    ),
-                    onSelected: (String value) {
-                      viewModel.jobPositionTextController.text = value;
-                    },
-                    itemBuilder: (BuildContext context) {
-                      return viewModel.jobPositionList.map((option) {
-                        return PopupMenuItem(
-                          value: option,
-                          child: Text(option),
-                        );
-                      }).toList();
-                    },
-                  ),
+                  hint: viewModel.jobPositionTextController.text,
+                  onSelected: (String? value) {
+                    viewModel.jobPositionTextController.text = value??"";
+                  },
+                  options: viewModel.jobPositionList,
+                  // hint: StringHelper.select,
+                  // readOnly: true,
+                  // suffix: PopupMenuButton(
+                  //   clipBehavior: Clip.hardEdge,
+                  //   icon: const Icon(
+                  //     Icons.arrow_drop_down,
+                  //     color: Colors.black,
+                  //   ),
+                  //   onSelected: (String value) {
+                  //     viewModel.jobPositionTextController.text = value;
+                  //   },
+                  //   itemBuilder: (BuildContext context) {
+                  //     return viewModel.jobPositionList.map((option) {
+                  //       return PopupMenuItem(
+                  //         value: option,
+                  //         child: Text(option),
+                  //       );
+                  //     }).toList();
+                  //   },
+                  // ),
                 ),
                 const Gap(10),
-                AppTextField(
+                CommonDropdown(
                   title: StringHelper.salaryPeriod,
-                  hint: StringHelper.select,
-                  controller: viewModel.jobSalaryTextController,
-                  readOnly: true,
-                  suffix: PopupMenuButton(
-                    clipBehavior: Clip.hardEdge,
-                    icon: const Icon(
-                      Icons.arrow_drop_down,
-                      color: Colors.black,
-                    ),
-                    onSelected: (String value) {
-                      viewModel.jobSalaryTextController.text = value;
-                    },
-                    itemBuilder: (BuildContext context) {
-                      return viewModel.salaryPeriodList.map((option) {
-                        return PopupMenuItem(
-                          value: option,
-                          child: Text(option),
-                        );
-                      }).toList();
-                    },
-                  ),
+                  hint:viewModel.jobSalaryTextController.text,
+                  options: viewModel.salaryPeriodList,
+                  onSelected: (String? value) {
+                    viewModel.jobSalaryTextController.text = value??"";
+                  },
+                  // controller: viewModel.jobSalaryTextController,
+                  // readOnly: true,
+                  // suffix: PopupMenuButton(
+                  //   clipBehavior: Clip.hardEdge,
+                  //   icon: const Icon(
+                  //     Icons.arrow_drop_down,
+                  //     color: Colors.black,
+                  //   ),
+                  //   onSelected: (String value) {
+                  //     viewModel.jobSalaryTextController.text = value;
+                  //   },
+                  //   itemBuilder: (BuildContext context) {
+                  //     return viewModel.salaryPeriodList.map((option) {
+                  //       return PopupMenuItem(
+                  //         value: option,
+                  //         child: Text(option),
+                  //       );
+                  //     }).toList();
+                  //   },
+                  // ),
                 ),
                 const Gap(10),
                 AppTextField(
@@ -869,6 +975,7 @@ class _FilterViewState extends State<FilterView> {
     }
     log("${categoriesList.map((element) => element.toJson()).toList()}",
         name: "BASEX");
+    setState(() {});
   }
 
   void resetFilters() {
