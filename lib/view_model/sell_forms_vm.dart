@@ -323,6 +323,7 @@ class SellFormsVM extends BaseViewModel {
     mainImagePath = "${ApiConstants.imageUrl}/${item.image}";
     adTitleTextController.text = item.name ?? '';
     descriptionTextController.text = item.description ?? '';
+    lookingForController.text = item.lookingFor ?? '';
     addressTextController.text = "${item.nearby}";
     priceTextController.text = item.price ?? '';
     productStatus = (item.status??0).toInt();
@@ -396,6 +397,7 @@ class SellFormsVM extends BaseViewModel {
     transmission = 0;
     mainImagePath = "";
     imagesList = [];
+    lookingForController.clear();
     jobPositionTextController.clear();
     jobSalaryTextController.clear();
     jobSalaryFromController.clear();
@@ -481,6 +483,7 @@ class SellFormsVM extends BaseViewModel {
       "name": adTitleTextController.text.trim(),
       "item_condition": currentIndex == 1 ? "new" : "used",
       "description": descriptionTextController.text.trim(),
+      "looking_for ": lookingForController.text.trim(),
       "image": mainImage,
       "medias": images.reversed.toList().join(','),
       "price": priceTextController.text.trim().isNotEmpty
@@ -656,6 +659,7 @@ class SellFormsVM extends BaseViewModel {
       "name": adTitleTextController.text.trim(),
       "item_condition": currentIndex == 1 ? "new" : "used",
       "description": descriptionTextController.text.trim(),
+      "looking_for ": lookingForController.text.trim(),
       "image": mainImage,
       "medias": images.reversed.toList().join(','),
       "price": priceTextController.text.trim().isNotEmpty

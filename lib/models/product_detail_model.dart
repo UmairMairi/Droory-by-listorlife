@@ -21,6 +21,7 @@ class ProductDetailModel {
   String? approvalDate;
   String? price;
   String? description;
+  String? lookingFor ;
   num? year;
   String? fuel;
   String? material;
@@ -99,6 +100,7 @@ class ProductDetailModel {
     this.approvalDate,
     this.price,
     this.description,
+    this.lookingFor,
     this.year,
     this.fuel,
     this.material,
@@ -176,6 +178,7 @@ class ProductDetailModel {
     salleryTo = json['sallery_to'];
     price = json['price'];
     description = json['description'];
+    lookingFor = json['looking_for '];
     year = json['year'];
     fuel = json['fuel'];
     area = json['area'];
@@ -278,6 +281,7 @@ class ProductDetailModel {
     data['sallery_to'] = salleryTo;
     data['price'] = price;
     data['description'] = description;
+    data['looking_for '] = lookingFor;
     data['year'] = year;
     data['approval_date'] = approvalDate;
     data['fuel'] = fuel;
