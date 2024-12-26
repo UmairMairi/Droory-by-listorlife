@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/res/assets_res.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 
 import '../base/network/api_constants.dart';
 import 'image_view.dart';
@@ -63,18 +65,48 @@ class ImageViewer extends StatelessWidget {
             return StaggeredGridTile.count(
                 crossAxisCellCount: (index % 3 == 0) ? 2 : 1,
                 mainAxisCellCount: (index % 3 == 0) ? 1.5 : 1,
-                child: ImageView.rect(
-                  borderRadius: 0,
-                  image: "${ApiConstants.imageUrl}/${galleryItems[index] ?? ""}",
-                  placeholder: AssetsRes.APP_LOGO,
-                  width: context.width,
-                  height: 220,
-                  fit: BoxFit.cover,
+                child: GestureDetector(
+                  onTap: ()=>Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PhotoViewer(
+                              galleryItems:galleryItems))),
+                  child: ImageView.rect(
+                    borderRadius: 0,
+                    image: "${ApiConstants.imageUrl}/${galleryItems[index] ?? ""}",
+                    placeholder: AssetsRes.APP_LOGO,
+                    width: context.width,
+                    height: 220,
+                    fit: BoxFit.cover,
+                  ),
                 ));
           }), // Spacing between columns
         ),
       ),
-      /*body: PhotoViewGallery.builder(
+    );
+  }
+}
+
+
+class PhotoViewer extends StatelessWidget {
+  final List<String?> galleryItems;
+  final PageController? pageController;
+  final int? initialIndex;
+
+  const PhotoViewer(
+      {super.key,
+        required this.galleryItems,
+        this.pageController,
+        this.initialIndex});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Image Explorer'),
+        centerTitle: true,
+      ),
+      body: PhotoViewGallery.builder(
           scrollPhysics: const BouncingScrollPhysics(),
           builder: (BuildContext context, int index) {
             return PhotoViewGalleryPageOptions(
@@ -103,7 +135,7 @@ class ImageViewer extends StatelessWidget {
           )),
           pageController: pageController,
           onPageChanged: (value) {},
-        )*/
+        )
     );
   }
 }

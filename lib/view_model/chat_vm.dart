@@ -310,7 +310,7 @@ class ChatVM extends BaseViewModel {
           isSender: data.senderId == DbHelper.getUserModel()?.id,
           color: data.senderId == DbHelper.getUserModel()?.id
               ? Colors.black
-              : const Color(0xff5A5B55),
+              : context.theme.colorScheme.error,
         );
       case 2:
         return BubbleOfferMessage(
@@ -362,7 +362,7 @@ class ChatVM extends BaseViewModel {
           isSender: data.senderId == DbHelper.getUserModel()?.id,
           color: data.senderId == DbHelper.getUserModel()?.id
               ? Colors.black
-              : const Color(0xff5A5B55),
+              : context.theme.colorScheme.error,
         );
 
       case 3:
@@ -392,7 +392,7 @@ class ChatVM extends BaseViewModel {
           isSender: data.senderId == DbHelper.getUserModel()?.id,
           color: data.senderId == DbHelper.getUserModel()?.id
               ? Colors.black
-              : const Color(0xff5A5B55),
+              : context.theme.colorScheme.error,
         );
 
       case 6:
@@ -410,7 +410,7 @@ class ChatVM extends BaseViewModel {
           isSender: data.senderId == DbHelper.getUserModel()?.id,
           color: data.senderId == DbHelper.getUserModel()?.id
               ? Colors.black
-              : const Color(0xff5A5B55),
+              : context.theme.colorScheme.error,
         );
       default:
         return const SizedBox.shrink();

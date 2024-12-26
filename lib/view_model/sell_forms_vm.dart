@@ -310,12 +310,22 @@ class SellFormsVM extends BaseViewModel {
     isEditProduct = true;
     imagesList.clear();
     deletedImageIds.clear();
-    imagesList.addAll(item.productMedias
-            ?.map((element) => ProductMedias(
-                id: element.id,
-                media: "${ApiConstants.imageUrl}/${element.media}"))
-            .toList() ??
-        []);
+    var productImagesList = item.productMedias??[];
+    if(productImagesList.isNotEmpty){
+      for(var element in productImagesList){
+        if((element.media??"").isNotEmpty){
+          imagesList.add(ProductMedias(
+              id: element.id,
+              media: "${ApiConstants.imageUrl}/${element.media}"));
+        }
+      }
+    }
+    // imagesList.addAll(item.productMedias
+    //         ?.map((element) => ProductMedias(
+    //             id: element.id,
+    //             media: "${ApiConstants.imageUrl}/${element.media}"))
+    //         .toList() ??
+    //     []);
     if (item.brandId != null) {
       getModels(brandId: int.parse("${item.brandId}"));
     }

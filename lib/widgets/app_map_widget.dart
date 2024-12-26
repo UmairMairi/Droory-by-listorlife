@@ -241,7 +241,7 @@ class _AppMapWidgetState extends State<AppMapWidget> {
 
                   setState(() {
                     _currentAddress =
-                        "${place.name}, ${place.locality}, ${place.postalCode}, ${place.country}";
+                    "${place.name}, ${place.locality}, ${place.postalCode}, ${place.country}";
                     searchController.text = _currentAddress;
                     placeName = place.name!;
                     city = place.locality!;
@@ -260,68 +260,70 @@ class _AppMapWidgetState extends State<AppMapWidget> {
               },
             ),
           ),
-          SafeArea(
-            child: Container(
-              alignment: Alignment.center,
-              height: 55,
-              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: GooglePlaceAutoCompleteTextField(
-                  textEditingController: searchController,
-                  countries: const ['eg'],
-                  googleAPIKey: "AIzaSyBDLT4xDcywIynEnoHJn6GdPisZLr4G5TU",
-                  inputDecoration: const InputDecoration(
-                    border: InputBorder.none,
-                    prefixIcon: Icon(Icons.search),
-                    hintText: "Search",
-                  ),
-                  debounceTime: 400,
-                  // default 600 ms,
-                  isLatLngRequired: true,
-                  getPlaceDetailWithLatLng: (Prediction prediction) {
-                    isMapDrag = false;
-
-                    lat = prediction.lat!;
-                    lng = prediction.lng!;
-
-                    debugPrint(
-                        "getPlaceDetailWithLatLng ${prediction.toJson().toString()} latitude ==>> $lng  longitude ==>> $lat");
-                    _getAddress(double.parse(lat), double.parse(lng),
-                        isSelectedFromList: true);
-
-                    _googleMapController!.animateCamera(
-                      CameraUpdate.newCameraPosition(
-                        CameraPosition(
-                          target: LatLng(double.parse(prediction.lat!),
-                              double.parse(prediction.lng!)),
-                          zoom: 18.0,
-                        ),
+          Positioned(
+            top: 10,
+            left: 20,
+            right: 20,
+            child: GooglePlaceAutoCompleteTextField(
+                textEditingController: searchController,
+                countries: const ['eg'],
+                boxDecoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(color: Colors.black,width: 1)
+                ),
+                googleAPIKey: "AIzaSyBDLT4xDcywIynEnoHJn6GdPisZLr4G5TU",
+                inputDecoration:  InputDecoration(
+                  border: InputBorder.none,
+                  disabledBorder: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  prefixIcon: Icon(Icons.search),
+                  hintText: "Search",
+                ),
+                debounceTime: 400,
+                // default 600 ms,
+                isLatLngRequired: true,
+                getPlaceDetailWithLatLng: (Prediction prediction) {
+                  isMapDrag = false;
+            
+                  lat = prediction.lat!;
+                  lng = prediction.lng!;
+            
+                  debugPrint(
+                      "getPlaceDetailWithLatLng ${prediction.toJson().toString()} latitude ==>> $lng  longitude ==>> $lat");
+                  _getAddress(double.parse(lat), double.parse(lng),
+                      isSelectedFromList: true);
+            
+                  _googleMapController!.animateCamera(
+                    CameraUpdate.newCameraPosition(
+                      CameraPosition(
+                        target: LatLng(double.parse(prediction.lat!),
+                            double.parse(prediction.lng!)),
+                        zoom: 18.0,
                       ),
-                    );
-                    setState(() {});
-                  },
-                  itemClick: (Prediction prediction) async {
-                    isMapDrag = false;
-
-                    searchController.text = prediction.description!;
-                    searchController.selection = TextSelection.fromPosition(
-                        const TextPosition(offset: 0));
-                    _googleMapController!.animateCamera(
-                      CameraUpdate.newCameraPosition(
-                        CameraPosition(
-                          target: LatLng(double.parse(prediction.lat!),
-                              double.parse(prediction.lng!)),
-                          zoom: 18.0,
-                        ),
+                    ),
+                  );
+                  setState(() {});
+                },
+                itemClick: (Prediction prediction) async {
+                  isMapDrag = false;
+            
+                  searchController.text = prediction.description!;
+                  searchController.selection = TextSelection.fromPosition(
+                      const TextPosition(offset: 0));
+                  _googleMapController!.animateCamera(
+                    CameraUpdate.newCameraPosition(
+                      CameraPosition(
+                        target: LatLng(double.parse(prediction.lat!),
+                            double.parse(prediction.lng!)),
+                        zoom: 18.0,
                       ),
-                    );
-                    setState(() {});
-                    FocusScope.of(context).requestFocus(FocusNode());
-                  }),
-            ),
+                    ),
+                  );
+                  setState(() {});
+                  FocusScope.of(context).requestFocus(FocusNode());
+                }),
           ),
           Positioned.fill(
               child: Align(
@@ -388,4 +390,7 @@ class _AppMapWidgetState extends State<AppMapWidget> {
       ),
     );
   }
+
+
+
 }

@@ -1,8 +1,10 @@
+import '../base/helpers/db_helper.dart';
+
 class CategoryModel {
   int? id;
   int? subCategoryId;
   String? name;
-  String? nameAr;
+  //String? nameAr;
   String? image;
   int? status;
   String? createdAt;
@@ -12,7 +14,7 @@ class CategoryModel {
       {this.id,
       this.subCategoryId,
       this.name,
-      this.nameAr,
+      //this.nameAr,
       this.image,
       this.media,
       this.status,
@@ -22,8 +24,8 @@ class CategoryModel {
   CategoryModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     subCategoryId = json['sub_category_id'];
-    name = json['name'];
-    nameAr = json['name_ar'];
+    name =DbHelper.getLanguage() == 'en'? json['name']??"":json['name_ar']??"";
+    //nameAr = json['name_ar'];
     image = json['image'];
     media = json['media'];
     status = json['status'];
@@ -36,7 +38,7 @@ class CategoryModel {
     data['id'] = id;
     data['sub_category_id'] = subCategoryId;
     data['name'] = name;
-    data['name_ar'] = nameAr;
+    //data['name_ar'] = nameAr;
     data['image'] = image;
     data['media'] = media;
     data['status'] = status;

@@ -15,10 +15,11 @@ import 'package:list_and_life/widgets/app_loading_widget.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 import 'package:provider/provider.dart';
-
 import '../../../base/helpers/string_helper.dart';
 import '../../../base/network/api_constants.dart';
 import '../../../chat_bubble/message_bar_with_suggetion.dart';
+import '../../../res/font_res.dart';
+import '../../../routes/app_routes.dart';
 
 class MessageView extends StatefulWidget {
   final InboxModel? chat;
@@ -71,9 +72,37 @@ class _MessageViewState extends State<MessageView> {
               ],
             ),
             const Gap(5),
-            Text(widget.chat?.senderId == DbHelper.getUserModel()?.id
-                ? "${widget.chat?.receiverDetail?.name} ${widget.chat?.receiverDetail?.lastName}"
-                : "${widget.chat?.senderDetail?.name} ${widget.chat?.senderDetail?.lastName}"),
+            GestureDetector(
+              onTap: (){
+                if (widget.chat?.productDetail?.userId == DbHelper.getUserModel()?.id) {
+                  context.push(Routes.myProduct,
+                      extra: widget.chat?.productDetail);
+                  return;
+                }
+
+                context.push(Routes.productDetails,
+                    extra: widget.chat?.productDetail);
+                return;
+              },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(widget.chat?.senderId == DbHelper.getUserModel()?.id
+                      ? "${widget.chat?.receiverDetail?.name} ${widget.chat?.receiverDetail?.lastName}"
+                      : "${widget.chat?.senderDetail?.name} ${widget.chat?.senderDetail?.lastName}"),
+                  const Gap(02),
+                  Text(
+                    widget.chat?.productDetail?.name ?? '',
+                    style: context
+                        .textTheme.labelLarge
+                        ?.copyWith(
+                        fontFamily: FontRes
+                            .MONTSERRAT_MEDIUM,
+                        color: Colors.black),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
         actions: [

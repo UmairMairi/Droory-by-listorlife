@@ -24,8 +24,8 @@ import '../../widgets/common_grid_view.dart';
 import '../../widgets/like_button.dart';
 
 class ProductDetailView extends BaseView<ProductVM> {
-  final ProductDetailModel? data;
-  const ProductDetailView({super.key, required this.data});
+  final ProductDetailModel? productDetails;
+  const ProductDetailView({super.key, required this.productDetails});
 
   @override
   Widget build(BuildContext context, ProductVM viewModel) {
@@ -67,7 +67,7 @@ class ProductDetailView extends BaseView<ProductVM> {
       body: Stack(
         children: [
           FutureBuilder<ProductDetailModel?>(
-              future: viewModel.getProductDetails(id: data?.id),
+              future: viewModel.getProductDetails(id: productDetails?.id),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   ProductDetailModel? productData = snapshot.data;
@@ -482,7 +482,7 @@ class ProductDetailView extends BaseView<ProductVM> {
               margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               height: 35,
               child: CommunicationButtons(
-                data: data, // Pass any additional data required
+                data: productDetails, // Pass any additional data required
               ),
               /*Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

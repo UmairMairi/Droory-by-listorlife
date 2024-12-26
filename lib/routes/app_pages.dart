@@ -114,7 +114,7 @@ class AppPages {
         pageBuilder: (context, state) {
           return getPage(
               child: ProductDetailView(
-                data: state.extra as ProductDetailModel,
+                productDetails: state.extra as ProductDetailModel,
               ),
               state: state);
         },

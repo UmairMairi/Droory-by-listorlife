@@ -310,9 +310,10 @@ class _AppSearchViewState extends State<AppSearchView> {
           if(!DbHelper.getIsGuest()){
             storeSearches(
                 id: category?.id,
-                name: DbHelper.getLanguage() == 'en'
-                ? category?.name ?? ''
-                : category?.nameAr ?? '',
+                name: category?.name ?? '',
+                // name: DbHelper.getLanguage() == 'en'
+                // ? category?.name ?? ''
+                // : category?.nameAr ?? '',
               type: "category"
             );
           }
@@ -340,9 +341,10 @@ class _AppSearchViewState extends State<AppSearchView> {
             ),
             const Gap(10),
             Text(
-              DbHelper.getLanguage() == 'en'
-                  ? category?.name ?? ''
-                  : category?.nameAr ?? '',
+              // DbHelper.getLanguage() == 'en'
+              //     ? category?.name ?? ''
+              //     : category?.nameAr ?? '',
+                category?.name ?? '',
               style: context.textTheme.labelSmall
                   ?.copyWith(
                   color: Colors.black,

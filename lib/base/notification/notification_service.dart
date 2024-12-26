@@ -162,7 +162,7 @@ class NotificationService {
       NotificationEntity notificationEntity =
           NotificationEntity.fromJson(message.data);
       debugPrint(message.data.toString());
-      notificationEntity.title = notificationEntity.title ?? "My Trade Block";
+      notificationEntity.title = notificationEntity.title ?? "Daroory";
       notificationEntity.body = message.notification?.body;
 
       showNotifications(NotificationEntity.fromJson(message.data));

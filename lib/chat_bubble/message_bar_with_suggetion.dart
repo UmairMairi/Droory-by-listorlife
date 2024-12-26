@@ -45,26 +45,26 @@ class _MessageBarWithSuggetionsState extends State<MessageBarWithSuggestions> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 230,
+      height: 170,
       child: DefaultTabController(
         length: 2,
         child: Column(
           children: [
-            const TabBar(
-                indicator: BoxDecoration(color: Colors.black54),
-                indicatorSize: TabBarIndicatorSize.tab,
-                labelColor: Colors.white,
-                physics: NeverScrollableScrollPhysics(),
-                tabs: [
-                  Tab(
-                    text: 'Questions',
-                    height: 40,
-                  ),
-                  Tab(
-                    text: 'Make Offer',
-                    height: 40,
-                  ),
-                ]),
+            // const TabBar(
+            //     indicator: BoxDecoration(color: Colors.black54),
+            //     indicatorSize: TabBarIndicatorSize.tab,
+            //     labelColor: Colors.white,
+            //     physics: NeverScrollableScrollPhysics(),
+            //     tabs: [
+            //       Tab(
+            //         text: 'Questions',
+            //         height: 40,
+            //       ),
+            //       Tab(
+            //         text: 'Make Offer',
+            //         height: 40,
+            //       ),
+            //     ]),
             Flexible(
               child: TabBarView(
                   physics: const NeverScrollableScrollPhysics(),

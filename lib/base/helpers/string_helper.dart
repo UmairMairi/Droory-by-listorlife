@@ -425,6 +425,10 @@ class StringHelper {
   static String lookingFor =
       LocaleService.translate('lookingFor') ?? 'Looking For';
 
+  ///new keys added
+  static String salary =
+      LocaleService.translate('salary') ?? 'Salary';
+
   static void refresh() {
     // Main Screen
     listLife = LocaleService.translate('listLife') ?? 'List & Lift';
@@ -775,6 +779,9 @@ class StringHelper {
     chat = LocaleService.translate('chat') ?? 'Chat';
     whatsapp = LocaleService.translate('whatsapp') ?? 'Whatsapp';
     details = LocaleService.translate('details') ?? 'Details';
+
+    ///new keys
+    salary = LocaleService.translate('salary') ?? 'Salary';
   }
 }
 

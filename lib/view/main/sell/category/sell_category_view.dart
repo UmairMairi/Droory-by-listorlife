@@ -93,10 +93,11 @@ class SellCategoryView extends BaseView<SellVM> {
                                             height: 13,
                                           ),
                                           Text(
-                                            DbHelper.getLanguage() == 'en'
-                                                ? categoryData[index].name ?? ''
-                                                : categoryData[index].nameAr ??
-                                                    '',
+                                            // DbHelper.getLanguage() == 'en'
+                                            //     ? categoryData[index].name ?? ''
+                                            //     : categoryData[index].nameAr ??
+                                            //         '',
+                                            categoryData[index].name ?? '',
                                             textAlign: TextAlign.center,
                                             style: context.textTheme.titleSmall,
                                           ),

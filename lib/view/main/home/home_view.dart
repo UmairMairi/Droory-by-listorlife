@@ -235,9 +235,10 @@ class HomeView extends BaseView<HomeVM> {
                                       ),
                                       const Gap(10),
                                       Text(
-                                        DbHelper.getLanguage() == 'en'
-                                            ? categoryItems[index].name ?? ''
-                                            : categoryItems[index].nameAr ?? '',
+                                        // DbHelper.getLanguage() == 'en'
+                                        //     ? categoryItems[index].name ?? ''
+                                        //     : categoryItems[index].nameAr ?? '',
+                                        categoryItems[index].name ?? '',
                                         style: context.textTheme.labelSmall
                                             ?.copyWith(
                                                 color: Colors.black,
@@ -401,7 +402,19 @@ class _LocationSearchPopupState extends State<LocationSearchPopup> {
                     itemClick: (Prediction prediction) async {}),
               ),
             ),
-
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  widget.viewModel.locationTextController.text =
+                  "Show All Ads in Egypt";
+                  widget.viewModel.updateLatLong(
+                      lat: 30.0444,
+                      long: 31.2357);
+                },
+                child: Text(
+                  '📍Show All Ads in Egypt',
+                  style: context.titleMedium?.copyWith(color: Colors.blue),
+                )),
             TextButton(
                 onPressed: () {
                   Navigator.pop(context);

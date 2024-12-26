@@ -1,4 +1,6 @@
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:list_and_life/base/base.dart';
@@ -8,10 +10,13 @@ import 'package:list_and_life/widgets/common_dropdown.dart';
 import 'package:list_and_life/widgets/multi_select_category.dart';
 
 import '../../../../base/helpers/dialog_helper.dart';
+import '../../../../base/helpers/image_picker_helper.dart';
 import '../../../../base/helpers/string_helper.dart';
 import '../../../../models/product_detail_model.dart';
+import '../../../../res/assets_res.dart';
 import '../../../../view_model/sell_forms_vm.dart';
 import '../../../../widgets/app_map_widget.dart';
+import '../../../../widgets/image_view.dart';
 
 class JobSellForm extends BaseView<SellFormsVM> {
   final String? type;
@@ -40,7 +45,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /*Text(
+            Text(
               StringHelper.uploadImages,
               style: context.textTheme.titleMedium,
             ),
@@ -59,28 +64,12 @@ class JobSellForm extends BaseView<SellFormsVM> {
                     border: Border.all(color: Colors.black),
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10)),
-                child: viewModel.mainImagePath.isNotEmpty
-                    ? ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.file(
-                          File(viewModel.mainImagePath),
-                          fit: BoxFit.contain,
-                        ))
-                    : Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.camera_alt_outlined),
-                          SizedBox(
-                            height: 2,
-                          ),
-                          Text(
-                            StringHelper.upload,
-                            style: TextStyle(
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
+                child: ImageView.rect(
+                    image: viewModel.mainImagePath,
+                    borderRadius: 10,
+                    width: context.width,
+                    placeholder: AssetsRes.IC_CAMERA,
+                    height: 220),
               ),
             ),
             Wrap(
@@ -162,7 +151,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
                   );
                 }
               }),
-            ),*/
+            ),
             CommonDropdown(
               title: StringHelper.lookingFor,
               hint: viewModel.lookingForController.text,
@@ -352,7 +341,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
 
             // Salary From Field
             AppTextField(
-              title: StringHelper.salaryFrom,
+              title: StringHelper.salary,
               hint: StringHelper.enter,
               controller: viewModel.jobSalaryFromController,
               keyboardType: TextInputType.number,
@@ -363,20 +352,32 @@ class JobSellForm extends BaseView<SellFormsVM> {
                     RegExp(viewModel.regexToRemoveEmoji)),
               ],
             ),
-
-            // Salary To Field
-            AppTextField(
-              title: StringHelper.salaryTo,
-              hint: StringHelper.enter,
-              controller: viewModel.jobSalaryToController,
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-                LengthLimitingTextInputFormatter(8),
-                FilteringTextInputFormatter.deny(
-                    RegExp(viewModel.regexToRemoveEmoji)),
-              ],
-            ),
+            // AppTextField(
+            //   title: StringHelper.salaryFrom,
+            //   hint: StringHelper.enter,
+            //   controller: viewModel.jobSalaryFromController,
+            //   keyboardType: TextInputType.number,
+            //   inputFormatters: [
+            //     FilteringTextInputFormatter.digitsOnly,
+            //     LengthLimitingTextInputFormatter(8),
+            //     FilteringTextInputFormatter.deny(
+            //         RegExp(viewModel.regexToRemoveEmoji)),
+            //   ],
+            // ),
+            //
+            // // Salary To Field
+            // AppTextField(
+            //   title: StringHelper.salaryTo,
+            //   hint: StringHelper.enter,
+            //   controller: viewModel.jobSalaryToController,
+            //   keyboardType: TextInputType.number,
+            //   inputFormatters: [
+            //     FilteringTextInputFormatter.digitsOnly,
+            //     LengthLimitingTextInputFormatter(8),
+            //     FilteringTextInputFormatter.deny(
+            //         RegExp(viewModel.regexToRemoveEmoji)),
+            //   ],
+            // ),
 
             // Ad Title Field
             AppTextField(

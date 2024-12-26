@@ -17,6 +17,7 @@ import '../base/network/base_client.dart';
 import '../models/common/map_response.dart';
 import '../models/home_list_model.dart';
 import '../models/product_detail_model.dart';
+import '../res/assets_res.dart';
 import '../view/main/sell/forms/sell_form_view.dart';
 import '../widgets/app_elevated_button.dart';
 
@@ -171,15 +172,50 @@ class MyAdsVM extends BaseViewModel {
 
         return;
       case 2:
-        await deactivateProductApi(id: item?.id);
-        if (context.mounted) context.pop();
+        deactivateDialog(context: context,
+            title: StringHelper.deactivate,
+            description: StringHelper.deactivate.toLowerCase(),
+            onTap: ()async{
+          await deactivateProductApi(id: item?.id);
+          if (context.mounted) context.pop();
+        });
+
         return;
       case 3:
-        await removeProductApi(id: item?.id);
-        if (context.mounted) context.pop();
+        deactivateDialog(context: context,
+            title: StringHelper.remove,
+            description: StringHelper.remove.toLowerCase(),
+            onTap: ()async{
+              await removeProductApi(id: item?.id);
+              if (context.mounted) context.pop();
+            });
       default:
         return;
     }
+  }
+  void deactivateDialog({required BuildContext context,String? title,String? description,required Function() onTap}) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return AppAlertDialogWithLottie(
+          lottieIcon: AssetsRes.DELETE_LOTTIE,
+          title: title??"",
+          description: 'Are you sure you want to ${description??""} this ad?',
+          onTap: () {
+            context.pop();
+            DialogHelper.showLoading();
+            onTap();
+          },
+          onCancelTap: () {
+            context.pop();
+          },
+          buttonText: 'Yes',
+          cancelButtonText: 'No',
+          showCancelButton: true,
+        );
+      },
+    );
   }
 
   Future<void> removeProductApi({num? id}) async {
