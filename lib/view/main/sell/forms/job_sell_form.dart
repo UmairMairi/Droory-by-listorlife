@@ -384,6 +384,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
               title: StringHelper.adTitle,
               hint: StringHelper.enter,
               controller: viewModel.adTitleTextController,
+              minLines: 1,
               maxLines: 4,
               inputFormatters: [
                 FilteringTextInputFormatter.deny(
