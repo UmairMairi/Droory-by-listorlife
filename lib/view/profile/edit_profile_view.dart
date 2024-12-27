@@ -126,7 +126,7 @@ class EditProfileView extends BaseView<ProfileVM> {
                             email: viewModel.emailTextController.text);
                       },
                       child: Text(
-                        'Verify',
+                        StringHelper.verifyButton,
                         style: context.titleSmall?.copyWith(color: Colors.blue),
                       )),
             ),
@@ -153,7 +153,7 @@ class EditProfileView extends BaseView<ProfileVM> {
                             phone: viewModel.phoneTextController.text);
                       },
                       child: Text(
-                        'Verify',
+                        StringHelper.verifyButton,
                         style: context.titleSmall?.copyWith(color: Colors.blue),
                       )),
               prefix: CountryPicker(

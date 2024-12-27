@@ -1,6 +1,7 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:flutter/material.dart';
+import 'package:list_and_life/base/helpers/string_helper.dart';
 import 'dialog_helper.dart';
 
 class LocationHelper {
@@ -112,12 +113,12 @@ class LocationHelper {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Location Alert"),
-          content: const Text(
-              "Please note that our app is currently only available for users in Egypt. Please select Egypt location for add product."),
+          title:  Text(StringHelper.locationAlert),
+          content:  Text(
+              StringHelper.locationAlertMsg),
           actions: [
             TextButton(
-              child: const Text("OK"),
+              child:  Text(StringHelper.ok),
               onPressed: () {
                 Navigator.pop(context);
                 onTap(); // Call the callback function

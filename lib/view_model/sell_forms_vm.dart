@@ -382,8 +382,8 @@ class SellFormsVM extends BaseViewModel {
     paymentTypeTextController.text = item.paymentType ?? '';
     currentPaymentOption= item.paymentType ?? '';
 
-    accessToUtilitiesTextController.text = item.paymentType ?? '';
-    currentAccessToUtilities= item.accessToUtilities ?? '';
+    accessToUtilitiesTextController.text = item.accessToUtilities ?? '';
+    currentAccessToUtilities = item.accessToUtilities ?? '';
 
     areaSizeTextController.text = "${item.area ?? ''}";
 

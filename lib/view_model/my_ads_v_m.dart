@@ -210,8 +210,8 @@ class MyAdsVM extends BaseViewModel {
           onCancelTap: () {
             context.pop();
           },
-          buttonText: 'Yes',
-          cancelButtonText: 'No',
+          buttonText: StringHelper.yes,
+          cancelButtonText: StringHelper.no,
           showCancelButton: true,
         );
       },
@@ -269,7 +269,7 @@ class MyAdsVM extends BaseViewModel {
                   category: category,
                   subSubCategory: subSubCategory,
                   subCategory: subCategory,
-                  type: category.name?.toLowerCase(),
+                  type: category.type?.toLowerCase(),
                   item: item,
                 )));
     onRefresh();

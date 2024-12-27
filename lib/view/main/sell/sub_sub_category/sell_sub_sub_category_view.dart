@@ -29,7 +29,7 @@ class SellSubSubCategoryView extends StatelessWidget {
             return ListTile(
               onTap: () {
                 context.read<SellFormsVM>().allModels.clear();
-                if (subSubCategory?[index].name?.contains('Parts') ?? false) {
+                if (subSubCategory?[index].type?.contains('Parts') ?? false) {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -48,7 +48,7 @@ class SellSubSubCategoryView extends StatelessWidget {
                               category: category,
                               subSubCategory: subSubCategory?[index],
                               subCategory: subCategory,
-                              type: category?.name?.toLowerCase(),
+                              type: category?.type?.toLowerCase(),
                             )));
               },
               title: Text(

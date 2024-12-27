@@ -87,7 +87,7 @@ class SellVM extends BaseViewModel {
               builder: (context) => SellFormView(
                     category: category,
                     subCategory: subCategory,
-                    type: category?.name?.toLowerCase(),
+                    type: category?.type?.toLowerCase(),
                   )));
     }
 

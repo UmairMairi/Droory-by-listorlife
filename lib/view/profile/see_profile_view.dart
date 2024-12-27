@@ -151,9 +151,9 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                                 lines: 4,
                                 hint: StringHelper.reason,
                               ),
-                              cancelButtonText: 'No',
+                              cancelButtonText: StringHelper.no,
                               title: 'Report User',
-                              buttonText: 'Yes',
+                              buttonText: StringHelper.yes,
                             ));
                     return;
                   case 3:
@@ -170,7 +170,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                               },
                               icon: AssetsRes.IC_BLOCK_USER,
                               showCancelButton: true,
-                              cancelButtonText: 'No',
+                              cancelButtonText: StringHelper.no,
                               title: viewModel.blockedUser
                                   ? StringHelper.unblockUser
                                   : StringHelper.blockUser,
@@ -275,7 +275,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                             ),
                             const Gap(05),
                             Text(
-                              'Phone is verified',
+                              StringHelper.phoneIsVerified,
                               style: const TextStyle(
                                   color: Colors.green, fontSize: 12),
                             ),
@@ -301,7 +301,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                             ),
                             const Gap(05),
                             Text(
-                              'Phone is unverified',
+                              StringHelper.phoneIsUnverified,
                               style: const TextStyle(
                                   color: Colors.red, fontSize: 12),
                             ),
@@ -329,7 +329,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                             ),
                             const Gap(05),
                             Text(
-                              'Email is verified',
+                              StringHelper.emailIsVerified,
                               style: const TextStyle(
                                   color: Colors.green, fontSize: 12),
                             ),
@@ -355,7 +355,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                             ),
                             const Gap(05),
                             Text(
-                              'Email is unverified',
+                              StringHelper.emailIsUnverified,
                               style: const TextStyle(
                                   color: Colors.red, fontSize: 12),
                             ),

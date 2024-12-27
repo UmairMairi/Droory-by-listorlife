@@ -350,7 +350,7 @@ class ApartmentForm extends StatelessWidget {
           onSelected: (String? value) {
             viewModel.levelTextController.text = value??"";
           },
-          options: ["Ground", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+", "Last Floor"],
+          options: [StringHelper.ground, "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+", "Last Floor"],
           // suffix: PopupMenuButton<String>(
           //   clipBehavior: Clip.hardEdge,
           //   icon: const Icon(
@@ -837,7 +837,7 @@ class ApartmentForm extends StatelessWidget {
               }
               if (viewModel.propertyForTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Property Type');
+                    message: StringHelper.plsSelectPropertyType);
                 return;
               }
               if (viewModel.adTitleTextController.text.trim().isEmpty) {
@@ -847,61 +847,61 @@ class ApartmentForm extends StatelessWidget {
               }
               if (viewModel.adTitleTextController.text.trim().length < 10) {
                 DialogHelper.showToast(
-                  message: "Ad title must be at least 10 characters long.",
+                  message: StringHelper.adLength,
                 );
                 return;
               }
               if (viewModel.propertyForTypeTextController.text.trim().isEmpty) {
                 DialogHelper.showToast(
-                    message: "Please select type");
+                    message: StringHelper.plsSelectType);
                 return;
               }
               if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.ownershipStatusTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Ownership');
+                    message: StringHelper.plsSelectOwnership);
                 return;
               }
               if (viewModel.areaSizeTextController.text.trim().isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please add area of Property');
+                    message: StringHelper.plsAddArea);
                 return;
               }
               if (viewModel.currentPropertyType.toLowerCase() == "rent" && viewModel.insuranceTextController.text.isEmpty) {
-                DialogHelper.showToast(message: 'Please enter insurance');
+                DialogHelper.showToast(message: StringHelper.plsSelectInsurance);
                 return;
               }
               if (viewModel.noOfBedroomsTextController.text.isEmpty) {
-                DialogHelper.showToast(message: 'Please select Bedrooms');
+                DialogHelper.showToast(message: StringHelper.plsSelectBedrooms);
                 return;
               }
               if (viewModel.noOfBathroomsTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Bathrooms');
+                    message: StringHelper.plsSelectBathrooms);
                 return;
               }
               if (viewModel.furnishingStatusTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Furnishing');
+                    message: StringHelper.plsSelectFurnishing);
                 return;
               }
               if (viewModel.levelTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select level');
+                    message: StringHelper.plsSelectLevel);
                 return;
               }
               if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.propertyAgeTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select building age');
+                    message: StringHelper.plsSelectBuildingAge);
                 return;
               }
               if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.paymentTypeTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select payment type');
+                    message: StringHelper.plsSelectPaymentType);
                 return;
               }
               if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.listedByTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select listed by');
+                    message: StringHelper.plsSelectListedBy);
                 return;
               }
               if (viewModel.addressTextController.text.trim().isEmpty) {

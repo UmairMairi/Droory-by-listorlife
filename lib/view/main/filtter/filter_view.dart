@@ -1262,7 +1262,7 @@ class _FilterViewState extends State<FilterView> {
             onSelected: (String? value) {
               viewModel.ownershipStatusTextController.text = value??"";
             },
-            options: ['Primary', 'Resell'],
+            options: [StringHelper.primary, StringHelper.resell],
             // readOnly: true,
             // suffix: PopupMenuButton<String>(
             //   clipBehavior: Clip.hardEdge,
@@ -1684,7 +1684,7 @@ class _FilterViewState extends State<FilterView> {
           title: StringHelper.level,
           //hint: StringHelper.select,
           hint: viewModel.levelTextController.text,
-          options: ["Ground", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+", "Last Floor"],
+          options: [StringHelper.ground, "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+", "Last Floor"],
           onSelected: (String? value) {
             viewModel.levelTextController.text = value??"";
           },
@@ -2372,7 +2372,7 @@ class _FilterViewState extends State<FilterView> {
           title: StringHelper.level,
           //hint: StringHelper.select,
           hint: viewModel.levelTextController.text,
-          options: ["Ground", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+", "Last Floor"],
+          options: [StringHelper.ground, "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+", "Last Floor"],
           onSelected: (String? value) {
             viewModel.levelTextController.text = value??"";
           },
@@ -3109,7 +3109,7 @@ class _FilterViewState extends State<FilterView> {
             title: StringHelper.paymentType,
             //hint: StringHelper.select,
             hint: viewModel.paymentTypeTextController.text,
-            options: ['Installment', 'Cash or Installment', 'cash'],
+            options: [StringHelper.installment, StringHelper.cashOrInstallment, StringHelper.cash],
             onSelected: (String? value) {
               viewModel.paymentTypeTextController.text = value??"";
             },
@@ -3539,7 +3539,7 @@ class _FilterViewState extends State<FilterView> {
           title: StringHelper.level,
           //hint: StringHelper.select,
           hint: viewModel.levelTextController.text,
-          options: ["Ground", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+", "Last Floor"],
+          options: [StringHelper.ground, "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+", "Last Floor"],
           onSelected: (String? value) {
             viewModel.levelTextController.text = value??"";
           },

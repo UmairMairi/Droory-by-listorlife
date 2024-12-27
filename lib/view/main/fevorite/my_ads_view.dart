@@ -406,15 +406,18 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                           .sellStatus !=
                                                       StringHelper.sold
                                                           .toLowerCase()
-                                                  ? Text(
-                                                      StringHelper
-                                                          .thisAdisCurrentlyLive,
-                                                      style: context
-                                                          .textTheme.labelMedium
-                                                          ?.copyWith(
-                                                              fontFamily: FontRes
-                                                                  .MONTSERRAT_MEDIUM),
-                                                    )
+                                                  ? Visibility(
+                                                visible: false,
+                                                    child: Text(
+                                                        StringHelper
+                                                            .thisAdisCurrentlyLive,
+                                                        style: context
+                                                            .textTheme.labelMedium
+                                                            ?.copyWith(
+                                                                fontFamily: FontRes
+                                                                    .MONTSERRAT_MEDIUM),
+                                                      ),
+                                                  )
                                                   : Text(
                                                       StringHelper.thisAdisSold,
                                                       style: context

@@ -514,29 +514,127 @@ class StringHelper {
   static String weekly = LocaleService.translate('weekly') ?? "Weekly";
   static String monthly = LocaleService.translate('monthly') ?? "Monthly";
   static String yearly = LocaleService.translate('yearly') ?? "Yearly";
-  static String accessToUtilities = LocaleService.translate('accessToUtilities') ?? "Access to Utilities";
-  static String waterSupply = LocaleService.translate('waterSupply') ?? "Water Supply";
-  static String electricity = LocaleService.translate('electricity') ?? "Electricity";
-  static String sewageSystem = LocaleService.translate('sewageSystem') ?? "Sewage System";
-  static String roadAccess = LocaleService.translate('roadAccess') ?? "Road Access";
-  static String showAllAdsInEgypt = LocaleService.translate('showAllAdsInEgypt') ?? "Show All Ads in Egypt";
-  static String recentSearches = LocaleService.translate('recentSearches') ?? "Recent Searches";
+  static String accessToUtilities =
+      LocaleService.translate('accessToUtilities') ?? "Access to Utilities";
+  static String waterSupply =
+      LocaleService.translate('waterSupply') ?? "Water Supply";
+  static String electricity =
+      LocaleService.translate('electricity') ?? "Electricity";
+  static String sewageSystem =
+      LocaleService.translate('sewageSystem') ?? "Sewage System";
+  static String roadAccess =
+      LocaleService.translate('roadAccess') ?? "Road Access";
+  static String showAllAdsInEgypt =
+      LocaleService.translate('showAllAdsInEgypt') ?? "Show All Ads in Egypt";
+  static String recentSearches =
+      LocaleService.translate('recentSearches') ?? "Recent Searches";
   static String seeAll = LocaleService.translate('seeAll') ?? "See All";
   static String insurance = LocaleService.translate('insurance') ?? "Insurance";
   static String deposit = LocaleService.translate('deposit') ?? "Deposit";
-  static String plsSelectPropertyType = LocaleService.translate('plsSelectPropertyType') ?? "Please select Property Type";
-  static String plsSelectListedBy = LocaleService.translate('plsSelectListedBy') ?? "Please select listed by";
-  static String plsSelectPaymentType = LocaleService.translate('plsSelectPaymentType') ?? "Please select payment type";
-  static String plsSelectBuildingAge = LocaleService.translate('plsSelectBuildingAge') ?? "Please select building age";
-  static String plsSelectLevel = LocaleService.translate('plsSelectLevel') ?? "Please select level";
-  static String plsSelectFurnishing = LocaleService.translate('plsSelectFurnishing') ?? "Please select Furnishing";
-  static String plsSelectBathrooms = LocaleService.translate('plsSelectBathrooms') ?? "Please select Bathrooms";
-  static String plsSelectBedrooms = LocaleService.translate('plsSelectBedrooms') ?? "Please select Bedrooms";
-  static String plsSelectInsurance = LocaleService.translate('plsSelectInsurance') ?? "Please enter insurance";
-  static String plsSelectOwnership = LocaleService.translate('plsSelectOwnership') ?? "Please select Ownership";
-  static String plsSelectType = LocaleService.translate('plsSelectType') ?? "Please select type";
-  static String plsAddArea = LocaleService.translate('plsAddArea') ?? "Please add area of Property";
-  static String adLength = LocaleService.translate('adLength') ?? "Ad title must be at least 10 characters long.";
+  static String plsSelectPropertyType =
+      LocaleService.translate('plsSelectPropertyType') ??
+          "Please select Property Type";
+  static String plsSelectListedBy =
+      LocaleService.translate('plsSelectListedBy') ?? "Please select listed by";
+  static String plsSelectPaymentType =
+      LocaleService.translate('plsSelectPaymentType') ??
+          "Please select payment type";
+  static String plsSelectBuildingAge =
+      LocaleService.translate('plsSelectBuildingAge') ??
+          "Please select building age";
+  static String plsSelectLevel =
+      LocaleService.translate('plsSelectLevel') ?? "Please select level";
+  static String plsSelectFurnishing =
+      LocaleService.translate('plsSelectFurnishing') ??
+          "Please select Furnishing";
+  static String plsSelectBathrooms =
+      LocaleService.translate('plsSelectBathrooms') ??
+          "Please select Bathrooms";
+  static String plsSelectBedrooms =
+      LocaleService.translate('plsSelectBedrooms') ?? "Please select Bedrooms";
+  static String plsSelectInsurance =
+      LocaleService.translate('plsSelectInsurance') ?? "Please enter insurance";
+  static String plsSelectOwnership =
+      LocaleService.translate('plsSelectOwnership') ??
+          "Please select Ownership";
+  static String plsSelectType =
+      LocaleService.translate('plsSelectType') ?? "Please select type";
+  static String plsAddArea =
+      LocaleService.translate('plsAddArea') ?? "Please add area of Property";
+  static String adLength = LocaleService.translate('adLength') ??
+      "Ad title must be at least 10 characters long.";
+  static String ground = LocaleService.translate('ground') ?? "Ground";
+  static String rentalPrice =
+      LocaleService.translate('rentalPrice') ?? "Rental Price";
+  static String plsSelectRentalPrice =
+      LocaleService.translate('plsSelectRentalPrice') ??
+          "Please enter rental price";
+  static String plsSelectCompletionStatus =
+      LocaleService.translate('plsSelectCompletionStatus') ??
+          "Please select completion status";
+
+  static String finished = LocaleService.translate("finished") ?? "Finished";
+  static String notFinished =
+      LocaleService.translate("notFinished") ?? "Not Finished";
+  static String coreAndSell =
+      LocaleService.translate("coreAndSell") ?? "Core and sell";
+  static String plsEnterAccessUtilities =
+      LocaleService.translate("plsEnterAccessUtilities") ??
+          "Please enter access of utilities";
+  static String plsSelectRentalTerms =
+      LocaleService.translate('plsSelectRentalTerms') ??
+          "Please select rental terms";
+  static String deliveryTerm =
+      LocaleService.translate('deliveryTerm') ?? "Delivery term";
+  static String plsSelectDeliveryTerm =
+      LocaleService.translate('plsSelectDeliveryTerm') ??
+          "Please select delivery term";
+  static String plsEnterDeposit =
+      LocaleService.translate('plsEnterDeposit') ?? "Please enter deposit";
+  static String plsSelectRentalTerm =
+      LocaleService.translate('plsSelectRentalTerm') ??
+          "Please select rental term";
+  static String imageMaxLimit = LocaleService.translate('imageMaxLimit') ??
+      "You have reached at maximum limit";
+  static String blocked = LocaleService.translate('blocked') ?? "Blocked";
+  static String unblock = LocaleService.translate('unblock') ?? "Unblock";
+  static String manageYourAccountAndPrivacy =
+      LocaleService.translate('manageYourAccountAndPrivacy') ??
+          "Manage your account and privacy.";
+  static String customizeYourAppExperience =
+      LocaleService.translate('customizeYourAppExperience') ??
+          "Customize your app experience.";
+  static String getHelpAndLearnMoreAboutTheApp =
+      LocaleService.translate('getHelpAndLearnMoreAboutTheApp') ??
+          "Get help and learn more about the app.";
+  static String supportInformation =
+      LocaleService.translate('supportInformation') ?? "Support & Information";
+  static String logoutMsg = LocaleService.translate('logoutMsg') ??
+      "Are you sure you want to logout this account?";
+  static String accountDelete =
+      LocaleService.translate('accountDelete') ?? "Account Delete";
+  static String accountDeleteMsg =
+      LocaleService.translate('accountDeleteMsg') ??
+          "Are you sure you want to delete this account?";
+  static String specifications =
+      LocaleService.translate('specifications') ?? "Specifications";
+  static String propertyInformation =
+      LocaleService.translate('propertyInformation') ?? "Property Information";
+  static String seeLess = LocaleService.translate('seeLess') ?? "See Less";
+  static String seeMore = LocaleService.translate('seeMore') ?? "See More";
+  static String mapView = LocaleService.translate('mapView') ?? "Map View";
+  static String phoneIsVerified =
+      LocaleService.translate('phoneIsVerified') ?? "Phone is verified";
+  static String emailIsVerified =
+      LocaleService.translate('emailIsVerified') ?? "Email is verified";
+  static String phoneIsUnverified =
+      LocaleService.translate('phoneIsUnverified') ?? "Phone is Unverified";
+  static String emailIsUnverified =
+      LocaleService.translate('emailIsUnverified') ?? "Email is Unverified";
+  static String locationAlertMsg =
+      LocaleService.translate('locationAlertMsg') ?? "Please note that our app is currently only available for users in Egypt. Please select Egypt location for add product.";
+static String locationAlert =
+      LocaleService.translate('locationAlert') ?? "Location Alert";
 
   static void refresh() {
     // Main Screen
@@ -963,28 +1061,106 @@ class StringHelper {
     weekly = LocaleService.translate('weekly') ?? "Weekly";
     monthly = LocaleService.translate('monthly') ?? "Monthly";
     yearly = LocaleService.translate('yearly') ?? "Yearly";
-    accessToUtilities = LocaleService.translate('accessToUtilities') ?? "Access to Utilities";
+    accessToUtilities =
+        LocaleService.translate('accessToUtilities') ?? "Access to Utilities";
     waterSupply = LocaleService.translate('waterSupply') ?? "Water Supply";
     electricity = LocaleService.translate('electricity') ?? "Electricity";
     sewageSystem = LocaleService.translate('sewageSystem') ?? "Sewage System";
     roadAccess = LocaleService.translate('roadAccess') ?? "Road Access";
-    showAllAdsInEgypt = LocaleService.translate('showAllAdsInEgypt') ?? "Show All Ads in Egypt";
-    recentSearches = LocaleService.translate('recentSearches') ?? "Recent Searches";
+    showAllAdsInEgypt =
+        LocaleService.translate('showAllAdsInEgypt') ?? "Show All Ads in Egypt";
+    recentSearches =
+        LocaleService.translate('recentSearches') ?? "Recent Searches";
     seeAll = LocaleService.translate('seeAll') ?? "See All";
     insurance = LocaleService.translate('insurance') ?? "Insurance";
     deposit = LocaleService.translate('deposit') ?? "Deposit";
-    plsSelectPropertyType = LocaleService.translate('plsSelectPropertyType') ?? "Please select Property Type";
-    plsSelectListedBy = LocaleService.translate('plsSelectListedBy') ?? "Please select listed by";
-    plsSelectPaymentType = LocaleService.translate('plsSelectPaymentType') ?? "Please select payment type";
-    plsSelectBuildingAge = LocaleService.translate('plsSelectBuildingAge') ?? "Please select building age";
-    plsSelectLevel = LocaleService.translate('plsSelectLevel') ?? "Please select level";
-    plsSelectFurnishing = LocaleService.translate('plsSelectFurnishing') ?? "Please select Furnishing";
-    plsSelectBathrooms = LocaleService.translate('plsSelectBathrooms') ?? "Please select Bathrooms";
-    plsSelectBedrooms = LocaleService.translate('plsSelectBedrooms') ?? "Please select Bedrooms";
-    plsSelectInsurance = LocaleService.translate('plsSelectInsurance') ?? "Please enter insurance";
-    plsSelectOwnership = LocaleService.translate('plsSelectOwnership') ?? "Please select Ownership";
-    plsSelectType = LocaleService.translate('plsSelectType') ?? "Please select Type";
-    plsAddArea = LocaleService.translate('plsAddArea') ?? "Please add area of Property";
-    adLength = LocaleService.translate('adLength') ?? "Ad title must be at least 10 characters long.";
+    plsSelectPropertyType = LocaleService.translate('plsSelectPropertyType') ??
+        "Please select Property Type";
+    plsSelectListedBy = LocaleService.translate('plsSelectListedBy') ??
+        "Please select listed by";
+    plsSelectPaymentType = LocaleService.translate('plsSelectPaymentType') ??
+        "Please select payment type";
+    plsSelectBuildingAge = LocaleService.translate('plsSelectBuildingAge') ??
+        "Please select building age";
+    plsSelectLevel =
+        LocaleService.translate('plsSelectLevel') ?? "Please select level";
+    plsSelectFurnishing = LocaleService.translate('plsSelectFurnishing') ??
+        "Please select Furnishing";
+    plsSelectBathrooms = LocaleService.translate('plsSelectBathrooms') ??
+        "Please select Bathrooms";
+    plsSelectBedrooms = LocaleService.translate('plsSelectBedrooms') ??
+        "Please select Bedrooms";
+    plsSelectInsurance = LocaleService.translate('plsSelectInsurance') ??
+        "Please enter insurance";
+    plsSelectOwnership = LocaleService.translate('plsSelectOwnership') ??
+        "Please select Ownership";
+    plsSelectType =
+        LocaleService.translate('plsSelectType') ?? "Please select Type";
+    plsAddArea =
+        LocaleService.translate('plsAddArea') ?? "Please add area of Property";
+    adLength = LocaleService.translate('adLength') ??
+        "Ad title must be at least 10 characters long.";
+    ground = LocaleService.translate('ground') ?? "Ground";
+    rentalPrice = LocaleService.translate('rentalPrice') ?? "Rental Price";
+    plsSelectRentalPrice = LocaleService.translate('plsSelectRentalPrice') ??
+        "Please enter rental price";
+    plsSelectCompletionStatus =
+        LocaleService.translate('plsSelectCompletionStatus') ??
+            "Please select completion status";
+    finished = LocaleService.translate('finished') ?? "Finished";
+    notFinished = LocaleService.translate('notFinished') ?? "Not Finished";
+    coreAndSell = LocaleService.translate('coreAndSell') ?? "Core and sell";
+    plsEnterAccessUtilities =
+        LocaleService.translate('plsEnterAccessUtilities') ??
+            "Please enter access of utilities";
+    plsSelectRentalTerms = LocaleService.translate('plsSelectRentalTerms') ??
+        "Please select rental terms";
+    deliveryTerm = LocaleService.translate('deliveryTerm') ?? "Delivery term";
+    plsSelectDeliveryTerm = LocaleService.translate('plsSelectDeliveryTerm') ??
+        "Please select delivery term";
+    plsEnterDeposit =
+        LocaleService.translate('plsEnterDeposit') ?? "Please enter deposit";
+    plsSelectRentalTerm = LocaleService.translate('plsSelectRentalTerm') ??
+        "Please select rental term";
+    imageMaxLimit = LocaleService.translate('imageMaxLimit') ??
+        "You have reached at maximum limit";
+    blocked = LocaleService.translate('blocked') ?? "Blocked";
+    unblock = LocaleService.translate('unblock') ?? "Unblock";
+    manageYourAccountAndPrivacy =
+        LocaleService.translate('manageYourAccountAndPrivacy') ??
+            "Manage your account and privacy.";
+    customizeYourAppExperience =
+        LocaleService.translate('customizeYourAppExperience') ??
+            "Customize your app experience.";
+    getHelpAndLearnMoreAboutTheApp =
+        LocaleService.translate('getHelpAndLearnMoreAboutTheApp') ??
+            "Get help and learn more about the app.";
+    supportInformation = LocaleService.translate('supportInformation') ??
+        "Support & Information";
+    logoutMsg = LocaleService.translate('logoutMsg') ??
+        "Are you sure you want to logout this account?";
+    accountDelete =
+        LocaleService.translate('accountDelete') ?? "Account Delete";
+    accountDeleteMsg = LocaleService.translate('accountDeleteMsg') ??
+        "Are you sure you want to delete this account?";
+    specifications =
+        LocaleService.translate('specifications') ?? "Specifications";
+    propertyInformation = LocaleService.translate('propertyInformation') ??
+        "Property Information";
+    seeLess = LocaleService.translate('seeLess') ?? "See Less";
+    seeMore = LocaleService.translate('seeMore') ?? "See More";
+    mapView = LocaleService.translate('mapView') ?? "Map View";
+    phoneIsVerified =
+        LocaleService.translate('phoneIsVerified') ?? "Phone is verified";
+    emailIsVerified =
+        LocaleService.translate('EmailIsVerified') ?? "Email is verified";
+    phoneIsUnverified =
+        LocaleService.translate('phoneIsUnverified') ?? "Phone is Unverified";
+    emailIsUnverified =
+        LocaleService.translate('emailIsUnverified') ?? "Email is Unverified";
+  locationAlertMsg =
+        LocaleService.translate('locationAlertMsg') ?? "Please note that our app is currently only available for users in Egypt. Please select Egypt location for add product.";
+  locationAlert =
+        LocaleService.translate('locationAlert') ?? "Location Alert";
   }
 }

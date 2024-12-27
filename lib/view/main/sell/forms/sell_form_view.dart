@@ -45,7 +45,7 @@ class SellFormView extends StatefulWidget {
 class _SellFormViewState extends State<SellFormView> {
   @override
   void initState() {
-    log("${widget.type}" "${widget.screenType}", name: "PRINT");
+    log("${widget.type}", name: "SellFormView");
     WidgetsBinding.instance.addPostFrameCallback((callback) {
       context.read<SellFormsVM>().updateTextFieldsItems(item: widget.item);
     });
@@ -99,7 +99,7 @@ class _SellFormViewState extends State<SellFormView> {
           item: widget.item,
         );
       case 'services':
-        if (widget.subCategory?.name == 'Education') {
+        if (widget.subCategory?.type == 'Education') {
           return EducationSellForm(
             type: widget.type,
             category: widget.category,
@@ -128,7 +128,7 @@ class _SellFormViewState extends State<SellFormView> {
         );
 
       case 'vehicles':
-        if (widget.subCategory?.name?.toLowerCase().contains('parts') ??
+        if (widget.subCategory?.type?.toLowerCase().contains('parts') ??
             false) {
           return CommonSellForm(
             type: widget.type,
@@ -139,7 +139,7 @@ class _SellFormViewState extends State<SellFormView> {
             item: widget.item,
           );
         }
-        if (widget.subCategory?.name?.toLowerCase().contains('cars') ?? false) {
+        if (widget.subCategory?.type?.toLowerCase().contains('cars') ?? false) {
           return CarsSellForm(
             type: widget.type,
             category: widget.category,

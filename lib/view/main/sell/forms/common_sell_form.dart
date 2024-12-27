@@ -128,7 +128,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                           }
                         } else {
                           DialogHelper.showToast(
-                              message: "You have reached at maximum limit");
+                              message: StringHelper.imageMaxLimit);
                         }
                       },
                       child: Container(
@@ -259,7 +259,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                   // textInputAction: TextInputAction.done,
                 )
               },
-              if (category?.name?.toLowerCase() == "fashion") ...{
+              if (category?.type?.toLowerCase() == "fashion") ...{
                 FutureBuilder<List<CategoryModel>>(
                   future: viewModel.getSizeOptions("${subSubCategory?.id}"),
                   builder: (context, snapshot) {
@@ -682,7 +682,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                     }
                     if (viewModel.adTitleTextController.text.trim().length < 10) {
                       DialogHelper.showToast(
-                        message: "Ad title must be at least 10 characters long.",
+                        message: StringHelper.adLength,
                       );
                       return;
                     }

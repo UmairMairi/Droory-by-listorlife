@@ -468,11 +468,11 @@ class JobSellForm extends BaseView<SellFormsVM> {
                     return;
                   }
 
-                  if (viewModel.jobSalaryToController.text.trim().isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.pleaseSelectSalaryTo);
-                    return;
-                  }
+                  // if (viewModel.jobSalaryToController.text.trim().isEmpty) {
+                  //   DialogHelper.showToast(
+                  //       message: StringHelper.pleaseSelectSalaryTo);
+                  //   return;
+                  // }
 
                   if (viewModel.adTitleTextController.text.trim().isEmpty) {
                     DialogHelper.showToast(
@@ -481,7 +481,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
                   }
                   if (viewModel.adTitleTextController.text.trim().length < 10) {
                     DialogHelper.showToast(
-                      message: "Ad title must be at least 10 characters long.",
+                      message: StringHelper.adLength,
                     );
                     return;
                   }
@@ -552,11 +552,11 @@ class JobSellForm extends BaseView<SellFormsVM> {
                     return;
                   }
 
-                  if (viewModel.jobSalaryToController.text.trim().isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.pleaseSelectSalaryTo);
-                    return;
-                  }
+                  // if (viewModel.jobSalaryToController.text.trim().isEmpty) {
+                  //   DialogHelper.showToast(
+                  //       message: StringHelper.pleaseSelectSalaryTo);
+                  //   return;
+                  // }
 
                   if (viewModel.adTitleTextController.text.trim().isEmpty) {
                     DialogHelper.showToast(

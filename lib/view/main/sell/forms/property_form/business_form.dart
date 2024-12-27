@@ -159,7 +159,7 @@ class BusinessForm extends StatelessWidget {
           title: StringHelper.level,
           //hint: StringHelper.select,
           hint: viewModel.levelTextController.text,
-          options: ["Ground", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+", "Last Floor"],
+          options: [StringHelper.ground, "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+", "Last Floor"],
           onSelected: (String? value) {
             viewModel.levelTextController.text = value??"";
           },
@@ -196,7 +196,7 @@ class BusinessForm extends StatelessWidget {
           // elevation: 6,
         ),
         CommonDropdown(
-          title: "No Of Bedrooms",
+          title: StringHelper.noOfBedrooms,
           //hint: StringHelper.select,
           hint: viewModel.noOfBedroomsTextController.text,
           onSelected: (String? value) {
@@ -283,7 +283,7 @@ class BusinessForm extends StatelessWidget {
           onSelected: (String? value) {
             viewModel.furnishingStatusTextController.text = value??"";
           },
-          options: ['Yes','No'],
+          options: [StringHelper.yes,StringHelper.no],
           // readOnly: true,
           // suffix: PopupMenuButton<String>(
           //   clipBehavior: Clip.hardEdge,
@@ -326,7 +326,7 @@ class BusinessForm extends StatelessWidget {
             onSelected: (String? value) {
               viewModel.completionStatusTextController.text = value??"";
             },
-            options: ['Ready', 'Off Plan'],
+            options: [StringHelper.ready, StringHelper.offPlan],
             // readOnly: true,
             // suffix: PopupMenuButton<String>(
             //   clipBehavior: Clip.hardEdge,
@@ -369,7 +369,7 @@ class BusinessForm extends StatelessWidget {
             onSelected: (String? value) {
               viewModel.paymentTypeTextController.text = value??"";
             },
-            options: ['Installment', 'Cash or Installment', 'cash'],
+            options: [StringHelper.installment, StringHelper.cashOrInstallment, StringHelper.cash],
             // readOnly: true,
             // suffix: PopupMenuButton<String>(
             //   clipBehavior: Clip.hardEdge,
@@ -406,13 +406,13 @@ class BusinessForm extends StatelessWidget {
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() == "rent",
           child: CommonDropdown(
-            title: "Rental Term",
+            title: StringHelper.rentalTerm,
             //hint: StringHelper.select,
             hint: viewModel.rentalTermsTextController.text,
             onSelected: (String? value) {
               viewModel.rentalTermsTextController.text = value??"";
             },
-            options: ['Daily', 'Weekly', 'Monthly', 'Yearly'],
+            options: [StringHelper.daily, StringHelper.weekly, StringHelper.monthly, StringHelper.yearly],
             // readOnly: true,
             // suffix: PopupMenuButton<String>(
             //   clipBehavior: Clip.hardEdge,
@@ -449,7 +449,7 @@ class BusinessForm extends StatelessWidget {
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() == "rent",
           child: AppTextField(
-            title: "Rental Price",
+            title: StringHelper.rentalPrice,
             controller: viewModel.rentalPriceTextController,
             hint: StringHelper.enterPrice,
             maxLength: 8,
@@ -509,7 +509,7 @@ class BusinessForm extends StatelessWidget {
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() == "rent",
           child: AppTextField(
-            title: "Deposit",
+            title: StringHelper.deposit,
             controller: viewModel.depositTextController,
             hint: StringHelper.enter,
             maxLength: 8,
@@ -571,7 +571,7 @@ class BusinessForm extends StatelessWidget {
               }
               if (viewModel.propertyForTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Property Type');
+                    message: StringHelper.plsSelectPropertyType);
                 return;
               }
               if (viewModel.adTitleTextController.text.trim().isEmpty) {
@@ -581,47 +581,47 @@ class BusinessForm extends StatelessWidget {
               }
               if (viewModel.adTitleTextController.text.trim().length < 10) {
                 DialogHelper.showToast(
-                  message: "Ad title must be at least 10 characters long.",
+                  message: StringHelper.adLength,
                 );
                 return;
               }
               if (viewModel.propertyForTypeTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Type');
+                    message: StringHelper.plsSelectType);
                 return;
               }
               if (viewModel.areaSizeTextController.text.trim().isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please add area of Property');
+                    message: StringHelper.plsAddArea);
                 return;
               }
               if (viewModel.noOfBedroomsTextController.text.isEmpty) {
-                DialogHelper.showToast(message: 'Please select Bedrooms');
+                DialogHelper.showToast(message: StringHelper.plsSelectBedrooms);
                 return;
               }
               if (viewModel.noOfBathroomsTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Bathrooms');
+                    message: StringHelper.plsSelectBathrooms);
                 return;
               }
               if (viewModel.furnishingStatusTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Furnishing');
+                    message: StringHelper.plsSelectFurnishing);
                 return;
               }
               if (viewModel.currentPropertyType.toLowerCase() == "rent" && viewModel.rentalPriceTextController.text.isEmpty) {
-                DialogHelper.showToast(message: 'Please enter rental price');
+                DialogHelper.showToast(message: StringHelper.plsSelectRentalPrice);
                 return;
               }
 
               if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.completionStatusTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select completion status');
+                    message: StringHelper.plsSelectCompletionStatus);
                 return;
               }
               if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.paymentTypeTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select payment type');
+                    message: StringHelper.plsSelectPaymentType);
                 return;
               }
 
@@ -684,7 +684,7 @@ class BusinessForm extends StatelessWidget {
               }
               if (viewModel.propertyForTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Property Type');
+                    message: StringHelper.plsSelectPropertyType);
                 return;
               }
               if (viewModel.adTitleTextController.text.trim().isEmpty) {
@@ -694,47 +694,47 @@ class BusinessForm extends StatelessWidget {
               }
               if (viewModel.adTitleTextController.text.trim().length < 10) {
                 DialogHelper.showToast(
-                  message: "Ad title must be at least 10 characters long.",
+                  message: StringHelper.adLength,
                 );
                 return;
               }
               if (viewModel.propertyForTypeTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Type');
+                    message: StringHelper.plsSelectType);
                 return;
               }
               if (viewModel.areaSizeTextController.text.trim().isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please add area of Property');
+                    message: StringHelper.plsAddArea);
                 return;
               }
               if (viewModel.noOfBedroomsTextController.text.isEmpty) {
-                DialogHelper.showToast(message: 'Please select Bedrooms');
+                DialogHelper.showToast(message: StringHelper.plsSelectBedrooms);
                 return;
               }
               if (viewModel.noOfBathroomsTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Bathrooms');
+                    message: StringHelper.plsSelectBathrooms);
                 return;
               }
               if (viewModel.furnishingStatusTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Furnishing');
+                    message: StringHelper.plsSelectFurnishing);
                 return;
               }
               if (viewModel.currentPropertyType.toLowerCase() == "rent" && viewModel.rentalPriceTextController.text.isEmpty) {
-                DialogHelper.showToast(message: 'Please enter rental price');
+                DialogHelper.showToast(message: StringHelper.plsSelectRentalPrice);
                 return;
               }
 
               if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.completionStatusTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select completion status');
+                    message: StringHelper.plsSelectCompletionStatus);
                 return;
               }
               if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.paymentTypeTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select payment type');
+                    message: StringHelper.plsSelectPaymentType);
                 return;
               }
 

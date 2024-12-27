@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
+import 'package:list_and_life/base/helpers/string_helper.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/base/network/api_request.dart';
 import 'package:list_and_life/base/network/base_client.dart';
@@ -60,7 +61,7 @@ class _BlockedUsersListState extends State<BlockedUsersList> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Blocked'),
+          title:  Text(StringHelper.blocked),
           centerTitle: true,
         ),
         body: FutureBuilder(
@@ -90,7 +91,7 @@ class _BlockedUsersListState extends State<BlockedUsersList> {
                               title: Text(
                                   "${item.user?.name} ${item.user?.lastName}"),
                               trailing: TextButton(
-                                child: const Text('Unblock'),
+                                child:  Text(StringHelper.unblock),
                                 onPressed: () {
                                   DialogHelper.showLoading();
                                   unBlockUser(data: item);

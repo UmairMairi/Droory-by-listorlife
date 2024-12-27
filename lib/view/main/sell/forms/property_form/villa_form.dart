@@ -159,7 +159,7 @@ class VillaForm extends StatelessWidget {
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() == "rent",
           child: AppTextField(
-            title: "Insurance",
+            title: StringHelper.insurance,
             hint: StringHelper.enter,
             controller: viewModel.insuranceTextController,
             maxLines: 4,
@@ -179,7 +179,7 @@ class VillaForm extends StatelessWidget {
         ),
 
         CommonDropdown(
-          title: "No Of Bedrooms",
+          title: StringHelper.noOfBedrooms,
           //hint: StringHelper.select,
           hint: viewModel.noOfBedroomsTextController.text,
           onSelected: (String? value) {
@@ -265,7 +265,7 @@ class VillaForm extends StatelessWidget {
           onSelected: (String? value) {
             viewModel.levelTextController.text = value??"";
           },
-          options: ["Ground", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+", "Last Floor"],
+          options: [StringHelper.ground, "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+", "Last Floor"],
           // readOnly: true,
           // suffix: PopupMenuButton<String>(
           //   clipBehavior: Clip.hardEdge,
@@ -315,13 +315,13 @@ class VillaForm extends StatelessWidget {
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() == "rent",
           child: CommonDropdown(
-            title: "Rental Term",
+            title: StringHelper.rentalTerm,
             //hint: StringHelper.select,
             hint: viewModel.rentalTermsTextController.text,
             onSelected: (String? value) {
               viewModel.rentalTermsTextController.text = value??"";
             },
-            options: ['Daily', 'Weekly', 'Monthly', 'Yearly'],
+            options: [StringHelper.daily, StringHelper.weekly, StringHelper.monthly, StringHelper.yearly],
             // readOnly: true,
             // suffix: PopupMenuButton<String>(
             //   clipBehavior: Clip.hardEdge,
@@ -402,7 +402,7 @@ class VillaForm extends StatelessWidget {
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() == "rent",
           child: AppTextField(
-            title: "Deposit",
+            title: StringHelper.deposit,
             controller: viewModel.depositTextController,
             hint: StringHelper.enter,
             maxLength: 8,
@@ -464,7 +464,7 @@ class VillaForm extends StatelessWidget {
               }
               if (viewModel.propertyForTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Property Type');
+                    message: StringHelper.plsSelectPropertyType);
                 return;
               }
               if (viewModel.adTitleTextController.text.trim().isEmpty) {
@@ -474,61 +474,61 @@ class VillaForm extends StatelessWidget {
               }
               if (viewModel.adTitleTextController.text.trim().length < 10) {
                 DialogHelper.showToast(
-                  message: "Ad title must be at least 10 characters long.",
+                  message: StringHelper.adLength,
                 );
                 return;
               }
               if (viewModel.propertyForTypeTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Type');
+                    message: StringHelper.plsSelectType);
                 return;
               }
               if (viewModel.areaSizeTextController.text.trim().isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please add area of Property');
+                    message: StringHelper.plsAddArea);
                 return;
               }
               if (viewModel.currentPropertyType.toLowerCase() == "rent" && viewModel.insuranceTextController.text.isEmpty) {
-                DialogHelper.showToast(message: 'Please enter insurance');
+                DialogHelper.showToast(message: StringHelper.plsSelectInsurance);
                 return;
               }
               if (viewModel.noOfBedroomsTextController.text.isEmpty) {
-                DialogHelper.showToast(message: 'Please select Bedrooms');
+                DialogHelper.showToast(message: StringHelper.plsSelectBedrooms);
                 return;
               }
               if (viewModel.noOfBathroomsTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Bathrooms');
+                    message: StringHelper.plsSelectBathrooms);
                 return;
               }
               if (viewModel.levelTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select level');
+                    message: StringHelper.plsSelectLevel);
                 return;
               }
               if (viewModel.furnishingStatusTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Furnishing');
+                    message: StringHelper.plsSelectFurnishing);
                 return;
               }
               if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.deliveryTermTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select delivery term');
+                    message: StringHelper.plsSelectDeliveryTerm);
                 return;
               }
               if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.completionStatusTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select completion status');
+                    message: StringHelper.plsSelectCompletionStatus);
                 return;
               }
               if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.paymentTypeTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select payment type');
+                    message: StringHelper.plsSelectPaymentType);
                 return;
               }
               if (viewModel.currentPropertyType.toLowerCase() == "rent" && viewModel.rentalTermsTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select rental term');
+                    message: StringHelper.plsSelectRentalTerm);
                 return;
               }
 
@@ -544,7 +544,7 @@ class VillaForm extends StatelessWidget {
               }
               if (viewModel.currentPropertyType.toLowerCase() == "rent" && viewModel.depositTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please enter deposit');
+                    message: StringHelper.plsEnterDeposit);
                 return;
               }
               if (viewModel.descriptionTextController.text.trim().isEmpty) {
@@ -596,7 +596,7 @@ class VillaForm extends StatelessWidget {
               }
               if (viewModel.propertyForTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Property Type');
+                    message: StringHelper.plsSelectPropertyType);
                 return;
               }
               if (viewModel.adTitleTextController.text.trim().isEmpty) {
@@ -606,61 +606,61 @@ class VillaForm extends StatelessWidget {
               }
               if (viewModel.adTitleTextController.text.trim().length < 10) {
                 DialogHelper.showToast(
-                  message: "Ad title must be at least 10 characters long.",
+                  message: StringHelper.adLength,
                 );
                 return;
               }
               if (viewModel.propertyForTypeTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Type');
+                    message: StringHelper.plsSelectType);
                 return;
               }
               if (viewModel.areaSizeTextController.text.trim().isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please add area of Property');
+                    message: StringHelper.plsAddArea);
                 return;
               }
               if (viewModel.currentPropertyType.toLowerCase() == "rent" && viewModel.insuranceTextController.text.isEmpty) {
-                DialogHelper.showToast(message: 'Please enter insurance');
+                DialogHelper.showToast(message: StringHelper.plsSelectInsurance);
                 return;
               }
               if (viewModel.noOfBedroomsTextController.text.isEmpty) {
-                DialogHelper.showToast(message: 'Please select Bedrooms');
+                DialogHelper.showToast(message: StringHelper.plsSelectBedrooms);
                 return;
               }
               if (viewModel.noOfBathroomsTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Bathrooms');
+                    message: StringHelper.plsSelectBathrooms);
                 return;
               }
               if (viewModel.levelTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select level');
+                    message: StringHelper.plsSelectLevel);
                 return;
               }
               if (viewModel.furnishingStatusTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Furnishing');
+                    message: StringHelper.plsSelectFurnishing);
                 return;
               }
               if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.deliveryTermTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select delivery term');
+                    message: StringHelper.plsSelectDeliveryTerm);
                 return;
               }
               if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.completionStatusTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select completion status');
+                    message: StringHelper.plsSelectCompletionStatus);
                 return;
               }
               if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.paymentTypeTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select payment type');
+                    message: StringHelper.plsSelectPaymentType);
                 return;
               }
               if (viewModel.currentPropertyType.toLowerCase() == "rent" && viewModel.rentalTermsTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select rental term');
+                    message: StringHelper.plsSelectRentalTerm);
                 return;
               }
 
@@ -676,7 +676,7 @@ class VillaForm extends StatelessWidget {
               }
               if (viewModel.currentPropertyType.toLowerCase() == "rent" && viewModel.depositTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please enter deposit');
+                    message: StringHelper.plsEnterDeposit);
                 return;
               }
               if (viewModel.descriptionTextController.text.trim().isEmpty) {
@@ -726,7 +726,7 @@ class VillaForm extends StatelessWidget {
         ),
         Column(
           mainAxisSize: MainAxisSize.min,
-          children: ['Yes', 'No'].map((status) {
+          children: [StringHelper.yes, StringHelper.no].map((status) {
             return RadioListTile<String>(
               contentPadding: EdgeInsets.zero,
               dense: true,
@@ -756,7 +756,7 @@ class VillaForm extends StatelessWidget {
         ),
         Column(
           mainAxisSize: MainAxisSize.min,
-          children: ['Installment', 'Cash or Installment', 'cash'].map((status) {
+          children: [StringHelper.installment, StringHelper.cashOrInstallment, StringHelper.cash].map((status) {
             return RadioListTile<String>(
               contentPadding: EdgeInsets.zero,
               dense: true,
@@ -787,7 +787,7 @@ class VillaForm extends StatelessWidget {
         ),
         Column(
           mainAxisSize: MainAxisSize.min,
-          children: ['Ready', 'Off-Plan'].map((status) {
+          children: [StringHelper.ready, StringHelper.offPlan].map((status) {
             return RadioListTile<String>(
               contentPadding: EdgeInsets.zero,
               dense: true,
@@ -813,12 +813,12 @@ class VillaForm extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          "Delivery Term",
+          StringHelper.deliveryTerm,
           style: context.textTheme.titleSmall,
         ),
         Column(
           mainAxisSize: MainAxisSize.min,
-          children: ['Move-in Ready','Under Construction','Shell and Core','Semi-Finished'].map((status) {
+          children: [StringHelper.moveInReady,StringHelper.underConstruction,StringHelper.shellAndCore,StringHelper.semiFinished].map((status) {
             return RadioListTile<String>(
               contentPadding: EdgeInsets.zero,
               dense: true,

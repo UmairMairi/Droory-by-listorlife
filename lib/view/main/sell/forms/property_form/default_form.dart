@@ -110,7 +110,7 @@ class DefaultForm extends StatelessWidget {
 
         // Field 4: No Of Bedrooms
         CommonDropdown(
-          title: "No Of Bedrooms",
+          title: StringHelper.noOfBedrooms,
           //hint: StringHelper.select,
           hint: viewModel.noOfBedroomsTextController.text,
           onSelected: (String? value) {
@@ -199,7 +199,7 @@ class DefaultForm extends StatelessWidget {
           onSelected: (String? value) {
             viewModel.furnishingStatusTextController.text = value??"";
           },
-          options: ['Furnished', 'Unfurnished', 'Semi Furnished'],
+          options: [StringHelper.furnished, StringHelper.unfurnished, StringHelper.semiFurnished],
           // readOnly: true,
           // suffix: PopupMenuButton<String>(
           //   clipBehavior: Clip.hardEdge,
@@ -241,7 +241,7 @@ class DefaultForm extends StatelessWidget {
           onSelected: (String? value) {
             viewModel.ownershipStatusTextController.text = value??"";
           },
-          options: ['Primary', 'Resell'],
+          options: [StringHelper.primary, StringHelper.resell],
           // readOnly: true,
           // suffix: PopupMenuButton<String>(
           //   clipBehavior: Clip.hardEdge,
@@ -282,7 +282,7 @@ class DefaultForm extends StatelessWidget {
           onSelected: (String? value) {
             viewModel.paymentTypeTextController.text = value??"";
           },
-          options: ['Installment', 'Cash or Installment', 'cash'],
+          options: [StringHelper.installment, StringHelper.cashOrInstallment, StringHelper.cash],
           // readOnly: true,
           // suffix: PopupMenuButton<String>(
           //   clipBehavior: Clip.hardEdge,
@@ -324,7 +324,7 @@ class DefaultForm extends StatelessWidget {
           onSelected: (String? value) {
             viewModel.completionStatusTextController.text = value??"";
           },
-          options: ['Ready', 'Off Plan'],
+          options: [StringHelper.ready, StringHelper.offPlan],
           // readOnly: true,
           // suffix: PopupMenuButton<String>(
           //   clipBehavior: Clip.hardEdge,
@@ -365,10 +365,10 @@ class DefaultForm extends StatelessWidget {
             viewModel.deliveryTermTextController.text = value??"";
           },
           options: [
-            'Finished',
-            'Not Finished',
-            'Core and sell',
-            'Semi finished'
+            StringHelper.finished,
+            StringHelper.notFinished,
+            StringHelper.coreAndSell,
+            StringHelper.semiFinished
           ],
           // readOnly: true,
           // suffix: PopupMenuButton<String>(
@@ -499,40 +499,40 @@ class DefaultForm extends StatelessWidget {
               }
               if (viewModel.adTitleTextController.text.trim().length < 10) {
                 DialogHelper.showToast(
-                  message: "Ad title must be at least 10 characters long.",
+                  message: StringHelper.adLength,
                 );
                 return;
               }
               if (viewModel.propertyForTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Property Type');
+                    message: StringHelper.plsSelectPropertyType);
                 return;
               }
               if (viewModel.areaSizeTextController.text.trim().isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please add area of Property');
+                    message: StringHelper.plsAddArea);
                 return;
               }
 
               if (viewModel.noOfBedroomsTextController.text.isEmpty) {
-                DialogHelper.showToast(message: 'Please select Bedrooms');
+                DialogHelper.showToast(message: StringHelper.plsSelectBedrooms);
                 return;
               }
               if (viewModel.noOfBathroomsTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Bathrooms');
+                    message: StringHelper.plsSelectBathrooms);
                 return;
               }
 
               if (viewModel.furnishingStatusTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Furnishing');
+                    message: StringHelper.plsSelectFurnishing);
                 return;
               }
 
               if (viewModel.ownershipStatusTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Ownership');
+                    message: StringHelper.plsSelectOwnership);
                 return;
               }
 
@@ -602,40 +602,40 @@ class DefaultForm extends StatelessWidget {
               }
               if (viewModel.adTitleTextController.text.trim().length < 10) {
                 DialogHelper.showToast(
-                  message: "Ad title must be at least 10 characters long.",
+                  message: StringHelper.adLength,
                 );
                 return;
               }
               if (viewModel.propertyForTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Property Type');
+                    message: StringHelper.plsSelectPropertyType);
                 return;
               }
               if (viewModel.areaSizeTextController.text.trim().isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please add area of Property');
+                    message: StringHelper.plsAddArea);
                 return;
               }
 
               if (viewModel.noOfBedroomsTextController.text.isEmpty) {
-                DialogHelper.showToast(message: 'Please select Bedrooms');
+                DialogHelper.showToast(message: StringHelper.plsSelectBedrooms);
                 return;
               }
               if (viewModel.noOfBathroomsTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Bathrooms');
+                    message: StringHelper.plsSelectBathrooms);
                 return;
               }
 
               if (viewModel.furnishingStatusTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Furnishing');
+                    message: StringHelper.plsSelectFurnishing);
                 return;
               }
 
               if (viewModel.ownershipStatusTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Ownership');
+                    message: StringHelper.plsSelectOwnership);
                 return;
               }
 

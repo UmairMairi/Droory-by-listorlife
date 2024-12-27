@@ -308,7 +308,7 @@ class MyProductView extends BaseView<ProductVM> {
                             if (viewModel
                                 .getSpecifications(context: context, data: data)
                                 .isNotEmpty) ...{
-                              Text('Specifications',
+                              Text(StringHelper.specifications,
                                   style: context.textTheme.titleMedium),
                               const SizedBox(height: 10),
                               Container(
@@ -334,7 +334,7 @@ class MyProductView extends BaseView<ProductVM> {
                           },
                           if (data?.categoryId == 11) ...{
                             Text(
-                              'Property Information',
+                              StringHelper.propertyInformation,
                               style: context.titleMedium,
                             ),
                             Gap(10),
@@ -430,7 +430,7 @@ class MyProductView extends BaseView<ProductVM> {
                                 child:Align(
                                     alignment: Alignment.topRight,
                                     child:Text(
-                                      viewModel.showAll ? "See Less" : "See More",
+                                      viewModel.showAll ? StringHelper.seeLess : StringHelper.seeMore,
                                       style: context.textTheme.titleSmall,
                                     )))),
                           },

@@ -166,7 +166,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                           }
                         } else {
                           DialogHelper.showToast(
-                              message: "You have reached at maximum limit");
+                              message: StringHelper.imageMaxLimit);
                         }
                       },
                       child: Container(

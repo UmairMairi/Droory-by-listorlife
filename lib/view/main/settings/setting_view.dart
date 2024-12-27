@@ -628,8 +628,8 @@ class SettingView extends BaseView<SettingVM> {
             const Divider(),
             if (!viewModel.isGuest) ...{
               CustomExpansionTile(
-                label: "Manage your account and privacy.",
-                title: "Account Settings",
+                label: StringHelper.manageYourAccountAndPrivacy,
+                title: StringHelper.accountSettings,
                 isExpanded: viewModel.isAccountSettings,
                 onExpansionChanged: (val) => viewModel.isAccountSettings = val,
                 items: viewModel.accountSettingsList,
@@ -645,8 +645,8 @@ class SettingView extends BaseView<SettingVM> {
               const Divider(),
             },
             CustomExpansionTile(
-              label: "Customize your app experience.",
-              title: "App Settings",
+              label: StringHelper.customizeYourAppExperience,
+              title: StringHelper.appSettings,
               isExpanded: viewModel.isAppSetting,
               onExpansionChanged: (val) => viewModel.isAppSetting = val,
               items: viewModel.appSettingList,
@@ -654,8 +654,8 @@ class SettingView extends BaseView<SettingVM> {
             ),
             const Divider(),
             CustomExpansionTile(
-              label: "Get help and learn more about the app.",
-              title: "Support & Information",
+              label: StringHelper.getHelpAndLearnMoreAboutTheApp,
+              title: StringHelper.supportInformation,
               isExpanded: viewModel.isSupport,
               onExpansionChanged: (val) => viewModel.isSupport = val,
               items: viewModel.supportList,
@@ -806,7 +806,7 @@ class SettingView extends BaseView<SettingVM> {
       builder: (BuildContext dialogContext) {
         return AppAlertDialogWithWidget(
           title: StringHelper.logout,
-          description: 'Are you sure you want to logout this account?',
+          description: StringHelper.logoutMsg,
           onTap: () {
             context.pop();
             DialogHelper.showLoading();
@@ -816,8 +816,8 @@ class SettingView extends BaseView<SettingVM> {
           onCancelTap: () {
             context.pop();
           },
-          buttonText: 'Yes',
-          cancelButtonText: 'No',
+          buttonText: StringHelper.yes,
+          cancelButtonText: StringHelper.no,
           showCancelButton: true,
         );
       },
@@ -829,7 +829,7 @@ class SettingView extends BaseView<SettingVM> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Select Language'),
+            title: Text(StringHelper.selectLanguage),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -879,7 +879,7 @@ class SettingView extends BaseView<SettingVM> {
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text('Cancel'),
+                child: Text(StringHelper.cancel),
               ),
             ],
           );
@@ -903,14 +903,14 @@ class SettingView extends BaseView<SettingVM> {
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text('Cancel'),
+                child: Text(StringHelper.cancel),
               ),
               TextButton(
                 onPressed: () => {
                   vm.updateProfileApi(),
                   Navigator.of(context).pop()
                 },
-                child: Text('Update'),
+                child: Text(StringHelper.update),
               ),
             ],
           );
@@ -924,8 +924,8 @@ class SettingView extends BaseView<SettingVM> {
       builder: (BuildContext dialogContext) {
         return AppAlertDialogWithLottie(
           lottieIcon: AssetsRes.DELETE_LOTTIE,
-          title: 'Account Delete',
-          description: 'Are you sure you want to delete this account?',
+          title: StringHelper.accountDelete,
+          description: StringHelper.accountDeleteMsg,
           onTap: () {
             context.pop();
             DialogHelper.showLoading();
@@ -934,8 +934,8 @@ class SettingView extends BaseView<SettingVM> {
           onCancelTap: () {
             context.pop();
           },
-          buttonText: 'Yes',
-          cancelButtonText: 'No',
+          buttonText: StringHelper.yes,
+          cancelButtonText: StringHelper.no,
           showCancelButton: true,
         );
       },

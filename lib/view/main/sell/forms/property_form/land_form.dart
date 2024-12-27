@@ -162,13 +162,13 @@ class LandForm extends StatelessWidget {
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() == "rent",
           child: CommonDropdown(
-            title: "Rental Term",
+            title: StringHelper.rentalTerm,
             //hint: StringHelper.select,
             hint: viewModel.rentalTermsTextController.text,
             onSelected: (String? value) {
               viewModel.rentalTermsTextController.text = value??"";
             },
-            options: ['Daily', 'Weekly', 'Monthly', 'Yearly'],
+            options: [StringHelper.daily, StringHelper.weekly, StringHelper.monthly, StringHelper.yearly],
             // readOnly: true,
             // suffix: PopupMenuButton<String>(
             //   clipBehavior: Clip.hardEdge,
@@ -235,7 +235,7 @@ class LandForm extends StatelessWidget {
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() == "rent",
           child: AppTextField(
-            title: "Rental Price",
+            title: StringHelper.rentalPrice,
             controller: viewModel.rentalPriceTextController,
             hint: StringHelper.enterPrice,
             maxLength: 8,
@@ -313,7 +313,7 @@ class LandForm extends StatelessWidget {
               }
               if (viewModel.propertyForTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Property Type');
+                    message: StringHelper.plsSelectPropertyType);
                 return;
               }
               if (viewModel.adTitleTextController.text.trim().isEmpty) {
@@ -323,32 +323,32 @@ class LandForm extends StatelessWidget {
               }
               if (viewModel.adTitleTextController.text.trim().length < 10) {
                 DialogHelper.showToast(
-                  message: "Ad title must be at least 10 characters long.",
+                  message: StringHelper.adLength,
                 );
                 return;
               }
               if (viewModel.propertyForTypeTextController.text.trim().isEmpty) {
                 DialogHelper.showToast(
-                    message: "Please select type");
+                    message: StringHelper.plsSelectType);
                 return;
               }
               if (viewModel.areaSizeTextController.text.trim().isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please add area of Property');
+                    message: StringHelper.plsAddArea);
                 return;
               }
               if (viewModel.accessToUtilitiesTextController.text.isEmpty) {
-                DialogHelper.showToast(message: 'Please enter access of utilities');
+                DialogHelper.showToast(message: StringHelper.plsEnterAccessUtilities);
                 return;
               }
               if (viewModel.paymentTypeTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select payment type');
+                    message: StringHelper.plsSelectPaymentType);
                 return;
               }
               if (viewModel.currentPropertyType.toLowerCase() == "rent" &&viewModel.rentalTermsTextController.text.trim().isEmpty) {
                 DialogHelper.showToast(
-                    message: "Please select rental terms");
+                    message: StringHelper.plsSelectRentalTerms);
                 return;
               }
               if (viewModel.addressTextController.text.trim().isEmpty) {
@@ -410,7 +410,7 @@ class LandForm extends StatelessWidget {
               }
               if (viewModel.propertyForTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Property Type');
+                    message: StringHelper.plsSelectPropertyType);
                 return;
               }
               if (viewModel.adTitleTextController.text.trim().isEmpty) {
@@ -420,32 +420,32 @@ class LandForm extends StatelessWidget {
               }
               if (viewModel.adTitleTextController.text.trim().length < 10) {
                 DialogHelper.showToast(
-                  message: "Ad title must be at least 10 characters long.",
+                  message: StringHelper.adLength,
                 );
                 return;
               }
               if (viewModel.propertyForTypeTextController.text.trim().isEmpty) {
                 DialogHelper.showToast(
-                    message: "Please select type");
+                    message: StringHelper.plsSelectType);
                 return;
               }
               if (viewModel.areaSizeTextController.text.trim().isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please add area of Property');
+                    message: StringHelper.plsAddArea);
                 return;
               }
               if (viewModel.accessToUtilitiesTextController.text.isEmpty) {
-                DialogHelper.showToast(message: 'Please enter access of utilities');
+                DialogHelper.showToast(message: StringHelper.plsEnterAccessUtilities);
                 return;
               }
               if (viewModel.paymentTypeTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select payment type');
+                    message: StringHelper.plsSelectPaymentType);
                 return;
               }
               if (viewModel.currentPropertyType.toLowerCase() == "rent" &&viewModel.rentalTermsTextController.text.trim().isEmpty) {
                 DialogHelper.showToast(
-                    message: "Please select rental terms");
+                    message: StringHelper.plsSelectRentalTerms);
                 return;
               }
               if (viewModel.addressTextController.text.trim().isEmpty) {
@@ -499,27 +499,46 @@ class LandForm extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          "Access to Utilities",
+          StringHelper.accessToUtilities,
           style: context.textTheme.titleSmall,
         ),
         Column(
           mainAxisSize: MainAxisSize.min,
-          children: ['Water Supply','Electricity','Gas','Sewage System','Road Access'].map((status) {
-            return RadioListTile<String>(
-              contentPadding: EdgeInsets.zero,
-              dense: true,
-              title: Text(status,
-                  style: Theme.of(context).textTheme.titleSmall
-              ),
-              value: status,
-              groupValue: viewModel.currentAccessToUtilities,
-              onChanged: (String? value) {
-                viewModel.accessToUtilitiesTextController.text = value ?? "";
-                viewModel.currentAccessToUtilities = value??"";
+          children: [StringHelper.waterSupply, StringHelper.electricity, StringHelper.gas, StringHelper.sewageSystem, StringHelper.roadAccess].map((status) {
+            return StatefulBuilder(
+              builder: (context, setState) {
+                bool isSelected = viewModel.currentAccessToUtilities.split(",").contains(status);
+
+                return ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  dense: true,
+                  leading: isSelected
+                      ? Icon(Icons.radio_button_checked, color: Theme.of(context).primaryColor)
+                      : Icon(Icons.radio_button_unchecked, color: Theme.of(context).disabledColor),
+                  title: Text(
+                    status,
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                  onTap: () {
+                    List<String> utilities = viewModel.currentAccessToUtilities.split(",").where((e) => e.isNotEmpty).toList();
+
+                    if (isSelected) {
+                      utilities.remove(status); // Remove the status if already selected
+                    } else {
+                      utilities.add(status); // Add the status if not selected
+                    }
+
+                    // Update viewModel variables
+                    viewModel.currentAccessToUtilities = utilities.join(",");
+                    viewModel.accessToUtilitiesTextController.text = viewModel.currentAccessToUtilities;
+
+                    setState(() {}); // Rebuild the UI
+                  },
+                );
               },
             );
           }).toList(),
-        ),
+        )
       ],
     );
   }
@@ -534,7 +553,7 @@ class LandForm extends StatelessWidget {
         ),
         Column(
           mainAxisSize: MainAxisSize.min,
-          children: ['Installment', 'Cash or Installment', 'cash'].map((status) {
+          children: [StringHelper.installment, StringHelper.cashOrInstallment, StringHelper.cash].map((status) {
             return RadioListTile<String>(
               contentPadding: EdgeInsets.zero,
               dense: true,
@@ -565,7 +584,7 @@ class LandForm extends StatelessWidget {
         ),
         Column(
           mainAxisSize: MainAxisSize.min,
-          children: ['Ready', 'Off-Plan'].map((status) {
+          children: [StringHelper.ready, StringHelper.offPlan].map((status) {
             return RadioListTile<String>(
               contentPadding: EdgeInsets.zero,
               dense: true,
@@ -591,12 +610,12 @@ class LandForm extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          "Delivery Term",
+          StringHelper.deliveryTerm,
           style: context.textTheme.titleSmall,
         ),
         Column(
           mainAxisSize: MainAxisSize.min,
-          children: ['Move-in Ready','Under Construction','Shell and Core','Semi-Finished'].map((status) {
+          children: [StringHelper.moveInReady,StringHelper.underConstruction,StringHelper.shellAndCore,StringHelper.semiFinished].map((status) {
             return RadioListTile<String>(
               contentPadding: EdgeInsets.zero,
               dense: true,

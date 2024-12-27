@@ -148,7 +148,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                           }
                         } else {
                           DialogHelper.showToast(
-                              message: "You have reached at maximum limit");
+                              message: StringHelper.imageMaxLimit);
                         }
                       },
                       child: Container(
@@ -160,7 +160,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: const Column(
+                        child:  Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(Icons.add),
@@ -168,7 +168,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                               height: 2,
                             ),
                             Text(
-                              "Add",
+                              StringHelper.add,
                               style: TextStyle(
                                 fontSize: 14,
                               ),
@@ -746,7 +746,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                     }
                     if (viewModel.adTitleTextController.text.trim().length < 10) {
                       DialogHelper.showToast(
-                        message: "Ad title must be at least 10 characters long.",
+                        message: StringHelper.adLength,
                       );
                       return;
                     }

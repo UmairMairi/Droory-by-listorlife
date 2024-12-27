@@ -148,7 +148,7 @@ class PetsSellForm extends BaseView<SellFormsVM> {
                           }
                         } else {
                           DialogHelper.showToast(
-                              message: "You have reached at maximum limit");
+                              message: StringHelper.imageMaxLimit);
                         }
                       },
                       child: Container(
@@ -361,7 +361,7 @@ class PetsSellForm extends BaseView<SellFormsVM> {
                     }
                     if (viewModel.adTitleTextController.text.trim().length < 10) {
                       DialogHelper.showToast(
-                        message: "Ad title must be at least 10 characters long.",
+                        message: StringHelper.adLength,
                       );
                       return;
                     }
