@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:list_and_life/base/helpers/string_helper.dart';
 import 'package:list_and_life/models/common/map_response.dart';
 import 'package:list_and_life/models/media_model.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
@@ -28,7 +29,7 @@ class BaseClient {
 
     bool isOnline = await hasNetwork();
     if (!isOnline) {
-      DialogHelper.showToast(message: 'No Internet, Please try later!');
+      DialogHelper.showToast(message: StringHelper.noInternet);
       Navigator.push(
           context!,
           MaterialPageRoute(

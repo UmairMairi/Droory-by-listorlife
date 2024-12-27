@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/base/helpers/string_helper.dart';
 
 import '../../res/assets_res.dart';
 import 'api_request.dart';
@@ -34,8 +35,8 @@ class NoInternetPage extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              const Text(
-                'No internet connection found.Please check your connection or try again.',
+               Text(
+                StringHelper.noInternetFound,
                 style: TextStyle(color: Colors.grey, fontSize: 16),
                 textAlign: TextAlign.center,
               ),
@@ -55,7 +56,7 @@ class NoInternetPage extends StatelessWidget {
                       color: context.theme.primaryColor,
                       borderRadius: BorderRadius.circular(20)),
                   child: Text(
-                    'Refresh',
+                    StringHelper.refreshText,
                     style: context.titleMedium?.copyWith(color: Colors.white),
                   ),
                 ),

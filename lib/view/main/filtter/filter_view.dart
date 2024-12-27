@@ -45,10 +45,10 @@ class _FilterViewState extends State<FilterView> {
   List<CategoryModel> brands = [];
   List<CategoryModel> allModels = [];
   List<String> yearsType = [];
-  List<String> fuelsType = ['Petrol', 'Diesel', 'Electric', 'Hybrid', 'Gas'];
+  List<String> fuelsType = [StringHelper.petrol, StringHelper.diesel, StringHelper.electric, StringHelper.hybrid, StringHelper.gas];
   List<String> transmissionType = [
-    'Manual',
-    'Automatic',
+    StringHelper.manual,
+    StringHelper.automatic,
   ];
   List<CategoryModel> sortByList = [
     CategoryModel(name: StringHelper.priceHighToLow),
@@ -61,14 +61,14 @@ class _FilterViewState extends State<FilterView> {
     CategoryModel(id: 4, name: StringHelper.lastMonth),
   ];
   List<CategoryModel> genders = [
-    CategoryModel(name: 'Male'),
-    CategoryModel(name: 'Female')
+    CategoryModel(name: StringHelper.male),
+    CategoryModel(name: StringHelper.female)
   ];
 
   // Map of filters based on category ID
   Map<int, List<String>> filters = {
     // Vehicles// Services
-    9: ['Job Type', 'Education', 'Salary Range', 'Experience'], // Jobs
+    9: [StringHelper.jobType, StringHelper.education, StringHelper.salaryRange, StringHelper.experience], // Jobs
   };
   List<String> filtersCat = [];
   // Method to get filters based on the selected category ID
@@ -372,14 +372,14 @@ class _FilterViewState extends State<FilterView> {
               if (subCategoriesList.isNotEmpty) ...{
                 CommonDropdown<CategoryModel?>(
                   title: filter.categoryId == '8'
-                      ? 'Select Services'
+                      ? StringHelper.selectServices
                       : filter.categoryId == '9'
-                          ? 'Job Type'
+                          ? StringHelper.jobType
                           : StringHelper.subCategory,
                   hint: viewModel.subCategoryTextController.text.trim().isEmpty?filter.categoryId == '8'
-                      ? 'Select Services'
+                      ? StringHelper.selectServices
                       : filter.categoryId == '9'
-                          ? 'Select Job Type'
+                          ? StringHelper.selectJobType
                           : StringHelper.selectSubCategory:viewModel.subCategoryTextController.text,
                   onSelected: (CategoryModel? value) async {
                     viewModel.subCategoryTextController.text =
@@ -435,12 +435,12 @@ class _FilterViewState extends State<FilterView> {
               Visibility(
                   visible: subCategoriesList.isNotEmpty && (filter.subcategoryId??"").isNotEmpty,
                   child:commonWidget(context,filter.subcategoryId,viewModel)),
-              if (brands.isNotEmpty) ...{
+              if (brands.isNotEmpty)...[
                 CommonDropdown<CategoryModel?>(
                   title:
-                      filter.categoryId == '6' ? 'Breed' : StringHelper.brand,
+                      filter.categoryId == '6' ? StringHelper.breed : StringHelper.brand,
                   hint: viewModel.brandsTextController.text.trim().isEmpty?filter.categoryId == '6'
-                      ? 'Select Breeds'
+                      ? StringHelper.selectBreeds
                       : StringHelper.selectBrands:viewModel.brandsTextController.text,
                   onSelected: (CategoryModel? value) async {
                     viewModel.brandsTextController.text = value?.name ?? '';
@@ -480,8 +480,8 @@ class _FilterViewState extends State<FilterView> {
                 ),
                 filter.categoryId == '6'
                     ? CommonDropdown<CategoryModel?>(
-                        title: 'Gender',
-                        hint:viewModel.genderTextController.text.trim().isEmpty? 'Select Gender':viewModel.genderTextController.text,
+                        title: StringHelper.gender,
+                        hint:viewModel.genderTextController.text.trim().isEmpty? StringHelper.selectGender:viewModel.genderTextController.text,
                   onSelected: (CategoryModel? value) {
                     viewModel.genderTextController.text =
                         value?.name ?? '';
@@ -515,11 +515,11 @@ class _FilterViewState extends State<FilterView> {
                 const SizedBox(
                   height: 10,
                 ),
-              },
+              ],
               if (allModels.isNotEmpty) ...{
                 CommonDropdown<CategoryModel?>(
                   title: StringHelper.models,
-                  hint: viewModel.modelTextController.text.trim().isEmpty?'Select Model':viewModel.modelTextController.text,
+                  hint: viewModel.modelTextController.text.trim().isEmpty?StringHelper.selectModel:viewModel.modelTextController.text,
                   onSelected: (value) {
                     viewModel.modelTextController.text = value?.name ?? '';
                     filter.modelId = "${value?.id}";
@@ -557,10 +557,10 @@ class _FilterViewState extends State<FilterView> {
                 ),
                 const Gap(10),
               },
-              if (filter.categoryId == '4') ...{
+              if (filter.categoryId == '4') ...[
                 CommonDropdown(
                   title: StringHelper.year,
-                  hint: viewModel.yearTextController.text.isEmpty?'Select Year':viewModel.yearTextController.text,
+                  hint: viewModel.yearTextController.text.isEmpty?StringHelper.selectYear:viewModel.yearTextController.text,
                   onSelected: (value) {
                     viewModel.yearTextController.text = value ?? '';
                     filter.year = value;
@@ -656,7 +656,7 @@ class _FilterViewState extends State<FilterView> {
                 ),
                 CommonDropdown(
                   title: StringHelper.transmission,
-                  hint: viewModel.transmissionTextController.text.isEmpty?'Select Transmission':viewModel.transmissionTextController.text,
+                  hint: viewModel.transmissionTextController.text.isEmpty?StringHelper.selectTransmission:viewModel.transmissionTextController.text,
                   onSelected: (value) {
                     viewModel.transmissionTextController.text = value??"";
                     filter.transmission = value?.toLowerCase();
@@ -704,7 +704,7 @@ class _FilterViewState extends State<FilterView> {
                 const SizedBox(
                   height: 10,
                 ),
-              },
+              ],
               if (filter.categoryId == '11' && (filter.subcategoryId??"").isNotEmpty) ...{
                 Visibility(
                     visible:filter.subcategoryId != "90" ,
@@ -714,7 +714,7 @@ class _FilterViewState extends State<FilterView> {
                   },
                 ))
               },
-              if (filter.categoryId == '9') ...{
+              if (filter.categoryId == '9') ...[
                 CommonDropdown(
                   title: StringHelper.positionType,
                   hint: viewModel.jobPositionTextController.text,
@@ -793,7 +793,7 @@ class _FilterViewState extends State<FilterView> {
                   ],
                 ),
                 const Gap(10),
-              },
+              ],
               AppTextField(
                 title: StringHelper.location,
                 hint: StringHelper.selectLocation,
@@ -1152,7 +1152,6 @@ class _FilterViewState extends State<FilterView> {
 
 
   Widget commonWidget(BuildContext context, String? subcategoryId,HomeVM viewModel){
-    debugPrint("subCatId ====> $subcategoryId");
     switch(subcategoryId){
       case "83":
         return apartmentWidget(viewModel);
@@ -1298,7 +1297,7 @@ class _FilterViewState extends State<FilterView> {
         ),
         if(viewModel.currentPropertyType.toLowerCase() != "rent")...{
           Text(
-            "Down Payment",
+            StringHelper.downPayment,
             style: context.textTheme.titleSmall,
           ),
           const Gap(10),
@@ -1560,7 +1559,7 @@ class _FilterViewState extends State<FilterView> {
         Gap(10),
 
         CommonDropdown(
-          title: "No Of Bedrooms",
+          title: StringHelper.noOfBedrooms,
           //hint: StringHelper.select,
           hint: viewModel.noOfBedroomsTextController.text,
           options: ["Studio", "1", "2", "3", "4", "5", "6+"],
@@ -1644,7 +1643,7 @@ class _FilterViewState extends State<FilterView> {
           title: StringHelper.furnishing,
           //hint: StringHelper.select,
           hint: viewModel.furnishingStatusTextController.text,
-          options: ['Furnished', 'Unfurnished', 'Semi Furnished'],
+          options: [StringHelper.furnished, StringHelper.unfurnished, StringHelper.semiFurnished],
           onSelected: (String? value) {
             viewModel.furnishingStatusTextController.text = value??"";
           },
@@ -1728,7 +1727,7 @@ class _FilterViewState extends State<FilterView> {
             title: StringHelper.completionStatus,
             //hint: StringHelper.select,
             hint: viewModel.completionStatusTextController.text,
-            options: ['Ready', 'Off Plan'],
+            options: [StringHelper.ready, StringHelper.offPlan],
             onSelected: (String? value) {
               viewModel.completionStatusTextController.text = value??"";
             },
@@ -1771,7 +1770,7 @@ class _FilterViewState extends State<FilterView> {
             title: StringHelper.paymentType,
             //hint: StringHelper.select,
             hint: viewModel.paymentTypeTextController.text,
-            options: ['Installment', 'Cash or Installment', 'cash'],
+            options: [StringHelper.installment, StringHelper.cashOrInstallment, StringHelper.cash],
             onSelected: (String? value) {
               viewModel.paymentTypeTextController.text = value??"";
             },
@@ -1812,10 +1811,10 @@ class _FilterViewState extends State<FilterView> {
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() != "rent",
           child: CommonDropdown(
-            title: "Listed By",
+            title: StringHelper.listedBy,
             //hint: StringHelper.select,
             hint: viewModel.listedByTextController.text,
-            options: ['Agent', 'Landlord'],
+            options: [StringHelper.agent, StringHelper.landlord],
             onSelected: (String? value) {
               viewModel.listedByTextController.text = value??"";
             },
@@ -1952,7 +1951,7 @@ class _FilterViewState extends State<FilterView> {
             onSelected: (String? value) {
               viewModel.ownershipStatusTextController.text = value??"";
             },
-            options: ['Primary', 'Resell'],
+            options: [StringHelper.primary, StringHelper.resell],
             // readOnly: true,
             // suffix: PopupMenuButton<String>(
             //   clipBehavior: Clip.hardEdge,
@@ -1987,7 +1986,7 @@ class _FilterViewState extends State<FilterView> {
         ),
         if(viewModel.currentPropertyType.toLowerCase() != "rent")...{
           Text(
-            "Down Payment",
+            StringHelper.downPayment,
             style: context.textTheme.titleSmall,
           ),
           const Gap(10),
@@ -2248,7 +2247,7 @@ class _FilterViewState extends State<FilterView> {
         }),
         Gap(10),
         CommonDropdown(
-          title: "No Of Bedrooms",
+          title: StringHelper.noOfBedrooms,
           //hint: StringHelper.select,
           hint: viewModel.noOfBedroomsTextController.text,
           options: ["Studio", "1", "2", "3", "4", "5", "6+"],
@@ -2332,7 +2331,7 @@ class _FilterViewState extends State<FilterView> {
           title: StringHelper.furnishing,
           //hint: StringHelper.select,
           hint: viewModel.furnishingStatusTextController.text,
-          options: ['Yes','No'],
+          options: [StringHelper.yes,StringHelper.no],
           onSelected: (String? value) {
             viewModel.furnishingStatusTextController.text = value??"";
           },
@@ -2416,7 +2415,7 @@ class _FilterViewState extends State<FilterView> {
             title: StringHelper.completionStatus,
             //hint: StringHelper.select,
             hint: viewModel.completionStatusTextController.text,
-            options: ['Ready', 'Off Plan'],
+            options: [StringHelper.ready, StringHelper.offPlan],
             onSelected: (String? value) {
               viewModel.completionStatusTextController.text = value??"";
             },
@@ -2459,7 +2458,7 @@ class _FilterViewState extends State<FilterView> {
             title: StringHelper.paymentType,
             //hint: StringHelper.select,
             hint: viewModel.paymentTypeTextController.text,
-            options: ['Installment', 'Cash or Installment', 'cash'],
+            options: [StringHelper.installment, StringHelper.cashOrInstallment, StringHelper.cash],
             onSelected: (String? value) {
               viewModel.paymentTypeTextController.text = value??"";
             },
@@ -2501,10 +2500,10 @@ class _FilterViewState extends State<FilterView> {
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() != "rent",
           child: CommonDropdown(
-            title: "Delivery Term",
+            title: StringHelper.deliveryTerms,
             //hint: StringHelper.select,
             hint: viewModel.deliveryTermTextController.text,
-            options: ['Move-in Ready','Under Construction','Shell and Core','Semi-Finished'],
+            options: [StringHelper.moveInReady,StringHelper.underConstruction,StringHelper.shellAndCore,StringHelper.semiFurnished],
             onSelected: (String? value) {
               viewModel.deliveryTermTextController.text = value??"";
             },
@@ -2545,10 +2544,10 @@ class _FilterViewState extends State<FilterView> {
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() == "rent",
           child: CommonDropdown(
-            title: "Rental Term",
+            title: StringHelper.rentalTerm,
             //hint: StringHelper.select,
             hint: viewModel.rentalTermsTextController.text,
-            options: ['Daily', 'Weekly', 'Monthly', 'Yearly'],
+            options: [StringHelper.daily, StringHelper.weekly, StringHelper.monthly, StringHelper.yearly],
             onSelected: (String? value) {
               viewModel.rentalTermsTextController.text = value??"";
             },
@@ -2677,7 +2676,7 @@ class _FilterViewState extends State<FilterView> {
 
         if(viewModel.currentPropertyType.toLowerCase() != "rent")...{
           Text(
-            "Down Payment",
+            StringHelper.downPayment,
             style: context.textTheme.titleSmall,
           ),
           const Gap(10),
@@ -2940,7 +2939,7 @@ class _FilterViewState extends State<FilterView> {
         Gap(10),
 
         CommonDropdown(
-          title: "No Of Bedrooms",
+          title: StringHelper.noOfBedrooms,
           //hint: StringHelper.select,
           hint: viewModel.noOfBedroomsTextController.text,
           options: ["Studio", "1", "2", "3", "4", "5", "6+"],
@@ -3024,7 +3023,7 @@ class _FilterViewState extends State<FilterView> {
           title: StringHelper.furnishing,
           //hint: StringHelper.select,
           hint: viewModel.furnishingStatusTextController.text,
-          options: ['Furnished', 'Unfurnished', 'Semi Furnished'],
+          options: [StringHelper.furnished, StringHelper.unfurnished, StringHelper.semiFurnished],
           onSelected: (String? value) {
             viewModel.furnishingStatusTextController.text = value??"";
           },
@@ -3067,7 +3066,7 @@ class _FilterViewState extends State<FilterView> {
             title: StringHelper.completionStatus,
             //hint: StringHelper.select,
             hint: viewModel.completionStatusTextController.text,
-            options: ['Ready', 'Off Plan'],
+            options: [StringHelper.ready, StringHelper.offPlan],
             onSelected: (String? value) {
               viewModel.completionStatusTextController.text = value??"";
             },
@@ -3151,10 +3150,10 @@ class _FilterViewState extends State<FilterView> {
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() != "rent",
           child: CommonDropdown(
-            title: "Delivery Term",
+            title: StringHelper.deliveryTerms,
             //hint: StringHelper.select,
             hint: viewModel.deliveryTermTextController.text,
-            options: ['Move-in Ready','Under Construction','Shell and Core','Semi-Finished'],
+            options: [StringHelper.moveInReady,StringHelper.underConstruction,StringHelper.shellAndCore,StringHelper.semiFinished],
             onSelected: (String? value) {
               viewModel.deliveryTermTextController.text = value??"";
             },
@@ -3195,10 +3194,10 @@ class _FilterViewState extends State<FilterView> {
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() == "rent",
           child: CommonDropdown(
-            title: "Rental Term",
+            title: StringHelper.rentalTerm,
             //hint: StringHelper.select,
             hint: viewModel.rentalTermsTextController.text,
-            options: ['Daily', 'Weekly', 'Monthly', 'Yearly'],
+            options: [StringHelper.daily, StringHelper.weekly, StringHelper.monthly, StringHelper.yearly],
             onSelected: (String? value) {
               viewModel.rentalTermsTextController.text = value??"";
             },
@@ -3456,7 +3455,7 @@ class _FilterViewState extends State<FilterView> {
         Gap(10),
 
         CommonDropdown(
-          title: "No Of Bedrooms",
+          title: StringHelper.noOfBedrooms,
           //hint: StringHelper.select,
           hint: viewModel.noOfBedroomsTextController.text,
           options: ["Studio", "1", "2", "3", "4", "5", "6+"],
@@ -3581,7 +3580,7 @@ class _FilterViewState extends State<FilterView> {
           title: StringHelper.furnishing,
           //hint: StringHelper.select,
           hint: viewModel.furnishingStatusTextController.text,
-          options: ["Yes","No"],
+          options: [StringHelper.yes,StringHelper.no],
           onSelected: (String? value) {
             viewModel.furnishingStatusTextController.text = value??"";
           },
@@ -3624,7 +3623,7 @@ class _FilterViewState extends State<FilterView> {
             title: StringHelper.completionStatus,
             //hint: StringHelper.select,
             hint: viewModel.completionStatusTextController.text,
-            options: ['Ready', 'Off Plan'],
+            options: [StringHelper.ready, StringHelper.offPlan],
             onSelected: (String? value) {
               viewModel.completionStatusTextController.text = value??"";
             },
@@ -3667,7 +3666,7 @@ class _FilterViewState extends State<FilterView> {
             title: StringHelper.paymentType,
             //hint: StringHelper.select,
             hint: viewModel.paymentTypeTextController.text,
-            options: ['Installment', 'Cash or Installment', 'cash'],
+            options: [StringHelper.installment, StringHelper.cashOrInstallment, StringHelper.cash],
             onSelected: (String? value) {
               viewModel.paymentTypeTextController.text = value??"";
             },
@@ -3708,10 +3707,10 @@ class _FilterViewState extends State<FilterView> {
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() == "rent",
           child: CommonDropdown(
-            title: "Rental Term",
+            title: StringHelper.rentalTerm,
             //hint: StringHelper.select,
             hint: viewModel.rentalTermsTextController.text,
-            options: ['Daily', 'Weekly', 'Monthly', 'Yearly'],
+            options: [StringHelper.daily, StringHelper.weekly, StringHelper.monthly, StringHelper.yearly],
             onSelected: (String? value) {
               viewModel.rentalTermsTextController.text = value??"";
             },
@@ -3968,10 +3967,10 @@ class _FilterViewState extends State<FilterView> {
         }),
         Gap(10),
         CommonDropdown(
-          title:"Access to Utilities",
+          title:StringHelper.accessToUtilities,
           //hint: StringHelper.select,
           hint: viewModel.accessToUtilitiesTextController.text,
-          options: ['Water Supply','Electricity','Gas','Sewage System','Road Access'],
+          options: [StringHelper.waterSupply,StringHelper.electricity,StringHelper.gas,StringHelper.sewageSystem,StringHelper.roadAccess],
           onSelected: (String? value) {
             viewModel.accessToUtilitiesTextController.text = value??"";
           },
@@ -4009,10 +4008,10 @@ class _FilterViewState extends State<FilterView> {
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() == "rent",
           child: CommonDropdown(
-            title: "Rental Term",
+            title: StringHelper.rentalTerm,
             //hint: StringHelper.select,
             hint: viewModel.rentalTermsTextController.text,
-            options: ['Daily', 'Weekly', 'Monthly', 'Yearly'],
+            options: [StringHelper.daily, StringHelper.weekly, StringHelper.monthly, StringHelper.yearly],
             onSelected: (String? value) {
               viewModel.rentalTermsTextController.text = value??"";
             },

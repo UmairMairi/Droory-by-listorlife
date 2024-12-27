@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/base/helpers/string_helper.dart';
 import 'package:list_and_life/models/category_model.dart';
 import 'package:list_and_life/view_model/home_vm.dart';
 
@@ -26,7 +27,7 @@ class SubCategoryView extends BaseView<HomeVM> {
             if (snapshot.hasData) {
               List<CategoryModel> subCategoriesList =
                   snapshot.data?.reversed.toList() ?? [];
-              subCategoriesList.insert(0, CategoryModel(name: "See All"));
+              subCategoriesList.insert(0, CategoryModel(name: StringHelper.seeAll));
               return ListView.separated(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 10),

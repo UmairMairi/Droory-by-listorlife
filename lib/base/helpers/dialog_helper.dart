@@ -4,6 +4,7 @@ import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/base/helpers/string_helper.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/routes/app_pages.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
@@ -86,7 +87,7 @@ class DialogHelper {
       {String? message, VoidCallback? onTap}) {
     QuickAlert.show(
       context: AppPages.rootNavigatorKey.currentContext!,
-      title: "Location Services",
+      title: StringHelper.locationServices,
       showCancelBtn: true,
       type: QuickAlertType.info,
       text: message,
@@ -123,9 +124,9 @@ class DialogHelper {
     showDialog(
         context: context,
         builder: (context) => AppAlertDialogWithWidget(
-              title: 'Login Required',
-              description: 'You need to log in to perform this action.',
-              buttonText: 'Login',
+              title: StringHelper.loginRequired,
+              description: StringHelper.youNeedLogin,
+              buttonText: StringHelper.login,
               icon: AssetsRes.IC_LOCK_LOGIN,
               onTap: () {
                 context.pop();
@@ -201,7 +202,7 @@ class AppAlertDialogWithLottie extends StatelessWidget {
                         child: AppElevatedButton(
                           width: context.width,
                           onTap: onTap,
-                          title: buttonText ?? ' Ok',
+                          title: buttonText ?? StringHelper.ok,
                         ),
                       ),
                       if (showCancelButton) ...{
@@ -217,7 +218,7 @@ class AppAlertDialogWithLottie extends StatelessWidget {
                                 context.pop();
                               },
                           tittleColor: Colors.black,
-                          title: cancelButtonText ?? ' Cencel',
+                          title: cancelButtonText ?? StringHelper.cancel,
                         )),
                       }
                     ],
@@ -312,7 +313,7 @@ class AppAlertDialogWithWidget extends StatelessWidget {
                   isTextDescription
                       ? Text(
                           description ??
-                              'Your Profile has been created successfully!',
+                              StringHelper.profileCreatedSuccessfully,
                           textAlign: TextAlign.center,
                         )
                       : content != null
@@ -327,7 +328,7 @@ class AppAlertDialogWithWidget extends StatelessWidget {
                         child: AppElevatedButton(
                           width: context.width,
                           onTap: onTap,
-                          title: buttonText ?? ' Ok',
+                          title: buttonText ?? StringHelper.ok,
                         ),
                       ),
                       if (showCancelButton) ...{
@@ -343,7 +344,7 @@ class AppAlertDialogWithWidget extends StatelessWidget {
                                 context.pop();
                               },
                           tittleColor: Colors.black,
-                          title: cancelButtonText ?? ' Cencel',
+                          title: cancelButtonText ?? StringHelper.cancel,
                         )),
                       }
                     ],

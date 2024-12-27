@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:list_and_life/base/helpers/string_helper.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/base/network/api_request.dart';
 import 'package:list_and_life/base/network/base_client.dart';
@@ -33,7 +34,7 @@ class _FaqViewState extends State<FaqView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('FAQ\'s'),
+        title:  Text(StringHelper.faqs),
         centerTitle: true,
       ),
       body: FutureBuilder<List<FaqModel>>(

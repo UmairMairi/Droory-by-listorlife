@@ -103,7 +103,7 @@ class HomeView extends BaseView<HomeVM> {
               children: [
                 Expanded(
                     child: AppTextField(
-                  hint: 'Search...',
+                  hint: '${StringHelper.search}...',
                   readOnly: true,
                   validator: (value) {},
                   controller: viewModel.searchController,
@@ -380,10 +380,10 @@ class _LocationSearchPopupState extends State<LocationSearchPopup> {
                     textEditingController: searchController,
                     countries: const ['eg'],
                     googleAPIKey: "AIzaSyBDLT4xDcywIynEnoHJn6GdPisZLr4G5TU",
-                    inputDecoration: const InputDecoration(
+                    inputDecoration:  InputDecoration(
                       border: InputBorder.none,
                       prefixIcon: Icon(Icons.search),
-                      hintText: "Search",
+                      hintText: StringHelper.search,
                     ),
                     debounceTime: 400,
                     // default 600 ms,
@@ -406,13 +406,13 @@ class _LocationSearchPopupState extends State<LocationSearchPopup> {
                 onPressed: () {
                   Navigator.pop(context);
                   widget.viewModel.locationTextController.text =
-                  "Show All Ads in Egypt";
+                  StringHelper.showAllAdsInEgypt;
                   widget.viewModel.updateLatLong(
                       lat: 30.0444,
                       long: 31.2357);
                 },
                 child: Text(
-                  '📍Show All Ads in Egypt',
+                  '📍${StringHelper.showAllAdsInEgypt}',
                   style: context.titleMedium?.copyWith(color: Colors.blue),
                 )),
             TextButton(
@@ -421,12 +421,12 @@ class _LocationSearchPopupState extends State<LocationSearchPopup> {
                   widget.viewModel.updateLocation();
                 },
                 child: Text(
-                  '📍Use current location',
+                  '📍${StringHelper.useCurrentLocation}',
                   style: context.titleMedium?.copyWith(color: Colors.blue),
                 )),
 
             const SizedBox(height: 10),
-            Text('Recent Searches:', style: context.textTheme.titleMedium),
+            Text('${StringHelper.recentSearches}:', style: context.textTheme.titleMedium),
             const Divider(),
             // Add other search-related features here
             Expanded(

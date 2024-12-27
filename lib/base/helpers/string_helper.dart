@@ -258,7 +258,8 @@ class StringHelper {
       LocaleService.translate('editProduct') ?? "Edit Product";
   static String type = LocaleService.translate('type') ?? "Type";
   static String level = LocaleService.translate('level') ?? "Level";
-  static String buildingAge = LocaleService.translate('buildingAge') ?? "Building Age";
+  static String buildingAge =
+      LocaleService.translate('buildingAge') ?? "Building Age";
   static String positionType =
       LocaleService.translate('positionType') ?? "Position Type";
   static String salaryPeriod =
@@ -426,8 +427,116 @@ class StringHelper {
       LocaleService.translate('lookingFor') ?? 'Looking For';
 
   ///new keys added
-  static String salary =
-      LocaleService.translate('salary') ?? 'Salary';
+  static String salary = LocaleService.translate('salary') ?? 'Salary';
+  static String locationServices =
+      LocaleService.translate('locationServices') ?? 'Location Services';
+  static String loginRequired =
+      LocaleService.translate('loginRequired') ?? 'Login Required';
+  static String youNeedLogin = LocaleService.translate('youNeedLogin') ??
+      'You need to log in to perform this action.';
+  static String profileCreatedSuccessfully =
+      LocaleService.translate('profileCreatedSuccessfully') ??
+          'Your Profile has been created successfully!';
+  static String ok = LocaleService.translate('ok') ?? 'Ok';
+  static String noInternet =
+      LocaleService.translate('noInternet') ?? 'No Internet, Please try later!';
+  static String noInternetFound = LocaleService.translate('noInternetFound') ??
+      'No internet connection found.Please check your connection or try again.';
+  static String refreshText = LocaleService.translate('refresh') ?? 'Refresh';
+  static String hereToHelp = LocaleService.translate('hereToHelp') ??
+      "We're here to help! Reach out to us through any of the following methods.";
+  static String sendUsYourQueries =
+      LocaleService.translate('sendUsYourQueries') ?? "Send us your queries";
+  static String callUsForImmediateAssistance =
+      LocaleService.translate('callUsForImmediateAssistance') ??
+          "Call us for immediate assistance";
+  static String petrol = LocaleService.translate('petrol') ?? "Petrol";
+  static String diesel = LocaleService.translate('diesel') ?? "Diesel";
+  static String electric = LocaleService.translate('electric') ?? "Electric";
+  static String hybrid = LocaleService.translate('hybrid') ?? "Hybrid";
+  static String gas = LocaleService.translate('gas') ?? "Gas";
+  static String male = LocaleService.translate('male') ?? "Male";
+  static String female = LocaleService.translate('female') ?? "Female";
+  static String jobType = LocaleService.translate('jobType') ?? "Job Type";
+  static String education = LocaleService.translate('education') ?? "Education";
+  static String salaryRange =
+      LocaleService.translate('salaryRange') ?? "Salary Range";
+  static String experience =
+      LocaleService.translate('experience') ?? "Experience";
+  static String selectServices =
+      LocaleService.translate('selectServices') ?? "Select Services";
+  static String selectJobType =
+      LocaleService.translate('selectJobType') ?? "Select Job Type";
+  static String breed = LocaleService.translate('breed') ?? "Breed";
+  static String selectBreeds =
+      LocaleService.translate('selectBreeds') ?? "Select Breeds";
+  static String gender = LocaleService.translate('gender') ?? "Gender";
+  static String selectGender =
+      LocaleService.translate('selectGender') ?? "Select Gender";
+  static String selectModel =
+      LocaleService.translate('selectModel') ?? "Select Model";
+  static String selectYear =
+      LocaleService.translate('selectYear') ?? "Select Year";
+  static String selectTransmission =
+      LocaleService.translate('selectTransmission') ?? "Select Transmission";
+  static String downPayment =
+      LocaleService.translate('downPayment') ?? "Down Payment";
+  static String noOfBedrooms =
+      LocaleService.translate('noOfBedrooms') ?? "No Of Bedrooms";
+  static String furnished = LocaleService.translate('furnished') ?? "Furnished";
+  static String unfurnished =
+      LocaleService.translate('unfurnished') ?? "Unfurnished";
+  static String semiFurnished =
+      LocaleService.translate('semiFurnished') ?? "Semi Furnished";
+  static String ready = LocaleService.translate('ready') ?? "Ready";
+  static String offPlan = LocaleService.translate('offPlan') ?? "Off Plan";
+  static String installment =
+      LocaleService.translate('installment') ?? "Installment";
+  static String cashOrInstallment =
+      LocaleService.translate('cashOrInstallment') ?? "Cash or Installment";
+  static String cash = LocaleService.translate('cash') ?? "Cash";
+  static String listedBy = LocaleService.translate('listedBy') ?? "Listed By";
+  static String agent = LocaleService.translate('agent') ?? "Agent";
+  static String landlord = LocaleService.translate('landlord') ?? "Landlord";
+  static String primary = LocaleService.translate('primary') ?? "Primary";
+  static String resell = LocaleService.translate('resell') ?? "Resell";
+  static String moveInReady =
+      LocaleService.translate('moveInReady') ?? "Move-in Ready";
+  static String underConstruction =
+      LocaleService.translate('underConstruction') ?? "Under Construction";
+  static String shellAndCore =
+      LocaleService.translate('shellAndCore') ?? "Shell and Core";
+  static String semiFinished =
+      LocaleService.translate('semiFinished') ?? "Semi-Finished";
+  static String rentalTerm =
+      LocaleService.translate('rentalTerm') ?? "Rental Term";
+  static String daily = LocaleService.translate('daily') ?? "Daily";
+  static String weekly = LocaleService.translate('weekly') ?? "Weekly";
+  static String monthly = LocaleService.translate('monthly') ?? "Monthly";
+  static String yearly = LocaleService.translate('yearly') ?? "Yearly";
+  static String accessToUtilities = LocaleService.translate('accessToUtilities') ?? "Access to Utilities";
+  static String waterSupply = LocaleService.translate('waterSupply') ?? "Water Supply";
+  static String electricity = LocaleService.translate('electricity') ?? "Electricity";
+  static String sewageSystem = LocaleService.translate('sewageSystem') ?? "Sewage System";
+  static String roadAccess = LocaleService.translate('roadAccess') ?? "Road Access";
+  static String showAllAdsInEgypt = LocaleService.translate('showAllAdsInEgypt') ?? "Show All Ads in Egypt";
+  static String recentSearches = LocaleService.translate('recentSearches') ?? "Recent Searches";
+  static String seeAll = LocaleService.translate('seeAll') ?? "See All";
+  static String insurance = LocaleService.translate('insurance') ?? "Insurance";
+  static String deposit = LocaleService.translate('deposit') ?? "Deposit";
+  static String plsSelectPropertyType = LocaleService.translate('plsSelectPropertyType') ?? "Please select Property Type";
+  static String plsSelectListedBy = LocaleService.translate('plsSelectListedBy') ?? "Please select listed by";
+  static String plsSelectPaymentType = LocaleService.translate('plsSelectPaymentType') ?? "Please select payment type";
+  static String plsSelectBuildingAge = LocaleService.translate('plsSelectBuildingAge') ?? "Please select building age";
+  static String plsSelectLevel = LocaleService.translate('plsSelectLevel') ?? "Please select level";
+  static String plsSelectFurnishing = LocaleService.translate('plsSelectFurnishing') ?? "Please select Furnishing";
+  static String plsSelectBathrooms = LocaleService.translate('plsSelectBathrooms') ?? "Please select Bathrooms";
+  static String plsSelectBedrooms = LocaleService.translate('plsSelectBedrooms') ?? "Please select Bedrooms";
+  static String plsSelectInsurance = LocaleService.translate('plsSelectInsurance') ?? "Please enter insurance";
+  static String plsSelectOwnership = LocaleService.translate('plsSelectOwnership') ?? "Please select Ownership";
+  static String plsSelectType = LocaleService.translate('plsSelectType') ?? "Please select type";
+  static String plsAddArea = LocaleService.translate('plsAddArea') ?? "Please add area of Property";
+  static String adLength = LocaleService.translate('adLength') ?? "Ad title must be at least 10 characters long.";
 
   static void refresh() {
     // Main Screen
@@ -782,262 +891,100 @@ class StringHelper {
 
     ///new keys
     salary = LocaleService.translate('salary') ?? 'Salary';
+    locationServices =
+        LocaleService.translate('locationServices') ?? 'Location Services';
+    loginRequired =
+        LocaleService.translate('loginRequired') ?? 'Login Required';
+    youNeedLogin = LocaleService.translate('youNeedLogin') ??
+        'You need to log in to perform this action.';
+    profileCreatedSuccessfully =
+        LocaleService.translate('profileCreatedSuccessfully') ??
+            'Your Profile has been created successfully!';
+    ok = LocaleService.translate('ok') ?? 'Ok';
+    noInternet = LocaleService.translate('noInternet') ??
+        'No Internet, Please try later!';
+    noInternetFound = LocaleService.translate('noInternetFound') ??
+        'No internet connection found.Please check your connection or try again.';
+    refreshText = LocaleService.translate('refresh') ?? 'Refresh';
+    hereToHelp = LocaleService.translate('hereToHelp') ??
+        "We're here to help! Reach out to us through any of the following methods.";
+    sendUsYourQueries =
+        LocaleService.translate('sendUsYourQueries') ?? "Send us your queries";
+    callUsForImmediateAssistance =
+        LocaleService.translate('callUsForImmediateAssistance') ??
+            "Call us for immediate assistance";
+    petrol = LocaleService.translate('petrol') ?? "Petrol";
+    diesel = LocaleService.translate('diesel') ?? "Diesel";
+    electric = LocaleService.translate('electric') ?? "Electric";
+    hybrid = LocaleService.translate('hybrid') ?? "Hybrid";
+    gas = LocaleService.translate('gas') ?? "Gas";
+    male = LocaleService.translate('male') ?? "Male";
+    female = LocaleService.translate('female') ?? "Female";
+    jobType = LocaleService.translate('jobType') ?? "Job Type";
+    education = LocaleService.translate('education') ?? "Education";
+    salaryRange = LocaleService.translate('salaryRange') ?? "Salary Range";
+    experience = LocaleService.translate('experience') ?? "Experience";
+    selectServices =
+        LocaleService.translate('selectServices') ?? "Select Services";
+    selectJobType =
+        LocaleService.translate('selectJobType') ?? "Select Job Type";
+    breed = LocaleService.translate('breed') ?? "Breed";
+    selectBreeds = LocaleService.translate('selectBreeds') ?? "Select Breeds";
+    gender = LocaleService.translate('gender') ?? "Gender";
+    selectGender = LocaleService.translate('selectGender') ?? "Select Gender";
+    selectModel = LocaleService.translate('selectModel') ?? "Select Model";
+    selectYear = LocaleService.translate('selectYear') ?? "Select Year";
+    selectTransmission =
+        LocaleService.translate('selectTransmission') ?? "Select Transmission";
+    downPayment = LocaleService.translate('downPayment') ?? "Down Payment";
+    noOfBedrooms = LocaleService.translate('noOfBedrooms') ?? "No Of Bedrooms";
+    furnished = LocaleService.translate('furnished') ?? "Furnished";
+    unfurnished = LocaleService.translate('unfurnished') ?? "Unfurnished";
+    semiFurnished =
+        LocaleService.translate('semiFurnished') ?? "Semi Furnished";
+    ready = LocaleService.translate('ready') ?? "Ready";
+    offPlan = LocaleService.translate('offPlan') ?? "Off Plan";
+    installment = LocaleService.translate('installment') ?? "Installment";
+    cashOrInstallment =
+        LocaleService.translate('cashOrInstallment') ?? "Cash or Installment";
+    cash = LocaleService.translate('cash') ?? "Cash";
+    listedBy = LocaleService.translate('listedBy') ?? "Listed By";
+    agent = LocaleService.translate('agent') ?? "Agent";
+    landlord = LocaleService.translate('landlord') ?? "Landlord";
+    primary = LocaleService.translate('primary') ?? "Primary";
+    resell = LocaleService.translate('resell') ?? "Resell";
+    moveInReady = LocaleService.translate('moveInReady') ?? "Move-in Ready";
+    underConstruction =
+        LocaleService.translate('underConstruction') ?? "Under Construction";
+    shellAndCore = LocaleService.translate('shellAndCore') ?? "Shell and Core";
+    semiFinished = LocaleService.translate('semiFinished') ?? "Semi-Finished";
+    rentalTerm = LocaleService.translate('rentalTerm') ?? "Rental Term";
+    daily = LocaleService.translate('daily') ?? "Daily";
+    weekly = LocaleService.translate('weekly') ?? "Weekly";
+    monthly = LocaleService.translate('monthly') ?? "Monthly";
+    yearly = LocaleService.translate('yearly') ?? "Yearly";
+    accessToUtilities = LocaleService.translate('accessToUtilities') ?? "Access to Utilities";
+    waterSupply = LocaleService.translate('waterSupply') ?? "Water Supply";
+    electricity = LocaleService.translate('electricity') ?? "Electricity";
+    sewageSystem = LocaleService.translate('sewageSystem') ?? "Sewage System";
+    roadAccess = LocaleService.translate('roadAccess') ?? "Road Access";
+    showAllAdsInEgypt = LocaleService.translate('showAllAdsInEgypt') ?? "Show All Ads in Egypt";
+    recentSearches = LocaleService.translate('recentSearches') ?? "Recent Searches";
+    seeAll = LocaleService.translate('seeAll') ?? "See All";
+    insurance = LocaleService.translate('insurance') ?? "Insurance";
+    deposit = LocaleService.translate('deposit') ?? "Deposit";
+    plsSelectPropertyType = LocaleService.translate('plsSelectPropertyType') ?? "Please select Property Type";
+    plsSelectListedBy = LocaleService.translate('plsSelectListedBy') ?? "Please select listed by";
+    plsSelectPaymentType = LocaleService.translate('plsSelectPaymentType') ?? "Please select payment type";
+    plsSelectBuildingAge = LocaleService.translate('plsSelectBuildingAge') ?? "Please select building age";
+    plsSelectLevel = LocaleService.translate('plsSelectLevel') ?? "Please select level";
+    plsSelectFurnishing = LocaleService.translate('plsSelectFurnishing') ?? "Please select Furnishing";
+    plsSelectBathrooms = LocaleService.translate('plsSelectBathrooms') ?? "Please select Bathrooms";
+    plsSelectBedrooms = LocaleService.translate('plsSelectBedrooms') ?? "Please select Bedrooms";
+    plsSelectInsurance = LocaleService.translate('plsSelectInsurance') ?? "Please enter insurance";
+    plsSelectOwnership = LocaleService.translate('plsSelectOwnership') ?? "Please select Ownership";
+    plsSelectType = LocaleService.translate('plsSelectType') ?? "Please select Type";
+    plsAddArea = LocaleService.translate('plsAddArea') ?? "Please add area of Property";
+    adLength = LocaleService.translate('adLength') ?? "Ad title must be at least 10 characters long.";
   }
 }
-
-/*class StringHelper {
-  /// Main Screen
-
-  static const String listLife = "List & Lift";
-
-  ///onBoarding Screen
-  static const String next = "Next";
-  static const String getStarted = "Get Started";
-
-  ///Login Screen
-  static const String login = "Log In";
-  static const String guestLogin = "Guest Login";
-  static const String continueButton = "Continue";
-  static const String loginWithSocial = "Login with Social";
-
-  /// Guest Login Screen
-  static const String loginNow = "Log In now";
-  static const String pleaseLoginToContinue = "Please log in to continue";
-  static const String phoneNumber = "Phone Number";
-  static const String clickToVerifyPhoneNumber = "Click to verify Phone number";
-  static const String orConnectWith = "Or Connect With";
-  static const String loginWithGoogle = "Log In With Google";
-  static const String loginWithIos = "Log In With IOS";
-
-  ///Verification Screen
-
-  static const String verification = "Verification";
-  static const String enterThe4DigitCode =
-      "Enter the 4-digit code sent to you at";
-  static const String otp = "OTP";
-  static const String verifyButton = "Verify";
-
-  /// Home Screen
-  static const String location = "Location";
-  static const String freshRecommendations = "Fresh recommendations";
-  static const String findCarsMobilePhonesAndMore =
-      "Find Cars, Mobile Phones and more...";
-
-  /// Chat Screen
-
-  static const String myChats = "My Chats";
-  static const String search = "Search...";
-  static const String areYouSureWantToDeleteThisChat =
-      "Are you sure want to delete this chat?";
-  static const String no = "No";
-  static const String deleteChat = "Clear Chat";
-  static const String yes = "Yes";
-  static const String pleaseEnterReasonOfReport =
-      "Please enter reason of report.";
-  static const String reason = "Reason...";
-  static const String reportUser = "Report User";
-  static const String areYouSureWantToUnblockThisUser =
-      "Are you sure want to unblock this user?";
-  static const String areYouSureWantToBlockThisUser =
-      "Are you sure want to block this user?";
-  static const String unblockUser = "Unblock User";
-  static const String blockUser = "Block User";
-  static const String hello = "Hello";
-  static const String howAreYou = "How are you?";
-
-  /// Error Screen
-
-  static const String somethingWantWrong = "Something Want Wrong!";
-  static const String goBack = "Go Back";
-
-  ///Favourite Screen
-  static const String ads = "Ads";
-  static const String favourites = "Favourites";
-  static const String edit = "Edit";
-  static const String deactivate = "Deactivate";
-  static const String remove = "Remove";
-  static const String egp = "EGP";
-  static const String likes = "Likes:";
-  static const String views = "Views:";
-  static const String sold = "Sold";
-  static const String rejected = "Rejected";
-  static const String active = "Active";
-  static const String review = "In Review";
-  static const String thisAdisCurrentlyLive = "This ad is currently live";
-  static const String thisAdisSold = "This ad is sold";
-  static const String markAsSold = "Mark as Sold";
-  static const String sellFasterNow = "Sell Faster Now";
-
-  /// Filter Screen
-
-  static const String filter = "Filter";
-  static const String newText = "New";
-  static const String used = "Used";
-  static const String price = "Price";
-  static const String egp0 = "EGP 0";
-  static const String to = "to";
-  static const String category = "Category";
-  static const String selectCategory = "Select Category";
-  static const String selectSubCategory = "Select Sub Category";
-  static const String subCategory = "Sub Category";
-  static const String selectBrands = "Select Brands";
-  static const String selectLocation = "Select Location";
-  static const String priceHighToLow = "Price: High to Low";
-  static const String priceLowToHigh = "Price: Low to High";
-  static const String datePublished = "Date Published";
-  static const String distance = "Distance";
-  static const String today = "Today";
-  static const String yesterday = "Yesterday";
-  static const String lastWeek = "Last Week";
-  static const String lastMonth = "Last Month";
-  static const String apply = "Apply";
-  static const String reset = "Reset";
-  static const String sortBy = "Sort By";
-  static const String postedWithin = "Posted Within";
-
-  /// Permission Screen
-  static const String helloWelcome = "Hello! Welcome";
-  static const String loremText =
-      "Lorem ipsum dolor sit amet, consecteturadipiscing elit.";
-  static const String useCurrentLocation = 'Use Current Location';
-  static const String skip = 'Skip';
-
-  /// Sell Screen
-  static const String sell = 'Sell';
-  static const String whatAreYouOffering = 'What are you offering?';
-  static const String uploadImages = 'Upload Images';
-  static const String upload = 'Upload';
-  static const String itemCondition = 'Item Condition';
-  static const String brand = 'Brand';
-  static const String select = 'Select';
-  static const String models = 'Models';
-  static const String year = 'Year';
-  static const String enter = 'Enter';
-  static const String fuel = 'Fuel';
-  static const String mileage = 'Mileage';
-  static const String transmission = 'Transmission';
-  static const String automatic = 'Automatic';
-  static const String manual = 'Manual';
-  static const String kmDriven = 'Km Driven';
-  static const String noOfOwners = 'No. of Owners';
-  static const String adTitle = 'Ad Title';
-  static const String priceEgp = 'Price (in EGP)';
-  static const String describeWhatYouAreSelling =
-      'Describe what you are selling';
-  static const String enterPrice = 'Enter Price';
-
-  /// ShowToast
-  static const String pleaseUploadMainImage = 'Please upload main image';
-  static const String pleaseUploadAddAtLeastOneImage =
-      'Please upload add at least one image';
-  static const String yearIsRequired = 'Year is required';
-  static const String kMDrivenIsRequired = 'KM Driven is required';
-  static const String adTitleIsRequired = 'Ad title is required';
-  static const String descriptionIsRequired = 'Description is required';
-  static const String locationIsRequired = 'Location is required';
-  static const String priceIsRequired = 'Price is required';
-  static const String pleaseSelectEducationType =
-      'Please select education type';
-  static const String pleasesSelectPositionType = "Please select position type";
-  static const String pleaseSelectSalaryPeriod = "Please select salary period";
-  static const String pleaseSelectSalaryForm = "Please select salary form";
-  static const String pleaseSelectSalaryTo = "Please select salary to";
-  static const String pleaseSelectPaymentMethod =
-      "Please Select Payment Method";
-  static const String pleaseSelectCard = "Please Select Card";
-
-  /// forms Screen
-  static const String add = 'Add';
-  static const String size = "Size";
-  static const String postNow = 'Post Now';
-  static const String updateNow = 'Update';
-  static const String ram = "Ram";
-  static const String strong = "Storage";
-  static const String screenSize = "Screen Size";
-  static const String material = "Material";
-  static const String editProduct = "Edit Product";
-  static const String type = "Type";
-  static const String positionType = "Position Type";
-  static const String salaryPeriod = "Salary Period";
-  static const String salaryFrom = "Salary from";
-  static const String salaryTo = "Salary to";
-  static const String congratulations = "Congratulations!";
-  static const String yourAdWillGoLiveShortly =
-      "Your Ad will go live shortly...";
-  static const String listOrLiftAllowsFreeAds =
-      "List or Lift allows 2 free ads 180 days for cars";
-  static const String reachMoreBuyersAndSellFaster =
-      "Reach more buyers and sell faster";
-  static const String upgradingAnAdHelpsYouToReachMoreBuyers =
-      "Upgrading an ad helps you to reach more buyers";
-  static const String reviewAd = "Review Ad";
-  static const String includeSomeDetails = "Include some details";
-
-  /// Setting Screen
-
-  static const String myProfile = "My Profile";
-  static const String guestUser = "Guest User";
-  static const String notifications = "Notifications";
-  static const String privacyPolicy = "Privacy Policy";
-  static const String termsConditions = "Terms & Conditions";
-
-  /// payment Screen
-
-  static const String nameOnCard = "Name on card";
-  static const String cardNumber = "Card Number";
-  static const String expDate = "Exp. Date";
-  static const String cvv = "CVV";
-  static const String saveCard = "Save Card";
-  static const String paymentSelection = "Payment selection";
-  static const String payNow = "Pay Now";
-  static const String paymentMethods = "Payment Methods";
-  static const String singleFeaturedAdFor7Days =
-      "Single Featured ad for 7 days";
-  static const String eGP260 = "EGP 260";
-  static const String name = "Name";
-  static const String description = "description";
-  static const String icon = "icon";
-  static const String paymentOptions = "Payment Options";
-  static const String addCard = "Add Card";
-  static const String selectCardAddNewCard = "Select a card or add a new card";
-  static const String expiryDate = "expiryDate";
-  static const String expiry = "Expiry:";
-
-  /// Product Screen
-  static const String cars = "Cars";
-  static const String owner = "Owner";
-  static const String city = "City";
-  static const String postingDate = "Posting Date";
-  static const String soldText = "sold";
-  static const String checkProductUrl =
-      "Check my this product on List or lift app url: www.google.com";
-  static const String postedBy = "Posted by";
-  static const String postedOn = "Posted On:";
-  static const String seeProfile = "See Profile";
-  static const String getDirection = "Get Direction";
-  static const String call = "Call";
-  static const String chat = "Chat";
-  static const String whatsapp = "Whatsapp";
-
-  /// Profile Screen
-
-  static const String completeYourProfile = "Complete your Profile";
-  static const String firstName = "First Name";
-  static const String lastName = "Last Name";
-  static const String email = "Email";
-  static const String iAgreeWithThe = "I agree with the ";
-  static const String editProfile = "Edit Profile";
-  static const String thisFieldIsNotEditable = "This field is not editable";
-  static const String bio = "Bio";
-  static const String writeHere = "Write here...";
-  static const String update = "Update";
-  static const String shareProfile = "Share Profile";
-  static const String memberSince = "Member since";
-
-  /// Purchase Screen
-  static const String featureAd = "Feature Ad";
-  static const String boostToTop = "Boost to Top";
-  static const String buyNow = "Buy Now";
-
-  static const String expiredAds = 'Expired';
-}*/

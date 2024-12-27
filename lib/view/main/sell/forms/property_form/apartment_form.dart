@@ -145,7 +145,7 @@ class ApartmentForm extends StatelessWidget {
             onSelected: (String? value) {
               viewModel.ownershipStatusTextController.text = value??"";
             },
-            options: ['Primary', 'Resell'],
+            options: [StringHelper.primary, StringHelper.resell],
             // suffix: PopupMenuButton<String>(
             //   clipBehavior: Clip.hardEdge,
             //   icon: const Icon(
@@ -200,7 +200,7 @@ class ApartmentForm extends StatelessWidget {
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() == "rent",
           child: AppTextField(
-            title: "Insurance",
+            title: StringHelper.insurance,
             hint: StringHelper.enter,
             controller: viewModel.insuranceTextController,
             maxLines: 4,
@@ -220,7 +220,7 @@ class ApartmentForm extends StatelessWidget {
         ),
 
         CommonDropdown(
-          title: "No Of Bedrooms",
+          title: StringHelper.noOfBedrooms,
           hint: viewModel.noOfBedroomsTextController.text,
           //controller: viewModel.noOfBedroomsTextController,
           //readOnly: true,
@@ -309,7 +309,7 @@ class ApartmentForm extends StatelessWidget {
           onSelected: (String? value) {
             viewModel.furnishingStatusTextController.text = value??"";
           },
-          options: ['Furnished', 'Unfurnished', 'Semi Furnished'],
+          options: [StringHelper.furnished, StringHelper.unfurnished, StringHelper.semiFurnished],
           // suffix: PopupMenuButton<String>(
           //   clipBehavior: Clip.hardEdge,
           //   icon: const Icon(
@@ -387,14 +387,14 @@ class ApartmentForm extends StatelessWidget {
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() != "rent",
           child: CommonDropdown(
-            title: "Building Age",
+            title: StringHelper.buildingAge,
             //hint: StringHelper.select,
             hint: viewModel.propertyAgeTextController.text,
             //readOnly: true,
             onSelected: (String? value) {
               viewModel.propertyAgeTextController.text = value??"";
             },
-            options: ["Under Construction", "0-11 months", "1-4 years", "5-9 years", "10-19 years", "20+ years"],
+            options: [StringHelper.underConstruction, "0-11 months", "1-4 years", "5-9 years", "10-19 years", "20+ years"],
             // suffix: PopupMenuButton<String>(
             //   clipBehavior: Clip.hardEdge,
             //   icon: const Icon(
@@ -437,7 +437,7 @@ class ApartmentForm extends StatelessWidget {
             onSelected: (String? value) {
               viewModel.completionStatusTextController.text = value??"";
             },
-            options: ['Ready', 'Off Plan'],
+            options: [StringHelper.ready, StringHelper.offPlan],
             //readOnly: true,
             // suffix: PopupMenuButton<String>(
             //   clipBehavior: Clip.hardEdge,
@@ -480,7 +480,7 @@ class ApartmentForm extends StatelessWidget {
             onSelected: (String? value) {
               viewModel.paymentTypeTextController.text = value??"";
             },
-            options: ['Installment', 'Cash or Installment', 'cash'],
+            options: [StringHelper.installment, StringHelper.cashOrInstallment, StringHelper.cash],
             //readOnly: true,
             // suffix: PopupMenuButton<String>(
             //   clipBehavior: Clip.hardEdge,
@@ -518,14 +518,14 @@ class ApartmentForm extends StatelessWidget {
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() != "rent",
           child: CommonDropdown(
-            title: "Listed By",
+            title: StringHelper.listedBy,
             //hint: StringHelper.select,
             hint: viewModel.listedByTextController.text,
             //readOnly: true,
             onSelected: (String? value) {
               viewModel.listedByTextController.text = value??"";
             },
-            options: ['Agent', 'Landlord'],
+            options: [StringHelper.agent, StringHelper.landlord],
             // suffix: PopupMenuButton<String>(
             //   clipBehavior: Clip.hardEdge,
             //   icon: const Icon(
@@ -562,13 +562,13 @@ class ApartmentForm extends StatelessWidget {
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() == "rent",
           child: CommonDropdown(
-            title: "Rental Term",
+            title: StringHelper.rentalTerm,
             //hint: StringHelper.select,
             hint: viewModel.rentalTermsTextController.text,
             onSelected: (String? value) {
               viewModel.rentalTermsTextController.text = value??"";
             },
-            options: ['Daily', 'Weekly', 'Monthly', 'Yearly'],
+            options: [StringHelper.daily, StringHelper.weekly, StringHelper.monthly, StringHelper.yearly],
             //readOnly: true,
             // suffix: PopupMenuButton<String>(
             //   clipBehavior: Clip.hardEdge,
@@ -649,7 +649,7 @@ class ApartmentForm extends StatelessWidget {
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() == "rent",
           child: AppTextField(
-            title: "Deposit",
+            title: StringHelper.deposit,
             controller: viewModel.depositTextController,
             hint: StringHelper.enter,
             maxLength: 8,
@@ -711,7 +711,7 @@ class ApartmentForm extends StatelessWidget {
               }
               if (viewModel.propertyForTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Property Type');
+                    message: StringHelper.plsSelectPropertyType);
                 return;
               }
               if (viewModel.adTitleTextController.text.trim().isEmpty) {
@@ -721,61 +721,61 @@ class ApartmentForm extends StatelessWidget {
               }
               if (viewModel.adTitleTextController.text.trim().length < 10) {
                 DialogHelper.showToast(
-                  message: "Ad title must be at least 10 characters long.",
+                  message: StringHelper.adLength,
                 );
                 return;
               }
               if (viewModel.propertyForTypeTextController.text.trim().isEmpty) {
                 DialogHelper.showToast(
-                    message: "Please select type");
+                    message: StringHelper.plsSelectType);
                 return;
               }
               if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.ownershipStatusTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Ownership');
+                    message: StringHelper.plsSelectOwnership);
                 return;
               }
               if (viewModel.areaSizeTextController.text.trim().isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please add area of Property');
+                    message: StringHelper.plsAddArea);
                 return;
               }
               if (viewModel.currentPropertyType.toLowerCase() == "rent" && viewModel.insuranceTextController.text.isEmpty) {
-                DialogHelper.showToast(message: 'Please enter insurance');
+                DialogHelper.showToast(message: StringHelper.plsSelectInsurance);
                 return;
               }
               if (viewModel.noOfBedroomsTextController.text.isEmpty) {
-                DialogHelper.showToast(message: 'Please select Bedrooms');
+                DialogHelper.showToast(message: StringHelper.plsSelectBedrooms);
                 return;
               }
               if (viewModel.noOfBathroomsTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Bathrooms');
+                    message: StringHelper.plsSelectBathrooms);
                 return;
               }
               if (viewModel.furnishingStatusTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select Furnishing');
+                    message: StringHelper.plsSelectFurnishing);
                 return;
               }
               if (viewModel.levelTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select level');
+                    message: StringHelper.plsSelectLevel);
                 return;
               }
               if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.propertyAgeTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select building age');
+                    message: StringHelper.plsSelectBuildingAge);
                 return;
               }
               if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.paymentTypeTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select payment type');
+                    message: StringHelper.plsSelectPaymentType);
                 return;
               }
               if (viewModel.currentPropertyType.toLowerCase() != "rent" && viewModel.listedByTextController.text.isEmpty) {
                 DialogHelper.showToast(
-                    message: 'Please select listed by');
+                    message: StringHelper.plsSelectListedBy);
                 return;
               }
               if (viewModel.addressTextController.text.trim().isEmpty) {

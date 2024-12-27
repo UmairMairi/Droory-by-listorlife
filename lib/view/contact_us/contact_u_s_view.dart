@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:list_and_life/base/extensions/context_extension.dart';
+import 'package:list_and_life/base/helpers/string_helper.dart';
 import 'package:list_and_life/res/assets_res.dart';
 
 class ContactUsView extends StatelessWidget {
@@ -9,7 +10,7 @@ class ContactUsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Contact Us'),
+        title:  Text(StringHelper.contactUs),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -20,22 +21,22 @@ class ContactUsView extends StatelessWidget {
           children: [
             const SizedBox(height: 10),
             Text(
-              "We're here to help! Reach out to us through any of the following methods.",
+              StringHelper.hereToHelp,
               style: context.textTheme.titleSmall,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
             _buildContactOption(
               iconPath: AssetsRes.IC_EMAIL_SERVICE,
-              title: 'Email',
-              subtitle: 'Send us your queries',
+              title: StringHelper.email,
+              subtitle: StringHelper.sendUsYourQueries,
               detail: 'am5803@gmail.com',
             ),
             const SizedBox(height: 25),
             _buildContactOption(
               iconPath: AssetsRes.IC_PHONE_SERVICE,
-              title: 'Phone',
-              subtitle: 'Call us for immediate assistance',
+              title: StringHelper.phoneNumber,
+              subtitle: StringHelper.callUsForImmediateAssistance,
               detail: '+1(555) 000-0000',
             ),
             const SizedBox(height: 25),
