@@ -274,9 +274,9 @@ class DateHelper {
         if (diff < _minuteMillis) {
           return "just now";
         } else if (diff < 2 * _minuteMillis) {
-          return "a minute ago";
+          return "a min ago";
         } else if (diff < 50 * _minuteMillis) {
-          return "${(diff / _minuteMillis).floor()} minutes ago";
+          return "${(diff / _minuteMillis).floor()} min ago";
         } else if (diff < 90 * _minuteMillis) {
           return "an hour ago";
         } else if (diff < 24 * _hourMillis) {

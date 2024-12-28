@@ -35,12 +35,21 @@ class _MessageViewState extends State<MessageView> {
   void initState() {
     // TODO: implement initState
     viewModel = context.read<ChatVM>();
-    WidgetsBinding.instance.addPostFrameCallback((d) =>
-        viewModel.getMessageList(
-            receiverId: widget.chat?.senderId == DbHelper.getUserModel()?.id
-                ? widget.chat?.receiverDetail?.id
-                : widget.chat?.senderDetail?.id,
-            productId: widget.chat?.productId));
+    WidgetsBinding.instance.addPostFrameCallback((d) {
+      viewModel.readChatStatus(
+          receiverId: widget.chat?.senderId == DbHelper.getUserModel()?.id
+              ? widget.chat?.receiverDetail?.id
+              : widget.chat?.senderDetail?.id,
+          roomId: widget.chat?.lastMessageDetail?.roomId??0);
+      viewModel.getMessageList(
+          receiverId: widget.chat?.senderId == DbHelper.getUserModel()?.id
+              ? widget.chat?.receiverDetail?.id
+              : widget.chat?.senderDetail?.id,
+          productId: widget.chat?.productId);
+    }
+
+    );
+
     super.initState();
   }
 

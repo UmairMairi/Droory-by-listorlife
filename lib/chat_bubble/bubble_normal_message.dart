@@ -52,13 +52,15 @@ class BubbleNormalMessage extends StatelessWidget {
   ///chat bubble builder method
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     bool stateTick = false;
     Widget? stateIcon;
+    Widget? timeStateIcon;
     if (sent) {
       stateTick = true;
       stateIcon = const Icon(
         Icons.done,
-        size: 18,
+        size: 15,
         color: Color(0xFF97AD8E),
       );
     }
@@ -66,7 +68,7 @@ class BubbleNormalMessage extends StatelessWidget {
       stateTick = true;
       stateIcon = const Icon(
         Icons.done_all,
-        size: 18,
+        size: 15,
         color: Color(0xFF97AD8E),
       );
     }
@@ -74,17 +76,17 @@ class BubbleNormalMessage extends StatelessWidget {
       stateTick = true;
       stateIcon = const Icon(
         Icons.done_all,
-        size: 18,
+        size: 15,
         color: Color(0xFF92DEDA),
       );
     }
 
     if (timeStamp) {
       stateTick = true;
-      stateIcon = Text(
+      timeStateIcon = Text(
         createdAt ?? '',
         style: const TextStyle(
-          fontSize: 10,
+          fontSize: 8,
           color: Colors.white70,
         ),
       );
@@ -102,7 +104,7 @@ class BubbleNormalMessage extends StatelessWidget {
         Container(
           color: Colors.transparent,
           constraints: constraints ??
-              BoxConstraints(maxWidth: MediaQuery.of(context).size.width * .8),
+              BoxConstraints(maxWidth: size.width * .8),
           margin: margin,
           padding: padding,
           child: GestureDetector(
@@ -140,11 +142,19 @@ class BubbleNormalMessage extends StatelessWidget {
                       textAlign: TextAlign.left,
                     ),
                   ),
-                  stateIcon != null && stateTick
+                  stateIcon != null || timeStateIcon !=null && stateTick
                       ? Positioned(
                           bottom: 4,
                           right: 6,
-                          child: stateIcon,
+                          child: Row(
+                            children: [
+                              timeStateIcon??SizedBox.shrink(),
+                              if(stateIcon!=null)...[
+                                SizedBox(width: 5,),
+                                stateIcon
+                              ]
+                            ],
+                          ),
                         )
                       : const SizedBox(
                           width: 1,

@@ -155,7 +155,7 @@ class ChatVM extends BaseViewModel {
       //DialogHelper.showToast(message: "You blocked this user successfully");
     });
     _socketIO.on(SocketConstants.readChatStatus, (data) {
-      log("Listen ${SocketConstants.readChatStatus} => data $data");
+      log("Listen ${SocketConstants.readChatStatus} => readChatStatus data $data");
     });
     _socketIO.on(SocketConstants.clearChat, (data) {
       log("Listen ${SocketConstants.clearChat} => data $data");
@@ -260,12 +260,25 @@ class ChatVM extends BaseViewModel {
           senderId: DbHelper.getUserModel()?.id?.toInt(),
           receiverId: receiverId?.toInt(),
           messageType: type,
+          isRead: 0,
           createdAt: "${DateTime.now()}",
           updatedAt: "${DateTime.now()}"),
     );
     messageStreamController.add(chatItems);
 
     DialogHelper.hideLoading();
+  }
+
+
+  void readChatStatus({required dynamic roomId,required dynamic receiverId}) {
+
+    Map<String, dynamic> map = {
+      "sender_id": DbHelper.getUserModel()?.id,
+      "room_id": roomId,
+    };
+    log("Socket Emit => ${SocketConstants.readChatStatus} with $map",
+        name: "readChatStatus");
+    _socketIO.emit(SocketConstants.readChatStatus, map);
   }
 
   String getCreatedAt({String? time}) {
@@ -303,6 +316,9 @@ class ChatVM extends BaseViewModel {
             color: Colors.white,
           ),
           timeStamp: true,
+          sent: data.isRead == 0,
+          delivered: data.isRead == 0,
+          seen: data.isRead == 1,
           createdAt: DateHelper.getTimeAgo(
               DateTime.parse(data.updatedAt ?? '2021-01-01 00:00:00')
                   .millisecondsSinceEpoch),
@@ -318,6 +334,9 @@ class ChatVM extends BaseViewModel {
               color: Colors.white,
               fontSize: 20,
               fontFamily: FontRes.MONTSERRAT_SEMIBOLD),
+          sent: data.isRead == 0,
+          delivered: data.isRead == 0,
+          seen: data.isRead == 1,
           onAccept: () {
             updateOfferStatus(
               messageId: data.id,
@@ -367,6 +386,9 @@ class ChatVM extends BaseViewModel {
 
       case 3:
         return BubbleNormalImage(
+            sent: data.isRead == 0,
+            delivered: data.isRead == 0,
+            seen: data.isRead == 1,
             id: "${data.id}",
             imageUrl: "${ApiConstants.imageUrl}/${data.message}",
             timeStamp: true,
@@ -380,6 +402,9 @@ class ChatVM extends BaseViewModel {
                 height: 150));
       case 5:
         return BubbleOfferAcceptedMessage(
+          sent: data.isRead == 0,
+          delivered: data.isRead == 0,
+          seen: data.isRead == 1,
           textStyle: const TextStyle(
               color: Colors.white,
               fontSize: 20,
@@ -397,6 +422,9 @@ class ChatVM extends BaseViewModel {
 
       case 6:
         return BubbleOfferAcceptedMessage(
+          sent: data.isRead == 0,
+          delivered: data.isRead == 0,
+          seen: data.isRead == 1,
           isAccepted: false,
           textStyle: const TextStyle(
               color: Colors.white,
