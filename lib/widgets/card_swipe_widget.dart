@@ -96,7 +96,7 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget>
               children: [
                 PageView.builder(
                   controller: _pageController,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: ClampingScrollPhysics(),
                   onPageChanged: (index) {
                     setState(() {
                       _currentPage = index;
