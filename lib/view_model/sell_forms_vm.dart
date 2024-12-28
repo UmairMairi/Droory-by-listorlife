@@ -484,6 +484,12 @@ class SellFormsVM extends BaseViewModel {
         images.add(await BaseClient.uploadImage(imagePath: element.media ?? ''));
       }
     }
+    var communication = "";
+    if(communicationChoice == "none" || communicationChoice.isEmpty){
+      communication = "chat";
+    }else{
+      communication = communicationChoice;
+    }
     Map<String, dynamic> body = {
       "category_id": category?.id,
       "sub_category_id": subCategory?.id,
@@ -523,7 +529,7 @@ class SellFormsVM extends BaseViewModel {
       "storage": storageTextController.text.trim(),
       "screen_size": screenSizeTextController.text.trim(),
       "size_id": selectedSize?.id,
-      'communication_choice': communicationChoice,
+      'communication_choice': communication,
       'property_for': propertyForTextController.text,
       'bedrooms': noOfBedroomsTextController.text,
       'bathrooms': noOfBathroomsTextController.text,
@@ -658,7 +664,12 @@ class SellFormsVM extends BaseViewModel {
         }
       }
     }
-
+    var communication = "";
+    if(communicationChoice == "none" || communicationChoice.isEmpty){
+      communication = "chat";
+    }else{
+      communication = communicationChoice;
+    }
     Map<String, dynamic> body = {
       "product_id": productId,
       "category_id": category?.id,
@@ -699,7 +710,7 @@ class SellFormsVM extends BaseViewModel {
       "screen_size": screenSizeTextController.text.trim(),
       "size_id": selectedSize?.id,
       "delete_img_id": deletedImageIds.join(','),
-      'communication_choice': communicationChoice,
+      'communication_choice': communication,
       'property_for': propertyForTextController.text,
       'bedrooms': noOfBedroomsTextController.text,
       'bathrooms': noOfBathroomsTextController.text,
