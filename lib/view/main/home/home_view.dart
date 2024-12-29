@@ -377,6 +377,7 @@ class _LocationSearchPopupState extends State<LocationSearchPopup> {
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: GooglePlaceAutoCompleteTextField(
+
                     textEditingController: searchController,
                     countries: const ['eg'],
                     googleAPIKey: "AIzaSyBDLT4xDcywIynEnoHJn6GdPisZLr4G5TU",
