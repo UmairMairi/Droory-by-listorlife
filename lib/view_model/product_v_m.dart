@@ -219,10 +219,17 @@ class ProductVM extends BaseViewModel {
         specs.add(_buildSpecRow(context, "${data.salleryPeriod}",
             Icons.attach_money, 'Salary Period'));
       }
-      if (data?.salleryFrom != null && data?.salleryTo != null) {
+      // if (data?.salleryFrom != null && data?.salleryTo != null) {
+      //   specs.add(_buildSpecRow(
+      //       context,
+      //       "${data?.salleryFrom}-${data?.salleryTo}",
+      //       Icons.attach_money,
+      //       'Salary Range'));
+      // }
+      if (data?.salleryFrom != null) {
         specs.add(_buildSpecRow(
             context,
-            "${data?.salleryFrom}-${data?.salleryTo}",
+            "${data?.salleryFrom}",
             Icons.attach_money,
             'Salary Range'));
       }

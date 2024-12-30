@@ -161,7 +161,8 @@ class ProductDetailView extends BaseView<ProductVM> {
                               const Gap(10),
                               if (productData?.categoryId == 9) ...{
                                 Text(
-                                  "${StringHelper.egp} ${productData?.salleryFrom} - ${productData?.salleryTo}",
+                                  "${StringHelper.egp} ${productData?.salleryFrom}",
+                                //  "${StringHelper.egp} ${productData?.salleryFrom} - ${productData?.salleryTo}",
                                   style: context.textTheme.titleLarge
                                       ?.copyWith(color: Colors.red),
                                 ),

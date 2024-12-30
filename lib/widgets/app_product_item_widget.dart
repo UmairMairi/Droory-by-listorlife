@@ -11,6 +11,7 @@ import 'package:list_and_life/widgets/card_swipe_widget.dart';
 import 'package:list_and_life/widgets/communication_buttons.dart';
 import 'package:list_and_life/widgets/like_button.dart';
 
+import '../base/helpers/string_helper.dart';
 import '../models/common/map_response.dart';
 import '../base/network/api_constants.dart';
 import '../base/network/api_request.dart';
@@ -89,11 +90,20 @@ class AppProductItemWidget extends StatelessWidget {
                           style: context.textTheme.titleSmall,
                         ),
                       ),
-                      Text(
-                        "EGP ${data?.price}",
-                        style: context.textTheme.titleMedium
-                            ?.copyWith(color: context.theme.colorScheme.error),
-                      ),
+                      if (data?.categoryId == 9) ...{
+                        Text(
+                          "${StringHelper.egp} ${data?.salleryFrom}",
+                          //"${StringHelper.egp} ${data?.salleryFrom} - ${data?.salleryTo}",
+                          style: context.textTheme.titleMedium
+                              ?.copyWith(color: context.theme.colorScheme.error),
+                        ),
+                      } else ...{
+                        Text(
+                          "${StringHelper.egp} ${data?.price}",
+                          style: context.textTheme.titleMedium
+                              ?.copyWith(color: context.theme.colorScheme.error),
+                        ),
+                      },
                     ],
                   ),
                   const Gap(5),
