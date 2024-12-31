@@ -42,6 +42,7 @@ class MessageModel {
   int? senderId;
   int? receiverId;
   String? roomId;
+  dynamic productId;
   String? message;
   int? messageType;
   int? isRead;
@@ -55,6 +56,7 @@ class MessageModel {
       this.roomId,
       this.message,
       this.messageType,
+      this.productId,
       this.isRead,
       this.createdAt,
       this.updatedAt});
@@ -66,6 +68,7 @@ class MessageModel {
     roomId = json['room_id'];
     message = json['message'];
     messageType = json['message_type'];
+    productId = json['product_id'];
     isRead = json['is_read'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
@@ -81,6 +84,7 @@ class MessageModel {
     data['message_type'] = messageType;
     data['is_read'] = isRead;
     data['createdAt'] = createdAt;
+    data['product_id'] = productId;
     data['updatedAt'] = updatedAt;
     return data;
   }

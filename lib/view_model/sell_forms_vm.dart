@@ -303,6 +303,7 @@ class SellFormsVM extends BaseViewModel {
   void updateTextFieldsItems({ProductDetailModel? item}) async {
     if (item == null) {
       resetTextFields();
+      communicationChoice = DbHelper.getUserModel()?.communicationChoice ?? '';
       isEditProduct = false;
       return;
     }

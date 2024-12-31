@@ -65,6 +65,16 @@ class ChatVM extends BaseViewModel {
     if (SocketHelper().isUserConnected == false) {
       SocketHelper().connectUser();
     }
+    getInboxListener();
+    getMessageListener();
+    offerListener();
+    sendMessageListener();
+    blockReportListener();
+    readChatListener();
+    clearChatListener();
+  }
+
+  getInboxListener(){
     _socketIO.on(SocketConstants.getUserLists, (data) {
       log("Listen ${SocketConstants.getUserLists} => data $data");
       inboxList.clear();
@@ -79,8 +89,11 @@ class ChatVM extends BaseViewModel {
       filteredInboxList = inboxList;
       inboxStreamController.add(filteredInboxList);
     });
+  }
+
+  getMessageListener(){
     _socketIO.on(SocketConstants.getMessageList, (data) {
-      log("Listen ${SocketConstants.getMessageList} => data $data");
+      log("Listen ${SocketConstants.getMessageList} => getMessageList $data");
 
       MessageDataModel model = MessageDataModel.fromJson(data);
       chatItems.clear();
@@ -113,6 +126,9 @@ class ChatVM extends BaseViewModel {
       }
       notifyListeners();
     });
+  }
+
+  offerListener(){
     _socketIO.on(SocketConstants.offerUpdate, (data) {
       log("Listen ${SocketConstants.offerUpdate} => data $data");
 
@@ -121,17 +137,23 @@ class ChatVM extends BaseViewModel {
         receiverId: data['receiver_id'],
       );
     });
+  }
+
+  sendMessageListener(){
     _socketIO.on(SocketConstants.sendMessage, (data) {
       log("Listen ${SocketConstants.sendMessage} => data $data");
 
       /// getInboxList();
       MessageModel message = MessageModel.fromJson(data);
-
+      readChatStatus(roomId: message.roomId, receiverId: 0);
       if (message.senderId != DbHelper.getUserModel()?.id) {
         chatItems.insert(0, message);
         messageStreamController.add(chatItems);
       }
     });
+  }
+
+  blockReportListener(){
     _socketIO.on(SocketConstants.blockOrReportUser, (data) {
       log("Listen ${SocketConstants.blockOrReportUser} => data $data");
 
@@ -154,9 +176,21 @@ class ChatVM extends BaseViewModel {
       notifyListeners();
       //DialogHelper.showToast(message: "You blocked this user successfully");
     });
+  }
+
+  readChatListener(){
     _socketIO.on(SocketConstants.readChatStatus, (data) {
       log("Listen ${SocketConstants.readChatStatus} => readChatStatus data $data");
+
+      for (var element in chatItems) {
+        element.isRead = 1;
+      }
+      messageStreamController.add(chatItems);
+      notifyListeners();
     });
+  }
+
+  clearChatListener(){
     _socketIO.on(SocketConstants.clearChat, (data) {
       log("Listen ${SocketConstants.clearChat} => data $data");
       //{sender_id: 64, receiver_id: 88, product_id: 107}
@@ -181,27 +215,6 @@ class ChatVM extends BaseViewModel {
     _socketIO.emit(SocketConstants.getUserLists, map);
   }
 
-  void searchInbox(String query) {
-    _debounce.run(() {
-      if (query.isEmpty) {
-        filteredInboxList = inboxList;
-      } else {
-        filteredInboxList = inboxList.where((inbox) {
-          String senderName = inbox.senderDetail?.name?.toLowerCase() ?? '';
-          String receiverName = inbox.receiverDetail?.name?.toLowerCase() ?? '';
-          String productName = inbox.productDetail?.name?.toLowerCase() ?? '';
-          String lastMessage =
-              inbox.lastMessageDetail?.message?.toLowerCase() ?? '';
-          return senderName.contains(query.toLowerCase()) ||
-              receiverName.contains(query.toLowerCase()) ||
-              productName.contains(query.toLowerCase()) ||
-              lastMessage.contains(query.toLowerCase());
-        }).toList();
-      }
-      inboxStreamController.add(filteredInboxList);
-    });
-  }
-
   void getMessageList({num? receiverId, required num? productId}) {
     blockedUser = false;
     Map<String, dynamic> map = {
@@ -218,9 +231,9 @@ class ChatVM extends BaseViewModel {
 
   void updateOfferStatus(
       {required num? messageId,
-      required num? messageType,
-      required num? productId,
-      required num? receiverId}) {
+        required num? messageType,
+        required num? productId,
+        required num? receiverId}) {
     Map<String, dynamic> map = {
       'message_id': messageId,
       'message_type': messageType,
@@ -235,9 +248,9 @@ class ChatVM extends BaseViewModel {
 
   void sendMessage(
       {String? message,
-      int? type,
-      required num? receiverId,
-      required num? productId}) {
+        int? type,
+        required num? receiverId,
+        required num? productId}) {
     if (message == null) {
       return;
     }
@@ -269,24 +282,12 @@ class ChatVM extends BaseViewModel {
     DialogHelper.hideLoading();
   }
 
-
-  void readChatStatus({required dynamic roomId,required dynamic receiverId}) {
-
+  void readChatStatus({required dynamic roomId, required dynamic receiverId}) {
     Map<String, dynamic> map = {
       "sender_id": DbHelper.getUserModel()?.id,
       "room_id": roomId,
     };
-    log("Socket Emit => ${SocketConstants.readChatStatus} with $map",
-        name: "readChatStatus");
     _socketIO.emit(SocketConstants.readChatStatus, map);
-  }
-
-  String getCreatedAt({String? time}) {
-    String dateTimeString = "2024-06-25T01:01:47.000Z";
-    DateTime dateTime = DateTime.parse(time ?? dateTimeString);
-    int timestamp = dateTime.millisecondsSinceEpoch ~/ 1000;
-
-    return DateHelper.getTimeAgo(timestamp);
   }
 
   void reportBlockUser(
@@ -307,6 +308,47 @@ class ChatVM extends BaseViewModel {
     _socketIO.emit(SocketConstants.blockOrReportUser, map);
   }
 
+  void clearChat({num? reciver, num? sender, required num? product}) {
+    Map<String, dynamic> map = {
+      "sender_id": sender,
+      "receiver_id": reciver,
+      "product_id": product
+    };
+    log("Socket Emit => ${SocketConstants.clearChat} with $map",
+        name: "SOCKET");
+
+    _socketIO.emit(SocketConstants.clearChat, map);
+  }
+
+  void searchInbox(String query) {
+    _debounce.run(() {
+      if (query.isEmpty) {
+        filteredInboxList = inboxList;
+      } else {
+        filteredInboxList = inboxList.where((inbox) {
+          String senderName = inbox.senderDetail?.name?.toLowerCase() ?? '';
+          String receiverName = inbox.receiverDetail?.name?.toLowerCase() ?? '';
+          String productName = inbox.productDetail?.name?.toLowerCase() ?? '';
+          String lastMessage =
+              inbox.lastMessageDetail?.message?.toLowerCase() ?? '';
+          return senderName.contains(query.toLowerCase()) ||
+              receiverName.contains(query.toLowerCase()) ||
+              productName.contains(query.toLowerCase()) ||
+              lastMessage.contains(query.toLowerCase());
+        }).toList();
+      }
+      inboxStreamController.add(filteredInboxList);
+    });
+  }
+
+  String getCreatedAt({String? time}) {
+    String dateTimeString = "2024-06-25T01:01:47.000Z";
+    DateTime dateTime = DateTime.parse(time ?? dateTimeString);
+    int timestamp = dateTime.millisecondsSinceEpoch ~/ 1000;
+
+    return DateHelper.getTimeAgo(timestamp);
+  }
+
   Widget getBubble(
       {int? type, required MessageModel data, required InboxModel? chat}) {
     switch (type) {
@@ -316,9 +358,15 @@ class ChatVM extends BaseViewModel {
             color: Colors.white,
           ),
           timeStamp: true,
-          sent: data.isRead == 0,
-          delivered: data.isRead == 0,
-          seen: data.isRead == 1,
+          sent: data.senderId == DbHelper.getUserModel()?.id
+              ? data.isRead == 0
+              : false,
+          delivered: data.senderId == DbHelper.getUserModel()?.id
+              ? data.isRead == 0
+              : false,
+          seen: data.senderId == DbHelper.getUserModel()?.id
+              ? data.isRead == 1
+              : false,
           createdAt: DateHelper.getTimeAgo(
               DateTime.parse(data.updatedAt ?? '2021-01-01 00:00:00')
                   .millisecondsSinceEpoch),
@@ -334,9 +382,15 @@ class ChatVM extends BaseViewModel {
               color: Colors.white,
               fontSize: 20,
               fontFamily: FontRes.MONTSERRAT_SEMIBOLD),
-          sent: data.isRead == 0,
-          delivered: data.isRead == 0,
-          seen: data.isRead == 1,
+          sent: data.senderId == DbHelper.getUserModel()?.id
+              ? data.isRead == 0
+              : false,
+          delivered: data.senderId == DbHelper.getUserModel()?.id
+              ? data.isRead == 0
+              : false,
+          seen: data.senderId == DbHelper.getUserModel()?.id
+              ? data.isRead == 1
+              : false,
           onAccept: () {
             updateOfferStatus(
               messageId: data.id,
@@ -383,12 +437,17 @@ class ChatVM extends BaseViewModel {
               ? Colors.black
               : context.theme.colorScheme.error,
         );
-
       case 3:
         return BubbleNormalImage(
-            sent: data.isRead == 0,
-            delivered: data.isRead == 0,
-            seen: data.isRead == 1,
+            sent: data.senderId == DbHelper.getUserModel()?.id
+                ? data.isRead == 0
+                : false,
+            delivered: data.senderId == DbHelper.getUserModel()?.id
+                ? data.isRead == 0
+                : false,
+            seen: data.senderId == DbHelper.getUserModel()?.id
+                ? data.isRead == 1
+                : false,
             id: "${data.id}",
             imageUrl: "${ApiConstants.imageUrl}/${data.message}",
             timeStamp: true,
@@ -402,9 +461,15 @@ class ChatVM extends BaseViewModel {
                 height: 150));
       case 5:
         return BubbleOfferAcceptedMessage(
-          sent: data.isRead == 0,
-          delivered: data.isRead == 0,
-          seen: data.isRead == 1,
+          sent: data.senderId == DbHelper.getUserModel()?.id
+              ? data.isRead == 0
+              : false,
+          delivered: data.senderId == DbHelper.getUserModel()?.id
+              ? data.isRead == 0
+              : false,
+          seen: data.senderId == DbHelper.getUserModel()?.id
+              ? data.isRead == 1
+              : false,
           textStyle: const TextStyle(
               color: Colors.white,
               fontSize: 20,
@@ -422,9 +487,15 @@ class ChatVM extends BaseViewModel {
 
       case 6:
         return BubbleOfferAcceptedMessage(
-          sent: data.isRead == 0,
-          delivered: data.isRead == 0,
-          seen: data.isRead == 1,
+          sent: data.senderId == DbHelper.getUserModel()?.id
+              ? data.isRead == 0
+              : false,
+          delivered: data.senderId == DbHelper.getUserModel()?.id
+              ? data.isRead == 0
+              : false,
+          seen: data.senderId == DbHelper.getUserModel()?.id
+              ? data.isRead == 1
+              : false,
           isAccepted: false,
           textStyle: const TextStyle(
               color: Colors.white,
@@ -456,15 +527,5 @@ class ChatVM extends BaseViewModel {
     }
   }
 
-  void clearChat({num? reciver, num? sender, required num? product}) {
-    Map<String, dynamic> map = {
-      "sender_id": sender,
-      "receiver_id": reciver,
-      "product_id": product
-    };
-    log("Socket Emit => ${SocketConstants.clearChat} with $map",
-        name: "SOCKET");
 
-    _socketIO.emit(SocketConstants.clearChat, map);
-  }
 }

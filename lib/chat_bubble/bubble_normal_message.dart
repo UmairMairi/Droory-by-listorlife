@@ -77,7 +77,7 @@ class BubbleNormalMessage extends StatelessWidget {
       stateIcon = const Icon(
         Icons.done_all,
         size: 15,
-        color: Color(0xFF92DEDA),
+        color: Colors.red,
       );
     }
 
@@ -149,8 +149,8 @@ class BubbleNormalMessage extends StatelessWidget {
                           child: Row(
                             children: [
                               timeStateIcon??SizedBox.shrink(),
+                              SizedBox(width: 5,),
                               if(stateIcon!=null)...[
-                                SizedBox(width: 5,),
                                 stateIcon
                               ]
                             ],
