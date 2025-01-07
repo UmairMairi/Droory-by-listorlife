@@ -61,7 +61,7 @@ class BubbleNormalMessage extends StatelessWidget {
       stateIcon = const Icon(
         Icons.done,
         size: 15,
-        color: Color(0xFF97AD8E),
+        color: Colors.grey,
       );
     }
     if (delivered) {
@@ -69,7 +69,7 @@ class BubbleNormalMessage extends StatelessWidget {
       stateIcon = const Icon(
         Icons.done_all,
         size: 15,
-        color: Color(0xFF97AD8E),
+        color: Colors.grey,
       );
     }
     if (seen) {
@@ -77,7 +77,7 @@ class BubbleNormalMessage extends StatelessWidget {
       stateIcon = const Icon(
         Icons.done_all,
         size: 15,
-        color: Colors.red,
+        color: Colors.green,
       );
     }
 

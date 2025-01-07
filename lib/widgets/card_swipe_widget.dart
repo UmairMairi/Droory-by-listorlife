@@ -129,28 +129,28 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget>
                         });
                   },
                 ),
-                Positioned(
-                  left: 0,
-                  child: IconButton(
-                    onPressed: _goToPreviousPage,
-                    icon: Icon(
-                      Icons.arrow_back_ios,
-                      textDirection: TextDirection.ltr,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                Positioned(
-                  right: 0,
-                  child: IconButton(
-                    onPressed: _goToNextPage,
-                    icon: Icon(
-                      Icons.arrow_forward_ios,
-                      textDirection: TextDirection.ltr,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
+                // Positioned(
+                //   left: 0,
+                //   child: IconButton(
+                //     onPressed: _goToPreviousPage,
+                //     icon: Icon(
+                //       Icons.arrow_back_ios,
+                //       textDirection: TextDirection.ltr,
+                //       color: Colors.white,
+                //     ),
+                //   ),
+                // ),
+                // Positioned(
+                //   right: 0,
+                //   child: IconButton(
+                //     onPressed: _goToNextPage,
+                //     icon: Icon(
+                //       Icons.arrow_forward_ios,
+                //       textDirection: TextDirection.ltr,
+                //       color: Colors.white,
+                //     ),
+                //   ),
+                // ),
                 Positioned(bottom: 0, child: _buildDots(context: context)),
               ],
             )

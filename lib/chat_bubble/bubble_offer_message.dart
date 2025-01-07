@@ -58,38 +58,40 @@ class BubbleOfferMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool stateTick = false;
+
     Widget? stateIcon;
+    Widget? timeStateIcon;
     if (sent) {
       stateTick = true;
       stateIcon = const Icon(
         Icons.done,
-        size: 18,
-        color: Color(0xFF97AD8E),
+        size: 15,
+        color: Colors.grey,
       );
     }
     if (delivered) {
       stateTick = true;
       stateIcon = const Icon(
         Icons.done_all,
-        size: 18,
-        color: Color(0xFF97AD8E),
+        size: 15,
+        color: Colors.grey,
       );
     }
     if (seen) {
       stateTick = true;
       stateIcon = const Icon(
         Icons.done_all,
-        size: 18,
-        color: Color(0xFF92DEDA),
+        size: 15,
+        color: Colors.green,
       );
     }
 
     if (timeStamp) {
       stateTick = true;
-      stateIcon = Text(
+      timeStateIcon = Text(
         createdAt ?? '',
         style: const TextStyle(
-          fontSize: 10,
+          fontSize: 8,
           color: Colors.white70,
         ),
       );
@@ -274,43 +276,44 @@ class BubbleOfferAcceptedMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool stateTick = false;
+
     Widget? stateIcon;
+    Widget? timeStateIcon;
     if (sent) {
       stateTick = true;
       stateIcon = const Icon(
         Icons.done,
-        size: 18,
-        color: Color(0xFF97AD8E),
+        size: 15,
+        color: Colors.grey,
       );
     }
     if (delivered) {
       stateTick = true;
       stateIcon = const Icon(
         Icons.done_all,
-        size: 18,
-        color: Color(0xFF97AD8E),
+        size: 15,
+        color: Colors.grey,
       );
     }
     if (seen) {
       stateTick = true;
       stateIcon = const Icon(
         Icons.done_all,
-        size: 18,
-        color: Color(0xFF92DEDA),
+        size: 15,
+        color: Colors.green,
       );
     }
 
     if (timeStamp) {
       stateTick = true;
-      stateIcon = Text(
+      timeStateIcon = Text(
         createdAt ?? '',
         style: const TextStyle(
-          fontSize: 10,
+          fontSize: 8,
           color: Colors.white70,
         ),
       );
     }
-
     return Row(
       children: <Widget>[
         isSender
@@ -392,15 +395,23 @@ class BubbleOfferAcceptedMessage extends StatelessWidget {
                     ],
                   ),
                 ),
-                stateIcon != null && stateTick
+                stateIcon != null || timeStateIcon !=null && stateTick
                     ? Positioned(
-                        bottom: 4,
-                        right: 6,
-                        child: stateIcon,
-                      )
+                  bottom: 4,
+                  right: 6,
+                  child: Row(
+                    children: [
+                      timeStateIcon??SizedBox.shrink(),
+                      SizedBox(width: 5,),
+                      if(stateIcon!=null)...[
+                        stateIcon
+                      ]
+                    ],
+                  ),
+                )
                     : const SizedBox(
-                        width: 1,
-                      ),
+                  width: 1,
+                ),
               ],
             ),
           ),

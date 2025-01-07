@@ -78,7 +78,7 @@ class MyProductView extends BaseView<ProductVM> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               ProductDetailModel? data = snapshot.data;
-              data?.productMedias?.insert(0, ProductMedias(media: data.image));
+              //data?.productMedias?.insert(0, ProductMedias(media: data.image));
 
               return SingleChildScrollView(
                 controller: viewModel.scrollController,

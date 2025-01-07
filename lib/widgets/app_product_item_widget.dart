@@ -27,9 +27,9 @@ class AppProductItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if((data?.image??"").isNotEmpty) {
-      data?.productMedias?.insert(0, ProductMedias(media: data?.image));
-    }
+    // if((data?.image??"").isNotEmpty) {
+    //   data?.productMedias?.insert(0, ProductMedias(media: data?.image));
+    // }
     return InkWell(
       onTap: onItemTapped,
       child: Container(
