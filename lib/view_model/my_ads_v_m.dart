@@ -255,11 +255,11 @@ class MyAdsVM extends BaseViewModel {
   void navigateToEditProduct(
       {ProductDetailModel? item, required BuildContext context}) async {
     CategoryModel category = CategoryModel(
-        id: item?.categoryId?.toInt(), name: item?.category?.name);
+        id: item?.categoryId?.toInt(), name: item?.category?.name, type: item?.category?.name);
     CategoryModel subCategory = CategoryModel(
-        id: item?.subCategoryId?.toInt(), name: item?.subCategory?.name);
+        id: item?.subCategoryId?.toInt(), name: item?.subCategory?.name, type: item?.subCategory?.name);
     CategoryModel subSubCategory = CategoryModel(
-        id: item?.subSubCategoryId?.toInt(), name: item?.subSubCategory?.name);
+        id: item?.subSubCategoryId?.toInt(), name: item?.subSubCategory?.name, type: item?.subSubCategory?.name);
 
     await Navigator.push(
         context,

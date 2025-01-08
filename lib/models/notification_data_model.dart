@@ -61,7 +61,7 @@ class NotificationDataModel {
   String? title;
   String? body;
   String? notificationType;
-  Null data;
+  dynamic data;
   String? createdAt;
   String? updatedAt;
   SenderDetail? senderDetail;
@@ -117,8 +117,8 @@ class NotificationDataModel {
 class SenderDetail {
   int? id;
   String? name;
-  Null lastName;
-  Null userName;
+  dynamic lastName;
+  dynamic userName;
   String? profilePic;
   String? email;
 
