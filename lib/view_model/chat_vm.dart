@@ -100,7 +100,7 @@ class ChatVM extends BaseViewModel {
       for (var element in model.list ?? []) {
         chatItems.add(element);
       }
-      messageStreamController.add(chatItems);
+      messageStreamController.sink.add(chatItems);
 
       blockedUser =
           model.checkBlock?.blockByMe != 0 || model.checkBlock?.blockMe != 0;
@@ -145,11 +145,17 @@ class ChatVM extends BaseViewModel {
 
       /// getInboxList();
       MessageModel message = MessageModel.fromJson(data);
-      readChatStatus(roomId: message.roomId, receiverId: 0);
+      var receiverId = message.senderId == DbHelper.getUserModel()?.id
+          ? message.receiverId
+          : message.senderId;
+      readChatStatus(roomId: message.roomId, receiverId: receiverId);
       if (message.senderId != DbHelper.getUserModel()?.id) {
+
         chatItems.insert(0, message);
-        messageStreamController.add(chatItems);
+        messageStreamController.sink.add(chatItems);
       }
+
+      getInboxList();
     });
   }
 
@@ -185,7 +191,7 @@ class ChatVM extends BaseViewModel {
       for (var element in chatItems) {
         element.isRead = 1;
       }
-      messageStreamController.add(chatItems);
+      messageStreamController.sink.add(chatItems);
       notifyListeners();
     });
   }
@@ -277,7 +283,7 @@ class ChatVM extends BaseViewModel {
           createdAt: "${DateTime.now()}",
           updatedAt: "${DateTime.now()}"),
     );
-    messageStreamController.add(chatItems);
+    messageStreamController.sink.add(chatItems);
 
     DialogHelper.hideLoading();
   }
@@ -285,6 +291,7 @@ class ChatVM extends BaseViewModel {
   void readChatStatus({required dynamic roomId, required dynamic receiverId}) {
     Map<String, dynamic> map = {
       "sender_id": DbHelper.getUserModel()?.id,
+      "receiver_id": receiverId,
       "room_id": roomId,
     };
     _socketIO.emit(SocketConstants.readChatStatus, map);
