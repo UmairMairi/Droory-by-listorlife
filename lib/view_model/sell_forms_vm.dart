@@ -509,7 +509,6 @@ class SellFormsVM extends BaseViewModel {
       "year": yearTextController.text.trim(),
       "fuel": fuelTextController.text.trim(),
       "milleage": mileageTextController.text.trim(),
-      "transmission": transmission == 1 ? 'automatic' : 'manual',
       "km_driven": kmDrivenTextController.text.trim(),
       "number_of_owner": numOfOwnerTextController.text.trim(),
       "education_type": educationTypeTextController.text.trim(),
@@ -555,6 +554,11 @@ class SellFormsVM extends BaseViewModel {
       'insurance': insuranceTextController.text.trim(),
       'access_to_utilities': accessToUtilitiesTextController.text.trim(),
     };
+    if(transmission != 0){
+      body.addAll({
+        "transmission": transmission == 1 ? 'automatic' : 'manual',
+      });
+    }
     // dea26a54c91ab44f8faf73b88c85e26d88980b90
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.addProductsUrl(),
@@ -689,7 +693,6 @@ class SellFormsVM extends BaseViewModel {
           : '0',
       "year": yearTextController.text.trim(),
       "fuel": fuelTextController.text.trim(),
-      "transmission": transmission == 1 ? 'automatic' : 'manual',
       "km_driven": kmDrivenTextController.text.trim(),
       "number_of_owner": numOfOwnerTextController.text.trim(),
       "education_type": educationTypeTextController.text.trim(),
@@ -737,7 +740,11 @@ class SellFormsVM extends BaseViewModel {
       'access_to_utilities': accessToUtilitiesTextController.text.trim(),
 
     };
-
+    if(transmission != 0){
+      body.addAll({
+        "transmission": transmission == 1 ? 'automatic' : 'manual',
+      });
+    }
     if(productStatus == 2){
       body['status'] = 0;
     }

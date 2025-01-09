@@ -733,11 +733,11 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                       return;
                     }
 
-                    if (viewModel.kmDrivenTextController.text.trim().isEmpty) {
-                      DialogHelper.showToast(
-                          message: StringHelper.kMDrivenIsRequired);
-                      return;
-                    }
+                    // if (viewModel.kmDrivenTextController.text.trim().isEmpty) {
+                    //   DialogHelper.showToast(
+                    //       message: StringHelper.kMDrivenIsRequired);
+                    //   return;
+                    // }
 
                     if (viewModel.adTitleTextController.text.trim().isEmpty) {
                       DialogHelper.showToast(
@@ -814,11 +814,11 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                       return;
                     }
 
-                    if (viewModel.kmDrivenTextController.text.trim().isEmpty) {
-                      DialogHelper.showToast(
-                          message: StringHelper.kMDrivenIsRequired);
-                      return;
-                    }
+                    // if (viewModel.kmDrivenTextController.text.trim().isEmpty) {
+                    //   DialogHelper.showToast(
+                    //       message: StringHelper.kMDrivenIsRequired);
+                    //   return;
+                    // }
 
                     if (viewModel.adTitleTextController.text.trim().isEmpty) {
                       DialogHelper.showToast(

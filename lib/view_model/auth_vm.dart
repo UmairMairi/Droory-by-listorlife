@@ -241,6 +241,9 @@ class AuthVM extends BaseViewModel {
       'type': '1',
       'last_name': lNameTextController.text.trim(),
       'email': emailTextController.text.trim(),
+      'address': locationTextController.text.trim(),
+      'latitude': latitude,
+      'longitude': longitude,
       'communication_choice': communication,
       'profile_pic': await BaseClient.getMultipartImage(path: imagePath)
     };
