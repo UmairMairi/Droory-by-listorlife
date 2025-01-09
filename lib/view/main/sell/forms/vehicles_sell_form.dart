@@ -304,43 +304,45 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                 )
               },
               // Year Text Field
-              TextFormField(
+              AppTextField(
+                title: StringHelper.year,
+                titleColor: Colors.black,
                 controller: viewModel.yearTextController,
+                readOnly: true,
                 focusNode: viewModel.yearText,
-                readOnly: false,
-                cursorColor: Colors.black,
-                decoration: InputDecoration(
-                  hintText: StringHelper.enter,
-                  hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                ),
+                hint: StringHelper.enter,
+                hintStyle:
+                    const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                fillColor: Colors.white,
+                contentPadding: const EdgeInsets.only(left: 20),
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(4),
                   FilteringTextInputFormatter.digitsOnly,
                   FilteringTextInputFormatter.deny(
-                      RegExp(viewModel.regexToRemoveEmoji)),
+                    RegExp(viewModel.regexToRemoveEmoji),
+                  ),
                 ],
                 keyboardType: TextInputType.number,
                 textInputAction: TextInputAction.done,
               ),
-
-// KM Driven Text Field
-              TextFormField(
-                controller: viewModel.kmDrivenTextController,
-                focusNode: viewModel.kmDrivenText,
-                readOnly: false,
-                cursorColor: Colors.black,
-                decoration: InputDecoration(
-                  hintText: StringHelper.enter,
-                  hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
+              // KM Driven Text Field
+              Visibility(
+                visible: false,
+                child: AppTextField(
+                  title: StringHelper.kmDriven,
+                  controller: viewModel.kmDrivenTextController,
+                  focusNode: viewModel.kmDrivenText,
+                  readOnly: false,
+                  cursorColor: Colors.black,
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(10),
+                    FilteringTextInputFormatter.digitsOnly,
+                    FilteringTextInputFormatter.deny(
+                        RegExp(viewModel.regexToRemoveEmoji)),
+                  ],
+                  keyboardType: TextInputType.number,
+                  textInputAction: TextInputAction.done,
                 ),
-                inputFormatters: [
-                  LengthLimitingTextInputFormatter(10),
-                  FilteringTextInputFormatter.digitsOnly,
-                  FilteringTextInputFormatter.deny(
-                      RegExp(viewModel.regexToRemoveEmoji)),
-                ],
-                keyboardType: TextInputType.number,
-                textInputAction: TextInputAction.done,
               ),
 
               Text(
@@ -417,15 +419,13 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                 height: 25,
               ),
               // Ad Title Text Field
-              TextFormField(
+              AppTextField(
+                title: StringHelper.adTitle,
+                hint: StringHelper.enter,
+                controller: viewModel.adTitleTextController,
                 maxLines: 4,
                 minLines: 1,
-                controller: viewModel.adTitleTextController,
                 cursorColor: Colors.black,
-                decoration: InputDecoration(
-                  hintText: StringHelper.enter,
-                  hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                ),
                 inputFormatters: [
                   FilteringTextInputFormatter.deny(
                       RegExp(viewModel.regexToRemoveEmoji)),
@@ -435,14 +435,12 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
               ),
 
 // Description Text Field
-              TextFormField(
+              AppTextField(
+                title: StringHelper.describeWhatYouAreSelling,
+                hint: StringHelper.enter,
                 controller: viewModel.descriptionTextController,
                 maxLines: 4,
                 cursorColor: Colors.black,
-                decoration: InputDecoration(
-                  hintText: StringHelper.enter,
-                  hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                ),
                 inputFormatters: [
                   FilteringTextInputFormatter.deny(
                       RegExp(viewModel.regexToRemoveEmoji)),
@@ -452,53 +450,53 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
               ),
 
 // Location Text Field (Read-Only)
-              TextFormField(
+              AppTextField(
+                title: StringHelper.location,
+                hint: StringHelper.select,
                 controller: viewModel.addressTextController,
                 maxLines: 2,
                 minLines: 1,
                 readOnly: true,
+                suffix: const Icon(Icons.location_on),
                 onTap: () async {
                   Map<String, dynamic>? value = await Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const AppMapWidget()),
+                      builder: (context) => const AppMapWidget(),
+                    ),
                   );
                   if (value != null && value.isNotEmpty) {
                     viewModel.addressTextController.text =
-                        "${value['location']}, ${value['city']}, ${value['state']}";
+                    "${value['location']}, ${value['city']}, ${value['state']}";
                   }
                 },
-                cursorColor: Colors.black,
-                decoration: InputDecoration(
-                  hintText: StringHelper.select,
-                  suffixIcon: Icon(Icons.location_on),
-                  hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                ),
+                contentPadding:
+                const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
                 inputFormatters: [
                   FilteringTextInputFormatter.deny(
-                      RegExp(viewModel.regexToRemoveEmoji)),
+                    RegExp(viewModel.regexToRemoveEmoji),
+                  ),
                 ],
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.done,
+                fillColor: Colors.white,
+                elevation: 6,
               ),
 
 // Price Text Field
-              TextFormField(
+              AppTextField(
+                title: StringHelper.priceEgp,
                 controller: viewModel.priceTextController,
-                cursorColor: Colors.black,
-                focusNode: viewModel.priceText,
-                decoration: InputDecoration(
-                  hintText: StringHelper.enterPrice,
-                  hintStyle: TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                ),
+                hint: StringHelper.enterPrice,
+                maxLength: 8,
+                keyboardType: TextInputType.number,
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(8),
                   FilteringTextInputFormatter.deny(
                       RegExp(viewModel.regexToRemoveEmoji)),
                   FilteringTextInputFormatter.digitsOnly,
                 ],
-                keyboardType: TextInputType.number,
-                textInputAction: TextInputAction.done,
+                focusNode: viewModel.priceText,
               ),
 
               Text(
