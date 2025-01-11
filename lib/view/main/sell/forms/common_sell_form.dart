@@ -339,7 +339,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      viewModel.currentIndex = 1;
+                      viewModel.itemCondition = 1;
                     },
                     child: Container(
                       width: 105,
@@ -347,10 +347,10 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                       margin: const EdgeInsets.only(top: 10, right: 10),
                       decoration: BoxDecoration(
                         border: Border.all(
-                            color: viewModel.currentIndex == 1
+                            color: viewModel.itemCondition == 1
                                 ? Colors.transparent
                                 : Colors.grey.withOpacity(0.5)),
-                        color: viewModel.currentIndex == 1
+                        color: viewModel.itemCondition == 1
                             ? Colors.black
                             : const Color(0xffFCFCFD),
                         borderRadius: BorderRadius.circular(5),
@@ -361,7 +361,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 16,
-                          color: viewModel.currentIndex == 1
+                          color: viewModel.itemCondition == 1
                               ? Colors.white
                               : Colors.black,
                         ),
@@ -370,18 +370,18 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      viewModel.currentIndex = 2;
+                      viewModel.itemCondition = 2;
                     },
                     child: Container(
                       width: 105,
                       height: 42,
                       margin: const EdgeInsets.only(top: 10, left: 10),
                       decoration: BoxDecoration(
-                        color: viewModel.currentIndex == 2
+                        color: viewModel.itemCondition == 2
                             ? Colors.black
                             : const Color(0xffFCFCFD),
                         border: Border.all(
-                            color: viewModel.currentIndex == 2
+                            color: viewModel.itemCondition == 2
                                 ? Colors.transparent
                                 : Colors.grey.withOpacity(0.5)),
                         borderRadius: BorderRadius.circular(5),
@@ -392,7 +392,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 16,
-                          color: viewModel.currentIndex == 2
+                          color: viewModel.itemCondition == 2
                               ? Colors.white
                               : Colors.black,
                         ),

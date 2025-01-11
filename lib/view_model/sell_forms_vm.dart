@@ -20,7 +20,7 @@ class SellFormsVM extends BaseViewModel {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   var regexToRemoveEmoji =
       r'(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])';
-  int _currentIndex = 1;
+  int _itemCondition = 1;
   int _transmission = 0;
   bool _isEditProduct = false;
   String _communicationChoice =
@@ -155,10 +155,10 @@ class SellFormsVM extends BaseViewModel {
     notifyListeners();
   }
 
-  int get currentIndex => _currentIndex;
+  int get itemCondition => _itemCondition;
 
-  set currentIndex(int index) {
-    _currentIndex = index;
+  set itemCondition(int index) {
+    _itemCondition = index;
     notifyListeners();
   }
 
@@ -330,7 +330,9 @@ class SellFormsVM extends BaseViewModel {
     if (item.brandId != null) {
       getModels(brandId: int.parse("${item.brandId}"));
     }
-    transmission = item.transmission == 'manual' ? 0 : 1;
+    transmission = (item.transmission?.isNotEmpty ?? false)
+        ? (item.transmission == 'manual' ? 2 : 1)
+        : 0;
     mainImagePath = "${ApiConstants.imageUrl}/${item.image}";
     adTitleTextController.text = item.name ?? '';
     descriptionTextController.text = item.description ?? '';
@@ -338,13 +340,13 @@ class SellFormsVM extends BaseViewModel {
     addressTextController.text = "${item.nearby}";
     priceTextController.text = item.price ?? '';
     productStatus = (item.status??0).toInt();
-    currentIndex =
+    itemCondition =
         (item.itemCondition?.toLowerCase().contains('used') ?? false) ? 2 : 1;
     brandTextController.text = item.brand?.name ?? '';
     modelTextController.text = item.model?.name ?? '';
-    ramTextController.text = "${item.ram ?? ''} GB";
-    storageTextController.text = "${item.storage ?? ''} GB";
-    screenSizeTextController.text = item.screenSize ?? '5.5"';
+    ramTextController.text ="${item.ram ?? ''}".isNotEmpty? "${item.ram ?? ''} GB":"";
+    storageTextController.text = "${item.storage ?? ''}".isNotEmpty?"${item.storage ?? ''} GB":"";
+    screenSizeTextController.text = (item.screenSize??"").isNotEmpty?item.screenSize ?? '5.5"':"";
     jobPositionTextController.text = item.positionType ?? '';
     jobSalaryTextController.text = item.salleryPeriod ?? '';
     jobSalaryFromController.text = item.salleryFrom ?? '';
@@ -404,7 +406,7 @@ class SellFormsVM extends BaseViewModel {
     currentPaymentOption = "";
     currentCompletion = "";
     currentDeliveryTerm = "";
-    currentIndex = 1;
+    itemCondition = 1;
     transmission = 0;
     mainImagePath = "";
     imagesList = [];
@@ -475,6 +477,8 @@ class SellFormsVM extends BaseViewModel {
       LocationHelper.showPopupAddProduct(context, () {});
       return;
     }
+    Map<String, dynamic> body = {};
+
     String mainImage = "";
     final List<String> images = [];
     if(mainImagePath.isNotEmpty) {
@@ -491,14 +495,13 @@ class SellFormsVM extends BaseViewModel {
     }else{
       communication = communicationChoice;
     }
-    Map<String, dynamic> body = {
+    Map<String, dynamic> fields = {
       "category_id": category?.id,
       "sub_category_id": subCategory?.id,
       "sub_sub_category_id": subSubCategory?.id,
       "brand_id": brand?.id,
       "model_id": models?.id,
       "name": adTitleTextController.text.trim(),
-      "item_condition": currentIndex == 1 ? "new" : "used",
       "description": descriptionTextController.text.trim(),
       "looking_for ": lookingForController.text.trim(),
       "image": mainImage,
@@ -519,9 +522,9 @@ class SellFormsVM extends BaseViewModel {
       "longitude": position?.longitude,
       "nearby": addressTextController.text.trim(),
       "position_type":
-          getPositionType(type: jobPositionTextController.text.trim()),
+      jobPositionTextController.text.trim().isNotEmpty? getPositionType(type: jobPositionTextController.text.trim()):"",
       "sallery_period":
-          getSallaryPeriod(type: jobSalaryTextController.text.trim()),
+      jobSalaryTextController.text.trim().isNotEmpty?getSallaryPeriod(type: jobSalaryTextController.text.trim()):"",
       "sallery_from": jobSalaryFromController.text.trim(),
       "sallery_to": jobSalaryToController.text.trim(),
       "material": materialTextController.text.trim(),
@@ -530,20 +533,17 @@ class SellFormsVM extends BaseViewModel {
       "screen_size": screenSizeTextController.text.trim(),
       "size_id": selectedSize?.id,
       'communication_choice': communication,
-      'property_for': propertyForTextController.text,
-      'bedrooms': noOfBedroomsTextController.text,
-      'bathrooms': noOfBathroomsTextController.text,
-      'furnished_type': furnishingStatusTextController.text,
-      'ownership': ownershipStatusTextController.text,
-      'payment_type': paymentTypeTextController.text.toLowerCase().split(' ')
-        ..join('_'),
+      'property_for': propertyForTextController.text.trim(),
+      'bedrooms': noOfBedroomsTextController.text.trim(),
+      'bathrooms': noOfBathroomsTextController.text.trim(),
+      'furnished_type': furnishingStatusTextController.text.trim(),
+      'ownership': ownershipStatusTextController.text.trim(),
+      'payment_type': paymentTypeTextController.text.trim().isNotEmpty?paymentTypeTextController.text.toLowerCase().split(' ').join('_'):"",
       'completion_status':
-          completionStatusTextController.text.toLowerCase().split(' ')
-            ..join('_'),
-      'delivery_term': deliveryTermTextController.text.toLowerCase().split(' ')
-        ..join('_'),
-      'selected_amnities': amenities.join(','),
-      'area': areaSizeTextController.text,
+          completionStatusTextController.text.trim().isNotEmpty?completionStatusTextController.text.toLowerCase().split(' ').join('_'):"",
+      'delivery_term': deliveryTermTextController.text.trim().isNotEmpty?deliveryTermTextController.text.toLowerCase().split(' ').join('_'):"",
+      'selected_amnities': amenities.isNotEmpty?amenities.join(','):"",
+      'area': areaSizeTextController.text.trim(),
       'type': propertyForTypeTextController.text.trim(),
       'level': levelTextController.text.trim(),
       'building_age': propertyAgeTextController.text.trim(),
@@ -554,12 +554,21 @@ class SellFormsVM extends BaseViewModel {
       'insurance': insuranceTextController.text.trim(),
       'access_to_utilities': accessToUtilitiesTextController.text.trim(),
     };
+    if(category?.id != 6 && category?.id != 8 && category?.id != 9 && category?.id != 11){
+      fields.addAll({
+        "item_condition": itemCondition == 1 ? "new" : "used",
+      });
+    }
     if(transmission != 0){
-      body.addAll({
+      fields.addAll({
         "transmission": transmission == 1 ? 'automatic' : 'manual',
       });
     }
-    // dea26a54c91ab44f8faf73b88c85e26d88980b90
+    fields.forEach((key, value) {
+      if (value != null && "$value".trim().isNotEmpty) {
+        body[key] = value;
+      }
+    });
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.addProductsUrl(),
         requestType: RequestType.post,
@@ -655,6 +664,8 @@ class SellFormsVM extends BaseViewModel {
       LocationHelper.showPopupAddProduct(context, () {});
       return;
     }
+    Map<String, dynamic> body = {};
+
     String mainImage = "";
     final List<String> images = [];
     if(mainImagePath.isNotEmpty) {
@@ -675,7 +686,7 @@ class SellFormsVM extends BaseViewModel {
     }else{
       communication = communicationChoice;
     }
-    Map<String, dynamic> body = {
+    Map<String, dynamic> fields = {
       "product_id": productId,
       "category_id": category?.id,
       "sub_category_id": subCategory?.id,
@@ -683,7 +694,6 @@ class SellFormsVM extends BaseViewModel {
       "brand_id": brand?.id,
       "model_id": models?.id,
       "name": adTitleTextController.text.trim(),
-      "item_condition": currentIndex == 1 ? "new" : "used",
       "description": descriptionTextController.text.trim(),
       "looking_for ": lookingForController.text.trim(),
       "image": mainImage,
@@ -703,9 +713,9 @@ class SellFormsVM extends BaseViewModel {
       "longitude": position?.longitude,
       "nearby": addressTextController.text.trim(),
       "position_type":
-          getPositionType(type: jobPositionTextController.text.trim()),
+      jobPositionTextController.text.trim().isNotEmpty? getPositionType(type: jobPositionTextController.text.trim()):"",
       "sallery_period":
-          getSallaryPeriod(type: jobSalaryTextController.text.trim()),
+      jobSalaryTextController.text.trim().isNotEmpty?getSallaryPeriod(type: jobSalaryTextController.text.trim()):"",
       "sallery_from": jobSalaryFromController.text.trim(),
       "sallery_to": jobSalaryToController.text.trim(),
       "material": materialTextController.text.trim(),
@@ -713,22 +723,19 @@ class SellFormsVM extends BaseViewModel {
       "storage": storageTextController.text.trim(),
       "screen_size": screenSizeTextController.text.trim(),
       "size_id": selectedSize?.id,
-      "delete_img_id": deletedImageIds.join(','),
+      "delete_img_id": deletedImageIds.isNotEmpty?deletedImageIds.join(','):"",
       'communication_choice': communication,
-      'property_for': propertyForTextController.text,
-      'bedrooms': noOfBedroomsTextController.text,
-      'bathrooms': noOfBathroomsTextController.text,
-      'furnished_type': furnishingStatusTextController.text,
-      'ownership': ownershipStatusTextController.text,
-      'payment_type': paymentTypeTextController.text.toLowerCase().split(' ')
-        ..join('_'),
+      'property_for': propertyForTextController.text.trim(),
+      'bedrooms': noOfBedroomsTextController.text.trim(),
+      'bathrooms': noOfBathroomsTextController.text.trim(),
+      'furnished_type': furnishingStatusTextController.text.trim(),
+      'ownership': ownershipStatusTextController.text.trim(),
+      'payment_type': paymentTypeTextController.text.trim().isNotEmpty?paymentTypeTextController.text.toLowerCase().split(' ').join('_'):"",
       'completion_status':
-          completionStatusTextController.text.toLowerCase().split(' ')
-            ..join('_'),
-      'delivery_term': deliveryTermTextController.text.toLowerCase().split(' ')
-        ..join('_'),
-      'selected_amnities': amenities.join(','),
-      'area': areaSizeTextController.text,
+          completionStatusTextController.text.trim().isNotEmpty?completionStatusTextController.text.toLowerCase().split(' ').join('_'):"",
+      'delivery_term': deliveryTermTextController.text.trim().isNotEmpty?deliveryTermTextController.text.toLowerCase().split(' ').join('_'):"",
+      'selected_amnities': amenities.isNotEmpty?amenities.join(','):"",
+      'area': areaSizeTextController.text.trim(),
       'type': propertyForTypeTextController.text.trim(),
       'level': levelTextController.text.trim(),
       'building_age': propertyAgeTextController.text.trim(),
@@ -738,16 +745,26 @@ class SellFormsVM extends BaseViewModel {
       'deposit': depositTextController.text.trim(),
       'insurance': insuranceTextController.text.trim(),
       'access_to_utilities': accessToUtilitiesTextController.text.trim(),
-
     };
+    if(category?.id != 6 && category?.id != 8 && category?.id != 9 && category?.id != 11){
+      fields.addAll({
+        "item_condition": itemCondition == 1 ? "new" : "used",
+      });
+    }
     if(transmission != 0){
-      body.addAll({
+      fields.addAll({
         "transmission": transmission == 1 ? 'automatic' : 'manual',
       });
     }
     if(productStatus == 2){
-      body['status'] = 0;
+      fields['status'] = 0;
     }
+
+    fields.forEach((key, value) {
+      if (value != null && "$value".trim().isNotEmpty) {
+        body[key] = value;
+      }
+    });
 
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.editProductsUrl(),
