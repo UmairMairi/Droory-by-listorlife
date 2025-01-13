@@ -434,6 +434,14 @@ class SellFormsVM extends BaseViewModel {
     sizeTextController.clear();
     propertyForTextController.clear();
     propertyForTypeTextController.clear();
+    levelTextController.clear();
+    propertyAgeTextController.clear();
+    listedByTextController.clear();
+    rentalTermsTextController.clear();
+    accessToUtilitiesTextController.clear();
+    rentalPriceTextController.clear();
+    insuranceTextController.clear();
+    depositTextController.clear();
     areaSizeTextController.clear();
     noOfBedroomsTextController.clear();
     noOfBathroomsTextController.clear();
