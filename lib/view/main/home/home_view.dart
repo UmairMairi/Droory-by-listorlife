@@ -187,7 +187,7 @@ class HomeView extends BaseView<HomeVM> {
             children: [
               const Gap(20),
               FutureBuilder<List<CategoryModel>>(
-                  future: viewModel.getCategoryListApi(),
+                  future: viewModel.cachedCategoryList,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       List<CategoryModel> categoryItems = snapshot.data ?? [];

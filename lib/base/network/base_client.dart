@@ -23,7 +23,8 @@ class BaseClient {
 
   static Future<dynamic> handleRequest(ApiRequest apiRequest) async {
     _dio.options.followRedirects = false;
-    _dio.options.connectTimeout = const Duration(seconds: 20);
+    _dio.options.connectTimeout = const Duration(seconds: 30);
+    _dio.options.receiveTimeout = const Duration(seconds: 30);
     _dio.interceptors.clear();
     _dio.interceptors.add(AppExceptions());
 
@@ -34,54 +35,55 @@ class BaseClient {
           context!,
           MaterialPageRoute(
               builder: (context) => NoInternetPage(
-                    callBack: (apiRequest) {
-                      handleRequest(apiRequest);
-                    },
-                    apiRequest: apiRequest,
-                  )));
-
+                callBack: (apiRequest) {
+                  handleRequest(apiRequest);
+                },
+                apiRequest: apiRequest,
+              )));
       return;
     }
 
     Map<String, dynamic> headers = {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      'language_type': DbHelper.getLanguage()
+      'language_type': DbHelper.getLanguage(),
     };
     if (apiRequest.headers != null) {
       headers.addAll(apiRequest.headers!);
     }
-
     if (DbHelper.getToken() != null) {
       headers.putIfAbsent(
           'Authorization', () => 'Bearer ${DbHelper.getToken()}');
     }
 
-    try {
-      switch (apiRequest.requestType) {
-        case RequestType.post:
-          return await _handlePostRequest(apiRequest, headers);
-        case RequestType.get:
-          var response = await _dio.get(apiRequest.url,
-              options: Options(
-                headers: headers,
-              ));
-
-          return response.data;
-        case RequestType.delete:
-          var response = await _dio.delete(apiRequest.url,
-              data: apiRequest.body,
-              options: Options(
-                headers: headers,
-              ));
-          return response.data;
-
-        case RequestType.put:
-          return await _handlePutRequest(apiRequest, headers);
+    // Retry logic
+    for (int retryCount = 0; retryCount < 3; retryCount++) {
+      try {
+        switch (apiRequest.requestType) {
+          case RequestType.post:
+            return await _handlePostRequest(apiRequest, headers);
+          case RequestType.get:
+            var response = await _dio.get(apiRequest.url,
+                options: Options(
+                  headers: headers,
+                ));
+            return response.data;
+          case RequestType.delete:
+            var response = await _dio.delete(apiRequest.url,
+                data: apiRequest.body,
+                options: Options(
+                  headers: headers,
+                ));
+            return response.data;
+          case RequestType.put:
+            return await _handlePutRequest(apiRequest, headers);
+        }
+      } catch (e) {
+        debugPrint('Request attempt ${retryCount + 1} failed: $e');
+        if (retryCount == 2) {
+          return _handleError(e);
+        }
       }
-    } catch (e) {
-      DialogHelper.hideLoading();
-      return _handleError(e);
     }
   }
 
@@ -113,7 +115,7 @@ class BaseClient {
           headers: headers,
         ));
     if (kDebugMode) {
-      print(response.data);
+      debugPrint('Put Response: ${response.data}');
     }
     return response.data;
   }
@@ -140,29 +142,36 @@ class BaseClient {
         break;
     }
 
-    var res = await _dio.post(apiRequest.url,
+    var response = await _dio.post(apiRequest.url,
         data: data,
         options: Options(
           headers: headers,
         ));
-    return res.data;
+    if (kDebugMode) {
+      debugPrint('Post Response: ${response.data}');
+    }
+    return response.data;
   }
 
   static Response _handleError(dynamic error) {
-    // You can customize error handling here
     if (error is DioException) {
       if (error.response != null) {
-        DialogHelper.showToast(message: error.response?.data['message']??"");
+        DialogHelper.showToast(
+            message: error.response?.data['message'] ?? 'Something went wrong');
+        debugPrint('Dio Error Response: ${error.response?.data}');
         return error.response!;
       }
-      DialogHelper.showToast(message: error.toString());
+      DialogHelper.showToast(
+          message: error.message ?? 'Connection failed or timed out');
+      debugPrint('Dio Error Message: ${error.message}');
       return Response(
         requestOptions: RequestOptions(path: ''),
         statusCode: 500,
-        statusMessage: error.toString(),
+        statusMessage: error.message ?? 'Unknown error',
       );
     } else {
       DialogHelper.showToast(message: error.toString());
+      debugPrint('Unknown Error: $error');
       return Response(
         requestOptions: RequestOptions(path: ''),
         statusCode: 500,
@@ -174,10 +183,13 @@ class BaseClient {
   static Future<bool> hasNetwork() async {
     try {
       final result = await InternetAddress.lookup('google.com');
-      return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
-    } on SocketException catch (_) {
-      return false;
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        return true;
+      }
+    } catch (e) {
+      debugPrint('Network check failed: $e');
     }
+    return false;
   }
 
   static Future<MultipartFile> getMultipartImage({required String path}) async {
@@ -201,7 +213,7 @@ class BaseClient {
     var response = await handleRequest(apiRequest);
 
     MapResponse<MediaModel> model =
-        MapResponse.fromJson(response, (json) => MediaModel.fromJson(json));
+    MapResponse.fromJson(response, (json) => MediaModel.fromJson(json));
 
     return model.body?.media ?? '';
   }

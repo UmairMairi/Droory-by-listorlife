@@ -3,7 +3,6 @@ import 'package:list_and_life/base/sockets/socket_constants.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
 import '../helpers/db_helper.dart';
-
 class SocketHelper {
   static final SocketHelper _singleton = SocketHelper._internal();
   SocketHelper._internal();
@@ -47,8 +46,6 @@ class SocketHelper {
       }
     });
 
-    //--------------------------------Connect User Listener -------------------------//
-
     _socketIO.on(SocketConstants.connectUser, (data) {
       isUserConnected = true;
       if (kDebugMode) {
@@ -58,9 +55,8 @@ class SocketHelper {
   }
 
   io.Socket getSocket() => _socketIO;
-  //--------------------------------Connect User Emitter -------------------------//
 
-  connectUser() {
+  void connectUser() {
     if (DbHelper.getUserModel()?.id == null) {
       return;
     }
@@ -76,8 +72,7 @@ class SocketHelper {
     });
   }
 
-  //--------------------------------Disconnect User-------------------------//
-  disconnectUser() {
+  void disconnectUser() {
     _socketIO.off("disconnect_user");
     Map<String, dynamic> map = {};
     map['userId'] = DbHelper.getUserModel()?.id;
@@ -88,5 +83,22 @@ class SocketHelper {
       }
       isUserConnected = false;
     });
+  }
+
+  /// Closes the socket connection and cleans up listeners.
+  void close() {
+    if (_socketIO.connected) {
+      _socketIO.disconnect();
+      if (kDebugMode) {
+        print("Socket disconnected");
+      }
+    }
+    _socketIO.close();
+    _socketIO.clearListeners();
+    isConnected = false;
+    isUserConnected = false;
+    if (kDebugMode) {
+      print("Socket connection closed and listeners cleared");
+    }
   }
 }

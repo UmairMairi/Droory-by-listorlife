@@ -20,6 +20,7 @@ import 'package:list_and_life/base/network/base_client.dart';
 import 'package:list_and_life/routes/app_pages.dart';
 import 'package:list_and_life/routes/app_routes.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:sign_in_with_apple_platform_interface/authorization_credential.dart';
 
 import '../base/helpers/image_picker_helper.dart';
 
@@ -129,26 +130,48 @@ class AuthVM extends BaseViewModel {
       case 3:
         var user = await SocialLoginHelper.loginWithApple();
         if (user != null) {
-          socialLoginApi(user: user, type: type);
+
+          socialLoginApi(type: type,appleData:user);
         }
       default:
     }
   }
 
   Future<void> socialLoginApi(
-      {required UserCredential user, required int type}) async {
+      {UserCredential? user, required int type,AuthorizationCredentialAppleID? appleData}) async {
     DialogHelper.showLoading();
-    Map<String, dynamic> body = {
-      'device_token': await Utils.getFcmToken(),
-      'device_type': Platform.isAndroid ? '1' : '2',
-      'name': user.user?.displayName?.split(' ').first,
-      'type': 1,
-      'last_name': user.user?.displayName?.split(' ').last,
-      'social_id': user.user?.uid,
-      'social_type': type,
-      'email': user.user?.email,
-      'profile_pic': user.user?.photoURL,
-    };
+    String? deviceToken = await Utils.getFcmToken();
+    String deviceType = Platform.isAndroid ? '1' : '2';
+    Map<String, dynamic> body = {};
+    if(user != null){
+      body.addAll({
+        'device_token': deviceToken,
+        'device_type': deviceType,
+        'name': user.user?.displayName?.split(' ').first,
+        'type': 1,
+        'last_name': user.user?.displayName?.split(' ').last,
+        'social_id': user.user?.uid,
+        'social_type': type,
+        'email': user.user?.email,
+        'profile_pic': user.user?.photoURL,
+      });
+    }
+
+    ///for apple only
+    if(appleData != null){
+      body.addAll({
+        'device_token': deviceToken,
+        'device_type': deviceType,
+        'name': appleData.givenName?.split(' ').first,
+        'type': 1,
+        'last_name': appleData.givenName?.split(' ').last,
+        'social_id': appleData.userIdentifier,
+        'social_type': type,
+        'email': appleData.email,
+       // 'profile_pic': user.user?.photoURL,
+      });
+    }
+
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.socialLoginUrl(),
         requestType: RequestType.post,

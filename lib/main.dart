@@ -31,6 +31,9 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  var appStateObserver = AppStateObserver();
+  WidgetsBinding.instance.addObserver(appStateObserver);
+
   SocketHelper().init();
   await NotificationService().init();
 
@@ -122,6 +125,25 @@ class MyHttpOverrides extends HttpOverrides {
           (X509Certificate cert, String host, int port) => true;
   }
 }
+
+class AppStateObserver extends WidgetsBindingObserver {
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    debugPrint("app state ===> $state");
+    switch (state) {
+      case AppLifecycleState.paused:
+      case AppLifecycleState.inactive:
+      case AppLifecycleState.detached:
+      case AppLifecycleState.hidden:
+        SocketHelper().close();
+        break;
+      case AppLifecycleState.resumed:
+        SocketHelper().init();
+        break;
+    }
+  }
+}
+
 /*
 >> When users are browsing vehicle ads, display the following three key details with icons underneath the ad title or image: (Done)
 

@@ -16,6 +16,8 @@ import '../models/category_model.dart';
 import '../models/common/list_response.dart';
 
 class HomeVM extends BaseViewModel {
+
+  late Future<List<CategoryModel>> cachedCategoryList;
   RefreshController refreshController = RefreshController(initialRefresh: true);
   String _currentLocation = '';
   String get currentLocation => _currentLocation;
@@ -168,6 +170,7 @@ class HomeVM extends BaseViewModel {
   @override
   void onInit() {
     // TODO: implement onInit
+    callApiMethods();
     updateLocation();
     searchQueryesList.addAll(DbHelper.getSearchHistory().reversed.toList());
 
@@ -188,6 +191,9 @@ class HomeVM extends BaseViewModel {
     super.onInit();
   }
 
+  callApiMethods() async{
+    cachedCategoryList = getCategoryListApi();
+  }
   @override
   void onClose() {
     // TODO: implement onClose

@@ -19,17 +19,17 @@ import '../routes/app_routes.dart';
 
 class ProfileVM extends BaseViewModel {
   TextEditingController nameTextController =
-      TextEditingController(text: DbHelper.getUserModel()?.name);
+      TextEditingController(text: DbHelper.getUserModel()?.name??"");
   TextEditingController lastNameController =
-      TextEditingController(text: DbHelper.getUserModel()?.lastName);
+      TextEditingController(text: DbHelper.getUserModel()?.lastName??"");
   TextEditingController locationTextController =
-      TextEditingController(text: DbHelper.getUserModel()?.address);
+      TextEditingController(text: DbHelper.getUserModel()?.address??"");
   TextEditingController emailTextController =
-      TextEditingController(text: DbHelper.getUserModel()?.email);
+      TextEditingController(text: DbHelper.getUserModel()?.email??"");
   TextEditingController phoneTextController =
-      TextEditingController(text: "${DbHelper.getUserModel()?.phoneNo}");
+      TextEditingController(text: DbHelper.getUserModel()?.phoneNo??"");
   TextEditingController bioTextController =
-      TextEditingController(text: DbHelper.getUserModel()?.bio);
+      TextEditingController(text: DbHelper.getUserModel()?.bio??"");
 
   TextEditingController otpTextController = TextEditingController();
 
@@ -104,17 +104,17 @@ class ProfileVM extends BaseViewModel {
     WidgetsBinding.instance.addPostFrameCallback((call) async {
       await context.read<SettingVM>().getProfile();
       nameTextController =
-          TextEditingController(text: DbHelper.getUserModel()?.name);
+          TextEditingController(text: DbHelper.getUserModel()?.name??"");
       lastNameController =
-          TextEditingController(text: DbHelper.getUserModel()?.lastName);
+          TextEditingController(text: DbHelper.getUserModel()?.lastName??"");
       locationTextController =
-          TextEditingController(text: DbHelper.getUserModel()?.address);
+          TextEditingController(text: DbHelper.getUserModel()?.address??"");
       emailTextController =
-          TextEditingController(text: DbHelper.getUserModel()?.email);
+          TextEditingController(text: DbHelper.getUserModel()?.email??"");
       phoneTextController =
-          TextEditingController(text: "${DbHelper.getUserModel()?.phoneNo}");
+          TextEditingController(text: DbHelper.getUserModel()?.phoneNo??"");
       bioTextController =
-          TextEditingController(text: DbHelper.getUserModel()?.bio);
+          TextEditingController(text: DbHelper.getUserModel()?.bio??"");
 
       isPhoneVerified = DbHelper.getUserModel()?.phoneVerified != 0;
       isEmailVerified = DbHelper.getUserModel()?.emailVerified != 0;
@@ -151,7 +151,7 @@ class ProfileVM extends BaseViewModel {
       'phone_no': phoneTextController.text.trim(),
       'country_code': countryCode,
       'communication_choice': communication,
-      'address': locationTextController.text,
+      'address': locationTextController.text.trim(),
       'latitude': latitude,
       'longitude': longitude
     };
@@ -216,7 +216,7 @@ class ProfileVM extends BaseViewModel {
     debugPrint("$model");
     DialogHelper.hideLoading();
     if (context.mounted) {
-      context.push(Routes.verifyProfile, extra: phoneTextController.text);
+      context.push(Routes.verifyProfile, extra: phoneTextController.text.trim());
     } else {
       AppPages.rootNavigatorKey.currentContext?.push(Routes.verifyProfile);
     }
