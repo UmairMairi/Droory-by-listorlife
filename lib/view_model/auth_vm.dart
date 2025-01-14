@@ -127,6 +127,11 @@ class AuthVM extends BaseViewModel {
         }
         break;
       case 2:
+        var user = await SocialLoginHelper.loginWithFacebook();
+        if (user != null) {
+          socialLoginApi(user: user, type: type);
+        }
+        break;
       case 3:
         var user = await SocialLoginHelper.loginWithApple();
         if (user != null) {

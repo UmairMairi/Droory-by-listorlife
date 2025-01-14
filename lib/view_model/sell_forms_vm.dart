@@ -27,6 +27,7 @@ class SellFormsVM extends BaseViewModel {
       DbHelper.getUserModel()?.communicationChoice ?? '';
 
   bool get isEditProduct => _isEditProduct;
+
   set isEditProduct(bool value) {
     _isEditProduct = value;
     notifyListeners();
@@ -163,6 +164,7 @@ class SellFormsVM extends BaseViewModel {
   }
 
   String _currentPropertyType = "Sell";
+
   String get currentPropertyType => _currentPropertyType;
 
   set currentPropertyType(String index) {
@@ -172,6 +174,7 @@ class SellFormsVM extends BaseViewModel {
 
   int productStatus = 0;
   String _currentFurnishing = "";
+
   String get currentFurnishing => _currentFurnishing;
 
   set currentFurnishing(String index) {
@@ -180,6 +183,7 @@ class SellFormsVM extends BaseViewModel {
   }
 
   String _currentAccessToUtilities = "";
+
   String get currentAccessToUtilities => _currentAccessToUtilities;
 
   set currentAccessToUtilities(String index) {
@@ -187,7 +191,8 @@ class SellFormsVM extends BaseViewModel {
     notifyListeners();
   }
 
-  String _currentPaymentOption= "";
+  String _currentPaymentOption = "";
+
   String get currentPaymentOption => _currentPaymentOption;
 
   set currentPaymentOption(String index) {
@@ -196,6 +201,7 @@ class SellFormsVM extends BaseViewModel {
   }
 
   String _currentCompletion = "";
+
   String get currentCompletion => _currentCompletion;
 
   set currentCompletion(String index) {
@@ -204,6 +210,7 @@ class SellFormsVM extends BaseViewModel {
   }
 
   String _currentDeliveryTerm = "";
+
   String get currentDeliveryTerm => _currentDeliveryTerm;
 
   set currentDeliveryTerm(String index) {
@@ -292,13 +299,13 @@ class SellFormsVM extends BaseViewModel {
 
   List<String> fuelsType = ['Petrol', 'Diesel', 'Electric', 'Hybrid', 'Gas'];
   String _selectedOption = 'Select';
+
   String get selectedOption => _selectedOption;
+
   set selectedOption(String value) {
     _selectedOption = value;
     notifyListeners();
   }
-
-
 
   void updateTextFieldsItems({ProductDetailModel? item}) async {
     if (item == null) {
@@ -311,10 +318,10 @@ class SellFormsVM extends BaseViewModel {
     isEditProduct = true;
     imagesList.clear();
     deletedImageIds.clear();
-    var productImagesList = item.productMedias??[];
-    if(productImagesList.isNotEmpty){
-      for(var element in productImagesList){
-        if((element.media??"").isNotEmpty){
+    var productImagesList = item.productMedias ?? [];
+    if (productImagesList.isNotEmpty) {
+      for (var element in productImagesList) {
+        if ((element.media ?? "").isNotEmpty) {
           imagesList.add(ProductMedias(
               id: element.id,
               media: "${ApiConstants.imageUrl}/${element.media}"));
@@ -339,14 +346,17 @@ class SellFormsVM extends BaseViewModel {
     lookingForController.text = item.lookingFor ?? '';
     addressTextController.text = "${item.nearby}";
     priceTextController.text = item.price ?? '';
-    productStatus = (item.status??0).toInt();
+    productStatus = (item.status ?? 0).toInt();
     itemCondition =
         (item.itemCondition?.toLowerCase().contains('used') ?? false) ? 2 : 1;
     brandTextController.text = item.brand?.name ?? '';
     modelTextController.text = item.model?.name ?? '';
-    ramTextController.text ="${item.ram ?? ''}".isNotEmpty? "${item.ram ?? ''} GB":"";
-    storageTextController.text = "${item.storage ?? ''}".isNotEmpty?"${item.storage ?? ''} GB":"";
-    screenSizeTextController.text = (item.screenSize??"").isNotEmpty?item.screenSize ?? '5.5"':"";
+    ramTextController.text =
+        "${item.ram ?? ''}".isNotEmpty ? "${item.ram ?? ''} GB" : "";
+    storageTextController.text =
+        "${item.storage ?? ''}".isNotEmpty ? "${item.storage ?? ''} GB" : "";
+    screenSizeTextController.text =
+        (item.screenSize ?? "").isNotEmpty ? item.screenSize ?? '5.5"' : "";
     jobPositionTextController.text = item.positionType ?? '';
     jobSalaryTextController.text = item.salleryPeriod ?? '';
     jobSalaryFromController.text = item.salleryFrom ?? '';
@@ -358,9 +368,16 @@ class SellFormsVM extends BaseViewModel {
     kmDrivenTextController.text = "${item.kmDriven ?? ''}";
     numOfOwnerTextController.text = "${item.numberOfOwner ?? ''}";
     sizeTextController.text = "${item.fashionSize ?? ''}";
-    selectedBrand = CategoryModel(id: item.brandId, name: item.brand?.name);
-    selectedModel = CategoryModel(id: item.modelId, name: item.model?.name);
-    selectedSize = CategoryModel(id: item.sizeId, name: item.fashionSize?.name);
+    if (item.brandId != null) {
+      selectedBrand = CategoryModel(id: item.brandId, name: item.brand?.name);
+    }
+    if (item.modelId != null) {
+      selectedModel = CategoryModel(id: item.modelId, name: item.model?.name);
+    }
+    if (item.sizeId != null) {
+      selectedSize =
+          CategoryModel(id: item.sizeId, name: item.fashionSize?.name);
+    }
     isEditProduct = true;
     communicationChoice = item.communicationChoice ?? '';
 
@@ -383,7 +400,7 @@ class SellFormsVM extends BaseViewModel {
     currentFurnishing = item.furnishedType ?? '';
     ownershipStatusTextController.text = item.ownership ?? '';
     paymentTypeTextController.text = item.paymentType ?? '';
-    currentPaymentOption= item.paymentType ?? '';
+    currentPaymentOption = item.paymentType ?? '';
 
     accessToUtilitiesTextController.text = item.accessToUtilities ?? '';
     currentAccessToUtilities = item.accessToUtilities ?? '';
@@ -396,7 +413,6 @@ class SellFormsVM extends BaseViewModel {
     amenities =
         item.productAmenities?.map((element) => element.amnityId).toList() ??
             [];
-
   }
 
   void resetTextFields() {
@@ -489,89 +505,92 @@ class SellFormsVM extends BaseViewModel {
 
     String mainImage = "";
     final List<String> images = [];
-    if(mainImagePath.isNotEmpty) {
-       mainImage = await BaseClient.uploadImage(imagePath: mainImagePath);
+    if (mainImagePath.isNotEmpty) {
+      mainImage = await BaseClient.uploadImage(imagePath: mainImagePath);
     }
-    if(imagesList.isNotEmpty) {
+    if (imagesList.isNotEmpty) {
       for (var element in imagesList) {
-        images.add(await BaseClient.uploadImage(imagePath: element.media ?? ''));
+        images
+            .add(await BaseClient.uploadImage(imagePath: element.media ?? ''));
       }
     }
     var communication = "";
-    if(communicationChoice == "none" || communicationChoice.isEmpty){
+    if (communicationChoice == "none" || communicationChoice.isEmpty) {
       communication = "chat";
-    }else{
+    } else {
       communication = communicationChoice;
     }
-    Map<String, dynamic> fields = {
-      "category_id": category?.id,
-      "sub_category_id": subCategory?.id,
-      "sub_sub_category_id": subSubCategory?.id,
-      "brand_id": brand?.id,
-      "model_id": models?.id,
-      "name": adTitleTextController.text.trim(),
-      "description": descriptionTextController.text.trim(),
-      "looking_for ": lookingForController.text.trim(),
-      "image": mainImage,
-      "medias": images.reversed.toList().join(','),
-      "price": priceTextController.text.trim().isNotEmpty
-          ? priceTextController.text.trim()
-          : '0',
-      "year": yearTextController.text.trim(),
-      "fuel": fuelTextController.text.trim(),
-      "milleage": mileageTextController.text.trim(),
-      "km_driven": kmDrivenTextController.text.trim(),
-      "number_of_owner": numOfOwnerTextController.text.trim(),
-      "education_type": educationTypeTextController.text.trim(),
-      "country": country,
-      "state": state,
-      "city": city,
-      "latitude": position?.latitude,
-      "longitude": position?.longitude,
-      "nearby": addressTextController.text.trim(),
-      "position_type":
-      jobPositionTextController.text.trim().isNotEmpty? getPositionType(type: jobPositionTextController.text.trim()):"",
-      "sallery_period":
-      jobSalaryTextController.text.trim().isNotEmpty?getSallaryPeriod(type: jobSalaryTextController.text.trim()):"",
-      "sallery_from": jobSalaryFromController.text.trim(),
-      "sallery_to": jobSalaryToController.text.trim(),
-      "material": materialTextController.text.trim(),
-      "ram": ramTextController.text.trim(),
-      "storage": storageTextController.text.trim(),
-      "screen_size": screenSizeTextController.text.trim(),
-      "size_id": selectedSize?.id,
-      'communication_choice': communication,
-      'property_for': propertyForTextController.text.trim(),
-      'bedrooms': noOfBedroomsTextController.text.trim(),
-      'bathrooms': noOfBathroomsTextController.text.trim(),
-      'furnished_type': furnishingStatusTextController.text.trim(),
-      'ownership': ownershipStatusTextController.text.trim(),
-      'payment_type': paymentTypeTextController.text.trim().isNotEmpty?paymentTypeTextController.text.toLowerCase().split(' ').join('_'):"",
-      'completion_status':
-          completionStatusTextController.text.trim().isNotEmpty?completionStatusTextController.text.toLowerCase().split(' ').join('_'):"",
-      'delivery_term': deliveryTermTextController.text.trim().isNotEmpty?deliveryTermTextController.text.toLowerCase().split(' ').join('_'):"",
-      'selected_amnities': amenities.isNotEmpty?amenities.join(','):"",
-      'area': areaSizeTextController.text.trim(),
-      'type': propertyForTypeTextController.text.trim(),
-      'level': levelTextController.text.trim(),
-      'building_age': propertyAgeTextController.text.trim(),
-      'listed_by': listedByTextController.text.trim(),
-      'rental_price': rentalPriceTextController.text.trim(),
-      'rental_term': rentalTermsTextController.text.trim(),
-      'deposit': depositTextController.text.trim(),
-      'insurance': insuranceTextController.text.trim(),
-      'access_to_utilities': accessToUtilitiesTextController.text.trim(),
-    };
-    if(category?.id != 6 && category?.id != 8 && category?.id != 9 && category?.id != 11){
-      fields.addAll({
-        "item_condition": itemCondition == 1 ? "new" : "used",
-      });
-    }
-    if(transmission != 0){
-      fields.addAll({
-        "transmission": transmission == 1 ? 'automatic' : 'manual',
-      });
-    }
+
+      Map<String, dynamic> fields = {
+        "name": trimController(adTitleTextController),
+        "description": trimController(descriptionTextController),
+        "looking_for": trimController(lookingForController),
+        "image": mainImage,
+        "medias": images.reversed.toList().join(','),
+        "price": trimController(priceTextController) ?? '0',
+        "year": trimController(yearTextController),
+        "fuel": trimController(fuelTextController),
+        "mileage": trimController(mileageTextController),
+        "km_driven": trimController(kmDrivenTextController),
+        "number_of_owner": trimController(numOfOwnerTextController),
+        "education_type": trimController(educationTypeTextController),
+        "country": country,
+        "state": state,
+        "city": city,
+        "latitude": position?.latitude,
+        "longitude": position?.longitude,
+        "nearby": trimController(addressTextController),
+        "position_type": trimController(jobPositionTextController) != null
+            ? getPositionType(type: jobPositionTextController.text.trim())
+            : "",
+        "salary_period": trimController(jobSalaryTextController) != null
+            ? getSallaryPeriod(type: jobSalaryTextController.text.trim())
+            : "",
+        "salary_from": trimController(jobSalaryFromController),
+        "salary_to": trimController(jobSalaryToController),
+        "material": trimController(materialTextController),
+        "ram": trimController(ramTextController),
+        "storage": trimController(storageTextController),
+        "screen_size": trimController(screenSizeTextController),
+        "communication_choice": communication,
+        "property_for": trimController(propertyForTextController),
+        "bedrooms": trimController(noOfBedroomsTextController),
+        "bathrooms": trimController(noOfBathroomsTextController),
+        "furnished_type": trimController(furnishingStatusTextController),
+        "ownership": trimController(ownershipStatusTextController),
+        "payment_type": transformToSnakeCase(trimController(paymentTypeTextController)),
+        "completion_status": transformToSnakeCase(trimController(completionStatusTextController)),
+        "delivery_term": transformToSnakeCase(trimController(deliveryTermTextController)),
+        "selected_amenities": amenities.isNotEmpty ? amenities.join(',') : "",
+        "area": trimController(areaSizeTextController),
+        "type": trimController(propertyForTypeTextController),
+        "level": trimController(levelTextController),
+        "building_age": trimController(propertyAgeTextController),
+        "listed_by": trimController(listedByTextController),
+        "rental_price": trimController(rentalPriceTextController),
+        "rental_term": trimController(rentalTermsTextController),
+        "deposit": trimController(depositTextController),
+        "insurance": trimController(insuranceTextController),
+        "access_to_utilities": trimController(accessToUtilitiesTextController),
+      };
+
+      // Adding dynamic fields
+      if (category != null) fields["category_id"] = category.id;
+      if (subCategory != null) fields["sub_category_id"] = subCategory.id;
+      if (subSubCategory != null) fields["sub_sub_category_id"] = subSubCategory.id;
+      if (brand != null) fields["brand_id"] = brand.id;
+      if (models != null) fields["model_id"] = models.id;
+      if (selectedSize != null) fields["size_id"] = selectedSize?.id;
+
+      if (category?.id != null &&
+          ![6, 8, 9, 11].contains(category?.id)) {
+        fields["item_condition"] = itemCondition == 1 ? "new" : "used";
+      }
+
+      if (transmission != 0) {
+        fields["transmission"] = transmission == 1 ? "automatic" : "manual";
+      }
+
     fields.forEach((key, value) {
       if (value != null && "$value".trim().isNotEmpty) {
         body[key] = value;
@@ -652,7 +671,10 @@ class SellFormsVM extends BaseViewModel {
         ListResponse.fromJson(response, (json) => CategoryModel.fromJson(json));
     return model.body ?? [];
   }
-
+  String? transformToSnakeCase(String? value) =>
+      value?.toLowerCase().split(' ').join('_');
+  String? trimController(TextEditingController controller) =>
+      controller.text.trim().isNotEmpty ? controller.text.trim() : null;
   void editProduct(
       {int? productId,
       CategoryModel? category,
@@ -676,95 +698,96 @@ class SellFormsVM extends BaseViewModel {
 
     String mainImage = "";
     final List<String> images = [];
-    if(mainImagePath.isNotEmpty) {
+    if (mainImagePath.isNotEmpty) {
       mainImage = mainImagePath.contains('http')
-        ? mainImagePath.split('/').last
-        : await BaseClient.uploadImage(imagePath: mainImagePath);
+          ? mainImagePath.split('/').last
+          : await BaseClient.uploadImage(imagePath: mainImagePath);
     }
-    if(imagesList.isNotEmpty) {
+    if (imagesList.isNotEmpty) {
       for (var element in imagesList) {
         if (!element.media!.contains('http')) {
-          images.add(await BaseClient.uploadImage(imagePath: element.media ?? ''));
+          images.add(
+              await BaseClient.uploadImage(imagePath: element.media ?? ''));
         }
       }
     }
     var communication = "";
-    if(communicationChoice == "none" || communicationChoice.isEmpty){
+    if (communicationChoice == "none" || communicationChoice.isEmpty) {
       communication = "chat";
-    }else{
+    } else {
       communication = communicationChoice;
     }
     Map<String, dynamic> fields = {
       "product_id": productId,
-      "category_id": category?.id,
-      "sub_category_id": subCategory?.id,
-      "sub_sub_category_id": subSubCategory?.id,
-      "brand_id": brand?.id,
-      "model_id": models?.id,
-      "name": adTitleTextController.text.trim(),
-      "description": descriptionTextController.text.trim(),
-      "looking_for ": lookingForController.text.trim(),
+      "name": trimController(adTitleTextController),
+      "description": trimController(descriptionTextController),
+      "looking_for ": trimController(lookingForController),
       "image": mainImage,
       "medias": images.reversed.toList().join(','),
-      "price": priceTextController.text.trim().isNotEmpty
-          ? priceTextController.text.trim()
-          : '0',
-      "year": yearTextController.text.trim(),
-      "fuel": fuelTextController.text.trim(),
-      "km_driven": kmDrivenTextController.text.trim(),
-      "number_of_owner": numOfOwnerTextController.text.trim(),
-      "education_type": educationTypeTextController.text.trim(),
+      "price": trimController(priceTextController)??"0",
+      "year": trimController(yearTextController),
+      "fuel": trimController(fuelTextController),
+      "km_driven": trimController(kmDrivenTextController),
+      "number_of_owner": trimController(numOfOwnerTextController),
+      "education_type": trimController(educationTypeTextController),
       "country": country,
       "state": state,
       "city": city,
       "latitude": position?.latitude,
       "longitude": position?.longitude,
-      "nearby": addressTextController.text.trim(),
-      "position_type":
-      jobPositionTextController.text.trim().isNotEmpty? getPositionType(type: jobPositionTextController.text.trim()):"",
-      "sallery_period":
-      jobSalaryTextController.text.trim().isNotEmpty?getSallaryPeriod(type: jobSalaryTextController.text.trim()):"",
-      "sallery_from": jobSalaryFromController.text.trim(),
-      "sallery_to": jobSalaryToController.text.trim(),
-      "material": materialTextController.text.trim(),
-      "ram": ramTextController.text.trim(),
-      "storage": storageTextController.text.trim(),
-      "screen_size": screenSizeTextController.text.trim(),
-      "size_id": selectedSize?.id,
-      "delete_img_id": deletedImageIds.isNotEmpty?deletedImageIds.join(','):"",
+      "nearby": trimController(addressTextController),
+      "position_type": trimController(jobPositionTextController) != null
+          ? getPositionType(type: jobPositionTextController.text.trim())
+          : "",
+      "sallery_period": trimController(jobSalaryTextController) != null
+          ? getSallaryPeriod(type: jobSalaryTextController.text.trim())
+          : "",
+      "sallery_from": trimController(jobSalaryFromController),
+      "sallery_to": trimController(jobSalaryToController),
+      "material": trimController(materialTextController),
+      "ram": trimController(ramTextController),
+      "storage": trimController(storageTextController),
+      "screen_size": trimController(screenSizeTextController),
+      "delete_img_id":
+          deletedImageIds.isNotEmpty ? deletedImageIds.join(',') : "",
       'communication_choice': communication,
-      'property_for': propertyForTextController.text.trim(),
-      'bedrooms': noOfBedroomsTextController.text.trim(),
-      'bathrooms': noOfBathroomsTextController.text.trim(),
-      'furnished_type': furnishingStatusTextController.text.trim(),
-      'ownership': ownershipStatusTextController.text.trim(),
-      'payment_type': paymentTypeTextController.text.trim().isNotEmpty?paymentTypeTextController.text.toLowerCase().split(' ').join('_'):"",
-      'completion_status':
-          completionStatusTextController.text.trim().isNotEmpty?completionStatusTextController.text.toLowerCase().split(' ').join('_'):"",
-      'delivery_term': deliveryTermTextController.text.trim().isNotEmpty?deliveryTermTextController.text.toLowerCase().split(' ').join('_'):"",
-      'selected_amnities': amenities.isNotEmpty?amenities.join(','):"",
-      'area': areaSizeTextController.text.trim(),
-      'type': propertyForTypeTextController.text.trim(),
-      'level': levelTextController.text.trim(),
-      'building_age': propertyAgeTextController.text.trim(),
-      'listed_by': listedByTextController.text.trim(),
-      'rental_price': rentalPriceTextController.text.trim(),
-      'rental_term': rentalTermsTextController.text.trim(),
-      'deposit': depositTextController.text.trim(),
-      'insurance': insuranceTextController.text.trim(),
-      'access_to_utilities': accessToUtilitiesTextController.text.trim(),
+      'property_for': trimController(propertyForTextController),
+      'bedrooms': trimController(noOfBedroomsTextController),
+      'bathrooms': trimController(noOfBathroomsTextController),
+      'furnished_type': trimController(furnishingStatusTextController),
+      'ownership': trimController(ownershipStatusTextController),
+      'payment_type': transformToSnakeCase(trimController(paymentTypeTextController)),
+      'completion_status': transformToSnakeCase(trimController(completionStatusTextController)),
+      'delivery_term': transformToSnakeCase(trimController(deliveryTermTextController)),
+      'selected_amnities': amenities.isNotEmpty ? amenities.join(',') : "",
+      'area': trimController(areaSizeTextController),
+      'type': trimController(propertyForTypeTextController),
+      'level': trimController(levelTextController),
+      'building_age': trimController(propertyAgeTextController),
+      'listed_by': trimController(listedByTextController),
+      'rental_price': trimController(rentalPriceTextController),
+      'rental_term': trimController(rentalTermsTextController),
+      'deposit': trimController(depositTextController),
+      'insurance': trimController(insuranceTextController),
+      'access_to_utilities': trimController(accessToUtilitiesTextController),
     };
-    if(category?.id != 6 && category?.id != 8 && category?.id != 9 && category?.id != 11){
-      fields.addAll({
-        "item_condition": itemCondition == 1 ? "new" : "used",
-      });
+    // Adding dynamic fields
+    if (category != null) fields["category_id"] = category.id;
+    if (subCategory != null) fields["sub_category_id"] = subCategory.id;
+    if (subSubCategory != null) fields["sub_sub_category_id"] = subSubCategory.id;
+    if (brand != null) fields["brand_id"] = brand.id;
+    if (models != null) fields["model_id"] = models.id;
+    if (selectedSize != null) fields["size_id"] = selectedSize?.id;
+
+    if (category?.id != null &&
+        ![6, 8, 9, 11].contains(category?.id)) {
+      fields["item_condition"] = itemCondition == 1 ? "new" : "used";
     }
-    if(transmission != 0){
-      fields.addAll({
-        "transmission": transmission == 1 ? 'automatic' : 'manual',
-      });
+
+    if (transmission != 0) {
+      fields["transmission"] = transmission == 1 ? "automatic" : "manual";
     }
-    if(productStatus == 2){
+    if (productStatus == 2) {
       fields['status'] = 0;
     }
 

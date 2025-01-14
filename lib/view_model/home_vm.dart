@@ -78,10 +78,14 @@ class HomeVM extends BaseViewModel {
   double latitude = 0.0;
   double longitude = 0.0;
 
-  void updateLatLong({required double lat, required double long}) async {
+  void updateLatLong({required double lat, required double long,String? type,String? address}) async {
     latitude = lat;
     longitude = long;
-    currentLocation = await LocationHelper.getAddressFromCoordinates(lat, long);
+    if(type==null) {
+      currentLocation = await LocationHelper.getAddressFromCoordinates(lat, long);
+    }else{
+      currentLocation = address??"";
+    }
     notifyListeners();
     onRefresh();
   }

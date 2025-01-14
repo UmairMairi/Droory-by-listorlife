@@ -11,6 +11,8 @@ class StringHelper {
   // OnBoarding Screen
   static String unverifiedToast = LocaleService.translate('unverifiedToast') ??
       'Verify your phone number in your profile before posting ads.';
+ static String unverifiedAddPhoneToast = LocaleService.translate('unverifiedAddPhoneToast') ??
+      'Add and verify your phone number in your profile before posting ads.';
   static String next = LocaleService.translate('next') ?? 'Next';
   static String getStarted =
       LocaleService.translate('getStarted') ?? 'Get Started';
@@ -678,6 +680,8 @@ static String locationAlert =
     verifyButton = LocaleService.translate('verifyButton') ?? 'Verify';
     unverifiedToast = LocaleService.translate('unverifiedToast') ??
         'Verify your phone number in your profile before posting ads.';
+    unverifiedAddPhoneToast = LocaleService.translate('unverifiedAddPhoneToast') ??
+        'Add and verify your phone number in your profile before posting ads.';
     next = LocaleService.translate('next') ?? 'Next';
     getStarted = LocaleService.translate('getStarted') ?? 'Get Started';
 

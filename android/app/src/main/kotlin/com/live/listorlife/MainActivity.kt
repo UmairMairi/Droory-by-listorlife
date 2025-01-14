@@ -1,4 +1,4 @@
-package com.dev.list_and_life
+package com.live.listorlife
 
 import io.flutter.embedding.android.FlutterActivity
 

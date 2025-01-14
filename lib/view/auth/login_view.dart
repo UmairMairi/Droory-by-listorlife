@@ -123,6 +123,19 @@ class LoginView extends BaseView<AuthVM> {
                         ),
                       ),
                     ),
+                    // const Gap(10),
+                    // InkWell(
+                    //   onTap: () => viewModel.socialLogin(type: 2),
+                    //   child: Card(
+                    //     child: Padding(
+                    //       padding: const EdgeInsets.all(8.0),
+                    //       child: Image.asset(
+                    //         AssetsRes.IC_GOOGLE_ICON,
+                    //         height: 30,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                     const Gap(10),
                     InkWell(
                       onTap: () => viewModel.socialLogin(type: 3),

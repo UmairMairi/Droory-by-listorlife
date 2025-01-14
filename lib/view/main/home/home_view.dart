@@ -397,6 +397,8 @@ class _LocationSearchPopupState extends State<LocationSearchPopup> {
                       DbHelper.saveLocationSearchQuery(
                           "${prediction.description}");
                       widget.viewModel.updateLatLong(
+                        type: "search",
+                          address: prediction.description ?? 'Cario, Egypt',
                           lat: double.parse(prediction.lat ?? '$lat'),
                           long: double.parse(prediction.lng ?? '$lng'));
                     },
@@ -451,6 +453,8 @@ class _LocationSearchPopupState extends State<LocationSearchPopup> {
                             widget.viewModel.locationTextController.text =
                                 searchHistory[index];
                             widget.viewModel.updateLatLong(
+                              type: "history",
+                                address: searchHistory[index],
                                 lat: position?.latitude ?? lat,
                                 long: position?.longitude ?? lng);
                           },

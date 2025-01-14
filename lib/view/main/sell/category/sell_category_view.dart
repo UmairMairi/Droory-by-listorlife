@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/models/category_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/widgets/app_error_widget.dart';
 import 'package:list_and_life/widgets/image_view.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../base/helpers/db_helper.dart';
 import '../../../../base/helpers/string_helper.dart';
 import '../../../../base/network/api_constants.dart';
+import '../../../../routes/app_routes.dart';
 import '../../../../skeletons/sell_loading_widget.dart';
+import '../../../../view_model/profile_vm.dart';
 import '../../../../view_model/sell_v_m.dart';
 import '../../../../widgets/unauthorised_view.dart';
 
@@ -57,14 +61,20 @@ class SellCategoryView extends BaseView<SellVM> {
                               itemBuilder: (buildContext, index) {
                                 return GestureDetector(
                                   onTap: () {
-                                    if (DbHelper.getUserModel()
-                                            ?.phoneVerified !=
-                                        1) {
-                                      DialogHelper.showToast(
-                                          message:
-                                              StringHelper.unverifiedToast);
-                                      return;
+                                    if(DbHelper.getUserModel()?.socialType == null){
+                                      if (DbHelper.getUserModel()?.phoneVerified != 1) {
+                                        DialogHelper.showToast(
+                                            message:
+                                            StringHelper.unverifiedToast);
+                                        return;
+                                      }
+                                    }else{
+                                      if (DbHelper.getUserModel()?.phoneVerified != 1) {
+                                        addContactDialog(context);
+                                         return;
+                                      }
                                     }
+
 
                                     viewModel.handelSellCat(
                                         item: categoryData[index]);
@@ -121,4 +131,30 @@ class SellCategoryView extends BaseView<SellVM> {
             ),
     );
   }
+
+
+  void addContactDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return AppAlertDialogWithLottie(
+          title: StringHelper.add,
+          description: StringHelper.unverifiedAddPhoneToast,
+          onTap: () {
+            context.pop();
+            context.read<ProfileVM>().imagePath = '';
+            context.push(Routes.editProfile);
+          },
+          onCancelTap: () {
+            context.pop();
+          },
+          buttonText: StringHelper.yes,
+          cancelButtonText: StringHelper.no,
+          showCancelButton: true,
+        );
+      },
+    );
+  }
+
 }
