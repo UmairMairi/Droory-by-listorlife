@@ -49,7 +49,7 @@ class BaseClient {
       'language_type': DbHelper.getLanguage(),
     };
     if (apiRequest.headers != null) {
-      headers.addAll(apiRequest.headers!);
+      headers.addAll(apiRequest.headers??{});
     }
     if (DbHelper.getToken() != null) {
       headers.putIfAbsent(

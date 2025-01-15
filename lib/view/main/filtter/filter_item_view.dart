@@ -75,14 +75,22 @@ class _FilterItemViewState extends State<FilterItemView> {
 
   String constructUrl(FilterModel model) {
     final baseUrl = ApiConstants.getFilteredProduct(limit: limit, page: page);
+
+    // Collect additional query parameters from the model and filter out null/empty values
     final queryParams = model
         .toMap()
         .entries
-        .where((entry) => entry.value != null && entry.value!.isNotEmpty)
+        .where((entry) => entry.value != null && (entry.value??"").isNotEmpty)
         .map((entry) => '${entry.key}=${entry.value}')
         .join('&');
-    return '$baseUrl&$queryParams&search=$searchQuery';
+
+    final searchQueryParam = searchQuery.isNotEmpty ? 'search=$searchQuery' : '';
+
+    final combinedParams = [queryParams, searchQueryParam].where((param) => param.isNotEmpty).join('&');
+
+    return '$baseUrl${combinedParams.isNotEmpty ? '&$combinedParams' : ''}';
   }
+
 
   Future<void> getProductsApi({bool loading = false}) async {
     if (loading) isLoading = loading;

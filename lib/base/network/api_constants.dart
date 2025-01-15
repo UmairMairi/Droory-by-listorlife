@@ -27,21 +27,62 @@ class ApiConstants {
   static String storeSearchesUrl() => "$_baseUrl/store/searches";
   static String getSearchesUrl() => "$_baseUrl/get/searches";
   static String deleteSearchesUrl() => "$_baseUrl/delete/searches";
-  static String getProductsUrl(
-          {int? limit = 10,
-          int? page = 1,
-          double? latitude,
-          double? longitude,
-          String? search,
-          required String? sellStatus}) =>
-      "$_baseUrl/get/products?limit=$limit&page=$page&latitude=$latitude&longitude=$longitude&sell_status=$sellStatus&search=$search";
+  static String getProductsUrl({
+    int? limit = 10,
+    int? page = 1,
+    double? latitude,
+    double? longitude,
+    String? search,
+    required String? sellStatus,
+  }) {
+    final Map<String, dynamic> queryParams = {
+      'limit': limit,
+      'page': page,
+      'latitude': latitude,
+      'longitude': longitude,
+      'search': search,
+      'sell_status': sellStatus,
+    };
 
-  static String getUsersProductsUrl(
-          {int? limit = 10, int? page = 1, String? userId}) =>
-      "$_baseUrl/get/products?limit=$limit&page=$page&user_id=$userId";
+    queryParams.removeWhere((key, value) => value == null || value.toString().isEmpty);
 
-  static String getFavouritesUrl({int? limit = 10, int? page = 1}) =>
-      "$_baseUrl/get/products?limit=$limit&page=$page&favourite=true";
+    final queryString = queryParams.entries.map((entry) => '${entry.key}=${entry.value}').join('&');
+
+    return "$_baseUrl/get/products?$queryString";
+  }
+
+  static String getUsersProductsUrl({
+    int? limit = 10,
+    int? page = 1,
+    String? userId,
+  }) {
+    final Map<String, dynamic> queryParams = {
+      'limit': limit,
+      'page': page,
+      'user_id': userId,
+    };
+
+    queryParams.removeWhere((key, value) => value == null || value.toString().isEmpty);
+
+    final queryString = queryParams.entries.map((entry) => '${entry.key}=${entry.value}').join('&');
+
+    return "$_baseUrl/get/products?$queryString";
+  }
+
+
+  static String getFavouritesUrl({int? limit = 10, int? page = 1}) {
+    final Map<String, dynamic> queryParams = {
+      'limit': limit,
+      'page': page,
+      'favourite': true,
+    };
+    queryParams.removeWhere((key, value) => value == null || value.toString().isEmpty);
+
+    final queryString = queryParams.entries.map((entry) => '${entry.key}=${entry.value}').join('&');
+
+    return "$_baseUrl/get/products?$queryString";
+  }
+
 
   static String addFavouriteUrl() => "$_baseUrl/add/favourite";
   static String getModelsUrl({String? brandId}) =>
@@ -75,6 +116,17 @@ class ApiConstants {
   static String getFilteredProduct({
     int? limit = 10,
     int? page = 1,
-  }) =>
-      "$_baseUrl/get/products?limit=$limit&page=$page";
+  }) {
+    final Map<String, dynamic> queryParams = {
+      'limit': limit,
+      'page': page,
+    };
+
+    queryParams.removeWhere((key, value) => value == null || value.toString().isEmpty);
+
+    final queryString = queryParams.entries.map((entry) => '${entry.key}=${entry.value}').join('&');
+
+    return "$_baseUrl/get/products?$queryString";
+  }
+
 }

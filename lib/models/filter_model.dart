@@ -100,7 +100,7 @@ class FilterModel {
       'limit': limit,
       'page': page,
       'category_id': categoryId,
-      'subcategory_id': subcategoryId,
+      'sub_category_id': subcategoryId,
       'brand_id': brandId,
       'user_id': userId,
       'favourite': favourite,
