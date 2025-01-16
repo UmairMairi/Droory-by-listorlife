@@ -3,6 +3,7 @@ class FilterModel {
   String? page;
   String? categoryId;
   String? subcategoryId;
+  String? subSubCategoryId;
   String? brandId;
   String? userId;
   String? favourite;
@@ -52,6 +53,7 @@ class FilterModel {
     this.page,
     this.categoryId,
     this.subcategoryId,
+    this.subSubCategoryId,
     this.brandId,
     this.userId,
     this.favourite,
@@ -101,6 +103,7 @@ class FilterModel {
       'page': page,
       'category_id': categoryId,
       'sub_category_id': subcategoryId,
+      'sub_sub_category_id': subSubCategoryId,
       'brand_id': brandId,
       'user_id': userId,
       'favourite': favourite,
@@ -150,6 +153,7 @@ class FilterModel {
     String? page,
     String? categoryId,
     String? subcategoryId,
+    String? subSubCategoryId,
     String? brandId,
     String? userId,
     String? favourite,
@@ -197,6 +201,7 @@ class FilterModel {
       page: page ?? this.page,
       categoryId: categoryId ?? this.categoryId,
       subcategoryId: subcategoryId ?? this.subcategoryId,
+      subSubCategoryId: subSubCategoryId ?? this.subSubCategoryId,
       brandId: brandId ?? this.brandId,
       userId: userId ?? this.userId,
       favourite: favourite ?? this.favourite,

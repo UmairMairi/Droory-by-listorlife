@@ -5,6 +5,7 @@ import 'package:list_and_life/base/helpers/string_helper.dart';
 import 'package:list_and_life/models/category_model.dart';
 import 'package:list_and_life/view_model/home_vm.dart';
 
+import '../../../base/helpers/dialog_helper.dart';
 import '../../../models/filter_model.dart';
 import '../../../routes/app_routes.dart';
 import '../../../skeletons/sub_category_loading_widget.dart';
@@ -34,13 +35,10 @@ class SubCategoryView extends BaseView<HomeVM> {
                   itemBuilder: (context, index) {
                     return ListTile(
                       onTap: () {
-                        context.push(Routes.filterDetails,
-                            extra: FilterModel(
-                              categoryId: "${category?.id}",
-                              subcategoryId: "${subCategoriesList[index].id??""}",
-                              latitude: "${viewModel.latitude}",
-                              longitude: "${viewModel.longitude}",
-                            ));
+                        DialogHelper.showLoading();
+                        viewModel.getSubSubCategoryListApi(
+                            category: category,
+                            subCategory: subCategoriesList[index]);
                       },
                       title: Text(
                         subCategoriesList[index].name ?? '',
@@ -61,6 +59,59 @@ class SubCategoryView extends BaseView<HomeVM> {
               isLoading: true,
             );
           }),
+    );
+  }
+}
+
+
+class SubSubCategoryView extends StatelessWidget {
+  final CategoryModel? category;
+  final CategoryModel? subCategory;
+  final List<CategoryModel>? subSubCategory;
+
+  final String? latitude;
+  final String? longitude;
+  const SubSubCategoryView({
+    super.key,
+    required this.category,
+    this.subSubCategory,
+    this.subCategory,
+    this.latitude,
+    this.longitude,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(subCategory?.name ?? ''),
+      ),
+      body: ListView.separated(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          itemBuilder: (context, index) {
+            var  subSubCat = subSubCategory?[index];
+            return ListTile(
+              onTap: () {
+                context.push(Routes.filterDetails,
+                    extra: FilterModel(
+                      categoryId: "${category?.id}",
+                      subcategoryId: "${subCategory?.id ?? ""}",
+                      subSubCategoryId: "${subSubCat?.id ?? ""}",
+                      latitude: "$latitude",
+                      longitude: "$longitude",
+                    ));
+              },
+              title: Text(
+                subSubCat?.name ?? '',
+                style: context.textTheme.titleSmall,
+              ),
+              trailing: const Icon(Icons.arrow_forward_ios),
+            );
+          },
+          separatorBuilder: (context, index) {
+            return const Divider();
+          },
+          itemCount: subSubCategory?.length ?? 0),
     );
   }
 }

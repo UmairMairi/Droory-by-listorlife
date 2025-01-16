@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/debouncer_helper.dart';
 import 'package:list_and_life/base/helpers/location_helper.dart';
@@ -12,14 +14,18 @@ import 'package:list_and_life/models/product_detail_model.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../base/helpers/db_helper.dart';
+import '../base/helpers/dialog_helper.dart';
 import '../models/category_model.dart';
 import '../models/common/list_response.dart';
+import '../models/filter_model.dart';
+import '../routes/app_routes.dart';
+import '../view/main/home/sub_category_view.dart';
 
 class HomeVM extends BaseViewModel {
-
   late Future<List<CategoryModel>> cachedCategoryList;
   RefreshController refreshController = RefreshController(initialRefresh: true);
   String _currentLocation = '';
+
   String get currentLocation => _currentLocation;
   final DebounceHelper _debounce = DebounceHelper(milliseconds: 1000);
   String searchQuery = '';
@@ -30,7 +36,9 @@ class HomeVM extends BaseViewModel {
   FocusNode searchFocusNode = FocusNode();
 
   String _publishedBy = 'Posted Within';
+
   String get publishedBy => _publishedBy;
+
   set publishedBy(String value) {
     _publishedBy = value;
     notifyListeners();
@@ -53,6 +61,7 @@ class HomeVM extends BaseViewModel {
   int _page = 1;
 
   int get page => _page;
+
   set page(int value) {
     _page = value;
     notifyListeners();
@@ -70,6 +79,7 @@ class HomeVM extends BaseViewModel {
   int _selectedIndex = 0;
 
   int get selectedIndex => _selectedIndex;
+
   set selectedIndex(int value) {
     _selectedIndex = value;
     notifyListeners();
@@ -78,13 +88,18 @@ class HomeVM extends BaseViewModel {
   double latitude = 0.0;
   double longitude = 0.0;
 
-  void updateLatLong({required double lat, required double long,String? type,String? address}) async {
+  void updateLatLong(
+      {required double lat,
+      required double long,
+      String? type,
+      String? address}) async {
     latitude = lat;
     longitude = long;
-    if(type==null) {
-      currentLocation = await LocationHelper.getAddressFromCoordinates(lat, long);
-    }else{
-      currentLocation = address??"";
+    if (type == null) {
+      currentLocation =
+          await LocationHelper.getAddressFromCoordinates(lat, long);
+    } else {
+      currentLocation = address ?? "";
     }
     notifyListeners();
     onRefresh();
@@ -195,9 +210,10 @@ class HomeVM extends BaseViewModel {
     super.onInit();
   }
 
-  callApiMethods() async{
+  callApiMethods() async {
     cachedCategoryList = getCategoryListApi();
   }
+
   @override
   void onClose() {
     // TODO: implement onClose
@@ -291,6 +307,41 @@ class HomeVM extends BaseViewModel {
     return model.body ?? [];
   }
 
+  Future<void> getSubSubCategoryListApi(
+      {required CategoryModel? category,
+      required CategoryModel subCategory}) async {
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.getSubSubCategoriesUrl(id: "${subCategory.id}"),
+        requestType: RequestType.get);
+
+    var response = await BaseClient.handleRequest(apiRequest);
+
+    ListResponse<CategoryModel> model =
+        ListResponse.fromJson(response, (json) => CategoryModel.fromJson(json));
+
+    if (model.body?.isNotEmpty ?? false) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => SubSubCategoryView(
+                    category: category,
+                    subSubCategory: model.body?.reversed.toList() ?? [],
+                    subCategory: subCategory,
+                latitude: "$latitude",
+                longitude: "$longitude",
+                  )));
+    } else {
+      context.push(Routes.filterDetails,
+          extra: FilterModel(
+            categoryId: "${category?.id}",
+            subcategoryId: "${subCategory.id ?? ""}",
+            latitude: "$latitude",
+            longitude: "$longitude",
+          ));
+    }
+
+    DialogHelper.hideLoading();
+  }
 
   /// new text controllers
   TextEditingController propertyForTextController = TextEditingController();
@@ -298,37 +349,37 @@ class HomeVM extends BaseViewModel {
   TextEditingController noOfBathroomsTextController = TextEditingController();
   TextEditingController noOfBedroomsTextController = TextEditingController();
   TextEditingController furnishingStatusTextController =
-  TextEditingController();
+      TextEditingController();
 
   TextEditingController accessToUtilitiesTextController =
-  TextEditingController();
+      TextEditingController();
   TextEditingController ownershipStatusTextController = TextEditingController();
   TextEditingController paymentTypeTextController = TextEditingController();
   TextEditingController listedByTextController = TextEditingController();
   TextEditingController rentalTermsTextController = TextEditingController();
   TextEditingController completionStatusTextController =
-  TextEditingController();
+      TextEditingController();
   TextEditingController deliveryTermTextController = TextEditingController();
   TextEditingController levelTextController = TextEditingController();
 
   TextEditingController startDownPriceTextController =
-  TextEditingController(text: '0');
+      TextEditingController(text: '0');
   TextEditingController endDownPriceTextController =
-  TextEditingController(text: '20000');
+      TextEditingController(text: '20000');
 
   TextEditingController startAreaTextController =
-  TextEditingController(text: '0');
+      TextEditingController(text: '0');
   TextEditingController endAreaTextController =
-  TextEditingController(text: '20000');
+      TextEditingController(text: '20000');
   String _currentPropertyType = "Sell";
+
   String get currentPropertyType => _currentPropertyType;
 
   set currentPropertyType(String index) {
     _currentPropertyType = index;
     notifyListeners();
   }
+
   var regexToRemoveEmoji =
       r'(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])';
-
-
 }
