@@ -46,12 +46,21 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyC8LyUM4IHrPfy3h6Lie_PiA-S8j_lGYfo',
+    appId: '1:349423978681:web:99209918ae303372f33368',
+    messagingSenderId: '349423978681',
+    projectId: 'list-and-life',
+    authDomain: 'list-and-life.firebaseapp.com',
+    storageBucket: 'list-and-life.firebasestorage.app',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDFB1JQ1oOHV2CVJI35EZNK_IdGtGOu0NA',
     appId: '1:349423978681:android:4a584bce7167e883f33368',
     messagingSenderId: '349423978681',
     projectId: 'list-and-life',
-    storageBucket: 'list-and-life.appspot.com',
+    storageBucket: 'list-and-life.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
@@ -59,19 +68,9 @@ class DefaultFirebaseOptions {
     appId: '1:349423978681:ios:4cd013bef1ea3d07f33368',
     messagingSenderId: '349423978681',
     projectId: 'list-and-life',
-    storageBucket: 'list-and-life.appspot.com',
+    storageBucket: 'list-and-life.firebasestorage.app',
     androidClientId: '349423978681-bq6js869ld4l74f148hps0b34ql241f8.apps.googleusercontent.com',
     iosClientId: '349423978681-js9aqmag1bjvutrll786mmdp9tegfn9f.apps.googleusercontent.com',
     iosBundleId: 'com.live.listorlife',
   );
-
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyC8LyUM4IHrPfy3h6Lie_PiA-S8j_lGYfo',
-    appId: '1:349423978681:web:99209918ae303372f33368',
-    messagingSenderId: '349423978681',
-    projectId: 'list-and-life',
-    authDomain: 'list-and-life.firebaseapp.com',
-    storageBucket: 'list-and-life.appspot.com',
-  );
-
 }

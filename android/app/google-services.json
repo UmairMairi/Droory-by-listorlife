@@ -2,7 +2,7 @@
   "project_info": {
     "project_number": "349423978681",
     "project_id": "list-and-life",
-    "storage_bucket": "list-and-life.appspot.com"
+    "storage_bucket": "list-and-life.firebasestorage.app"
   },
   "client": [
     {

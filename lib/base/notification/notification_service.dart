@@ -5,11 +5,13 @@ import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:dio/dio.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:list_and_life/base/utils/utils.dart';
 
+import '../../firebase_options.dart';
 import '../helpers/db_helper.dart';
 import '../helpers/dialog_helper.dart';
 import 'notification_entity.dart';
@@ -43,12 +45,19 @@ class NotificationService {
       FlutterLocalNotificationsPlugin();
 
   Future<void> init() async {
-//AIzaSyAmZTH749kcHqE3G5ZYRIXNUI-gcXK29uY
+    if (Firebase.apps.isEmpty) {
+      await Firebase.initializeApp(
+        name: "list-and-life",
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+    }
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+    AndroidInitializationSettings('@mipmap/ic_launcher');
 
     DarwinInitializationSettings initializationSettingsIOS =
-        DarwinInitializationSettings();
+    DarwinInitializationSettings(
+      //onDidReceiveLocalNotification: onDidReceiveLocalNotification,
+    );
 
     InitializationSettings initializationSettings = InitializationSettings(
       android: initializationSettingsAndroid,
@@ -59,19 +68,17 @@ class NotificationService {
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onDidReceiveNotificationResponse:
             (NotificationResponse notificationResponse) async {
-              debugPrint(notificationResponse.payload);
+          debugPrint(notificationResponse.payload.toString());
 
-      NotificationEntity? notificationEntity =
-          DbHelper.convertStringToNotificationEntity(
-              notificationResponse.payload);
+          NotificationEntity? notificationEntity = DbHelper.convertStringToNotificationEntity(notificationResponse.payload);
 
-      pushNextScreenFromForeground(notificationEntity);
+          pushNextScreenFromForeground(notificationEntity!);
 
-      if (notificationResponse.payload != null) {
-        debugPrint('notification payload: ${notificationResponse.payload}');
-      }
-      selectNotificationSubject.add(notificationResponse.payload);
-    });
+          if (notificationResponse.payload != null) {
+            debugPrint('notification payload: ${notificationResponse.payload}');
+          }
+          selectNotificationSubject.add(notificationResponse.payload);
+        });
 
     /// Create an Android Notification Channel.
     ///
@@ -79,22 +86,22 @@ class NotificationService {
     /// default FCM channel to enable heads up notifications.
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
+        AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
 
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
+        AndroidFlutterLocalNotificationsPlugin>()
         ?.requestNotificationsPermission();
 
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
-            IOSFlutterLocalNotificationsPlugin>()
+        IOSFlutterLocalNotificationsPlugin>()
         ?.requestPermissions(
-          alert: true,
-          badge: true,
-          sound: true,
-        );
+      alert: true,
+      badge: true,
+      sound: true,
+    );
 
     /// Update the iOS foreground notification presentation options to allow
     /// heads up notifications.
@@ -104,8 +111,7 @@ class NotificationService {
       badge: true,
       sound: true,
     );
-
-    String? deviceToken = await Utils.getFcmToken();
+    String deviceToken = await FirebaseMessaging.instance.getToken() ?? "";
     debugPrint("fcm Token = $deviceToken");
     _configureSelectNotificationSubject();
 

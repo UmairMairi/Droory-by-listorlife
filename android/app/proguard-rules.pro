@@ -42,7 +42,7 @@
 -keep class io.flutter.** { *; }
 
 # Keep all classes in your app
--keep class com.example.list_and_life.** { *; }
+-keep class com.live.listorlife.** { *; }
 # Keep attributes for annotations
 -keepattributes *Annotation*
 # Suppress warnings for Gson missing classes

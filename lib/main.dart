@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -29,17 +30,16 @@ void main() async {
   HttpOverrides.global = MyHttpOverrides();
   await GetStorage.init();
   await Firebase.initializeApp(
+    name: "list-and-life",
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FirebaseMessaging.instance.requestPermission();
+  await NotificationService().init();
   var appStateObserver = AppStateObserver();
   WidgetsBinding.instance.addObserver(appStateObserver);
-
   SocketHelper().init();
-  await NotificationService().init();
-
   await initializeDateFormatting('en', null);
   await initializeDateFormatting('en_US,', null);
-
   runApp(
       MultiProvider(providers: Providers.getProviders(), child: const MyApp()));
 }
