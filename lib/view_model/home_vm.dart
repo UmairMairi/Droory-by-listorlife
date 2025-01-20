@@ -11,6 +11,7 @@ import 'package:list_and_life/base/network/base_client.dart';
 import 'package:list_and_life/models/common/map_response.dart';
 import 'package:list_and_life/models/home_list_model.dart';
 import 'package:list_and_life/models/product_detail_model.dart';
+import 'package:list_and_life/models/user_model.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../base/helpers/db_helper.dart';
@@ -101,11 +102,22 @@ class HomeVM extends BaseViewModel {
     } else {
       currentLocation = address ?? "";
     }
+    DbHelper.saveLastLocation(UserModel(
+        latitude: latitude, longitude: longitude, address: currentLocation));
     notifyListeners();
     onRefresh();
   }
 
   Future<void> updateLocation() async {
+    var userAddress = DbHelper.getLastLocation();
+    if (context.mounted) {
+      if (userAddress != null) {
+        latitude = userAddress.latitude;
+        longitude = userAddress.longitude;
+        currentLocation = userAddress.address;
+      }
+      return;
+    }
     Position? position;
 
     try {
@@ -121,6 +133,8 @@ class HomeVM extends BaseViewModel {
       longitude = position.longitude;
       currentLocation =
           await LocationHelper.getAddressFromCoordinates(latitude, longitude);
+      DbHelper.saveLastLocation(UserModel(
+          latitude: latitude, longitude: longitude, address: currentLocation));
     } else {
       if (context.mounted) {
         latitude = LocationHelper.cairoLatitude;
@@ -130,6 +144,12 @@ class HomeVM extends BaseViewModel {
         latitude = LocationHelper.cairoLatitude;
         longitude = LocationHelper.cairoLongitude;
         currentLocation = "Cairo, Egypt";
+      }
+      if (context.mounted) {
+        DbHelper.saveLastLocation(UserModel(
+            latitude: latitude,
+            longitude: longitude,
+            address: currentLocation));
       }
     }
     onRefresh();
@@ -190,7 +210,6 @@ class HomeVM extends BaseViewModel {
   void onInit() {
     // TODO: implement onInit
     callApiMethods();
-    updateLocation();
     searchQueryesList.addAll(DbHelper.getSearchHistory().reversed.toList());
 
     searchQueryesList.addAll([
@@ -206,7 +225,9 @@ class HomeVM extends BaseViewModel {
       'Mobiles & Tablets'
     ]);
     refreshController = RefreshController(initialRefresh: true);
-
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      updateLocation();
+    });
     super.onInit();
   }
 
@@ -327,8 +348,8 @@ class HomeVM extends BaseViewModel {
                     category: category,
                     subSubCategory: model.body?.reversed.toList() ?? [],
                     subCategory: subCategory,
-                latitude: "$latitude",
-                longitude: "$longitude",
+                    latitude: "$latitude",
+                    longitude: "$longitude",
                   )));
     } else {
       context.push(Routes.filterDetails,

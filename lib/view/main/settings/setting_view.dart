@@ -162,8 +162,10 @@ class SettingView extends BaseView<SettingVM> {
   }
 
   String getImageUrl() {
-    String url = "${DbHelper.getUserModel()?.profilePic}";
-
+    String url = DbHelper.getUserModel()?.profilePic??"";
+    if(url.isEmpty){
+      return AssetsRes.IC_USER_ICON;
+    }
     if (url.contains('http')) {
       return url;
     }

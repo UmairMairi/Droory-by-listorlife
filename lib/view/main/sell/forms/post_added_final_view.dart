@@ -50,48 +50,48 @@ class PostAddedFinalView extends StatelessWidget {
                 ],
               ),
             ),
-            Container(
-                width: double.infinity,
-                height: 42,
-                color: const Color(0xffFF385C),
-                child: Center(
-                  child: Text(
-                    StringHelper.listOrLiftAllowsFreeAds,
-                    style: context.textTheme.titleMedium
-                        ?.copyWith(color: Colors.white),
-                  ),
-                )),
+            // Container(
+            //     width: double.infinity,
+            //     height: 42,
+            //     color: const Color(0xffFF385C),
+            //     child: Center(
+            //       child: Text(
+            //         StringHelper.listOrLiftAllowsFreeAds,
+            //         style: context.textTheme.titleMedium
+            //             ?.copyWith(color: Colors.white),
+            //       ),
+            //     )),
             const SizedBox(
-              height: 20,
+              height: 50,
             ),
             Image.asset(
               AssetsRes.IC_CONGRATULATION_IMAGE,
               scale: 2.5,
             ),
+            // const SizedBox(
+            //   height: 20,
+            // ),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            //   child: Text(
+            //     StringHelper.reachMoreBuyersAndSellFaster,
+            //     style: context.textTheme.titleLarge,
+            //   ),
+            // ),
+            // const SizedBox(
+            //   height: 10,
+            // ),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            //   child: Text(
+            //     StringHelper.upgradingAnAdHelpsYouToReachMoreBuyers,
+            //     textAlign: TextAlign.center,
+            //     style: context.textTheme.titleMedium
+            //         ?.copyWith(color: Colors.black.withOpacity(0.5)),
+            //   ),
+            // ),
             const SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text(
-                StringHelper.reachMoreBuyersAndSellFaster,
-                style: context.textTheme.titleLarge,
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text(
-                StringHelper.upgradingAnAdHelpsYouToReachMoreBuyers,
-                textAlign: TextAlign.center,
-                style: context.textTheme.titleMedium
-                    ?.copyWith(color: Colors.black.withOpacity(0.5)),
-              ),
-            ),
-            const SizedBox(
-              height: 20,
+              height: 50,
             ),
             /*     AppElevatedButton(
               onTap: () {

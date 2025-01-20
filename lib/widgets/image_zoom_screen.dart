@@ -18,7 +18,7 @@ class ImageZoomScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Image Explorer'),
+          //title: const Text('Image Explorer'),
           centerTitle: true,
         ),
         body: InteractiveViewer(
@@ -40,18 +40,20 @@ class ImageViewer extends StatelessWidget {
   final List<String?> galleryItems;
   final PageController? pageController;
   final int? initialIndex;
+  final String? title;
 
   const ImageViewer(
       {super.key,
       required this.galleryItems,
       this.pageController,
-      this.initialIndex});
+      this.initialIndex, this.title});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Image Explorer'),
+        //title: const Text('Image Explorer'),
+        title: Text(title??""),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -70,6 +72,7 @@ class ImageViewer extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) => PhotoViewer(
+                              title:title,
                               galleryItems:galleryItems))),
                   child: ImageView.rect(
                     borderRadius: 0,
@@ -92,18 +95,20 @@ class PhotoViewer extends StatelessWidget {
   final List<String?> galleryItems;
   final PageController? pageController;
   final int? initialIndex;
+  final String? title;
 
   const PhotoViewer(
       {super.key,
         required this.galleryItems,
         this.pageController,
-        this.initialIndex});
+        this.initialIndex, this.title});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Image Explorer'),
+       // title: const Text('Image Explorer'),
+        title: Text(title??""),
         centerTitle: true,
       ),
       body: PhotoViewGallery.builder(

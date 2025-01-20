@@ -124,6 +124,7 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget>
                                     builder: (context) => ImageViewer(
                                         pageController: _pageController,
                                         initialIndex: index,
+                                        title:widget.data?.name??"",
                                         galleryItems: bannerImages)));
                           }
                         });

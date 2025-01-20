@@ -14,6 +14,7 @@ class DbHelper {
   static const String _searchHistory = "searchHistory";
   static const String _locationSearchHistory = "locationSearchHistory";
   static const String _userModel = "userModel";
+  static const String _userLocation = "userLocation";
   static const String _isLoggedIn = "isLoggedIn";
   static const String _isGuest = "isGuest";
   static const String _isVerified = "isVerified";
@@ -78,6 +79,25 @@ class DbHelper {
 
   static UserModel? getUserModel() {
     String? user = readData(_userModel);
+    if (user != null) {
+      Map<String, dynamic> userMap = _decoder.convert(user);
+      return UserModel.fromJson(userMap);
+    } else {
+      return null;
+    }
+  }
+
+  static void saveLastLocation(UserModel? model) {
+    if (model != null) {
+      String value = _encoder.convert(model);
+      writeData(_userLocation, value);
+    } else {
+      writeData(_userLocation, null);
+    }
+  }
+
+  static UserModel? getLastLocation() {
+    String? user = readData(_userLocation);
     if (user != null) {
       Map<String, dynamic> userMap = _decoder.convert(user);
       return UserModel.fromJson(userMap);
