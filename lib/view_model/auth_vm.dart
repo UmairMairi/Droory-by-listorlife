@@ -106,7 +106,7 @@ class AuthVM extends BaseViewModel {
     // DialogHelper.showToast(message: model.message);
 
     if (resend) {
-      DialogHelper.showToast(message: "Your verification code is 1111");
+      //DialogHelper.showToast(message: "Your verification code is 1111");
       return;
     }
 
@@ -115,7 +115,7 @@ class AuthVM extends BaseViewModel {
     } else {
       AppPages.rootNavigatorKey.currentContext?.push(Routes.verify);
     }
-    DialogHelper.showToast(message: "Your verification code is 1111");
+    //DialogHelper.showToast(message: "Your verification code is 1111");
   }
 
   Future<void> socialLogin({required int type}) async {
@@ -375,7 +375,7 @@ class AuthVM extends BaseViewModel {
     DialogHelper.showLoading();
     Future.delayed(Duration(seconds: 2), () {
       DialogHelper.hideLoading();
-      DialogHelper.showToast(message: "Your verification code is 1111");
+      //DialogHelper.showToast(message: "Your verification code is 1111");
     });
   }
 }

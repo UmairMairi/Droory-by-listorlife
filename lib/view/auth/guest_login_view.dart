@@ -68,7 +68,7 @@ class GuestLoginView extends BaseView<AuthVM> {
               prefix: CountryPicker(
                   selectedCountry: viewModel.selectedCountry,
                   dense: true,
-                  isEnable: false,
+                  isEnable: true,
                   //displays arrow, true by default
                   showLine: false,
                   showFlag: true,

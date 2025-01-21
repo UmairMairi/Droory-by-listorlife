@@ -220,7 +220,7 @@ class ProfileVM extends BaseViewModel {
     } else {
       AppPages.rootNavigatorKey.currentContext?.push(Routes.verifyProfile);
     }
-    DialogHelper.showToast(message: "Your verification code is 1111");
+    //DialogHelper.showToast(message: "Your verification code is 1111");
 
     /// DialogHelper.showToast(message: model.message);
   }
