@@ -596,7 +596,7 @@ class SellFormsVM extends BaseViewModel {
       "price": trimController(priceTextController) ?? '0',
       "year": trimController(yearTextController),
       "fuel": trimController(fuelTextController),
-      "mileage": trimController(mileageTextController),
+      "milleage": trimController(mileageTextController),
       "km_driven": trimController(kmDrivenTextController),
       "number_of_owner": trimController(numOfOwnerTextController),
       "education_type": trimController(educationTypeTextController),
@@ -609,11 +609,11 @@ class SellFormsVM extends BaseViewModel {
       "position_type": trimController(jobPositionTextController) != null
           ? getPositionType(type: jobPositionTextController.text.trim())
           : "",
-      "salary_period": trimController(jobSalaryTextController) != null
+      "sallery_period": trimController(jobSalaryTextController) != null
           ? getSalaryPeriod(type: jobSalaryTextController.text.trim())
           : "",
-      "salary_from": trimController(jobSalaryFromController),
-      "salary_to": trimController(jobSalaryToController),
+      "sallery_from": trimController(jobSalaryFromController),
+      "sallery_to": trimController(jobSalaryToController),
       "material": trimController(materialTextController),
       "ram": trimController(ramTextController),
       "storage": trimController(storageTextController),
@@ -627,7 +627,7 @@ class SellFormsVM extends BaseViewModel {
       "payment_type": transformToSnakeCase(trimController(paymentTypeTextController)),
       "completion_status": transformToSnakeCase(trimController(completionStatusTextController)),
       "delivery_term": transformToSnakeCase(trimController(deliveryTermTextController)),
-      "selected_amenities": amenities.isNotEmpty ? amenities.join(',') : "",
+      "selected_amnities": amenities.isNotEmpty ? amenities.join(',') : "",
       "area": trimController(areaSizeTextController),
       "type": trimController(propertyForTypeTextController),
       "level": trimController(levelTextController),
@@ -750,6 +750,7 @@ class SellFormsVM extends BaseViewModel {
       'deposit': trimController(depositTextController),
       'insurance': trimController(insuranceTextController),
       'access_to_utilities': trimController(accessToUtilitiesTextController),
+
     };
     // Adding dynamic fields
     if (category != null) fields["category_id"] = category.id;

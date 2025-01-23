@@ -109,52 +109,62 @@ class HomeVM extends BaseViewModel {
   }
 
   Future<void> updateLocation() async {
+    // Retrieve the last known location if available
     var userAddress = DbHelper.getLastLocation();
-    if (context.mounted) {
-      if (userAddress != null) {
-        latitude = userAddress.latitude;
-        longitude = userAddress.longitude;
-        currentLocation = userAddress.address;
+    if (userAddress != null) {
+      latitude = userAddress.latitude;
+      longitude = userAddress.longitude;
+      currentLocation = userAddress.address;
+    }else{
+      Position? position;
+      try {
+        position = await LocationHelper.getCurrentLocation();
+      } catch (e) {
+        debugPrint("Error getting location: $e");
+        position = null;
       }
-      return;
-    }
-    Position? position;
 
-    try {
-      position = await LocationHelper.getCurrentLocation();
-    } catch (e) {
-      position = await LocationHelper.getCurrentLocation();
-    }
-    bool isEgypt = await LocationHelper.checkLocationIsEgypt(
-        latitude: position.latitude, longitude: position.longitude);
-
-    if (isEgypt) {
-      latitude = position.latitude;
-      longitude = position.longitude;
-      currentLocation =
-          await LocationHelper.getAddressFromCoordinates(latitude, longitude);
-      DbHelper.saveLastLocation(UserModel(
-          latitude: latitude, longitude: longitude, address: currentLocation));
-    } else {
-      if (context.mounted) {
-        latitude = LocationHelper.cairoLatitude;
-        longitude = LocationHelper.cairoLongitude;
-        currentLocation = "Cairo, Egypt";
+      // If we couldn't get the location, use Cairo as the fallback
+      if (position == null) {
+        _setDefaultCairoLocation();
       } else {
-        latitude = LocationHelper.cairoLatitude;
-        longitude = LocationHelper.cairoLongitude;
-        currentLocation = "Cairo, Egypt";
+        bool isEgypt = await LocationHelper.checkLocationIsEgypt(
+            latitude: position.latitude, longitude: position.longitude);
+
+        if (isEgypt) {
+          latitude = position.latitude;
+          longitude = position.longitude;
+          currentLocation = await LocationHelper.getAddressFromCoordinates(
+              latitude, longitude);
+        } else {
+          _setDefaultCairoLocation();
+        }
       }
-      if (context.mounted) {
-        DbHelper.saveLastLocation(UserModel(
-            latitude: latitude,
-            longitude: longitude,
-            address: currentLocation));
-      }
+
+      _saveLocation();
+      onRefresh();
+      notifyListeners();
     }
-    onRefresh();
-    notifyListeners();
   }
+
+  /// **Helper method to set Cairo as the fallback location**
+  void _setDefaultCairoLocation() {
+    latitude = LocationHelper.cairoLatitude;
+    longitude = LocationHelper.cairoLongitude;
+    currentLocation = "Cairo, Egypt";
+  }
+
+  /// **Helper method to save location to the database**
+  void _saveLocation() {
+    if (context.mounted) {
+      DbHelper.saveLastLocation(UserModel(
+        latitude: latitude,
+        longitude: longitude,
+        address: currentLocation,
+      ));
+    }
+  }
+
 
   TextEditingController startPriceTextController =
       TextEditingController(text: '0');
