@@ -82,7 +82,7 @@ class AuthVM extends BaseViewModel {
 
   void updateCountry(Country country) {
     selectedCountry = country;
-    countryCode = "+${country.dialingCode}";
+    countryCode = country.dialingCode;
     notifyListeners();
   }
 
