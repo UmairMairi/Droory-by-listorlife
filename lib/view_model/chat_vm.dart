@@ -50,7 +50,6 @@ class ChatVM extends BaseViewModel {
   @override
   void onInit() {
     // TODO: implement onInit
-    getInboxList();
     super.onInit();
   }
 
@@ -65,6 +64,7 @@ class ChatVM extends BaseViewModel {
     if (SocketHelper().isUserConnected == false) {
       SocketHelper().connectUser();
     }
+    getInboxList();
     getInboxListener();
     getMessageListener();
     offerListener();
@@ -75,6 +75,7 @@ class ChatVM extends BaseViewModel {
   }
 
   getInboxListener(){
+    _socketIO.off(SocketConstants.getUserLists,);
     _socketIO.on(SocketConstants.getUserLists, (data) {
       log("Listen ${SocketConstants.getUserLists} => data $data");
       inboxList.clear();
@@ -92,6 +93,7 @@ class ChatVM extends BaseViewModel {
   }
 
   getMessageListener(){
+    _socketIO.off(SocketConstants.getMessageList);
     _socketIO.on(SocketConstants.getMessageList, (data) {
       log("Listen ${SocketConstants.getMessageList} => getMessageList $data");
 
@@ -129,6 +131,7 @@ class ChatVM extends BaseViewModel {
   }
 
   offerListener(){
+    _socketIO.off(SocketConstants.offerUpdate);
     _socketIO.on(SocketConstants.offerUpdate, (data) {
       log("Listen ${SocketConstants.offerUpdate} => data $data");
 
@@ -140,6 +143,7 @@ class ChatVM extends BaseViewModel {
   }
 
   sendMessageListener(){
+    _socketIO.off(SocketConstants.sendMessage);
     _socketIO.on(SocketConstants.sendMessage, (data) {
       log("Listen ${SocketConstants.sendMessage} => data $data");
 
@@ -160,6 +164,7 @@ class ChatVM extends BaseViewModel {
   }
 
   blockReportListener(){
+    _socketIO.off(SocketConstants.blockOrReportUser);
     _socketIO.on(SocketConstants.blockOrReportUser, (data) {
       log("Listen ${SocketConstants.blockOrReportUser} => data $data");
 
@@ -185,6 +190,7 @@ class ChatVM extends BaseViewModel {
   }
 
   readChatListener(){
+    _socketIO.off(SocketConstants.readChatStatus);
     _socketIO.on(SocketConstants.readChatStatus, (data) {
       log("Listen ${SocketConstants.readChatStatus} => readChatStatus data $data");
 
@@ -197,6 +203,7 @@ class ChatVM extends BaseViewModel {
   }
 
   clearChatListener(){
+    _socketIO.off(SocketConstants.clearChat);
     _socketIO.on(SocketConstants.clearChat, (data) {
       log("Listen ${SocketConstants.clearChat} => data $data");
       //{sender_id: 64, receiver_id: 88, product_id: 107}

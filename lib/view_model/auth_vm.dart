@@ -11,6 +11,7 @@ import 'package:list_and_life/base/helpers/db_helper.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/base/helpers/location_helper.dart';
 import 'package:list_and_life/base/helpers/social_login_helper.dart';
+import 'package:list_and_life/base/sockets/socket_helper.dart';
 import 'package:list_and_life/base/utils/utils.dart';
 import 'package:list_and_life/models/common/map_response.dart';
 import 'package:list_and_life/models/user_model.dart';
@@ -227,6 +228,7 @@ class AuthVM extends BaseViewModel {
       DbHelper.saveToken(model.body?.token);
       DbHelper.saveIsGuest(false);
       DbHelper.saveIsLoggedIn(true);
+      SocketHelper().connectUser();
       if (context.mounted) {
         context.go(Routes.main);
       } else {
