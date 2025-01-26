@@ -58,7 +58,9 @@ class InboxView extends BaseView<ChatVM> {
                                   onTap: () {
                                     context.push(Routes.message,
                                         extra:
-                                            viewModel.filteredInboxList[index]);
+                                            viewModel.filteredInboxList[index]).then((value){
+                                      viewModel.updateChatScreenId();
+                                    });
                                   },
                                   child: Row(
                                     crossAxisAlignment:

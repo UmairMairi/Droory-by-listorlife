@@ -69,6 +69,11 @@ class ProfileVM extends BaseViewModel {
     notifyListeners();
   }
 
+
+  Future<Country?> getCountryByCountryCode(String countryCode) async {
+    var list = Country.ALL;
+    return list.firstWhere((element) => element.dialingCode == countryCode);
+  }
   bool get isEmailVerified => _isEmailVerified;
 
   String _latitude = DbHelper.getUserModel()?.latitude ?? '';
@@ -119,6 +124,10 @@ class ProfileVM extends BaseViewModel {
       isPhoneVerified = DbHelper.getUserModel()?.phoneVerified != 0;
       isEmailVerified = DbHelper.getUserModel()?.emailVerified != 0;
       communicationChoice = DbHelper.getUserModel()?.communicationChoice ?? '';
+      var country =  await getCountryByCountryCode( DbHelper.getUserModel()?.countryCode ?? '');
+      if(country != null){
+        updateCountry(country);
+      }
     });
 
     super.onInit();
@@ -126,7 +135,7 @@ class ProfileVM extends BaseViewModel {
 
   void updateCountry(Country country) {
     selectedCountry = country;
-    countryCode = "+${country.dialingCode}";
+    countryCode = country.dialingCode;
     notifyListeners();
   }
 
@@ -200,7 +209,7 @@ class ProfileVM extends BaseViewModel {
     DialogHelper.showToast(message: model.message);
   }
 
-  Future<void> sendVerificationPhone({required String? phone}) async {
+  Future<void> sendVerificationPhone({required String? phone,required String? countryCode}) async {
     if (phone?.isEmpty ?? false) {
       DialogHelper.showToast(message: "Please enter phone number");
       return;
@@ -210,7 +219,7 @@ class ProfileVM extends BaseViewModel {
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.sendOtpMobileUrl(),
         requestType: RequestType.post,
-        body: {'country_code': '+20', 'phone_no': phone});
+        body: {'country_code': countryCode, 'phone_no': phone});
     var response = await BaseClient.handleRequest(apiRequest);
     MapResponse model = MapResponse.fromJson(response, (json) => null);
     debugPrint("$model");
@@ -226,9 +235,9 @@ class ProfileVM extends BaseViewModel {
   }
 
   Future<void> verifyOtpApi(
-      {required String? phoneNo, required String? otp}) async {
+      {required String? countryCode,required String? phoneNo, required String? otp}) async {
     Map<String, dynamic> body = {
-      'country_code': "+20",
+      'country_code': countryCode,
       'phone_no': phoneNo,
       'otp': otp
     };

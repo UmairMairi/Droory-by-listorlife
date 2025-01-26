@@ -136,6 +136,7 @@ class AppStateObserver extends WidgetsBindingObserver {
       case AppLifecycleState.detached:
       case AppLifecycleState.hidden:
         SocketHelper().close();
+        SocketHelper().updateChatScreenId();
         break;
       case AppLifecycleState.resumed:
         SocketHelper().init();

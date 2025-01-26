@@ -221,7 +221,6 @@ class AuthVM extends BaseViewModel {
     MapResponse<UserModel> model =
         MapResponse.fromJson(response, (json) => UserModel.fromJson(json));
     DialogHelper.hideLoading();
-
     if (model.body?.id != null) {
       DbHelper.saveIsGuest(false);
       DbHelper.saveUserModel(model.body);

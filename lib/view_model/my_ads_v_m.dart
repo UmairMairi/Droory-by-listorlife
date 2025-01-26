@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:list_and_life/base/base.dart';
@@ -68,15 +69,34 @@ class MyAdsVM extends BaseViewModel {
 
   int selectedFilter = 0; // Tracks the currently selected filter
 
+  bool _isGuest = DbHelper.getIsGuest();
+
+  bool get isGuest => _isGuest;
+  set isGuest(bool value) {
+    _isGuest = value;
+    notifyListeners();
+  }
   @override
   void onInit() {
     // TODO: implement onInit
     refreshController = RefreshController(initialRefresh: true);
+    DbHelper.box.listenKey('isGuest', (value) {
+      isGuest = DbHelper.getIsGuest();
+    });
+    if (!isGuest) onRefresh();
     super.onInit();
   }
 
   @override
+  void onReady(){
+    // TODO: implement onReady
+    if (!isGuest) onRefresh();
+    super.onReady();
+  }
+
+  @override
   void onClose() {
+    // TODO: implement onClose
     //refreshController.dispose();
     super.onClose();
   }
@@ -312,12 +332,10 @@ class MyAdsVM extends BaseViewModel {
     notifyListeners(); // To update UI with the filtered list
   }
 
-  Widget getStatus({required ProductDetailModel data}) {
-    switch (data.status) {
+  Widget getStatus({required BuildContext context,required ProductDetailModel productDetails}) {
+    switch (productDetails.status) {
       case 0:
-        if (DateTime.now()
-                .difference(DateTime.parse(data.createdAt ?? ''))
-                .inDays >
+        if (DateTime.now().difference(DateTime.parse(productDetails.createdAt ?? '')).inDays >
             30) {
           return AppElevatedButton(
             onTap: () {},
@@ -336,7 +354,7 @@ class MyAdsVM extends BaseViewModel {
         );
 
       case 1:
-        return data.sellStatus?.toLowerCase() != StringHelper.sold.toLowerCase()
+        return productDetails.sellStatus?.toLowerCase() != StringHelper.sold.toLowerCase()
             ? AppElevatedButton(
                 onTap: () {},
                 title: StringHelper.active,

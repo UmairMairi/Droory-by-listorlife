@@ -49,14 +49,17 @@ class ChatVM extends BaseViewModel {
 
   @override
   void onInit() {
+    getInboxList();
+    initListeners();
     // TODO: implement onInit
     super.onInit();
   }
 
   @override
   void onReady() {
+    getInboxList();
+    initListeners();
     // TODO: implement onReady
-
     super.onReady();
   }
 
@@ -64,18 +67,20 @@ class ChatVM extends BaseViewModel {
     if (SocketHelper().isUserConnected == false) {
       SocketHelper().connectUser();
     }
-    getInboxList();
     getInboxListener();
     getMessageListener();
     offerListener();
     sendMessageListener();
     blockReportListener();
     readChatListener();
+    updateChatScreenIdListener();
     clearChatListener();
   }
 
-  getInboxListener(){
-    _socketIO.off(SocketConstants.getUserLists,);
+  getInboxListener() {
+    _socketIO.off(
+      SocketConstants.getUserLists,
+    );
     _socketIO.on(SocketConstants.getUserLists, (data) {
       log("Listen ${SocketConstants.getUserLists} => data $data");
       inboxList.clear();
@@ -92,7 +97,7 @@ class ChatVM extends BaseViewModel {
     });
   }
 
-  getMessageListener(){
+  getMessageListener() {
     _socketIO.off(SocketConstants.getMessageList);
     _socketIO.on(SocketConstants.getMessageList, (data) {
       log("Listen ${SocketConstants.getMessageList} => getMessageList $data");
@@ -102,6 +107,17 @@ class ChatVM extends BaseViewModel {
       for (var element in model.list ?? []) {
         chatItems.add(element);
       }
+      //if(chatItems.isNotEmpty){
+      //   var message = chatItems.first;
+      //   var receiverId = message.senderId == DbHelper.getUserModel()?.id
+      //       ? message.receiverId
+      //       : message.senderId;
+      //   var roomId = message.roomId;
+      //   updateChatScreenId(
+      //     //receiverId: receiverId,
+      //     roomId: roomId
+      //   );
+      // }
       messageStreamController.sink.add(chatItems);
 
       blockedUser =
@@ -130,7 +146,7 @@ class ChatVM extends BaseViewModel {
     });
   }
 
-  offerListener(){
+  offerListener() {
     _socketIO.off(SocketConstants.offerUpdate);
     _socketIO.on(SocketConstants.offerUpdate, (data) {
       log("Listen ${SocketConstants.offerUpdate} => data $data");
@@ -142,28 +158,31 @@ class ChatVM extends BaseViewModel {
     });
   }
 
-  sendMessageListener(){
+  sendMessageListener() {
     _socketIO.off(SocketConstants.sendMessage);
     _socketIO.on(SocketConstants.sendMessage, (data) {
       log("Listen ${SocketConstants.sendMessage} => data $data");
 
       /// getInboxList();
       MessageModel message = MessageModel.fromJson(data);
-      var receiverId = message.senderId == DbHelper.getUserModel()?.id
-          ? message.receiverId
-          : message.senderId;
-      readChatStatus(roomId: message.roomId, receiverId: receiverId);
-      if (message.senderId != DbHelper.getUserModel()?.id) {
-
-        chatItems.insert(0, message);
-        messageStreamController.sink.add(chatItems);
-      }
-
+      // var receiverId = message.senderId == DbHelper.getUserModel()?.id
+      //     ? message.receiverId
+      //     : message.senderId;
+      // var roomId = message.roomId;
+      // updateChatScreenId(
+      //     roomId: roomId
+      // );
+      // if (message.senderId != DbHelper.getUserModel()?.id) {
+      //   chatItems.insert(0, message);
+      //   messageStreamController.sink.add(chatItems);
+      // }
+      chatItems.insert(0, message);
+      messageStreamController.sink.add(chatItems);
       getInboxList();
     });
   }
 
-  blockReportListener(){
+  blockReportListener() {
     _socketIO.off(SocketConstants.blockOrReportUser);
     _socketIO.on(SocketConstants.blockOrReportUser, (data) {
       log("Listen ${SocketConstants.blockOrReportUser} => data $data");
@@ -189,20 +208,38 @@ class ChatVM extends BaseViewModel {
     });
   }
 
-  readChatListener(){
+  readChatListener() {
     _socketIO.off(SocketConstants.readChatStatus);
     _socketIO.on(SocketConstants.readChatStatus, (data) {
-      log("Listen ${SocketConstants.readChatStatus} => readChatStatus data $data");
+      try {
+        log("Listen ${SocketConstants.readChatStatus} => readChatStatus data $data");
 
-      for (var element in chatItems) {
-        element.isRead = 1;
+        if (data != null) {
+          var senderId = data["sender_id"];
+          var receiverId = data["receiver_id"];
+          var roomId = data["room_id"];
+          var read = data["read"];
+
+          for (var element in chatItems) {
+            element.isRead = 1;
+          }
+          messageStreamController.sink.add(chatItems);
+        }
+      } catch (e) {
+        log("Error in readChatListener: $e");
       }
-      messageStreamController.sink.add(chatItems);
       notifyListeners();
     });
   }
 
-  clearChatListener(){
+  updateChatScreenIdListener() {
+    _socketIO.off(SocketConstants.updateChatScreenId);
+    _socketIO.on(SocketConstants.updateChatScreenId, (data) {
+      log("Listen ${SocketConstants.updateChatScreenId} => $data");
+    });
+  }
+
+  clearChatListener() {
     _socketIO.off(SocketConstants.clearChat);
     _socketIO.on(SocketConstants.clearChat, (data) {
       log("Listen ${SocketConstants.clearChat} => data $data");
@@ -244,9 +281,9 @@ class ChatVM extends BaseViewModel {
 
   void updateOfferStatus(
       {required num? messageId,
-        required num? messageType,
-        required num? productId,
-        required num? receiverId}) {
+      required num? messageType,
+      required num? productId,
+      required num? receiverId}) {
     Map<String, dynamic> map = {
       'message_id': messageId,
       'message_type': messageType,
@@ -261,9 +298,9 @@ class ChatVM extends BaseViewModel {
 
   void sendMessage(
       {String? message,
-        int? type,
-        required num? receiverId,
-        required num? productId}) {
+      int? type,
+      required num? receiverId,
+      required num? productId}) {
     if (message == null) {
       return;
     }
@@ -279,17 +316,17 @@ class ChatVM extends BaseViewModel {
         name: "SOCKET");
     _socketIO.emit(SocketConstants.sendMessage, map);
 
-    chatItems.insert(
-      0,
-      MessageModel(
-          message: message,
-          senderId: DbHelper.getUserModel()?.id?.toInt(),
-          receiverId: receiverId?.toInt(),
-          messageType: type,
-          isRead: 0,
-          createdAt: "${DateTime.now()}",
-          updatedAt: "${DateTime.now()}"),
-    );
+    // chatItems.insert(
+    //   0,
+    //   MessageModel(
+    //       message: message,
+    //       senderId: DbHelper.getUserModel()?.id?.toInt(),
+    //       receiverId: receiverId?.toInt(),
+    //       messageType: type,
+    //       isRead: 0,
+    //       createdAt: "${DateTime.now()}",
+    //       updatedAt: "${DateTime.now()}"),
+    // );
     messageStreamController.sink.add(chatItems);
 
     DialogHelper.hideLoading();
@@ -302,6 +339,15 @@ class ChatVM extends BaseViewModel {
       "room_id": roomId,
     };
     _socketIO.emit(SocketConstants.readChatStatus, map);
+    debugPrint("readChat emit ===> $map");
+  }
+  void updateChatScreenId({dynamic roomId}) {
+    Map<String, dynamic> map = {
+      "sender_id": DbHelper.getUserModel()?.id,
+      "room_id": roomId,
+    };
+    _socketIO.emit(SocketConstants.updateChatScreenId, map);
+    debugPrint("updateChatScreenId $map");
   }
 
   void reportBlockUser(
@@ -364,7 +410,7 @@ class ChatVM extends BaseViewModel {
   }
 
   Widget getBubble(
-      {int? type, required MessageModel data, required InboxModel? chat}) {
+      {int? type, required MessageModel data, required InboxModel? chat, required BuildContext context}) {
     switch (type) {
       case 1:
         return BubbleNormalMessage(
@@ -540,6 +586,4 @@ class ChatVM extends BaseViewModel {
         return '${message?.message}';
     }
   }
-
-
 }

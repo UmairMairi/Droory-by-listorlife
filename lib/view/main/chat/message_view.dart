@@ -36,6 +36,9 @@ class _MessageViewState extends State<MessageView> {
     // TODO: implement initState
     viewModel = context.read<ChatVM>();
     WidgetsBinding.instance.addPostFrameCallback((d) {
+      viewModel.initListeners();
+      viewModel.updateChatScreenId(
+          roomId: widget.chat?.lastMessageDetail?.roomId??0);
       viewModel.readChatStatus(
           receiverId: widget.chat?.senderId == DbHelper.getUserModel()?.id
               ? widget.chat?.receiverDetail?.id
@@ -46,9 +49,7 @@ class _MessageViewState extends State<MessageView> {
               ? widget.chat?.receiverDetail?.id
               : widget.chat?.senderDetail?.id,
           productId: widget.chat?.productId);
-    }
-
-    );
+    });
 
     super.initState();
   }
@@ -252,6 +253,7 @@ class _MessageViewState extends State<MessageView> {
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           return viewModel.getBubble(
+                            context:context,
                               chat: widget.chat,
                               data: data[index],
                               type: data[index].messageType);

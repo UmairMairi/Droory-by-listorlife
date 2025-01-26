@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ccp_dialog/country_picker/flutter_country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -137,6 +139,7 @@ class LoginView extends BaseView<AuthVM> {
                     //   ),
                     // ),
                     const Gap(10),
+                    if (Platform.isIOS)
                     InkWell(
                       onTap: () => viewModel.socialLogin(type: 3),
                       child: Card(

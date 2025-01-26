@@ -69,7 +69,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '349423978681',
     projectId: 'list-and-life',
     storageBucket: 'list-and-life.firebasestorage.app',
-    androidClientId: '349423978681-bq6js869ld4l74f148hps0b34ql241f8.apps.googleusercontent.com',
+    androidClientId: '349423978681-0jdh0mpofbib5n4lb518o7nui4noojtm.apps.googleusercontent.com',
     iosClientId: '349423978681-js9aqmag1bjvutrll786mmdp9tegfn9f.apps.googleusercontent.com',
     iosBundleId: 'com.live.listorlife',
   );

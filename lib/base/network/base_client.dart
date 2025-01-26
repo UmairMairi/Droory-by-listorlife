@@ -23,8 +23,8 @@ class BaseClient {
 
   static Future<dynamic> handleRequest(ApiRequest apiRequest) async {
     _dio.options.followRedirects = false;
-    _dio.options.connectTimeout = const Duration(seconds: 30);
-    _dio.options.receiveTimeout = const Duration(seconds: 30);
+    _dio.options.connectTimeout = const Duration(seconds: 50);
+    _dio.options.receiveTimeout = const Duration(seconds: 50);
     _dio.interceptors.clear();
     _dio.interceptors.add(AppExceptions());
 
@@ -56,34 +56,28 @@ class BaseClient {
           'Authorization', () => 'Bearer ${DbHelper.getToken()}');
     }
 
-    // Retry logic
-    for (int retryCount = 0; retryCount < 3; retryCount++) {
-      try {
-        switch (apiRequest.requestType) {
-          case RequestType.post:
-            return await _handlePostRequest(apiRequest, headers);
-          case RequestType.get:
-            var response = await _dio.get(apiRequest.url,
-                options: Options(
-                  headers: headers,
-                ));
-            return response.data;
-          case RequestType.delete:
-            var response = await _dio.delete(apiRequest.url,
-                data: apiRequest.body,
-                options: Options(
-                  headers: headers,
-                ));
-            return response.data;
-          case RequestType.put:
-            return await _handlePutRequest(apiRequest, headers);
-        }
-      } catch (e) {
-        debugPrint('Request attempt ${retryCount + 1} failed: $e');
-        if (retryCount == 2) {
-          return _handleError(e);
-        }
+    try {
+      switch (apiRequest.requestType) {
+        case RequestType.post:
+          return await _handlePostRequest(apiRequest, headers);
+        case RequestType.get:
+          var response = await _dio.get(apiRequest.url,
+              options: Options(
+                headers: headers,
+              ));
+          return response.data;
+        case RequestType.delete:
+          var response = await _dio.delete(apiRequest.url,
+              data: apiRequest.body,
+              options: Options(
+                headers: headers,
+              ));
+          return response.data;
+        case RequestType.put:
+          return await _handlePutRequest(apiRequest, headers);
       }
+    } catch (e) {
+      return handleError(e);
     }
   }
 
@@ -153,7 +147,7 @@ class BaseClient {
     return response.data;
   }
 
-  static Response _handleError(dynamic error) {
+  static Response handleError(dynamic error) {
     if (error is DioException) {
       if (error.response != null) {
         DialogHelper.showToast(

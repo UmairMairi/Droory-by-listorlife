@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
+import 'package:list_and_life/models/product_detail_model.dart';
 import 'package:list_and_life/res/font_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/skeletons/my_ads_skeleton.dart';
@@ -18,6 +19,7 @@ import '../../../base/helpers/db_helper.dart';
 import '../../../base/helpers/string_helper.dart';
 import '../../../res/assets_res.dart';
 import '../../../view_model/my_ads_v_m.dart';
+import '../../../widgets/app_elevated_button.dart';
 import '../../../widgets/unauthorised_view.dart';
 
 class MyAdsView extends BaseView<MyAdsVM> {
@@ -25,7 +27,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
 
   @override
   Widget build(BuildContext context, MyAdsVM viewModel) {
-    return DbHelper.getIsGuest()
+    return viewModel.isGuest
         ? const UnauthorisedView()
         : Column(
             children: [
@@ -103,10 +105,14 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                   horizontal: 20, vertical: 10),
                               itemCount: viewModel.productsList.length,
                               itemBuilder: (context, index) {
+                                var productDetails =
+                                    viewModel.productsList[index];
+                                var soldStatus = productDetails.sellStatus?.toLowerCase() != StringHelper.sold.toLowerCase();
+                                var productStatus = "${productDetails.status}" == "0";
                                 return InkWell(
                                   onTap: () async {
                                     await context.push(Routes.myProduct,
-                                        extra: viewModel.productsList[index]);
+                                        extra: productDetails);
                                     viewModel.onRefresh();
                                   },
                                   child: Card(
@@ -141,8 +147,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                             children: [
                                               Text(
                                                 viewModel.getCreatedAt(
-                                                    time: viewModel
-                                                        .productsList[index]
+                                                    time: productDetails
                                                         .createdAt),
                                                 style: context
                                                     .textTheme.titleSmall,
@@ -164,30 +169,23 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                       .handelPopupMenuItemClick(
                                                           context: context,
                                                           index: value,
-                                                          item: viewModel
-                                                                  .productsList[
-                                                              index]);
+                                                          item: productDetails);
                                                 },
                                                 itemBuilder:
-                                                    (BuildContext context) =>
-                                                        <PopupMenuEntry<int>>[
-                                                  if (viewModel
-                                                          .productsList[index]
-                                                          .sellStatus
-                                                          ?.toLowerCase() !=
-                                                      StringHelper.sold
-                                                          .toLowerCase()) ...{
+                                                    (BuildContext context) => <PopupMenuEntry<int>>[
+                                                  if (productStatus && soldStatus) ...{
+                                                    // PopupMenuItem(
+                                                    //   value: 1,
+                                                    //   child: Text(
+                                                    //       StringHelper.edit),
+                                                    // )
                                                     PopupMenuItem(
-                                                      value: 1,
-                                                      child: Text(
-                                                          StringHelper.edit),
-                                                    )
+                                                      value: 2,
+                                                      child: Text(StringHelper
+                                                          .deactivate),
+                                                    ),
                                                   },
-                                                  PopupMenuItem(
-                                                    value: 2,
-                                                    child: Text(StringHelper
-                                                        .deactivate),
-                                                  ),
+
                                                   PopupMenuItem(
                                                     value: 3,
                                                     child: Text(
@@ -211,9 +209,10 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                               Expanded(
                                                   flex: 6,
                                                   child: ImageView.rect(
-                                                    placeholder: AssetsRes.APP_LOGO,
+                                                    placeholder:
+                                                        AssetsRes.APP_LOGO,
                                                     image:
-                                                        "${ApiConstants.imageUrl}/${viewModel.productsList[index].image}",
+                                                        "${ApiConstants.imageUrl}/${productDetails.image}",
                                                     width: 250,
                                                     height: 100,
                                                     borderRadius: 10,
@@ -228,18 +227,12 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      viewModel
-                                                              .productsList[
-                                                                  index]
-                                                              .name ??
-                                                          '',
+                                                      productDetails.name ?? '',
                                                       style: context.textTheme
                                                           .titleMedium,
                                                     ),
                                                     Text(
-                                                      viewModel
-                                                              .productsList[
-                                                                  index]
+                                                      productDetails
                                                               .description ??
                                                           '',
                                                       maxLines: 2,
@@ -254,7 +247,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                                   Colors.grey),
                                                     ),
                                                     Text(
-                                                      "${StringHelper.egp} ${viewModel.productsList[index].price}",
+                                                      "${StringHelper.egp} ${productDetails.price}",
                                                       style: context
                                                           .textTheme.titleMedium
                                                           ?.copyWith(
@@ -290,7 +283,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                     ),
                                                     const Gap(02),
                                                     Text(
-                                                      '${StringHelper.likes} ${viewModel.productsList[index].favouritesCount}',
+                                                      '${StringHelper.likes} ${productDetails.favouritesCount}',
                                                       style: context
                                                           .textTheme.labelMedium
                                                           ?.copyWith(
@@ -309,7 +302,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                     ),
                                                     const Gap(02),
                                                     Text(
-                                                      '${StringHelper.views} ${viewModel.productsList[index].countViews}',
+                                                      '${StringHelper.views} ${productDetails.countViews}',
                                                       style: context
                                                           .textTheme.labelMedium
                                                           ?.copyWith(
@@ -328,7 +321,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                     ),
                                                     const Gap(02),
                                                     Text(
-                                                      '${StringHelper.call}: ${viewModel.productsList[index].callCount}',
+                                                      '${StringHelper.call}: ${productDetails.callCount}',
                                                       style: context
                                                           .textTheme.labelMedium
                                                           ?.copyWith(
@@ -347,7 +340,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                     ),
                                                     const Gap(02),
                                                     Text(
-                                                      '${StringHelper.chat}: ${viewModel.productsList[index].chatCount}',
+                                                      '${StringHelper.chat}: ${productDetails.chatCount}',
                                                       style: context
                                                           .textTheme.labelMedium
                                                           ?.copyWith(
@@ -361,163 +354,8 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                           ),
                                         ),
                                         const Gap(20),
-                                        Container(
-                                          width: context.width,
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 15, vertical: 10),
-                                          decoration: BoxDecoration(
-                                              color: Colors.grey.shade300,
-                                              borderRadius:
-                                                  const BorderRadius.only(
-                                                bottomLeft: Radius.circular(20),
-                                                bottomRight:
-                                                    Radius.circular(20),
-                                              )),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  viewModel.getStatus(
-                                                      data: viewModel
-                                                          .productsList[index]),
-                                                  if (viewModel
-                                                          .productsList[index]
-                                                          .sellStatus !=
-                                                      StringHelper.sold
-                                                          .toLowerCase()) ...{
-                                                    viewModel.getRemainDays(
-                                                        item: viewModel
-                                                                .productsList[
-                                                            index])
-                                                  }
-                                                ],
-                                              ),
-                                              const Gap(10),
-                                              viewModel.productsList[index]
-                                                          .sellStatus !=
-                                                      StringHelper.sold
-                                                          .toLowerCase()
-                                                  ? Visibility(
-                                                visible: false,
-                                                    child: Text(
-                                                        StringHelper
-                                                            .thisAdisCurrentlyLive,
-                                                        style: context
-                                                            .textTheme.labelMedium
-                                                            ?.copyWith(
-                                                                fontFamily: FontRes
-                                                                    .MONTSERRAT_MEDIUM),
-                                                      ),
-                                                  )
-                                                  : Text(
-                                                      StringHelper.thisAdisSold,
-                                                      style: context
-                                                          .textTheme.labelMedium
-                                                          ?.copyWith(
-                                                              fontFamily: FontRes
-                                                                  .MONTSERRAT_MEDIUM),
-                                                    ),
-                                              if (viewModel.productsList[index]
-                                                      .sellStatus !=
-                                                  StringHelper.sold
-                                                      .toLowerCase()) ...{
-                                                const Gap(10),
-                                                Row(
-                                                  children: [
-                                                    Expanded(
-                                                      child: InkWell(
-                                                        onTap: () async {
-                                                          DialogHelper
-                                                              .showLoading();
-                                                          await viewModel.markAsSoldApi(
-                                                              product: viewModel
-                                                                      .productsList[
-                                                                  index]);
-                                                        },
-                                                        child: Container(
-                                                          alignment:
-                                                              Alignment.center,
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  horizontal:
-                                                                      10,
-                                                                  vertical: 08),
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color:
-                                                                Colors.black54,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        08),
-                                                          ),
-                                                          child: Text(
-                                                            StringHelper
-                                                                .markAsSold,
-                                                            style: context
-                                                                .textTheme
-                                                                .labelLarge
-                                                                ?.copyWith(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize:
-                                                                        12,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    const Gap(15),
-                                                    /* Expanded(
-                                                      child: InkWell(
-                                                        onTap: () => context
-                                                            .push(Routes.planList),
-                                                        child: Container(
-                                                          alignment: Alignment.center,
-                                                          padding: const EdgeInsets
-                                                              .symmetric(
-                                                              horizontal: 10,
-                                                              vertical: 08),
-                                                          decoration: BoxDecoration(
-                                                            color: Colors.black54,
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                                    08),
-                                                          ),
-                                                          child: Text(
-                                                            StringHelper
-                                                                .sellFasterNow,
-                                                            style: context
-                                                                .textTheme.labelLarge
-                                                                ?.copyWith(
-                                                                    color:
-                                                                        Colors.white,
-                                                                    fontSize: 12,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),*/
-                                                  ],
-                                                )
-                                              }
-                                            ],
-                                          ),
-                                        )
+                                        detailsWidget(
+                                            context, viewModel, productDetails)
                                       ],
                                     ),
                                   ),
@@ -533,5 +371,145 @@ class MyAdsView extends BaseView<MyAdsVM> {
               ),
             ],
           );
+  }
+
+  detailsWidget(
+    BuildContext context,
+    MyAdsVM viewModel,
+    ProductDetailModel productDetails,
+  ) {
+    return Container(
+      width: context.width,
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      decoration: BoxDecoration(
+          color: Colors.grey.shade300,
+          borderRadius: const BorderRadius.only(
+            bottomLeft: Radius.circular(20),
+            bottomRight: Radius.circular(20),
+          )),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              viewModel.getStatus(context: context,productDetails: productDetails),
+              if (productDetails.sellStatus !=
+                  StringHelper.sold.toLowerCase()) ...{
+                viewModel.getRemainDays(item: productDetails)
+              }
+            ],
+          ),
+          const Gap(10),
+          productDetails.sellStatus != StringHelper.sold.toLowerCase()
+              ? Visibility(
+                  visible: false,
+                  child: Text(
+                    StringHelper.thisAdisCurrentlyLive,
+                    style: context.textTheme.labelMedium
+                        ?.copyWith(fontFamily: FontRes.MONTSERRAT_MEDIUM),
+                  ),
+                )
+              : Text(
+                  StringHelper.thisAdisSold,
+                  style: context.textTheme.labelMedium
+                      ?.copyWith(fontFamily: FontRes.MONTSERRAT_MEDIUM),
+                ),
+          if("${productDetails.status}" == "0")...{
+            AppElevatedButton(
+              onTap: () {
+                viewModel
+                    .handelPopupMenuItemClick(
+                    context: context,
+                    index: 1,
+                    item: productDetails);
+              },
+              title: StringHelper.edit,
+              height: 30,
+              width: context.width,
+              backgroundColor: Colors.grey,
+            ),
+          }else...{
+            if (productDetails.sellStatus != StringHelper.sold.toLowerCase()) ...{
+              const Gap(10),
+              InkWell(
+                onTap: () async {
+                  DialogHelper.showLoading();
+                  await viewModel.markAsSoldApi(product: productDetails);
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  padding:
+                  const EdgeInsets.symmetric(horizontal: 10, vertical: 08),
+                  decoration: BoxDecoration(
+                    color: Colors.black54,
+                    borderRadius: BorderRadius.circular(08),
+                  ),
+                  child: Text(
+                    StringHelper.markAsSold,
+                    style: context.textTheme.labelLarge?.copyWith(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ),
+              // Row(
+              //   children: [
+              //     Expanded(
+              //       child: InkWell(
+              //         onTap: () async {
+              //           DialogHelper.showLoading();
+              //           await viewModel.markAsSoldApi(product: productDetails);
+              //         },
+              //         child: Container(
+              //           alignment: Alignment.center,
+              //           padding: const EdgeInsets.symmetric(
+              //               horizontal: 10, vertical: 08),
+              //           decoration: BoxDecoration(
+              //             color: Colors.black54,
+              //             borderRadius: BorderRadius.circular(08),
+              //           ),
+              //           child: Text(
+              //             StringHelper.markAsSold,
+              //             style: context.textTheme.labelLarge?.copyWith(
+              //                 color: Colors.white,
+              //                 fontSize: 12,
+              //                 fontWeight: FontWeight.w600),
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //     const Gap(15),
+              //     Expanded(
+              //       child: InkWell(
+              //         onTap: () => context.push(Routes.planList),
+              //         child: Container(
+              //           alignment: Alignment.center,
+              //           padding: const EdgeInsets.symmetric(
+              //               horizontal: 10, vertical: 08),
+              //           decoration: BoxDecoration(
+              //             color: Colors.black54,
+              //             borderRadius: BorderRadius.circular(08),
+              //           ),
+              //           child: Text(
+              //             StringHelper.sellFasterNow,
+              //             style: context.textTheme.labelLarge?.copyWith(
+              //                 color: Colors.white,
+              //                 fontSize: 12,
+              //                 fontWeight: FontWeight.w600),
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // )
+            }
+          }
+        ],
+      ),
+    );
   }
 }

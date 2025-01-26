@@ -29,6 +29,7 @@ class SocketHelper {
       isConnected = true;
       if (DbHelper.getUserModel()?.id != null) {
         connectUser();
+        updateChatScreenId();
       }
       if (kDebugMode) {
         print('socket connected');
@@ -61,15 +62,16 @@ class SocketHelper {
       return;
     }
     _socketIO.off(SocketConstants.connectUser);
-    Map<String, dynamic> map = {};
-    map['user_id'] = DbHelper.getUserModel()?.id;
-    _socketIO.emit(SocketConstants.connectUser, map);
     _socketIO.on(SocketConstants.connectUser, (data) {
       isUserConnected = true;
       if (kDebugMode) {
         print("User Connected --------------->  $data");
       }
     });
+
+    Map<String, dynamic> map = {};
+    map['user_id'] = DbHelper.getUserModel()?.id;
+    _socketIO.emit(SocketConstants.connectUser, map);
   }
 
   void disconnectUser() {
@@ -100,5 +102,17 @@ class SocketHelper {
     if (kDebugMode) {
       print("Socket connection closed and listeners cleared");
     }
+  }
+
+  void updateChatScreenId() {
+    if (DbHelper.getUserModel()?.id == null) {
+      return;
+    }
+    Map<String, dynamic> map = {
+      "sender_id": DbHelper.getUserModel()?.id,
+      "room_id": null,
+    };
+    _socketIO.emit(SocketConstants.updateChatScreenId, map);
+    debugPrint("updateChatScreenId $map");
   }
 }

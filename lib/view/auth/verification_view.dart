@@ -4,6 +4,7 @@ import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/view_model/auth_vm.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
+import 'package:pinput/pinput.dart';
 
 import '../../base/helpers/string_helper.dart';
 import '../../res/assets_res.dart';
@@ -15,6 +16,29 @@ class VerificationView extends BaseView<AuthVM> {
 
   @override
   Widget build(BuildContext context, AuthVM viewModel) {
+    viewModel.otpTextController.clear();
+    var defaultPinTheme = PinTheme(
+      width: 60,
+      height: 60,
+      margin: EdgeInsets.only(left: 15, top: 10),
+      textStyle: TextStyle(
+        fontSize: 20,
+        color: Colors.black,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        shape: BoxShape.circle,
+        border: Border.all(color: Colors.grey.shade300),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.shade300, // Shadow color
+            spreadRadius: .5, // Spread radius
+            blurRadius: .5, // Blur radius
+            offset: Offset(0, 2), // Offset in x and y
+          ),
+        ],
+      ),
+    );
     return Scaffold(
       appBar: AppBar(
         title: Text(StringHelper.verification),
@@ -38,15 +62,44 @@ class VerificationView extends BaseView<AuthVM> {
               textAlign: TextAlign.center,
             ),
             const Gap(20),
-            AppOtpWidget(
-              size: 4,
-              title: StringHelper.otp,
-              onOtpEntered: (otp) {
-                // Handle OTP entered
-                viewModel.otpTextController.text = otp;
-                debugPrint("Entered OTP: $otp");
-              },
+
+            Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                StringHelper.otp,
+                style: context.textTheme.titleSmall,
+              ),
             ),
+            Gap(
+              05,
+            ),
+            Pinput(
+              controller: viewModel.otpTextController,
+              defaultPinTheme: defaultPinTheme,
+              obscureText: false,
+              obscuringCharacter: "*",
+              separatorBuilder: (index) => const SizedBox(width: 15),
+              hapticFeedbackType: HapticFeedbackType.lightImpact,
+              onCompleted: (pin) {
+                debugPrint('onCompleted: $pin');
+              },
+              onChanged: (value) {
+                debugPrint('onChanged: $value');
+              },
+              focusedPinTheme: defaultPinTheme,
+              submittedPinTheme: defaultPinTheme,
+              errorPinTheme: defaultPinTheme,
+            ),
+            const Gap(30),
+            // AppOtpWidget(
+            //   size: 4,
+            //   title: StringHelper.otp,
+            //   onOtpEntered: (otp) {
+            //     // Handle OTP entered
+            //     viewModel.otpTextController.text = otp;
+            //     debugPrint("Entered OTP: $otp");
+            //   },
+            // ),
             AppElevatedButton(
               width: context.width,
               onTap: () {

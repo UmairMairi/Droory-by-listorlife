@@ -68,10 +68,10 @@ class MainVM extends BaseViewModel {
   @override
   void onReady() {
     // TODO: implement onReady
-    if (!DbHelper.getIsGuest()) {
-      var model = context.read<ChatVM>();
-      model.initListeners();
-    }
+    // if (!DbHelper.getIsGuest()) {
+    //   var model = context.read<ChatVM>();
+    //   model.initListeners();
+    // }
     super.onReady();
   }
 

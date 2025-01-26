@@ -150,6 +150,7 @@ class EditProfileView extends BaseView<ProfileVM> {
                   : TextButton(
                       onPressed: () {
                         viewModel.sendVerificationPhone(
+                          countryCode: viewModel.countryCode,
                             phone: viewModel.phoneTextController.text);
                       },
                       child: Text(
@@ -159,7 +160,7 @@ class EditProfileView extends BaseView<ProfileVM> {
               prefix: CountryPicker(
                   selectedCountry: viewModel.selectedCountry,
                   dense: true,
-                  isEnable: false,
+                  isEnable: true,
                   //displays arrow, true by default
                   showLine: false,
                   showFlag: true,
@@ -228,6 +229,7 @@ class EditProfileView extends BaseView<ProfileVM> {
                 }
                 if (viewModel.phoneTextController.text != DbHelper.getUserModel()?.phoneNo) {
                   viewModel.sendVerificationPhone(
+                    countryCode: viewModel.countryCode,
                       phone: viewModel.phoneTextController.text);
                   return;
                 }

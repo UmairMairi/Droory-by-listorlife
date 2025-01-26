@@ -11,6 +11,7 @@ import 'package:list_and_life/widgets/card_swipe_widget.dart';
 import 'package:list_and_life/widgets/communication_buttons.dart';
 import 'package:list_and_life/widgets/like_button.dart';
 
+import '../base/helpers/db_helper.dart';
 import '../base/helpers/string_helper.dart';
 import '../models/common/map_response.dart';
 import '../base/network/api_constants.dart';
@@ -150,6 +151,7 @@ class AppProductItemWidget extends StatelessWidget {
                     ],
                   ),
                   const Gap(10),
+                  if(data?.userId != DbHelper.getUserModel()?.id)
                   CommunicationButtons2(
                     data: data,
                   ),
