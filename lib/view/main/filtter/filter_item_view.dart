@@ -78,7 +78,7 @@ class _FilterItemViewState extends State<FilterItemView> {
 
     // Collect additional query parameters from the model and filter out null/empty values
     final queryParams = model
-        .toMap()
+        .toJson()
         .entries
         .where((entry) => entry.value != null && (entry.value??"").isNotEmpty)
         .map((entry) => '${entry.key}=${entry.value}')
@@ -118,40 +118,40 @@ class _FilterItemViewState extends State<FilterItemView> {
     });
   }
 
-  void removeFilter(String key) {
-    setState(() {
-      filterModel = filterModel.copyWith(
-        limit: key == 'limit' ? null : filterModel.limit,
-        page: key == 'page' ? null : filterModel.page,
-        categoryId: key == 'categoryId' ? null : filterModel.categoryId,
-        subcategoryId:
-            key == 'subcategoryId' ? null : filterModel.subcategoryId,
-        brandId: key == 'brandId' ? null : filterModel.brandId,
-        userId: key == 'userId' ? null : filterModel.userId,
-        favourite: key == 'favourite' ? null : filterModel.favourite,
-        latitude: key == 'latitude' ? null : filterModel.latitude,
-        longitude: key == 'longitude' ? null : filterModel.longitude,
-        minPrice: key == 'minPrice' ? null : filterModel.minPrice,
-        maxPrice: key == 'maxPrice' ? null : filterModel.maxPrice,
-        minKmDriven: key == 'minKmDriven' ? null : filterModel.minKmDriven,
-        maxKmDriven: key == 'maxKmDriven' ? null : filterModel.maxKmDriven,
-        fuel: key == 'fuel' ? null : filterModel.fuel,
-        numberOfOwner:
-            key == 'numberOfOwner' ? null : filterModel.numberOfOwner,
-        year: key == 'year' ? null : filterModel.year,
-        sellStatus: key == 'sellStatus' ? null : filterModel.sellStatus,
-        search: key == 'search' ? null : filterModel.search,
-        datePublished:
-            key == 'datePublished' ? null : filterModel.datePublished,
-        sortByPrice: key == 'sortByPrice' ? null : filterModel.sortByPrice,
-        distance: key == 'distance' ? null : filterModel.distance,
-        itemCondition:
-            key == 'itemCondition' ? null : filterModel.itemCondition,
-        startDate: key == 'startDate' ? null : filterModel.startDate,
-        endDate: key == 'endDate' ? null : filterModel.endDate,
-      );
-    });
-  }
+  // void removeFilter(String key) {
+  //   setState(() {
+  //     filterModel = filterModel.copyWith(
+  //       limit: key == 'limit' ? null : filterModel.limit,
+  //       page: key == 'page' ? null : filterModel.page,
+  //       categoryId: key == 'categoryId' ? null : filterModel.categoryId,
+  //       subcategoryId:
+  //           key == 'subcategoryId' ? null : filterModel.subcategoryId,
+  //       brandId: key == 'brandId' ? null : filterModel.brandId,
+  //       userId: key == 'userId' ? null : filterModel.userId,
+  //       favourite: key == 'favourite' ? null : filterModel.favourite,
+  //       latitude: key == 'latitude' ? null : filterModel.latitude,
+  //       longitude: key == 'longitude' ? null : filterModel.longitude,
+  //       minPrice: key == 'minPrice' ? null : filterModel.minPrice,
+  //       maxPrice: key == 'maxPrice' ? null : filterModel.maxPrice,
+  //       minKmDriven: key == 'minKmDriven' ? null : filterModel.minKmDriven,
+  //       maxKmDriven: key == 'maxKmDriven' ? null : filterModel.maxKmDriven,
+  //       fuel: key == 'fuel' ? null : filterModel.fuel,
+  //       numberOfOwner:
+  //           key == 'numberOfOwner' ? null : filterModel.numberOfOwner,
+  //       year: key == 'year' ? null : filterModel.year,
+  //       sellStatus: key == 'sellStatus' ? null : filterModel.sellStatus,
+  //       search: key == 'search' ? null : filterModel.search,
+  //       datePublished:
+  //           key == 'datePublished' ? null : filterModel.datePublished,
+  //       sortByPrice: key == 'sortByPrice' ? null : filterModel.sortByPrice,
+  //       distance: key == 'distance' ? null : filterModel.distance,
+  //       itemCondition:
+  //           key == 'itemCondition' ? null : filterModel.itemCondition,
+  //       startDate: key == 'startDate' ? null : filterModel.startDate,
+  //       endDate: key == 'endDate' ? null : filterModel.endDate,
+  //     );
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {

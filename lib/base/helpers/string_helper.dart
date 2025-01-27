@@ -2,7 +2,7 @@ import '../lang/locale_service.dart';
 
 class StringHelper {
   // Main Screen
-  static String listLife = LocaleService.translate('listLife') ?? 'List & Lift';
+  static String listLife = LocaleService.translate('listLife') ?? 'Daroory';
   static String howToConnect =
       LocaleService.translate('howToConnect') ?? 'How to connect?';
   static String amenities =
@@ -276,7 +276,7 @@ class StringHelper {
           "Your Ad will go live shortly...";
   static String listOrLiftAllowsFreeAds =
       LocaleService.translate('listOrLiftAllowsFreeAds') ??
-          "List or Lift allows 2 free ads 180 days for cars";
+          "Daroory allows 2 free ads 180 days for cars";
   static String reachMoreBuyersAndSellFaster =
       LocaleService.translate('reachMoreBuyersAndSellFaster') ??
           "Reach more buyers and sell faster";
@@ -346,7 +346,7 @@ class StringHelper {
       LocaleService.translate('postingDate') ?? "Posting Date";
   static String soldText = LocaleService.translate('soldText') ?? "sold";
   static String checkProductUrl = LocaleService.translate('checkProductUrl') ??
-      "Check my this product on List or lift app url: www.google.com";
+      "Check my this product on Daroory app url: www.google.com";
   static String postedBy = LocaleService.translate('postedBy') ?? "Posted by";
   static String postedOn = LocaleService.translate('postedOn') ?? "Posted On:";
   static String seeProfile =
@@ -640,7 +640,7 @@ static String locationAlert =
 
   static void refresh() {
     // Main Screen
-    listLife = LocaleService.translate('listLife') ?? 'List & Lift';
+    listLife = LocaleService.translate('listLife') ?? 'Daroory';
     howToConnect = LocaleService.translate('howToConnect') ?? 'How to connect?';
     amenities = LocaleService.translate('amenities') ?? 'Amenities';
 
@@ -873,7 +873,7 @@ static String locationAlert =
             "Your Ad will go live shortly...";
     listOrLiftAllowsFreeAds =
         LocaleService.translate('listOrLiftAllowsFreeAds') ??
-            "List or Lift allows 2 free ads 180 days for cars";
+            "Daroory allows 2 free ads 180 days for cars";
     reachMoreBuyersAndSellFaster =
         LocaleService.translate('reachMoreBuyersAndSellFaster') ??
             "Reach more buyers and sell faster";
@@ -926,7 +926,7 @@ static String locationAlert =
     postingDate = LocaleService.translate('postingDate') ?? "Posting Date";
     soldText = LocaleService.translate('soldText') ?? "sold";
     checkProductUrl = LocaleService.translate('checkProductUrl') ??
-        "Check my this product on List or lift app url: www.google.com";
+        "Check my this product on Daroory app url: www.google.com";
     postedBy = LocaleService.translate('postedBy') ?? "Posted by";
     postedOn = LocaleService.translate('postedOn') ?? "Posted On:";
     seeProfile = LocaleService.translate('seeProfile') ?? "See Profile";

@@ -241,7 +241,7 @@ class AuthVM extends BaseViewModel {
         AppPages.rootNavigatorKey.currentContext?.go(Routes.completeProfile);
       }
       /*DialogHelper.showToast(
-          message: 'Welcome to List & Lift, Complete your profile.');*/
+          message: 'Welcome to Daroory, Complete your profile.');*/
     }
   }
 

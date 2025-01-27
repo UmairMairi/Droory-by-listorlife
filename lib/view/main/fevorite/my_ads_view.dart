@@ -14,8 +14,6 @@ import 'package:list_and_life/skeletons/my_ads_skeleton.dart';
 import 'package:list_and_life/widgets/app_empty_widget.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
-import '../../../base/helpers/db_helper.dart';
 import '../../../base/helpers/string_helper.dart';
 import '../../../res/assets_res.dart';
 import '../../../view_model/my_ads_v_m.dart';
@@ -417,7 +415,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                   style: context.textTheme.labelMedium
                       ?.copyWith(fontFamily: FontRes.MONTSERRAT_MEDIUM),
                 ),
-          if("${productDetails.status}" == "0")...{
+          if("${productDetails.status}" == "0" || "${productDetails.status}" == "2")...{
             AppElevatedButton(
               onTap: () {
                 viewModel
@@ -507,9 +505,37 @@ class MyAdsView extends BaseView<MyAdsVM> {
               //   ],
               // )
             }
-          }
+          },
+
+          if("${productDetails.status}" == "2")...[
+            rejectedReason(context,viewModel,productDetails)
+          ]
         ],
       ),
+    );
+  }
+
+  rejectedReason(BuildContext context, MyAdsVM viewModel, ProductDetailModel productDetails) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Gap(10),
+        GestureDetector(
+          onTap: (){
+            viewModel.learnMore = !viewModel.learnMore;
+          },
+          child: Text("Learn More",
+            style: context.textTheme.titleSmall?.copyWith(color: Colors.blue),
+          ),
+        ),
+
+        Visibility(
+          visible: viewModel.learnMore,
+          child: Text(productDetails.rejectedReason??"",
+            style: context.textTheme.bodyMedium?.copyWith(color: Colors.red),
+          ),
+        ),
+      ],
     );
   }
 }

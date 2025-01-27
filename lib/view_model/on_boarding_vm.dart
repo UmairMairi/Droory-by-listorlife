@@ -10,17 +10,17 @@ class OnBoardingVM extends BaseViewModel {
   List<OnBoardingModel> itemsList = [
     OnBoardingModel(
         image: AssetsRes.ON_BOARD_FIRST,
-        title: 'Welcome To List Or Lift',
+        title: 'Welcome To Daroory',
         description:
             "Lorem Ipsum is simply dummy text of the printing and typesetting industry."),
     OnBoardingModel(
         image: AssetsRes.ON_BOARD_SECOND,
-        title: 'Welcome To List Or Lift',
+        title: 'Welcome To Daroory',
         description:
             "Lorem Ipsum is simply dummy text of the printing and typesetting industry."),
     OnBoardingModel(
         image: AssetsRes.ON_BOARD_THIRD,
-        title: 'Welcome To List Or Lift',
+        title: 'Welcome To Daroory',
         description:
             "Lorem Ipsum is simply dummy text of the printing and typesetting industry."),
   ];

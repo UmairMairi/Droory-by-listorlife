@@ -38,11 +38,16 @@ class ApiConstants {
     final Map<String, dynamic> queryParams = {
       'limit': limit,
       'page': page,
-      'latitude': latitude,
-      'longitude': longitude,
       'search': search,
       'sell_status': sellStatus,
     };
+
+    if(latitude != 0.0 && longitude != 0.0){
+      queryParams.addAll({
+        'latitude': latitude,
+        'longitude': longitude,
+      });
+    }
 
     queryParams.removeWhere((key, value) => value == null || value.toString().isEmpty);
 

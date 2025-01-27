@@ -77,12 +77,12 @@ class HomeVM extends BaseViewModel {
 
   bool get isLoading => _loading;
 
-  int _selectedIndex = 0;
+  int _itemCondition = 0;
 
-  int get selectedIndex => _selectedIndex;
+  int get itemCondition => _itemCondition;
 
-  set selectedIndex(int value) {
-    _selectedIndex = value;
+  set itemCondition(int value) {
+    _itemCondition = value;
     notifyListeners();
   }
 
@@ -90,20 +90,25 @@ class HomeVM extends BaseViewModel {
   double longitude = 0.0;
 
   void updateLatLong(
-      {required double lat,
-      required double long,
+      { double? lat,
+       double? long,
       String? type,
       String? address}) async {
-    latitude = lat;
-    longitude = long;
-    if (type == null) {
-      currentLocation =
-          await LocationHelper.getAddressFromCoordinates(lat, long);
-    } else {
-      currentLocation = address ?? "";
+    if(lat != null && long != null){
+      latitude = lat;
+      longitude = long;
+      if (type == null) {
+        currentLocation =
+        await LocationHelper.getAddressFromCoordinates(lat, long);
+      } else {
+        currentLocation = address ?? "";
+      }
+      DbHelper.saveLastLocation(UserModel(
+          latitude: latitude, longitude: longitude, address: currentLocation));
+    }else{
+      latitude = 0.0;
+      longitude = 0.0;
     }
-    DbHelper.saveLastLocation(UserModel(
-        latitude: latitude, longitude: longitude, address: currentLocation));
     notifyListeners();
     onRefresh();
   }
@@ -335,7 +340,7 @@ class HomeVM extends BaseViewModel {
 
     ListResponse<CategoryModel> model = ListResponse<CategoryModel>.fromJson(
         response, (json) => CategoryModel.fromJson(json));
-    return model.body ?? [];
+    return model.body??[];
   }
 
   Future<void> getSubSubCategoryListApi(
@@ -349,14 +354,21 @@ class HomeVM extends BaseViewModel {
 
     ListResponse<CategoryModel> model =
         ListResponse.fromJson(response, (json) => CategoryModel.fromJson(json));
+    List<CategoryModel> modelList = [];
+    if(category?.id == 11 && [83, 84, 87, 88,90].contains(subCategory.id)){
+      modelList.add(CategoryModel(name: "Rent"));
+      modelList.add(CategoryModel(name: "Sell"));
+    }else{
+      modelList =  model.body ?? [];
+    }
 
-    if (model.body?.isNotEmpty ?? false) {
+    if (modelList.isNotEmpty) {
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => SubSubCategoryView(
                     category: category,
-                    subSubCategory: model.body?.reversed.toList() ?? [],
+                    subSubCategory: modelList.reversed.toList() ?? [],
                     subCategory: subCategory,
                     latitude: "$latitude",
                     longitude: "$longitude",

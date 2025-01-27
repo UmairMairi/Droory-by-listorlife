@@ -16,7 +16,7 @@ class LocationHelper {
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       DialogHelper.showLocationServiceEnable(
-          message: "List or Life would like to access your location",
+          message: "Daroory would like to access your location",
           onTap: () async {
             await Geolocator.openLocationSettings();
           });
@@ -27,7 +27,7 @@ class LocationHelper {
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.deniedForever) {
       DialogHelper.showLocationServiceEnable(
-          message: "List or Life would like to access your location",
+          message: "Daroory would like to access your location",
           onTap: () async {
             await Geolocator.openAppSettings();
           });
@@ -40,7 +40,7 @@ class LocationHelper {
           permission != LocationPermission.always) {
         if (permission == LocationPermission.deniedForever) {
           DialogHelper.showLocationServiceEnable(
-              message: "List or Life would like to access your location",
+              message: "Daroory would like to access your location",
               onTap: () async {
                 await Geolocator.openAppSettings();
               });

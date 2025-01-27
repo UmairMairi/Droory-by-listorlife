@@ -14,7 +14,9 @@ import 'package:list_and_life/widgets/app_text_field.dart';
 
 import '../../base/helpers/dialog_helper.dart';
 import '../../base/helpers/string_helper.dart';
+import '../../res/font_res.dart';
 import '../../view_model/auth_vm.dart';
+import '../../widgets/image_view.dart';
 
 class LoginView extends BaseView<AuthVM> {
   const LoginView({super.key});
@@ -90,7 +92,7 @@ class LoginView extends BaseView<AuthVM> {
                       showCurrencyISO: false,
                       onChanged: (country) => viewModel.updateCountry(country)),
                 ),
-                const Flexible(child: Gap(50)),
+                const Flexible(child: Gap(20)),
                 AppElevatedButton(
                   width: context.width,
                   onTap: () {
@@ -104,56 +106,159 @@ class LoginView extends BaseView<AuthVM> {
                   },
                   title: StringHelper.continueButton,
                 ),
-                const Flexible(child: Gap(100)),
-                Text(
-                  StringHelper.loginWithSocial,
-                  style: context.textTheme.titleSmall,
-                ),
                 const Gap(30),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      onTap: () => viewModel.socialLogin(type: 1),
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Image.asset(
-                            AssetsRes.IC_GOOGLE_ICON,
+                Row(children: <Widget>[
+                  Expanded(
+                    child: Container(
+                        margin: const EdgeInsets.only(left: 10.0, right: 20.0),
+                        child: const Divider(
+                          color: Colors.black,
+                          height: 36,
+                        )),
+                  ),
+                  Text(
+                    StringHelper.orConnectWith,
+                    style: context.titleSmall,
+                  ),
+                  Expanded(
+                    child: Container(
+                        margin: const EdgeInsets.only(left: 20.0, right: 10.0),
+                        child: const Divider(
+                          color: Colors.black,
+                          height: 36,
+                        )),
+                  ),
+                ]),
+                // Text(
+                //   StringHelper.loginWithSocial,
+                //   style: context.textTheme.titleSmall,
+                // ),
+                const Gap(30),
+                GestureDetector(
+                    onTap: () async {
+                      viewModel.socialLogin(type: 1);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              offset: const Offset(0, 1),
+                              blurRadius: 6,
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(100)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          ImageView.circle(
+                            image: AssetsRes.IC_GOOGLE_ICON,
                             height: 30,
+                            width: 30,
                           ),
-                        ),
-                      ),
-                    ),
-                    // const Gap(10),
-                    // InkWell(
-                    //   onTap: () => viewModel.socialLogin(type: 2),
-                    //   child: Card(
-                    //     child: Padding(
-                    //       padding: const EdgeInsets.all(8.0),
-                    //       child: Image.asset(
-                    //         AssetsRes.IC_GOOGLE_ICON,
-                    //         height: 30,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                    const Gap(10),
-                    if (Platform.isIOS)
-                    InkWell(
-                      onTap: () => viewModel.socialLogin(type: 3),
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Image.asset(
-                            AssetsRes.IC_APPLE_ICON,
-                            height: 30,
+                          Text(
+                            StringHelper.loginWithGoogle,
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                                fontFamily: FontRes.MONTSERRAT_BOLD,
+                                fontWeight: FontWeight.w500),
                           ),
-                        ),
+                          SizedBox(
+                            width: 15,
+                          )
+                        ],
                       ),
-                    )
-                  ],
-                )
+                    )),
+                const SizedBox(
+                  height: 30,
+                ),
+                if (Platform.isIOS) ...{
+                  GestureDetector(
+                      onTap: () {
+                        viewModel.socialLogin(type: 3);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        decoration: BoxDecoration(
+                            color: Colors.black,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                offset: const Offset(0, 1),
+                                blurRadius: 6,
+                              ),
+                            ],
+                            borderRadius: BorderRadius.circular(100)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            ImageView.circle(
+                              image: AssetsRes.IC_APPLE_LOGO,
+                              height: 30,
+                              width: 30,
+                            ),
+                            Text(
+                              StringHelper.loginWithIos,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: FontRes.MONTSERRAT_BOLD,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            SizedBox(
+                              width: 15,
+                            )
+                          ],
+                        ),
+                      )),
+                }
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     InkWell(
+                //       onTap: () => viewModel.socialLogin(type: 1),
+                //       child: Card(
+                //         child: Padding(
+                //           padding: const EdgeInsets.all(8.0),
+                //           child: Image.asset(
+                //             AssetsRes.IC_GOOGLE_ICON,
+                //             height: 30,
+                //           ),
+                //         ),
+                //       ),
+                //     ),
+                //     // const Gap(10),
+                //     // InkWell(
+                //     //   onTap: () => viewModel.socialLogin(type: 2),
+                //     //   child: Card(
+                //     //     child: Padding(
+                //     //       padding: const EdgeInsets.all(8.0),
+                //     //       child: Image.asset(
+                //     //         AssetsRes.IC_GOOGLE_ICON,
+                //     //         height: 30,
+                //     //       ),
+                //     //     ),
+                //     //   ),
+                //     // ),
+                //     const Gap(10),
+                //     if (Platform.isIOS)
+                //     InkWell(
+                //       onTap: () => viewModel.socialLogin(type: 3),
+                //       child: Card(
+                //         child: Padding(
+                //           padding: const EdgeInsets.all(8.0),
+                //           child: Image.asset(
+                //             AssetsRes.IC_APPLE_ICON,
+                //             height: 30,
+                //           ),
+                //         ),
+                //       ),
+                //     )
+                //   ],
+                // )
               ],
             ),
           ),

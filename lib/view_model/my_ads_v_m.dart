@@ -76,6 +76,15 @@ class MyAdsVM extends BaseViewModel {
     _isGuest = value;
     notifyListeners();
   }
+
+  bool _learnMore = false;
+
+  bool get learnMore => _learnMore;
+
+  set learnMore(bool value) {
+    _learnMore = value;
+    notifyListeners();
+  }
   @override
   void onInit() {
     // TODO: implement onInit
@@ -408,7 +417,7 @@ class MyAdsVM extends BaseViewModel {
         );
       } else {
         return Text(
-          'Ad Expired in : $remainingDays Days',
+          'Ad Expires in : $remainingDays Days',
           style: TextStyle(
               color: Colors.green, fontWeight: FontWeight.w800, fontSize: 12),
         );

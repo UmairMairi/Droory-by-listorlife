@@ -408,11 +408,11 @@ class _LocationSearchPopupState extends State<LocationSearchPopup> {
             TextButton(
                 onPressed: () {
                   Navigator.pop(context);
-                  widget.viewModel.locationTextController.text =
-                  StringHelper.showAllAdsInEgypt;
-                  widget.viewModel.updateLatLong(
-                      lat: 30.0444,
-                      long: 31.2357);
+                  widget.viewModel.locationTextController.text ="Cairo, Egypt";
+                  //StringHelper.showAllAdsInEgypt;
+                  widget.viewModel.updateLatLong();
+                      // lat: 30.0444,
+                      // long: 31.2357);
                 },
                 child: Text(
                   '📍${StringHelper.showAllAdsInEgypt}',

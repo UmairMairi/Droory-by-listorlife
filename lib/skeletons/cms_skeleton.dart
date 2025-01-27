@@ -17,7 +17,7 @@ class CmsSkeleton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                'TERMS OF USE FOR LIST OR LIFT LTD',
+                'TERMS OF USE FOR Daroory LTD',
                 style: context.textTheme.titleMedium,
               ),
               const Gap(10),

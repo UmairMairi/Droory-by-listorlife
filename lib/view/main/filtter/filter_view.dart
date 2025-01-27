@@ -36,9 +36,9 @@ class FilterView extends StatefulWidget {
 }
 
 class _FilterViewState extends State<FilterView> {
-  SfRangeValues values = const SfRangeValues(00, 20000);
-  SfRangeValues downValues = const SfRangeValues(00, 20000);
-  SfRangeValues areaValues = const SfRangeValues(00, 20000);
+  SfRangeValues values = const SfRangeValues(00, 2000000);
+  SfRangeValues downValues = const SfRangeValues(00, 2000000);
+  SfRangeValues areaValues = const SfRangeValues(00, 2000000);
   FilterModel filter = FilterModel();
   List<CategoryModel> categoriesList = [];
   List<CategoryModel> subCategoriesList = [];
@@ -117,52 +117,64 @@ class _FilterViewState extends State<FilterView> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      viewModel.selectedIndex = 0;
+                      viewModel.itemCondition = 1;
                     },
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 8, horizontal: 32),
+                      width: 105,
+                      height: 42,
+                      margin: const EdgeInsets.only(top: 10, right: 10),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: Colors.grey),
-                        color: viewModel.selectedIndex == 0
+                        border: Border.all(
+                            color: viewModel.itemCondition == 1
+                                ? Colors.transparent
+                                : Colors.grey.withOpacity(0.5)),
+                        color: viewModel.itemCondition == 1
                             ? Colors.black
-                            : Colors.white,
+                            : const Color(0xffFCFCFD),
+                        borderRadius: BorderRadius.circular(5),
                       ),
-                      child: Text(
-                        StringHelper.newText,
-                        style: context.textTheme.titleMedium?.copyWith(
-                          color: viewModel.selectedIndex == 0
-                              ? Colors.white
-                              : Colors.black,
-                        ),
-                      ),
+                      child: Center(
+                          child: Text(
+                            StringHelper.newText,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                              color: viewModel.itemCondition == 1
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
+                          )),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 10,
                   ),
                   GestureDetector(
                     onTap: () {
-                      viewModel.selectedIndex = 1;
+                      viewModel.itemCondition = 2;
                     },
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 8, horizontal: 32),
+                      width: 105,
+                      height: 42,
+                      margin: const EdgeInsets.only(top: 10, left: 10),
                       decoration: BoxDecoration(
+                        color: viewModel.itemCondition == 2
+                            ? Colors.black
+                            : const Color(0xffFCFCFD),
+                        border: Border.all(
+                            color: viewModel.itemCondition == 2
+                                ? Colors.transparent
+                                : Colors.grey.withOpacity(0.5)),
                         borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: Colors.grey),
-                        color: viewModel.selectedIndex == 0
-                            ? Colors.white
-                            : Colors.black,
                       ),
-                      child: Text(
-                        StringHelper.used,
-                        style: context.textTheme.titleMedium?.copyWith(
-                            color: viewModel.selectedIndex == 1
-                                ? Colors.white
-                                : Colors.black),
-                      ),
+                      child: Center(
+                          child: Text(
+                            StringHelper.used,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                              color: viewModel.itemCondition == 2
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
+                          )),
                     ),
                   ),
                 ],
@@ -190,6 +202,7 @@ class _FilterViewState extends State<FilterView> {
                           textAlign: TextAlign.center,
                           controller: viewModel.startPriceTextController,
                           cursorColor: Colors.black,
+                          maxLength: 7,
                           onChanged: (value) {
                             setState(() {
                               if (value.isEmpty) {
@@ -208,6 +221,7 @@ class _FilterViewState extends State<FilterView> {
                             });
                           },
                           decoration: InputDecoration(
+                            counterText: "",
                               fillColor: const Color(0xffFCFCFD),
                               hintText: StringHelper.egp0,
                               border: OutlineInputBorder(
@@ -241,13 +255,14 @@ class _FilterViewState extends State<FilterView> {
                         textAlign: TextAlign.center,
                         controller: viewModel.endPriceTextController,
                         cursorColor: Colors.black,
+                        maxLength: 7,
                         onChanged: (value) {
                           setState(() {
                             if (value.isEmpty) {
                               values = SfRangeValues(
                                   int.parse(
                                       viewModel.startPriceTextController.text),
-                                  20000);
+                                  2000000);
                               return;
                             }
 
@@ -259,6 +274,7 @@ class _FilterViewState extends State<FilterView> {
                           });
                         },
                         decoration: InputDecoration(
+                          counterText: "",
                             fillColor: const Color(0xffFCFCFD),
                             hintText: "EGP0",
                             border: OutlineInputBorder(
@@ -280,15 +296,15 @@ class _FilterViewState extends State<FilterView> {
               StatefulBuilder(builder: (context, setState) {
                 return SfRangeSlider(
                   min: 0,
-                  max: 20000,
+                  max: 2000000,
                   values: values,
                   inactiveColor: Colors.grey,
                   activeColor: const Color(0xffFF385C),
                   showLabels: true,
-                  interval: 20000,
+                  interval: 2000000,
                   labelFormatterCallback:
                       (dynamic actualValue, String formattedText) {
-                    return actualValue == 19999
+                    return actualValue == 1999999
                         ? ' $formattedText+'
                         : ' $formattedText';
                   },
@@ -332,6 +348,7 @@ class _FilterViewState extends State<FilterView> {
                   viewModel.currentPropertyType = "Sell";
                   brands.clear();
                   allModels.clear();
+                  subCategoriesList.clear();
                   viewModel.brandsTextController.clear();
                   viewModel.modelTextController.clear();
                   viewModel.subCategoryTextController.clear();
@@ -902,38 +919,123 @@ class _FilterViewState extends State<FilterView> {
                 width: context.width,
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 onTap: () {
-                  filter.itemCondition = viewModel.selectedIndex == 0
-                      ? StringHelper.newText
-                      : StringHelper.used;
-                  filter.minPrice =
-                      viewModel.startPriceTextController.text.trim();
-                  filter.maxPrice =
-                      viewModel.endPriceTextController.text.trim();
-                  filter.latitude = viewModel.latitude.toString();
-                  filter.longitude = viewModel.longitude.toString();
-                  filter.year = viewModel.yearTextController.text.trim();
-                  filter.fuel = viewModel.fuelTextController.text.trim();
+                  if(viewModel.itemCondition != 0){
+                    filter.itemCondition = viewModel.itemCondition == 0
+                        ? StringHelper.newText
+                        : StringHelper.used;
+                  }
+                  if(values.start != 0 && values.end != 2000000){
+                    filter.minPrice = viewModel.startPriceTextController.text.trim();
+                    filter.maxPrice = viewModel.endPriceTextController.text.trim();
+                  }
 
-                  filter.propertyFor = viewModel.propertyForTextController.text.trim();
-                  filter.bedrooms = viewModel.noOfBedroomsTextController.text.trim();
-                  filter.bathrooms = viewModel.noOfBathroomsTextController.text.trim();
-                  filter.furnishedType = viewModel.furnishingStatusTextController.text.trim();
-                  filter.ownership = viewModel.ownershipStatusTextController.text.trim();
-                  filter.paymentType = viewModel.paymentTypeTextController.text.trim();
-                  filter.completionStatus = viewModel.completionStatusTextController.text.trim();
-                  filter.deliveryTerm = viewModel.deliveryTermTextController.text.trim();
-                  filter.type = viewModel.propertyForTypeTextController.text.trim();
-                  filter.level = viewModel.levelTextController.text.trim();
-                  filter.listedBy = viewModel.listedByTextController.text.trim();
-                  filter.rentalTerm = viewModel.rentalTermsTextController.text.trim();
-                  filter.accessToUtilities = viewModel.accessToUtilitiesTextController.text.trim();
-                  filter.minDownPrice = viewModel.startDownPriceTextController.text.trim();
-                  filter.maxDownPrice = viewModel.endDownPriceTextController.text.trim();
-                  filter.maxAreaSize = viewModel.startAreaTextController.text.trim();
-                  filter.minAreaSize = viewModel.endAreaTextController.text.trim();
+                  if ("${viewModel.latitude}" != "0.0" && "${viewModel.longitude}" != "0.0") {
+                    filter.latitude = viewModel.latitude.toString();
+                    filter.longitude = viewModel.longitude.toString();
+                  }
 
-                  filter.minKmDriven =
-                      viewModel.kmDrivenTextController.text.trim();
+                  if (viewModel.yearTextController.text.trim().isNotEmpty) {
+                    filter.year = viewModel.yearTextController.text.trim();
+                  }
+
+                  if (viewModel.fuelTextController.text.trim().isNotEmpty) {
+                    filter.fuel = viewModel.fuelTextController.text.trim();
+                  }
+
+                  if (viewModel.propertyForTextController.text.trim().isNotEmpty) {
+                    filter.propertyFor = viewModel.propertyForTextController.text.trim();
+                  }
+
+                  if (viewModel.noOfBedroomsTextController.text.trim().isNotEmpty) {
+                    filter.bedrooms = viewModel.noOfBedroomsTextController.text.trim();
+                  }
+
+                  if (viewModel.noOfBathroomsTextController.text.trim().isNotEmpty) {
+                    filter.bathrooms = viewModel.noOfBathroomsTextController.text.trim();
+                  }
+
+                  if (viewModel.furnishingStatusTextController.text.trim().isNotEmpty) {
+                    filter.furnishedType = viewModel.furnishingStatusTextController.text.trim();
+                  }
+
+                  if (viewModel.ownershipStatusTextController.text.trim().isNotEmpty) {
+                    filter.ownership = viewModel.ownershipStatusTextController.text.trim();
+                  }
+
+                  if (viewModel.paymentTypeTextController.text.trim().isNotEmpty) {
+                    filter.paymentType = viewModel.paymentTypeTextController.text.trim();
+                  }
+
+                  if (viewModel.completionStatusTextController.text.trim().isNotEmpty) {
+                    filter.completionStatus = viewModel.completionStatusTextController.text.trim();
+                  }
+
+                  if (viewModel.deliveryTermTextController.text.trim().isNotEmpty) {
+                    filter.deliveryTerm = viewModel.deliveryTermTextController.text.trim();
+                  }
+
+                  if (viewModel.propertyForTypeTextController.text.trim().isNotEmpty) {
+                    filter.type = viewModel.propertyForTypeTextController.text.trim();
+                  }
+
+                  if (viewModel.levelTextController.text.trim().isNotEmpty) {
+                    filter.level = viewModel.levelTextController.text.trim();
+                  }
+
+                  if (viewModel.listedByTextController.text.trim().isNotEmpty) {
+                    filter.listedBy = viewModel.listedByTextController.text.trim();
+                  }
+
+                  if (viewModel.rentalTermsTextController.text.trim().isNotEmpty) {
+                    filter.rentalTerm = viewModel.rentalTermsTextController.text.trim();
+                  }
+
+                  if (viewModel.accessToUtilitiesTextController.text.trim().isNotEmpty) {
+                    filter.accessToUtilities = viewModel.accessToUtilitiesTextController.text.trim();
+                  }
+                  if(downValues.start != 0 && downValues.end != 2000000){
+                    filter.minDownPrice = viewModel.startDownPriceTextController.text.trim();
+                    filter.maxDownPrice = viewModel.endDownPriceTextController.text.trim();
+                  }
+
+                  if(areaValues.start != 0 && areaValues.end != 2000000){
+                    filter.maxAreaSize = viewModel.startAreaTextController.text.trim();
+                    filter.minAreaSize = viewModel.endAreaTextController.text.trim();
+                  }
+
+                  if (viewModel.kmDrivenTextController.text.trim().isNotEmpty) {
+                    filter.minKmDriven = viewModel.kmDrivenTextController.text.trim();
+                  }
+
+                  // filter.minPrice =
+                  //     viewModel.startPriceTextController.text.trim();
+                  // filter.maxPrice =
+                  //     viewModel.endPriceTextController.text.trim();
+                  // filter.latitude = viewModel.latitude.toString();
+                  // filter.longitude = viewModel.longitude.toString();
+                  // filter.year = viewModel.yearTextController.text.trim();
+                  // filter.fuel = viewModel.fuelTextController.text.trim();
+                  //
+                  // filter.propertyFor = viewModel.propertyForTextController.text.trim();
+                  // filter.bedrooms = viewModel.noOfBedroomsTextController.text.trim();
+                  // filter.bathrooms = viewModel.noOfBathroomsTextController.text.trim();
+                  // filter.furnishedType = viewModel.furnishingStatusTextController.text.trim();
+                  // filter.ownership = viewModel.ownershipStatusTextController.text.trim();
+                  // filter.paymentType = viewModel.paymentTypeTextController.text.trim();
+                  // filter.completionStatus = viewModel.completionStatusTextController.text.trim();
+                  // filter.deliveryTerm = viewModel.deliveryTermTextController.text.trim();
+                  // filter.type = viewModel.propertyForTypeTextController.text.trim();
+                  // filter.level = viewModel.levelTextController.text.trim();
+                  // filter.listedBy = viewModel.listedByTextController.text.trim();
+                  // filter.rentalTerm = viewModel.rentalTermsTextController.text.trim();
+                  // filter.accessToUtilities = viewModel.accessToUtilitiesTextController.text.trim();
+                  // filter.minDownPrice = viewModel.startDownPriceTextController.text.trim();
+                  // filter.maxDownPrice = viewModel.endDownPriceTextController.text.trim();
+                  // filter.maxAreaSize = viewModel.startAreaTextController.text.trim();
+                  // filter.minAreaSize = viewModel.endAreaTextController.text.trim();
+                  //
+                  // filter.minKmDriven =
+                  //     viewModel.kmDrivenTextController.text.trim();
                   context.pushReplacement(Routes.filterDetails, extra: filter);
                 },
                 title: StringHelper.apply,
@@ -959,18 +1061,20 @@ class _FilterViewState extends State<FilterView> {
   void updateFilter({required HomeVM vm}) async {
     categoriesList = vm.categories;
     if (widget.filters != null) {
+      brands.clear();
+      vm.subCategoryTextController.clear();
+      vm.brandsTextController.clear();
       filter = widget.filters!;
 
-      vm.selectedIndex = filter.itemCondition == null
+      vm.itemCondition = (filter.itemCondition??"").isEmpty
           ? 0
-          : filter.itemCondition!.toLowerCase().contains('new')
-              ? 0
-              : 1;
+          : (filter.itemCondition?.toLowerCase().contains('used') ?? false) ? 2 : 1;
+      debugPrint("vm.itemCondition ${vm.itemCondition}");
       vm.latitude = double.parse(filter.latitude ?? '0.0');
       vm.longitude = double.parse(filter.longitude ?? '0.0');
       vm.startPriceTextController.text = filter.minPrice ?? '0';
       vm.endPriceTextController.text =
-          filter.maxPrice != '0' ? filter.maxPrice ?? '20000' : '20000';
+          filter.maxPrice != '0' ? filter.maxPrice ?? '2000000' : '2000000';
       vm.kmDrivenTextController.text = filter.minKmDriven ?? '';
       vm.yearTextController.text = filter.year ?? '';
       vm.fuelTextController.text = filter.fuel ?? '';
@@ -978,16 +1082,16 @@ class _FilterViewState extends State<FilterView> {
       vm.currentLocation = await LocationHelper.getAddressFromCoordinates(
           vm.latitude, vm.longitude);
       vm.categoryTextController.text = getCategoryName(id: filter.categoryId);
-      if (filter.categoryId != null && filter.categoryId != '0') {
+      if ((filter.categoryId??"").isNotEmpty && filter.categoryId != '0') {
         await getSubCategory(id: filter.categoryId);
       }
-      if (filter.subcategoryId != null) {
+      if ((filter.subcategoryId??"").isNotEmpty) {
         await getBrands(id: filter.subcategoryId);
         vm.subCategoryTextController.text =
             getSubCategoryName(id: filter.subcategoryId);
       }
 
-      if (filter.brandId != null) {
+      if ((filter.brandId??"").isNotEmpty) {
         vm.brandsTextController.text = getBrandName(id: filter.brandId);
       }
 
@@ -1006,18 +1110,18 @@ class _FilterViewState extends State<FilterView> {
   void resetFilters() {
     HomeVM vm = context.read<HomeVM>();
     filter = FilterModel();
-    vm.selectedIndex = 0;
+    vm.itemCondition = 0;
     vm.latitude = LocationHelper.cairoLatitude;
     vm.longitude = LocationHelper.cairoLongitude;
     vm.locationTextController.text = "Cairo, Egypt";
     vm.startPriceTextController.text = '0';
-    vm.endPriceTextController.text = '20000';
+    vm.endPriceTextController.text = '2000000';
     values = SfRangeValues(
         int.parse(vm.startPriceTextController.text.isEmpty
             ? '0'
             : vm.startPriceTextController.text),
         int.parse(vm.endPriceTextController.text.isEmpty
-            ? '20000'
+            ? '2000000'
             : vm.endPriceTextController.text));
     brands.clear();
     subCategoriesList.clear();
@@ -1044,19 +1148,19 @@ class _FilterViewState extends State<FilterView> {
             ? '0'
             : vm.startDownPriceTextController.text),
         int.parse(vm.endDownPriceTextController.text.isEmpty
-            ? '20000'
+            ? '2000000'
             : vm.endDownPriceTextController.text));
     areaValues = SfRangeValues(
         int.parse(vm.startAreaTextController.text.isEmpty
             ? '0'
             : vm.startAreaTextController.text),
         int.parse(vm.endAreaTextController.text.isEmpty
-            ? '20000'
+            ? '2000000'
             : vm.endAreaTextController.text));
     vm.startDownPriceTextController.text = '0';
-    vm.endDownPriceTextController.text = '20000';
+    vm.endDownPriceTextController.text = '2000000';
     vm.startAreaTextController.text = '0';
-    vm.endAreaTextController.text = '20000';
+    vm.endAreaTextController.text = '2000000';
     setState(() {});
   }
 
@@ -1308,6 +1412,7 @@ class _FilterViewState extends State<FilterView> {
                   width: context.width,
                   height: 50,
                   child: TextFormField(
+                      maxLength: 7,
                       keyboardType: TextInputType.number,
                       textAlign: TextAlign.center,
                       controller: viewModel.startDownPriceTextController,
@@ -1330,6 +1435,7 @@ class _FilterViewState extends State<FilterView> {
                         });
                       },
                       decoration: InputDecoration(
+                        counterText: "",
                           fillColor: const Color(0xffFCFCFD),
                           hintText: StringHelper.egp0,
                           border: OutlineInputBorder(
@@ -1359,6 +1465,7 @@ class _FilterViewState extends State<FilterView> {
                   width: context.width,
                   height: 50,
                   child: TextFormField(
+                    maxLength: 7,
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
                     controller: viewModel.endDownPriceTextController,
@@ -1369,7 +1476,7 @@ class _FilterViewState extends State<FilterView> {
                           downValues = SfRangeValues(
                               int.parse(
                                   viewModel.startDownPriceTextController.text),
-                              20000);
+                              2000000);
                           return;
                         }
 
@@ -1381,6 +1488,7 @@ class _FilterViewState extends State<FilterView> {
                       });
                     },
                     decoration: InputDecoration(
+                      counterText: "",
                         fillColor: const Color(0xffFCFCFD),
                         hintText: "EGP0",
                         border: OutlineInputBorder(
@@ -1402,15 +1510,15 @@ class _FilterViewState extends State<FilterView> {
           StatefulBuilder(builder: (context, setState) {
             return SfRangeSlider(
               min: 0,
-              max: 20000,
+              max: 2000000,
               values: downValues,
               inactiveColor: Colors.grey,
               activeColor: const Color(0xffFF385C),
               showLabels: true,
-              interval: 20000,
+              interval: 2000000,
               labelFormatterCallback:
                   (dynamic actualValue, String formattedText) {
-                return actualValue == 19999
+                return actualValue == 1999999
                     ? ' $formattedText+'
                     : ' $formattedText';
               },
@@ -1439,6 +1547,7 @@ class _FilterViewState extends State<FilterView> {
                 width: context.width,
                 height: 50,
                 child: TextFormField(
+                    maxLength: 7,
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
                     controller: viewModel.startAreaTextController,
@@ -1461,6 +1570,7 @@ class _FilterViewState extends State<FilterView> {
                       });
                     },
                     decoration: InputDecoration(
+                      counterText: "",
                         fillColor: const Color(0xffFCFCFD),
                         hintText: StringHelper.egp0,
                         border: OutlineInputBorder(
@@ -1490,6 +1600,7 @@ class _FilterViewState extends State<FilterView> {
                 width: context.width,
                 height: 50,
                 child: TextFormField(
+                  maxLength: 7,
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
                   controller: viewModel.endAreaTextController,
@@ -1500,7 +1611,7 @@ class _FilterViewState extends State<FilterView> {
                         areaValues = SfRangeValues(
                             int.parse(
                                 viewModel.startAreaTextController.text),
-                            20000);
+                            2000000);
                         return;
                       }
 
@@ -1512,6 +1623,7 @@ class _FilterViewState extends State<FilterView> {
                     });
                   },
                   decoration: InputDecoration(
+                    counterText: "",
                       fillColor: const Color(0xffFCFCFD),
                       hintText: "0",
                       border: OutlineInputBorder(
@@ -1533,15 +1645,15 @@ class _FilterViewState extends State<FilterView> {
         StatefulBuilder(builder: (context, setState) {
           return SfRangeSlider(
             min: 0,
-            max: 20000,
+            max: 2000000,
             values: areaValues,
             inactiveColor: Colors.grey,
             activeColor: const Color(0xffFF385C),
             showLabels: true,
-            interval: 20000,
+            interval: 2000000,
             labelFormatterCallback:
                 (dynamic actualValue, String formattedText) {
-              return actualValue == 19999
+              return actualValue == 1999999
                   ? ' $formattedText+'
                   : ' $formattedText';
             },
@@ -1997,6 +2109,7 @@ class _FilterViewState extends State<FilterView> {
                   width: context.width,
                   height: 50,
                   child: TextFormField(
+                      maxLength: 7,
                       keyboardType: TextInputType.number,
                       textAlign: TextAlign.center,
                       controller: viewModel.startDownPriceTextController,
@@ -2019,6 +2132,7 @@ class _FilterViewState extends State<FilterView> {
                         });
                       },
                       decoration: InputDecoration(
+                        counterText: "",
                           fillColor: const Color(0xffFCFCFD),
                           hintText: StringHelper.egp0,
                           border: OutlineInputBorder(
@@ -2048,6 +2162,7 @@ class _FilterViewState extends State<FilterView> {
                   width: context.width,
                   height: 50,
                   child: TextFormField(
+                    maxLength: 7,
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
                     controller: viewModel.endDownPriceTextController,
@@ -2058,7 +2173,7 @@ class _FilterViewState extends State<FilterView> {
                           downValues = SfRangeValues(
                               int.parse(
                                   viewModel.startDownPriceTextController.text),
-                              20000);
+                              2000000);
                           return;
                         }
 
@@ -2070,6 +2185,7 @@ class _FilterViewState extends State<FilterView> {
                       });
                     },
                     decoration: InputDecoration(
+                      counterText: "",
                         fillColor: const Color(0xffFCFCFD),
                         hintText: "EGP0",
                         border: OutlineInputBorder(
@@ -2091,15 +2207,15 @@ class _FilterViewState extends State<FilterView> {
           StatefulBuilder(builder: (context, setState) {
             return SfRangeSlider(
               min: 0,
-              max: 20000,
+              max: 2000000,
               values: downValues,
               inactiveColor: Colors.grey,
               activeColor: const Color(0xffFF385C),
               showLabels: true,
-              interval: 20000,
+              interval: 2000000,
               labelFormatterCallback:
                   (dynamic actualValue, String formattedText) {
-                return actualValue == 19999
+                return actualValue == 1999999
                     ? ' $formattedText+'
                     : ' $formattedText';
               },
@@ -2128,6 +2244,7 @@ class _FilterViewState extends State<FilterView> {
                 width: context.width,
                 height: 50,
                 child: TextFormField(
+                    maxLength: 7,
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
                     controller: viewModel.startAreaTextController,
@@ -2150,6 +2267,7 @@ class _FilterViewState extends State<FilterView> {
                       });
                     },
                     decoration: InputDecoration(
+                      counterText: "",
                         fillColor: const Color(0xffFCFCFD),
                         hintText: StringHelper.egp0,
                         border: OutlineInputBorder(
@@ -2179,6 +2297,7 @@ class _FilterViewState extends State<FilterView> {
                 width: context.width,
                 height: 50,
                 child: TextFormField(
+                  maxLength: 7,
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
                   controller: viewModel.endAreaTextController,
@@ -2189,7 +2308,7 @@ class _FilterViewState extends State<FilterView> {
                         areaValues = SfRangeValues(
                             int.parse(
                                 viewModel.startAreaTextController.text),
-                            20000);
+                            2000000);
                         return;
                       }
 
@@ -2201,6 +2320,7 @@ class _FilterViewState extends State<FilterView> {
                     });
                   },
                   decoration: InputDecoration(
+                    counterText: "",
                       fillColor: const Color(0xffFCFCFD),
                       hintText: "0",
                       border: OutlineInputBorder(
@@ -2222,15 +2342,15 @@ class _FilterViewState extends State<FilterView> {
         StatefulBuilder(builder: (context, setState) {
           return SfRangeSlider(
             min: 0,
-            max: 20000,
+            max: 2000000,
             values: areaValues,
             inactiveColor: Colors.grey,
             activeColor: const Color(0xffFF385C),
             showLabels: true,
-            interval: 20000,
+            interval: 2000000,
             labelFormatterCallback:
                 (dynamic actualValue, String formattedText) {
-              return actualValue == 19999
+              return actualValue == 1999999
                   ? ' $formattedText+'
                   : ' $formattedText';
             },
@@ -2687,6 +2807,7 @@ class _FilterViewState extends State<FilterView> {
                   width: context.width,
                   height: 50,
                   child: TextFormField(
+                      maxLength: 7,
                       keyboardType: TextInputType.number,
                       textAlign: TextAlign.center,
                       controller: viewModel.startDownPriceTextController,
@@ -2709,6 +2830,7 @@ class _FilterViewState extends State<FilterView> {
                         });
                       },
                       decoration: InputDecoration(
+                        counterText: "",
                           fillColor: const Color(0xffFCFCFD),
                           hintText: StringHelper.egp0,
                           border: OutlineInputBorder(
@@ -2738,6 +2860,7 @@ class _FilterViewState extends State<FilterView> {
                   width: context.width,
                   height: 50,
                   child: TextFormField(
+                    maxLength: 7,
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
                     controller: viewModel.endDownPriceTextController,
@@ -2748,7 +2871,7 @@ class _FilterViewState extends State<FilterView> {
                           downValues = SfRangeValues(
                               int.parse(
                                   viewModel.startDownPriceTextController.text),
-                              20000);
+                              2000000);
                           return;
                         }
 
@@ -2760,6 +2883,7 @@ class _FilterViewState extends State<FilterView> {
                       });
                     },
                     decoration: InputDecoration(
+                      counterText: "",
                         fillColor: const Color(0xffFCFCFD),
                         hintText: "EGP0",
                         border: OutlineInputBorder(
@@ -2781,15 +2905,15 @@ class _FilterViewState extends State<FilterView> {
           StatefulBuilder(builder: (context, setState) {
             return SfRangeSlider(
               min: 0,
-              max: 20000,
+              max: 2000000,
               values: downValues,
               inactiveColor: Colors.grey,
               activeColor: const Color(0xffFF385C),
               showLabels: true,
-              interval: 20000,
+              interval: 2000000,
               labelFormatterCallback:
                   (dynamic actualValue, String formattedText) {
-                return actualValue == 19999
+                return actualValue == 1999999
                     ? ' $formattedText+'
                     : ' $formattedText';
               },
@@ -2819,6 +2943,7 @@ class _FilterViewState extends State<FilterView> {
                 width: context.width,
                 height: 50,
                 child: TextFormField(
+                    maxLength: 7,
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
                     controller: viewModel.startAreaTextController,
@@ -2841,6 +2966,7 @@ class _FilterViewState extends State<FilterView> {
                       });
                     },
                     decoration: InputDecoration(
+                      counterText: "",
                         fillColor: const Color(0xffFCFCFD),
                         hintText: StringHelper.egp0,
                         border: OutlineInputBorder(
@@ -2870,6 +2996,7 @@ class _FilterViewState extends State<FilterView> {
                 width: context.width,
                 height: 50,
                 child: TextFormField(
+                  maxLength: 7,
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
                   controller: viewModel.endAreaTextController,
@@ -2880,7 +3007,7 @@ class _FilterViewState extends State<FilterView> {
                         areaValues = SfRangeValues(
                             int.parse(
                                 viewModel.startAreaTextController.text),
-                            20000);
+                            2000000);
                         return;
                       }
 
@@ -2892,6 +3019,7 @@ class _FilterViewState extends State<FilterView> {
                     });
                   },
                   decoration: InputDecoration(
+                    counterText: "",
                       fillColor: const Color(0xffFCFCFD),
                       hintText: "0",
                       border: OutlineInputBorder(
@@ -2913,15 +3041,15 @@ class _FilterViewState extends State<FilterView> {
         StatefulBuilder(builder: (context, setState) {
           return SfRangeSlider(
             min: 0,
-            max: 20000,
+            max: 2000000,
             values: areaValues,
             inactiveColor: Colors.grey,
             activeColor: const Color(0xffFF385C),
             showLabels: true,
-            interval: 20000,
+            interval: 2000000,
             labelFormatterCallback:
                 (dynamic actualValue, String formattedText) {
-              return actualValue == 19999
+              return actualValue == 1999999
                   ? ' $formattedText+'
                   : ' $formattedText';
             },
@@ -3335,6 +3463,7 @@ class _FilterViewState extends State<FilterView> {
                 width: context.width,
                 height: 50,
                 child: TextFormField(
+                    maxLength: 7,
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
                     controller: viewModel.startAreaTextController,
@@ -3357,6 +3486,7 @@ class _FilterViewState extends State<FilterView> {
                       });
                     },
                     decoration: InputDecoration(
+                      counterText: "",
                         fillColor: const Color(0xffFCFCFD),
                         hintText: StringHelper.egp0,
                         border: OutlineInputBorder(
@@ -3386,6 +3516,7 @@ class _FilterViewState extends State<FilterView> {
                 width: context.width,
                 height: 50,
                 child: TextFormField(
+                  maxLength: 7,
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
                   controller: viewModel.endAreaTextController,
@@ -3396,7 +3527,7 @@ class _FilterViewState extends State<FilterView> {
                         areaValues = SfRangeValues(
                             int.parse(
                                 viewModel.startAreaTextController.text),
-                            20000);
+                            2000000);
                         return;
                       }
 
@@ -3408,6 +3539,7 @@ class _FilterViewState extends State<FilterView> {
                     });
                   },
                   decoration: InputDecoration(
+                    counterText: "",
                       fillColor: const Color(0xffFCFCFD),
                       hintText: "0",
                       border: OutlineInputBorder(
@@ -3429,15 +3561,15 @@ class _FilterViewState extends State<FilterView> {
         StatefulBuilder(builder: (context, setState) {
           return SfRangeSlider(
             min: 0,
-            max: 20000,
+            max: 2000000,
             values: areaValues,
             inactiveColor: Colors.grey,
             activeColor: const Color(0xffFF385C),
             showLabels: true,
-            interval: 20000,
+            interval: 2000000,
             labelFormatterCallback:
                 (dynamic actualValue, String formattedText) {
-              return actualValue == 19999
+              return actualValue == 1999999
                   ? ' $formattedText+'
                   : ' $formattedText';
             },
@@ -3848,6 +3980,7 @@ class _FilterViewState extends State<FilterView> {
                 width: context.width,
                 height: 50,
                 child: TextFormField(
+                    maxLength: 7,
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
                     controller: viewModel.startAreaTextController,
@@ -3870,6 +4003,7 @@ class _FilterViewState extends State<FilterView> {
                       });
                     },
                     decoration: InputDecoration(
+                      counterText: "",
                         fillColor: const Color(0xffFCFCFD),
                         hintText: StringHelper.egp0,
                         border: OutlineInputBorder(
@@ -3899,6 +4033,7 @@ class _FilterViewState extends State<FilterView> {
                 width: context.width,
                 height: 50,
                 child: TextFormField(
+                  maxLength: 7,
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
                   controller: viewModel.endAreaTextController,
@@ -3909,7 +4044,7 @@ class _FilterViewState extends State<FilterView> {
                         areaValues = SfRangeValues(
                             int.parse(
                                 viewModel.startAreaTextController.text),
-                            20000);
+                            2000000);
                         return;
                       }
 
@@ -3921,6 +4056,7 @@ class _FilterViewState extends State<FilterView> {
                     });
                   },
                   decoration: InputDecoration(
+                    counterText: "",
                       fillColor: const Color(0xffFCFCFD),
                       hintText: "0",
                       border: OutlineInputBorder(
@@ -3942,15 +4078,15 @@ class _FilterViewState extends State<FilterView> {
         StatefulBuilder(builder: (context, setState) {
           return SfRangeSlider(
             min: 0,
-            max: 20000,
+            max: 2000000,
             values: areaValues,
             inactiveColor: Colors.grey,
             activeColor: const Color(0xffFF385C),
             showLabels: true,
-            interval: 20000,
+            interval: 2000000,
             labelFormatterCallback:
                 (dynamic actualValue, String formattedText) {
-              return actualValue == 19999
+              return actualValue == 1999999
                   ? ' $formattedText+'
                   : ' $formattedText';
             },

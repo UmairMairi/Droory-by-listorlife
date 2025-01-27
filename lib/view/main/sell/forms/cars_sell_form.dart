@@ -679,7 +679,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                 validator: (value) {
                   if (value == null ||
                       value.isEmpty ||
-                      int.parse(value) < 1000) {
+                      num.parse(value) < 1000) {
                     return '* The minimum valid price is EGP 1000';
                   }
 

@@ -99,6 +99,7 @@ class SubSubCategoryView extends StatelessWidget {
                       subSubCategoryId: "${subSubCat?.id ?? ""}",
                       latitude: "$latitude",
                       longitude: "$longitude",
+                      propertyFor: (subSubCat?.name == "Rent" || subSubCat?.name == "Sell") ? subSubCat?.name : "",
                     ));
               },
               title: Text(
