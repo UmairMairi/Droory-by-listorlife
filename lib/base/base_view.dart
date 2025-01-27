@@ -18,12 +18,16 @@ class _BaseViewState<T extends BaseViewModel> extends State<BaseView<T>>  with A
 
   @override
   void initState() {
-    viewModel = context.read<T>();
-    viewModel.setContext(context);
-    viewModel.onInit();
+    try {
+      viewModel = context.read<T>();
+      viewModel.setContext(context);
+      viewModel.onInit();
+      WidgetsBinding.instance
+          .addPostFrameCallback((timeStamp) => viewModel.onReady());
+    } catch (e) {
+      debugPrint("Error initializing ViewModel: $e");
+    }
     super.initState();
-    WidgetsBinding.instance
-        .addPostFrameCallback((timeStamp) => viewModel.onReady());
   }
 
   @override
@@ -34,12 +38,19 @@ class _BaseViewState<T extends BaseViewModel> extends State<BaseView<T>>  with A
 
   @override
   void dispose() {
-    // TODO: implement dispose
-    viewModel.onClose();
+    try {
+      viewModel.onClose();
+    } catch (e) {
+      debugPrint("Error during dispose: $e");
+    }
     super.dispose();
+
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
+
+  void triggerOnReady() {
+    viewModel.callOnReady();
+  }
 }

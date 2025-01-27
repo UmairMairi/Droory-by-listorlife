@@ -50,7 +50,7 @@ class HomeVM extends BaseViewModel {
     notifyListeners();
   }
 
-  int _limit = 10;
+  int _limit = 20;
 
   int get limit => _limit;
 

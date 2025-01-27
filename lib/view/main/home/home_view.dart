@@ -43,28 +43,22 @@ class HomeView extends BaseView<HomeVM> {
               style: context.textTheme.titleMedium,
             ),
             const Gap(01),
-            Row(
-              children: [
-                Text(
-                  viewModel.currentLocation,
-                  style: context.textTheme.bodySmall
-                      ?.copyWith(fontWeight: FontWeight.bold, fontSize: 10),
-                ),
-                GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        showDragHandle: true,
-                        isScrollControlled: true,
-                        builder: (BuildContext context) {
-                          return LocationSearchPopup(
-                            viewModel: viewModel,
-                          );
-                        },
-                      );
-                    },
-                    child: const Icon(Icons.arrow_drop_down)),
-              ],
+            GestureDetector(
+              onTap: (){
+                showLocationSheet(context,viewModel);
+              },
+              child: Row(
+                children: [
+                  Flexible(
+                    child: Text(
+                      viewModel.currentLocation,
+                      style: context.textTheme.bodySmall
+                          ?.copyWith(fontWeight: FontWeight.bold, fontSize: 10),
+                    ),
+                  ),
+                  const Icon(Icons.arrow_drop_down),
+                ],
+              ),
             ),
           ],
         ),
@@ -85,7 +79,7 @@ class HomeView extends BaseView<HomeVM> {
             },
             child: Container(
                 padding: const EdgeInsets.all(05),
-                margin: const EdgeInsets.symmetric(horizontal: 05),
+                margin: const EdgeInsets.symmetric(horizontal: 10),
                 decoration: BoxDecoration(
                     color: Colors.black,
                     borderRadius: BorderRadius.circular(10)),
@@ -279,29 +273,28 @@ class HomeView extends BaseView<HomeVM> {
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: viewModel.productsList.length,
                         itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              if (viewModel.productsList[index].userId ==
+                          var productDetails = viewModel.productsList[index];
+                          return AppProductItemWidget(
+                            data: productDetails,
+                            onItemTapped: (){
+                              if (productDetails.userId ==
                                   DbHelper.getUserModel()?.id) {
                                 context.push(Routes.myProduct,
-                                    extra: viewModel.productsList[index]);
-                                return;
+                                    extra: productDetails);
+                              }else{
+                                context.push(Routes.productDetails,
+                                    extra: productDetails);
                               }
-
-                              context.push(Routes.productDetails,
-                                  extra: viewModel.productsList[index]);
                             },
-                            child: AppProductItemWidget(
-                              data: viewModel.productsList[index],
-                              onLikeTapped: () {
-                                if (viewModel.productsList[index].isFavourite ==
-                                    1) {
-                                  viewModel.productsList[index].isFavourite = 0;
+                            onLikeTapped: () {
+                              if(!DbHelper.getIsGuest()){
+                                if (productDetails.isFavourite == 1) {
+                                  productDetails.isFavourite = 0;
                                   return;
                                 }
-                                viewModel.productsList[index].isFavourite = 1;
-                              },
-                            ),
+                                productDetails.isFavourite = 1;
+                              }
+                            },
                           );
                         },
                         separatorBuilder: (BuildContext context, int index) {
@@ -330,6 +323,19 @@ class HomeView extends BaseView<HomeVM> {
     }
 
     return '';
+  }
+
+  void showLocationSheet(BuildContext context, HomeVM viewModel) {
+    showModalBottomSheet(
+      context: context,
+      showDragHandle: true,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return LocationSearchPopup(
+          viewModel: viewModel,
+        );
+      },
+    );
   }
 }
 

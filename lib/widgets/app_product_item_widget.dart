@@ -20,11 +20,11 @@ import '../base/network/base_client.dart';
 
 class AppProductItemWidget extends StatelessWidget {
   final ProductDetailModel? data;
-  final VoidCallback? onLikeTapped;
-  final VoidCallback? onItemTapped;
+  final Function()? onLikeTapped;
+  final Function()  onItemTapped;
 
   const AppProductItemWidget(
-      {super.key, this.data, this.onLikeTapped, this.onItemTapped});
+      {super.key, this.data, this.onLikeTapped, required this.onItemTapped});
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +54,7 @@ class AppProductItemWidget extends StatelessWidget {
             Stack(
               children: [
                 CardSwipeWidget(
+                  onItemTapped: onItemTapped,
                   screenType: "home",
                   data: data,
                   imagesList: data?.productMedias,
@@ -69,7 +70,10 @@ class AppProductItemWidget extends StatelessWidget {
                     child: LikeButton(
                         isFav: data?.isFavourite == 1,
                         onTap: () async => {
-                              await onLikeButtonTapped(id: data?.id),
+                          if(!DbHelper.getIsGuest()){
+                            await onLikeButtonTapped(id: data?.id),
+                          }
+
                             })),
               ],
             ),
@@ -93,14 +97,14 @@ class AppProductItemWidget extends StatelessWidget {
                       ),
                       if (data?.categoryId == 9) ...{
                         Text(
-                          "${StringHelper.egp} ${data?.salleryFrom}",
+                          "${StringHelper.egp} ${parseAmount(data?.salleryFrom)}",
                           //"${StringHelper.egp} ${data?.salleryFrom} - ${data?.salleryTo}",
                           style: context.textTheme.titleMedium
                               ?.copyWith(color: context.theme.colorScheme.error),
                         ),
                       } else ...{
                         Text(
-                          "${StringHelper.egp} ${data?.price}",
+                          "${StringHelper.egp} ${parseAmount(data?.price)}",
                           style: context.textTheme.titleMedium
                               ?.copyWith(color: context.theme.colorScheme.error),
                         ),
@@ -324,6 +328,11 @@ class AppProductItemWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String parseAmount(dynamic amount){
+    if("${amount??""}".isEmpty)return "0";
+    return num.parse("${amount??0}").toStringAsFixed(0);
   }
 
   String getCreatedAt({String? time}) {

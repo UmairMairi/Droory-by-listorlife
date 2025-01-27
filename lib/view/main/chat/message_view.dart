@@ -34,7 +34,7 @@ class _MessageViewState extends State<MessageView> {
   @override
   void initState() {
     // TODO: implement initState
-    viewModel = context.read<ChatVM>();
+    viewModel = Provider.of<ChatVM>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((d) {
       viewModel.initListeners();
       viewModel.updateChatScreenId(

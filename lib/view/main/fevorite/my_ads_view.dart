@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/base/helpers/db_helper.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/models/product_detail_model.dart';
@@ -25,7 +26,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
 
   @override
   Widget build(BuildContext context, MyAdsVM viewModel) {
-    return viewModel.isGuest
+    return DbHelper.getIsGuest()
         ? const UnauthorisedView()
         : Column(
             children: [
@@ -171,12 +172,16 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                 },
                                                 itemBuilder:
                                                     (BuildContext context) => <PopupMenuEntry<int>>[
-                                                  if (productStatus && soldStatus) ...{
-                                                    // PopupMenuItem(
-                                                    //   value: 1,
-                                                    //   child: Text(
-                                                    //       StringHelper.edit),
-                                                    // )
+                                                  if ("${productDetails.status}" == "1" && soldStatus) ...{
+                                                    PopupMenuItem(
+                                                      value: 1,
+                                                      child: Text(
+                                                          StringHelper.edit),
+                                                    )
+                                                  },
+
+                                                      if (productStatus && soldStatus) ...{
+
                                                     PopupMenuItem(
                                                       value: 2,
                                                       child: Text(StringHelper
@@ -245,7 +250,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                                   Colors.grey),
                                                     ),
                                                     Text(
-                                                      "${StringHelper.egp} ${productDetails.price}",
+                                                      "${StringHelper.egp} ${parseAmount(productDetails.price)}",
                                                       style: context
                                                           .textTheme.titleMedium
                                                           ?.copyWith(
@@ -371,6 +376,10 @@ class MyAdsView extends BaseView<MyAdsVM> {
           );
   }
 
+  String parseAmount(dynamic amount){
+    if("${amount??""}".isEmpty)return "0";
+    return num.parse("${amount??0}").toStringAsFixed(0);
+  }
   detailsWidget(
     BuildContext context,
     MyAdsVM viewModel,

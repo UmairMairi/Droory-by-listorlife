@@ -153,14 +153,27 @@ class AuthVM extends BaseViewModel {
       body.addAll({
         'device_token': deviceToken,
         'device_type': deviceType,
-        'name': user.user?.displayName?.split(' ').first,
         'type': 1,
-        'last_name': user.user?.displayName?.split(' ').last,
         'social_id': user.user?.uid,
         'social_type': type,
-        'email': user.user?.email,
-        'profile_pic': user.user?.photoURL,
       });
+
+      if((user.user?.photoURL??"").isNotEmpty){
+        body.addAll({
+          'profile_pic': user.user?.photoURL,
+        });
+      }
+      if((user.user?.email??"").isNotEmpty){
+        body.addAll({
+          'email': user.user?.email,
+        });
+      }
+      if((user.user?.displayName??"").isNotEmpty){
+        body.addAll({
+          'name': user.user?.displayName?.split(' ').first,
+          'last_name': user.user?.displayName?.split(' ').last,
+        });
+      }
     }
 
     ///for apple only
@@ -168,14 +181,23 @@ class AuthVM extends BaseViewModel {
       body.addAll({
         'device_token': deviceToken,
         'device_type': deviceType,
-        'name': appleData.givenName?.split(' ').first,
         'type': 1,
-        'last_name': appleData.givenName?.split(' ').last,
         'social_id': appleData.userIdentifier,
         'social_type': type,
-        'email': appleData.email,
        // 'profile_pic': user.user?.photoURL,
       });
+
+      if((appleData.givenName??"").isNotEmpty){
+        body.addAll({
+          'name': appleData.givenName?.split(' ').first,
+          'last_name': appleData.givenName?.split(' ').last,
+        });
+      }
+      if((appleData.email??"").isNotEmpty){
+        body.addAll({
+          'email': appleData.email,
+          });
+      }
     }
 
     ApiRequest apiRequest = ApiRequest(
@@ -195,6 +217,7 @@ class AuthVM extends BaseViewModel {
     DbHelper.saveToken(model.body?.token);
     DbHelper.saveIsGuest(false);
     DbHelper.saveIsLoggedIn(true);
+    SocketHelper().connectUser();
     if (context.mounted) {
       context.go(Routes.main);
     } else {

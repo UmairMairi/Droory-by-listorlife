@@ -49,8 +49,8 @@ class ChatVM extends BaseViewModel {
 
   @override
   void onInit() {
-    getInboxList();
-    initListeners();
+    //getInboxList();
+    //initListeners();
     // TODO: implement onInit
     super.onInit();
   }
@@ -64,9 +64,7 @@ class ChatVM extends BaseViewModel {
   }
 
   void initListeners() {
-    if (SocketHelper().isUserConnected == false) {
-      SocketHelper().connectUser();
-    }
+    SocketHelper().connectUser();
     getInboxListener();
     getMessageListener();
     offerListener();

@@ -188,7 +188,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                         context: context, data: productData)
                                     .isNotEmpty) ...{
                                   Text(StringHelper.specifications,
-                                      style: context.textTheme.titleMedium),
+                                      style: context.textTheme.titleSmall),
                                   const SizedBox(height: 10),
                                   Container(
                                     decoration: BoxDecoration(
@@ -219,7 +219,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                 ),
                                 Gap(10),
                                 getPropertyInformation(
-                                        context: context, productData: productData) ??
+                                        context: context, data: productData) ??
                                     SizedBox.shrink(),
                               },
                               if (productData?.categoryId == 11) ...{
@@ -418,7 +418,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                           ),
                                           Text(
                                             "${productData?.user?.name} ${productData?.user?.lastName}",
-                                            style: context.textTheme.titleLarge
+                                            style: context.textTheme.titleMedium
                                                 ?.copyWith(
                                                     fontFamily: FontRes
                                                         .MONTSERRAT_SEMIBOLD),
@@ -753,44 +753,43 @@ class ProductDetailView extends BaseView<ProductVM> {
   }
 
   getPropertyInformation(
-      {required BuildContext context, ProductDetailModel? productData}) {
+      {required BuildContext context, ProductDetailModel? data}) {
     {
       List<Widget> specs = [];
 
-      if (productData?.propertyFor != null && productData!.propertyFor!.isNotEmpty) {
+      if ((data?.propertyFor??"").isNotEmpty) {
         specs.add(_buildInfoRow(
-            context, "${productData.propertyFor?.capitalized}", '🏠', 'Property For'));
+            context, "${data?.propertyFor?.capitalized}", '🏠', 'Property For'));
       }
-      if (productData?.area != null && productData!.area != 0) {
-        specs.add(_buildInfoRow(context, "${productData.area} sqft", '📏', 'Area'));
+      if ((data?.area??0) != 0) {
+        specs.add(_buildInfoRow(context, "${data?.area} sqft", '📏', 'Area'));
       }
-      if (productData?.bedrooms != null && productData!.bedrooms != 0) {
+      if ((data?.bedrooms??0) != 0) {
         specs
-            .add(_buildInfoRow(context, "${productData.bedrooms}", '🛏️', 'Bedrooms'));
+            .add(_buildInfoRow(context, "${data?.bedrooms}", '🛏️', 'Bedrooms'));
       }
-      if (productData?.bathrooms != null && productData!.bathrooms != 0) {
+      if ((data?.bathrooms??0) != 0) {
         specs.add(
-            _buildInfoRow(context, "${productData.bathrooms}", '🚽', 'Bathrooms'));
+            _buildInfoRow(context, "${data?.bathrooms}", '🚽', 'Bathrooms'));
       }
-      if (productData?.furnishedType != null && productData!.furnishedType!.isNotEmpty) {
-        specs.add(_buildInfoRow(context, "${productData.furnishedType?.capitalized}",
+      if ((data?.furnishedType??"").isNotEmpty) {
+        specs.add(_buildInfoRow(context, "${data?.furnishedType?.capitalized}",
             '🛋️', 'Furnished Type'));
       }
-      if (productData?.ownership != null && productData!.ownership!.isNotEmpty) {
+      if ((data?.ownership??"").isNotEmpty) {
         specs.add(_buildInfoRow(
-            context, "${productData.ownership?.capitalized}", '📜', 'Ownership'));
+            context, "${data?.ownership?.capitalized}", '📜', 'Ownership'));
       }
-      if (productData?.paymentType != null && productData!.paymentType!.isNotEmpty) {
+      if ((data?.paymentType??"").isNotEmpty) {
         specs.add(_buildInfoRow(
-            context, "${productData.paymentType?.capitalized}", '💳', 'Payment Type'));
+            context, "${data?.paymentType?.capitalized}", '💳', 'Payment Type'));
       }
-      if (productData?.completionStatus != null &&
-          productData!.completionStatus!.isNotEmpty) {
+      if ((data?.completionStatus??"") .isNotEmpty) {
         specs.add(_buildInfoRow(context,
-            "${productData.completionStatus?.capitalized}", '✅', 'Completion Status'));
+            "${data?.completionStatus?.capitalized}", '✅', 'Completion Status'));
       }
-      if (productData?.deliveryTerm != null && productData!.deliveryTerm!.isNotEmpty) {
-        specs.add(_buildInfoRow(context, "${productData.deliveryTerm?.capitalized}",
+      if ((data?.deliveryTerm??"").isNotEmpty) {
+        specs.add(_buildInfoRow(context, (data?.deliveryTerm??"").capitalized,
             '🚚', 'Delivery Term'));
       }
       return Column(
@@ -803,17 +802,17 @@ class ProductDetailView extends BaseView<ProductVM> {
   }
 
   Widget _buildInfoRow(
-      BuildContext context, String label, String icon, String value) {
+      BuildContext context, String? label, String icon, String? value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            value,
+            value??"",
             style: context.titleSmall,
           ),
-          Text(label, style: TextStyle(fontWeight: FontWeight.w500)),
+          Text(label??"", style: TextStyle(fontWeight: FontWeight.w500)),
         ],
       ),
     );

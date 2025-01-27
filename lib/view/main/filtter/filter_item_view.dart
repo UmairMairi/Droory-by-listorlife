@@ -227,23 +227,19 @@ class _FilterItemViewState extends State<FilterItemView> {
                         horizontal: 20, vertical: 10),
                     itemCount: productsList.length,
                     itemBuilder: (context, index) {
-                      log("${productsList[index].toJson()}",
-                          name: "Item- $index");
-                      return GestureDetector(
-                        onTap: () {
-                          if (productsList[index].userId ==
+                      var productDetails = productsList[index];
+                      return AppProductItemWidget(
+                        onItemTapped: (){
+                          if (productDetails.userId ==
                               DbHelper.getUserModel()?.id) {
                             context.push(Routes.myProduct,
-                                extra: productsList[index]);
-                            return;
+                                extra: productDetails);
+                          }else{
+                            context.push(Routes.productDetails,
+                                extra: productDetails);
                           }
-
-                          context.push(Routes.productDetails,
-                              extra: productsList[index]);
                         },
-                        child: AppProductItemWidget(
-                          data: productsList[index],
-                        ),
+                        data: productDetails,
                       );
                     },
                     separatorBuilder: (BuildContext context, int index) {

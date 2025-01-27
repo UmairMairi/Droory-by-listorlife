@@ -14,6 +14,7 @@ class CardSwipeWidget extends StatefulWidget {
   final BorderRadiusGeometry? borderRadius;
   final String? screenType;
   final BoxFit? fit;
+  final Function()?  onItemTapped;
 
   const CardSwipeWidget({
     super.key,
@@ -22,7 +23,7 @@ class CardSwipeWidget extends StatefulWidget {
     this.imagesList,
     this.borderRadius,
     this.screenType,
-    this.fit,
+    this.fit, this.onItemTapped,
   });
 
   @override
@@ -116,7 +117,7 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget>
                     MaterialPageRoute(
                         builder: (context) => ImageViewer(
                             galleryItems:bannerImages))),*/
-                        onTap: () {
+                        onTap:widget.onItemTapped?? () {
                           if ((widget.screenType ?? "").isEmpty) {
                             Navigator.push(
                                 context,

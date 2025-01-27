@@ -15,7 +15,7 @@ class MainView extends BaseView<MainVM> {
         extendBody: true,
         body: PersistentTabView(
           context,
-          onItemSelected: (index) => viewModel.onIndexSelected(index: index),
+          onItemSelected: (index) => viewModel.onIndexSelected(index: index, context: context),
           controller: viewModel.navController,
           screens: viewModel.screensView,
           items: [

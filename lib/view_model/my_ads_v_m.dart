@@ -23,7 +23,7 @@ import '../view/main/sell/forms/sell_form_view.dart';
 import '../widgets/app_elevated_button.dart';
 
 class MyAdsVM extends BaseViewModel {
-  late RefreshController refreshController;
+  RefreshController refreshController = RefreshController(initialRefresh: true);
   int _selectIndex = 0;
 
   int get selectIndex => _selectIndex;
@@ -88,17 +88,19 @@ class MyAdsVM extends BaseViewModel {
   @override
   void onInit() {
     // TODO: implement onInit
-    refreshController = RefreshController(initialRefresh: true);
-    DbHelper.box.listenKey('isGuest', (value) {
-      isGuest = DbHelper.getIsGuest();
-    });
-    if (!isGuest) onRefresh();
+    // DbHelper.box.listenKey('isGuest', (value) {
+    //   isGuest = DbHelper.getIsGuest();
+    // });
+    // if (!isGuest) onRefresh();
     super.onInit();
   }
 
   @override
   void onReady(){
     // TODO: implement onReady
+    DbHelper.box.listenKey('isGuest', (value) {
+      isGuest = DbHelper.getIsGuest();
+    });
     if (!isGuest) onRefresh();
     super.onReady();
   }

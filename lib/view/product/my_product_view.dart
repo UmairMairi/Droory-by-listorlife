@@ -77,7 +77,7 @@ class MyProductView extends BaseView<ProductVM> {
           future: viewModel.getProductDetails(id: data?.id),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              ProductDetailModel? data = snapshot.data;
+              ProductDetailModel? productDetails = snapshot.data;
               //data?.productMedias?.insert(0, ProductMedias(media: data.image));
 
               return SingleChildScrollView(
@@ -91,8 +91,8 @@ class MyProductView extends BaseView<ProductVM> {
                       children: [
                         CardSwipeWidget(
                           height: 350,
-                          data: data,
-                          imagesList: data?.productMedias,
+                          data: productDetails,
+                          imagesList: productDetails?.productMedias,
                           borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(20),
                             topRight: Radius.circular(20),
@@ -137,18 +137,24 @@ class MyProductView extends BaseView<ProductVM> {
                                   vm.handelPopupMenuItemClick(
                                       context: context,
                                       index: value,
-                                      item: data);
+                                      item: productDetails);
                                 },
                                 itemBuilder: (BuildContext context) =>
                                     <PopupMenuEntry<int>>[
-                                  PopupMenuItem(
-                                    value: 1,
-                                    child: Text(StringHelper.edit),
-                                  ),
-                                  PopupMenuItem(
-                                    value: 2,
-                                    child: Text(StringHelper.deactivate),
-                                  ),
+                                      if ("${productDetails?.status}" == "1" && productDetails?.sellStatus?.toLowerCase() != StringHelper.sold.toLowerCase()) ...{
+                                        PopupMenuItem(
+                                          value: 1,
+                                          child: Text(
+                                              StringHelper.edit),
+                                        )
+                                      },
+                                      if ("${productDetails?.status}" == "0" && productDetails?.sellStatus?.toLowerCase() != StringHelper.sold.toLowerCase()) ...{
+                                        PopupMenuItem(
+                                          value: 2,
+                                          child: Text(StringHelper
+                                              .deactivate),
+                                        ),
+                                      },
                                   PopupMenuItem(
                                     value: 3,
                                     child: Text(StringHelper.remove),
@@ -178,13 +184,13 @@ class MyProductView extends BaseView<ProductVM> {
                                 child: Text(
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  data?.name ?? '',
+                                  productDetails?.name ?? '',
                                   style: context.textTheme.titleMedium,
                                 ),
                               ),
-                              if (data?.sellStatus !=
+                              if (productDetails?.sellStatus !=
                                   StringHelper.sold.toLowerCase()) ...{
-                                viewModel.getRemainDays(item: data)
+                                viewModel.getRemainDays(item: productDetails)
                               }
                             ],
                           ),
@@ -196,86 +202,92 @@ class MyProductView extends BaseView<ProductVM> {
                                 size: 16,
                               ),
                               const Gap(05),
-                              Text(data?.nearby ?? ''),
+                              Flexible(child: Text(productDetails?.nearby ?? '')),
                             ],
                           ),
                           const Gap(10),
-                          if (data?.categoryId == 9) ...{
+                          if (productDetails?.categoryId == 9) ...{
                             Text(
-                              "${StringHelper.egp} ${data?.salleryFrom}",
+                              "${StringHelper.egp} ${parseAmount(productDetails?.salleryFrom)}",
                               //"${StringHelper.egp} ${data?.salleryFrom} - ${data?.salleryTo}",
                               style: context.textTheme.titleLarge
                                   ?.copyWith(color: Colors.red),
                             ),
                           } else ...{
                             Text(
-                              "${StringHelper.egp} ${data?.price}",
+                              "${StringHelper.egp} ${parseAmount(productDetails?.price)}",
                               style: context.textTheme.titleLarge
                                   ?.copyWith(color: Colors.red),
                             ),
                           },
                           const Gap(10),
-                          data?.sellStatus != StringHelper.soldText
+                          productDetails?.sellStatus != StringHelper.soldText
                               ? Row(
                                   children: [
-                                    Expanded(
-                                      child: InkWell(
-                                        onTap: () async {
-                                          DialogHelper.showLoading();
-                                          await viewModel.markAsSoldApi(
-                                              product: data!);
-                                        },
-                                        child: Container(
-                                          alignment: Alignment.center,
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 10, vertical: 08),
-                                          decoration: BoxDecoration(
-                                            color: Colors.black54,
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                          child: Text(
-                                            StringHelper.markAsSold,
-                                            style: context.textTheme.labelLarge
-                                                ?.copyWith(
-                                                    color: Colors.white,
-                                                    fontSize: 12,
-                                                    fontWeight:
-                                                        FontWeight.w600),
+                                    if(productDetails?.sellStatus != StringHelper.sold.toLowerCase() && "${productDetails?.status}" != "0" && "${productDetails?.status}" != "2")...{
+                                      Expanded(
+                                        child: InkWell(
+                                          onTap: () async {
+                                            DialogHelper.showLoading();
+                                            await viewModel.markAsSoldApi(
+                                                product: productDetails!);
+                                          },
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10, vertical: 08),
+                                            decoration: BoxDecoration(
+                                              color: Colors.black54,
+                                              borderRadius:
+                                              BorderRadius.circular(10),
+                                            ),
+                                            child: Text(
+                                              StringHelper.markAsSold,
+                                              style: context.textTheme.labelLarge
+                                                  ?.copyWith(
+                                                  color: Colors.white,
+                                                  fontSize: 12,
+                                                  fontWeight:
+                                                  FontWeight.w600),
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    const Gap(10),
-                                    Expanded(
-                                      child: InkWell(
-                                        onTap: () async {
-                                          var vm = context.read<MyAdsVM>();
+                                      const Gap(10),
+                                    },
 
-                                          vm.navigateToEditProduct(
-                                              context: context, item: data);
-                                        },
-                                        child: Container(
-                                          alignment: Alignment.center,
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 10, vertical: 08),
-                                          decoration: BoxDecoration(
-                                            color: Colors.black54,
-                                            borderRadius:
-                                                BorderRadius.circular(08),
-                                          ),
-                                          child: Text(
-                                            StringHelper.edit,
-                                            style: context.textTheme.labelLarge
-                                                ?.copyWith(
-                                                    color: Colors.white,
-                                                    fontSize: 12,
-                                                    fontWeight:
-                                                        FontWeight.w600),
+                                    if("${productDetails?.status}" == "0" || "${productDetails?.status}" == "2")...[
+                                      Expanded(
+                                        child: InkWell(
+                                          onTap: () async {
+                                            var vm = context.read<MyAdsVM>();
+
+                                            vm.navigateToEditProduct(
+                                                context: context, item: productDetails);
+                                          },
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10, vertical: 08),
+                                            decoration: BoxDecoration(
+                                              color: Colors.black54,
+                                              borderRadius:
+                                              BorderRadius.circular(08),
+                                            ),
+                                            child: Text(
+                                              StringHelper.edit,
+                                              style: context.textTheme.labelLarge
+                                                  ?.copyWith(
+                                                  color: Colors.white,
+                                                  fontSize: 12,
+                                                  fontWeight:
+                                                  FontWeight.w600),
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
+                                    ]
+
                                     /*Expanded(
                                       child: Container(
                                         alignment: Alignment.center,
@@ -305,12 +317,12 @@ class MyProductView extends BaseView<ProductVM> {
                                   backgroundColor: Colors.grey,
                                 ),
                           Divider(),
-                          if (data?.categoryId != 11) ...{
+                          if (productDetails?.categoryId != 11) ...{
                             if (viewModel
-                                .getSpecifications(context: context, data: data)
+                                .getSpecifications(context: context, data: productDetails)
                                 .isNotEmpty) ...{
                               Text(StringHelper.specifications,
-                                  style: context.textTheme.titleMedium),
+                                  style: context.textTheme.titleSmall),
                               const SizedBox(height: 10),
                               Container(
                                 decoration: BoxDecoration(
@@ -328,22 +340,22 @@ class MyProductView extends BaseView<ProductVM> {
                                           mainAxisSpacing: 5,
                                           crossAxisSpacing: 20),
                                   children: viewModel.getSpecifications(
-                                      context: context, data: data),
+                                      context: context, data: productDetails),
                                 ),
                               ),
                             }
                           },
-                          if (data?.categoryId == 11) ...{
+                          if (productDetails?.categoryId == 11) ...{
                             Text(
                               StringHelper.propertyInformation,
                               style: context.titleMedium,
                             ),
                             Gap(10),
                             getPropertyInformation(
-                                    context: context, data: data) ??
+                                    context: context, data: productDetails) ??
                                 SizedBox.shrink(),
                           },
-                          if (data?.categoryId == 11) ...{
+                          if (productDetails?.categoryId == 11) ...{
                             Divider(),
                             Text(
                               StringHelper.amenities,
@@ -357,7 +369,7 @@ class MyProductView extends BaseView<ProductVM> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: List.generate(
-                                  data?.productAmenities?.length ?? 0, (index) {
+                                  productDetails?.productAmenities?.length ?? 0, (index) {
                                 return Padding(
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 5.0),
@@ -367,15 +379,15 @@ class MyProductView extends BaseView<ProductVM> {
                                         CrossAxisAlignment.start,
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      getAmenityIcon(data
+                                      getAmenityIcon(productDetails
                                               ?.productAmenities?[index]
                                               .amnity
                                               ?.name ??
                                           ''),
                                       Gap(05),
                                       Text(DbHelper.getLanguage() == 'en'
-                                          ? "${data?.productAmenities?[index].amnity?.name}"
-                                          : "${data?.productAmenities?[index].amnity?.nameAr}"),
+                                          ? "${productDetails?.productAmenities?[index].amnity?.name}"
+                                          : "${productDetails?.productAmenities?[index].amnity?.nameAr}"),
                                     ],
                                   ),
                                 );
@@ -388,9 +400,9 @@ class MyProductView extends BaseView<ProductVM> {
                               crossAxisCount: 3,
                               childAspectRatio: 16/16,
                               itemCount: viewModel.showAll
-                                  ? data?.productAmenities?.length ?? 0
-                                  : (data?.productAmenities?.length ?? 0) < 5
-                                  ? data?.productAmenities?.length ?? 0
+                                  ? productDetails?.productAmenities?.length ?? 0
+                                  : (productDetails?.productAmenities?.length ?? 0) < 5
+                                  ? productDetails?.productAmenities?.length ?? 0
                                   : 5,
                               itemBuilder: (BuildContext context, int index) {
                                 return Card(
@@ -407,15 +419,15 @@ class MyProductView extends BaseView<ProductVM> {
                                       crossAxisAlignment: CrossAxisAlignment.center,
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
-                                        getAmenityIcon(data
+                                        getAmenityIcon(productDetails
                                             ?.productAmenities?[index]
                                             .amnity
                                             ?.name ??
                                             ''),
                                         Gap(05),
                                         Text(DbHelper.getLanguage() == 'en'
-                                            ? "${data?.productAmenities?[index].amnity?.name}"
-                                            : "${data?.productAmenities?[index].amnity?.nameAr}",textAlign: TextAlign.center,),
+                                            ? "${productDetails?.productAmenities?[index].amnity?.name}"
+                                            : "${productDetails?.productAmenities?[index].amnity?.nameAr}",textAlign: TextAlign.center,),
                                       ],
                                     ),
                                   ),
@@ -423,7 +435,7 @@ class MyProductView extends BaseView<ProductVM> {
                               },),
                             Gap(10),
                             Visibility(
-                                visible: (data?.productAmenities?.length ?? 0) > 5,
+                                visible: (productDetails?.productAmenities?.length ?? 0) > 5,
                                 child:GestureDetector(
                                 onTap: (){
                                   viewModel.showAll = !viewModel.showAll;
@@ -441,7 +453,7 @@ class MyProductView extends BaseView<ProductVM> {
                             style: context.textTheme.titleMedium,
                           ),
                           const Gap(05),
-                          Text(data?.description ?? ''),
+                          Text(productDetails?.description ?? ''),
                           const Gap(20),
                         ],
                       ),
@@ -459,46 +471,48 @@ class MyProductView extends BaseView<ProductVM> {
           }),
     );
   }
-
+  String parseAmount(dynamic amount){
+    if("${amount??""}".isEmpty)return "0";
+    return num.parse("${amount??0}").toStringAsFixed(0);
+  }
   getPropertyInformation(
       {required BuildContext context, ProductDetailModel? data}) {
     {
       List<Widget> specs = [];
 
-      if (data?.propertyFor != null && data!.propertyFor!.isNotEmpty) {
+      if ((data?.propertyFor??"").isNotEmpty) {
         specs.add(_buildInfoRow(
-            context, "${data.propertyFor?.capitalized}", '🏠', 'Property For'));
+            context, "${data?.propertyFor?.capitalized}", '🏠', 'Property For'));
       }
-      if (data?.area != null && data!.area != 0) {
-        specs.add(_buildInfoRow(context, "${data.area} sqft", '📏', 'Area'));
+      if ((data?.area??0) != 0) {
+        specs.add(_buildInfoRow(context, "${data?.area} sqft", '📏', 'Area'));
       }
-      if (data?.bedrooms != null && data!.bedrooms != 0) {
+      if ((data?.bedrooms??0) != 0) {
         specs
-            .add(_buildInfoRow(context, "${data.bedrooms}", '🛏️', 'Bedrooms'));
+            .add(_buildInfoRow(context, "${data?.bedrooms}", '🛏️', 'Bedrooms'));
       }
-      if (data?.bathrooms != null && data!.bathrooms != 0) {
+      if ((data?.bathrooms??0) != 0) {
         specs.add(
-            _buildInfoRow(context, "${data.bathrooms}", '🚽', 'Bathrooms'));
+            _buildInfoRow(context, "${data?.bathrooms}", '🚽', 'Bathrooms'));
       }
-      if (data?.furnishedType != null && data!.furnishedType!.isNotEmpty) {
-        specs.add(_buildInfoRow(context, "${data.furnishedType?.capitalized}",
+      if ((data?.furnishedType??"").isNotEmpty) {
+        specs.add(_buildInfoRow(context, "${data?.furnishedType?.capitalized}",
             '🛋️', 'Furnished Type'));
       }
-      if (data?.ownership != null && data!.ownership!.isNotEmpty) {
+      if ((data?.ownership??"").isNotEmpty) {
         specs.add(_buildInfoRow(
-            context, "${data.ownership?.capitalized}", '📜', 'Ownership'));
+            context, "${data?.ownership?.capitalized}", '📜', 'Ownership'));
       }
-      if (data?.paymentType != null && data!.paymentType!.isNotEmpty) {
+      if ((data?.paymentType??"").isNotEmpty) {
         specs.add(_buildInfoRow(
-            context, "${data.paymentType?.capitalized}", '💳', 'Payment Type'));
+            context, "${data?.paymentType?.capitalized}", '💳', 'Payment Type'));
       }
-      if (data?.completionStatus != null &&
-          data!.completionStatus!.isNotEmpty) {
+      if ((data?.completionStatus??"") .isNotEmpty) {
         specs.add(_buildInfoRow(context,
-            "${data.completionStatus?.capitalized}", '✅', 'Completion Status'));
+            "${data?.completionStatus?.capitalized}", '✅', 'Completion Status'));
       }
-      if (data?.deliveryTerm != null && data!.deliveryTerm!.isNotEmpty) {
-        specs.add(_buildInfoRow(context, "${data.deliveryTerm?.capitalized}",
+      if ((data?.deliveryTerm??"").isNotEmpty) {
+        specs.add(_buildInfoRow(context, (data?.deliveryTerm??"").capitalized,
             '🚚', 'Delivery Term'));
       }
       return Column(

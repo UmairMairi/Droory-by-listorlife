@@ -393,6 +393,7 @@ class _AppSearchViewState extends State<AppSearchView> {
               }
               product.isFavourite = 1;
             },
+            onItemTapped: () {  },
           ),
         );
       }, separatorBuilder: (BuildContext context, int index) {

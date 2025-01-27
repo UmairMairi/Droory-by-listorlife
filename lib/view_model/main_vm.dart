@@ -10,6 +10,7 @@ import 'package:list_and_life/models/product_detail_model.dart';
 import 'package:list_and_life/models/user_model.dart';
 import 'package:list_and_life/providers/language_provider.dart';
 import 'package:list_and_life/view_model/chat_vm.dart';
+import 'package:list_and_life/view_model/my_ads_v_m.dart';
 import 'package:persistent_bottom_nav_bar_plus/persistent_bottom_nav_bar_plus.dart';
 import 'package:provider/provider.dart';
 
@@ -75,7 +76,7 @@ class MainVM extends BaseViewModel {
     super.onReady();
   }
 
-  void onIndexSelected({required int index}) {
+  void onIndexSelected({required int index,required BuildContext context}) {
     switch (index) {
       case 0:
         return;
@@ -84,6 +85,7 @@ class MainVM extends BaseViewModel {
           context.push(Routes.guestLogin);
           navController.jumpToTab(0);
         } else {
+          context.read<ChatVM>().initListeners();
           context.read<ChatVM>().getInboxList();
         }
       case 2:
@@ -91,6 +93,8 @@ class MainVM extends BaseViewModel {
         if (DbHelper.getIsGuest()) {
           context.push(Routes.guestLogin);
           navController.jumpToTab(0);
+        } else {
+          context.read<MyAdsVM>().onRefresh();
         }
         return;
       case 4:

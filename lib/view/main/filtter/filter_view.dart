@@ -924,7 +924,7 @@ class _FilterViewState extends State<FilterView> {
                         ? StringHelper.newText
                         : StringHelper.used;
                   }
-                  if(values.start != 0 && values.end != 2000000){
+                  if(values.start > 0 && values.end <= 2000000){
                     filter.minPrice = viewModel.startPriceTextController.text.trim();
                     filter.maxPrice = viewModel.endPriceTextController.text.trim();
                   }
@@ -993,12 +993,12 @@ class _FilterViewState extends State<FilterView> {
                   if (viewModel.accessToUtilitiesTextController.text.trim().isNotEmpty) {
                     filter.accessToUtilities = viewModel.accessToUtilitiesTextController.text.trim();
                   }
-                  if(downValues.start != 0 && downValues.end != 2000000){
+                  if(downValues.start > 0 && downValues.end <= 2000000){
                     filter.minDownPrice = viewModel.startDownPriceTextController.text.trim();
                     filter.maxDownPrice = viewModel.endDownPriceTextController.text.trim();
                   }
 
-                  if(areaValues.start != 0 && areaValues.end != 2000000){
+                  if(areaValues.start > 0 && areaValues.end <= 2000000){
                     filter.maxAreaSize = viewModel.startAreaTextController.text.trim();
                     filter.minAreaSize = viewModel.endAreaTextController.text.trim();
                   }
@@ -1078,6 +1078,7 @@ class _FilterViewState extends State<FilterView> {
       vm.kmDrivenTextController.text = filter.minKmDriven ?? '';
       vm.yearTextController.text = filter.year ?? '';
       vm.fuelTextController.text = filter.fuel ?? '';
+      vm.propertyForTextController.text = filter.propertyFor ?? '';
 
       vm.currentLocation = await LocationHelper.getAddressFromCoordinates(
           vm.latitude, vm.longitude);

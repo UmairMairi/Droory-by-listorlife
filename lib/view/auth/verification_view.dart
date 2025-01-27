@@ -16,7 +16,7 @@ class VerificationView extends BaseView<AuthVM> {
 
   @override
   Widget build(BuildContext context, AuthVM viewModel) {
-    viewModel.otpTextController.clear();
+    //viewModel.otpTextController.clear();
     var defaultPinTheme = PinTheme(
       width: 60,
       height: 60,
