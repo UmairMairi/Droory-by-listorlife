@@ -207,7 +207,7 @@ class MyAdsVM extends BaseViewModel {
             title: StringHelper.deactivate,
             description: StringHelper.deactivate.toLowerCase(),
             onTap: ()async{
-          await deactivateProductApi(id: item?.id);
+          await deactivateProductApi(id: item?.id,status: "deactivate");
           if (context.mounted) context.pop();
         });
 
@@ -220,17 +220,27 @@ class MyAdsVM extends BaseViewModel {
               await removeProductApi(id: item?.id);
               if (context.mounted) context.pop();
             });
+
+      case 4:
+        deactivateDialog(context: context,
+            title: "Republish",
+            description: "Republish",
+            image: AssetsRes.TICK_MARK_LOTTIE,
+            onTap: ()async{
+              await deactivateProductApi(id: item?.id,status: "activate");
+              if (context.mounted) context.pop();
+            });
       default:
         return;
     }
   }
-  void deactivateDialog({required BuildContext context,String? title,String? description,required Function() onTap}) {
+  void deactivateDialog({required BuildContext context,String? title,String? description,String? image,required Function() onTap}) {
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext dialogContext) {
         return AppAlertDialogWithLottie(
-          lottieIcon: AssetsRes.DELETE_LOTTIE,
+          lottieIcon: image ??AssetsRes.DELETE_LOTTIE,
           title: title??"",
           description: 'Are you sure you want to ${description??""} this ad?',
           onTap: () {
@@ -265,13 +275,13 @@ class MyAdsVM extends BaseViewModel {
     onRefresh();
   }
 
-  Future<void> deactivateProductApi({num? id}) async {
+  Future<void> deactivateProductApi({num? id,String? status}) async {
     DialogHelper.showLoading();
 
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.deactivateProductUrl(),
         requestType: RequestType.put,
-        body: {'product_id': id, 'status': '0'});
+        body: {'product_id': id, 'ad_status': status});
 
     var response = await BaseClient.handleRequest(apiRequest);
 

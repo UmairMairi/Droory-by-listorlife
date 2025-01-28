@@ -108,8 +108,14 @@ class InboxView extends BaseView<ChatVM> {
                                                               ?.id
                                                       ? "${receiver?.name} ${receiver?.lastName}"
                                                       : "${sender?.name} ${sender?.lastName}",
-                                                  style: context
-                                                      .textTheme.titleMedium,
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        fontFamily: FontRes
+                                                            .MONTSERRAT_MEDIUM,
+                                                        fontWeight: FontWeight.bold,
+                                                        color: Colors.black
+                                                    ),
+                                                  maxLines: 2,
                                                 ),
                                                 Row(
                                                   mainAxisSize:
@@ -138,12 +144,13 @@ class InboxView extends BaseView<ChatVM> {
                                             const Gap(02),
                                             Text(
                                               data.productDetail?.name ?? '',
-                                              style: context
-                                                  .textTheme.labelLarge
-                                                  ?.copyWith(
-                                                      fontFamily: FontRes
-                                                          .MONTSERRAT_MEDIUM,
-                                                      color: Colors.black),
+                                              style: TextStyle(
+                                                  fontSize: 11,
+                                                  fontFamily: FontRes
+                                                      .MONTSERRAT_MEDIUM,
+                                                  color: Colors.black
+                                              ),
+                                              maxLines: 2,
                                             ),
                                             const Gap(02),
                                             Text(
@@ -151,7 +158,7 @@ class InboxView extends BaseView<ChatVM> {
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                               style: context
-                                                  .textTheme.labelMedium
+                                                  .textTheme.labelSmall
                                                   ?.copyWith(
                                                       fontFamily: FontRes
                                                           .MONTSERRAT_MEDIUM),

@@ -9,8 +9,10 @@ import 'package:list_and_life/base/network/base_client.dart';
 import 'package:list_and_life/models/inbox_model.dart';
 import 'package:list_and_life/models/product_detail_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
+import 'package:provider/provider.dart';
 
 import '../routes/app_routes.dart';
+import '../view_model/chat_vm.dart';
 
 class CommunicationButtons extends StatelessWidget {
   final ProductDetailModel? data;
@@ -69,6 +71,7 @@ class CommunicationButtons extends StatelessWidget {
             DialogHelper.showLoginDialog(context: context);
             return;
           }
+          context.read<ChatVM>().initListeners();
           context.push(
             Routes.message,
             extra: InboxModel(
@@ -224,6 +227,8 @@ class CommunicationButtons2 extends StatelessWidget {
           DialogHelper.showLoginDialog(context: context);
           return;
         }
+
+        context.read<ChatVM>().initListeners();
         context.push(
           Routes.message,
           extra: InboxModel(

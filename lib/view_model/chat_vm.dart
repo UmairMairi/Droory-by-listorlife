@@ -51,6 +51,7 @@ class ChatVM extends BaseViewModel {
   void onInit() {
     //getInboxList();
     //initListeners();
+    SocketHelper().connectUser();
     // TODO: implement onInit
     super.onInit();
   }
@@ -64,7 +65,6 @@ class ChatVM extends BaseViewModel {
   }
 
   void initListeners() {
-    SocketHelper().connectUser();
     getInboxListener();
     getMessageListener();
     offerListener();
@@ -189,7 +189,15 @@ class ChatVM extends BaseViewModel {
         DialogHelper.showToast(message: "Your report submitted successfully");
       }
       if (data['type'] == 'block') {
-        DialogHelper.showToast(message: "Settings updated successfully.");
+        var productId = data['product_id'];
+        var blockBy = data['block_by'];
+        var blockTo = data['block_to'];
+        var receiverId = "$blockTo" == "${DbHelper.getUserModel()?.id}"?blockBy:blockTo;
+        getMessageList(
+          productId: productId,
+          receiverId: receiverId,
+        );
+        //DialogHelper.showToast(message: "Settings updated successfully.");
       }
 
       /* if (data['type'] == 'block') {
@@ -263,12 +271,12 @@ class ChatVM extends BaseViewModel {
     _socketIO.emit(SocketConstants.getUserLists, map);
   }
 
-  void getMessageList({num? receiverId, required num? productId}) {
+  void getMessageList({dynamic receiverId, dynamic productId}) {
     blockedUser = false;
     Map<String, dynamic> map = {
       "sender_id": DbHelper.getUserModel()?.id,
-      "receiver_id": receiverId,
-      "product_id": productId,
+      "receiver_id": "$receiverId",
+      "product_id": "$productId",
       "limit": 10000,
       "page": 1
     };
@@ -349,7 +357,7 @@ class ChatVM extends BaseViewModel {
   }
 
   void reportBlockUser(
-      {String? reason, required String? userId, bool report = false}) {
+      {String? reason, required String? userId,dynamic productId, bool report = false}) {
     if (report) {
       if (reason?.isEmpty ?? false) {
         return;
@@ -361,6 +369,11 @@ class ChatVM extends BaseViewModel {
       "type": report ? "report" : "block",
       "reason": reason ?? ''
     };
+    if(!report){
+      map.addAll({
+        "product_id": productId,
+      });
+    }
     log("Socket Emit => ${SocketConstants.blockOrReportUser} with $map",
         name: "SOCKET");
     _socketIO.emit(SocketConstants.blockOrReportUser, map);
@@ -575,6 +588,9 @@ class ChatVM extends BaseViewModel {
   }
 
   getLastMessage({MessageModel? message}) {
+    if(message?.isDeleted != null){
+      return "Start Chat";
+    }
     switch (message?.messageType) {
       case 2:
         return '🎁EGP ${message?.message}';

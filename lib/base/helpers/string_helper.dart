@@ -211,7 +211,7 @@ class StringHelper {
           'Please upload main image';
   static String pleaseUploadAddAtLeastOneImage =
       LocaleService.translate('pleaseUploadAddAtLeastOneImage') ??
-          'Please upload add at least one image';
+          'Please upload add at least 2 images';
   static String yearIsRequired =
       LocaleService.translate('yearIsRequired') ?? 'Year is required';
   static String kMDrivenIsRequired =
@@ -818,7 +818,7 @@ static String locationAlert =
         'Please upload main image';
     pleaseUploadAddAtLeastOneImage =
         LocaleService.translate('pleaseUploadAddAtLeastOneImage') ??
-            'Please upload add at least one image';
+            'Please upload add at least 2 images';
     yearIsRequired =
         LocaleService.translate('yearIsRequired') ?? 'Year is required';
     kMDrivenIsRequired = LocaleService.translate('kMDrivenIsRequired') ??

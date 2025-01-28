@@ -41,6 +41,7 @@ class ProductDetailModel {
   String? longitude;
   num? status;
   String? sellStatus;
+  String? adStatus;
   String? rejectedReason;
   String? deletedAt;
   String? createdAt;
@@ -121,6 +122,7 @@ class ProductDetailModel {
     this.longitude,
     this.status,
     this.sellStatus,
+    this.adStatus,
     this.rejectedReason,
     this.deletedAt,
     this.createdAt,
@@ -201,6 +203,7 @@ class ProductDetailModel {
     longitude = json['longitude'];
     status = json['status'];
     sellStatus = json['sell_status'];
+    adStatus = json['ad_status'];
     rejectedReason = json['rejected_reason'];
     deletedAt = json['deleted_at'];
     createdAt = json['created_at'];
@@ -305,6 +308,7 @@ class ProductDetailModel {
     data['longitude'] = longitude;
     data['status'] = status;
     data['sell_status'] = sellStatus;
+    data['ad_status'] = adStatus;
     data['rejected_reason'] = rejectedReason;
     data['deleted_at'] = deletedAt;
     data['created_at'] = createdAt;

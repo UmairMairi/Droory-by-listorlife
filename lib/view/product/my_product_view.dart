@@ -148,7 +148,7 @@ class MyProductView extends BaseView<ProductVM> {
                                               StringHelper.edit),
                                         )
                                       },
-                                      if ("${productDetails?.status}" == "0" && productDetails?.sellStatus?.toLowerCase() != StringHelper.sold.toLowerCase()) ...{
+                                      if ("${productDetails?.adStatus}" != "deactivate" && "${productDetails?.status}" == "0" && productDetails?.sellStatus?.toLowerCase() != StringHelper.sold.toLowerCase()) ...{
                                         PopupMenuItem(
                                           value: 2,
                                           child: Text(StringHelper
@@ -224,7 +224,7 @@ class MyProductView extends BaseView<ProductVM> {
                           productDetails?.sellStatus != StringHelper.soldText
                               ? Row(
                                   children: [
-                                    if(productDetails?.sellStatus != StringHelper.sold.toLowerCase() && "${productDetails?.status}" != "0" && "${productDetails?.status}" != "2")...{
+                                    if("${productDetails?.adStatus}" != "deactivate" && productDetails?.sellStatus != StringHelper.sold.toLowerCase() && "${productDetails?.status}" != "0" && "${productDetails?.status}" != "2")...{
                                       Expanded(
                                         child: InkWell(
                                           onTap: () async {
@@ -256,14 +256,45 @@ class MyProductView extends BaseView<ProductVM> {
                                       const Gap(10),
                                     },
 
-                                    if("${productDetails?.status}" == "0" || "${productDetails?.status}" == "2")...[
+                                    if("${productDetails?.adStatus}" == "deactivate")...{
+                                      Expanded(
+                                        child: InkWell(
+                                          onTap: () async {
+                                            DialogHelper.showLoading();
+                                            await viewModel.markAsSoldApi(
+                                                product: productDetails!);
+                                          },
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10, vertical: 08),
+                                            decoration: BoxDecoration(
+                                              color: Colors.black54,
+                                              borderRadius:
+                                              BorderRadius.circular(10),
+                                            ),
+                                            child: Text(
+                                              "Republish",
+                                              style: context.textTheme.labelLarge
+                                                  ?.copyWith(
+                                                  color: Colors.white,
+                                                  fontSize: 12,
+                                                  fontWeight:
+                                                  FontWeight.w600),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    },
+
+                                    if("${productDetails?.adStatus}" != "deactivate" && "${productDetails?.status}" == "0" || "${productDetails?.status}" == "2")...[
                                       Expanded(
                                         child: InkWell(
                                           onTap: () async {
                                             var vm = context.read<MyAdsVM>();
 
-                                            vm.navigateToEditProduct(
-                                                context: context, item: productDetails);
+                                            vm.handelPopupMenuItemClick(
+                                                context: context, item: productDetails, index: 4);
                                           },
                                           child: Container(
                                             alignment: Alignment.center,

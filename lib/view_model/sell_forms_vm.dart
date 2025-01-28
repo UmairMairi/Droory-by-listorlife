@@ -563,11 +563,10 @@ class SellFormsVM extends BaseViewModel {
         if (!mediaPath.contains('http')) {
           images.add(await BaseClient.uploadImage(imagePath: mediaPath));
         } else {
-          images.add(mediaPath);
+          //images.add(mediaPath);
         }
       }
     }
-
     return images.toList();
   }
 
@@ -591,8 +590,6 @@ class SellFormsVM extends BaseViewModel {
       "name": trimController(adTitleTextController),
       "description": trimController(descriptionTextController),
       "looking_for": trimController(lookingForController),
-      "image": mainImage,
-      "medias": images.reversed.toList().join(','),
       "price": trimController(priceTextController) ?? '0',
       "year": trimController(yearTextController),
       "fuel": trimController(fuelTextController),
@@ -639,6 +636,18 @@ class SellFormsVM extends BaseViewModel {
       "insurance": trimController(insuranceTextController),
       "access_to_utilities": trimController(accessToUtilitiesTextController),
     };
+
+    if(mainImage.isNotEmpty){
+      fields.addAll({
+        "image": mainImage,
+      });
+    }
+
+    if(images.isNotEmpty){
+      fields.addAll({
+        "medias": images.reversed.toList().join(','),
+      });
+    }
 
     // Adding dynamic fields
     if (category != null) fields["category_id"] = category.id;
@@ -702,8 +711,6 @@ class SellFormsVM extends BaseViewModel {
       "name": trimController(adTitleTextController),
       "description": trimController(descriptionTextController),
       "looking_for ": trimController(lookingForController),
-      "image": mainImage,
-      "medias": images.reversed.toList().join(','),
       "price": trimController(priceTextController)??"0",
       "year": trimController(yearTextController),
       "fuel": trimController(fuelTextController),
@@ -752,6 +759,18 @@ class SellFormsVM extends BaseViewModel {
       'access_to_utilities': trimController(accessToUtilitiesTextController),
 
     };
+
+    if(mainImage.isNotEmpty){
+      fields.addAll({
+        "image": mainImage,
+      });
+    }
+
+    if(images.isNotEmpty){
+      fields.addAll({
+        "medias": images.reversed.toList().join(','),
+      });
+    }
     // Adding dynamic fields
     if (category != null) fields["category_id"] = category.id;
     if (subCategory != null) fields["sub_category_id"] = subCategory.id;

@@ -180,7 +180,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                     )
                                                   },
 
-                                                      if (productStatus && soldStatus) ...{
+                                                      if ("${productDetails.adStatus}" != "deactivate" && productStatus && soldStatus) ...{
 
                                                     PopupMenuItem(
                                                       value: 2,
@@ -398,17 +398,19 @@ class MyAdsView extends BaseView<MyAdsVM> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              viewModel.getStatus(context: context,productDetails: productDetails),
-              if (productDetails.sellStatus !=
-                  StringHelper.sold.toLowerCase()) ...{
-                viewModel.getRemainDays(item: productDetails)
-              }
-            ],
-          ),
+          if("${productDetails.adStatus}" != "deactivate")...{
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                viewModel.getStatus(context: context,productDetails: productDetails),
+                if (productDetails.sellStatus !=
+                    StringHelper.sold.toLowerCase()) ...{
+                  viewModel.getRemainDays(item: productDetails)
+                }
+              ],
+            )
+          },
           const Gap(10),
           productDetails.sellStatus != StringHelper.sold.toLowerCase()
               ? Visibility(
@@ -424,7 +426,23 @@ class MyAdsView extends BaseView<MyAdsVM> {
                   style: context.textTheme.labelMedium
                       ?.copyWith(fontFamily: FontRes.MONTSERRAT_MEDIUM),
                 ),
-          if("${productDetails.status}" == "0" || "${productDetails.status}" == "2")...{
+
+          if("${productDetails.adStatus}" == "deactivate")...{
+            AppElevatedButton(
+              onTap: () {
+                viewModel
+                    .handelPopupMenuItemClick(
+                    context: context,
+                    index: 4,
+                    item: productDetails);
+              },
+              title: "Republish",
+              height: 30,
+              width: context.width,
+              backgroundColor: Colors.grey,
+            ),
+          },
+          if("${productDetails.adStatus}" != "deactivate"  && "${productDetails.status}" == "0" || "${productDetails.status}" == "2")...{
             AppElevatedButton(
               onTap: () {
                 viewModel
@@ -439,7 +457,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
               backgroundColor: Colors.grey,
             ),
           }else...{
-            if (productDetails.sellStatus != StringHelper.sold.toLowerCase()) ...{
+            if ("${productDetails.adStatus}" != "deactivate"  && productDetails.sellStatus != StringHelper.sold.toLowerCase()) ...{
               const Gap(10),
               InkWell(
                 onTap: () async {

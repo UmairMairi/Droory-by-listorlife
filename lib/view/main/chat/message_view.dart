@@ -31,31 +31,33 @@ class MessageView extends StatefulWidget {
 
 class _MessageViewState extends State<MessageView> {
   late ChatVM viewModel;
+
   @override
   void initState() {
-    // TODO: implement initState
-    viewModel = Provider.of<ChatVM>(context, listen: false);
-    WidgetsBinding.instance.addPostFrameCallback((d) {
-      viewModel.initListeners();
-      viewModel.updateChatScreenId(
-          roomId: widget.chat?.lastMessageDetail?.roomId??0);
-      viewModel.readChatStatus(
-          receiverId: widget.chat?.senderId == DbHelper.getUserModel()?.id
-              ? widget.chat?.receiverDetail?.id
-              : widget.chat?.senderDetail?.id,
-          roomId: widget.chat?.lastMessageDetail?.roomId??0);
-      viewModel.getMessageList(
-          receiverId: widget.chat?.senderId == DbHelper.getUserModel()?.id
-              ? widget.chat?.receiverDetail?.id
-              : widget.chat?.senderDetail?.id,
-          productId: widget.chat?.productId);
-    });
-
     super.initState();
+    viewModel = context.read<ChatVM>();
+    viewModel.initListeners();
+    viewModel.updateChatScreenId(
+      roomId: widget.chat?.lastMessageDetail?.roomId ?? 0,
+    );
+    viewModel.readChatStatus(
+      receiverId: widget.chat?.senderId == DbHelper.getUserModel()?.id
+          ? widget.chat?.receiverDetail?.id
+          : widget.chat?.senderDetail?.id,
+      roomId: widget.chat?.lastMessageDetail?.roomId ?? 0,
+    );
+    viewModel.getMessageList(
+      receiverId: widget.chat?.senderId == DbHelper.getUserModel()?.id
+          ? widget.chat?.receiverDetail?.id
+          : widget.chat?.senderDetail?.id,
+      productId: widget.chat?.productId,
+    );
   }
+
 
   @override
   Widget build(BuildContext context) {
+    viewModel = Provider.of<ChatVM>(context);
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -69,48 +71,58 @@ class _MessageViewState extends State<MessageView> {
                 ImageView.rect(
                   height: 50,
                   width: 50,
-                  image:
-                      "${ApiConstants.imageUrl}/${widget.chat?.productDetail?.image}",
+                  image: "${ApiConstants.imageUrl}/${widget.chat?.productDetail?.image??""}",
                 ),
                 ImageView.circle(
                   height: 20,
                   width: 20,
                   borderColor: context.theme.primaryColor,
-                  image:
-                      "${ApiConstants.imageUrl}/${widget.chat?.senderId == DbHelper.getUserModel()?.id ? widget.chat?.receiverDetail?.profilePic ?? '' : widget.chat?.senderDetail?.profilePic ?? ''}",
+                  image: "${ApiConstants.imageUrl}/${widget.chat?.senderId == DbHelper.getUserModel()?.id ? widget.chat?.receiverDetail?.profilePic ?? '' : widget.chat?.senderDetail?.profilePic ?? ''}",
                 ),
               ],
             ),
             const Gap(5),
-            GestureDetector(
-              onTap: (){
-                if (widget.chat?.productDetail?.userId == DbHelper.getUserModel()?.id) {
-                  context.push(Routes.myProduct,
+            Flexible(
+              child: GestureDetector(
+                onTap: (){
+                  if (widget.chat?.productDetail?.userId == DbHelper.getUserModel()?.id) {
+                    context.push(Routes.myProduct,
+                        extra: widget.chat?.productDetail);
+                    return;
+                  }
+              
+                  context.push(Routes.productDetails,
                       extra: widget.chat?.productDetail);
                   return;
-                }
-
-                context.push(Routes.productDetails,
-                    extra: widget.chat?.productDetail);
-                return;
-              },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(widget.chat?.senderId == DbHelper.getUserModel()?.id
-                      ? "${widget.chat?.receiverDetail?.name} ${widget.chat?.receiverDetail?.lastName}"
-                      : "${widget.chat?.senderDetail?.name} ${widget.chat?.senderDetail?.lastName}"),
-                  const Gap(02),
-                  Text(
-                    widget.chat?.productDetail?.name ?? '',
-                    style: context
-                        .textTheme.labelLarge
-                        ?.copyWith(
+                },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(widget.chat?.senderId == DbHelper.getUserModel()?.id
+                        ? "${widget.chat?.receiverDetail?.name} ${widget.chat?.receiverDetail?.lastName}"
+                        : "${widget.chat?.senderDetail?.name} ${widget.chat?.senderDetail?.lastName}",
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: FontRes
+                              .MONTSERRAT_MEDIUM,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black
+                      ),
+                      maxLines: 2,
+                    ),
+                    const Gap(02),
+                    Text(
+                      widget.chat?.productDetail?.name ?? '',
+                      style: TextStyle(
+                        fontSize: 11,
                         fontFamily: FontRes
                             .MONTSERRAT_MEDIUM,
-                        color: Colors.black),
-                  ),
-                ],
+                        color: Colors.black
+                      ),
+                      maxLines: 2,
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -194,16 +206,17 @@ class _MessageViewState extends State<MessageView> {
                             onTap: () {
                               context.pop();
                               viewModel.reportBlockUser(
+                                productId: widget.chat?.productId,
                                   userId:
                                       "${widget.chat?.senderId == DbHelper.getUserModel()?.id ? widget.chat?.receiverDetail?.id : widget.chat?.senderDetail?.id}");
-                              Future.delayed(Duration(milliseconds: 500), () {
-                                viewModel.getMessageList(
-                                    receiverId: widget.chat?.senderId ==
-                                            DbHelper.getUserModel()?.id
-                                        ? widget.chat?.receiverDetail?.id
-                                        : widget.chat?.senderDetail?.id,
-                                    productId: widget.chat?.productId);
-                              });
+                              // Future.delayed(Duration(milliseconds: 500), () {
+                              //   viewModel.getMessageList(
+                              //       receiverId: widget.chat?.senderId ==
+                              //               DbHelper.getUserModel()?.id
+                              //           ? widget.chat?.receiverDetail?.id
+                              //           : widget.chat?.senderDetail?.id,
+                              //       productId: widget.chat?.productId);
+                              // });
                             },
                             icon: AssetsRes.IC_BLOCK_USER,
                             showCancelButton: true,

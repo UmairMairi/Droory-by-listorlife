@@ -7,11 +7,20 @@ import 'dart:math' as math;
 import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:list_and_life/base/utils/utils.dart';
+import 'package:list_and_life/view/main/chat/message_view.dart';
+import 'package:list_and_life/view/notifications/notification_view.dart';
+import 'package:provider/provider.dart';
 
 import '../../firebase_options.dart';
+import '../../models/inbox_model.dart';
+import '../../models/product_detail_model.dart';
+import '../../routes/app_pages.dart';
+import '../../view_model/chat_vm.dart';
 import '../helpers/db_helper.dart';
 import '../helpers/dialog_helper.dart';
 import 'notification_entity.dart';
@@ -212,18 +221,33 @@ class NotificationService {
     // Utils.showLoader();
     debugPrint("Notificaion data => ${notificationEntity?.toJson()}");
 
-    /*  switch ("${notificationEntity.entityName}") {
-      case 'MESSAGE':
-        Get.toNamed(Routes.MESSAGE,
-            arguments: ProductDetailsModel(
-                image: notificationEntity.jobImage,
-                username: notificationEntity.dataName,
-                userId: num.parse("${notificationEntity.dataId}"),
-                id: num.parse("${notificationEntity.entityId}")));
+      switch ("${notificationEntity?.notificationType}") {
+      case 'send_message_user_driver':
+        //Provider.of<ChatVM>(AppPages.rootNavigatorKey.currentContext!, listen: false).initListeners();
+        Navigator.push(AppPages.rootNavigatorKey.currentContext!, MaterialPageRoute(builder: (context)=>MessageView(chat: InboxModel(
+            senderId: DbHelper.getUserModel()?.id,
+            receiverId: num.parse("${notificationEntity?.senderId}"),
+            productId: num.parse("${notificationEntity?.productId}"),
+            productDetail: ProductDetailModel(
+              image: "${notificationEntity?.productImage??""}",
+                name: "${notificationEntity?.productName??""}",
+                id: int.parse("${notificationEntity?.productId}")),
+            receiverDetail: SenderDetail(
+                id: num.parse("${notificationEntity?.senderId}"),
+                lastName: "${notificationEntity?.senderLastName??""}",
+                profilePic: "${notificationEntity?.profilePic??""}",
+                name: notificationEntity?.senderName),
+            senderDetail: SenderDetail(
+                id: DbHelper.getUserModel()?.id,
+                profilePic: DbHelper.getUserModel()?.profilePic,
+                lastName: DbHelper.getUserModel()?.lastName,
+                name: DbHelper.getUserModel()?.name)),
+        )));
+
         break;
       default:
-        Get.toNamed(Routes.NOTIFICATIONS);
-    }*/
+        Navigator.push(AppPages.rootNavigatorKey.currentContext!, MaterialPageRoute(builder: (context)=>NotificationView(),));
+    }
   }
 
   static Future<String> getAccessToken() async {

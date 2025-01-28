@@ -48,6 +48,8 @@ class MessageModel {
   int? isRead;
   String? createdAt;
   String? updatedAt;
+  MessageModel? isDeleted;
+  dynamic messageId;
 
   MessageModel(
       {this.id,
@@ -59,7 +61,10 @@ class MessageModel {
       this.productId,
       this.isRead,
       this.createdAt,
-      this.updatedAt});
+      this.updatedAt,
+      this.messageId,
+        this.isDeleted
+      });
 
   MessageModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -71,7 +76,11 @@ class MessageModel {
     productId = json['product_id'];
     isRead = json['is_read'];
     createdAt = json['createdAt'];
+    messageId = json['message_id'];
     updatedAt = json['updatedAt'];
+    isDeleted = json['is_deleted'] != null
+        ? MessageModel.fromJson(json['is_deleted'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -84,8 +93,12 @@ class MessageModel {
     data['message_type'] = messageType;
     data['is_read'] = isRead;
     data['createdAt'] = createdAt;
+    data['message_id'] = messageId;
     data['product_id'] = productId;
     data['updatedAt'] = updatedAt;
+    if (isDeleted != null) {
+      data['is_deleted'] = isDeleted!.toJson();
+    }
     return data;
   }
 }
