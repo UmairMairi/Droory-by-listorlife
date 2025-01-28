@@ -85,7 +85,7 @@ class MainVM extends BaseViewModel {
           context.push(Routes.guestLogin);
           navController.jumpToTab(0);
         } else {
-          context.read<ChatVM>().initListeners();
+          //context.read<ChatVM>().initListeners();
           context.read<ChatVM>().getInboxList();
         }
       case 2:

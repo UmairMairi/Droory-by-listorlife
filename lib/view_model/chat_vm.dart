@@ -49,8 +49,8 @@ class ChatVM extends BaseViewModel {
 
   @override
   void onInit() {
-    //getInboxList();
-    //initListeners();
+    getInboxList();
+    initListeners();
 
     // TODO: implement onInit
     super.onInit();
@@ -58,14 +58,16 @@ class ChatVM extends BaseViewModel {
 
   @override
   void onReady() {
-    getInboxList();
-    initListeners();
+    //getInboxList();
+    //initListeners();
     // TODO: implement onReady
     super.onReady();
   }
 
   void initListeners() {
-    SocketHelper().connectUser();
+    if (SocketHelper().isUserConnected == false) {
+      SocketHelper().connectUser();
+    }
     getInboxListener();
     getMessageListener();
     offerListener();
@@ -158,20 +160,11 @@ class ChatVM extends BaseViewModel {
 
       /// getInboxList();
       MessageModel message = MessageModel.fromJson(data);
-      // var receiverId = message.senderId == DbHelper.getUserModel()?.id
-      //     ? message.receiverId
-      //     : message.senderId;
-      // var roomId = message.roomId;
-      // updateChatScreenId(
-      //     roomId: roomId
-      // );
-      // if (message.senderId != DbHelper.getUserModel()?.id) {
-      //   chatItems.insert(0, message);
-      //   messageStreamController.sink.add(chatItems);
-      // }
-      chatItems.insert(0, message);
-      messageStreamController.sink.add(chatItems);
-      getInboxList();
+
+      if (message.senderId != DbHelper.getUserModel()?.id) {
+        chatItems.insert(0, message);
+        messageStreamController.add(chatItems);
+      }
     });
   }
 
@@ -313,18 +306,17 @@ class ChatVM extends BaseViewModel {
         name: "SOCKET");
     _socketIO.emit(SocketConstants.sendMessage, map);
 
-    // chatItems.insert(
-    //   0,
-    //   MessageModel(
-    //       message: message,
-    //       senderId: DbHelper.getUserModel()?.id?.toInt(),
-    //       receiverId: receiverId?.toInt(),
-    //       messageType: type,
-    //       isRead: 0,
-    //       createdAt: "${DateTime.now()}",
-    //       updatedAt: "${DateTime.now()}"),
-    // );
-    messageStreamController.sink.add(chatItems);
+    chatItems.insert(
+      0,
+      MessageModel(
+          message: message,
+          senderId: DbHelper.getUserModel()?.id?.toInt(),
+          receiverId: receiverId?.toInt(),
+          messageType: type,
+          createdAt: "${DateTime.now()}",
+          updatedAt: "${DateTime.now()}"),
+    );
+    messageStreamController.add(chatItems);
 
     DialogHelper.hideLoading();
   }

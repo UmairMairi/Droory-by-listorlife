@@ -71,7 +71,7 @@ class CommunicationButtons extends StatelessWidget {
             DialogHelper.showLoginDialog(context: context);
             return;
           }
-          context.read<ChatVM>().initListeners();
+          //context.read<ChatVM>().initListeners();
           context.push(
             Routes.message,
             extra: InboxModel(
@@ -228,7 +228,7 @@ class CommunicationButtons2 extends StatelessWidget {
           return;
         }
 
-        context.read<ChatVM>().initListeners();
+        //context.read<ChatVM>().initListeners();
         context.push(
           Routes.message,
           extra: InboxModel(
