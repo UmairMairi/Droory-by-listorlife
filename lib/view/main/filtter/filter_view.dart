@@ -637,37 +637,37 @@ class _FilterViewState extends State<FilterView> {
                   //   },
                   // ),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                CommonDropdown(
-                  title: StringHelper.mileage,
-                  hint: viewModel.mileageTextController.text,
-                  onSelected: (value) {
-                    viewModel.mileageTextController.text = value??"";
-                  },
-                  options: viewModel.mileageRanges,
-                  // hint: StringHelper.select,
-                  // readOnly: true,
-                  // suffix: PopupMenuButton<String>(
-                  //   clipBehavior: Clip.hardEdge,
-                  //   icon: const Icon(
-                  //     Icons.arrow_drop_down,
-                  //     color: Colors.black,
-                  //   ),
-                  //   onSelected: (value) {
-                  //     viewModel.mileageTextController.text = value;
-                  //   },
-                  //   itemBuilder: (BuildContext context) {
-                  //     return viewModel.mileageRanges.map((option) {
-                  //       return PopupMenuItem(
-                  //         value: option,
-                  //         child: Text(option ?? ''),
-                  //       );
-                  //     }).toList();
-                  //   },
-                  // ),
-                ),
+                // const SizedBox(
+                //   height: 10,
+                // ),
+                // CommonDropdown(
+                //   title: StringHelper.mileage,
+                //   hint: viewModel.mileageTextController.text,
+                //   onSelected: (value) {
+                //     viewModel.mileageTextController.text = value??"";
+                //   },
+                //   options: viewModel.mileageRanges,
+                //   // hint: StringHelper.select,
+                //   // readOnly: true,
+                //   // suffix: PopupMenuButton<String>(
+                //   //   clipBehavior: Clip.hardEdge,
+                //   //   icon: const Icon(
+                //   //     Icons.arrow_drop_down,
+                //   //     color: Colors.black,
+                //   //   ),
+                //   //   onSelected: (value) {
+                //   //     viewModel.mileageTextController.text = value;
+                //   //   },
+                //   //   itemBuilder: (BuildContext context) {
+                //   //     return viewModel.mileageRanges.map((option) {
+                //   //       return PopupMenuItem(
+                //   //         value: option,
+                //   //         child: Text(option ?? ''),
+                //   //       );
+                //   //     }).toList();
+                //   //   },
+                //   // ),
+                // ),
                 const SizedBox(
                   height: 10,
                 ),

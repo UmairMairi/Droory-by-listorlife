@@ -44,9 +44,11 @@ class MyAdsSkeleton extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'From:25 APR 2024 TO 25 MAY 2024',
-                        style: context.textTheme.titleSmall,
+                      Flexible(
+                        child: Text(
+                          'From:25 APR 2024 TO 25 MAY 2024',
+                          style: context.textTheme.titleSmall,
+                        ),
                       ),
                       PopupMenuButton<int>(
                         icon: const Icon(

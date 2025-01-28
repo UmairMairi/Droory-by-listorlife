@@ -36,28 +36,28 @@ class _MessageViewState extends State<MessageView> {
   void initState() {
     super.initState();
     viewModel = context.read<ChatVM>();
-    viewModel.initListeners();
-    viewModel.updateChatScreenId(
-      roomId: widget.chat?.lastMessageDetail?.roomId ?? 0,
-    );
-    viewModel.readChatStatus(
-      receiverId: widget.chat?.senderId == DbHelper.getUserModel()?.id
-          ? widget.chat?.receiverDetail?.id
-          : widget.chat?.senderDetail?.id,
-      roomId: widget.chat?.lastMessageDetail?.roomId ?? 0,
-    );
-    viewModel.getMessageList(
-      receiverId: widget.chat?.senderId == DbHelper.getUserModel()?.id
-          ? widget.chat?.receiverDetail?.id
-          : widget.chat?.senderDetail?.id,
-      productId: widget.chat?.productId,
-    );
+      viewModel.initListeners();
+      viewModel.updateChatScreenId(
+        roomId: widget.chat?.lastMessageDetail?.roomId ?? 0,
+      );
+      viewModel.readChatStatus(
+        receiverId: widget.chat?.senderId == DbHelper.getUserModel()?.id
+            ? widget.chat?.receiverDetail?.id
+            : widget.chat?.senderDetail?.id,
+        roomId: widget.chat?.lastMessageDetail?.roomId ?? 0,
+      );
+      viewModel.getMessageList(
+        receiverId: widget.chat?.senderId == DbHelper.getUserModel()?.id
+            ? widget.chat?.receiverDetail?.id
+            : widget.chat?.senderDetail?.id,
+        productId: widget.chat?.productId,
+      );
   }
 
 
   @override
   Widget build(BuildContext context) {
-    viewModel = Provider.of<ChatVM>(context);
+    //viewModel = Provider.of<ChatVM>(context);
     return Scaffold(
       appBar: AppBar(
         title: Row(

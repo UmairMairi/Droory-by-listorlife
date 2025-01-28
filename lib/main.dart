@@ -33,7 +33,7 @@ void main() async {
     name: "list-and-life",
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  FirebaseMessaging.instance.requestPermission();
+  await FirebaseMessaging.instance.requestPermission(provisional: true);
   await NotificationService().init();
   var appStateObserver = AppStateObserver();
   WidgetsBinding.instance.addObserver(appStateObserver);
@@ -135,7 +135,6 @@ class AppStateObserver extends WidgetsBindingObserver {
       case AppLifecycleState.inactive:
       case AppLifecycleState.detached:
       case AppLifecycleState.hidden:
-        SocketHelper().close();
         SocketHelper().updateChatScreenId();
         break;
       case AppLifecycleState.resumed:

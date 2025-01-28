@@ -120,8 +120,8 @@ class NotificationService {
       badge: true,
       sound: true,
     );
-    //String deviceToken = await FirebaseMessaging.instance.getToken() ?? "";
-    //debugPrint("fcm Token = $deviceToken");
+    // String deviceToken = await FirebaseMessaging.instance.getToken() ?? "";
+    // debugPrint("fcm Token = $deviceToken");
     _configureSelectNotificationSubject();
 
     initFirebaseListeners();
