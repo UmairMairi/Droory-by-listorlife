@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -287,15 +288,19 @@ class _AppMapWidgetState extends State<AppMapWidget> {
                 getPlaceDetailWithLatLng: (Prediction prediction) {
                   isMapDrag = false;
             
-                  lat = prediction.lat!;
-                  lng = prediction.lng!;
-            
-                  debugPrint(
+                  lat = "${prediction.lat??0.0}";
+                  lng = "${prediction.lng??0.0}";
+
+                  log(
                       "getPlaceDetailWithLatLng ${prediction.toJson().toString()} latitude ==>> $lng  longitude ==>> $lat");
-                  _getAddress(double.parse(lat), double.parse(lng),
-                      isSelectedFromList: true);
-            
-                  _googleMapController!.animateCamera(
+                  // _getAddress(double.parse(lat), double.parse(lng),
+                  //     isSelectedFromList: true);
+                  Map<String, String> locationData = extractLocationData(prediction.toJson());
+                   placeName = locationData["location"]??"";
+                  city = locationData["city"]??"";
+                  state = locationData["state"]??"";
+                  country = locationData["country"]??"";
+                  _googleMapController?.animateCamera(
                     CameraUpdate.newCameraPosition(
                       CameraPosition(
                         target: LatLng(double.parse(prediction.lat!),
@@ -308,15 +313,15 @@ class _AppMapWidgetState extends State<AppMapWidget> {
                 },
                 itemClick: (Prediction prediction) async {
                   isMapDrag = false;
-            
-                  searchController.text = prediction.description!;
+                    searchController.text = prediction.description??"";
+                  _currentAddress = searchController.text;
                   searchController.selection = TextSelection.fromPosition(
                       const TextPosition(offset: 0));
-                  _googleMapController!.animateCamera(
+                  _googleMapController?.animateCamera(
                     CameraUpdate.newCameraPosition(
                       CameraPosition(
-                        target: LatLng(double.parse(prediction.lat!),
-                            double.parse(prediction.lng!)),
+                        target: LatLng(double.parse("${prediction.lat??0.0}"),
+                            double.parse("${prediction.lng??0.0}")),
                         zoom: 18.0,
                       ),
                     ),
@@ -391,6 +396,36 @@ class _AppMapWidgetState extends State<AppMapWidget> {
     );
   }
 
+  Map<String, String> extractLocationData(Map<String, dynamic> data) {
+    List terms = data['terms'];
+
+    String placeName = data['structured_formatting']['main_text'];
+    String city = terms.length > 1 ? terms[1]['value'] : '';
+    String state = terms.length > 2 ? terms[2]['value'] : '';
+    String country = terms.isNotEmpty ? terms.last['value'] : '';
+
+    return {
+      'location': placeName,
+      'city': city,
+      'state': state,
+      'country': country,
+    };
+  }
+  // Map<String, String> extractLocationData(Map<String, dynamic> data) {
+  //   List terms = data['terms'];
+  //
+  //   String placeName = data['structured_formatting']['main_text'];
+  //   String city = terms.isNotEmpty ? terms[0]['value'] : '';
+  //   String state = terms.length > 2 ? terms[1]['value'] : ''; // Check if state exists
+  //   String country = terms.isNotEmpty ? terms.last['value'] : '';
+  //
+  //   return {
+  //     'location': placeName,
+  //     'city': city,
+  //     'state': state,
+  //     'country': country,
+  //   };
+  // }
 
 
 }

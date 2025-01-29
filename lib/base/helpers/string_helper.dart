@@ -195,7 +195,7 @@ class StringHelper {
       LocaleService.translate('priceEgp') ?? 'Price (in EGP)';
   static String describeWhatYouAreSelling =
       LocaleService.translate('describeWhatYouAreSelling') ??
-          'Describe what you are selling';
+          'Description';
   static String enterPrice =
       LocaleService.translate('enterPrice') ?? 'Enter Price';
   static String propertyType =
@@ -810,7 +810,7 @@ static String locationAlert =
     priceEgp = LocaleService.translate('priceEgp') ?? 'Price (in EGP)';
     describeWhatYouAreSelling =
         LocaleService.translate('describeWhatYouAreSelling') ??
-            'Describe what you are selling';
+            'Description';
     enterPrice = LocaleService.translate('enterPrice') ?? 'Enter Price';
 
     /// ShowToast

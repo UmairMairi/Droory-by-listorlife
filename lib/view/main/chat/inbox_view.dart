@@ -15,8 +15,12 @@ import 'package:list_and_life/widgets/app_error_widget.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 
+import '../../../res/assets_res.dart';
+
 class InboxView extends BaseView<ChatVM> {
   const InboxView({super.key});
+
+
 
   @override
   Widget build(BuildContext context, ChatVM viewModel) {
@@ -38,6 +42,9 @@ class InboxView extends BaseView<ChatVM> {
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       controller: viewModel.inboxSearchTextController,
                       hint: StringHelper.search,
+                      validator: (value){
+                        return null;
+                      },
                       onChanged: (String text) {
                         viewModel.searchInbox(text);
                       },
@@ -54,6 +61,7 @@ class InboxView extends BaseView<ChatVM> {
                                     viewModel.filteredInboxList[index];
                                 SenderDetail? sender = data.senderDetail;
                                 SenderDetail? receiver = data.receiverDetail;
+                                var userImage = data.senderId == DbHelper.getUserModel()?.id ? receiver?.profilePic ?? '' : sender?.profilePic ?? '';
                                 return InkWell(
                                   onTap: () {
                                     context.push(Routes.message,
@@ -79,10 +87,9 @@ class InboxView extends BaseView<ChatVM> {
                                           ImageView.circle(
                                             height: 25,
                                             width: 25,
-                                            borderColor:
-                                                context.theme.primaryColor,
-                                            image:
-                                                "${ApiConstants.imageUrl}/${data.senderId == DbHelper.getUserModel()?.id ? receiver?.profilePic ?? '' : sender?.profilePic ?? ''}",
+                                            borderColor: context.theme.primaryColor,
+                                            placeholder: AssetsRes.IC_USER_ICON,
+                                            image:getImageUrl(url: userImage),
                                           ),
                                         ],
                                       ),
@@ -189,5 +196,15 @@ class InboxView extends BaseView<ChatVM> {
             );
           }),
     );
+  }
+
+  String getImageUrl({required String url}) {
+    if (url.contains('http')) {
+      return url;
+    }
+    if (!url.contains('http')) {
+      return "${ApiConstants.imageUrl}/$url";
+    }
+    return AssetsRes.IC_USER_ICON;
   }
 }

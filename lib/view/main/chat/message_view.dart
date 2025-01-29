@@ -36,7 +36,7 @@ class _MessageViewState extends State<MessageView> {
   void initState() {
     super.initState();
     viewModel = context.read<ChatVM>();
-      viewModel.initListeners();
+      //viewModel.initListeners();
       viewModel.updateChatScreenId(
         roomId: widget.chat?.lastMessageDetail?.roomId ?? 0,
       );
@@ -76,6 +76,7 @@ class _MessageViewState extends State<MessageView> {
                 ImageView.circle(
                   height: 20,
                   width: 20,
+                  placeholder: AssetsRes.IC_USER_ICON,
                   borderColor: context.theme.primaryColor,
                   image: "${ApiConstants.imageUrl}/${widget.chat?.senderId == DbHelper.getUserModel()?.id ? widget.chat?.receiverDetail?.profilePic ?? '' : widget.chat?.senderDetail?.profilePic ?? ''}",
                 ),

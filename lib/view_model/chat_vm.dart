@@ -49,9 +49,8 @@ class ChatVM extends BaseViewModel {
 
   @override
   void onInit() {
+    //initListeners();
     getInboxList();
-    initListeners();
-
     // TODO: implement onInit
     super.onInit();
   }
@@ -184,20 +183,9 @@ class ChatVM extends BaseViewModel {
           productId: productId,
           receiverId: receiverId,
         );
-        //DialogHelper.showToast(message: "Settings updated successfully.");
       }
 
-      /* if (data['type'] == 'block') {
-        DialogHelper.showToast(message: "You blocked this user successfully");
-      }
-
-
-      if (data['type'] == 'unblock') {
-        DialogHelper.showToast(message: "You unblocked this user successfully");
-      }
-*/
       notifyListeners();
-      //DialogHelper.showToast(message: "You blocked this user successfully");
     });
   }
 
@@ -359,6 +347,7 @@ class ChatVM extends BaseViewModel {
     }
     log("Socket Emit => ${SocketConstants.blockOrReportUser} with $map",
         name: "SOCKET");
+    reportTextController.clear();
     _socketIO.emit(SocketConstants.blockOrReportUser, map);
   }
 

@@ -126,6 +126,8 @@ class ImageView extends StatelessWidget {
   /// Applies common decoration settings to all image types.
   Widget _buildDecorationImage(ImageProvider imageProvider) {
     return Container(
+      height: height,
+      width: width,
       decoration: BoxDecoration(
         color: color ?? Colors.transparent,
         image: DecorationImage(
@@ -147,6 +149,18 @@ class ImageView extends StatelessWidget {
   }
 
   /// Builds a placeholder image.
+  // Widget _buildPlaceholder() {
+  //   return Container(
+  //     height: height,
+  //     width: width,
+  //     decoration: BoxDecoration(
+  //       image: DecorationImage(
+  //           image: AssetImage(placeholder ?? AssetsRes.IC_IMAGE_PLACEHOLDER),
+  //       ),
+  //     ),
+  //   );
+  // }
+
   Widget _buildPlaceholder() {
     return Container(
       height: 50,

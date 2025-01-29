@@ -106,9 +106,17 @@ class MyProductView extends BaseView<ProductVM> {
                                   onPressed: () {
                                     context.pop();
                                   },
-                                  icon: Icon(Icons.arrow_back_ios,
-                                      textDirection: TextDirection.ltr,
-                                      color: Colors.white)),
+                                  icon: Container(
+                                    padding: EdgeInsets.only(left:15,right: 8,top: 5,bottom: 5),
+                                    decoration: BoxDecoration(
+                                        color: Colors.black,
+                                        shape: BoxShape.circle
+                                    ),
+                                    child: Icon(Icons.arrow_back_ios,
+                                        size: 20,
+                                        textDirection: TextDirection.ltr,
+                                        color: Colors.white),
+                                  )),
                             )),
                         Positioned(
                             top: 0,
@@ -153,6 +161,12 @@ class MyProductView extends BaseView<ProductVM> {
                                           value: 2,
                                           child: Text(StringHelper
                                               .deactivate),
+                                        ),
+                                      },
+                                      if ("${productDetails?.adStatus}" == "deactivate" && "${productDetails?.status}" == "0" && productDetails?.sellStatus?.toLowerCase() != StringHelper.sold.toLowerCase()) ...{
+                                        PopupMenuItem(
+                                          value: 4,
+                                          child: Text("Republish"),
                                         ),
                                       },
                                   PopupMenuItem(
@@ -256,36 +270,6 @@ class MyProductView extends BaseView<ProductVM> {
                                       const Gap(10),
                                     },
 
-                                    if("${productDetails?.adStatus}" == "deactivate")...{
-                                      Expanded(
-                                        child: InkWell(
-                                          onTap: () async {
-                                            DialogHelper.showLoading();
-                                            await viewModel.markAsSoldApi(
-                                                product: productDetails!);
-                                          },
-                                          child: Container(
-                                            alignment: Alignment.center,
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 10, vertical: 08),
-                                            decoration: BoxDecoration(
-                                              color: Colors.black54,
-                                              borderRadius:
-                                              BorderRadius.circular(10),
-                                            ),
-                                            child: Text(
-                                              "Republish",
-                                              style: context.textTheme.labelLarge
-                                                  ?.copyWith(
-                                                  color: Colors.white,
-                                                  fontSize: 12,
-                                                  fontWeight:
-                                                  FontWeight.w600),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    },
 
                                     if("${productDetails?.adStatus}" != "deactivate" && "${productDetails?.status}" == "0" || "${productDetails?.status}" == "2")...[
                                       Expanded(
@@ -294,7 +278,7 @@ class MyProductView extends BaseView<ProductVM> {
                                             var vm = context.read<MyAdsVM>();
 
                                             vm.handelPopupMenuItemClick(
-                                                context: context, item: productDetails, index: 4);
+                                                context: context, item: productDetails, index: 1);
                                           },
                                           child: Container(
                                             alignment: Alignment.center,
@@ -349,8 +333,7 @@ class MyProductView extends BaseView<ProductVM> {
                                 ),
                           Divider(),
                           if (productDetails?.categoryId != 11) ...{
-                            if (viewModel
-                                .getSpecifications(context: context, data: productDetails)
+                            if (viewModel.getSpecifications(context: context, data: productDetails)
                                 .isNotEmpty) ...{
                               Text(StringHelper.specifications,
                                   style: context.textTheme.titleSmall),

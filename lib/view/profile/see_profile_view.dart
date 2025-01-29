@@ -204,6 +204,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
             Row(
               children: [
                 ImageView.circle(
+                  placeholder: AssetsRes.IC_USER_ICON,
                   image: "${ApiConstants.imageUrl}/${widget.user?.profilePic}",
                   height: 60,
                   width: 60,
@@ -409,6 +410,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         ImageView.rect(
+                                            placeholder: AssetsRes.IC_IMAGE_PLACEHOLDER,
                                             image:
                                                 "${ApiConstants.imageUrl}/${_productsList[index].image}",
                                             borderRadius: 15,

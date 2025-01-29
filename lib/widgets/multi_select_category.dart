@@ -112,9 +112,9 @@ class _MultiSelectCategoryState extends State<MultiSelectCategory> {
       choice = CommunicationChoice.call_chat_whatsapp; // All three selected
     } else if (selectedCategories.contains("Call") &&
         selectedCategories.contains("WhatsApp")) {
-      choice = CommunicationChoice.call_whatsapp; // Call and WhatsApp selected
+      choice = CommunicationChoice.call_chat_whatsapp; // Call and WhatsApp selected
     } else if (selectedCategories.contains("Call")) {
-      choice = CommunicationChoice.call; // Only Call selected
+      choice = CommunicationChoice.call_chat; // Only Call selected
     } else if (selectedCategories.contains("WhatsApp")) {
       choice = CommunicationChoice.chat_whatsapp; // Chat and WhatsApp selected
     } else {

@@ -35,7 +35,6 @@ class DialogHelper {
     if (message == null) {
       return;
     }
-    log("Toast message => $message");
     toastification.show(
       description: Text(message),
       alignment: Alignment.topRight,

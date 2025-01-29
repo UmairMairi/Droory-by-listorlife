@@ -282,7 +282,7 @@ class SellFormSkeleton extends StatelessWidget {
             RichText(
                 text: const TextSpan(children: [
               TextSpan(
-                text: "Describe what you are selling",
+                text: "Description",
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 14,

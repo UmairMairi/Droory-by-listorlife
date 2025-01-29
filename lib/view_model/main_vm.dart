@@ -69,10 +69,10 @@ class MainVM extends BaseViewModel {
   @override
   void onReady() {
     // TODO: implement onReady
-    // if (!DbHelper.getIsGuest()) {
-    //   var model = context.read<ChatVM>();
-    //   model.initListeners();
-    // }
+    if (!DbHelper.getIsGuest()) {
+      var model = context.read<ChatVM>();
+      model.initListeners();
+    }
     super.onReady();
   }
 
@@ -85,7 +85,6 @@ class MainVM extends BaseViewModel {
           context.push(Routes.guestLogin);
           navController.jumpToTab(0);
         } else {
-          //context.read<ChatVM>().initListeners();
           context.read<ChatVM>().getInboxList();
         }
       case 2:

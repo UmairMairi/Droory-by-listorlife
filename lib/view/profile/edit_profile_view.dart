@@ -14,6 +14,7 @@ import 'package:list_and_life/widgets/image_view.dart';
 
 import '../../base/helpers/string_helper.dart';
 import '../../base/network/api_constants.dart';
+import '../../res/assets_res.dart';
 import '../../widgets/app_map_widget.dart';
 import '../../widgets/multi_select_category.dart';
 
@@ -39,6 +40,7 @@ class EditProfileView extends BaseView<ProfileVM> {
                   children: [
                     ImageView.circle(
                       image: getImageUrl(viewModel: viewModel),
+                      placeholder: AssetsRes.IC_USER_ICON,
                       borderWidth: 1,
                       borderColor: Colors.black,
                       height: 180,
@@ -98,11 +100,22 @@ class EditProfileView extends BaseView<ProfileVM> {
                         builder: (context) => const AppMapWidget()));
                 debugPrint("$value");
                 if (value != null && value.isNotEmpty) {
+                  String address = "";
+
+                  if ("${value['location'] ?? ""}".isNotEmpty) {
+                    address = "${value['location'] ?? ""}";
+                  }
+                  if ("${value['city'] ?? ""}".isNotEmpty) {
+                    address += ", ${value['city'] ?? ""}";
+                  }
+                  if ("${value['state'] ?? ""}".isNotEmpty) {
+                    address += ", ${value['state'] ?? ""}";
+                  }
+
+                  viewModel.locationTextController.text = address;
                   viewModel.latitude = "${value['latitude']}";
                   viewModel.longitude = "${value['longitude']}";
-                  viewModel.locationTextController.text =
-                      "${value['location']}, ${value['city']}, ${value['state']}";
-                }
+                   }
               },
               inputFormatters: AppTextInputFormatters.withNameFormatter(),
               controller: viewModel.locationTextController,
@@ -256,6 +269,9 @@ class EditProfileView extends BaseView<ProfileVM> {
     if (url.contains('http')) {
       return url;
     }
-    return "${ApiConstants.imageUrl}/$url";
+    if (!url.contains('http')) {
+      return "${ApiConstants.imageUrl}/$url";
+    }
+    return AssetsRes.IC_USER_ICON;
   }
 }

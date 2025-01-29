@@ -360,8 +360,19 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                         builder: (context) => const AppMapWidget()),
                   );
                   if (value != null && value.isNotEmpty) {
-                    viewModel.addressTextController.text =
-                        "${value['location']}, ${value['city']}, ${value['state']}";
+                    String address = "";
+
+                    if ("${value['location'] ?? ""}".isNotEmpty) {
+                      address = "${value['location'] ?? ""}";
+                    }
+                    if ("${value['city'] ?? ""}".isNotEmpty) {
+                      address += ", ${value['city'] ?? ""}";
+                    }
+                    if ("${value['state'] ?? ""}".isNotEmpty) {
+                      address += ", ${value['state'] ?? ""}";
+                    }
+
+                    viewModel.addressTextController.text = address;
                   }
                 },
                 inputFormatters: [

@@ -99,9 +99,17 @@ class ProductDetailView extends BaseView<ProductVM> {
                                       onPressed: () {
                                         context.pop();
                                       },
-                                      icon: Icon(Icons.arrow_back_ios,
-                                          textDirection: TextDirection.ltr,
-                                          color: Colors.white)),
+                                      icon: Container(
+                                        padding: EdgeInsets.only(left:15,right: 8,top: 5,bottom: 5),
+                                        decoration: BoxDecoration(
+                                          color: Colors.black,
+                                          shape: BoxShape.circle
+                                        ),
+                                        child: Icon(Icons.arrow_back_ios,
+                                            size: 20,
+                                            textDirection: TextDirection.ltr,
+                                            color: Colors.white),
+                                      )),
                                 )),
                             Positioned(
                                 top: 0,
@@ -395,6 +403,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       ImageView.circle(
+                                          placeholder: AssetsRes.IC_USER_ICON,
                                           image:
                                               "${ApiConstants.imageUrl}/${productData?.user?.profilePic}",
                                           width: 80,

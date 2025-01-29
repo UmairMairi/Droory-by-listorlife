@@ -370,8 +370,19 @@ class VillaForm extends StatelessWidget {
               viewModel.state = value['state'];
               viewModel.city = value['city'];
               viewModel.country = value['country'];
-              viewModel.addressTextController.text =
-              "${value['location']}, ${value['city']}, ${value['state']}";
+              String address = "";
+
+              if ("${value['location'] ?? ""}".isNotEmpty) {
+                address = "${value['location'] ?? ""}";
+              }
+              if ("${value['city'] ?? ""}".isNotEmpty) {
+                address += ", ${value['city'] ?? ""}";
+              }
+              if ("${value['state'] ?? ""}".isNotEmpty) {
+                address += ", ${value['state'] ?? ""}";
+              }
+
+              viewModel.addressTextController.text = address;
             }
           },
           suffix: Icon(Icons.location_on),

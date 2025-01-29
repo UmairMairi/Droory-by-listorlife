@@ -174,7 +174,7 @@ class HomeVM extends BaseViewModel {
   TextEditingController startPriceTextController =
       TextEditingController(text: '0');
   TextEditingController endPriceTextController =
-      TextEditingController(text: '20000');
+      TextEditingController(text: '100000');
 
   TextEditingController locationTextController = TextEditingController();
   TextEditingController categoryTextController = TextEditingController();
@@ -408,12 +408,12 @@ class HomeVM extends BaseViewModel {
   TextEditingController startDownPriceTextController =
       TextEditingController(text: '0');
   TextEditingController endDownPriceTextController =
-      TextEditingController(text: '20000');
+      TextEditingController(text: '100000');
 
   TextEditingController startAreaTextController =
       TextEditingController(text: '0');
   TextEditingController endAreaTextController =
-      TextEditingController(text: '20000');
+      TextEditingController(text: '100000');
   String _currentPropertyType = "Sell";
 
   String get currentPropertyType => _currentPropertyType;

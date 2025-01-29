@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/base/helpers/string_helper.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
@@ -17,6 +18,7 @@ import 'package:socket_io_client/socket_io_client.dart';
 
 import '../../../base/sockets/socket_constants.dart';
 import '../../../base/sockets/socket_helper.dart';
+import '../../../res/assets_res.dart';
 
 class BlockedUsersList extends StatefulWidget {
   const BlockedUsersList({super.key});
@@ -61,7 +63,7 @@ class _BlockedUsersListState extends State<BlockedUsersList> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title:  Text(StringHelper.blocked),
+          title: Text(StringHelper.blocked),
           centerTitle: true,
         ),
         body: FutureBuilder(
@@ -72,32 +74,120 @@ class _BlockedUsersListState extends State<BlockedUsersList> {
                 return blockList.isEmpty
                     ? const AppEmptyWidget()
                     : ListView.separated(
+                        shrinkWrap: true,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 10),
                         itemCount: blockList.length,
                         itemBuilder: (context, index) {
                           var item = blockList[index];
-
+                          print("(item.user?.profilePic??"
+                              ") ${(item.user?.profilePic ?? "")}");
+                          var userImage = (item.user?.profilePic ?? "")
+                                  .isNotEmpty
+                              ? (item.user?.profilePic ?? "").contains('http')
+                                  ? "${item.user?.profilePic}"
+                                  : "${ApiConstants.imageUrl}/${item.user?.profilePic}"
+                              : "";
                           return Card(
-                            child: ListTile(
-                              leading: ImageView.circle(
-                                  image: item.user?.profilePic
-                                              ?.contains('http') ??
-                                          false
-                                      ? "${item.user?.profilePic}"
-                                      : "${ApiConstants.imageUrl}/${item.user?.profilePic}",
-                                  width: 100,
-                                  height: 100),
-                              title: Text(
-                                  "${item.user?.name} ${item.user?.lastName}"),
-                              trailing: TextButton(
-                                child:  Text(StringHelper.unblock),
-                                onPressed: () {
-                                  DialogHelper.showLoading();
-                                  unBlockUser(data: item);
-                                },
+                            margin: EdgeInsets.zero,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15)),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 10),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Row(
+                                      children: [
+                                        ImageView.circle(
+                                            placeholder: AssetsRes.IC_USER_ICON,
+                                            image: userImage,
+                                            width: 50,
+                                            height: 50),
+                                        SizedBox(width: 10,),
+                                        Text(
+                                          "${item.user?.name} ${item.user?.lastName}",
+                                          style: TextStyle(fontSize: 12),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  TextButton(
+                                    style: TextButton.styleFrom(
+                                        backgroundColor: Colors.black,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 15)),
+                                    child: Text(
+                                      StringHelper.unblock,
+                                      style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500),
+                                    ),
+                                    onPressed: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) =>
+                                              AppAlertDialogWithWidget(
+                                                description: StringHelper
+                                                    .areYouSureWantToUnblockThisUser,
+                                                onTap: () {
+                                                  context.pop();
+                                                  DialogHelper.showLoading();
+                                                  unBlockUser(data: item);
+                                                },
+                                                icon: AssetsRes.IC_BLOCK_USER,
+                                                showCancelButton: true,
+                                                cancelButtonText:
+                                                    StringHelper.no,
+                                                title: StringHelper.unblockUser,
+                                                buttonText: StringHelper.yes,
+                                              ));
+                                    },
+                                  ),
+                                ],
                               ),
                             ),
+                            // child: ListTile(
+                            //   leading: Row(
+                            //     mainAxisSize: MainAxisSize.min,
+                            //     children: [
+                            //       ImageView.circle(
+                            //           placeholder: AssetsRes.IC_USER_ICON,
+                            //           image: userImage,
+                            //           width: 100,
+                            //           height: 100),
+                            //       SizedBox(width: 10,),
+                            //       Text(
+                            //           "${item.user?.name} ${item.user?.lastName}",
+                            //       style: TextStyle(fontSize: 12),
+                            //       )
+                            //     ],
+                            //   ),
+                            //   trailing: TextButton(
+                            //     style: TextButton.styleFrom(
+                            //       backgroundColor: Colors.black,
+                            //       padding: EdgeInsets.symmetric(horizontal: 10)
+                            //     ),
+                            //     child:  Text(StringHelper.unblock,style: TextStyle(color: Colors.white),),
+                            //     onPressed: () {
+                            //       showDialog(
+                            //           context: context,
+                            //           builder: (context) => AppAlertDialogWithWidget(
+                            //             description: StringHelper.areYouSureWantToUnblockThisUser,
+                            //             onTap: () {
+                            //               context.pop();
+                            //               DialogHelper.showLoading();
+                            //               unBlockUser(data: item);
+                            //             },
+                            //             icon: AssetsRes.IC_BLOCK_USER,
+                            //             showCancelButton: true,
+                            //             cancelButtonText: StringHelper.no,
+                            //             title:  StringHelper.unblockUser,
+                            //             buttonText: StringHelper.yes,
+                            //           ));
+                            //
+                            //     },
+                            //   ),
+                            // ),
                           );
                         },
                         separatorBuilder: (BuildContext context, int index) {

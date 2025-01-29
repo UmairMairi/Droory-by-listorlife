@@ -787,9 +787,7 @@ class SellFormsVM extends BaseViewModel {
     if (transmission != 0) {
       fields["transmission"] = transmission == 1 ? "automatic" : "manual";
     }
-    if (productStatus == 2) {
-      fields['status'] = 0;
-    }
+    fields['status'] = 0;
 
 
     ApiRequest apiRequest = ApiRequest(

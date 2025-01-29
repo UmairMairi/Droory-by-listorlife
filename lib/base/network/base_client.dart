@@ -155,8 +155,8 @@ class BaseClient {
         debugPrint('Dio Error Response: ${error.response?.data}');
         return error.response!;
       }
-      DialogHelper.showToast(
-          message: error.message ?? 'Connection failed or timed out');
+      // DialogHelper.showToast(
+      //     message: error.message ?? 'Connection failed or timed out');
       debugPrint('Dio Error Message: ${error.message}');
       return Response(
         requestOptions: RequestOptions(path: ''),
@@ -164,7 +164,7 @@ class BaseClient {
         statusMessage: error.message ?? 'Unknown error',
       );
     } else {
-      DialogHelper.showToast(message: error.toString());
+      //DialogHelper.showToast(message: error.toString());
       debugPrint('Unknown Error: $error');
       return Response(
         requestOptions: RequestOptions(path: ''),

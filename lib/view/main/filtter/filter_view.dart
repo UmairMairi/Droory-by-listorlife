@@ -36,9 +36,9 @@ class FilterView extends StatefulWidget {
 }
 
 class _FilterViewState extends State<FilterView> {
-  SfRangeValues values = const SfRangeValues(00, 2000000);
-  SfRangeValues downValues = const SfRangeValues(00, 2000000);
-  SfRangeValues areaValues = const SfRangeValues(00, 2000000);
+  SfRangeValues values = const SfRangeValues(00, 100000);
+  SfRangeValues downValues = const SfRangeValues(00, 100000);
+  SfRangeValues areaValues = const SfRangeValues(00, 100000);
   FilterModel filter = FilterModel();
   List<CategoryModel> categoriesList = [];
   List<CategoryModel> subCategoriesList = [];
@@ -203,6 +203,7 @@ class _FilterViewState extends State<FilterView> {
                           controller: viewModel.startPriceTextController,
                           cursorColor: Colors.black,
                           maxLength: 7,
+                          readOnly: true,
                           onChanged: (value) {
                             setState(() {
                               if (value.isEmpty) {
@@ -256,13 +257,14 @@ class _FilterViewState extends State<FilterView> {
                         controller: viewModel.endPriceTextController,
                         cursorColor: Colors.black,
                         maxLength: 7,
+                        readOnly: true,
                         onChanged: (value) {
                           setState(() {
                             if (value.isEmpty) {
                               values = SfRangeValues(
                                   int.parse(
                                       viewModel.startPriceTextController.text),
-                                  2000000);
+                                  100000);
                               return;
                             }
 
@@ -296,15 +298,15 @@ class _FilterViewState extends State<FilterView> {
               StatefulBuilder(builder: (context, setState) {
                 return SfRangeSlider(
                   min: 0,
-                  max: 2000000,
+                  max: 100000,
                   values: values,
                   inactiveColor: Colors.grey,
                   activeColor: const Color(0xffFF385C),
-                  showLabels: true,
-                  interval: 2000000,
+                  showLabels: false,
+                  interval: 1000,
                   labelFormatterCallback:
                       (dynamic actualValue, String formattedText) {
-                    return actualValue == 1999999
+                    return actualValue == 99999
                         ? ' $formattedText+'
                         : ' $formattedText';
                   },
@@ -492,43 +494,43 @@ class _FilterViewState extends State<FilterView> {
                   //   },
                   // ),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                filter.categoryId == '6'
-                    ? CommonDropdown<CategoryModel?>(
-                        title: StringHelper.gender,
-                        hint:viewModel.genderTextController.text.trim().isEmpty? StringHelper.selectGender:viewModel.genderTextController.text,
-                  onSelected: (CategoryModel? value) {
-                    viewModel.genderTextController.text =
-                        value?.name ?? '';
-                  },
-                  listItemBuilder: (context,model,selected,fxn){
-                    return Text(model?.name ?? '');
-                  },
-                  headerBuilder: (context, selectedItem, enabled) {
-                    return Text(selectedItem?.name??"");
-                  },
-                  options: genders,
-                  // controller: viewModel.genderTextController,
-                  //       readOnly: true,
-                  //       suffix: PopupMenuButton(
-                  //         icon: const Icon(Icons.arrow_drop_down),
-                  //         onSelected: (value) {
-                  //           viewModel.genderTextController.text =
-                  //               value.name ?? '';
-                  //         },
-                  //         itemBuilder: (BuildContext context) {
-                  //           return genders.map((option) {
-                  //             return PopupMenuItem(
-                  //               value: option,
-                  //               child: Text(option.name ?? ''),
-                  //             );
-                  //           }).toList();
-                  //         },
-                  //       ),
-                      )
-                    : const SizedBox.shrink(),
+                // const SizedBox(
+                //   height: 10,
+                // ),
+                // filter.categoryId == '6'
+                //     ? CommonDropdown<CategoryModel?>(
+                //         title: StringHelper.gender,
+                //         hint:viewModel.genderTextController.text.trim().isEmpty? StringHelper.selectGender:viewModel.genderTextController.text,
+                //   onSelected: (CategoryModel? value) {
+                //     viewModel.genderTextController.text =
+                //         value?.name ?? '';
+                //   },
+                //   listItemBuilder: (context,model,selected,fxn){
+                //     return Text(model?.name ?? '');
+                //   },
+                //   headerBuilder: (context, selectedItem, enabled) {
+                //     return Text(selectedItem?.name??"");
+                //   },
+                //   options: genders,
+                //   // controller: viewModel.genderTextController,
+                //   //       readOnly: true,
+                //   //       suffix: PopupMenuButton(
+                //   //         icon: const Icon(Icons.arrow_drop_down),
+                //   //         onSelected: (value) {
+                //   //           viewModel.genderTextController.text =
+                //   //               value.name ?? '';
+                //   //         },
+                //   //         itemBuilder: (BuildContext context) {
+                //   //           return genders.map((option) {
+                //   //             return PopupMenuItem(
+                //   //               value: option,
+                //   //               child: Text(option.name ?? ''),
+                //   //             );
+                //   //           }).toList();
+                //   //         },
+                //   //       ),
+                //       )
+                //     : const SizedBox.shrink(),
                 const SizedBox(
                   height: 10,
                 ),
@@ -824,8 +826,19 @@ class _FilterViewState extends State<FilterView> {
                           builder: (context) => const AppMapWidget()));
                   debugPrint("$value");
                   if (value != null && value.isNotEmpty) {
-                    viewModel.locationTextController.text =
-                        "${value['location']}, ${value['city']}, ${value['state']}";
+                    String address = "";
+
+                    if ("${value['location'] ?? ""}".isNotEmpty) {
+                      address = "${value['location'] ?? ""}";
+                    }
+                    if ("${value['city'] ?? ""}".isNotEmpty) {
+                      address += ", ${value['city'] ?? ""}";
+                    }
+                    if ("${value['state'] ?? ""}".isNotEmpty) {
+                      address += ", ${value['state'] ?? ""}";
+                    }
+
+                    viewModel.locationTextController.text = address;
                     viewModel.latitude = double.parse(value['latitude']);
                     viewModel.longitude = double.parse(value['longitude']);
                   }
@@ -920,11 +933,12 @@ class _FilterViewState extends State<FilterView> {
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 onTap: () {
                   if(viewModel.itemCondition != 0){
-                    filter.itemCondition = viewModel.itemCondition == 0
+                    filter.itemCondition = viewModel.itemCondition == 1
                         ? StringHelper.newText
                         : StringHelper.used;
                   }
-                  if(values.start > 0 && values.end <= 2000000){
+
+                  if(values.start > 0 && values.end <= 100000){
                     filter.minPrice = viewModel.startPriceTextController.text.trim();
                     filter.maxPrice = viewModel.endPriceTextController.text.trim();
                   }
@@ -993,12 +1007,12 @@ class _FilterViewState extends State<FilterView> {
                   if (viewModel.accessToUtilitiesTextController.text.trim().isNotEmpty) {
                     filter.accessToUtilities = viewModel.accessToUtilitiesTextController.text.trim();
                   }
-                  if(downValues.start > 0 && downValues.end <= 2000000){
+                  if(downValues.start > 0 && downValues.end <= 100000){
                     filter.minDownPrice = viewModel.startDownPriceTextController.text.trim();
                     filter.maxDownPrice = viewModel.endDownPriceTextController.text.trim();
                   }
 
-                  if(areaValues.start > 0 && areaValues.end <= 2000000){
+                  if(areaValues.start > 0 && areaValues.end <= 100000){
                     filter.maxAreaSize = viewModel.startAreaTextController.text.trim();
                     filter.minAreaSize = viewModel.endAreaTextController.text.trim();
                   }
@@ -1036,7 +1050,12 @@ class _FilterViewState extends State<FilterView> {
                   //
                   // filter.minKmDriven =
                   //     viewModel.kmDrivenTextController.text.trim();
-                  context.pushReplacement(Routes.filterDetails, extra: filter);
+                  context.pop();
+                  if(widget.filters?.screenFrom == "home") {
+                    context.push(Routes.filterDetails, extra: filter);
+                  }else {
+                    context.pushReplacement(Routes.filterDetails, extra: filter);
+                  }
                 },
                 title: StringHelper.apply,
               ),
@@ -1060,10 +1079,10 @@ class _FilterViewState extends State<FilterView> {
 
   void updateFilter({required HomeVM vm}) async {
     categoriesList = vm.categories;
+    resetFilters();
     if (widget.filters != null) {
+
       brands.clear();
-      vm.subCategoryTextController.clear();
-      vm.brandsTextController.clear();
       filter = widget.filters!;
 
       vm.itemCondition = (filter.itemCondition??"").isEmpty
@@ -1074,14 +1093,14 @@ class _FilterViewState extends State<FilterView> {
       vm.longitude = double.parse(filter.longitude ?? '0.0');
       vm.startPriceTextController.text = filter.minPrice ?? '0';
       vm.endPriceTextController.text =
-          filter.maxPrice != '0' ? filter.maxPrice ?? '2000000' : '2000000';
+          filter.maxPrice != '0' ? filter.maxPrice ?? '100000' : '100000';
       vm.kmDrivenTextController.text = filter.minKmDriven ?? '';
       vm.yearTextController.text = filter.year ?? '';
       vm.fuelTextController.text = filter.fuel ?? '';
       vm.propertyForTextController.text = filter.propertyFor ?? '';
 
-      vm.currentLocation = await LocationHelper.getAddressFromCoordinates(
-          vm.latitude, vm.longitude);
+      // vm.currentLocation = await LocationHelper.getAddressFromCoordinates(
+      //     vm.latitude, vm.longitude);
       vm.categoryTextController.text = getCategoryName(id: filter.categoryId);
       if ((filter.categoryId??"").isNotEmpty && filter.categoryId != '0') {
         await getSubCategory(id: filter.categoryId);
@@ -1101,7 +1120,7 @@ class _FilterViewState extends State<FilterView> {
               ? '0'
               : vm.startPriceTextController.text),
           int.parse(vm.endPriceTextController.text));
-      vm.locationTextController.text = vm.currentLocation;
+      //vm.locationTextController.text = vm.currentLocation;
     }
     log("${categoriesList.map((element) => element.toJson()).toList()}",
         name: "BASEX");
@@ -1112,17 +1131,19 @@ class _FilterViewState extends State<FilterView> {
     HomeVM vm = context.read<HomeVM>();
     filter = FilterModel();
     vm.itemCondition = 0;
-    vm.latitude = LocationHelper.cairoLatitude;
-    vm.longitude = LocationHelper.cairoLongitude;
+    //vm.latitude = LocationHelper.cairoLatitude;
+    //vm.longitude = LocationHelper.cairoLongitude;
+    vm.latitude = 0.0;
+    vm.longitude = 0.0;
     vm.locationTextController.text = "Cairo, Egypt";
     vm.startPriceTextController.text = '0';
-    vm.endPriceTextController.text = '2000000';
+    vm.endPriceTextController.text = '100000';
     values = SfRangeValues(
         int.parse(vm.startPriceTextController.text.isEmpty
             ? '0'
             : vm.startPriceTextController.text),
         int.parse(vm.endPriceTextController.text.isEmpty
-            ? '2000000'
+            ? '100000'
             : vm.endPriceTextController.text));
     brands.clear();
     subCategoriesList.clear();
@@ -1149,19 +1170,19 @@ class _FilterViewState extends State<FilterView> {
             ? '0'
             : vm.startDownPriceTextController.text),
         int.parse(vm.endDownPriceTextController.text.isEmpty
-            ? '2000000'
+            ? '100000'
             : vm.endDownPriceTextController.text));
     areaValues = SfRangeValues(
         int.parse(vm.startAreaTextController.text.isEmpty
             ? '0'
             : vm.startAreaTextController.text),
         int.parse(vm.endAreaTextController.text.isEmpty
-            ? '2000000'
+            ? '100000'
             : vm.endAreaTextController.text));
     vm.startDownPriceTextController.text = '0';
-    vm.endDownPriceTextController.text = '2000000';
+    vm.endDownPriceTextController.text = '100000';
     vm.startAreaTextController.text = '0';
-    vm.endAreaTextController.text = '2000000';
+    vm.endAreaTextController.text = '100000';
     setState(() {});
   }
 
@@ -1416,6 +1437,7 @@ class _FilterViewState extends State<FilterView> {
                       maxLength: 7,
                       keyboardType: TextInputType.number,
                       textAlign: TextAlign.center,
+                      readOnly: true,
                       controller: viewModel.startDownPriceTextController,
                       cursorColor: Colors.black,
                       onChanged: (value) {
@@ -1469,6 +1491,7 @@ class _FilterViewState extends State<FilterView> {
                     maxLength: 7,
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
+                    readOnly: true,
                     controller: viewModel.endDownPriceTextController,
                     cursorColor: Colors.black,
                     onChanged: (value) {
@@ -1477,7 +1500,7 @@ class _FilterViewState extends State<FilterView> {
                           downValues = SfRangeValues(
                               int.parse(
                                   viewModel.startDownPriceTextController.text),
-                              2000000);
+                              100000);
                           return;
                         }
 
@@ -1511,15 +1534,15 @@ class _FilterViewState extends State<FilterView> {
           StatefulBuilder(builder: (context, setState) {
             return SfRangeSlider(
               min: 0,
-              max: 2000000,
+              max: 100000,
               values: downValues,
               inactiveColor: Colors.grey,
               activeColor: const Color(0xffFF385C),
-              showLabels: true,
-              interval: 2000000,
+              showLabels: false,
+              interval: 1000,
               labelFormatterCallback:
                   (dynamic actualValue, String formattedText) {
-                return actualValue == 1999999
+                return actualValue == 99999
                     ? ' $formattedText+'
                     : ' $formattedText';
               },
@@ -1549,6 +1572,7 @@ class _FilterViewState extends State<FilterView> {
                 height: 50,
                 child: TextFormField(
                     maxLength: 7,
+                    readOnly: true,
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
                     controller: viewModel.startAreaTextController,
@@ -1604,6 +1628,7 @@ class _FilterViewState extends State<FilterView> {
                   maxLength: 7,
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
+                  readOnly: true,
                   controller: viewModel.endAreaTextController,
                   cursorColor: Colors.black,
                   onChanged: (value) {
@@ -1612,7 +1637,7 @@ class _FilterViewState extends State<FilterView> {
                         areaValues = SfRangeValues(
                             int.parse(
                                 viewModel.startAreaTextController.text),
-                            2000000);
+                            100000);
                         return;
                       }
 
@@ -1646,15 +1671,15 @@ class _FilterViewState extends State<FilterView> {
         StatefulBuilder(builder: (context, setState) {
           return SfRangeSlider(
             min: 0,
-            max: 2000000,
+            max: 100000,
             values: areaValues,
             inactiveColor: Colors.grey,
             activeColor: const Color(0xffFF385C),
-            showLabels: true,
-            interval: 2000000,
+            showLabels: false,
+            interval: 1000,
             labelFormatterCallback:
                 (dynamic actualValue, String formattedText) {
-              return actualValue == 1999999
+              return actualValue == 99999
                   ? ' $formattedText+'
                   : ' $formattedText';
             },
@@ -2113,6 +2138,7 @@ class _FilterViewState extends State<FilterView> {
                       maxLength: 7,
                       keyboardType: TextInputType.number,
                       textAlign: TextAlign.center,
+                      readOnly: true,
                       controller: viewModel.startDownPriceTextController,
                       cursorColor: Colors.black,
                       onChanged: (value) {
@@ -2165,6 +2191,7 @@ class _FilterViewState extends State<FilterView> {
                   child: TextFormField(
                     maxLength: 7,
                     keyboardType: TextInputType.number,
+                    readOnly: true,
                     textAlign: TextAlign.center,
                     controller: viewModel.endDownPriceTextController,
                     cursorColor: Colors.black,
@@ -2174,7 +2201,7 @@ class _FilterViewState extends State<FilterView> {
                           downValues = SfRangeValues(
                               int.parse(
                                   viewModel.startDownPriceTextController.text),
-                              2000000);
+                              100000);
                           return;
                         }
 
@@ -2208,15 +2235,15 @@ class _FilterViewState extends State<FilterView> {
           StatefulBuilder(builder: (context, setState) {
             return SfRangeSlider(
               min: 0,
-              max: 2000000,
+              max: 100000,
               values: downValues,
               inactiveColor: Colors.grey,
               activeColor: const Color(0xffFF385C),
-              showLabels: true,
-              interval: 2000000,
+              showLabels: false,
+              interval: 1000,
               labelFormatterCallback:
                   (dynamic actualValue, String formattedText) {
-                return actualValue == 1999999
+                return actualValue == 99999
                     ? ' $formattedText+'
                     : ' $formattedText';
               },
@@ -2246,6 +2273,7 @@ class _FilterViewState extends State<FilterView> {
                 height: 50,
                 child: TextFormField(
                     maxLength: 7,
+                    readOnly: true,
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
                     controller: viewModel.startAreaTextController,
@@ -2301,6 +2329,7 @@ class _FilterViewState extends State<FilterView> {
                   maxLength: 7,
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
+                  readOnly: true,
                   controller: viewModel.endAreaTextController,
                   cursorColor: Colors.black,
                   onChanged: (value) {
@@ -2309,7 +2338,7 @@ class _FilterViewState extends State<FilterView> {
                         areaValues = SfRangeValues(
                             int.parse(
                                 viewModel.startAreaTextController.text),
-                            2000000);
+                            100000);
                         return;
                       }
 
@@ -2343,15 +2372,15 @@ class _FilterViewState extends State<FilterView> {
         StatefulBuilder(builder: (context, setState) {
           return SfRangeSlider(
             min: 0,
-            max: 2000000,
+            max: 100000,
             values: areaValues,
             inactiveColor: Colors.grey,
             activeColor: const Color(0xffFF385C),
-            showLabels: true,
-            interval: 2000000,
+            showLabels: false,
+            interval: 1000,
             labelFormatterCallback:
                 (dynamic actualValue, String formattedText) {
-              return actualValue == 1999999
+              return actualValue == 99999
                   ? ' $formattedText+'
                   : ' $formattedText';
             },
@@ -2811,6 +2840,7 @@ class _FilterViewState extends State<FilterView> {
                       maxLength: 7,
                       keyboardType: TextInputType.number,
                       textAlign: TextAlign.center,
+                      readOnly: true,
                       controller: viewModel.startDownPriceTextController,
                       cursorColor: Colors.black,
                       onChanged: (value) {
@@ -2864,6 +2894,7 @@ class _FilterViewState extends State<FilterView> {
                     maxLength: 7,
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
+                    readOnly: true,
                     controller: viewModel.endDownPriceTextController,
                     cursorColor: Colors.black,
                     onChanged: (value) {
@@ -2872,7 +2903,7 @@ class _FilterViewState extends State<FilterView> {
                           downValues = SfRangeValues(
                               int.parse(
                                   viewModel.startDownPriceTextController.text),
-                              2000000);
+                              100000);
                           return;
                         }
 
@@ -2906,15 +2937,15 @@ class _FilterViewState extends State<FilterView> {
           StatefulBuilder(builder: (context, setState) {
             return SfRangeSlider(
               min: 0,
-              max: 2000000,
+              max: 100000,
               values: downValues,
               inactiveColor: Colors.grey,
               activeColor: const Color(0xffFF385C),
-              showLabels: true,
-              interval: 2000000,
+              showLabels: false,
+              interval: 1000,
               labelFormatterCallback:
                   (dynamic actualValue, String formattedText) {
-                return actualValue == 1999999
+                return actualValue == 99999
                     ? ' $formattedText+'
                     : ' $formattedText';
               },
@@ -2947,6 +2978,7 @@ class _FilterViewState extends State<FilterView> {
                     maxLength: 7,
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
+                    readOnly: true,
                     controller: viewModel.startAreaTextController,
                     cursorColor: Colors.black,
                     onChanged: (value) {
@@ -3000,6 +3032,7 @@ class _FilterViewState extends State<FilterView> {
                   maxLength: 7,
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
+                  readOnly: true,
                   controller: viewModel.endAreaTextController,
                   cursorColor: Colors.black,
                   onChanged: (value) {
@@ -3008,7 +3041,7 @@ class _FilterViewState extends State<FilterView> {
                         areaValues = SfRangeValues(
                             int.parse(
                                 viewModel.startAreaTextController.text),
-                            2000000);
+                            100000);
                         return;
                       }
 
@@ -3042,15 +3075,15 @@ class _FilterViewState extends State<FilterView> {
         StatefulBuilder(builder: (context, setState) {
           return SfRangeSlider(
             min: 0,
-            max: 2000000,
+            max: 100000,
             values: areaValues,
             inactiveColor: Colors.grey,
             activeColor: const Color(0xffFF385C),
-            showLabels: true,
-            interval: 2000000,
+            showLabels: false,
+            interval: 1000,
             labelFormatterCallback:
                 (dynamic actualValue, String formattedText) {
-              return actualValue == 1999999
+              return actualValue == 99999
                   ? ' $formattedText+'
                   : ' $formattedText';
             },
@@ -3467,6 +3500,7 @@ class _FilterViewState extends State<FilterView> {
                     maxLength: 7,
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
+                    readOnly: true,
                     controller: viewModel.startAreaTextController,
                     cursorColor: Colors.black,
                     onChanged: (value) {
@@ -3520,6 +3554,7 @@ class _FilterViewState extends State<FilterView> {
                   maxLength: 7,
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
+                  readOnly: true,
                   controller: viewModel.endAreaTextController,
                   cursorColor: Colors.black,
                   onChanged: (value) {
@@ -3528,7 +3563,7 @@ class _FilterViewState extends State<FilterView> {
                         areaValues = SfRangeValues(
                             int.parse(
                                 viewModel.startAreaTextController.text),
-                            2000000);
+                            100000);
                         return;
                       }
 
@@ -3562,15 +3597,15 @@ class _FilterViewState extends State<FilterView> {
         StatefulBuilder(builder: (context, setState) {
           return SfRangeSlider(
             min: 0,
-            max: 2000000,
+            max: 100000,
             values: areaValues,
             inactiveColor: Colors.grey,
             activeColor: const Color(0xffFF385C),
-            showLabels: true,
-            interval: 2000000,
+            showLabels: false,
+            interval: 1000,
             labelFormatterCallback:
                 (dynamic actualValue, String formattedText) {
-              return actualValue == 1999999
+              return actualValue == 99999
                   ? ' $formattedText+'
                   : ' $formattedText';
             },
@@ -3984,6 +4019,7 @@ class _FilterViewState extends State<FilterView> {
                     maxLength: 7,
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
+                    readOnly: true,
                     controller: viewModel.startAreaTextController,
                     cursorColor: Colors.black,
                     onChanged: (value) {
@@ -4037,6 +4073,7 @@ class _FilterViewState extends State<FilterView> {
                   maxLength: 7,
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
+                  readOnly: true,
                   controller: viewModel.endAreaTextController,
                   cursorColor: Colors.black,
                   onChanged: (value) {
@@ -4045,7 +4082,7 @@ class _FilterViewState extends State<FilterView> {
                         areaValues = SfRangeValues(
                             int.parse(
                                 viewModel.startAreaTextController.text),
-                            2000000);
+                            100000);
                         return;
                       }
 
@@ -4079,15 +4116,15 @@ class _FilterViewState extends State<FilterView> {
         StatefulBuilder(builder: (context, setState) {
           return SfRangeSlider(
             min: 0,
-            max: 2000000,
+            max: 100000,
             values: areaValues,
             inactiveColor: Colors.grey,
             activeColor: const Color(0xffFF385C),
-            showLabels: true,
-            interval: 2000000,
+            showLabels: false,
+            interval: 1000,
             labelFormatterCallback:
                 (dynamic actualValue, String formattedText) {
-              return actualValue == 1999999
+              return actualValue == 99999
                   ? ' $formattedText+'
                   : ' $formattedText';
             },

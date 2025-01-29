@@ -118,10 +118,21 @@ class CompleteProfileView extends BaseView<AuthVM> {
                         builder: (context) => const AppMapWidget()));
 
                 if (value != null && value.isNotEmpty) {
+                  String address = "";
+
+                  if ("${value['location'] ?? ""}".isNotEmpty) {
+                    address = "${value['location'] ?? ""}";
+                  }
+                  if ("${value['city'] ?? ""}".isNotEmpty) {
+                    address += ", ${value['city'] ?? ""}";
+                  }
+                  if ("${value['state'] ?? ""}".isNotEmpty) {
+                    address += ", ${value['state'] ?? ""}";
+                  }
+
+                  viewModel.locationTextController.text = address;
                   viewModel.latitude = "${value['latitude']}";
                   viewModel.longitude = "${value['longitude']}";
-                  viewModel.locationTextController.text =
-                      "${value['location']}, ${value['city']}, ${value['state']}";
                 }
               },
               inputFormatters: AppTextInputFormatters.withNameFormatter(),

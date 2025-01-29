@@ -250,6 +250,7 @@
 
 
 class FilterModel {
+  String? screenFrom; /// for check route
   String? limit;
   String? page;
   String? categoryId;
@@ -300,6 +301,7 @@ class FilterModel {
   String? minAreaSize;
 
   FilterModel({
+    this.screenFrom,
     this.limit,
     this.page,
     this.categoryId,

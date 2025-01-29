@@ -42,8 +42,8 @@ class _NotificationViewState extends State<NotificationView> {
   }
 
   String getCreatedAt({String? time}) {
-    String dateTimeString = "2024-06-25T01:01:47.000Z";
-    DateTime dateTime = DateTime.parse(time ?? dateTimeString);
+    if((time??"").isEmpty)return "";
+    DateTime dateTime = DateTime.parse(time??"").toUtc().toLocal();
 
     return DateHelper.getWalletDate(dateTime);
   }
@@ -63,11 +63,19 @@ class _NotificationViewState extends State<NotificationView> {
                 return notifications.isEmpty
                     ? const AppEmptyNotificationWidget()
                     : ListView.separated(
+                  shrinkWrap: true,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 10),
                         itemBuilder: (context, index) {
                           return Card(
+                            margin: EdgeInsets.zero,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)
+                            ),
                             child: ListTile(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
                               leading: const ImageView.rect(
                                   image: AssetsRes.IC_NOTIFICATION,
                                   width: 50,

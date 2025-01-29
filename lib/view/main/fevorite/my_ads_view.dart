@@ -189,6 +189,15 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                     ),
                                                   },
 
+                                                      if ("${productDetails.adStatus}" == "deactivate" && productStatus && soldStatus) ...{
+
+                                                        PopupMenuItem(
+                                                          value: 4,
+                                                          child: Text("Republish"),
+                                                        ),
+                                                      },
+
+
                                                   PopupMenuItem(
                                                     value: 3,
                                                     child: Text(
@@ -410,6 +419,13 @@ class MyAdsView extends BaseView<MyAdsVM> {
                 }
               ],
             )
+          }else...{
+            AppElevatedButton(
+              title: StringHelper.deactivate,
+              height: 30,
+              width: 100,
+              backgroundColor: Colors.grey,
+            )
           },
           const Gap(10),
           productDetails.sellStatus != StringHelper.sold.toLowerCase()
@@ -427,21 +443,6 @@ class MyAdsView extends BaseView<MyAdsVM> {
                       ?.copyWith(fontFamily: FontRes.MONTSERRAT_MEDIUM),
                 ),
 
-          if("${productDetails.adStatus}" == "deactivate")...{
-            AppElevatedButton(
-              onTap: () {
-                viewModel
-                    .handelPopupMenuItemClick(
-                    context: context,
-                    index: 4,
-                    item: productDetails);
-              },
-              title: "Republish",
-              height: 30,
-              width: context.width,
-              backgroundColor: Colors.grey,
-            ),
-          },
           if("${productDetails.adStatus}" != "deactivate"  && "${productDetails.status}" == "0" || "${productDetails.status}" == "2")...{
             AppElevatedButton(
               onTap: () {
