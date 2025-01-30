@@ -274,64 +274,75 @@ class _MessageViewState extends State<MessageView> {
                         }),
                   ),
                   const Gap(10),
-                  viewModel.blockedUser
-                      ? SafeArea(
-                          child: Text(
-                            viewModel.blockText,
-                            style:
-                                context.titleLarge?.copyWith(color: Colors.red),
-                          ),
-                        )
-                      : MessageBarWithSuggestions(
-                          suggestions: [
-                            StringHelper.hello,
-                            StringHelper.howAreYou
-                          ],
-                          onSuggestionSelected: (value) {
-                            viewModel.messageTextController.text = value;
-                          },
-                          onOfferMade: (value) {
-                            viewModel.sendMessage(
-                                message: '$value',
-                                type: 2,
-                                receiverId: widget.chat?.senderId ==
-                                        DbHelper.getUserModel()?.id
-                                    ? widget.chat?.receiverDetail?.id
-                                    : widget.chat?.senderDetail?.id,
-                                productId: widget.chat?.productId);
-                          },
-                          textController: viewModel.messageTextController,
-                          onSubmitted: (value) {
-                            viewModel.sendMessage(
-                                message: value,
-                                type: 1,
-                                receiverId: widget.chat?.senderId ==
-                                        DbHelper.getUserModel()?.id
-                                    ? widget.chat?.receiverDetail?.id
-                                    : widget.chat?.senderDetail?.id,
-                                productId: widget.chat?.productId);
-                            viewModel.messageTextController.clear();
-                          },
-                          onPickImageClick: () async {
-                            var image = await ImagePickerHelper.openImagePicker(
-                                context: context, isCropping: false);
+                  if((widget.chat?.productDetail?.sellStatus??"").toLowerCase() != "sold")...{
+                    viewModel.blockedUser
+                        ? SafeArea(
+                      child: Text(
+                        viewModel.blockText,
+                        style:
+                        context.titleLarge?.copyWith(color: Colors.red),
+                      ),
+                    )
+                        : MessageBarWithSuggestions(
+                      suggestions: [
+                        StringHelper.hello,
+                        StringHelper.howAreYou
+                      ],
+                      onSuggestionSelected: (value) {
+                        viewModel.messageTextController.text = value;
+                      },
+                      onOfferMade: (value) {
+                        viewModel.sendMessage(
+                            message: '$value',
+                            type: 2,
+                            receiverId: widget.chat?.senderId ==
+                                DbHelper.getUserModel()?.id
+                                ? widget.chat?.receiverDetail?.id
+                                : widget.chat?.senderDetail?.id,
+                            productId: widget.chat?.productId);
+                      },
+                      textController: viewModel.messageTextController,
+                      onSubmitted: (value) {
+                        viewModel.sendMessage(
+                            message: value,
+                            type: 1,
+                            receiverId: widget.chat?.senderId ==
+                                DbHelper.getUserModel()?.id
+                                ? widget.chat?.receiverDetail?.id
+                                : widget.chat?.senderDetail?.id,
+                            productId: widget.chat?.productId);
+                        viewModel.messageTextController.clear();
+                      },
+                      onPickImageClick: () async {
+                        var image = await ImagePickerHelper.openImagePicker(
+                            context: context, isCropping: false);
 
-                            if (image != null) {
-                              DialogHelper.showLoading();
-                              String value = await BaseClient.uploadImage(
-                                  imagePath: image);
-                              viewModel.sendMessage(
-                                  message: value,
-                                  type: 3,
-                                  receiverId: widget.chat?.senderId ==
-                                          DbHelper.getUserModel()?.id
-                                      ? widget.chat?.receiverDetail?.id
-                                      : widget.chat?.senderDetail?.id,
-                                  productId: widget.chat?.productId);
-                            }
-                          },
-                          onRecordingClick: () {},
-                        ),
+                        if (image != null) {
+                          DialogHelper.showLoading();
+                          String value = await BaseClient.uploadImage(
+                              imagePath: image);
+                          viewModel.sendMessage(
+                              message: value,
+                              type: 3,
+                              receiverId: widget.chat?.senderId ==
+                                  DbHelper.getUserModel()?.id
+                                  ? widget.chat?.receiverDetail?.id
+                                  : widget.chat?.senderDetail?.id,
+                              productId: widget.chat?.productId);
+                        }
+                      },
+                      onRecordingClick: () {},
+                    ),
+                  }else...{
+                    SafeArea(
+                      child: Text(
+                        "Product Sold Out",
+                        style:
+                        context.titleLarge?.copyWith(color: Colors.red),
+                      ),
+                    )
+                  }
+
                 ],
               );
             }

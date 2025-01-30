@@ -202,7 +202,7 @@ class MyProductView extends BaseView<ProductVM> {
                                   style: context.textTheme.titleMedium,
                                 ),
                               ),
-                              if (productDetails?.sellStatus !=
+                              if ("${productDetails?.status}" != "0" && productDetails?.sellStatus !=
                                   StringHelper.sold.toLowerCase()) ...{
                                 viewModel.getRemainDays(item: productDetails)
                               }

@@ -164,6 +164,7 @@ class ChatVM extends BaseViewModel {
         chatItems.insert(0, message);
         messageStreamController.add(chatItems);
       }
+      getInboxList();
     });
   }
 
@@ -301,6 +302,7 @@ class ChatVM extends BaseViewModel {
           senderId: DbHelper.getUserModel()?.id?.toInt(),
           receiverId: receiverId?.toInt(),
           messageType: type,
+          isRead: 0,
           createdAt: "${DateTime.now()}",
           updatedAt: "${DateTime.now()}"),
     );

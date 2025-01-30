@@ -231,6 +231,7 @@ class NotificationService {
             productDetail: ProductDetailModel(
               image: "${notificationEntity?.productImage??""}",
                 name: "${notificationEntity?.productName??""}",
+                sellStatus: "${notificationEntity?.sellStatus??""}",
                 id: int.parse("${notificationEntity?.productId}")),
             receiverDetail: SenderDetail(
                 id: num.parse("${notificationEntity?.senderId}"),

@@ -104,6 +104,7 @@ class NotificationEntity {
   dynamic type;
   dynamic title;
   dynamic senderId;
+  dynamic sellStatus;
 
   NotificationEntity({
     this.notificationType,
@@ -120,6 +121,7 @@ class NotificationEntity {
     this.type,
     this.title,
     this.senderId,
+    this.sellStatus,
   });
 
   NotificationEntity.fromJson(Map<String, dynamic> json) {
@@ -137,6 +139,7 @@ class NotificationEntity {
     type = json['type'];
     title = json['title'];
     senderId = json['sender_id'];
+    sellStatus = json['sell_status'];
   }
 
   Map<String, dynamic> toJson() {
@@ -155,6 +158,7 @@ class NotificationEntity {
     data['type'] = type;
     data['title'] = title;
     data['sender_id'] = senderId;
+    data['sell_status'] = sellStatus;
     return data;
   }
 }

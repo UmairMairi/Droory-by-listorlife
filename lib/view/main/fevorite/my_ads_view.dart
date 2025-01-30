@@ -413,8 +413,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 viewModel.getStatus(context: context,productDetails: productDetails),
-                if (productDetails.sellStatus !=
-                    StringHelper.sold.toLowerCase()) ...{
+                if ("${productDetails.status}" != "0" && productDetails.sellStatus != StringHelper.sold.toLowerCase()) ...{
                   viewModel.getRemainDays(item: productDetails)
                 }
               ],
