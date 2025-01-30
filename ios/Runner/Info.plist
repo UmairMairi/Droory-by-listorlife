@@ -33,10 +33,10 @@
 			</array>
 		</dict>
 	</array>
-	<key>com.apple.security.network.client</key>
-    <true/>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>comgooglemaps</string>
@@ -81,13 +81,10 @@
 	<string>Describe why your app needs permission for the photo library.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
-	<key>FirebaseAppDelegateProxyEnabled</key>
-    <false/>
 	<key>UIBackgroundModes</key>
 	<array>
-		<string>processing</string>
-		<string>remote-notification</string>
 		<string>fetch</string>
+		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
