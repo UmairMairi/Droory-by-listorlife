@@ -657,8 +657,7 @@ class SellFormsVM extends BaseViewModel {
     if (models != null) fields["model_id"] = models.id;
     if (selectedSize != null) fields["size_id"] = selectedSize?.id;
 
-    if (category?.id != null &&
-        ![6, 8, 9, 11].contains(category?.id)) {
+    if (category?.id != null && ![6, 8, 9, 11].contains(category?.id) && itemCondition != 0) {
       fields["item_condition"] = itemCondition == 1 ? "new" : "used";
     }
 
@@ -780,7 +779,7 @@ class SellFormsVM extends BaseViewModel {
     if (selectedSize != null) fields["size_id"] = selectedSize?.id;
 
     if (category?.id != null &&
-        ![6, 8, 9, 11].contains(category?.id)) {
+        ![6, 8, 9, 11].contains(category?.id) && itemCondition != 0) {
       fields["item_condition"] = itemCondition == 1 ? "new" : "used";
     }
 

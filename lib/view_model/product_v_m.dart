@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/base/helpers/db_helper.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/base/network/api_request.dart';
 import 'package:list_and_life/base/network/base_client.dart';
@@ -57,12 +58,29 @@ class ProductVM extends BaseViewModel {
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.getProductUrl(id: '$id'),
         requestType: RequestType.get);
-
+    if(!DbHelper.getIsGuest()){
+      productViewApi(id: id);
+    }
     var response = await BaseClient.handleRequest(apiRequest);
 
     MapResponse<ProductDetailModel> model =
         MapResponse<ProductDetailModel>.fromJson(
             response, (json) => ProductDetailModel.fromJson(json));
+
+    return model.body;
+  }
+
+  Future<Object?> productViewApi({num? id}) async {
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.productViewUrl(),
+        body: {"product_id": id},
+        requestType: RequestType.post);
+
+    var response = await BaseClient.handleRequest(apiRequest);
+
+    MapResponse<Object?> model =
+        MapResponse<Object?>.fromJson(
+            response, (json) => json);
 
     return model.body;
   }
