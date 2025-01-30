@@ -159,8 +159,11 @@ class ChatVM extends BaseViewModel {
 
       /// getInboxList();
       MessageModel message = MessageModel.fromJson(data);
-
-      if (message.senderId != DbHelper.getUserModel()?.id) {
+      var roomId = "0";
+      if(chatItems.isNotEmpty){
+         roomId = chatItems.first.roomId??"0";
+      }
+      if (message.senderId != DbHelper.getUserModel()?.id && message.roomId == roomId) {
         chatItems.insert(0, message);
         messageStreamController.add(chatItems);
       }

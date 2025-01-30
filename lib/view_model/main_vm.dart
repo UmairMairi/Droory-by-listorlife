@@ -51,6 +51,14 @@ class MainVM extends BaseViewModel {
     });
   }
 
+
+  bool _isGuest = DbHelper.getIsGuest();
+
+  bool get isGuest => _isGuest;
+  set isGuest(bool value) {
+    _isGuest = value;
+    notifyListeners();
+  }
   @override
   void onInit() {
     // TODO: implement onInit
@@ -58,10 +66,11 @@ class MainVM extends BaseViewModel {
           context: context,
           lang: DbHelper.getLanguage(),
         );
+    DbHelper.box.listenKey('isGuest', (value) {
+      isGuest = DbHelper.getIsGuest();
+    });
+    if (!isGuest) SocketHelper().connectUser();
 
-    if (!DbHelper.getIsGuest()) {
-      SocketHelper().connectUser();
-    }
     initUniLinks();
     super.onInit();
   }
@@ -69,7 +78,7 @@ class MainVM extends BaseViewModel {
   @override
   void onReady() {
     // TODO: implement onReady
-    if (!DbHelper.getIsGuest()) {
+    if (!isGuest)  {
       var model = context.read<ChatVM>();
       model.initListeners();
     }
