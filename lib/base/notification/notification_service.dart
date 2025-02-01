@@ -20,6 +20,8 @@ import '../../firebase_options.dart';
 import '../../models/inbox_model.dart';
 import '../../models/product_detail_model.dart';
 import '../../routes/app_pages.dart';
+import '../../routes/app_routes.dart';
+import '../../view/product/my_product_view.dart';
 import '../../view_model/chat_vm.dart';
 import '../helpers/db_helper.dart';
 import '../helpers/dialog_helper.dart';
@@ -246,6 +248,13 @@ class NotificationService {
         )));
 
         break;
+        case 'product_status':
+          Navigator.push(AppPages.rootNavigatorKey.currentContext!, MaterialPageRoute(builder: (context)=> MyProductView(
+            data: ProductDetailModel(
+                id: int.parse("${notificationEntity?.productId}")),
+          )
+          ));
+          break;
       default:
         Navigator.push(AppPages.rootNavigatorKey.currentContext!, MaterialPageRoute(builder: (context)=>NotificationView(),));
     }

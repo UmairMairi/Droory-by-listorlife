@@ -1,7 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:list_and_life/base/sockets/socket_constants.dart';
+import 'package:provider/provider.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
+import '../../routes/app_pages.dart';
+import '../../view_model/chat_vm.dart';
 import '../helpers/db_helper.dart';
 class SocketHelper {
   static final SocketHelper _singleton = SocketHelper._internal();
@@ -64,6 +67,7 @@ class SocketHelper {
     _socketIO.off(SocketConstants.connectUser);
     _socketIO.on(SocketConstants.connectUser, (data) {
       isUserConnected = true;
+      Provider.of<ChatVM>(AppPages.rootNavigatorKey.currentContext!, listen: false).initListeners();
       if (kDebugMode) {
         print("User Connected --------------->  $data");
       }

@@ -535,7 +535,7 @@ class _FilterViewState extends State<FilterView> {
                   height: 10,
                 ),
               ],
-              if (allModels.isNotEmpty) ...{
+              if (allModels.isNotEmpty && filter.categoryId != '3') ...{
                 CommonDropdown<CategoryModel?>(
                   title: StringHelper.models,
                   hint: viewModel.modelTextController.text.trim().isEmpty?StringHelper.selectModel:viewModel.modelTextController.text,
@@ -705,21 +705,21 @@ class _FilterViewState extends State<FilterView> {
                   // keyboardType: TextInputType.number,
                   // textInputAction: TextInputAction.done,
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                AppTextField(
-                  title: StringHelper.kmDriven,
-                  hint: StringHelper.enter,
-                  controller: viewModel.kmDrivenTextController,
-                  readOnly: false,
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(10),
-                    FilteringTextInputFormatter.digitsOnly,
-                  ],
-                  keyboardType: TextInputType.number,
-                  textInputAction: TextInputAction.done,
-                ),
+                // const SizedBox(
+                //   height: 10,
+                // ),
+                // AppTextField(
+                //   title: StringHelper.kmDriven,
+                //   hint: StringHelper.enter,
+                //   controller: viewModel.kmDrivenTextController,
+                //   readOnly: false,
+                //   inputFormatters: [
+                //     LengthLimitingTextInputFormatter(10),
+                //     FilteringTextInputFormatter.digitsOnly,
+                //   ],
+                //   keyboardType: TextInputType.number,
+                //   textInputAction: TextInputAction.done,
+                // ),
                 const SizedBox(
                   height: 10,
                 ),
@@ -1110,7 +1110,7 @@ class _FilterViewState extends State<FilterView> {
         vm.subCategoryTextController.text =
             getSubCategoryName(id: filter.subcategoryId);
       }
-
+      vm.brandsTextController.clear();
       if ((filter.brandId??"").isNotEmpty) {
         vm.brandsTextController.text = getBrandName(id: filter.brandId);
       }

@@ -182,7 +182,7 @@ class PetsSellForm extends BaseView<SellFormsVM> {
               ),
               if (brands?.isNotEmpty ?? false)
                 CommonDropdown<CategoryModel?>(
-                  title: StringHelper.brand,
+                  title: StringHelper.breed,
                   hint: viewModel.brandTextController.text,
                   listItemBuilder: (context,model,selected,fxn){
                     return Text(model?.name ?? '');

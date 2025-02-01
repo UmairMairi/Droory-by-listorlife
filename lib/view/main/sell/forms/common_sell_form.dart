@@ -210,7 +210,9 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                   //       RegExp(viewModel.regexToRemoveEmoji)),
                   // ],
                 ),
-                CommonDropdown<CategoryModel?>(
+                Visibility(
+                    visible: category?.id != 3,
+                    child:CommonDropdown<CategoryModel?>(
                   title: StringHelper.models,
                   titleColor: Colors.black,
                   hint: viewModel.modelTextController.text,
@@ -257,7 +259,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                   // ],
                   // keyboardType: TextInputType.text,
                   // textInputAction: TextInputAction.done,
-                )
+                ))
               },
               if (category?.type?.toLowerCase() == "fashion") ...{
                 FutureBuilder<List<CategoryModel>>(

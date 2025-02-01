@@ -197,6 +197,10 @@ class ProductVM extends BaseViewModel {
         specs.add(_buildSpecRow(context, '${data?.numberOfOwner} Owners',
             Icons.account_circle, 'Number of Owners'));
       }
+      if ((data?.itemCondition??"").isNotEmpty) {
+        specs.add(_buildSpecRow(context, "${data?.itemCondition}",
+            Icons.verified_user, 'Condition'));
+      }
     }
 
     // Hobbies, Music, Art & Books Specifications
