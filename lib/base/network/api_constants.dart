@@ -101,6 +101,8 @@ class ApiConstants {
     int? page = 1,
   }) =>
       "$_baseUrl/notification/list?limit=$limit&page=$page";
+
+  static String clearNotificationUrl() => "$_baseUrl/clear/notifications";
   static String productViewUrl() => "$_baseUrl/product/view";
   static String callOnUrl({required String productId}) =>
       "$_baseUrl/call/on/$productId ";

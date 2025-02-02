@@ -17,6 +17,7 @@ import 'package:list_and_life/widgets/app_error_widget.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 
 import '../../base/helpers/date_helper.dart';
+import '../../base/helpers/dialog_helper.dart';
 import '../../base/helpers/string_helper.dart';
 import '../../routes/app_routes.dart';
 
@@ -43,6 +44,21 @@ class _NotificationViewState extends State<NotificationView> {
     notificationStream.sink.add (model.body?.data ?? []);
   }
 
+  Future<void> clearNotification() async {
+    DialogHelper.showLoading();
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.clearNotificationUrl(), requestType: RequestType.get);
+
+    var response = await BaseClient.handleRequest(apiRequest);
+    DialogHelper.hideLoading();
+    MapResponse<Object?> model =
+        MapResponse<Object>.fromJson(
+            response, (json) => json);
+    if(model.body!=null){
+      getNotificationList();
+    }
+  }
+
   @override
   void initState() {
     getNotificationList();
@@ -62,6 +78,12 @@ class _NotificationViewState extends State<NotificationView> {
         appBar: AppBar(
           title: Text(StringHelper.notifications),
           centerTitle: true,
+          actions: [
+            IconButton(onPressed: (){
+              clearNotification();
+            },
+                icon: Icon(Icons.delete))
+          ],
         ),
         body: StreamBuilder<List<NotificationDataModel>>(
             stream: notificationStream.stream,

@@ -44,10 +44,10 @@ class DialogHelper {
         icon: const Icon(Icons.notifications),
         style: ToastificationStyle.minimal,
         type: error ? ToastificationType.error : ToastificationType.success,
-        autoCloseDuration: const Duration(seconds: 1),
+        autoCloseDuration: const Duration(seconds: 2),
       );
     }
-    Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(Duration(seconds: 2), () {
       isToastVisible = false;
     });
   }

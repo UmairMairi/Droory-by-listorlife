@@ -258,14 +258,20 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                               color:
                                                                   Colors.grey),
                                                     ),
-                                                    Text(
-                                                      "${StringHelper.egp} ${parseAmount(productDetails.price)}",
-                                                      style: context
-                                                          .textTheme.titleMedium
-                                                          ?.copyWith(
-                                                              color:
-                                                                  Colors.red),
-                                                    ),
+                                                    if (productDetails.categoryId == 9) ...{
+                                                      Text(
+                                                        "${StringHelper.egp} ${parseAmount(productDetails.salleryFrom)}",
+                                                        //"${StringHelper.egp} ${data?.salleryFrom} - ${data?.salleryTo}",
+                                                        style: context.textTheme.titleMedium
+                                                            ?.copyWith(color: context.theme.colorScheme.error),
+                                                      ),
+                                                    } else ...{
+                                                      Text(
+                                                        "${StringHelper.egp} ${parseAmount(productDetails.price)}",
+                                                        style: context.textTheme.titleMedium
+                                                            ?.copyWith(color: context.theme.colorScheme.error),
+                                                      ),
+                                                    },
                                                   ],
                                                 ),
                                               )

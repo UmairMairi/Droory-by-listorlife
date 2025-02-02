@@ -166,6 +166,7 @@ class HomeView extends BaseView<HomeVM> {
         controller: viewModel.refreshController,
         enablePullDown: true,
         enablePullUp: true,
+        scrollController: viewModel.scrollController,
         header: WaterDropHeader(
           complete: Platform.isAndroid
               ? const CircularProgressIndicator()

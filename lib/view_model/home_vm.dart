@@ -25,6 +25,7 @@ import '../view/main/home/sub_category_view.dart';
 class HomeVM extends BaseViewModel {
   late Future<List<CategoryModel>> cachedCategoryList;
   RefreshController refreshController = RefreshController(initialRefresh: true);
+  ScrollController scrollController = ScrollController();
   String _currentLocation = '';
 
   String get currentLocation => _currentLocation;
@@ -263,6 +264,11 @@ class HomeVM extends BaseViewModel {
       page = 1;
       productsList.clear();
       await getProductsApi(loading: true);
+      scrollController.animateTo(
+        scrollController.position.minScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
       refreshController.refreshCompleted();
     } catch (e) {
       refreshController.refreshFailed();
