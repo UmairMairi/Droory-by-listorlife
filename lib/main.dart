@@ -33,7 +33,7 @@ void main() async {
     name: "list-and-life",
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await FirebaseMessaging.instance.requestPermission(provisional: true);
+  FirebaseMessaging.instance.requestPermission();
   await NotificationService().init();
   var appStateObserver = AppStateObserver();
   WidgetsBinding.instance.addObserver(appStateObserver);

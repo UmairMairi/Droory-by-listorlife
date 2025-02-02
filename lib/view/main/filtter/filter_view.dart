@@ -301,32 +301,30 @@ class _FilterViewState extends State<FilterView> {
                     const SizedBox(
                       height: 15,
                     ),
-                    StatefulBuilder(builder: (context, setState) {
-                      return SfRangeSlider(
-                        min: 0,
-                        max: 100000,
-                        values: values,
-                        inactiveColor: Colors.grey,
-                        activeColor: const Color(0xffFF385C),
-                        showLabels: false,
-                        interval: 1000,
-                        labelFormatterCallback:
-                            (dynamic actualValue, String formattedText) {
-                          return actualValue == 99999
-                              ? ' $formattedText+'
-                              : ' $formattedText';
-                        },
-                        onChanged: (SfRangeValues newValues) {
-                          viewModel.startPriceTextController.text =
-                          "${newValues.start.round()}";
-                          viewModel.endPriceTextController.text =
-                          "${newValues.end.round()}";
-                          setState(() {
-                            values = newValues;
-                          });
-                        },
-                      );
-                    }),
+                StatefulBuilder(
+                  builder: (context, setState) {
+                    return SfRangeSlider(
+                      min: 0,
+                      max: 100000,
+                      values: values,
+                      inactiveColor: Colors.grey,
+                      activeColor: const Color(0xffFF385C),
+                      showLabels: false,
+                      interval: 1000, // Controls label intervals
+                      stepSize: 1000, // Ensures the slider moves in steps of 1000
+                      labelFormatterCallback: (dynamic actualValue, String formattedText) {
+                        return actualValue == 99999 ? ' $formattedText+' : ' $formattedText';
+                      },
+                      onChanged: (SfRangeValues newValues) {
+                        viewModel.startPriceTextController.text = "${newValues.start.round()}";
+                        viewModel.endPriceTextController.text = "${newValues.end.round()}";
+                        setState(() {
+                          values = newValues;
+                        });
+                      },
+                    );
+                  },
+                ),
                     const SizedBox(
                       height: 10,
                     ),
@@ -356,7 +354,7 @@ class _FilterViewState extends State<FilterView> {
                   getSubCategory(id: "${value?.id}");
                   viewModel.categoryTextController.text = value?.name ?? '';
                   filter.categoryId = "${value?.id}";
-                  if(filter.categoryId == "8" || filter.categoryId == "8" ){
+                  if(filter.categoryId == "8" || filter.categoryId == "9" ){
                     viewModel.itemCondition = 0;
                   }
                   filter.subcategoryId = "";
@@ -896,7 +894,8 @@ class _FilterViewState extends State<FilterView> {
                     inactiveColor: Colors.grey,
                     activeColor: const Color(0xffFF385C),
                     showLabels: false,
-                    interval: 1000,
+                    interval: 1000, // Controls label intervals
+                    stepSize: 1000, // Ensures the slider moves in steps of 1000
                     labelFormatterCallback:
                         (dynamic actualValue, String formattedText) {
                       return actualValue == 99999
@@ -1087,7 +1086,7 @@ class _FilterViewState extends State<FilterView> {
                 width: context.width,
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 onTap: () {
-                  if(viewModel.itemCondition != 0){
+                  if(viewModel.itemCondition != 0 && filter.categoryId != "8" && filter.categoryId != "9" ){
                     filter.itemCondition = viewModel.itemCondition == 1
                         ? StringHelper.newText
                         : StringHelper.used;
@@ -1601,7 +1600,8 @@ class _FilterViewState extends State<FilterView> {
         ),
         if(viewModel.currentPropertyType.toLowerCase() != "rent")...{
           Text(
-            StringHelper.downPayment,
+            //StringHelper.downPayment,
+            StringHelper.deposit,
             style: context.textTheme.titleSmall,
           ),
           const Gap(10),
@@ -1717,7 +1717,8 @@ class _FilterViewState extends State<FilterView> {
               inactiveColor: Colors.grey,
               activeColor: const Color(0xffFF385C),
               showLabels: false,
-              interval: 1000,
+              interval: 1000, // Controls label intervals
+              stepSize: 1000, // Ensures the slider moves in steps of 1000
               labelFormatterCallback:
                   (dynamic actualValue, String formattedText) {
                 return actualValue == 99999
@@ -1854,7 +1855,8 @@ class _FilterViewState extends State<FilterView> {
             inactiveColor: Colors.grey,
             activeColor: const Color(0xffFF385C),
             showLabels: false,
-            interval: 1000,
+            interval: 1000, // Controls label intervals
+            stepSize: 1000, // Ensures the slider moves in steps of 1000
             labelFormatterCallback:
                 (dynamic actualValue, String formattedText) {
               return actualValue == 99999
@@ -2302,7 +2304,8 @@ class _FilterViewState extends State<FilterView> {
         ),
         if(viewModel.currentPropertyType.toLowerCase() != "rent")...{
           Text(
-            StringHelper.downPayment,
+            //StringHelper.downPayment,
+            StringHelper.deposit,
             style: context.textTheme.titleSmall,
           ),
           const Gap(10),
@@ -2418,7 +2421,8 @@ class _FilterViewState extends State<FilterView> {
               inactiveColor: Colors.grey,
               activeColor: const Color(0xffFF385C),
               showLabels: false,
-              interval: 1000,
+              interval: 1000, // Controls label intervals
+              stepSize: 1000, // Ensures the slider moves in steps of 1000
               labelFormatterCallback:
                   (dynamic actualValue, String formattedText) {
                 return actualValue == 99999
@@ -2555,7 +2559,8 @@ class _FilterViewState extends State<FilterView> {
             inactiveColor: Colors.grey,
             activeColor: const Color(0xffFF385C),
             showLabels: false,
-            interval: 1000,
+            interval: 1000, // Controls label intervals
+            stepSize: 1000, // Ensures the slider moves in steps of 1000
             labelFormatterCallback:
                 (dynamic actualValue, String formattedText) {
               return actualValue == 99999
@@ -3004,7 +3009,8 @@ class _FilterViewState extends State<FilterView> {
 
         if(viewModel.currentPropertyType.toLowerCase() != "rent")...{
           Text(
-            StringHelper.downPayment,
+            //StringHelper.downPayment,
+            StringHelper.deposit,
             style: context.textTheme.titleSmall,
           ),
           const Gap(10),
@@ -3120,7 +3126,8 @@ class _FilterViewState extends State<FilterView> {
               inactiveColor: Colors.grey,
               activeColor: const Color(0xffFF385C),
               showLabels: false,
-              interval: 1000,
+              interval: 1000, // Controls label intervals
+              stepSize: 1000, // Ensures the slider moves in steps of 1000
               labelFormatterCallback:
                   (dynamic actualValue, String formattedText) {
                 return actualValue == 99999
@@ -3258,7 +3265,8 @@ class _FilterViewState extends State<FilterView> {
             inactiveColor: Colors.grey,
             activeColor: const Color(0xffFF385C),
             showLabels: false,
-            interval: 1000,
+            interval: 1000, // Controls label intervals
+            stepSize: 1000, // Ensures the slider moves in steps of 1000
             labelFormatterCallback:
                 (dynamic actualValue, String formattedText) {
               return actualValue == 99999
@@ -3780,7 +3788,8 @@ class _FilterViewState extends State<FilterView> {
             inactiveColor: Colors.grey,
             activeColor: const Color(0xffFF385C),
             showLabels: false,
-            interval: 1000,
+            interval: 1000, // Controls label intervals
+            stepSize: 1000, // Ensures the slider moves in steps of 1000
             labelFormatterCallback:
                 (dynamic actualValue, String formattedText) {
               return actualValue == 99999
@@ -4299,7 +4308,8 @@ class _FilterViewState extends State<FilterView> {
             inactiveColor: Colors.grey,
             activeColor: const Color(0xffFF385C),
             showLabels: false,
-            interval: 1000,
+            interval: 1000, // Controls label intervals
+            stepSize: 1000, // Ensures the slider moves in steps of 1000
             labelFormatterCallback:
                 (dynamic actualValue, String formattedText) {
               return actualValue == 99999

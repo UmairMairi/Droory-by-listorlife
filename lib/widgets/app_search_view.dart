@@ -253,7 +253,7 @@ class _AppSearchViewState extends State<AppSearchView> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           AppEmptyWidget(),
-          Text("No results found."),
+         // Text("No results found."),
         ],
       );
     }
@@ -365,8 +365,16 @@ class _AppSearchViewState extends State<AppSearchView> {
       itemCount: products.length,
       itemBuilder: (context, index) {
         final product = products[index];
-        return GestureDetector(
-          onTap: () {
+        return AppProductItemWidget(
+          data: product,
+          onLikeTapped: () {
+            if (product.isFavourite == 1) {
+              product.isFavourite = 0;
+              return;
+            }
+            product.isFavourite = 1;
+          },
+          onItemTapped: () {
             if(!DbHelper.getIsGuest()){
               storeSearches(
                   id: product.id,
@@ -384,17 +392,6 @@ class _AppSearchViewState extends State<AppSearchView> {
             context.push(Routes.productDetails,
                 extra: product);
           },
-          child: AppProductItemWidget(
-            data: product,
-            onLikeTapped: () {
-              if (product.isFavourite == 1) {
-                product.isFavourite = 0;
-                return;
-              }
-              product.isFavourite = 1;
-            },
-            onItemTapped: () {  },
-          ),
         );
       }, separatorBuilder: (BuildContext context, int index) {
       return const Gap(20);
