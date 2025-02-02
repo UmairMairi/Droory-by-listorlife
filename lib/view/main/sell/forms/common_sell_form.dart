@@ -763,6 +763,12 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                           message: StringHelper.adTitleIsRequired);
                       return;
                     }
+                    if (viewModel.adTitleTextController.text.trim().length < 10) {
+                      DialogHelper.showToast(
+                        message: StringHelper.adLength,
+                      );
+                      return;
+                    }
                     if (viewModel.descriptionTextController.text
                         .trim()
                         .isEmpty) {

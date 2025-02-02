@@ -403,11 +403,11 @@ class SellFormsVM extends BaseViewModel {
     areaSizeTextController.text = "${item.area ?? ''}";
     completionStatusTextController.text = item.completionStatus ?? '';
     currentCompletion = item.completionStatus ?? '';
+    currentDeliveryTerm = item.deliveryTerm ?? '';
     deliveryTermTextController.text = item.deliveryTerm ?? '';
-
     amenities = item.productAmenities?.map((element) => element.amnityId).toList() ?? [];
   }
-  void resetTextFields() {
+  void resetTextFields() async{
     currentPropertyType = "Sell";
     currentFurnishing = "";
     currentAccessToUtilities = "";
@@ -463,7 +463,12 @@ class SellFormsVM extends BaseViewModel {
     selectedBrand = null;
     selectedModel = null;
     selectedSize = null;
-    addressTextController.text = DbHelper.getUserModel()?.address ?? '';
+    Position? position = await LocationHelper.getCurrentLocation();
+    if(position != null){
+      addressTextController.text = await LocationHelper.getAddressFromCoordinates(position.latitude, position.longitude);
+    }else{
+      addressTextController.text = DbHelper.getUserModel()?.address ?? '';
+    }
   }
 
   Future<List<CategoryModel>> getBrands({CategoryModel? data}) async {
@@ -801,7 +806,7 @@ class SellFormsVM extends BaseViewModel {
         response, (json) => ProductDetailModel.fromJson(json));
     DialogHelper.hideLoading();
     DialogHelper.showToast(message: model.message);
-    Navigator.pop(context);
+    Navigator.pop(context,true);
     /*Navigator.pushReplacement(
       context,
       MaterialPageRoute(

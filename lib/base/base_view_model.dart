@@ -25,8 +25,4 @@ abstract class BaseViewModel extends ChangeNotifier {
   void onClose() {
     // You can implement specific initialization logic here
   }
-
-  void callOnReady() {
-    onReady();
-  }
 }

@@ -295,6 +295,7 @@ class _MessageViewState extends State<MessageView> {
                         viewModel.sendMessage(
                             message: '$value',
                             type: 2,
+                            roomId: widget.chat?.lastMessageDetail?.roomId??"",
                             receiverId: widget.chat?.senderId ==
                                 DbHelper.getUserModel()?.id
                                 ? widget.chat?.receiverDetail?.id
@@ -305,6 +306,7 @@ class _MessageViewState extends State<MessageView> {
                       onSubmitted: (value) {
                         viewModel.sendMessage(
                             message: value,
+                            roomId: widget.chat?.lastMessageDetail?.roomId??"",
                             type: 1,
                             receiverId: widget.chat?.senderId ==
                                 DbHelper.getUserModel()?.id
@@ -322,6 +324,7 @@ class _MessageViewState extends State<MessageView> {
                           String value = await BaseClient.uploadImage(
                               imagePath: image);
                           viewModel.sendMessage(
+                              roomId: widget.chat?.lastMessageDetail?.roomId??"",
                               message: value,
                               type: 3,
                               receiverId: widget.chat?.senderId ==

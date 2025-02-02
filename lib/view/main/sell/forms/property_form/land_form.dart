@@ -572,7 +572,7 @@ class LandForm extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleSmall
               ),
               value: status,
-              groupValue: viewModel.currentPaymentOption,
+              groupValue: viewModel.currentPaymentOption.capitalized,
               onChanged: (String? value) {
                 viewModel.paymentTypeTextController.text = value ?? "";
                 viewModel.currentPaymentOption = value??"";
@@ -603,7 +603,7 @@ class LandForm extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleSmall
               ),
               value: status,
-              groupValue: viewModel.currentCompletion,
+              groupValue: viewModel.currentCompletion.capitalized,
               onChanged: (String? value) {
                 viewModel.completionStatusTextController.text = value ?? "";
                 viewModel.currentCompletion = value??"";
@@ -634,7 +634,7 @@ class LandForm extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleSmall
               ),
               value: status,
-              groupValue: viewModel.currentDeliveryTerm,
+              groupValue: viewModel.currentDeliveryTerm.capitalized,
               onChanged: (String? value) {
                 viewModel.deliveryTermTextController.text = value ?? "";
                 viewModel.currentDeliveryTerm = value??"";

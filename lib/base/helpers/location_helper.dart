@@ -8,7 +8,7 @@ class LocationHelper {
   static const double cairoLatitude = 31.2341262;
   static const double cairoLongitude = 30.0282809;
 
-  static Future<Position> getCurrentLocation() async {
+  static Future<Position?> getCurrentLocation() async {
     bool serviceEnabled;
     LocationPermission permission;
 
@@ -51,8 +51,23 @@ class LocationHelper {
     }
 
     // Get current position
-    return await Geolocator.getCurrentPosition(
+    // return await Geolocator.getCurrentPosition(
+    //     locationSettings: LocationSettings(accuracy: LocationAccuracy.high));
+
+
+    // Get current position
+    Position position = await Geolocator.getCurrentPosition(
         locationSettings: LocationSettings(accuracy: LocationAccuracy.high));
+
+    // Validate if the location is within Egypt
+    if (position.latitude < 22.0 ||
+        position.latitude > 31.7 ||
+        position.longitude < 25.0 ||
+        position.longitude > 35.0) {
+      return null;
+    }
+
+    return position;
   }
 
   static Future<String> getAddressFromCoordinates(

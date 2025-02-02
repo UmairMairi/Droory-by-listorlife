@@ -37,6 +37,7 @@ class FilterView extends StatefulWidget {
 
 class _FilterViewState extends State<FilterView> {
   SfRangeValues values = const SfRangeValues(00, 100000);
+  SfRangeValues salaryFromTo = const SfRangeValues(00, 100000);
   SfRangeValues downValues = const SfRangeValues(00, 100000);
   SfRangeValues areaValues = const SfRangeValues(00, 100000);
   FilterModel filter = FilterModel();
@@ -179,152 +180,160 @@ class _FilterViewState extends State<FilterView> {
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 15,
-              ),
-              const Divider(),
-              const SizedBox(
-                height: 15,
-              ),
-              Text(
-                StringHelper.price,
-                style: context.textTheme.titleSmall,
-              ),
-              const Gap(10),
-              Row(
-                children: [
-                  Expanded(
-                    child: SizedBox(
-                      width: context.width,
-                      height: 50,
-                      child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          textAlign: TextAlign.center,
-                          controller: viewModel.startPriceTextController,
-                          cursorColor: Colors.black,
-                          maxLength: 7,
-                          readOnly: true,
-                          onChanged: (value) {
-                            setState(() {
-                              if (value.isEmpty) {
-                                values = SfRangeValues(
-                                    0,
-                                    int.parse(
-                                        viewModel.endPriceTextController.text));
-                                return;
-                              }
-
-                              values = SfRangeValues(
-                                  int.parse(
-                                      viewModel.startPriceTextController.text),
-                                  int.parse(
-                                      viewModel.endPriceTextController.text));
-                            });
-                          },
-                          decoration: InputDecoration(
-                            counterText: "",
-                              fillColor: const Color(0xffFCFCFD),
-                              hintText: StringHelper.egp0,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide:
-                                    const BorderSide(color: Color(0xffEFEFEF)),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide:
-                                    const BorderSide(color: Color(0xffEFEFEF)),
-                              ))),
+              Visibility(
+                visible: filter.categoryId != "9",
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 15,
                     ),
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  Text(
-                    StringHelper.to,
-                    style: context.textTheme.titleSmall,
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  Expanded(
-                    child: SizedBox(
-                      width: context.width,
-                      height: 50,
-                      child: TextFormField(
-                        keyboardType: TextInputType.number,
-                        textAlign: TextAlign.center,
-                        controller: viewModel.endPriceTextController,
-                        cursorColor: Colors.black,
-                        maxLength: 7,
-                        readOnly: true,
-                        onChanged: (value) {
-                          setState(() {
-                            if (value.isEmpty) {
-                              values = SfRangeValues(
-                                  int.parse(
-                                      viewModel.startPriceTextController.text),
-                                  100000);
-                              return;
-                            }
+                    const Divider(),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Text(
+                      StringHelper.price,
+                      style: context.textTheme.titleSmall,
+                    ),
+                    const Gap(10),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: SizedBox(
+                            width: context.width,
+                            height: 50,
+                            child: TextFormField(
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.center,
+                                controller: viewModel.startPriceTextController,
+                                cursorColor: Colors.black,
+                                maxLength: 7,
+                                readOnly: true,
+                                onChanged: (value) {
+                                  setState(() {
+                                    if (value.isEmpty) {
+                                      values = SfRangeValues(
+                                          0,
+                                          int.parse(
+                                              viewModel.endPriceTextController.text));
+                                      return;
+                                    }
 
-                            values = SfRangeValues(
-                                int.parse(
-                                    viewModel.startPriceTextController.text),
-                                int.parse(
-                                    viewModel.endPriceTextController.text));
+                                    values = SfRangeValues(
+                                        int.parse(
+                                            viewModel.startPriceTextController.text),
+                                        int.parse(
+                                            viewModel.endPriceTextController.text));
+                                  });
+                                },
+                                decoration: InputDecoration(
+                                    counterText: "",
+                                    fillColor: const Color(0xffFCFCFD),
+                                    hintText: StringHelper.egp0,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide:
+                                      const BorderSide(color: Color(0xffEFEFEF)),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide:
+                                      const BorderSide(color: Color(0xffEFEFEF)),
+                                    ))),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          StringHelper.to,
+                          style: context.textTheme.titleSmall,
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Expanded(
+                          child: SizedBox(
+                            width: context.width,
+                            height: 50,
+                            child: TextFormField(
+                              keyboardType: TextInputType.number,
+                              textAlign: TextAlign.center,
+                              controller: viewModel.endPriceTextController,
+                              cursorColor: Colors.black,
+                              maxLength: 7,
+                              readOnly: true,
+                              onChanged: (value) {
+                                setState(() {
+                                  if (value.isEmpty) {
+                                    values = SfRangeValues(
+                                        int.parse(
+                                            viewModel.startPriceTextController.text),
+                                        100000);
+                                    return;
+                                  }
+
+                                  values = SfRangeValues(
+                                      int.parse(
+                                          viewModel.startPriceTextController.text),
+                                      int.parse(
+                                          viewModel.endPriceTextController.text));
+                                });
+                              },
+                              decoration: InputDecoration(
+                                  counterText: "",
+                                  fillColor: const Color(0xffFCFCFD),
+                                  hintText: "EGP0",
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide:
+                                      const BorderSide(color: Color(0xffEFEFEF))),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                          color: Color(0xffEFEFEF)))),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    StatefulBuilder(builder: (context, setState) {
+                      return SfRangeSlider(
+                        min: 0,
+                        max: 100000,
+                        values: values,
+                        inactiveColor: Colors.grey,
+                        activeColor: const Color(0xffFF385C),
+                        showLabels: false,
+                        interval: 1000,
+                        labelFormatterCallback:
+                            (dynamic actualValue, String formattedText) {
+                          return actualValue == 99999
+                              ? ' $formattedText+'
+                              : ' $formattedText';
+                        },
+                        onChanged: (SfRangeValues newValues) {
+                          viewModel.startPriceTextController.text =
+                          "${newValues.start.round()}";
+                          viewModel.endPriceTextController.text =
+                          "${newValues.end.round()}";
+                          setState(() {
+                            values = newValues;
                           });
                         },
-                        decoration: InputDecoration(
-                          counterText: "",
-                            fillColor: const Color(0xffFCFCFD),
-                            hintText: "EGP0",
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide:
-                                    const BorderSide(color: Color(0xffEFEFEF))),
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: const BorderSide(
-                                    color: Color(0xffEFEFEF)))),
-                      ),
+                      );
+                    }),
+                    const SizedBox(
+                      height: 10,
                     ),
-                  ),
-                ],
+                    const Divider(),
+                  ],
+                ),
               ),
-              const SizedBox(
-                height: 15,
-              ),
-              StatefulBuilder(builder: (context, setState) {
-                return SfRangeSlider(
-                  min: 0,
-                  max: 100000,
-                  values: values,
-                  inactiveColor: Colors.grey,
-                  activeColor: const Color(0xffFF385C),
-                  showLabels: false,
-                  interval: 1000,
-                  labelFormatterCallback:
-                      (dynamic actualValue, String formattedText) {
-                    return actualValue == 99999
-                        ? ' $formattedText+'
-                        : ' $formattedText';
-                  },
-                  onChanged: (SfRangeValues newValues) {
-                    viewModel.startPriceTextController.text =
-                        "${newValues.start.round()}";
-                    viewModel.endPriceTextController.text =
-                        "${newValues.end.round()}";
-                    setState(() {
-                      values = newValues;
-                    });
-                  },
-                );
-              }),
-              const SizedBox(
-                height: 10,
-              ),
-              const Divider(),
               const SizedBox(
                 height: 10,
               ),
@@ -339,6 +348,7 @@ class _FilterViewState extends State<FilterView> {
                 },
                 options: categoriesList,
                 onSelected: (CategoryModel? value) {
+                  resetFilters();
                   setState(() {
                     filtersCat = getFiltersByCategory(value?.id);
                   });
@@ -346,6 +356,9 @@ class _FilterViewState extends State<FilterView> {
                   getSubCategory(id: "${value?.id}");
                   viewModel.categoryTextController.text = value?.name ?? '';
                   filter.categoryId = "${value?.id}";
+                  if(filter.categoryId == "8" || filter.categoryId == "8" ){
+                    viewModel.itemCondition = 0;
+                  }
                   filter.subcategoryId = "";
                   viewModel.currentPropertyType = "Sell";
                   brands.clear();
@@ -354,6 +367,7 @@ class _FilterViewState extends State<FilterView> {
                   viewModel.brandsTextController.clear();
                   viewModel.modelTextController.clear();
                   viewModel.subCategoryTextController.clear();
+
                 },
                 //hint: StringHelper.selectCategory,
                 // readOnly: true,
@@ -762,56 +776,197 @@ class _FilterViewState extends State<FilterView> {
                   //   },
                   // ),
                 ),
-                const Gap(10),
-                CommonDropdown(
-                  title: StringHelper.salaryPeriod,
-                  hint:viewModel.jobSalaryTextController.text,
-                  options: viewModel.salaryPeriodList,
-                  onSelected: (String? value) {
-                    viewModel.jobSalaryTextController.text = value??"";
-                  },
-                  // controller: viewModel.jobSalaryTextController,
-                  // readOnly: true,
-                  // suffix: PopupMenuButton(
-                  //   clipBehavior: Clip.hardEdge,
-                  //   icon: const Icon(
-                  //     Icons.arrow_drop_down,
-                  //     color: Colors.black,
-                  //   ),
-                  //   onSelected: (String value) {
-                  //     viewModel.jobSalaryTextController.text = value;
-                  //   },
-                  //   itemBuilder: (BuildContext context) {
-                  //     return viewModel.salaryPeriodList.map((option) {
-                  //       return PopupMenuItem(
-                  //         value: option,
-                  //         child: Text(option),
-                  //       );
-                  //     }).toList();
-                  //   },
-                  // ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Text(
+                  StringHelper.salary,
+                  style: context.textTheme.titleSmall,
                 ),
                 const Gap(10),
-                AppTextField(
-                  title: StringHelper.salaryFrom,
-                  hint: StringHelper.enter,
-                  controller: viewModel.jobSalaryFromController,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(8),
+                Row(
+                  children: [
+                    Expanded(
+                      child: SizedBox(
+                        width: context.width,
+                        height: 50,
+                        child: TextFormField(
+                            keyboardType: TextInputType.number,
+                            textAlign: TextAlign.center,
+                            controller: viewModel.jobSalaryFromController,
+                            cursorColor: Colors.black,
+                            maxLength: 7,
+                            readOnly: true,
+                            onChanged: (value) {
+                              setState(() {
+                                if (value.isEmpty) {
+                                  salaryFromTo = SfRangeValues(
+                                      0,
+                                      int.parse(
+                                          viewModel.jobSalaryToController.text));
+                                  return;
+                                }
+
+                                salaryFromTo = SfRangeValues(
+                                    int.parse(
+                                        viewModel.jobSalaryFromController.text),
+                                    int.parse(
+                                        viewModel.jobSalaryToController.text));
+                              });
+                            },
+                            decoration: InputDecoration(
+                                counterText: "",
+                                fillColor: const Color(0xffFCFCFD),
+                                hintText: StringHelper.egp0,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                  const BorderSide(color: Color(0xffEFEFEF)),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                  const BorderSide(color: Color(0xffEFEFEF)),
+                                ))),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      StringHelper.to,
+                      style: context.textTheme.titleSmall,
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Expanded(
+                      child: SizedBox(
+                        width: context.width,
+                        height: 50,
+                        child: TextFormField(
+                          keyboardType: TextInputType.number,
+                          textAlign: TextAlign.center,
+                          controller: viewModel.jobSalaryToController,
+                          cursorColor: Colors.black,
+                          maxLength: 7,
+                          readOnly: true,
+                          onChanged: (value) {
+                            setState(() {
+                              if (value.isEmpty) {
+                                salaryFromTo = SfRangeValues(
+                                    int.parse(
+                                        viewModel.jobSalaryFromController.text),
+                                    100000);
+                                return;
+                              }
+
+                              salaryFromTo = SfRangeValues(
+                                  int.parse(
+                                      viewModel.jobSalaryFromController.text),
+                                  int.parse(
+                                      viewModel.jobSalaryToController.text));
+                            });
+                          },
+                          decoration: InputDecoration(
+                              counterText: "",
+                              fillColor: const Color(0xffFCFCFD),
+                              hintText: "EGP0",
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide:
+                                  const BorderSide(color: Color(0xffEFEFEF))),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                      color: Color(0xffEFEFEF)))),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
-                const Gap(10),
-                AppTextField(
-                  title: StringHelper.salaryTo,
-                  hint: StringHelper.enter,
-                  controller: viewModel.jobSalaryToController,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(8),
-                  ],
+                const SizedBox(
+                  height: 15,
                 ),
-                const Gap(10),
+                StatefulBuilder(builder: (context, setState) {
+                  return SfRangeSlider(
+                    min: 0,
+                    max: 100000,
+                    values: salaryFromTo,
+                    inactiveColor: Colors.grey,
+                    activeColor: const Color(0xffFF385C),
+                    showLabels: false,
+                    interval: 1000,
+                    labelFormatterCallback:
+                        (dynamic actualValue, String formattedText) {
+                      return actualValue == 99999
+                          ? ' $formattedText+'
+                          : ' $formattedText';
+                    },
+                    onChanged: (SfRangeValues newValues) {
+                      viewModel.jobSalaryFromController.text =
+                      "${newValues.start.round()}";
+                      viewModel.jobSalaryToController.text =
+                      "${newValues.end.round()}";
+                      setState(() {
+                        salaryFromTo = newValues;
+                      });
+                    },
+                  );
+                }),
+                const SizedBox(
+                  height: 10,
+                ),
+                // const Gap(10),
+                // CommonDropdown(
+                //   title: StringHelper.salaryPeriod,
+                //   hint:viewModel.jobSalaryTextController.text,
+                //   options: viewModel.salaryPeriodList,
+                //   onSelected: (String? value) {
+                //     viewModel.jobSalaryTextController.text = value??"";
+                //   },
+                //   // controller: viewModel.jobSalaryTextController,
+                //   // readOnly: true,
+                //   // suffix: PopupMenuButton(
+                //   //   clipBehavior: Clip.hardEdge,
+                //   //   icon: const Icon(
+                //   //     Icons.arrow_drop_down,
+                //   //     color: Colors.black,
+                //   //   ),
+                //   //   onSelected: (String value) {
+                //   //     viewModel.jobSalaryTextController.text = value;
+                //   //   },
+                //   //   itemBuilder: (BuildContext context) {
+                //   //     return viewModel.salaryPeriodList.map((option) {
+                //   //       return PopupMenuItem(
+                //   //         value: option,
+                //   //         child: Text(option),
+                //   //       );
+                //   //     }).toList();
+                //   //   },
+                //   // ),
+                // ),
+                // const Gap(10),
+                // AppTextField(
+                //   title: StringHelper.salary,
+                //   hint: StringHelper.enter,
+                //   controller: viewModel.jobSalaryFromController,
+                //   inputFormatters: [
+                //     FilteringTextInputFormatter.digitsOnly,
+                //     LengthLimitingTextInputFormatter(8),
+                //   ],
+                // ),
+                // const Gap(10),
+                // AppTextField(
+                //   title: StringHelper.salaryTo,
+                //   hint: StringHelper.enter,
+                //   controller: viewModel.jobSalaryToController,
+                //   inputFormatters: [
+                //     FilteringTextInputFormatter.digitsOnly,
+                //     LengthLimitingTextInputFormatter(8),
+                //   ],
+                // ),
+                //const Gap(10),
               ],
               AppTextField(
                 title: StringHelper.location,
@@ -938,9 +1093,17 @@ class _FilterViewState extends State<FilterView> {
                         : StringHelper.used;
                   }
 
-                  if(values.start > 0 && values.end <= 100000){
-                    filter.minPrice = viewModel.startPriceTextController.text.trim();
-                    filter.maxPrice = viewModel.endPriceTextController.text.trim();
+                  if((filter.categoryId??"").isNotEmpty && filter.categoryId != '9' ) {
+                    if (values.start >= 0 && values.end <= 100000) {
+                      filter.minPrice =
+                          viewModel.startPriceTextController.text.trim();
+                      filter.maxPrice =
+                          viewModel.endPriceTextController.text.trim();
+                    }
+                  }
+                  if (filter.categoryId == '9' && salaryFromTo.start >= 0 && values.end <= 100000) {
+                  filter.salleryFrom = viewModel.jobSalaryFromController.text.trim();
+                  filter.salleryTo = viewModel.jobSalaryToController.text.trim();
                   }
 
                   if ("${viewModel.latitude}" != "0.0" && "${viewModel.longitude}" != "0.0") {
@@ -1007,14 +1170,18 @@ class _FilterViewState extends State<FilterView> {
                   if (viewModel.accessToUtilitiesTextController.text.trim().isNotEmpty) {
                     filter.accessToUtilities = viewModel.accessToUtilitiesTextController.text.trim();
                   }
-                  if(downValues.start > 0 && downValues.end <= 100000){
-                    filter.minDownPrice = viewModel.startDownPriceTextController.text.trim();
-                    filter.maxDownPrice = viewModel.endDownPriceTextController.text.trim();
+                  if(filter.categoryId == "11" && ["83", "84", "87"].contains(filter.subcategoryId)) {
+                    if (downValues.start >= 0 && downValues.end <= 100000) {
+                      filter.minDownPrice =
+                          viewModel.startDownPriceTextController.text.trim();
+                      filter.maxDownPrice =
+                          viewModel.endDownPriceTextController.text.trim();
+                    }
                   }
 
-                  if(areaValues.start > 0 && areaValues.end <= 100000){
-                    filter.maxAreaSize = viewModel.startAreaTextController.text.trim();
-                    filter.minAreaSize = viewModel.endAreaTextController.text.trim();
+                  if (filter.categoryId == "11" && areaValues.start >= 0 && areaValues.end <= 100000) {
+                  filter.maxAreaSize = viewModel.startAreaTextController.text.trim();
+                  filter.minAreaSize = viewModel.endAreaTextController.text.trim();
                   }
 
                   if (viewModel.kmDrivenTextController.text.trim().isNotEmpty) {
@@ -1084,7 +1251,7 @@ class _FilterViewState extends State<FilterView> {
 
       brands.clear();
       filter = widget.filters!;
-
+      vm.currentPropertyType = filter.propertyFor??"";
       vm.itemCondition = (filter.itemCondition??"").isEmpty
           ? 0
           : (filter.itemCondition?.toLowerCase().contains('used') ?? false) ? 2 : 1;
@@ -1159,6 +1326,7 @@ class _FilterViewState extends State<FilterView> {
     vm.furnishingStatusTextController.clear();
     vm.accessToUtilitiesTextController.clear();
     vm.ownershipStatusTextController.clear();
+    vm.propertyForTypeTextController.clear();
     vm.paymentTypeTextController.clear();
     vm.listedByTextController.clear();
     vm.rentalTermsTextController.clear();
@@ -1183,6 +1351,15 @@ class _FilterViewState extends State<FilterView> {
     vm.endDownPriceTextController.text = '100000';
     vm.startAreaTextController.text = '0';
     vm.endAreaTextController.text = '100000';
+    salaryFromTo = SfRangeValues(
+        int.parse(vm.jobSalaryFromController.text.isEmpty
+            ? '0'
+            : vm.jobSalaryFromController.text),
+        int.parse(vm.jobSalaryToController.text.isEmpty
+            ? '100000'
+            : vm.jobSalaryToController.text));
+    vm.jobSalaryFromController.text = '0';
+    vm.jobSalaryToController.text = '100000';
     setState(() {});
   }
 
@@ -1255,27 +1432,27 @@ class _FilterViewState extends State<FilterView> {
     switch (value?.id) {
       case 1:
         filter.startDate = DateFormat('yyyy-MM-dd').format(now);
-        filter.endDate = DateFormat('yyyy-MM-dd').format(now);
+        filter.endDate = DateFormat('yyyy-MM-dd').format(now.add(const Duration(days: 1)));
         break;
       case 2:
         filter.startDate = DateFormat('yyyy-MM-dd')
             .format(now.subtract(const Duration(days: 1)));
         filter.endDate = DateFormat('yyyy-MM-dd')
-            .format(now.subtract(const Duration(days: 1)));
+            .format(now);
         break;
       case 3:
-        filter.startDate = DateFormat('yyyy-MM-dd').format(now);
-        filter.endDate = DateFormat('yyyy-MM-dd')
+        filter.endDate = DateFormat('yyyy-MM-dd').format(now);
+        //filter.startDate = DateFormat('yyyy-MM-dd').format(now);
+        filter.startDate = DateFormat('yyyy-MM-dd')
             .format(now.subtract(const Duration(days: 7)));
         break;
       case 4:
-        filter.startDate = DateFormat('yyyy-MM-dd').format(now);
-        filter.endDate = DateFormat('yyyy-MM-dd')
+        filter.endDate = DateFormat('yyyy-MM-dd').format(now);
+        filter.startDate = DateFormat('yyyy-MM-dd')
             .format(now.subtract(const Duration(days: 30)));
         break;
     }
   }
-
 
   Widget commonWidget(BuildContext context, String? subcategoryId,HomeVM viewModel){
     switch(subcategoryId){
@@ -1293,6 +1470,7 @@ class _FilterViewState extends State<FilterView> {
         return Container();
     }
   }
+
   Widget apartmentWidget(HomeVM viewModel) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

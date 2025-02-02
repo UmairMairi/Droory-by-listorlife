@@ -28,7 +28,9 @@ class NotificationView extends StatefulWidget {
 }
 
 class _NotificationViewState extends State<NotificationView> {
-  Future<List<NotificationDataModel>> getNotificationList() async {
+
+  StreamController<List<NotificationDataModel>> notificationStream = StreamController<List<NotificationDataModel>>.broadcast();
+  Future<void> getNotificationList() async {
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.getNotificationUrl(), requestType: RequestType.get);
 
@@ -38,7 +40,13 @@ class _NotificationViewState extends State<NotificationView> {
         MapResponse<NotificationListModel>.fromJson(
             response, (json) => NotificationListModel.fromJson(json));
 
-    return model.body?.data ?? [];
+    notificationStream.sink.add (model.body?.data ?? []);
+  }
+
+  @override
+  void initState() {
+    getNotificationList();
+    super.initState();
   }
 
   String getCreatedAt({String? time}) {
@@ -55,8 +63,8 @@ class _NotificationViewState extends State<NotificationView> {
           title: Text(StringHelper.notifications),
           centerTitle: true,
         ),
-        body: FutureBuilder<List<NotificationDataModel>>(
-            future: getNotificationList(),
+        body: StreamBuilder<List<NotificationDataModel>>(
+            stream: notificationStream.stream,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 List<NotificationDataModel> notifications = snapshot.data ?? [];
@@ -76,10 +84,10 @@ class _NotificationViewState extends State<NotificationView> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10)
                               ),
-                              leading: const ImageView.rect(
-                                  image: AssetsRes.IC_NOTIFICATION,
-                                  width: 50,
-                                  height: 50),
+                              // leading: const ImageView.rect(
+                              //     image: AssetsRes.IC_NOTIFICATION,
+                              //     width: 50,
+                              //     height: 50),
                               onTap: () {
                                 if (notifications[index].productId != null) {
                                   context.push(Routes.myProduct,

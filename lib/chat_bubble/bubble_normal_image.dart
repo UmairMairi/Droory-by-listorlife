@@ -206,6 +206,7 @@ class _DetailScreenState extends State<_DetailScreen> {
   Widget build(BuildContext context) {
     return GestureDetector(
       child: Scaffold(
+        appBar: AppBar(),
         body: Center(
           child: Hero(
             tag: widget.tag,

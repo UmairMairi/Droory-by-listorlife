@@ -761,6 +761,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                       );
                       return;
                     }
+
                     if (viewModel.descriptionTextController.text
                         .trim()
                         .isEmpty) {
@@ -834,6 +835,12 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                     if (viewModel.adTitleTextController.text.trim().isEmpty) {
                       DialogHelper.showToast(
                           message: StringHelper.adTitleIsRequired);
+                      return;
+                    }
+                    if (viewModel.adTitleTextController.text.trim().length < 10) {
+                      DialogHelper.showToast(
+                        message: StringHelper.adLength,
+                      );
                       return;
                     }
                     if (viewModel.descriptionTextController.text

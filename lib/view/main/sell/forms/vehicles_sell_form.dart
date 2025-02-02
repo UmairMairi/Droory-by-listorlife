@@ -35,6 +35,10 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
 
   @override
   Widget build(BuildContext context, SellFormsVM viewModel) {
+    int currentYear = DateTime.now().year;
+    for (int i = 0; i < 20; i++) {
+      viewModel.yearsType.add((currentYear - i).toString());
+    }
     return Form(
       key: viewModel.formKey,
       child: KeyboardActions(
@@ -304,27 +308,66 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                 )
               },
               // Year Text Field
-              AppTextField(
+              CommonDropdown(
                 title: StringHelper.year,
                 titleColor: Colors.black,
-                controller: viewModel.yearTextController,
-                readOnly: true,
-                focusNode: viewModel.yearText,
-                hint: StringHelper.enter,
-                hintStyle:
-                    const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                fillColor: Colors.white,
-                contentPadding: const EdgeInsets.only(left: 20),
-                inputFormatters: [
-                  LengthLimitingTextInputFormatter(4),
-                  FilteringTextInputFormatter.digitsOnly,
-                  FilteringTextInputFormatter.deny(
-                    RegExp(viewModel.regexToRemoveEmoji),
-                  ),
-                ],
-                keyboardType: TextInputType.number,
-                textInputAction: TextInputAction.done,
+                hint: viewModel.yearTextController.text,
+                onSelected: (String? value) {
+                  viewModel.yearTextController.text = value ?? '';
+                },
+                options: viewModel.yearsType,
+                // readOnly: true,
+                // focusNode: viewModel.yearText,
+                // hint: StringHelper.enter,
+                // hintStyle:
+                //     const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                // fillColor: Colors.white,
+                // contentPadding: const EdgeInsets.only(left: 20),
+                // suffix: PopupMenuButton<String>(
+                //   icon: const Icon(Icons.arrow_drop_down),
+                //   onSelected: (value) {
+                //     viewModel.yearTextController.text = value ?? '';
+                //   },
+                //   itemBuilder: (BuildContext context) {
+                //     return viewModel.yearsType.map((option) {
+                //       return PopupMenuItem(
+                //         value: option,
+                //         child: Text(option),
+                //       );
+                //     }).toList();
+                //   },
+                // ),
+                // inputFormatters: [
+                //   LengthLimitingTextInputFormatter(4),
+                //   FilteringTextInputFormatter.digitsOnly,
+                //   FilteringTextInputFormatter.deny(
+                //     RegExp(viewModel.regexToRemoveEmoji),
+                //   ),
+                // ],
+                // keyboardType: TextInputType.number,
+                // textInputAction: TextInputAction.done,
               ),
+              // AppTextField(
+              //   title: StringHelper.year,
+              //   titleColor: Colors.black,
+              //   controller: viewModel.yearTextController,
+              //   readOnly: true,
+              //   focusNode: viewModel.yearText,
+              //   hint: StringHelper.enter,
+              //   hintStyle:
+              //       const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+              //   fillColor: Colors.white,
+              //   contentPadding: const EdgeInsets.only(left: 20),
+              //   inputFormatters: [
+              //     LengthLimitingTextInputFormatter(4),
+              //     FilteringTextInputFormatter.digitsOnly,
+              //     FilteringTextInputFormatter.deny(
+              //       RegExp(viewModel.regexToRemoveEmoji),
+              //     ),
+              //   ],
+              //   keyboardType: TextInputType.number,
+              //   textInputAction: TextInputAction.done,
+              // ),
               // KM Driven Text Field
               Visibility(
                 visible: false,
@@ -552,6 +595,12 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                           message: StringHelper.adTitleIsRequired);
                       return;
                     }
+                    if (viewModel.adTitleTextController.text.trim().length < 10) {
+                      DialogHelper.showToast(
+                        message: StringHelper.adLength,
+                      );
+                      return;
+                    }
                     if (viewModel.descriptionTextController.text
                         .trim()
                         .isEmpty) {
@@ -625,6 +674,12 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                     if (viewModel.adTitleTextController.text.trim().isEmpty) {
                       DialogHelper.showToast(
                           message: StringHelper.adTitleIsRequired);
+                      return;
+                    }
+                    if (viewModel.adTitleTextController.text.trim().length < 10) {
+                      DialogHelper.showToast(
+                        message: StringHelper.adLength,
+                      );
                       return;
                     }
                     if (viewModel.descriptionTextController.text

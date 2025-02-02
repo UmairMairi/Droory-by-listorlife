@@ -50,7 +50,4 @@ class _BaseViewState<T extends BaseViewModel> extends State<BaseView<T>>  with A
   @override
   bool get wantKeepAlive => true;
 
-  void triggerOnReady() {
-    viewModel.callOnReady();
-  }
 }

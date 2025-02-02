@@ -16,70 +16,34 @@ import '../../widgets/app_elevated_button.dart';
 import '../../widgets/card_swipe_widget.dart';
 import '../../widgets/common_grid_view.dart';
 
-class MyProductView extends BaseView<ProductVM> {
+class MyProductView extends StatefulWidget {
   final ProductDetailModel? data;
   const MyProductView({super.key, this.data});
 
   @override
-  Widget build(BuildContext context, ProductVM viewModel) {
+  State<MyProductView> createState() => _MyProductViewState();
+}
+
+class _MyProductViewState extends State<MyProductView> {
+
+  late  ProductVM viewModel;
+
+  @override
+  void initState() {
+    viewModel = context.read<ProductVM>();
+    viewModel.getMyProductDetails(id: widget.data?.id);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: !viewModel.isAppBarVisible?AppBar(backgroundColor: Colors.transparent,automaticallyImplyLeading: false,toolbarHeight: 0,elevation: 0,):null,
-
-      /*appBar: AppBar(
-        title: const Text('Details'),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () async {
-              */ /*   final dynamicLink =
-                  await DynamicLinkHelper.createDynamicLink("${data?.id}");
-              debugPrint(dynamicLink.toString());
-
-              Share.share(
-                  'Hello, Please check this useful product on following link \n$dynamicLink',
-                  subject: 'Check this issue');*/ /*
-
-              DialogHelper.showToast(message: "Coming Soon");
-            },
-            icon: const Icon(Icons.share_outlined),
-          ),
-          PopupMenuButton<int>(
-            icon: const Icon(
-              Icons.more_vert_outlined,
-            ),
-            offset: const Offset(0, 40),
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(15.0))),
-            onSelected: (int value) {
-              var vm = context.read<MyAdsVM>();
-
-              vm.handelPopupMenuItemClick(
-                  context: context, index: value, item: data);
-            },
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
-              PopupMenuItem(
-                value: 1,
-                child: Text(StringHelper.edit),
-              ),
-              PopupMenuItem(
-                value: 2,
-                child: Text(StringHelper.deactivate),
-              ),
-              PopupMenuItem(
-                value: 3,
-                child: Text(StringHelper.remove),
-              ),
-            ],
-          )
-        ],
-      ),*/
-      body: FutureBuilder<ProductDetailModel?>(
-          future: viewModel.getProductDetails(id: data?.id),
+      body: StreamBuilder<ProductDetailModel?>(
+          stream:viewModel.productStream.stream,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               ProductDetailModel? productDetails = snapshot.data;
-              //data?.productMedias?.insert(0, ProductMedias(media: data.image));
-
               return SingleChildScrollView(
                 controller: viewModel.scrollController,
                 child: Column(
@@ -343,19 +307,27 @@ class MyProductView extends BaseView<ProductVM> {
                                   borderRadius: BorderRadius.circular(5),
                                   color: Colors.white,
                                 ),
-                                child: GridView(
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  padding: const EdgeInsets.all(10),
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 3,
-                                          mainAxisExtent: 50,
-                                          mainAxisSpacing: 5,
-                                          crossAxisSpacing: 20),
-                                  children: viewModel.getSpecifications(
-                                      context: context, data: productDetails),
-                                ),
+                                child: Wrap(
+                                  spacing: 20, // Horizontal spacing between items
+                                  runSpacing: 15, // Vertical spacing between items
+                                  children: viewModel
+                                      .getSpecifications(context: context, data: productDetails)
+                                      .map((spec) => SizedBox(child: spec))
+                                      .toList(),
+                                )
+                                // child: GridView(
+                                //   shrinkWrap: true,
+                                //   physics: const NeverScrollableScrollPhysics(),
+                                //   padding: const EdgeInsets.all(10),
+                                //   gridDelegate:
+                                //       const SliverGridDelegateWithFixedCrossAxisCount(
+                                //           crossAxisCount: 3,
+                                //           mainAxisExtent: 50,
+                                //           mainAxisSpacing: 5,
+                                //           crossAxisSpacing: 20),
+                                //   children: viewModel.getSpecifications(
+                                //       context: context, data: productDetails),
+                                // ),
                               ),
                             }
                           },
@@ -485,10 +457,12 @@ class MyProductView extends BaseView<ProductVM> {
           }),
     );
   }
+
   String parseAmount(dynamic amount){
     if("${amount??""}".isEmpty)return "0";
     return num.parse("${amount??0}").toStringAsFixed(0);
   }
+
   getPropertyInformation(
       {required BuildContext context, ProductDetailModel? data}) {
     {
@@ -525,9 +499,48 @@ class MyProductView extends BaseView<ProductVM> {
         specs.add(_buildInfoRow(context,
             "${data?.completionStatus?.capitalized}", '✅', 'Completion Status'));
       }
+
       if ((data?.deliveryTerm??"").isNotEmpty) {
         specs.add(_buildInfoRow(context, (data?.deliveryTerm??"").capitalized,
             '🚚', 'Delivery Term'));
+      }
+
+      /// new data add without icon
+      if ((data?.type??"").isNotEmpty) {
+        specs.add(_buildInfoRow(
+            context, "${data?.type?.capitalized}", '💳', 'Property Type'));
+      }
+      if ((data?.level??"") .isNotEmpty) {
+        specs.add(_buildInfoRow(context,
+            "${data?.level?.capitalized}", '✅', 'Level'));
+      }
+      if ((data?.buildingAge??"") .isNotEmpty) {
+        specs.add(_buildInfoRow(context,
+            "${data?.buildingAge?.capitalized}", '✅', 'Building Age'));
+      }
+      if ((data?.listedBy??"") .isNotEmpty) {
+        specs.add(_buildInfoRow(context,
+            "${data?.listedBy?.capitalized}", '✅', 'Listed By'));
+      }
+      if ((data?.rentalPrice??"") .isNotEmpty) {
+        specs.add(_buildInfoRow(context,
+            num.parse("${data?.rentalPrice??0}").toStringAsFixed(0), '✅', 'Rental Price'));
+      }
+      if ((data?.rentalTerm??"") .isNotEmpty) {
+        specs.add(_buildInfoRow(context,
+            "${data?.rentalTerm?.capitalized}", '✅', 'Rental Term'));
+      }
+      if ((data?.deposit??"") .isNotEmpty) {
+        specs.add(_buildInfoRow(context,
+            num.parse("${data?.deposit??0}").toStringAsFixed(0), '✅', 'Deposit'));
+      }
+      if ((data?.insurance??"") .isNotEmpty) {
+        specs.add(_buildInfoRow(context,
+            "${data?.insurance?.capitalized}", '✅', 'Insurance'));
+      }
+      if ((data?.accessToUtilities??"") .isNotEmpty) {
+        specs.add(_buildInfoRow(context,
+            "${data?.accessToUtilities?.capitalized}", '✅', 'Access To Utilities'));
       }
       return Column(
         mainAxisSize: MainAxisSize.min,
@@ -538,6 +551,7 @@ class MyProductView extends BaseView<ProductVM> {
     }
   }
 
+  // getPropertyInformation(
   Widget _buildInfoRow(
       BuildContext context, String label, String icon, String value) {
     return Padding(

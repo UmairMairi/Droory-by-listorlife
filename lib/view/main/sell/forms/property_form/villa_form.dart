@@ -806,7 +806,7 @@ class VillaForm extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleSmall
               ),
               value: status,
-              groupValue: viewModel.currentCompletion,
+              groupValue: viewModel.currentCompletion.capitalized,
               onChanged: (String? value) {
                 viewModel.completionStatusTextController.text = value ?? "";
                 viewModel.currentCompletion = value??"";
@@ -837,7 +837,7 @@ class VillaForm extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleSmall
               ),
               value: status,
-              groupValue: viewModel.currentDeliveryTerm,
+              groupValue: viewModel.currentDeliveryTerm.capitalized,
               onChanged: (String? value) {
                 viewModel.deliveryTermTextController.text = value ?? "";
                 viewModel.currentDeliveryTerm = value??"";

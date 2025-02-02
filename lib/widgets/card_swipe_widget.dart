@@ -4,6 +4,7 @@ import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/models/product_detail_model.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 import 'package:list_and_life/widgets/image_zoom_screen.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../res/assets_res.dart';
 
@@ -196,24 +197,43 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget>
   Widget _buildDots({required BuildContext context}) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: List.generate(bannerImages.length, (index) {
-          return Container(
-            margin: const EdgeInsets.symmetric(horizontal: 5),
-            width: 10,
-            height: 10,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: _currentPage == index
-                  ? Theme.of(context).primaryColor
-                  : Colors.grey.withOpacity(0.8),
-            ),
-          );
-        }),
+      child: SmoothPageIndicator(
+          controller: _pageController,  // PageController
+          count:  bannerImages.length,
+          effect:  ScrollingDotsEffect(
+            dotHeight: 10,
+            dotWidth: 10,
+            dotColor: Colors.grey.withOpacity(0.8),
+            activeDotColor: Theme.of(context).primaryColor
+          ),
+          onDotClicked: (index){
+          }
       ),
     );
   }
+
+
+  // Widget _buildDots({required BuildContext context}) {
+  //   return Padding(
+  //     padding: const EdgeInsets.all(10.0),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.center,
+  //       children: List.generate(bannerImages.length, (index) {
+  //         return Container(
+  //           margin: const EdgeInsets.symmetric(horizontal: 5),
+  //           width: 10,
+  //           height: 10,
+  //           decoration: BoxDecoration(
+  //             shape: BoxShape.circle,
+  //             color: _currentPage == index
+  //                 ? Theme.of(context).primaryColor
+  //                 : Colors.grey.withOpacity(0.8),
+  //           ),
+  //         );
+  //       }),
+  //     ),
+  //   );
+  // }
 
   @override
   bool get wantKeepAlive => true;

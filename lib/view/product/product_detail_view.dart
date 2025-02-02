@@ -169,14 +169,14 @@ class ProductDetailView extends BaseView<ProductVM> {
                               const Gap(10),
                               if (productData?.categoryId == 9) ...{
                                 Text(
-                                  "${StringHelper.egp} ${productData?.salleryFrom}",
+                                  "${StringHelper.egp} ${parseAmount(productData?.salleryFrom)}",
                                 //  "${StringHelper.egp} ${productData?.salleryFrom} - ${productData?.salleryTo}",
                                   style: context.textTheme.titleLarge
                                       ?.copyWith(color: Colors.red),
                                 ),
                               } else ...{
                                 Text(
-                                  "${StringHelper.egp} ${productData?.price}",
+                                  "${StringHelper.egp} ${parseAmount(productData?.price)}",
                                   style: context.textTheme.titleLarge
                                       ?.copyWith(color: Colors.red),
                                 ),
@@ -203,20 +203,27 @@ class ProductDetailView extends BaseView<ProductVM> {
                                       borderRadius: BorderRadius.circular(5),
                                       color: Colors.white,
                                     ),
-                                    child: GridView(
-                                      shrinkWrap: true,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      padding: const EdgeInsets.all(10),
-                                      gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: 3,
-                                              mainAxisExtent: 50,
-                                              mainAxisSpacing: 5,
-                                              crossAxisSpacing: 20),
-                                      children: viewModel.getSpecifications(
-                                          context: context, data: productData),
-                                    ),
+                                    child: Wrap(
+                                spacing: 20, // Horizontal spacing between items
+                                runSpacing: 15, // Vertical spacing between items
+                                children: viewModel
+                                    .getSpecifications(context: context, data: productDetails)
+                                    .map((spec) => SizedBox(child: spec))
+                                    .toList()),
+                                    // child: GridView(
+                                    //   shrinkWrap: true,
+                                    //   physics:
+                                    //       const NeverScrollableScrollPhysics(),
+                                    //   padding: const EdgeInsets.all(10),
+                                    //   gridDelegate:
+                                    //       const SliverGridDelegateWithFixedCrossAxisCount(
+                                    //           crossAxisCount: 3,
+                                    //           mainAxisExtent: 50,
+                                    //           mainAxisSpacing: 5,
+                                    //           crossAxisSpacing: 20),
+                                    //   children: viewModel.getSpecifications(
+                                    //       context: context, data: productData),
+                                    // ),
                                   ),
                                 }
                               },
@@ -649,6 +656,10 @@ class ProductDetailView extends BaseView<ProductVM> {
     );
   }
 
+  String parseAmount(dynamic amount){
+    if("${amount??""}".isEmpty)return "0";
+    return num.parse("${amount??0}").toStringAsFixed(0);
+  }
   Widget getSpecifications({
     required BuildContext context,
     ProductDetailModel? productData,
@@ -797,9 +808,48 @@ class ProductDetailView extends BaseView<ProductVM> {
         specs.add(_buildInfoRow(context,
             "${data?.completionStatus?.capitalized}", '✅', 'Completion Status'));
       }
+
       if ((data?.deliveryTerm??"").isNotEmpty) {
         specs.add(_buildInfoRow(context, (data?.deliveryTerm??"").capitalized,
             '🚚', 'Delivery Term'));
+      }
+
+      /// new data add without icon
+      if ((data?.type??"").isNotEmpty) {
+        specs.add(_buildInfoRow(
+            context, "${data?.type?.capitalized}", '💳', 'Property Type'));
+      }
+      if ((data?.level??"") .isNotEmpty) {
+        specs.add(_buildInfoRow(context,
+            "${data?.level?.capitalized}", '✅', 'Level'));
+      }
+      if ((data?.buildingAge??"") .isNotEmpty) {
+        specs.add(_buildInfoRow(context,
+            "${data?.buildingAge?.capitalized}", '✅', 'Building Age'));
+      }
+      if ((data?.listedBy??"") .isNotEmpty) {
+        specs.add(_buildInfoRow(context,
+            "${data?.listedBy?.capitalized}", '✅', 'Listed By'));
+      }
+      if ((data?.rentalPrice??"") .isNotEmpty) {
+        specs.add(_buildInfoRow(context,
+            num.parse("${data?.rentalPrice??0}").toStringAsFixed(0), '✅', 'Rental Price'));
+      }
+      if ((data?.rentalTerm??"") .isNotEmpty) {
+        specs.add(_buildInfoRow(context,
+            "${data?.rentalTerm?.capitalized}", '✅', 'Rental Term'));
+      }
+      if ((data?.deposit??"") .isNotEmpty) {
+        specs.add(_buildInfoRow(context,
+            num.parse("${data?.deposit??0}").toStringAsFixed(0), '✅', 'Deposit'));
+      }
+      if ((data?.insurance??"") .isNotEmpty) {
+        specs.add(_buildInfoRow(context,
+            "${data?.insurance?.capitalized}", '✅', 'Insurance'));
+      }
+      if ((data?.accessToUtilities??"") .isNotEmpty) {
+        specs.add(_buildInfoRow(context,
+            "${data?.accessToUtilities?.capitalized}", '✅', 'Access To Utilities'));
       }
       return Column(
         mainAxisSize: MainAxisSize.min,

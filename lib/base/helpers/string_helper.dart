@@ -318,7 +318,7 @@ class StringHelper {
   static String eGP260 = LocaleService.translate('eGP260') ?? "EGP 260";
   static String name = LocaleService.translate('name') ?? "Name";
   static String description =
-      LocaleService.translate('description') ?? "description";
+      LocaleService.translate('description') ?? "Description";
   static String icon = LocaleService.translate('icon') ?? "icon";
   static String paymentOptions =
       LocaleService.translate('paymentOptions') ?? "Payment Options";
@@ -909,7 +909,7 @@ static String locationAlert =
             "Single Featured ad for 7 days";
     eGP260 = LocaleService.translate('eGP260') ?? "EGP 260";
     name = LocaleService.translate('name') ?? "Name";
-    description = LocaleService.translate('description') ?? "description";
+    description = LocaleService.translate('description') ?? "Description";
     icon = LocaleService.translate('icon') ?? "icon";
     paymentOptions =
         LocaleService.translate('paymentOptions') ?? "Payment Options";

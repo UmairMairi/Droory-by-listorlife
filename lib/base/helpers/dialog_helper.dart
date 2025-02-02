@@ -31,18 +31,25 @@ class DialogHelper {
   }
 
   /// Show Toast
+  static bool isToastVisible = false;
+
   static showToast({required String? message, bool error = true}) {
     if (message == null) {
       return;
     }
-    toastification.show(
-      description: Text(message),
-      alignment: Alignment.topRight,
-      icon: const Icon(Icons.notifications),
-      style: ToastificationStyle.minimal,
-      type: error ? ToastificationType.error : ToastificationType.success,
-      autoCloseDuration: const Duration(seconds: 2),
-    );
+    if (!isToastVisible){
+      toastification.show(
+        description: Text(message),
+        alignment: Alignment.topRight,
+        icon: const Icon(Icons.notifications),
+        style: ToastificationStyle.minimal,
+        type: error ? ToastificationType.error : ToastificationType.success,
+        autoCloseDuration: const Duration(seconds: 1),
+      );
+    }
+    Future.delayed(Duration(seconds: 1), () {
+      isToastVisible = false;
+    });
   }
 
   /// Hide the soft keyboard.

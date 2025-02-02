@@ -838,6 +838,12 @@ class VacationForm extends StatelessWidget {
                     message: StringHelper.adTitleIsRequired);
                 return;
               }
+              if (viewModel.adTitleTextController.text.trim().length < 10) {
+                DialogHelper.showToast(
+                  message: StringHelper.adLength,
+                );
+                return;
+              }
               if (viewModel.propertyForTypeTextController.text.isEmpty) {
                 DialogHelper.showToast(
                     message: StringHelper.plsSelectType);

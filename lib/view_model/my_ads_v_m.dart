@@ -7,6 +7,8 @@ import 'package:intl/intl.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/models/category_model.dart';
+import 'package:list_and_life/view_model/product_v_m.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../base/helpers/date_helper.dart';
@@ -20,6 +22,7 @@ import '../models/home_list_model.dart';
 import '../models/product_detail_model.dart';
 import '../res/assets_res.dart';
 import '../view/main/sell/forms/sell_form_view.dart';
+import '../view/product/my_product_view.dart';
 import '../widgets/app_elevated_button.dart';
 
 class MyAdsVM extends BaseViewModel {
@@ -312,7 +315,12 @@ class MyAdsVM extends BaseViewModel {
                   subCategory: subCategory,
                   type: category.type?.toLowerCase(),
                   item: item,
-                )));
+                ))).then((value){
+                  if(value != null){
+                  Provider.of<ProductVM>(context, listen: false).getMyProductDetails(id: item?.id);
+
+                  }
+    });
     onRefresh();
   }
 

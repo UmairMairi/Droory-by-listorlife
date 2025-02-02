@@ -39,7 +39,7 @@ class FilterItemView extends StatefulWidget {
 class _FilterItemViewState extends State<FilterItemView> {
   List<ProductDetailModel> productsList = [];
   late RefreshController refreshController;
-  int limit = 10;
+  int limit = 20;
   int page = 1;
   bool isLoading = true;
   String searchQuery = '';
@@ -56,7 +56,25 @@ class _FilterItemViewState extends State<FilterItemView> {
     super.initState();
   }
 
+  // Future<void> onRefresh() async {
+  //   try {
+  //     page = 1;
+  //     productsList.clear();
+  //     await getProductsApi(loading: true);
+  //     refreshController.refreshCompleted();
+  //   } catch (e) {
+  //     refreshController.refreshFailed();
+  //   }
+  // }
+  //
+  // Future<void> onLoading() async {
+  //   ++page;
+  //   await getProductsApi(loading: false);
+  //   refreshController.loadComplete();
+  // }
+
   Future<void> onRefresh() async {
+    // monitor network fetch
     try {
       page = 1;
       productsList.clear();
@@ -68,11 +86,13 @@ class _FilterItemViewState extends State<FilterItemView> {
   }
 
   Future<void> onLoading() async {
+    // monitor network fetch
     ++page;
     await getProductsApi(loading: false);
+
+    ///await fetchProducts();
     refreshController.loadComplete();
   }
-
   String constructUrl(FilterModel model) {
     final baseUrl = ApiConstants.getFilteredProduct(limit: limit, page: page);
 
@@ -179,6 +199,7 @@ class _FilterItemViewState extends State<FilterItemView> {
               const Gap(10),
               InkWell(
                 onTap: () {
+                  context.pop();
                   context.push(Routes.filter, extra: filterModel);
                 },
                 child: Container(
@@ -208,49 +229,7 @@ class _FilterItemViewState extends State<FilterItemView> {
         ),
         onRefresh: onRefresh,
         onLoading: onLoading,
-        child: Column(
-          children: [
-            // getFilterWidget(data: widget.model),
-            SizedBox(
-              height: 20,
-            ),
-            if (isLoading) ...{
-              ProductListSkeleton(isLoading: isLoading)
-            } else ...{
-              if (productsList.isEmpty)
-                const Expanded(child: AppEmptyWidget())
-              else
-                Expanded(
-                  child: ListView.separated(
-                    shrinkWrap: true,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
-                    itemCount: productsList.length,
-                    itemBuilder: (context, index) {
-                      var productDetails = productsList[index];
-                      return AppProductItemWidget(
-                        onItemTapped: (){
-                          if (productDetails.userId ==
-                              DbHelper.getUserModel()?.id) {
-                            context.push(Routes.myProduct,
-                                extra: productDetails);
-                          }else{
-                            context.push(Routes.productDetails,
-                                extra: productDetails);
-                          }
-                        },
-                        data: productDetails,
-                      );
-                    },
-                    separatorBuilder: (BuildContext context, int index) {
-                      return const Gap(20);
-                    },
-                  ),
-                )
-            },
-            // Display selected filters
-          ],
-        ),
+        child: isLoading?loadingWidget(isLoading):productsList.isEmpty?emptyWidget():dataWidget(context)
       ),
     );
   }
@@ -798,6 +777,56 @@ class _FilterItemViewState extends State<FilterItemView> {
               ),
           ],
         );*/
+      },
+    );
+  }
+
+  loadingWidget(bool isLoading) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 20,
+        ),
+        ProductListSkeleton(isLoading: isLoading)
+      ],
+    );
+  }
+
+  emptyWidget() {
+    return Column(
+      children: [
+        SizedBox(
+          height: 20,
+        ),
+        const Expanded(child: AppEmptyWidget())
+      ],
+    );
+  }
+
+  dataWidget(BuildContext context) {
+    return ListView.separated(
+      shrinkWrap: true,
+      padding: const EdgeInsets.symmetric(
+          horizontal: 20, vertical: 20),
+      itemCount: productsList.length,
+      itemBuilder: (context, index) {
+        var productDetails = productsList[index];
+        return AppProductItemWidget(
+          onItemTapped: (){
+            if (productDetails.userId ==
+                DbHelper.getUserModel()?.id) {
+              context.push(Routes.myProduct,
+                  extra: productDetails);
+            }else{
+              context.push(Routes.productDetails,
+                  extra: productDetails);
+            }
+          },
+          data: productDetails,
+        );
+      },
+      separatorBuilder: (BuildContext context, int index) {
+        return const Gap(20);
       },
     );
   }

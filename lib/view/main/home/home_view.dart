@@ -417,7 +417,7 @@ class _LocationSearchPopupState extends State<LocationSearchPopup> {
                   Navigator.pop(context);
                   widget.viewModel.locationTextController.text ="Cairo, Egypt";
                   //StringHelper.showAllAdsInEgypt;
-                  widget.viewModel.updateLatLong();
+                  widget.viewModel.updateLatLong(address: "Cairo, Egypt");
                       // lat: 30.0444,
                       // long: 31.2357);
                 },
@@ -428,6 +428,7 @@ class _LocationSearchPopupState extends State<LocationSearchPopup> {
             TextButton(
                 onPressed: () {
                   Navigator.pop(context);
+                  DbHelper.deleteData("userLocation");
                   widget.viewModel.updateLocation();
                 },
                 child: Text(

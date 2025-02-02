@@ -103,13 +103,26 @@ class _AppMapWidgetState extends State<AppMapWidget> {
     if (await hasLocationPermission() == false) {
       return null;
     }
-    Position position = await LocationHelper.getCurrentLocation();
-
-    bool isEgypt = await LocationHelper.checkLocationIsEgypt(
-        latitude: position.latitude, longitude: position.longitude);
-    if (isEgypt) {
-      _animateCameraAndFindAddress(position);
-    } else {
+    Position? position = await LocationHelper.getCurrentLocation();
+    if(position != null){
+      bool isEgypt = await LocationHelper.checkLocationIsEgypt(
+          latitude: position.latitude, longitude: position.longitude);
+      if (isEgypt) {
+        _animateCameraAndFindAddress(position);
+      } else {
+        _animateCameraAndFindAddress(Position(
+            longitude: LocationHelper.cairoLongitude,
+            latitude: LocationHelper.cairoLatitude,
+            timestamp: DateTime.now(),
+            accuracy: 0.0,
+            altitude: 0.0,
+            altitudeAccuracy: 0.0,
+            heading: 0.0,
+            headingAccuracy: 0.0,
+            speed: 0.0,
+            speedAccuracy: 0.0));
+      }
+    }else{
       _animateCameraAndFindAddress(Position(
           longitude: LocationHelper.cairoLongitude,
           latitude: LocationHelper.cairoLatitude,
@@ -122,6 +135,7 @@ class _AppMapWidgetState extends State<AppMapWidget> {
           speed: 0.0,
           speedAccuracy: 0.0));
     }
+
   }
 
   Future<void> _animateCameraAndFindAddress(Position position) async {

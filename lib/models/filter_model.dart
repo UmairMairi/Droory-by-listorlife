@@ -299,6 +299,8 @@ class FilterModel {
   String? maxDownPrice;
   String? maxAreaSize;
   String? minAreaSize;
+  String? salleryFrom;
+  String? salleryTo;
 
   FilterModel({
     this.screenFrom,
@@ -348,6 +350,8 @@ class FilterModel {
     this.maxDownPrice,
     this.maxAreaSize,
     this.minAreaSize,
+    this.salleryFrom,
+    this.salleryTo,
   });
 
   // fromJson method
@@ -398,6 +402,8 @@ class FilterModel {
     maxDownPrice = json['max_down_price'];
     maxAreaSize = json['max_area_size'];
     minAreaSize = json['min_area_size'];
+    salleryFrom = json['sallery_from'];
+    salleryTo = json['sallery_to'];
   }
 
   // toJson method
@@ -449,6 +455,8 @@ class FilterModel {
     data['max_down_price'] = maxDownPrice;
     data['max_area_size'] = maxAreaSize;
     data['min_area_size'] = minAreaSize;
+    data['sallery_from'] = salleryFrom;
+    data['sallery_to'] = salleryTo;
     data.removeWhere((key, value) => value == "" || value == null);
     return data;
   }

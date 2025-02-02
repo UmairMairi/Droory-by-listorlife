@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -54,6 +55,21 @@ class ProductVM extends BaseViewModel {
     notifyListeners();
   }
 
+  StreamController<ProductDetailModel?> productStream =
+  StreamController<ProductDetailModel?>.broadcast();
+  Future<void> getMyProductDetails({num? id}) async {
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.getProductUrl(id: '$id'),
+        requestType: RequestType.get);
+
+    var response = await BaseClient.handleRequest(apiRequest);
+
+    MapResponse<ProductDetailModel> model =
+        MapResponse<ProductDetailModel>.fromJson(
+            response, (json) => ProductDetailModel.fromJson(json));
+    productStream.sink.add(model.body);
+    notifyListeners();
+  }
   Future<ProductDetailModel?> getProductDetails({num? id}) async {
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.getProductUrl(id: '$id'),
@@ -66,7 +82,6 @@ class ProductVM extends BaseViewModel {
     MapResponse<ProductDetailModel> model =
         MapResponse<ProductDetailModel>.fromJson(
             response, (json) => ProductDetailModel.fromJson(json));
-
     return model.body;
   }
 
@@ -201,6 +216,10 @@ class ProductVM extends BaseViewModel {
         specs.add(_buildSpecRow(context, "${data?.itemCondition}",
             Icons.verified_user, 'Condition'));
       }
+      if (data?.brand != null && (data?.brand?.name??"").isNotEmpty) {
+        specs.add(
+            _buildSpecRow(context, "${data?.brand?.name}", Icons.directions_car, 'Brand'));
+      }
     }
 
     // Hobbies, Music, Art & Books Specifications
@@ -227,19 +246,31 @@ class ProductVM extends BaseViewModel {
       }
       if ((data?.itemCondition??"").isNotEmpty) {
         specs.add(_buildSpecRow(context, data?.itemCondition??"",
-            Icons.visibility_off, 'Condition'));
+            Icons.visibility, 'Condition'));
       }
     }
 
     // Jobs Specifications
     if (data?.categoryId == 9) {
+      if ((data?.subCategoryId??0) != 0) {
+        specs.add(_buildSpecRow(
+            context, data?.subCategory?.name??"", Icons.work, 'Job Type'));
+      }
       if ((data?.positionType??"").isNotEmpty) {
         specs.add(_buildSpecRow(
             context, "${data?.positionType}", Icons.work, 'Position Type'));
       }
+      if ((data?.lookingFor??"").isNotEmpty) {
+        specs.add(_buildSpecRow(context, data?.lookingFor??"",
+            Icons.person, 'Looking For'));
+      }
+      if ((data?.salleryFrom??"").isNotEmpty) {
+        specs.add(_buildSpecRow(context, num.parse(data?.salleryFrom??" ").toStringAsFixed(0),
+            Icons.attach_money, 'Salary'));
+      }
       if ((data?.salleryPeriod??"").isNotEmpty) {
-        specs.add(_buildSpecRow(context, data?.salleryPeriod??"",
-            Icons.attach_money, 'Salary Period'));
+        specs.add(_buildSpecRow(context, data?.salleryPeriod??" ",
+            Icons.watch_later, 'Salary Period'));
       }
       // if (data?.salleryFrom != null && data?.salleryTo != null) {
       //   specs.add(_buildSpecRow(
@@ -248,13 +279,13 @@ class ProductVM extends BaseViewModel {
       //       Icons.attach_money,
       //       'Salary Range'));
       // }
-      if ((data?.salleryFrom??"").isNotEmpty) {
-        specs.add(_buildSpecRow(
-            context,
-            data?.salleryFrom??"",
-            Icons.attach_money,
-            'Salary Range'));
-      }
+      // if ((data?.salleryFrom??"").isNotEmpty) {
+      //   specs.add(_buildSpecRow(
+      //       context,
+      //       data?.salleryFrom??"",
+      //       Icons.attach_money,
+      //       'Salary Range'));
+      // }
     }
 
     // Mobiles & Tablets Specifications
@@ -337,6 +368,7 @@ class ProductVM extends BaseViewModel {
   Widget _buildSpecRow(
       BuildContext context, String? specValue, IconData icon, String? title) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -351,6 +383,7 @@ class ProductVM extends BaseViewModel {
           maxLines: 1,
         ),
         Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
               icon,
@@ -358,14 +391,12 @@ class ProductVM extends BaseViewModel {
               size: 16,
             ),
             const SizedBox(width: 3),
-            Expanded(
-              child: Text(
-                specValue??"",
-                style: const TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600,
-                  overflow: TextOverflow.ellipsis,
-                ),
+            Text(
+              specValue??"",
+              style: const TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],
