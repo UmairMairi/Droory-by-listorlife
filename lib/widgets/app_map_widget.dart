@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:google_places_flutter/google_places_flutter.dart';
-import 'package:google_places_flutter/model/prediction.dart';
+import 'package:google_places_autocomplete_text_field/google_places_autocomplete_text_field.dart';
+import 'package:google_places_autocomplete_text_field/model/prediction.dart';
+// import 'package:google_places_flutter/google_places_flutter.dart';
+// import 'package:google_places_flutter/model/prediction.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/location_helper.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
@@ -279,20 +281,34 @@ class _AppMapWidgetState extends State<AppMapWidget> {
             top: 10,
             left: 20,
             right: 20,
-            child: GooglePlaceAutoCompleteTextField(
+            child: GooglePlacesAutoCompleteTextFormField(
+                keyboardType: TextInputType.text,
                 textEditingController: searchController,
                 countries: const ['eg'],
-                boxDecoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(15),
-                  border: Border.all(color: Colors.black,width: 1)
-                ),
+                // decoration: BoxDecoration(
+                //   color: Colors.white,
+                //   borderRadius: BorderRadius.circular(15),
+                //   border: Border.all(color: Colors.black,width: 1)
+                // ),
                 googleAPIKey: "AIzaSyBDLT4xDcywIynEnoHJn6GdPisZLr4G5TU",
-                inputDecoration:  InputDecoration(
-                  border: InputBorder.none,
-                  disabledBorder: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  focusedBorder: InputBorder.none,
+                decoration: InputDecoration(
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                    borderSide: BorderSide(color: Colors.black,width: 1)
+                  ),
+                  disabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide(color: Colors.black,width: 1)
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide(color: Colors.black,width: 1)
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide(color: Colors.black,width: 1)
+                  ),
                   prefixIcon: Icon(Icons.search),
                   hintText: "Search",
                 ),
@@ -325,7 +341,7 @@ class _AppMapWidgetState extends State<AppMapWidget> {
                   );
                   setState(() {});
                 },
-                itemClick: (Prediction prediction) async {
+                itmClick: (Prediction prediction) async {
                   isMapDrag = false;
                     searchController.text = prediction.description??"";
                   _currentAddress = searchController.text;

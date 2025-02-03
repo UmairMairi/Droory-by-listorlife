@@ -127,6 +127,7 @@ class ProductVM extends BaseViewModel {
     MapResponse model = MapResponse.fromJson(response, (json) => null);
     DialogHelper.showToast(message: model.message);
     DialogHelper.hideLoading();
+    getMyProductDetails(id: product.id);
     if (context.mounted) context.pop();
   }
 

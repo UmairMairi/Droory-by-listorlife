@@ -1,13 +1,11 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
-import 'package:list_and_life/base/helpers/location_helper.dart';
 import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/view_model/home_vm.dart';
 import 'package:list_and_life/widgets/amenities_widget.dart';
@@ -17,7 +15,6 @@ import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:list_and_life/widgets/common_dropdown.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
-
 import '../../../base/helpers/string_helper.dart';
 import '../../../base/network/api_constants.dart';
 import '../../../base/network/api_request.dart';

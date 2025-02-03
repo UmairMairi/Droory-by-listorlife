@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_places_flutter/google_places_flutter.dart';
-import 'package:google_places_flutter/model/prediction.dart';
+import 'package:google_places_autocomplete_text_field/google_places_autocomplete_text_field.dart';
+import 'package:google_places_autocomplete_text_field/model/prediction.dart';
+// import 'package:google_places_flutter/google_places_flutter.dart';
+// import 'package:google_places_flutter/model/prediction.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/location_helper.dart';
 import 'package:list_and_life/res/assets_res.dart';
@@ -384,18 +386,31 @@ class _LocationSearchPopupState extends State<LocationSearchPopup> {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(15),
                 ),
-                child: GooglePlaceAutoCompleteTextField(
-
+                child: GooglePlacesAutoCompleteTextFormField(
+                  //showError: false,
+                  keyboardType: TextInputType.text,
                     textEditingController: searchController,
                     countries: const ['eg'],
                     googleAPIKey: "AIzaSyBDLT4xDcywIynEnoHJn6GdPisZLr4G5TU",
-                    inputDecoration:  InputDecoration(
-                      border: InputBorder.none,
+                    decoration:  InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide(color: Colors.black,width: 1)
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide(color: Colors.black,width: 1)
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide(color: Colors.black,width: 1)
+                      ),
                       prefixIcon: Icon(Icons.search),
                       hintText: StringHelper.search,
                     ),
                     debounceTime: 400,
                     // default 600 ms,
+
                     isLatLngRequired: true,
                     getPlaceDetailWithLatLng: (Prediction prediction) async {
                       Navigator.pop(context);
@@ -410,7 +425,7 @@ class _LocationSearchPopupState extends State<LocationSearchPopup> {
                           lat: double.parse(prediction.lat ?? '$lat'),
                           long: double.parse(prediction.lng ?? '$lng'));
                     },
-                    itemClick: (Prediction prediction) async {}),
+                    itmClick: (Prediction prediction) async {}),
               ),
             ),
             TextButton(
