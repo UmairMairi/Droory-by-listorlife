@@ -19,6 +19,7 @@ class DbHelper {
   static const String _isGuest = "isGuest";
   static const String _isVerified = "isVerified";
   static const String _token = "token";
+  static const String _notificationStatus = "notificationStatus";
   static const String _latLng = "latLng";
   static const String _language = "language";
   static const String _theme = "theme";
@@ -112,6 +113,14 @@ class DbHelper {
 
   static String? getToken() {
     return readData(_token);
+  }
+
+  static void saveNotificationStatus(String? notificationStatus) {
+    writeData(_notificationStatus, notificationStatus);
+  }
+
+  static String? getNotificationStatus() {
+    return readData(_notificationStatus) ?? "0";
   }
 
   static void saveLatLng(LatLng latLng) {

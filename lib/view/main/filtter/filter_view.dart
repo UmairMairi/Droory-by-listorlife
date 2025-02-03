@@ -1179,8 +1179,8 @@ class _FilterViewState extends State<FilterView> {
                   }
 
                   if (filter.categoryId == "11" && areaValues.start >= 0 && areaValues.end <= 100000) {
-                  filter.maxAreaSize = viewModel.startAreaTextController.text.trim();
-                  filter.minAreaSize = viewModel.endAreaTextController.text.trim();
+                  filter.minAreaSize = viewModel.startAreaTextController.text.trim();
+                  filter.maxAreaSize = viewModel.endAreaTextController.text.trim();
                   }
 
                   if (viewModel.kmDrivenTextController.text.trim().isNotEmpty) {

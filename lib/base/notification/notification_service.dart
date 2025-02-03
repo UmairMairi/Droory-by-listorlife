@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math' as math;
+import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -484,8 +484,7 @@ class NotificationService {
         return;
       }
 
-      NotificationEntity notificationEntity =
-      NotificationEntity.fromJson(message.data);
+      NotificationEntity notificationEntity = NotificationEntity.fromJson(message.data);
       debugPrint(message.data.toString());
       notificationEntity.title = notificationEntity.title ?? "Daroory";
       notificationEntity.body = message.notification?.body;
@@ -498,7 +497,7 @@ class NotificationService {
   }
 
   Future<void> showNotifications(NotificationEntity notificationEntity) async {
-    math.Random random = math.Random();
+    Random random = Random();
     int id = random.nextInt(900) + 10;
     await flutterLocalNotificationsPlugin.show(
         id,
