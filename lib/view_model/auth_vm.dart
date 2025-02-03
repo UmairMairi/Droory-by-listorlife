@@ -27,7 +27,6 @@ import '../base/helpers/image_picker_helper.dart';
 
 class AuthVM extends BaseViewModel {
   TextEditingController phoneTextController = TextEditingController();
-  TextEditingController otpTextController = TextEditingController();
 
   TextEditingController nameTextController = TextEditingController();
   TextEditingController lNameTextController = TextEditingController();
@@ -227,13 +226,13 @@ class AuthVM extends BaseViewModel {
     DialogHelper.showToast(message: model.message);
   }
 
-  Future<void> verifyOtpApi() async {
+  Future<void> verifyOtpApi({required String otp}) async {
     Map<String, dynamic> body = {
       'country_code': countryCode,
       'phone_no': phoneTextController.text.trim(),
       'device_token': await Utils.getFcmToken(),
       'device_type': Platform.isAndroid ? '1' : '2',
-      'otp': otpTextController.text.trim()
+      'otp': otp
     };
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.verifyOtpUrl(),

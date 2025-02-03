@@ -42,6 +42,8 @@ class _FilterViewState extends State<FilterView> {
   List<CategoryModel> subCategoriesList = [];
   List<CategoryModel> brands = [];
   List<CategoryModel> allModels = [];
+
+  List<int> selectedAmenities = [];
   List<String> yearsType = [];
   List<String> fuelsType = [StringHelper.petrol, StringHelper.diesel, StringHelper.electric, StringHelper.hybrid, StringHelper.gas];
   List<String> transmissionType = [
@@ -313,11 +315,14 @@ class _FilterViewState extends State<FilterView> {
                         return actualValue == 99999 ? ' $formattedText+' : ' $formattedText';
                       },
                       onChanged: (SfRangeValues newValues) {
-                        viewModel.startPriceTextController.text = "${newValues.start.round()}";
-                        viewModel.endPriceTextController.text = "${newValues.end.round()}";
-                        setState(() {
-                          values = newValues;
-                        });
+        if ((newValues.end - newValues.start) >= 1000) {
+          viewModel.startPriceTextController.text =
+          "${newValues.start.round()}";
+          viewModel.endPriceTextController.text = "${newValues.end.round()}";
+          setState(() {
+            values = newValues;
+          });
+        }
                       },
                     );
                   },
@@ -417,9 +422,22 @@ class _FilterViewState extends State<FilterView> {
                     DialogHelper.showLoading();
                     brands.clear();
                     allModels.clear();
+                    selectedAmenities.clear();
                     viewModel.propertyForTextController.clear();
                     viewModel.brandsTextController.clear();
                     viewModel.modelTextController.clear();
+                    viewModel.noOfBathroomsTextController.clear();
+                    viewModel.noOfBedroomsTextController.clear();
+                    viewModel.furnishingStatusTextController.clear();
+                    viewModel.accessToUtilitiesTextController.clear();
+                    viewModel.ownershipStatusTextController.clear();
+                    viewModel.propertyForTypeTextController.clear();
+                    viewModel.paymentTypeTextController.clear();
+                    viewModel.listedByTextController.clear();
+                    viewModel.rentalTermsTextController.clear();
+                    viewModel.completionStatusTextController.clear();
+                    viewModel.deliveryTermTextController.clear();
+                    viewModel.levelTextController.clear();
                     await getBrands(id: "${filter.subcategoryId}");
                   },
                   listItemBuilder: (context,model,selected,fxn){
@@ -737,6 +755,7 @@ class _FilterViewState extends State<FilterView> {
                 Visibility(
                     visible:filter.subcategoryId != "90" ,
                     child:AmenitiesWidget(
+                      amenitiesChecked: selectedAmenities,
                   selectedAmenities: (List<int?> ids) {
                     filter.selectedAmnities = ids.join(',');
                   },
@@ -900,13 +919,15 @@ class _FilterViewState extends State<FilterView> {
                           : ' $formattedText';
                     },
                     onChanged: (SfRangeValues newValues) {
-                      viewModel.jobSalaryFromController.text =
-                      "${newValues.start.round()}";
-                      viewModel.jobSalaryToController.text =
-                      "${newValues.end.round()}";
-                      setState(() {
-                        salaryFromTo = newValues;
-                      });
+        if ((newValues.end - newValues.start) >= 1000) {
+          viewModel.jobSalaryFromController.text =
+          "${newValues.start.round()}";
+          viewModel.jobSalaryToController.text =
+          "${newValues.end.round()}";
+          setState(() {
+            salaryFromTo = newValues;
+          });
+        }
                     },
                   );
                 }),
@@ -1257,6 +1278,11 @@ class _FilterViewState extends State<FilterView> {
       vm.startPriceTextController.text = filter.minPrice ?? '0';
       vm.endPriceTextController.text =
           filter.maxPrice != '0' ? filter.maxPrice ?? '100000' : '100000';
+
+      vm.jobSalaryFromController.text = filter.salleryFrom ?? '0';
+      vm.jobSalaryToController.text =
+          filter.salleryTo != '0' ? filter.salleryTo ?? '100000' : '100000';
+
       vm.kmDrivenTextController.text = filter.minKmDriven ?? '';
       vm.yearTextController.text = filter.year ?? '';
       vm.fuelTextController.text = filter.fuel ?? '';
@@ -1283,6 +1309,9 @@ class _FilterViewState extends State<FilterView> {
               ? '0'
               : vm.startPriceTextController.text),
           int.parse(vm.endPriceTextController.text));
+      if((filter.selectedAmnities??"").isNotEmpty) {
+        selectedAmenities = (filter.selectedAmnities??"").split(',').map((e) => int.parse(e)).toList();
+      }
       //vm.locationTextController.text = vm.currentLocation;
     }
     log("${categoriesList.map((element) => element.toJson()).toList()}",
@@ -1309,6 +1338,7 @@ class _FilterViewState extends State<FilterView> {
             ? '100000'
             : vm.endPriceTextController.text));
     brands.clear();
+    selectedAmenities.clear();
     subCategoriesList.clear();
     vm.categoryTextController.clear();
     vm.subCategoryTextController.clear();
@@ -1723,13 +1753,15 @@ class _FilterViewState extends State<FilterView> {
                     : ' $formattedText';
               },
               onChanged: (SfRangeValues newValues) {
-                viewModel.startDownPriceTextController.text =
-                "${newValues.start.round()}";
-                viewModel.endDownPriceTextController.text =
-                "${newValues.end.round()}";
-                setState(() {
-                  downValues = newValues;
-                });
+    if ((newValues.end - newValues.start) >= 1000) {
+      viewModel.startDownPriceTextController.text =
+      "${newValues.start.round()}";
+      viewModel.endDownPriceTextController.text =
+      "${newValues.end.round()}";
+      setState(() {
+        downValues = newValues;
+      });
+    }
               },
             );
           }),
@@ -1861,13 +1893,15 @@ class _FilterViewState extends State<FilterView> {
                   : ' $formattedText';
             },
             onChanged: (SfRangeValues newValues) {
-              viewModel.startAreaTextController.text =
-              "${newValues.start.round()}";
-              viewModel.endAreaTextController.text =
-              "${newValues.end.round()}";
-              setState(() {
-                areaValues = newValues;
-              });
+    if ((newValues.end - newValues.start) >= 1000) {
+      viewModel.startAreaTextController.text =
+      "${newValues.start.round()}";
+      viewModel.endAreaTextController.text =
+      "${newValues.end.round()}";
+      setState(() {
+        areaValues = newValues;
+      });
+    }
             },
           );
         }),
@@ -2427,13 +2461,15 @@ class _FilterViewState extends State<FilterView> {
                     : ' $formattedText';
               },
               onChanged: (SfRangeValues newValues) {
-                viewModel.startDownPriceTextController.text =
-                "${newValues.start.round()}";
-                viewModel.endDownPriceTextController.text =
-                "${newValues.end.round()}";
-                setState(() {
-                  downValues = newValues;
-                });
+    if ((newValues.end - newValues.start) >= 1000) {
+      viewModel.startDownPriceTextController.text =
+      "${newValues.start.round()}";
+      viewModel.endDownPriceTextController.text =
+      "${newValues.end.round()}";
+      setState(() {
+        downValues = newValues;
+      });
+    }
               },
             );
           }),
@@ -2565,13 +2601,15 @@ class _FilterViewState extends State<FilterView> {
                   : ' $formattedText';
             },
             onChanged: (SfRangeValues newValues) {
-              viewModel.startAreaTextController.text =
-              "${newValues.start.round()}";
-              viewModel.endAreaTextController.text =
-              "${newValues.end.round()}";
-              setState(() {
-                areaValues = newValues;
-              });
+    if ((newValues.end - newValues.start) >= 1000) {
+      viewModel.startAreaTextController.text =
+      "${newValues.start.round()}";
+      viewModel.endAreaTextController.text =
+      "${newValues.end.round()}";
+      setState(() {
+        areaValues = newValues;
+      });
+    }
             },
           );
         }),
@@ -3132,13 +3170,15 @@ class _FilterViewState extends State<FilterView> {
                     : ' $formattedText';
               },
               onChanged: (SfRangeValues newValues) {
-                viewModel.startDownPriceTextController.text =
-                "${newValues.start.round()}";
-                viewModel.endDownPriceTextController.text =
-                "${newValues.end.round()}";
-                setState(() {
-                  downValues = newValues;
-                });
+    if ((newValues.end - newValues.start) >= 1000) {
+      viewModel.startDownPriceTextController.text =
+      "${newValues.start.round()}";
+      viewModel.endDownPriceTextController.text =
+      "${newValues.end.round()}";
+      setState(() {
+        downValues = newValues;
+      });
+    }
               },
             );
           }),
@@ -3271,13 +3311,15 @@ class _FilterViewState extends State<FilterView> {
                   : ' $formattedText';
             },
             onChanged: (SfRangeValues newValues) {
-              viewModel.startAreaTextController.text =
-              "${newValues.start.round()}";
-              viewModel.endAreaTextController.text =
-              "${newValues.end.round()}";
-              setState(() {
-                areaValues = newValues;
-              });
+    if ((newValues.end - newValues.start) >= 1000) {
+      viewModel.startAreaTextController.text =
+      "${newValues.start.round()}";
+      viewModel.endAreaTextController.text =
+      "${newValues.end.round()}";
+      setState(() {
+        areaValues = newValues;
+      });
+    }
             },
           );
         }),
@@ -3794,13 +3836,15 @@ class _FilterViewState extends State<FilterView> {
                   : ' $formattedText';
             },
             onChanged: (SfRangeValues newValues) {
-              viewModel.startAreaTextController.text =
-              "${newValues.start.round()}";
-              viewModel.endAreaTextController.text =
-              "${newValues.end.round()}";
-              setState(() {
-                areaValues = newValues;
-              });
+    if ((newValues.end - newValues.start) >= 1000) {
+      viewModel.startAreaTextController.text =
+      "${newValues.start.round()}";
+      viewModel.endAreaTextController.text =
+      "${newValues.end.round()}";
+      setState(() {
+        areaValues = newValues;
+      });
+    }
             },
           );
         }),
@@ -4314,13 +4358,15 @@ class _FilterViewState extends State<FilterView> {
                   : ' $formattedText';
             },
             onChanged: (SfRangeValues newValues) {
-              viewModel.startAreaTextController.text =
-              "${newValues.start.round()}";
-              viewModel.endAreaTextController.text =
-              "${newValues.end.round()}";
-              setState(() {
-                areaValues = newValues;
-              });
+    if ((newValues.end - newValues.start) >= 1000) {
+      viewModel.startAreaTextController.text =
+      "${newValues.start.round()}";
+      viewModel.endAreaTextController.text =
+      "${newValues.end.round()}";
+      setState(() {
+        areaValues = newValues;
+      });
+    }
             },
           );
         }),

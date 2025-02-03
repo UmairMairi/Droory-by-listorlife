@@ -46,7 +46,12 @@ class ChatVM extends BaseViewModel {
 
   List<MessageModel> chatItems = [];
   final DebounceHelper _debounce = DebounceHelper(milliseconds: 500);
-
+  String _currentRoomId = "";
+  String get currentRoomId => _currentRoomId;
+  set currentRoomId(String index) {
+    _currentRoomId = index;
+    notifyListeners();
+  }
   @override
   void onInit() {
     //initListeners();
@@ -163,6 +168,10 @@ class ChatVM extends BaseViewModel {
 
       /// getInboxList();
       MessageModel message = MessageModel.fromJson(data);
+      currentRoomId = message.roomId??"";
+      // updateChatScreenId(
+      //   roomId: currentRoomId
+      // );
       if (chatItems.isNotEmpty) {
         if (message.senderId != DbHelper.getUserModel()?.id && message.roomId == chatItems.first.roomId) {
           chatItems.insert(0, message);
@@ -208,7 +217,9 @@ class ChatVM extends BaseViewModel {
           var receiverId = data["receiver_id"];
           var roomId = data["room_id"];
           var read = data["read"];
-
+          if(roomId != null) {
+            currentRoomId = roomId;
+          }
           for (var element in chatItems) {
             element.isRead = 1;
           }
@@ -288,7 +299,7 @@ class ChatVM extends BaseViewModel {
   void sendMessage(
       {String? message,
       int? type,
-        required String roomId,
+        required String? roomId,
       required num? receiverId,
       required num? productId}) {
     if (message == null) {
@@ -309,7 +320,7 @@ class ChatVM extends BaseViewModel {
     chatItems.insert(
       0,
       MessageModel(
-        roomId: roomId,
+        roomId: roomId??currentRoomId,
           message: message,
           senderId: DbHelper.getUserModel()?.id?.toInt(),
           receiverId: receiverId?.toInt(),

@@ -12,7 +12,8 @@ import '../../widgets/app_otp_widget.dart';
 import '../../widgets/app_resend_otp_button.dart';
 
 class VerificationView extends BaseView<AuthVM> {
-  const VerificationView({super.key});
+  VerificationView({super.key});
+  final TextEditingController otpTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context, AuthVM viewModel) {
@@ -74,7 +75,7 @@ class VerificationView extends BaseView<AuthVM> {
               05,
             ),
             Pinput(
-              controller: viewModel.otpTextController,
+              controller: otpTextController,
               defaultPinTheme: defaultPinTheme,
               obscureText: false,
               obscuringCharacter: "*",
@@ -103,16 +104,16 @@ class VerificationView extends BaseView<AuthVM> {
             AppElevatedButton(
               width: context.width,
               onTap: () {
-                if (viewModel.otpTextController.text.trim().isEmpty) {
+                if (otpTextController.text.trim().isEmpty) {
                   DialogHelper.showToast(message: FormFieldErrors.otpRequired);
                   return;
                 }
-                if (viewModel.otpTextController.text.trim().length < 4) {
+                if (otpTextController.text.trim().length < 4) {
                   DialogHelper.showToast(message: FormFieldErrors.invalidOtp);
                   return;
                 }
                 DialogHelper.showLoading();
-                viewModel.verifyOtpApi();
+                viewModel.verifyOtpApi(otp:otpTextController.text.trim());
 
                 /*context.go(Routes.completeProfile);*/
               },

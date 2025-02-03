@@ -323,8 +323,10 @@
   "supportInformation": "Support & Information",
   "logoutMsg": "Are you sure you want to logout this account?",
   "accountDelete": "Account Delete",
+  "notificationDelete": "Notification Delete",
   "propertyType": "Property Type",
   "locationAlert": "Location Alert",
   "locationAlertMsg": "Please note that our app is currently only available for users in Egypt. Please select Egypt location for add product.",
-  "accountDeleteMsg": "Are you sure you want to delete this account?"
+  "accountDeleteMsg": "Are you sure you want to delete this account?",
+  "notificationDeleteMsg": "Are you sure you want to delete notifications?"
 }

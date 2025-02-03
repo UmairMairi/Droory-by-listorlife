@@ -615,9 +615,16 @@ class StringHelper {
       "Are you sure you want to logout this account?";
   static String accountDelete =
       LocaleService.translate('accountDelete') ?? "Account Delete";
+
+  static String notificationDelete =
+      LocaleService.translate('notificationDelete') ?? "Notification Delete";
   static String accountDeleteMsg =
       LocaleService.translate('accountDeleteMsg') ??
           "Are you sure you want to delete this account?";
+
+  static String notificationDeleteMsg =
+      LocaleService.translate('notificationDeleteMsg') ??
+          "Are you sure you want to delete notifications?";
   static String specifications =
       LocaleService.translate('specifications') ?? "Specifications";
   static String propertyInformation =
@@ -1145,8 +1152,12 @@ static String locationAlert =
         "Are you sure you want to logout this account?";
     accountDelete =
         LocaleService.translate('accountDelete') ?? "Account Delete";
+    notificationDelete =
+        LocaleService.translate('notificationDelete') ?? "Notification Delete";
     accountDeleteMsg = LocaleService.translate('accountDeleteMsg') ??
         "Are you sure you want to delete this account?";
+    notificationDeleteMsg = LocaleService.translate('notificationDeleteMsg') ??
+        "Are you sure you want to delete notifications?";
     specifications =
         LocaleService.translate('specifications') ?? "Specifications";
     propertyInformation = LocaleService.translate('propertyInformation') ??

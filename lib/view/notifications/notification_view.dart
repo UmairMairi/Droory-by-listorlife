@@ -80,7 +80,7 @@ class _NotificationViewState extends State<NotificationView> {
           centerTitle: true,
           actions: [
             IconButton(onPressed: (){
-              clearNotification();
+              deleteDialog(context);
             },
                 icon: Icon(Icons.delete))
           ],
@@ -117,11 +117,16 @@ class _NotificationViewState extends State<NotificationView> {
                                           id: notifications[index].productId));
                                 }
                               },
-                              title: Text(notifications[index].title ?? ''),
+                              title: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(notifications[index].title ?? ''),
+                                  Text(notifications[index].body ?? '',style: context.labelLarge,),
+                                ],
+                              ),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  Text(notifications[index].body ?? ''),
                                   Text(
                                     getCreatedAt(
                                         time: notifications[index].updatedAt),
@@ -198,4 +203,29 @@ class _NotificationViewState extends State<NotificationView> {
       )*/
         );
   }
+
+  void deleteDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return AppAlertDialogWithLottie(
+          lottieIcon: AssetsRes.DELETE_LOTTIE,
+          title: StringHelper.notificationDelete,
+          description: StringHelper.notificationDeleteMsg,
+          onTap: () {
+            context.pop();
+            clearNotification();
+          },
+          onCancelTap: () {
+            context.pop();
+          },
+          buttonText: StringHelper.yes,
+          cancelButtonText: StringHelper.no,
+          showCancelButton: true,
+        );
+      },
+    );
+  }
+
 }

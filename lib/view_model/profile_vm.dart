@@ -31,7 +31,6 @@ class ProfileVM extends BaseViewModel {
   TextEditingController bioTextController =
       TextEditingController(text: DbHelper.getUserModel()?.bio??"");
 
-  TextEditingController otpTextController = TextEditingController();
 
   String _imagePath = '';
   bool _agreedToTerms = false;

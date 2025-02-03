@@ -68,7 +68,7 @@ class AppPages {
       GoRoute(
         path: Routes.verify,
         pageBuilder: (context, state) {
-          return getPage(child: const VerificationView(), state: state);
+          return getPage(child: VerificationView(), state: state);
         },
       ),
       GoRoute(

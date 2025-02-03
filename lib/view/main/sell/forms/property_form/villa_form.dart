@@ -141,16 +141,36 @@ class VillaForm extends StatelessWidget {
           title: StringHelper.areaSize,
           hint: StringHelper.enter,
           controller: viewModel.areaSizeTextController,
-          maxLines: 4,
-          minLines: 1,
           contentPadding:
           const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          maxLength: 6,
+          keyboardType: TextInputType.number,
           inputFormatters: [
             FilteringTextInputFormatter.deny(
-              RegExp(viewModel.regexToRemoveEmoji),
-            ),
+                RegExp(viewModel.regexToRemoveEmoji)),
+            FilteringTextInputFormatter.digitsOnly,
           ],
-          keyboardType: TextInputType.text,
+          validator: (value) {
+            if (value == null || value.trim().isEmpty) {
+              return '* This field is required';
+            }
+
+            final amount = num.tryParse(value);
+
+            if (amount == null) {
+              return '* Please enter a valid number';
+            }
+
+            if (amount < 100) {
+              return '* The minimum valid area size 100';
+            }
+
+            if (amount > 100000) {
+              return '* The maximum valid area size is 100,000';
+            }
+
+            return null;
+          },
           textInputAction: TextInputAction.done,
           fillColor: Colors.white,
           elevation: 6,
@@ -400,14 +420,37 @@ class VillaForm extends StatelessWidget {
           title: StringHelper.priceEgp,
           controller: viewModel.priceTextController,
           hint: StringHelper.enterPrice,
-          maxLength: 8,
+          maxLength: 6,
+          keyboardType: TextInputType.number,
           inputFormatters: [
+            LengthLimitingTextInputFormatter(6),
             FilteringTextInputFormatter.deny(
                 RegExp(viewModel.regexToRemoveEmoji)),
             FilteringTextInputFormatter.digitsOnly,
           ],
-          keyboardType: TextInputType.number,
-          textInputAction: TextInputAction.done,
+          focusNode: viewModel.priceText,
+          validator: (value) {
+            if (value == null || value.trim().isEmpty) {
+              return '* This field is required';
+            }
+
+            final amount = num.tryParse(value);
+
+            if (amount == null) {
+              return '* Please enter a valid number';
+            }
+
+            if (amount < 1000) {
+              return '* The minimum valid price is EGP 1000';
+            }
+
+            if (amount > 100000) {
+              return '* The maximum valid price is EGP 100,000';
+            }
+
+            return null;
+          },
+
         ),
 
         Visibility(
@@ -416,14 +459,35 @@ class VillaForm extends StatelessWidget {
             title: StringHelper.deposit,
             controller: viewModel.depositTextController,
             hint: StringHelper.enter,
-            maxLength: 8,
+            keyboardType: TextInputType.number,
+            textInputAction: TextInputAction.done,
+            maxLength: 6,
             inputFormatters: [
               FilteringTextInputFormatter.deny(
                   RegExp(viewModel.regexToRemoveEmoji)),
               FilteringTextInputFormatter.digitsOnly,
             ],
-            keyboardType: TextInputType.number,
-            textInputAction: TextInputAction.done,
+            validator: (value) {
+              if (value == null || value.trim().isEmpty) {
+                return '* This field is required';
+              }
+
+              final amount = num.tryParse(value);
+
+              if (amount == null) {
+                return '* Please enter a valid number';
+              }
+
+              if (amount < 1000) {
+                return '* The minimum valid price is EGP 1000';
+              }
+
+              if (amount > 100000) {
+                return '* The maximum valid price is EGP 100,000';
+              }
+
+              return null;
+            },
           ),
         ),
 

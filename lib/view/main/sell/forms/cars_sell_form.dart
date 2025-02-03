@@ -684,33 +684,39 @@ class CarsSellForm extends BaseView<SellFormsVM> {
               // Price TextField
               AppTextField(
                 title: StringHelper.priceEgp,
-                titleColor: Colors.black,
                 controller: viewModel.priceTextController,
                 hint: StringHelper.enterPrice,
+                maxLength: 6,
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(6),
+                  FilteringTextInputFormatter.deny(
+                      RegExp(viewModel.regexToRemoveEmoji)),
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+                focusNode: viewModel.priceText,
                 validator: (value) {
-                  if (value == null ||
-                      value.isEmpty ||
-                      num.parse(value) < 1000) {
+                  if (value == null || value.trim().isEmpty) {
+                    return '* This field is required';
+                  }
+
+                  final amount = num.tryParse(value);
+
+                  if (amount == null) {
+                    return '* Please enter a valid number';
+                  }
+
+                  if (amount < 1000) {
                     return '* The minimum valid price is EGP 1000';
+                  }
+
+                  if (amount > 100000) {
+                    return '* The maximum valid price is EGP 100,000';
                   }
 
                   return null;
                 },
-                hintStyle:
-                    const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                fillColor: Colors.white,
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                maxLines: 1,
-                inputFormatters: [
-                  LengthLimitingTextInputFormatter(8),
-                  FilteringTextInputFormatter.deny(
-                    RegExp(viewModel.regexToRemoveEmoji),
-                  ),
-                  FilteringTextInputFormatter.digitsOnly,
-                ],
-                keyboardType: TextInputType.number,
-                textInputAction: TextInputAction.done,
+
               ),
               Text(
                 StringHelper.howToConnect,

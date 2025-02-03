@@ -323,7 +323,9 @@
   "supportInformation": "الدعم والمعلومات",
   "logoutMsg": "هل أنت متأكد أنك تريد تسجيل الخروج من هذا الحساب؟",
   "accountDelete": "حذف الحساب",
+  "notificationDelete": "حذف الإخطار",
   "accountDeleteMsg": "هل أنت متأكد أنك تريد حذف هذا الحساب؟",
+  "notificationDeleteMsg": "هل أنت متأكد أنك تريد حذف الإخطارات؟",
   "locationAlert": "تنبيه الموقع",
   "locationAlertMsg": "يرجى ملاحظة أن تطبيقنا متاح حاليًا للمستخدمين في مصر فقط. الرجاء تحديد موقع مصر لإضافة المنتج.",
   "propertyType": "نوع العقار"

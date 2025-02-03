@@ -12,13 +12,26 @@ import 'package:list_and_life/widgets/app_resend_otp_button.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 
-class VerificationProfileView extends StatelessWidget {
+class VerificationProfileView extends StatefulWidget {
   final String? phoneNo;
-  const VerificationProfileView({super.key, required this.phoneNo});
+   const VerificationProfileView({super.key, required this.phoneNo});
 
   @override
+  State<VerificationProfileView> createState() => _VerificationProfileViewState();
+}
+
+class _VerificationProfileViewState extends State<VerificationProfileView> {
+  final TextEditingController otpTextController = TextEditingController();
+
+  late ProfileVM viewModel;
+  @override
+  void initState() {
+     viewModel = context.read<ProfileVM>();
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
-    ProfileVM viewModel = context.read<ProfileVM>();
+
     var defaultPinTheme = PinTheme(
       width: 60,
       height: 60,
@@ -59,7 +72,7 @@ class VerificationProfileView extends StatelessWidget {
             ),
             const Flexible(child: Gap(80)),
             Text(
-              '${StringHelper.enterThe4DigitCode} \n${viewModel.countryCode}-${phoneNo?.trim()}',
+              '${StringHelper.enterThe4DigitCode} \n${viewModel.countryCode}-${widget.phoneNo?.trim()}',
               style: context.textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
@@ -75,7 +88,7 @@ class VerificationProfileView extends StatelessWidget {
               05,
             ),
             Pinput(
-              controller: viewModel.otpTextController,
+              controller: otpTextController,
               defaultPinTheme: defaultPinTheme,
               obscureText: false,
               obscuringCharacter: "*",
@@ -104,17 +117,17 @@ class VerificationProfileView extends StatelessWidget {
             AppElevatedButton(
               width: context.width,
               onTap: () {
-                if (viewModel.otpTextController.text.trim().isEmpty) {
+                if (otpTextController.text.trim().isEmpty) {
                   return;
                 }
-                if (viewModel.otpTextController.text.trim().length < 4) {
+                if (otpTextController.text.trim().length < 4) {
                   DialogHelper.showToast(message: FormFieldErrors.invalidOtp);
                   return;
                 }
                 DialogHelper.showLoading();
                 viewModel.verifyOtpApi(
                   countryCode: viewModel.countryCode,
-                    phoneNo: phoneNo, otp: viewModel.otpTextController.text);
+                    phoneNo: widget.phoneNo, otp: otpTextController.text.trim());
 
                 /*context.go(Routes.completeProfile);*/
               },
@@ -124,7 +137,7 @@ class VerificationProfileView extends StatelessWidget {
             AppResendOtpButton(
               seconds: 30,
               onResend: () {
-                viewModel.sendVerificationPhone(countryCode: viewModel.countryCode,phone: phoneNo);
+                viewModel.sendVerificationPhone(countryCode: viewModel.countryCode,phone: widget.phoneNo);
 
                 //debugPrint('Your new OTp is 1111');
               },

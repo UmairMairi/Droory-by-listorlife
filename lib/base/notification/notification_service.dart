@@ -531,8 +531,12 @@ class NotificationService {
 
     switch ("${notificationEntity?.notificationType}") {
       case 'send_message_user_driver':
-      //Provider.of<ChatVM>(AppPages.rootNavigatorKey.currentContext!, listen: false).initListeners();
-        Navigator.push(AppPages.rootNavigatorKey.currentContext!, MaterialPageRoute(builder: (context)=>MessageView(chat: InboxModel(
+
+        //Provider.of<ChatVM>(AppPages.rootNavigatorKey.currentContext!, listen: false).initListeners();
+        Navigator.push(AppPages.rootNavigatorKey.currentContext!,
+            MaterialPageRoute(
+                settings: RouteSettings(name: '/message'),
+                builder: (context)=>MessageView(chat: InboxModel(
             senderId: DbHelper.getUserModel()?.id,
             receiverId: num.parse("${notificationEntity?.senderId}"),
             productId: num.parse("${notificationEntity?.productId}"),
@@ -565,4 +569,7 @@ class NotificationService {
         Navigator.push(AppPages.rootNavigatorKey.currentContext!, MaterialPageRoute(builder: (context)=>NotificationView(),));
     }
   }
+
+
+
 }

@@ -60,6 +60,7 @@ class _AmenitiesWidgetState extends State<AmenitiesWidget> {
     return Icon(
       amenityIconMap[amenityName] ??
           Icons.help_outline, // "help_outline" as a default icon
+      size: 18,
     );
   }
 
@@ -110,6 +111,7 @@ class _AmenitiesWidgetState extends State<AmenitiesWidget> {
       itemBuilder: (context, index) {
         final amenity = _amenities[index];
         return CheckboxListTile(
+          visualDensity: VisualDensity.compact,
           title: Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -118,10 +120,14 @@ class _AmenitiesWidgetState extends State<AmenitiesWidget> {
               getAmenityIcon(amenity.name ?? ''),
               Gap(05),
               Text(DbHelper.getLanguage() == 'en'
-                  ? amenity.name ?? ''
-                  : amenity.nameAr ?? ''),
+                  ? (amenity.name ?? '').replaceAll('\n', '')
+                  : (amenity.nameAr ?? '').replaceAll('\n', '') ,
+              style: TextStyle(fontSize: 14,fontWeight: FontWeight.w500),
+              ),
             ],
           ),
+          contentPadding: EdgeInsets.symmetric(horizontal: 5),
+          dense: true,
           value: amenitiesChecked.contains(amenity.id),
           onChanged: (bool? value) {
             setState(() {

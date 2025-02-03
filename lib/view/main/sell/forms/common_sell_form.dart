@@ -647,19 +647,38 @@ class CommonSellForm extends BaseView<SellFormsVM> {
               AppTextField(
                 title: StringHelper.priceEgp,
                 controller: viewModel.priceTextController,
-                cursorColor: Colors.black,
-                focusNode: viewModel.priceText,
                 hint: StringHelper.enterPrice,
-                hintStyle:
-                    const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                maxLength: 6,
+                keyboardType: TextInputType.number,
                 inputFormatters: [
-                  LengthLimitingTextInputFormatter(8),
+                  LengthLimitingTextInputFormatter(6),
                   FilteringTextInputFormatter.deny(
                       RegExp(viewModel.regexToRemoveEmoji)),
                   FilteringTextInputFormatter.digitsOnly,
                 ],
-                keyboardType: TextInputType.number,
-                textInputAction: TextInputAction.done,
+                focusNode: viewModel.priceText,
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return '* This field is required';
+                  }
+
+                  final amount = num.tryParse(value);
+
+                  if (amount == null) {
+                    return '* Please enter a valid number';
+                  }
+
+                  if (amount < 1000) {
+                    return '* The minimum valid price is EGP 1000';
+                  }
+
+                  if (amount > 100000) {
+                    return '* The maximum valid price is EGP 100,000';
+                  }
+
+                  return null;
+                },
+
               ),
 
               Text(

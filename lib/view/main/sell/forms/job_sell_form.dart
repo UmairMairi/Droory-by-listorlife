@@ -345,13 +345,36 @@ class JobSellForm extends BaseView<SellFormsVM> {
               hint: StringHelper.enter,
               controller: viewModel.jobSalaryFromController,
               keyboardType: TextInputType.number,
+              maxLength: 6,
               inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-                LengthLimitingTextInputFormatter(8),
+                LengthLimitingTextInputFormatter(6),
                 FilteringTextInputFormatter.deny(
                     RegExp(viewModel.regexToRemoveEmoji)),
+                FilteringTextInputFormatter.digitsOnly,
               ],
+              validator: (value) {
+                if (value == null || value.trim().isEmpty) {
+                  return '* This field is required';
+                }
+
+                final amount = num.tryParse(value);
+
+                if (amount == null) {
+                  return '* Please enter a valid number';
+                }
+
+                if (amount < 1000) {
+                  return '* The minimum valid salary is EGP 1000';
+                }
+
+                if (amount > 100000) {
+                  return '* The maximum valid salary is EGP 100,000';
+                }
+
+                return null;
+              },
             ),
+
             // AppTextField(
             //   title: StringHelper.salaryFrom,
             //   hint: StringHelper.enter,
