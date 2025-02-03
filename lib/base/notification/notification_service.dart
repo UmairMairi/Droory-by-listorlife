@@ -367,6 +367,7 @@ class NotificationService {
   Future<void> init() async {
     if (Firebase.apps.isEmpty) {
       await Firebase.initializeApp(
+        name: "list-and-life",
         options: DefaultFirebaseOptions.currentPlatform,
       );
     }
@@ -431,8 +432,8 @@ class NotificationService {
       badge: true,
       sound: true,
     );
-    String deviceToken = await FirebaseMessaging.instance.getToken() ?? "";
-    debugPrint("fcm Token = $deviceToken");
+    // String deviceToken = await FirebaseMessaging.instance.getToken() ?? "";
+    // debugPrint("fcm Token = $deviceToken");
     _configureSelectNotificationSubject();
 
     initFirebaseListeners();

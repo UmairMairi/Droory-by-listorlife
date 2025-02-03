@@ -25,32 +25,32 @@ class Utils {
   //   return await FirebaseMessaging.instance.getToken();
   // }
 
-  // static Future<String?> getFcmToken() async {
-  //   String? fcmToken;
-  //   if (Platform.isIOS) {
-  //     // On iOS we need to see an APN token is available first
-  //     String? apnsToken = await FirebaseMessaging.instance.getAPNSToken();
-  //     if (apnsToken != null) {
-  //       fcmToken = await FirebaseMessaging.instance.getToken();
-  //     }
-  //     else {
-  //       // add a delay and retry getting APN token
-  //       await Future<void>.delayed(const Duration(seconds: 3,));
-  //       apnsToken = await FirebaseMessaging.instance.getAPNSToken();
-  //       if (apnsToken != null) {
-  //         fcmToken = await FirebaseMessaging.instance.getToken();
-  //       }
-  //     }
-  //   }
-  //   else {
-  //     // android platform
-  //     fcmToken = await FirebaseMessaging.instance.getToken();
-  //   }
-  //   debugPrint("getFcmToken $fcmToken");
-  //   return fcmToken;
-  // }
-
   static Future<String?> getFcmToken() async {
-    return await FirebaseMessaging.instance.getToken()??"";
+    String? fcmToken;
+    if (Platform.isIOS) {
+      // On iOS we need to see an APN token is available first
+      String? apnsToken = await FirebaseMessaging.instance.getAPNSToken();
+      if (apnsToken != null) {
+        fcmToken = await FirebaseMessaging.instance.getToken();
+      }
+      else {
+        // add a delay and retry getting APN token
+        await Future<void>.delayed(const Duration(seconds: 3,));
+        apnsToken = await FirebaseMessaging.instance.getAPNSToken();
+        if (apnsToken != null) {
+          fcmToken = await FirebaseMessaging.instance.getToken();
+        }
+      }
+    }
+    else {
+      // android platform
+      fcmToken = await FirebaseMessaging.instance.getToken();
+    }
+    debugPrint("getFcmToken $fcmToken");
+    return fcmToken;
   }
+
+  // static Future<String?> getFcmToken() async {
+  //   return await FirebaseMessaging.instance.getToken()??"";
+  // }
 }

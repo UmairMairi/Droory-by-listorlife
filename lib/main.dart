@@ -27,12 +27,12 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  HttpOverrides.global = MyHttpOverrides();
-  await GetStorage.init();
   await Firebase.initializeApp(
     name: "list-and-life",
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  HttpOverrides.global = MyHttpOverrides();
+  await GetStorage.init();
   FirebaseMessaging.instance.requestPermission();
   await NotificationService().init();
   var appStateObserver = AppStateObserver();
