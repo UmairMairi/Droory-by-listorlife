@@ -17,11 +17,25 @@ import '../../../../view_model/profile_vm.dart';
 import '../../../../view_model/sell_v_m.dart';
 import '../../../../widgets/unauthorised_view.dart';
 
-class SellCategoryView extends BaseView<SellVM> {
+class SellCategoryView extends StatefulWidget {
   const SellCategoryView({super.key});
 
   @override
-  Widget build(BuildContext context, SellVM viewModel) {
+  State<SellCategoryView> createState() => _SellCategoryViewState();
+}
+
+class _SellCategoryViewState extends State<SellCategoryView> {
+  late SellVM viewModel;
+  @override
+  void initState() {
+    viewModel = context.read<SellVM>();
+    viewModel.getCategoryListApi();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     debugPrint("DbHelper.getIsGuest() ${DbHelper.getIsGuest()}");
     return Scaffold(
       appBar: AppBar(
@@ -41,8 +55,8 @@ class SellCategoryView extends BaseView<SellVM> {
                   const SizedBox(
                     height: 20,
                   ),
-                  FutureBuilder<List<CategoryModel>>(
-                      future: viewModel.getCategoryListApi(),
+                  StreamBuilder<List<CategoryModel>>(
+                      stream:viewModel.categoryStream.stream ,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           List<CategoryModel> categoryData =
@@ -132,7 +146,6 @@ class SellCategoryView extends BaseView<SellVM> {
     );
   }
 
-
   void addContactDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -156,5 +169,4 @@ class SellCategoryView extends BaseView<SellVM> {
       },
     );
   }
-
 }

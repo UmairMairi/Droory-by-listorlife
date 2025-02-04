@@ -4,22 +4,38 @@ import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/models/category_model.dart';
 import 'package:list_and_life/skeletons/sub_category_loading_widget.dart';
 import 'package:list_and_life/widgets/app_error_widget.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../view_model/sell_v_m.dart';
 
-class SellSubCategoryView extends BaseView<SellVM> {
+class SellSubCategoryView extends StatefulWidget {
   final CategoryModel? category;
   const SellSubCategoryView({super.key, this.category});
 
   @override
-  Widget build(BuildContext context, SellVM viewModel) {
+  State<SellSubCategoryView> createState() => _SellSubCategoryViewState();
+}
+
+class _SellSubCategoryViewState extends State<SellSubCategoryView> {
+
+  late SellVM viewModel;
+  @override
+  void initState() {
+    viewModel = context.read<SellVM>();
+    viewModel.getSubCategoryListApi(category: widget.category);
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(category?.name ?? ''),
+        title: Text(widget.category?.name ?? ''),
         centerTitle: true,
       ),
-      body: FutureBuilder<List<CategoryModel>>(
-          future: viewModel.getSubCategoryListApi(category: category),
+      body: StreamBuilder<List<CategoryModel>>(
+          stream: viewModel.subcategoryStream.stream,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               List<CategoryModel> subCategoriesList =
@@ -33,7 +49,7 @@ class SellSubCategoryView extends BaseView<SellVM> {
                       onTap: () {
                         DialogHelper.showLoading();
                         viewModel.getSubSubCategoryListApi(
-                            category: category,
+                            category: widget.category,
                             subCategory: subCategoriesList[index]);
                       },
                       title: Text(

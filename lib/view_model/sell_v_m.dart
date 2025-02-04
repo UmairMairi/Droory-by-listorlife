@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
@@ -34,7 +36,10 @@ class SellVM extends BaseViewModel {
     }
   }
 
-  Future<List<CategoryModel>> getCategoryListApi() async {
+  StreamController<List<CategoryModel>> categoryStream = StreamController<List<CategoryModel>>.broadcast();
+  StreamController<List<CategoryModel>> subcategoryStream = StreamController<List<CategoryModel>>.broadcast();
+
+  Future<void> getCategoryListApi() async {
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.getCategoriesUrl(), requestType: RequestType.get);
     var response = await BaseClient.handleRequest(apiRequest);
@@ -42,10 +47,10 @@ class SellVM extends BaseViewModel {
     ListResponse<CategoryModel> model = ListResponse<CategoryModel>.fromJson(
         response, (json) => CategoryModel.fromJson(json));
 
-    return model.body ?? [];
+    categoryStream.sink.add(model.body ?? []);
   }
 
-  Future<List<CategoryModel>> getSubCategoryListApi(
+  Future<void> getSubCategoryListApi(
       {CategoryModel? category}) async {
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.getSubCategoriesUrl(id: "${category?.id}"),
@@ -55,7 +60,7 @@ class SellVM extends BaseViewModel {
 
     ListResponse<CategoryModel> model = ListResponse<CategoryModel>.fromJson(
         response, (json) => CategoryModel.fromJson(json));
-    return model.body ?? [];
+    subcategoryStream.sink.add(model.body ?? []);
   }
 
   Future<void> getSubSubCategoryListApi(
