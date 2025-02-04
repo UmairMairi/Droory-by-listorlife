@@ -94,7 +94,7 @@ class ApiConstants {
       "$_baseUrl/get/models?brand_id=$brandId";
 
   static String getSearchProductUrl({String? search}) =>
-      "$_baseUrl/serach/category/product?search=$search";
+      "$_baseUrl/serach/category/product?search=$search&&sell_status=ongoing";
 
   static String getNotificationUrl({
     int? limit = 1000,

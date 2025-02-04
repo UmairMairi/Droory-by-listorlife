@@ -71,6 +71,8 @@ class SearchData {
   int? id;
   String? name;
   String? type;
+  dynamic userId;
+  String? communicationChoice;
 
   SearchData({this.id, this.name, this.type});
 
@@ -78,6 +80,8 @@ class SearchData {
     id = json['id'];
     name = json['name'];
     type = json['type'];
+    userId = json['user_id'];
+    communicationChoice = json['communication_choice'];
   }
 
   Map<String, dynamic> toJson() {
@@ -85,6 +89,8 @@ class SearchData {
     data['id'] = id;
     data['name'] = name;
     data['type'] = type;
+    data['user_id'] = userId;
+    data['communication_choice'] = communicationChoice;
     return data;
   }
 }

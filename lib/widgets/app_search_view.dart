@@ -95,12 +95,22 @@ class _AppSearchViewState extends State<AppSearchView> {
     }
   }
 
-  Future<void> storeSearches({dynamic id,dynamic name,dynamic type}) async {
+  Future<void> storeSearches({dynamic id,dynamic name,dynamic type,dynamic userId, String? communicationChoice}) async {
     Map<String,dynamic> body = {
       "id": id,
       "name":name,
-      "type":type
+      "type":type,
     };
+    if(userId != null){
+      body.addAll({
+        "user_id":userId
+      });
+    }
+    if(communicationChoice != null){
+      body.addAll({
+        "communication_choice":communicationChoice
+      });
+    }
     try {
       ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.storeSearchesUrl(),
@@ -379,6 +389,8 @@ class _AppSearchViewState extends State<AppSearchView> {
               storeSearches(
                   id: product.id,
                   name: product.name ?? '',
+                  userId: product.userId,
+                  communicationChoice: product.communicationChoice,
                   type: "product"
               );
             }
@@ -456,16 +468,23 @@ class _AppSearchViewState extends State<AppSearchView> {
                         return;
                       }
                       if(item.searchData?.type == "product"){
-                        ProductDetailModel product = ProductDetailModel(id: item.searchData?.id,name: item.searchData?.name);
-                        if (item.userId == DbHelper.getUserModel()?.id) {
+                        ProductDetailModel product = ProductDetailModel(id: item.searchData?.id,name: item.searchData?.name,userId: item.searchData?.userId,communicationChoice: item.searchData?.communicationChoice);
+                        // if (item.userId == DbHelper.getUserModel()?.id) {
+                        //   context.push(Routes.myProduct,
+                        //       extra: product);
+                        //   return;
+                        // }
+                        //
+                        // context.push(Routes.productDetails,
+                        //     extra: product);
+                        // return;
+                        if ("${item.searchData?.userId}" == "${DbHelper.getUserModel()?.id}") {
                           context.push(Routes.myProduct,
                               extra: product);
-                          return;
+                        }else{
+                          context.push(Routes.productDetails,
+                              extra: product);
                         }
-
-                        context.push(Routes.productDetails,
-                            extra: product);
-                        return;
                       }
                     },
                     child: Chip(
