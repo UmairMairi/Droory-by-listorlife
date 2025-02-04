@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class LikeButton extends StatefulWidget {
   final VoidCallback onTap;
   final bool isFav;
+  final Color? color;
 
-  const LikeButton({super.key, required this.onTap, required this.isFav});
+  const LikeButton({super.key, required this.onTap, required this.isFav, this.color});
 
   @override
   State<LikeButton> createState() => _LikeButtonState();
@@ -51,10 +52,10 @@ class _LikeButtonState extends State<LikeButton>
                     size: 30,
                     color: Colors.red,
                   )
-                : const Icon(
+                :  Icon(
                     Icons.favorite_border_outlined,
                     size: 30,
-                    color: Colors.white,
+                    color: widget.color??Colors.white,
                   )),
       ),
     );

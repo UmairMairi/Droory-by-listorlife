@@ -438,6 +438,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                                                                 .MONTSERRAT_BOLD),
                                                   ),
                                                   LikeButton(
+                                                    color: Colors.black,
                                                     onTap: () async =>
                                                         onLikeButtonTapped(
                                                             id: _productsList[

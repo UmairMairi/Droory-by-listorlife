@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 
 import '../../base/helpers/dialog_helper.dart';
 import '../../base/helpers/string_helper.dart';
+import '../../res/assets_res.dart';
 import '../../view_model/my_ads_v_m.dart';
 import '../../widgets/app_elevated_button.dart';
 import '../../widgets/card_swipe_widget.dart';
@@ -174,13 +175,20 @@ class _MyProductViewState extends State<MyProductView> {
                           ),
                           const Gap(5),
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              const Icon(
-                                Icons.location_on,
-                                size: 16,
+                              Image.asset(
+                                AssetsRes.IC_ITEM_LOCATION,
+                                scale: 2.5,
+                                color: Colors.black,
                               ),
-                              const Gap(05),
-                              Flexible(child: Text(productDetails?.nearby ?? '')),
+                              const Gap(10),
+                              Flexible(
+                                child: Text(
+                                  productDetails?.nearby ?? '',
+                                ),
+                              ),
                             ],
                           ),
                           const Gap(10),

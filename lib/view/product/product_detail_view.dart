@@ -153,17 +153,20 @@ class ProductDetailView extends BaseView<ProductVM> {
                               getSpecifications(context: context, productData: productData),
                               const Gap(5),
                               Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(top:8.0),
-                                    child: const Icon(
-                                      Icons.location_on,
-                                      size: 16,
+                                  Image.asset(
+                                    AssetsRes.IC_ITEM_LOCATION,
+                                    scale: 2.5,
+                                    color: Colors.black,
+                                  ),
+                                  const Gap(10),
+                                  Flexible(
+                                    child: Text(
+                                      productData?.nearby ?? '',
                                     ),
                                   ),
-                                  const Gap(05),
-                                  Flexible(child: Text(productData?.nearby ?? '')),
                                 ],
                               ),
                               const Gap(10),
