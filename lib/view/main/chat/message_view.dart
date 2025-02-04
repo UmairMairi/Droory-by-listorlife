@@ -38,11 +38,10 @@ class _MessageViewState extends State<MessageView> {
     viewModel = context.read<ChatVM>();
       viewModel.initListeners();
     WidgetsBinding.instance.addPostFrameCallback((d) {
-    if((widget.chat?.lastMessageDetail?.roomId??"").isNotEmpty){
-      viewModel.currentRoomId = widget.chat?.lastMessageDetail?.roomId??"0";
-    }});
+      viewModel.currentProductId = widget.chat?.productId ?? 0;
+    });
       viewModel.updateChatScreenId(
-        roomId: widget.chat?.lastMessageDetail?.roomId ?? viewModel.currentRoomId,
+        roomId: widget.chat?.lastMessageDetail?.roomId ?? viewModel.currentProductId,
       );
 
       viewModel.readChatStatus(
@@ -300,7 +299,6 @@ class _MessageViewState extends State<MessageView> {
                         viewModel.sendMessage(
                             message: '$value',
                             type: 2,
-                            roomId: viewModel.currentRoomId,
                             receiverId: widget.chat?.senderId ==
                                 DbHelper.getUserModel()?.id
                                 ? widget.chat?.receiverDetail?.id
@@ -311,7 +309,6 @@ class _MessageViewState extends State<MessageView> {
                       onSubmitted: (value) {
                         viewModel.sendMessage(
                             message: value,
-                            roomId: viewModel.currentRoomId,
                             type: 1,
                             receiverId: widget.chat?.senderId ==
                                 DbHelper.getUserModel()?.id
@@ -329,7 +326,6 @@ class _MessageViewState extends State<MessageView> {
                           String value = await BaseClient.uploadImage(
                               imagePath: image);
                           viewModel.sendMessage(
-                              roomId: viewModel.currentRoomId,
                               message: value,
                               type: 3,
                               receiverId: widget.chat?.senderId ==

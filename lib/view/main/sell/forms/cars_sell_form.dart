@@ -427,50 +427,47 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                 // ],
                 // textInputAction: TextInputAction.done,
               ),
-              Visibility(
-                visible: false,
-                child: CommonDropdown(
-                  title: StringHelper.mileage,
-                  titleColor: Colors.black,
-                  hint: viewModel.mileageTextController.text,
-                  onSelected: (String? value) {
-                    viewModel.mileageTextController.text = value??"";
-                  },
-                  options: viewModel.mileageRanges,
-                  // readOnly: true,
-                  // hint: StringHelper.enter,
-                  // hintStyle:
-                  //     const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                  // fillColor: Colors.white,
-                  // contentPadding: const EdgeInsets.only(left: 20),
-                  // suffix: PopupMenuButton<String>(
-                  //   clipBehavior: Clip.hardEdge,
-                  //   icon: const Icon(
-                  //     Icons.arrow_drop_down,
-                  //     color: Colors.black,
-                  //   ),
-                  //   onSelected: (value) {
-                  //     viewModel.mileageTextController.text = value;
-                  //   },
-                  //   itemBuilder: (BuildContext context) {
-                  //     return viewModel.mileageRanges.map((option) {
-                  //       return PopupMenuItem(
-                  //         value: option,
-                  //         child: Text(option ?? ''),
-                  //       );
-                  //     }).toList();
-                  //   },
-                  // ),
-                  // inputFormatters: [
-                  //   LengthLimitingTextInputFormatter(4),
-                  //   FilteringTextInputFormatter.digitsOnly,
-                  //   FilteringTextInputFormatter.deny(
-                  //     RegExp(viewModel.regexToRemoveEmoji),
-                  //   ),
-                  // ],
-                  // keyboardType: TextInputType.number,
-                  // textInputAction: TextInputAction.done,
-                ),
+              CommonDropdown(
+                title: StringHelper.mileage,
+                titleColor: Colors.black,
+                hint: viewModel.mileageTextController.text,
+                onSelected: (String? value) {
+                  viewModel.mileageTextController.text = value??"";
+                },
+                options: viewModel.mileageRanges,
+                // readOnly: true,
+                // hint: StringHelper.enter,
+                // hintStyle:
+                //     const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                // fillColor: Colors.white,
+                // contentPadding: const EdgeInsets.only(left: 20),
+                // suffix: PopupMenuButton<String>(
+                //   clipBehavior: Clip.hardEdge,
+                //   icon: const Icon(
+                //     Icons.arrow_drop_down,
+                //     color: Colors.black,
+                //   ),
+                //   onSelected: (value) {
+                //     viewModel.mileageTextController.text = value;
+                //   },
+                //   itemBuilder: (BuildContext context) {
+                //     return viewModel.mileageRanges.map((option) {
+                //       return PopupMenuItem(
+                //         value: option,
+                //         child: Text(option ?? ''),
+                //       );
+                //     }).toList();
+                //   },
+                // ),
+                // inputFormatters: [
+                //   LengthLimitingTextInputFormatter(4),
+                //   FilteringTextInputFormatter.digitsOnly,
+                //   FilteringTextInputFormatter.deny(
+                //     RegExp(viewModel.regexToRemoveEmoji),
+                //   ),
+                // ],
+                // keyboardType: TextInputType.number,
+                // textInputAction: TextInputAction.done,
               ),
               RichText(
                   text: TextSpan(children: [

@@ -301,6 +301,7 @@ class FilterModel {
   String? minAreaSize;
   String? salleryFrom;
   String? salleryTo;
+  String? milleage;
 
   FilterModel({
     this.screenFrom,
@@ -352,6 +353,7 @@ class FilterModel {
     this.minAreaSize,
     this.salleryFrom,
     this.salleryTo,
+    this.milleage,
   });
 
   // fromJson method
@@ -404,6 +406,7 @@ class FilterModel {
     minAreaSize = json['min_area_size'];
     salleryFrom = json['sallery_from'];
     salleryTo = json['sallery_to'];
+    milleage = json['milleage'];
   }
 
   // toJson method
@@ -457,6 +460,7 @@ class FilterModel {
     data['min_area_size'] = minAreaSize;
     data['sallery_from'] = salleryFrom;
     data['sallery_to'] = salleryTo;
+    data['milleage'] = milleage;
     data.removeWhere((key, value) => value == "" || value == null);
     return data;
   }

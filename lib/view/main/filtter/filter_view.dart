@@ -316,6 +316,8 @@ class _FilterViewState extends State<FilterView> {
                       },
                       onChanged: (SfRangeValues newValues) {
         if ((newValues.end - newValues.start) >= 1000) {
+          debugPrint("newValues==> ${newValues.end}");
+          debugPrint("newValues start==> ${newValues.start}");
           viewModel.startPriceTextController.text =
           "${newValues.start.round()}";
           viewModel.endPriceTextController.text = "${newValues.end.round()}";
@@ -666,37 +668,37 @@ class _FilterViewState extends State<FilterView> {
                   //   },
                   // ),
                 ),
-                // const SizedBox(
-                //   height: 10,
-                // ),
-                // CommonDropdown(
-                //   title: StringHelper.mileage,
-                //   hint: viewModel.mileageTextController.text,
-                //   onSelected: (value) {
-                //     viewModel.mileageTextController.text = value??"";
-                //   },
-                //   options: viewModel.mileageRanges,
-                //   // hint: StringHelper.select,
-                //   // readOnly: true,
-                //   // suffix: PopupMenuButton<String>(
-                //   //   clipBehavior: Clip.hardEdge,
-                //   //   icon: const Icon(
-                //   //     Icons.arrow_drop_down,
-                //   //     color: Colors.black,
-                //   //   ),
-                //   //   onSelected: (value) {
-                //   //     viewModel.mileageTextController.text = value;
-                //   //   },
-                //   //   itemBuilder: (BuildContext context) {
-                //   //     return viewModel.mileageRanges.map((option) {
-                //   //       return PopupMenuItem(
-                //   //         value: option,
-                //   //         child: Text(option ?? ''),
-                //   //       );
-                //   //     }).toList();
-                //   //   },
-                //   // ),
-                // ),
+                const SizedBox(
+                  height: 10,
+                ),
+                CommonDropdown(
+                  title: StringHelper.mileage,
+                  hint: viewModel.mileageTextController.text,
+                  onSelected: (value) {
+                    viewModel.mileageTextController.text = value??"";
+                  },
+                  options: viewModel.mileageRanges,
+                  // hint: StringHelper.select,
+                  // readOnly: true,
+                  // suffix: PopupMenuButton<String>(
+                  //   clipBehavior: Clip.hardEdge,
+                  //   icon: const Icon(
+                  //     Icons.arrow_drop_down,
+                  //     color: Colors.black,
+                  //   ),
+                  //   onSelected: (value) {
+                  //     viewModel.mileageTextController.text = value;
+                  //   },
+                  //   itemBuilder: (BuildContext context) {
+                  //     return viewModel.mileageRanges.map((option) {
+                  //       return PopupMenuItem(
+                  //         value: option,
+                  //         child: Text(option ?? ''),
+                  //       );
+                  //     }).toList();
+                  //   },
+                  // ),
+                ),
                 const SizedBox(
                   height: 10,
                 ),
@@ -1203,6 +1205,9 @@ class _FilterViewState extends State<FilterView> {
 
                   if (viewModel.kmDrivenTextController.text.trim().isNotEmpty) {
                     filter.minKmDriven = viewModel.kmDrivenTextController.text.trim();
+                  }
+                  if (viewModel.mileageTextController.text.trim().isNotEmpty) {
+                    filter.milleage = viewModel.mileageTextController.text.trim();
                   }
 
                   // filter.minPrice =

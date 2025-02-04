@@ -94,6 +94,7 @@ class NotificationEntity {
   dynamic receiverId;
   dynamic deviceToken;
   dynamic productId;
+  dynamic roomId;
   dynamic profilePic;
   dynamic productName;
   dynamic productImage;
@@ -120,6 +121,7 @@ class NotificationEntity {
     this.body,
     this.type,
     this.title,
+    this.roomId,
     this.senderId,
     this.sellStatus,
   });
@@ -140,6 +142,7 @@ class NotificationEntity {
     title = json['title'];
     senderId = json['sender_id'];
     sellStatus = json['sell_status'];
+    roomId = json['room_id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -159,6 +162,7 @@ class NotificationEntity {
     data['title'] = title;
     data['sender_id'] = senderId;
     data['sell_status'] = sellStatus;
+    data['room_id'] = roomId;
     return data;
   }
 }

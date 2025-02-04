@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 
 import '../../firebase_options.dart';
 import '../../models/inbox_model.dart';
+import '../../models/message_model.dart';
 import '../../models/product_detail_model.dart';
 import '../../routes/app_pages.dart';
 import '../../routes/app_routes.dart';
@@ -540,6 +541,7 @@ class NotificationService {
             senderId: DbHelper.getUserModel()?.id,
             receiverId: num.parse("${notificationEntity?.senderId}"),
             productId: num.parse("${notificationEntity?.productId}"),
+            lastMessageDetail: MessageModel(roomId: "${notificationEntity?.roomId??""}"),
             productDetail: ProductDetailModel(
                 image: "${notificationEntity?.productImage??""}",
                 name: "${notificationEntity?.productName??""}",

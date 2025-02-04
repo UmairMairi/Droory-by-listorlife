@@ -524,46 +524,46 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                   // textInputAction: TextInputAction.done,
                 ),
               },
-              if (category?.id == 2 || subCategory?.subCategoryId == 4) ...{
-                /// MATERIAL SPECIFICATION
-                CommonDropdown(
-                  title: StringHelper.material,
-                  hint: viewModel.materialTextController.text,
-                  onSelected: (String? value) {
-                    viewModel.materialTextController.text = value ?? '';
-                  },
-                  options: viewModel.materialOptions,
-                  // readOnly: true,
-                  // cursorColor: Colors.black,
-                  // hint: StringHelper.select,
-                  // hintStyle:
-                  //     const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                  // suffix: PopupMenuButton<String>(
-                  //   clipBehavior: Clip.hardEdge,
-                  //   icon: const Icon(
-                  //     Icons.arrow_drop_down,
-                  //     color: Colors.black,
-                  //   ),
-                  //   onSelected: (value) {
-                  //     viewModel.materialTextController.text = value ?? '';
-                  //   },
-                  //   itemBuilder: (BuildContext context) {
-                  //     return viewModel.materialOptions.map((option) {
-                  //       return PopupMenuItem(
-                  //         value: option,
-                  //         child: Text(option ?? ''),
-                  //       );
-                  //     }).toList();
-                  //   },
-                  // ),
-                  // inputFormatters: [
-                  //   FilteringTextInputFormatter.deny(
-                  //       RegExp(viewModel.regexToRemoveEmoji)),
-                  // ],
-                  // keyboardType: TextInputType.text,
-                  // textInputAction: TextInputAction.done,
-                ),
-              },
+              // if (category?.id == 2 || subCategory?.subCategoryId == 4) ...{
+              //   /// MATERIAL SPECIFICATION
+              //   CommonDropdown(
+              //     title: StringHelper.material,
+              //     hint: viewModel.materialTextController.text,
+              //     onSelected: (String? value) {
+              //       viewModel.materialTextController.text = value ?? '';
+              //     },
+              //     options: viewModel.materialOptions,
+              //     // readOnly: true,
+              //     // cursorColor: Colors.black,
+              //     // hint: StringHelper.select,
+              //     // hintStyle:
+              //     //     const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+              //     // suffix: PopupMenuButton<String>(
+              //     //   clipBehavior: Clip.hardEdge,
+              //     //   icon: const Icon(
+              //     //     Icons.arrow_drop_down,
+              //     //     color: Colors.black,
+              //     //   ),
+              //     //   onSelected: (value) {
+              //     //     viewModel.materialTextController.text = value ?? '';
+              //     //   },
+              //     //   itemBuilder: (BuildContext context) {
+              //     //     return viewModel.materialOptions.map((option) {
+              //     //       return PopupMenuItem(
+              //     //         value: option,
+              //     //         child: Text(option ?? ''),
+              //     //       );
+              //     //     }).toList();
+              //     //   },
+              //     // ),
+              //     // inputFormatters: [
+              //     //   FilteringTextInputFormatter.deny(
+              //     //       RegExp(viewModel.regexToRemoveEmoji)),
+              //     // ],
+              //     // keyboardType: TextInputType.text,
+              //     // textInputAction: TextInputAction.done,
+              //   ),
+              // },
 
               /// Ad Title Section
               AppTextField(
