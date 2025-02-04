@@ -27,14 +27,14 @@ class SellVM extends BaseViewModel {
     _isGuest = value;
     notifyListeners();
   }
-  void handelSellCat({required CategoryModel item}) {
-    if (context.mounted) {
-      context.push(Routes.sellSubCategoryView, extra: item);
-    } else {
-      AppPages.rootNavigatorKey.currentContext
-          ?.push(Routes.sellSubCategoryView, extra: item);
-    }
-  }
+  // void handelSellCat({required CategoryModel item}) {
+  //   if (context.mounted) {
+  //     context.push(Routes.sellSubCategoryView, extra: item);
+  //   } else {
+  //     AppPages.rootNavigatorKey.currentContext
+  //         ?.push(Routes.sellSubCategoryView, extra: item);
+  //   }
+  // }
 
   StreamController<List<CategoryModel>> categoryStream = StreamController<List<CategoryModel>>.broadcast();
   StreamController<List<CategoryModel>> subcategoryStream = StreamController<List<CategoryModel>>.broadcast();
@@ -64,7 +64,8 @@ class SellVM extends BaseViewModel {
   }
 
   Future<void> getSubSubCategoryListApi(
-      {required CategoryModel? category,
+      {required BuildContext context,
+      required CategoryModel? category,
       required CategoryModel subCategory}) async {
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.getSubSubCategoriesUrl(id: "${subCategory.id}"),

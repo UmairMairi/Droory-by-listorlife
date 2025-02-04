@@ -89,9 +89,9 @@ class _SellCategoryViewState extends State<SellCategoryView> {
                                       }
                                     }
 
-
-                                    viewModel.handelSellCat(
-                                        item: categoryData[index]);
+                                    context.push(Routes.sellSubCategoryView, extra: categoryData[index]);
+                                    // viewModel.handelSellCat(
+                                    //     item: categoryData[index]);
                                   },
                                   child: Card(
                                     color: const Color(0xffFCFCFD),

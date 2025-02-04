@@ -165,19 +165,20 @@ class ChatVM extends BaseViewModel {
     _socketIO.off(SocketConstants.sendMessage);
         _socketIO.on(SocketConstants.sendMessage, (data) {
       log("Listen ${SocketConstants.sendMessage} => data $data");
-
-      /// getInboxList();
       MessageModel message = MessageModel.fromJson(data);
       currentRoomId = message.roomId??"";
-      // updateChatScreenId(
-      //   roomId: currentRoomId
-      // );
-      if (chatItems.isNotEmpty) {
-        if (message.senderId != DbHelper.getUserModel()?.id && message.roomId == chatItems.first.roomId) {
-          chatItems.insert(0, message);
-          messageStreamController.add(chatItems);
+      /// getInboxList();
+      messageStreamController.stream.map((chat){
+        if (chat.isNotEmpty) {
+          var receiver = message.senderId != DbHelper.getUserModel()?.id;
+          var room = message.roomId == chat.first.roomId;
+          var productId = message.productId == chat.first.productId;
+          if (receiver && room || productId) {
+            chatItems.insert(0, message);
+            messageStreamController.add(chatItems);
+          }
         }
-      }
+      });
 
       getInboxList();
     });

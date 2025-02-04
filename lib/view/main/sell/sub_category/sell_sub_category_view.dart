@@ -49,6 +49,7 @@ class _SellSubCategoryViewState extends State<SellSubCategoryView> {
                       onTap: () {
                         DialogHelper.showLoading();
                         viewModel.getSubSubCategoryListApi(
+                          context: context,
                             category: widget.category,
                             subCategory: subCategoriesList[index]);
                       },
