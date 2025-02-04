@@ -128,10 +128,10 @@ class InboxView extends BaseView<ChatVM> {
                                                   mainAxisSize:
                                                       MainAxisSize.min,
                                                   children: [
-                                                    const Icon(
-                                                      Icons
-                                                          .remove_red_eye_outlined,
+                                                     Icon(
+                                                      Icons.remove_red_eye_outlined,
                                                       size: 12,
+                                                      //color: data.lastMessageDetail?.isRead == 0?Colors.red:Colors.black,
                                                     ),
                                                     const Gap(02),
                                                     Text(

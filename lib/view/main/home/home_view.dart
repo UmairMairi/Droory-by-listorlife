@@ -86,9 +86,15 @@ class HomeView extends BaseView<HomeVM> {
                 decoration: BoxDecoration(
                     color: Colors.black,
                     borderRadius: BorderRadius.circular(10)),
-                child: Image.asset(
-                  AssetsRes.IC_BELL_ICON,
-                  scale: 1.3,
+                child: Stack(
+                  alignment: Alignment.topRight,
+                  children: [
+                    Badge(),
+                    Image.asset(
+                      AssetsRes.IC_BELL_ICON,
+                      scale: 1.3,
+                    ),
+                  ],
                 )),
           )
         ],

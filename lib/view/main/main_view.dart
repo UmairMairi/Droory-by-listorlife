@@ -26,7 +26,13 @@ class MainView extends BaseView<MainVM> {
               inactiveColorPrimary: CupertinoColors.systemGrey,
             ),
             PersistentBottomNavBarItem(
-              icon: const Icon(CupertinoIcons.chat_bubble_text),
+              icon: Stack(
+                alignment: Alignment.topRight,
+                children: [
+                  Badge(),
+                  const Icon(CupertinoIcons.chat_bubble_text),
+                ],
+              ),
               title: (StringHelper.myChat),
               activeColorPrimary: CupertinoColors.black,
               inactiveColorPrimary: CupertinoColors.systemGrey,
