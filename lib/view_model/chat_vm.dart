@@ -167,7 +167,6 @@ class ChatVM extends BaseViewModel {
             roomId: message.roomId,
           );
         }
-
       });
 
       if(message.senderId != DbHelper.getUserModel()?.id && message.productId == currentProductId) {
