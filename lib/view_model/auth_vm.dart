@@ -189,7 +189,7 @@ class AuthVM extends BaseViewModel {
       if((appleData.givenName??"").isNotEmpty){
         body.addAll({
           'name': appleData.givenName?.split(' ').first,
-          'last_name': appleData.givenName?.split(' ').last,
+          'last_name': appleData.familyName??"",
         });
       }
       if((appleData.email??"").isNotEmpty){
