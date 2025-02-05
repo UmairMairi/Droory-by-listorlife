@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:app_links/app_links.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
@@ -60,6 +62,16 @@ class MainVM extends BaseViewModel {
     _isGuest = value;
     notifyListeners();
   }
+
+  num _countMessage = 0;
+
+  num get countMessage => _countMessage;
+
+  set countMessage(num value) {
+    _countMessage = value;
+    notifyListeners();
+  }
+
   @override
   void onInit() {
     // TODO: implement onInit
@@ -70,7 +82,10 @@ class MainVM extends BaseViewModel {
     DbHelper.box.listenKey('isGuest', (value) {
       isGuest = DbHelper.getIsGuest();
     });
-    if (!isGuest) SocketHelper().connectUser();
+    if (!isGuest) {
+      SocketHelper().connectUser();
+      getChatNotifyCount();
+    }
 
     initUniLinks();
     super.onInit();
@@ -96,6 +111,7 @@ class MainVM extends BaseViewModel {
           context.push(Routes.guestLogin);
           navController.jumpToTab(0);
         } else {
+          getChatNotifyCount();
           context.read<ChatVM>().getInboxList();
         }
       case 2:
@@ -114,6 +130,20 @@ class MainVM extends BaseViewModel {
         return;
     }
     notifyListeners();
+  }
+
+
+  Future<void> getChatNotifyCount() async {
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.getChatNotifyCount(), requestType: RequestType.get);
+    var response = await BaseClient.handleRequest(apiRequest);
+
+    MapResponse<UserModel?> model = MapResponse<UserModel>.fromJson(
+        response, (json) => UserModel.fromJson(json));
+    if(model.body != null){
+      countMessage = model.body?.count_message??0;
+      notifyListeners();
+    }
   }
 
   Future<void> getProfile() async {

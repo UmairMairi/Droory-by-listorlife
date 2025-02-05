@@ -74,7 +74,9 @@ class HomeView extends BaseView<HomeVM> {
               if (DbHelper.getIsGuest()) {
                 context.push(Routes.guestLogin);
               } else {
-                context.push(Routes.notifications);
+                context.push(Routes.notifications).then((value){
+                  viewModel.getChatNotifyCount();
+                });
               }
 
               /*     await NotificationService.sendNotification(
@@ -89,7 +91,12 @@ class HomeView extends BaseView<HomeVM> {
                 child: Stack(
                   alignment: Alignment.topRight,
                   children: [
-                    Badge(),
+                    Visibility(
+                      visible: viewModel.countMessage != 0,
+                      child: Badge(
+                        child: Text("${viewModel.countMessage}",style: TextStyle(fontSize: 8,color: Colors.white),),
+                      ),
+                    ),
                     Image.asset(
                       AssetsRes.IC_BELL_ICON,
                       scale: 1.3,

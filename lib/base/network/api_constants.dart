@@ -120,6 +120,7 @@ class ApiConstants {
   static String sendMailForVerifyUrl() => "$_baseUrl/send/mail/for/verify";
   static String verifyOtpMobileUrl() => "$_baseUrl/verify/otp/mobile";
   static String sendOtpMobileUrl() => "$_baseUrl/send/otp/mobile";
+  static String getChatNotifyCount() => "$_baseUrl/get/chat/notification/count";
   static String getFilteredProduct({
     int? limit = 10,
     int? page = 1,

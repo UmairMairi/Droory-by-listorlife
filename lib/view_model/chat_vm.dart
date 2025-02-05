@@ -155,12 +155,12 @@ class ChatVM extends BaseViewModel {
       log("Listen ${SocketConstants.sendMessage} => data $data");
       MessageModel message = MessageModel.fromJson(data);
 
-      if(message.senderId == DbHelper.getUserModel()?.id && message.productId == currentProductId) {
-        for (var element in chatItems) {
-          element.isRead = 1;
-        }
-        messageStreamController.sink.add(chatItems);
-      }
+      // if(message.senderId == DbHelper.getUserModel()?.id && message.productId == currentProductId) {
+      //   for (var element in chatItems) {
+      //     element.isRead = 1;
+      //   }
+      //   messageStreamController.sink.add(chatItems);
+      // }
       if(message.senderId != DbHelper.getUserModel()?.id && message.productId == currentProductId) {
         chatItems.insert(0, message);
         messageStreamController.sink.add(chatItems);
@@ -222,6 +222,7 @@ class ChatVM extends BaseViewModel {
     _socketIO.off(SocketConstants.updateChatScreenId);
     _socketIO.on(SocketConstants.updateChatScreenId, (data) {
       log("Listen ${SocketConstants.updateChatScreenId} => $data");
+      getInboxList();
     });
   }
 

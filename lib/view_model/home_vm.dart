@@ -251,6 +251,7 @@ class HomeVM extends BaseViewModel {
     cachedCategoryList = getCategoryListApi();
   }
 
+
   @override
   void onClose() {
     // TODO: implement onClose
@@ -258,11 +259,36 @@ class HomeVM extends BaseViewModel {
     super.onClose();
   }
 
+  num _countMessage = 0;
+
+  num get countMessage => _countMessage;
+
+  set countMessage(num value) {
+    _countMessage = value;
+    notifyListeners();
+  }
+
+  Future<void> getChatNotifyCount() async {
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.getChatNotifyCount(), requestType: RequestType.get);
+    var response = await BaseClient.handleRequest(apiRequest);
+
+    MapResponse<UserModel?> model = MapResponse<UserModel>.fromJson(
+        response, (json) => UserModel.fromJson(json));
+    if(model.body != null){
+      countMessage = model.body?.count_notification??0;
+      notifyListeners();
+    }
+  }
+
   Future<void> onRefresh() async {
     // monitor network fetch
     try {
       page = 1;
       productsList.clear();
+      if(!DbHelper.getIsGuest()) {
+        getChatNotifyCount();
+      }
       await getProductsApi(loading: true);
       scrollController.animateTo(
         scrollController.position.minScrollExtent,

@@ -131,7 +131,7 @@ class InboxView extends BaseView<ChatVM> {
                                                      Icon(
                                                       Icons.remove_red_eye_outlined,
                                                       size: 12,
-                                                      //color: data.lastMessageDetail?.isRead == 0?Colors.red:Colors.black,
+                                                      color: data.unread_count != 0?Colors.red:Colors.black,
                                                     ),
                                                     const Gap(02),
                                                     Text(
@@ -160,15 +160,41 @@ class InboxView extends BaseView<ChatVM> {
                                               maxLines: 2,
                                             ),
                                             const Gap(02),
-                                            Text(
-                                              "${viewModel.getLastMessage(message: data.lastMessageDetail)}",
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: context
-                                                  .textTheme.labelSmall
-                                                  ?.copyWith(
-                                                      fontFamily: FontRes
-                                                          .MONTSERRAT_MEDIUM),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Expanded(
+                                                  child: Text(
+                                                    "${viewModel.getLastMessage(message: data.lastMessageDetail)}",
+                                                    maxLines: 1,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    style: context
+                                                        .textTheme.labelSmall
+                                                        ?.copyWith(
+                                                            fontFamily: FontRes
+                                                                .MONTSERRAT_MEDIUM),
+                                                  ),
+                                                ),
+                                                Gap(10),
+                                                Visibility(
+                                                  visible: data.unread_count != 0,
+                                                  child: CircleAvatar(
+                                                    radius: 10, // Adjust based on UI needs
+                                                    backgroundColor: Colors.red, // Unread count indicator
+                                                    child: Center(
+                                                      child: Text(
+                                                        "${(data.unread_count??0) > 99 ? '99+' : data.unread_count}", // Limit to 99+
+                                                        style: context.textTheme.labelSmall?.copyWith(
+                                                          color: Colors.white, // Ensure contrast
+                                                          fontSize:(data.unread_count??0) > 99? 7:9,
+                                                          fontWeight: FontWeight.w500,
+                                                          fontFamily: FontRes.MONTSERRAT_MEDIUM,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
                                             ),
                                           ],
                                         ),

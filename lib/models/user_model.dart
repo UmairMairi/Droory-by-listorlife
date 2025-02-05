@@ -30,6 +30,8 @@ class UserModel {
   String? name;
   String? communicationChoice;
   num? status;
+  num? count_notification;
+  num? count_message;
 
   UserModel(
       {this.phoneNo,
@@ -62,6 +64,8 @@ class UserModel {
       this.deviceToken,
       this.name,
       this.communicationChoice,
+      this.count_notification,
+      this.count_message,
       this.status});
 
   UserModel.fromJson(Map<String, dynamic> json) {
@@ -95,6 +99,8 @@ class UserModel {
     deviceToken = json['device_token'];
     name = json['name'];
     communicationChoice = json['communication_choice'];
+    count_notification = json['count_notification'];
+    count_message = json['count_message'];
     status = json['status'];
   }
 
@@ -130,6 +136,8 @@ class UserModel {
     data['device_token'] = deviceToken;
     data['name'] = name;
     data['communication_choice'] = communicationChoice;
+    data['count_notification'] = count_notification;
+    data['count_message'] = count_message;
     data['status'] = status;
     return data;
   }

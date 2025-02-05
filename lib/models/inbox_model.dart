@@ -62,6 +62,7 @@ class InboxModel {
   num? receiverId;
   num? productId;
   num? lastMessageId;
+  num? unread_count;
   String? createdAt;
   String? updatedAt;
   String? receiverName;
@@ -78,6 +79,7 @@ class InboxModel {
       this.lastMessageId,
       this.createdAt,
       this.updatedAt,
+      this.unread_count,
       this.receiverName,
       this.senderDetail,
       this.receiverDetail,
@@ -90,6 +92,7 @@ class InboxModel {
     receiverId = json['receiver_id'];
     productId = json['product_id'];
     lastMessageId = json['last_message_id'];
+    unread_count = json['unread_count'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     receiverName = json['receiver_name'];
@@ -114,6 +117,7 @@ class InboxModel {
     data['receiver_id'] = receiverId;
     data['product_id'] = productId;
     data['last_message_id'] = lastMessageId;
+    data['unread_count'] = unread_count;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
     data['receiver_name'] = receiverName;

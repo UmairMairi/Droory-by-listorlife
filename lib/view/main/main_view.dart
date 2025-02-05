@@ -29,7 +29,12 @@ class MainView extends BaseView<MainVM> {
               icon: Stack(
                 alignment: Alignment.topRight,
                 children: [
-                  Badge(),
+                  Visibility(
+                    visible: viewModel.countMessage != 0,
+                    child: Badge(
+                      child: Text("${viewModel.countMessage}",style: TextStyle(fontSize: 8,color: Colors.white),),
+                    ),
+                  ),
                   const Icon(CupertinoIcons.chat_bubble_text),
                 ],
               ),
