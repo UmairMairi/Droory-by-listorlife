@@ -1,29 +1,19 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math';
-
-import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:list_and_life/base/utils/utils.dart';
-import 'package:list_and_life/view/main/chat/message_view.dart';
-import 'package:list_and_life/view/notifications/notification_view.dart';
-import 'package:provider/provider.dart';
-
+import 'package:go_router/go_router.dart';
 import '../../firebase_options.dart';
 import '../../models/inbox_model.dart';
 import '../../models/message_model.dart';
 import '../../models/product_detail_model.dart';
 import '../../routes/app_pages.dart';
 import '../../routes/app_routes.dart';
-import '../../view/product/my_product_view.dart';
-import '../../view_model/chat_vm.dart';
 import '../helpers/db_helper.dart';
-import '../helpers/dialog_helper.dart';
 import 'notification_entity.dart';
-import 'package:googleapis_auth/auth_io.dart' as auth;
 
 // class NotificationService {
 //   //Singleton pattern
@@ -533,45 +523,99 @@ class NotificationService {
     switch ("${notificationEntity?.notificationType}") {
       case 'send_message_user_driver':
 
-        //Provider.of<ChatVM>(AppPages.rootNavigatorKey.currentContext!, listen: false).initListeners();
-        Navigator.push(AppPages.rootNavigatorKey.currentContext!,
-            MaterialPageRoute(
-                settings: RouteSettings(name: '/message'),
-                builder: (context)=>MessageView(chat: InboxModel(
-            senderId: DbHelper.getUserModel()?.id,
-            receiverId: num.parse("${notificationEntity?.senderId}"),
-            productId: num.parse("${notificationEntity?.productId}"),
-            lastMessageDetail: MessageModel(roomId: "${notificationEntity?.roomId??""}"),
-            productDetail: ProductDetailModel(
-                image: "${notificationEntity?.productImage??""}",
-                name: "${notificationEntity?.productName??""}",
-                sellStatus: "${notificationEntity?.sellStatus??""}",
-                id: int.parse("${notificationEntity?.productId}")),
-            receiverDetail: SenderDetail(
-                id: num.parse("${notificationEntity?.senderId}"),
-                lastName: "${notificationEntity?.senderLastName??""}",
-                profilePic: "${notificationEntity?.profilePic??""}",
-                name: notificationEntity?.senderName),
-            senderDetail: SenderDetail(
-                id: DbHelper.getUserModel()?.id,
-                profilePic: DbHelper.getUserModel()?.profilePic,
-                lastName: DbHelper.getUserModel()?.lastName,
-                name: DbHelper.getUserModel()?.name)),
-        )));
-
+        // //Provider.of<ChatVM>(AppPages.rootNavigatorKey.currentContext!, listen: false).initListeners();
+        // Navigator.push(AppPages.rootNavigatorKey.currentContext!,
+        //     MaterialPageRoute(
+        //         settings: RouteSettings(name: '/message'),
+        //         builder: (context)=>MessageView(chat: InboxModel(
+        //     senderId: DbHelper.getUserModel()?.id,
+        //     receiverId: num.parse("${notificationEntity?.senderId}"),
+        //     productId: num.parse("${notificationEntity?.productId}"),
+        //     lastMessageDetail: MessageModel(roomId: "${notificationEntity?.roomId??""}"),
+        //     productDetail: ProductDetailModel(
+        //         image: "${notificationEntity?.productImage??""}",
+        //         name: "${notificationEntity?.productName??""}",
+        //         sellStatus: "${notificationEntity?.sellStatus??""}",
+        //         id: int.parse("${notificationEntity?.productId}")),
+        //     receiverDetail: SenderDetail(
+        //         id: num.parse("${notificationEntity?.senderId}"),
+        //         lastName: "${notificationEntity?.senderLastName??""}",
+        //         profilePic: "${notificationEntity?.profilePic??""}",
+        //         name: notificationEntity?.senderName),
+        //     senderDetail: SenderDetail(
+        //         id: DbHelper.getUserModel()?.id,
+        //         profilePic: DbHelper.getUserModel()?.profilePic,
+        //         lastName: DbHelper.getUserModel()?.lastName,
+        //         name: DbHelper.getUserModel()?.name)),
+        // )));
+        navigateToMessageView(notificationEntity);
         break;
       case 'product_status':
-        Navigator.push(AppPages.rootNavigatorKey.currentContext!, MaterialPageRoute(builder: (context)=> MyProductView(
-          data: ProductDetailModel(
-              id: int.parse("${notificationEntity?.productId}")),
-        )
-        ));
+        // Navigator.push(AppPages.rootNavigatorKey.currentContext!, MaterialPageRoute(builder: (context)=> MyProductView(
+        //   data: ProductDetailModel(
+        //       id: int.parse("${notificationEntity?.productId}")),
+        // )
+        // ));
+        navigateToMyProduct(notificationEntity);
         break;
       default:
-        Navigator.push(AppPages.rootNavigatorKey.currentContext!, MaterialPageRoute(builder: (context)=>NotificationView(),));
+        navigateToNotification(notificationEntity);
+        //Navigator.push(AppPages.rootNavigatorKey.currentContext!, MaterialPageRoute(builder: (context)=>NotificationView(),));
     }
   }
 
 
+  void navigateToMessageView(NotificationEntity? notificationEntity) {
+    final context = AppPages.rootNavigatorKey.currentContext!;
+    final userModel = DbHelper.getUserModel();
 
+    if (context.mounted) {
+      final String currentRoute = GoRouter.of(context).routeInformationProvider.value.uri.path;
+      if(currentRoute == Routes.message){
+        context.pop();
+      }
+      context.push(Routes.message, extra: InboxModel(
+        senderId: userModel?.id,
+        receiverId: num.parse("${notificationEntity?.senderId}"),
+        productId: num.parse("${notificationEntity?.productId}"),
+        lastMessageDetail: MessageModel(roomId: "${notificationEntity?.roomId ?? ""}"),
+        productDetail: ProductDetailModel(
+          image: "${notificationEntity?.productImage ?? ""}",
+          name: "${notificationEntity?.productName ?? ""}",
+          sellStatus: "${notificationEntity?.sellStatus ?? ""}",
+          id: int.parse("${notificationEntity?.productId}"),
+        ),
+        receiverDetail: SenderDetail(
+          id: num.parse("${notificationEntity?.senderId}"),
+          lastName: "${notificationEntity?.senderLastName ?? ""}",
+          profilePic: "${notificationEntity?.profilePic ?? ""}",
+          name: notificationEntity?.senderName,
+        ),
+        senderDetail: SenderDetail(
+          id: userModel?.id,
+          profilePic: userModel?.profilePic,
+          lastName: userModel?.lastName,
+          name: userModel?.name,
+        ),
+      ));
+    }
+  }
+
+  void navigateToMyProduct(NotificationEntity? notificationEntity) {
+    final context = AppPages.rootNavigatorKey.currentContext!;
+
+    if (context.mounted) {
+      final String currentRoute = GoRouter.of(context).routeInformationProvider.value.uri.path;
+      context.push(Routes.myProduct, extra: ProductDetailModel(id: int.parse("${notificationEntity?.productId}")));
+    }
+  }
+
+  void navigateToNotification(NotificationEntity? notificationEntity) {
+    final context = AppPages.rootNavigatorKey.currentContext!;
+
+    if (context.mounted) {
+      final String currentRoute = GoRouter.of(context).routeInformationProvider.value.uri.path;
+      context.push(Routes.notifications);
+    }
+  }
 }
