@@ -51,24 +51,22 @@ class LocationHelper {
     }
 
     // Get current position
-    // return await Geolocator.getCurrentPosition(
-    //     locationSettings: LocationSettings(accuracy: LocationAccuracy.high));
-
-
-    // Get current position
     Position position = await Geolocator.getCurrentPosition(
         locationSettings: LocationSettings(accuracy: LocationAccuracy.high));
 
-    // Validate if the location is within Egypt
+    // Validate if the location is within Egypt (latitude: 22.0 - 31.7, longitude: 25.0 - 35.0)
     if (position.latitude < 22.0 ||
         position.latitude > 31.7 ||
         position.longitude < 25.0 ||
         position.longitude > 35.0) {
+      // Return null if location is outside Egypt
       return null;
     }
 
+    // Return the position if it's inside Egypt
     return position;
   }
+
 
   static Future<String> getAddressFromCoordinates(
       double latitude, double longitude) async {
@@ -78,7 +76,7 @@ class LocationHelper {
       Placemark place = placeMarks.first;
       return "${place.name},${place.locality}, ${place.administrativeArea}, ${place.country}";
     } catch (e) {
-      return "Unable to get address for the provided coordinates.";
+      return "";
     }
   }
 
