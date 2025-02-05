@@ -41,7 +41,7 @@ class _MessageViewState extends State<MessageView> {
       viewModel.currentProductId = widget.chat?.productId ?? 0;
     });
       viewModel.updateChatScreenId(
-        roomId: widget.chat?.lastMessageDetail?.roomId ?? viewModel.currentProductId,
+        roomId: widget.chat?.lastMessageDetail?.roomId,
       );
 
       viewModel.readChatStatus(
