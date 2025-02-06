@@ -67,7 +67,10 @@ class SocketHelper {
     _socketIO.off(SocketConstants.connectUser);
     _socketIO.on(SocketConstants.connectUser, (data) {
       isUserConnected = true;
-      Provider.of<ChatVM>(AppPages.rootNavigatorKey.currentContext!, listen: false).initListeners();
+      final context = AppPages.rootNavigatorKey.currentContext!;
+      if(context.mounted) {
+        Provider.of<ChatVM>(context, listen: false).initListeners();
+      }
       if (kDebugMode) {
         print("User Connected --------------->  $data");
       }
@@ -89,23 +92,6 @@ class SocketHelper {
       }
       isUserConnected = false;
     });
-  }
-
-  /// Closes the socket connection and cleans up listeners.
-  void close() {
-    if (_socketIO.connected) {
-      _socketIO.disconnect();
-      if (kDebugMode) {
-        print("Socket disconnected");
-      }
-    }
-    _socketIO.close();
-    _socketIO.clearListeners();
-    isConnected = false;
-    isUserConnected = false;
-    if (kDebugMode) {
-      print("Socket connection closed and listeners cleared");
-    }
   }
 
   void updateChatScreenId() {

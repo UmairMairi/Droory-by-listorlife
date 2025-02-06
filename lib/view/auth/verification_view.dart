@@ -45,7 +45,8 @@ class VerificationView extends BaseView<AuthVM> {
         title: Text(StringHelper.verification),
         centerTitle: true,
       ),
-      body: Padding(
+      body: SingleChildScrollView(
+        physics: ClampingScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,

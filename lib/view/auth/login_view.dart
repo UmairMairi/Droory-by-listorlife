@@ -14,6 +14,7 @@ import 'package:list_and_life/widgets/app_text_field.dart';
 
 import '../../base/helpers/dialog_helper.dart';
 import '../../base/helpers/string_helper.dart';
+import '../../base/utils/utils.dart';
 import '../../res/font_res.dart';
 import '../../view_model/auth_vm.dart';
 import '../../widgets/image_view.dart';
@@ -72,7 +73,7 @@ class LoginView extends BaseView<AuthVM> {
                   inputFormatters:
                       AppTextInputFormatters.withPhoneNumberFormatter(),
                   controller: viewModel.phoneTextController,
-                  keyboardType: TextInputType.phone,
+                  keyboardType: TextInputType.number,
                   prefix: CountryPicker(
                       selectedCountry: viewModel.selectedCountry,
                       dense: true,
@@ -136,6 +137,7 @@ class LoginView extends BaseView<AuthVM> {
                 const Gap(30),
                 GestureDetector(
                     onTap: () async {
+                      Utils.hideKeyboard(context);
                       viewModel.socialLogin(type: 1);
                     },
                     child: Container(
@@ -178,6 +180,7 @@ class LoginView extends BaseView<AuthVM> {
                 if (Platform.isIOS) ...{
                   GestureDetector(
                       onTap: () {
+                        Utils.hideKeyboard(context);
                         viewModel.socialLogin(type: 3);
                       },
                       child: Container(

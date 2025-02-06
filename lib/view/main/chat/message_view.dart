@@ -40,6 +40,8 @@ class _MessageViewState extends State<MessageView> {
     log("message11111 ${widget.chat?.toJson()}");
     viewModel = context.read<ChatVM>();
       viewModel.initListeners();
+      viewModel.chatItems.clear();
+      viewModel.messageStreamController.sink.add([]);
     viewModel.updateChatScreenId(
       roomId: widget.chat?.lastMessageDetail?.roomId,
     );

@@ -71,7 +71,8 @@ class InboxView extends BaseView<ChatVM> {
                                       //     ? data.receiverDetail?.id
                                       //     : data.senderDetail?.id,
                                       //   roomId: data.lastMessageDetail?.roomId);
-                                      viewModel.updateChatScreenId();
+                                      viewModel.initListeners();
+                                      viewModel.updateChatScreenId(roomId: null);
                                     });
                                   },
                                   child: Row(

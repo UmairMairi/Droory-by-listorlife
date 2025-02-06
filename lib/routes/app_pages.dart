@@ -48,7 +48,7 @@ class AppPages {
     debugLogDiagnostics: true,
     initialLocation: '/',
     navigatorKey: rootNavigatorKey,
-    /*observers: [AppRouteObserver()],*/
+    observers: [RemoveFocusObserver()],
     routes: [
       GoRoute(
         path: Routes.root,
@@ -261,5 +261,19 @@ class AppPages {
       key: state.pageKey,
       child: child,
     );
+  }
+}
+
+class RemoveFocusObserver extends NavigatorObserver {
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    super.didPush(route, previousRoute);
+    FocusManager.instance.primaryFocus?.unfocus();
+  }
+
+  @override
+  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    super.didPop(route, previousRoute);
+    FocusManager.instance.primaryFocus?.unfocus();
   }
 }

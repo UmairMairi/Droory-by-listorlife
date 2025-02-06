@@ -13,6 +13,11 @@ class Utils {
     }
   }
 
+  /// Hide the soft keyboard.
+  static void hideKeyboard(BuildContext context) {
+    FocusScope.of(context).requestFocus(FocusNode());
+  }
+
   // static Future<String?> getFcmToken() async {
   //   if (Platform.isIOS) {
   //     IosDeviceInfo iosInfo = await deviceInfo.iosInfo;

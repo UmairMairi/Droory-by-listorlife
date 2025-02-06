@@ -231,10 +231,10 @@ class ChatVM extends BaseViewModel {
           // if(roomId != null) {
           //   currentRoomId = roomId;
           // }
-          for (var element in chatItems) {
-            element.isRead = 1;
-          }
-          messageStreamController.sink.add(chatItems);
+          // for (var element in chatItems) {
+          //   element.isRead = 1;
+          // }
+          // messageStreamController.sink.add(chatItems);
         }
     });
   }
@@ -350,7 +350,7 @@ class ChatVM extends BaseViewModel {
     _socketIO.emit(SocketConstants.readChatStatus, map);
     debugPrint("readChat emit ===> $map");
   }
-  void updateChatScreenId({dynamic roomId}) {
+  void updateChatScreenId({required dynamic roomId}) {
     Map<String, dynamic> map = {
       "sender_id": DbHelper.getUserModel()?.id,
       "room_id": roomId,

@@ -92,32 +92,35 @@ class _MyAppState extends State<MyApp> {
             child: Consumer<LanguageProvider>(
               builder: (BuildContext context, value, Widget? child) {
                 DateHelper.setLocale(value.selectedLang);
-                return MaterialApp.router(
-                  scrollBehavior: const MaterialScrollBehavior().copyWith(
-                    dragDevices: {
-                      PointerDeviceKind.mouse,
-                      PointerDeviceKind.touch,
-                      PointerDeviceKind.stylus,
-                      PointerDeviceKind.unknown
-                    },
+                return GestureDetector(
+                  onTap: () => hideKeyboard(context),
+                  child: MaterialApp.router(
+                    scrollBehavior: const MaterialScrollBehavior().copyWith(
+                      dragDevices: {
+                        PointerDeviceKind.mouse,
+                        PointerDeviceKind.touch,
+                        PointerDeviceKind.stylus,
+                        PointerDeviceKind.unknown
+                      },
+                    ),
+                    title: StringHelper.listLife,
+                    theme: ThemeHelper.lightTheme(),
+                    darkTheme: ThemeHelper.lightTheme(),
+                    themeMode: ThemeMode.light,
+                    debugShowCheckedModeBanner: false,
+                    localizationsDelegates: const [
+                      GlobalMaterialLocalizations.delegate,
+                      GlobalWidgetsLocalizations.delegate,
+                      GlobalCupertinoLocalizations.delegate,
+                      AppLocalizations.delegate
+                    ],
+                    locale: Locale(value.selectedLang),
+                    supportedLocales: const [Locale('en'), Locale('ar')],
+                    routeInformationProvider:
+                        AppPages.router.routeInformationProvider,
+                    routeInformationParser: AppPages.router.routeInformationParser,
+                    routerDelegate: AppPages.router.routerDelegate,
                   ),
-                  title: StringHelper.listLife,
-                  theme: ThemeHelper.lightTheme(),
-                  darkTheme: ThemeHelper.lightTheme(),
-                  themeMode: ThemeMode.light,
-                  debugShowCheckedModeBanner: false,
-                  localizationsDelegates: const [
-                    GlobalMaterialLocalizations.delegate,
-                    GlobalWidgetsLocalizations.delegate,
-                    GlobalCupertinoLocalizations.delegate,
-                    AppLocalizations.delegate
-                  ],
-                  locale: Locale(value.selectedLang),
-                  supportedLocales: const [Locale('en'), Locale('ar')],
-                  routeInformationProvider:
-                      AppPages.router.routeInformationProvider,
-                  routeInformationParser: AppPages.router.routeInformationParser,
-                  routerDelegate: AppPages.router.routerDelegate,
                 );
               },
             ),
@@ -125,6 +128,13 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
     );
+  }
+
+  void hideKeyboard(context) {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+      FocusManager.instance.primaryFocus?.unfocus();
+    }
   }
 }
 
@@ -147,7 +157,7 @@ class AppStateObserver extends WidgetsBindingObserver {
       case AppLifecycleState.detached:
       case AppLifecycleState.hidden:
         SocketHelper().init();
-        //SocketHelper().updateChatScreenId();
+        SocketHelper().updateChatScreenId();
         break;
       case AppLifecycleState.resumed:
         SocketHelper().init();
