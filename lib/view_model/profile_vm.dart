@@ -274,4 +274,39 @@ class ProfileVM extends BaseViewModel {
       DialogHelper.showToast(message: model.message);
     }*/
   }
+
+
+  Future<void> verifyOtpEmailApi(
+      { required String? otp}) async {
+    Map<String, dynamic> body = {
+      'otp': otp
+    };
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.verifyOtpEmailUrl(),
+        requestType: RequestType.post,
+        body: body);
+
+    var response = await BaseClient.handleRequest(apiRequest);
+
+    MapResponse<UserModel> model =
+        MapResponse.fromJson(response, (json) => UserModel.fromJson(json));
+    DialogHelper.hideLoading();
+    await updateProfileApi();
+    if (context.mounted) {
+      context.pop();
+    } else {
+      AppPages.rootNavigatorKey.currentContext?.pop();
+    }
+    DialogHelper.showToast(message: model.message);
+    /*if (model.body?.id != null) {
+      DbHelper.saveIsGuest(false);
+      DbHelper.saveUserModel(model.body);
+      if (context.mounted) {
+        context.pop();
+      } else {
+        AppPages.rootNavigatorKey.currentContext?.pop();
+      }
+      DialogHelper.showToast(message: model.message);
+    }*/
+  }
 }

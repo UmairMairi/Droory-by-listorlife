@@ -118,6 +118,7 @@ class ApiConstants {
   static String getFaqUrl() => "$_baseUrl/get/faqs";
   static String getBlockListUrl() => "$_baseUrl/block/list?limit=1000&page=1";
   static String sendMailForVerifyUrl() => "$_baseUrl/send/mail/for/verify";
+  static String verifyOtpEmailUrl() => "$_baseUrl/verify/otp/email";
   static String verifyOtpMobileUrl() => "$_baseUrl/verify/otp/mobile";
   static String sendOtpMobileUrl() => "$_baseUrl/send/otp/mobile";
   static String getChatNotifyCount() => "$_baseUrl/get/chat/notification/count";

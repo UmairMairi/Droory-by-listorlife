@@ -136,9 +136,14 @@ class _VerificationProfileViewState extends State<VerificationProfileView> {
                   return;
                 }
                 DialogHelper.showLoading();
-                viewModel.verifyOtpApi(
-                  countryCode: viewModel.countryCode,
-                    phoneNo: widget.phoneNo, otp: otpTextController.text.trim());
+                if((widget.phoneNo??"").contains("@")){
+                  viewModel.verifyOtpEmailApi(
+                      otp: otpTextController.text.trim());
+                }else{
+                  viewModel.verifyOtpApi(
+                      countryCode: viewModel.countryCode,
+                      phoneNo: widget.phoneNo, otp: otpTextController.text.trim());
+                }
 
                 /*context.go(Routes.completeProfile);*/
               },
