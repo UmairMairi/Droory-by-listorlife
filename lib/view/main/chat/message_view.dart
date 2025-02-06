@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -35,27 +37,29 @@ class _MessageViewState extends State<MessageView> {
   @override
   void initState() {
     super.initState();
+    log("message11111 ${widget.chat?.toJson()}");
     viewModel = context.read<ChatVM>();
       viewModel.initListeners();
+    viewModel.updateChatScreenId(
+      roomId: widget.chat?.lastMessageDetail?.roomId,
+    );
+
+    viewModel.readChatStatus(
+      receiverId: widget.chat?.senderId == DbHelper.getUserModel()?.id
+          ? widget.chat?.receiverDetail?.id
+          : widget.chat?.senderDetail?.id,
+      roomId: widget.chat?.lastMessageDetail?.roomId ?? 0,
+    );
+    viewModel.getMessageList(
+      receiverId: widget.chat?.senderId == DbHelper.getUserModel()?.id
+          ? widget.chat?.receiverDetail?.id
+          : widget.chat?.senderDetail?.id,
+      productId: widget.chat?.productId,
+    );
     WidgetsBinding.instance.addPostFrameCallback((d) {
       viewModel.currentProductId = widget.chat?.productId ?? 0;
     });
-      viewModel.updateChatScreenId(
-        roomId: widget.chat?.lastMessageDetail?.roomId,
-      );
 
-      viewModel.readChatStatus(
-        receiverId: widget.chat?.senderId == DbHelper.getUserModel()?.id
-            ? widget.chat?.receiverDetail?.id
-            : widget.chat?.senderDetail?.id,
-        roomId: widget.chat?.lastMessageDetail?.roomId ?? 0,
-      );
-      viewModel.getMessageList(
-        receiverId: widget.chat?.senderId == DbHelper.getUserModel()?.id
-            ? widget.chat?.receiverDetail?.id
-            : widget.chat?.senderDetail?.id,
-        productId: widget.chat?.productId,
-      );
   }
 
 
@@ -64,6 +68,18 @@ class _MessageViewState extends State<MessageView> {
     //viewModel = Provider.of<ChatVM>(context);
     return Scaffold(
       appBar: AppBar(
+        leading: InkWell(
+          onTap: (){
+            context.pop();
+            viewModel.currentProductId = 0;
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Icon(Icons.arrow_back_ios,
+                size: 20,
+                color: Colors.black),
+          ),
+        ),
         title: Row(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,

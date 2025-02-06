@@ -24,6 +24,7 @@ import '../../../base/helpers/string_helper.dart';
 import '../../../base/network/api_constants.dart';
 import '../../../models/category_model.dart';
 import '../../../models/filter_model.dart';
+import '../../../res/font_res.dart';
 import '../../../skeletons/home_category_skelton.dart';
 import '../../../widgets/app_empty_widget.dart';
 import '../../../widgets/app_product_item_widget.dart';
@@ -82,27 +83,42 @@ class HomeView extends BaseView<HomeVM> {
               /*     await NotificationService.sendNotification(
                   title: "Test Notification", body: "Test Body");*/
             },
-            child: Container(
-                padding: const EdgeInsets.all(05),
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(10)),
-                child: Stack(
-                  alignment: Alignment.topRight,
-                  children: [
-                    Visibility(
-                      visible: viewModel.countMessage != 0,
-                      child: Badge(
-                        child: Text("${viewModel.countMessage}",style: TextStyle(fontSize: 8,color: Colors.white),),
-                      ),
-                    ),
-                    Image.asset(
+            child: Stack(
+              alignment: Alignment.topRight,
+              children: [
+                Container(
+                    padding: const EdgeInsets.all(05),
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Image.asset(
                       AssetsRes.IC_BELL_ICON,
                       scale: 1.3,
+                    )),
+                Visibility(
+                  visible: viewModel.countMessage != 0,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: CircleAvatar(
+                      radius: 10, // Adjust based on UI needs
+                      backgroundColor: Colors.red, // Unread count indicator
+                      child: Center(
+                        child: Text(
+                          "${(viewModel.countMessage) > 9 ? '9+' : viewModel.countMessage}",
+                          style: context.textTheme.labelSmall?.copyWith(
+                            color: Colors.white, // Ensure contrast
+                            fontSize:(viewModel.countMessage) > 9? 8:9,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: FontRes.MONTSERRAT_MEDIUM,
+                          ),
+                        ),
+                      ),
                     ),
-                  ],
-                )),
+                  ),
+                ),
+              ],
+            ),
           )
         ],
         bottom: PreferredSize(

@@ -4,6 +4,7 @@ import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/string_helper.dart';
 import 'package:persistent_bottom_nav_bar_plus/persistent_bottom_nav_bar_plus.dart';
 
+import '../../res/font_res.dart';
 import '../../view_model/main_vm.dart';
 
 class MainView extends BaseView<MainVM> {
@@ -29,13 +30,33 @@ class MainView extends BaseView<MainVM> {
               icon: Stack(
                 alignment: Alignment.topRight,
                 children: [
+
+                  const Icon(CupertinoIcons.chat_bubble_text),
                   Visibility(
                     visible: viewModel.countMessage != 0,
                     child: Badge(
-                      child: Text("${viewModel.countMessage}",style: TextStyle(fontSize: 8,color: Colors.white),),
+                       largeSize: 10,
+                      smallSize: 10,
                     ),
                   ),
-                  const Icon(CupertinoIcons.chat_bubble_text),
+                  // Visibility(
+                  //   visible: viewModel.countMessage == 0,
+                  //   child: CircleAvatar(
+                  //     radius: 10, // Adjust based on UI needs
+                  //     backgroundColor: Colors.red, // Unread count indicator
+                  //     child: Center(
+                  //       child: Text(
+                  //         "${(viewModel.countMessage) > 9 ? '9+' : viewModel.countMessage}",
+                  //         style: context.textTheme.labelSmall?.copyWith(
+                  //           color: Colors.white, // Ensure contrast
+                  //           fontSize:(viewModel.countMessage) > 9? 8:9,
+                  //           fontWeight: FontWeight.w500,
+                  //           fontFamily: FontRes.MONTSERRAT_MEDIUM,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
               title: (StringHelper.myChat),

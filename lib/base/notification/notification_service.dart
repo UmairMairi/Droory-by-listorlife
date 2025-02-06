@@ -11,6 +11,7 @@ import '../../models/inbox_model.dart';
 import '../../models/message_model.dart';
 import '../../models/product_detail_model.dart';
 import '../../routes/app_pages.dart';
+import '../../routes/app_pages.dart' as r;
 import '../../routes/app_routes.dart';
 import '../helpers/db_helper.dart';
 import 'notification_entity.dart';
@@ -563,22 +564,21 @@ class NotificationService {
         //Navigator.push(AppPages.rootNavigatorKey.currentContext!, MaterialPageRoute(builder: (context)=>NotificationView(),));
     }
   }
-
-
   void navigateToMessageView(NotificationEntity? notificationEntity) {
     final context = AppPages.rootNavigatorKey.currentContext!;
     final userModel = DbHelper.getUserModel();
 
     if (context.mounted) {
       final String currentRoute = GoRouter.of(context).routeInformationProvider.value.uri.path;
-      if(currentRoute == Routes.message){
+      if (currentRoute == Routes.message && context.canPop()) {
         context.pop();
       }
+
       context.push(Routes.message, extra: InboxModel(
         senderId: userModel?.id,
         receiverId: num.parse("${notificationEntity?.senderId}"),
         productId: num.parse("${notificationEntity?.productId}"),
-        lastMessageDetail: MessageModel(roomId: "${notificationEntity?.roomId ?? ""}"),
+        lastMessageDetail: MessageModel(roomId: notificationEntity?.roomId),
         productDetail: ProductDetailModel(
           image: "${notificationEntity?.productImage ?? ""}",
           name: "${notificationEntity?.productName ?? ""}",
@@ -600,6 +600,51 @@ class NotificationService {
       ));
     }
   }
+
+
+  // void navigateToMessageView(NotificationEntity? notificationEntity) {
+  //   final context = AppPages.rootNavigatorKey.currentContext!;
+  //   final userModel = DbHelper.getUserModel();
+  //
+  //   if (context.mounted) {
+  //     String? previousRoute = GoRouter.of(context).r;
+  //     print("Previous Route: $previousRoute");
+  //
+  //     if (previousRoute == Routes.message) {
+  //       context.pop();
+  //     }
+  //
+  //     final String currentRoute = GoRouter.of(context).rou;
+  //     print("currentRoute $currentRoute");
+  //     if(currentRoute == Routes.message){
+  //       context.pop();
+  //     }
+  //     context.push(Routes.message, extra: InboxModel(
+  //       senderId: userModel?.id,
+  //       receiverId: num.parse("${notificationEntity?.senderId}"),
+  //       productId: num.parse("${notificationEntity?.productId}"),
+  //       lastMessageDetail: MessageModel(roomId: "${notificationEntity?.roomId ?? ""}"),
+  //       productDetail: ProductDetailModel(
+  //         image: "${notificationEntity?.productImage ?? ""}",
+  //         name: "${notificationEntity?.productName ?? ""}",
+  //         sellStatus: "${notificationEntity?.sellStatus ?? ""}",
+  //         id: int.parse("${notificationEntity?.productId}"),
+  //       ),
+  //       receiverDetail: SenderDetail(
+  //         id: num.parse("${notificationEntity?.senderId}"),
+  //         lastName: "${notificationEntity?.senderLastName ?? ""}",
+  //         profilePic: "${notificationEntity?.profilePic ?? ""}",
+  //         name: notificationEntity?.senderName,
+  //       ),
+  //       senderDetail: SenderDetail(
+  //         id: userModel?.id,
+  //         profilePic: userModel?.profilePic,
+  //         lastName: userModel?.lastName,
+  //         name: userModel?.name,
+  //       ),
+  //     ));
+  //   }
+  // }
 
   void navigateToMyProduct(NotificationEntity? notificationEntity) {
     final context = AppPages.rootNavigatorKey.currentContext!;

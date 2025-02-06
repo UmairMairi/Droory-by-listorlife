@@ -92,12 +92,28 @@ class _AppMapWidgetState extends State<AppMapWidget> {
     if (await hasLocationPermission() == false) {
       return null;
     }
-    Position? position = await Geolocator.getLastKnownPosition();
+    Position? position = await getLastKnownPosition();
     if (position == null) {
       return;
     }
     _animateCameraAndFindAddress(position);
   }
+
+  Future<Position?> getLastKnownPosition() async {
+    Position? position = await Geolocator.getLastKnownPosition();
+
+    // Validate if the location is within Egypt (latitude: 22.0 - 31.7, longitude: 25.0 - 35.0)
+    if (position != null &&
+        (position.latitude < 22.0 ||
+            position.latitude > 31.7 ||
+            position.longitude < 25.0 ||
+            position.longitude > 35.0)) {
+      return null; // Return null if the location is outside Egypt
+    }
+
+    return position; // Return the position if it's inside Egypt
+  }
+
 
   void _getCurrentLocation() async {
     searchController.text = "Determine current location...";
@@ -106,38 +122,39 @@ class _AppMapWidgetState extends State<AppMapWidget> {
       return null;
     }
     Position? position = await LocationHelper.getCurrentLocation();
-    if(position != null){
-      _animateCameraAndFindAddress(position);
-      // bool isEgypt = await LocationHelper.checkLocationIsEgypt(
-      //     latitude: position.latitude, longitude: position.longitude);
-      // if (isEgypt) {
-      //   _animateCameraAndFindAddress(position);
-      // } else {
-      //   _animateCameraAndFindAddress(Position(
-      //       longitude: LocationHelper.cairoLongitude,
-      //       latitude: LocationHelper.cairoLatitude,
-      //       timestamp: DateTime.now(),
-      //       accuracy: 0.0,
-      //       altitude: 0.0,
-      //       altitudeAccuracy: 0.0,
-      //       heading: 0.0,
-      //       headingAccuracy: 0.0,
-      //       speed: 0.0,
-      //       speedAccuracy: 0.0));
-      // }
-    }else{
-      _animateCameraAndFindAddress(Position(
-          longitude: LocationHelper.cairoLongitude,
-          latitude: LocationHelper.cairoLatitude,
-          timestamp: DateTime.now(),
-          accuracy: 0.0,
-          altitude: 0.0,
-          altitudeAccuracy: 0.0,
-          heading: 0.0,
-          headingAccuracy: 0.0,
-          speed: 0.0,
-          speedAccuracy: 0.0));
-    }
+    debugPrint("position===> ${position?.latitude} ${position?.longitude}");
+      if(position != null){
+        _animateCameraAndFindAddress(position);
+        // bool isEgypt = await LocationHelper.checkLocationIsEgypt(
+        //     latitude: position.latitude, longitude: position.longitude);
+        // if (isEgypt) {
+        //   _animateCameraAndFindAddress(position);
+        // } else {
+        //   _animateCameraAndFindAddress(Position(
+        //       longitude: LocationHelper.cairoLongitude,
+        //       latitude: LocationHelper.cairoLatitude,
+        //       timestamp: DateTime.now(),
+        //       accuracy: 0.0,
+        //       altitude: 0.0,
+        //       altitudeAccuracy: 0.0,
+        //       heading: 0.0,
+        //       headingAccuracy: 0.0,
+        //       speed: 0.0,
+        //       speedAccuracy: 0.0));
+        // }
+      }else{
+        _animateCameraAndFindAddress(Position(
+            longitude: LocationHelper.cairoLongitude,
+            latitude: LocationHelper.cairoLatitude,
+            timestamp: DateTime.now(),
+            accuracy: 0.0,
+            altitude: 0.0,
+            altitudeAccuracy: 0.0,
+            heading: 0.0,
+            headingAccuracy: 0.0,
+            speed: 0.0,
+            speedAccuracy: 0.0));
+      }
 
   }
 
@@ -165,11 +182,11 @@ class _AppMapWidgetState extends State<AppMapWidget> {
       setState(() {
         if (!isSelectedFromList) {
           searchController.text = "Determine address...";
-          lat = _currentPosition!.latitude.toString();
-          lng = _currentPosition!.longitude.toString();
+          lat = "${_currentPosition?.latitude}";
+          lng = "${_currentPosition?.longitude}";
         }
-        _currentAddress =
-            "${place.name}, ${place.locality}, ${place.postalCode}, ${place.country}";
+        _currentAddress = _formatAddress(place);
+            //"${place.name}, ${place.locality}, ${place.postalCode}, ${place.country}";
 
         placeName = place.name!;
         city = place.locality!;
@@ -186,6 +203,24 @@ class _AppMapWidgetState extends State<AppMapWidget> {
     } catch (e) {
       debugPrint(e.toString());
     }
+  }
+
+  String _formatAddress(Placemark place) {
+    StringBuffer addressBuffer = StringBuffer();
+    if ((place.name??"").isNotEmpty) {
+      addressBuffer.write('${place.name}, ');
+    }
+    if ((place.locality??"").isNotEmpty) {
+      addressBuffer.write('${place.locality}, ');
+    }
+    if ((place.postalCode??"").isNotEmpty) {
+      addressBuffer.write('${place.postalCode}, ');
+    }
+    if ((place.country??"").isNotEmpty) {
+      addressBuffer.write('${place.country}');
+    }
+    String address = addressBuffer.toString().replaceAll(RegExp(r',\s*$'), '');
+    return address;
   }
 
   // Create LatLngBounds for India and Egypt
@@ -258,8 +293,8 @@ class _AppMapWidgetState extends State<AppMapWidget> {
                   Placemark place = p[0];
 
                   setState(() {
-                    _currentAddress =
-                    "${place.name}, ${place.locality}, ${place.postalCode}, ${place.country}";
+                    _currentAddress = _formatAddress(place);
+                   // "${place.name}, ${place.locality}, ${place.postalCode}, ${place.country}";
                     searchController.text = _currentAddress;
                     placeName = place.name!;
                     city = place.locality!;

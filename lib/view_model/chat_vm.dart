@@ -152,27 +152,44 @@ class ChatVM extends BaseViewModel {
   sendMessageListener() {
     _socketIO.off(SocketConstants.sendMessage);
         _socketIO.on(SocketConstants.sendMessage, (data) {
-      log("Listen ${SocketConstants.sendMessage} => data $data");
+      log("Listen 1111${SocketConstants.sendMessage} => data $data");
       MessageModel message = MessageModel.fromJson(data);
 
-      messageStreamController.stream.listen((chat){
-        if(chat.isNotEmpty && chat.first.roomId != null && message.productId == chat.first.productId){
-          updateChatScreenId(
-            roomId: message.roomId,
-          );
-          readChatStatus(
-            receiverId: message.senderId == DbHelper.getUserModel()?.id
-                ? message.receiverId
-                : message.senderId,
-            roomId: message.roomId,
-          );
-        }
-      });
+      // messageStreamController.stream.listen((chat){
+      //   if(chat.isNotEmpty && chat.first.roomId != null && message.productId == chat.first.productId){
+      //     updateChatScreenId(
+      //       roomId: message.roomId,
+      //     );
+      //     readChatStatus(
+      //       receiverId: message.senderId == DbHelper.getUserModel()?.id
+      //           ? message.receiverId
+      //           : message.senderId,
+      //       roomId: message.roomId,
+      //     );
+      //   }
+      // });
 
-      if(message.senderId != DbHelper.getUserModel()?.id && message.productId == currentProductId) {
-        chatItems.insert(0, message);
-        messageStreamController.sink.add(chatItems);
-      }
+
+      // if(message.senderId != DbHelper.getUserModel()?.id && message.productId == currentProductId) {
+      //   chatItems.insert(0, message);
+      //   for (var element in chatItems) {
+      //     element.isRead = 1;
+      //   }
+      //   messageStreamController.sink.add(chatItems);
+      //   updateChatScreenId(
+      //     roomId: message.roomId,
+      //   );
+      //   readChatStatus(
+      //     receiverId: message.receiverId,
+      //     roomId: message.roomId,
+      //   );
+      // }
+      getMessageList(
+          receiverId: message.senderId == DbHelper.getUserModel()?.id
+              ? message.receiverId
+                 : message.senderId,
+        productId: message.productId
+      );
       getInboxList();
     });
   }
@@ -203,7 +220,6 @@ class ChatVM extends BaseViewModel {
   readChatListener() {
     _socketIO.off(SocketConstants.readChatStatus);
     _socketIO.on(SocketConstants.readChatStatus, (data) {
-      try {
         log("Listen ${SocketConstants.readChatStatus} => readChatStatus data $data");
 
         if (data != null) {
@@ -219,10 +235,6 @@ class ChatVM extends BaseViewModel {
           }
           messageStreamController.sink.add(chatItems);
         }
-      } catch (e) {
-        log("Error in readChatListener: $e");
-      }
-      notifyListeners();
     });
   }
 
@@ -311,19 +323,19 @@ class ChatVM extends BaseViewModel {
         name: "SOCKET");
     _socketIO.emit(SocketConstants.sendMessage, map);
 
-    chatItems.insert(
-      0,
-      MessageModel(
-          message: message,
-          senderId: DbHelper.getUserModel()?.id?.toInt(),
-          receiverId: receiverId?.toInt(),
-          messageType: type,
-          productId: productId,
-          isRead: 0,
-          createdAt: "${DateTime.now()}",
-          updatedAt: "${DateTime.now()}"),
-    );
-    messageStreamController.sink.add(chatItems);
+    // chatItems.insert(
+    //   0,
+    //   MessageModel(
+    //       message: message,
+    //       senderId: DbHelper.getUserModel()?.id?.toInt(),
+    //       receiverId: receiverId?.toInt(),
+    //       messageType: type,
+    //       productId: productId,
+    //       isRead: 0,
+    //       createdAt: "${DateTime.now()}",
+    //       updatedAt: "${DateTime.now()}"),
+    // );
+    // messageStreamController.sink.add(chatItems);
 
     DialogHelper.hideLoading();
   }

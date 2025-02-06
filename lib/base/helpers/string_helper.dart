@@ -251,6 +251,7 @@ class StringHelper {
   static String size = LocaleService.translate('size') ?? "Size";
   static String postNow = LocaleService.translate('postNow') ?? 'Post Now';
   static String updateNow = LocaleService.translate('updateNow') ?? 'Update';
+  static String updateRepublish = LocaleService.translate('updateRepublish') ?? 'Update & Republish';
   static String ram = LocaleService.translate('ram') ?? "Ram";
   static String strong = LocaleService.translate('strong') ?? "Storage";
   static String screenSize =
@@ -863,6 +864,7 @@ static String locationAlert =
     size = LocaleService.translate('size') ?? "Size";
     postNow = LocaleService.translate('postNow') ?? 'Post Now';
     updateNow = LocaleService.translate('updateNow') ?? 'Update';
+    updateRepublish = LocaleService.translate('updateRepublish') ?? 'Update & Republish';
     ram = LocaleService.translate('ram') ?? "Ram";
     strong = LocaleService.translate('strong') ?? "Storage";
     screenSize = LocaleService.translate('screenSize') ?? "Screen Size";

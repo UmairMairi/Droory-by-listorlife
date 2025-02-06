@@ -104,6 +104,7 @@ class MainVM extends BaseViewModel {
   void onIndexSelected({required int index,required BuildContext context}) {
     switch (index) {
       case 0:
+        context.read<HomeVM>().callApiMethods();
         context.read<HomeVM>().onRefresh();
         return;
       case 1:
@@ -111,8 +112,8 @@ class MainVM extends BaseViewModel {
           context.push(Routes.guestLogin);
           navController.jumpToTab(0);
         } else {
-          getChatNotifyCount();
           context.read<ChatVM>().getInboxList();
+          getChatNotifyCount();
         }
       case 2:
       case 3:

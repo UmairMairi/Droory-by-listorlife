@@ -225,14 +225,15 @@ class MyAdsVM extends BaseViewModel {
             });
 
       case 4:
-        deactivateDialog(context: context,
-            title: "Republish",
-            description: "Republish",
-            image: AssetsRes.TICK_MARK_LOTTIE,
-            onTap: ()async{
-              await deactivateProductApi(id: item?.id,status: "activate");
-              if (context.mounted) context.pop();
-            });
+        navigateToEditProduct(context: context, item: item);
+        // deactivateDialog(context: context,
+        //     title: "Republish",
+        //     description: "Republish",
+        //     image: AssetsRes.TICK_MARK_LOTTIE,
+        //     onTap: ()async{
+        //       await deactivateProductApi(id: item?.id,status: "activate");
+        //       if (context.mounted) context.pop();
+        //     });
       default:
         return;
     }

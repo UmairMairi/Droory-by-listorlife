@@ -67,6 +67,7 @@ class InboxView extends BaseView<ChatVM> {
                                     context.push(Routes.message,
                                         extra:
                                             viewModel.filteredInboxList[index]).then((value){
+                                      viewModel.getInboxList();
                                       viewModel.updateChatScreenId();
                                     });
                                   },
@@ -183,10 +184,10 @@ class InboxView extends BaseView<ChatVM> {
                                                     backgroundColor: Colors.red, // Unread count indicator
                                                     child: Center(
                                                       child: Text(
-                                                        "${(data.unread_count??0) > 99 ? '99+' : data.unread_count}", // Limit to 99+
+                                                        "${(data.unread_count??0) > 9 ? '9+' : data.unread_count}", // Limit to 99+
                                                         style: context.textTheme.labelSmall?.copyWith(
                                                           color: Colors.white, // Ensure contrast
-                                                          fontSize:(data.unread_count??0) > 99? 7:9,
+                                                          fontSize:(data.unread_count??0) > 9? 8:9,
                                                           fontWeight: FontWeight.w500,
                                                           fontFamily: FontRes.MONTSERRAT_MEDIUM,
                                                         ),

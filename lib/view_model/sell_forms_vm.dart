@@ -70,6 +70,7 @@ class SellFormsVM extends BaseViewModel {
 
   ///---------------------
   int productStatus = 0;
+  String adStatus = '';
   int _itemCondition = 1;
   int _transmission = 0;
   int get itemCondition => _itemCondition;
@@ -345,6 +346,7 @@ class SellFormsVM extends BaseViewModel {
     addressTextController.text = item.nearby ?? '';
     priceTextController.text = item.price ?? '';
     productStatus = (item.status ?? 0).toInt();
+    adStatus = item.adStatus??"";
     if((item.itemCondition??"").isNotEmpty){
       itemCondition =
       (item.itemCondition?.toLowerCase().contains('used') ?? false) ? 2 : 1;
@@ -718,6 +720,7 @@ class SellFormsVM extends BaseViewModel {
       "price": trimController(priceTextController)??"0",
       "year": trimController(yearTextController),
       "fuel": trimController(fuelTextController),
+      "milleage": trimController(mileageTextController),
       "km_driven": trimController(kmDrivenTextController),
       "number_of_owner": trimController(numOfOwnerTextController),
       "education_type": trimController(educationTypeTextController),
@@ -790,6 +793,9 @@ class SellFormsVM extends BaseViewModel {
 
     if (transmission != 0) {
       fields["transmission"] = transmission == 1 ? "automatic" : "manual";
+    }
+    if (adStatus == "deactivate") {
+      fields["ad_status"] = "activate";
     }
     fields['status'] = 0;
 

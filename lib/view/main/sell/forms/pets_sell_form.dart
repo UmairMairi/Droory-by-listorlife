@@ -426,7 +426,7 @@ class PetsSellForm extends BaseView<SellFormsVM> {
                         color: Colors.black,
                         borderRadius: BorderRadius.circular(100)),
                     child: Text(
-                      StringHelper.updateNow,
+                      viewModel.adStatus == "deactivate"?StringHelper.updateRepublish:StringHelper.updateNow,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 16,

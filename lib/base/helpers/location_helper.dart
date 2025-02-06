@@ -74,10 +74,28 @@ class LocationHelper {
       List<Placemark> placeMarks =
           await placemarkFromCoordinates(latitude, longitude);
       Placemark place = placeMarks.first;
-      return "${place.name},${place.locality}, ${place.administrativeArea}, ${place.country}";
+      return _formatAddress(place);
     } catch (e) {
       return "";
     }
+  }
+
+ static String _formatAddress(Placemark place) {
+    StringBuffer addressBuffer = StringBuffer();
+    if ((place.name??"").isNotEmpty) {
+      addressBuffer.write('${place.name}, ');
+    }
+    if ((place.locality??"").isNotEmpty) {
+      addressBuffer.write('${place.locality}, ');
+    }
+    if ((place.administrativeArea??"").isNotEmpty) {
+      addressBuffer.write('${place.administrativeArea}, ');
+    }
+    if ((place.country??"").isNotEmpty) {
+      addressBuffer.write('${place.country}');
+    }
+    String address = addressBuffer.toString().replaceAll(RegExp(r',\s*$'), '');
+    return address;
   }
 
   static Future<bool> checkLocationIsEgypt(

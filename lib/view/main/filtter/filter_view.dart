@@ -1291,6 +1291,7 @@ class _FilterViewState extends State<FilterView> {
       vm.kmDrivenTextController.text = filter.minKmDriven ?? '';
       vm.yearTextController.text = filter.year ?? '';
       vm.fuelTextController.text = filter.fuel ?? '';
+      vm.mileageTextController.text = filter.milleage ?? '';
       vm.propertyForTextController.text = filter.propertyFor ?? '';
 
       // vm.currentLocation = await LocationHelper.getAddressFromCoordinates(
@@ -1364,6 +1365,7 @@ class _FilterViewState extends State<FilterView> {
     vm.completionStatusTextController.clear();
     vm.deliveryTermTextController.clear();
     vm.levelTextController.clear();
+    vm.mileageTextController.clear();
     downValues = SfRangeValues(
         int.parse(vm.startDownPriceTextController.text.isEmpty
             ? '0'
