@@ -67,7 +67,10 @@ class InboxView extends BaseView<ChatVM> {
                                     context.push(Routes.message,
                                         extra:
                                             viewModel.filteredInboxList[index]).then((value){
-                                      viewModel.getInboxList();
+                                      // viewModel.readChatStatus(receiverId: data.senderId == DbHelper.getUserModel()?.id
+                                      //     ? data.receiverDetail?.id
+                                      //     : data.senderDetail?.id,
+                                      //   roomId: data.lastMessageDetail?.roomId);
                                       viewModel.updateChatScreenId();
                                     });
                                   },

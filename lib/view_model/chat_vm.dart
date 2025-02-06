@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/base/base_view.dart';
 import 'package:list_and_life/chat_bubble/bubble_normal_image.dart';
 import 'package:list_and_life/base/helpers/db_helper.dart';
 import 'package:list_and_life/base/helpers/debouncer_helper.dart';
@@ -190,7 +191,7 @@ class ChatVM extends BaseViewModel {
                  : message.senderId,
         productId: message.productId
       );
-      getInboxList();
+      //getInboxList();
     });
   }
 
@@ -355,6 +356,7 @@ class ChatVM extends BaseViewModel {
       "room_id": roomId,
     };
     _socketIO.emit(SocketConstants.updateChatScreenId, map);
+    getInboxList();
     debugPrint("updateChatScreenId $map");
   }
 

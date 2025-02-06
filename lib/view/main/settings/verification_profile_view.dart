@@ -71,10 +71,21 @@ class _VerificationProfileViewState extends State<VerificationProfileView> {
               height: 90,
             ),
             const Flexible(child: Gap(80)),
-            Text(
-              '${StringHelper.enterThe4DigitCode} \n${viewModel.countryCode}-${widget.phoneNo?.trim()}',
-              style: context.textTheme.bodyMedium,
-              textAlign: TextAlign.center,
+            Visibility(
+              visible: (widget.phoneNo??"").contains("@"),
+              child: Text(
+                '${StringHelper.enterThe4DigitCode} \n${widget.phoneNo?.trim()}',
+                style: context.textTheme.bodyMedium,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Visibility(
+              visible: !(widget.phoneNo??"").contains("@"),
+              child: Text(
+                '${StringHelper.enterThe4DigitCode} \n${viewModel.countryCode}-${widget.phoneNo?.trim()}',
+                style: context.textTheme.bodyMedium,
+                textAlign: TextAlign.center,
+              ),
             ),
             const Gap(20),
             Align(

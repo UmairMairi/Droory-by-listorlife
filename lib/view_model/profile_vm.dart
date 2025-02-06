@@ -205,7 +205,13 @@ class ProfileVM extends BaseViewModel {
     var response = await BaseClient.handleRequest(apiRequest);
     MapResponse model = MapResponse.fromJson(response, (json) => null);
     DialogHelper.hideLoading();
-    DialogHelper.showToast(message: model.message);
+    debugPrint("$model");
+    //DialogHelper.showToast(message: model.message);
+    if (context.mounted) {
+      context.push(Routes.verifyProfile, extra: email);
+    } else {
+      AppPages.rootNavigatorKey.currentContext?.push(Routes.verifyProfile,extra: email);
+    }
   }
 
   Future<void> sendVerificationPhone({required String? phone,required String? countryCode}) async {

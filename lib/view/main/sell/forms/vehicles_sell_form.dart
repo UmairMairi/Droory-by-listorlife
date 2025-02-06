@@ -13,6 +13,7 @@ import '../../../../base/helpers/image_picker_helper.dart';
 import '../../../../base/helpers/string_helper.dart';
 import '../../../../models/category_model.dart';
 import '../../../../models/product_detail_model.dart';
+import '../../../../res/assets_res.dart';
 import '../../../../view_model/sell_forms_vm.dart';
 import '../../../../widgets/app_map_widget.dart';
 import '../../../../widgets/common_dropdown.dart';
@@ -65,54 +66,31 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                 StringHelper.uploadImages,
                 style: context.textTheme.titleMedium,
               ),
-              GestureDetector(
-                onTap: () async {
-                  viewModel.mainImagePath =
-                      await ImagePickerHelper.openImagePicker(
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 10),
+                width: double.infinity,
+                height: 220,
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10)),
+                child: GestureDetector(
+                    onTap: () async {
+                      viewModel.mainImagePath =
+                          await ImagePickerHelper.openImagePicker(
                               context: context, isCropping: true) ??
-                          '';
-                },
-                child: Container(
-                  margin: const EdgeInsets.symmetric(vertical: 10),
-                  width: double.infinity,
-                  height: 220,
-                  decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          offset: const Offset(0, 1),
-                          blurRadius: 6,
-                        ),
-                      ],
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: viewModel.mainImagePath.isNotEmpty
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.file(
-                            File(viewModel.mainImagePath),
-                            fit: BoxFit.contain,
-                          ))
-                      : Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.camera_alt_outlined),
-                            SizedBox(
-                              height: 2,
-                            ),
-                            Text(
-                              StringHelper.upload,
-                              style: TextStyle(
-                                fontSize: 14,
-                              ),
-                            ),
-                          ],
-                        ),
-                ),
+                              '';
+                    },
+                    child: ImageView.rect(
+                        image: viewModel.mainImagePath,
+                        borderRadius: 10,
+                        width: context.width,
+                        placeholder: AssetsRes.IC_CAMERA,
+                        height: 220)),
               ),
               Wrap(
                 children:
-                    List.generate(viewModel.imagesList.length + 1, (index) {
+                List.generate(viewModel.imagesList.length + 1, (index) {
                   if (index < viewModel.imagesList.length) {
                     return Stack(
                       alignment: Alignment.topRight,
@@ -122,25 +100,14 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                           width: 100,
                           height: 80,
                           decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                offset: const Offset(0, 1),
-                                blurRadius: 6,
-                              ),
-                            ],
+                            border: Border.all(color: Colors.black),
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: ImageView.rect(
+                          child: ImageView.rect(
                               image: viewModel.imagesList[index].media ?? '',
-                              fit: BoxFit.contain,
                               height: 80,
-                              width: 100,
-                            ),
-                          ),
+                              width: 120),
                         ),
                         Container(
                           decoration: const BoxDecoration(
@@ -163,7 +130,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                       onTap: () async {
                         if (viewModel.imagesList.length < 10) {
                           var image = await ImagePickerHelper.openImagePicker(
-                                  context: context, isCropping: true) ??
+                              context: context, isCropping: true) ??
                               '';
                           if (image.isNotEmpty) {
                             viewModel.addImage(image);
@@ -178,13 +145,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                         width: 120,
                         height: 80,
                         decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              offset: const Offset(0, 1),
-                              blurRadius: 6,
-                            ),
-                          ],
+                          border: Border.all(color: Colors.black),
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                         ),

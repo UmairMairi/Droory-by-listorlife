@@ -461,12 +461,12 @@ class NotificationService {
   }
 
   void initFirebaseListeners() {
-    FirebaseMessaging.instance.getInitialMessage().then((initialMessage) {
-      if (initialMessage != null) {
-        pushNextScreenFromForeground(
-            NotificationEntity.fromJson(initialMessage.data));
-      }
-    });
+    // FirebaseMessaging.instance.getInitialMessage().then((initialMessage) {
+    //   if (initialMessage != null) {
+    //     pushNextScreenFromForeground(
+    //         NotificationEntity.fromJson(initialMessage.data));
+    //   }
+    // });
     // Also handle any interaction when the app is in the foreground via a Stream listener
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       debugPrint(

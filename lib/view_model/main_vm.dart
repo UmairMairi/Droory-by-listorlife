@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:app_links/app_links.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
@@ -18,6 +19,8 @@ import 'package:persistent_bottom_nav_bar_plus/persistent_bottom_nav_bar_plus.da
 import 'package:provider/provider.dart';
 
 import '../base/helpers/db_helper.dart';
+import '../base/notification/notification_entity.dart';
+import '../base/notification/notification_service.dart';
 import '../base/sockets/socket_helper.dart';
 import '../routes/app_routes.dart';
 import '../view/main/chat/inbox_view.dart';
@@ -75,6 +78,13 @@ class MainVM extends BaseViewModel {
   @override
   void onInit() {
     // TODO: implement onInit
+    FirebaseMessaging.instance.getInitialMessage().then((initialMessage) {
+      if (initialMessage != null) {
+        NotificationService().pushNextScreenFromForeground(
+            NotificationEntity.fromJson(initialMessage.data));
+      }
+    });
+
     context.read<LanguageProvider>().updateLanguage(
           context: context,
           lang: DbHelper.getLanguage(),

@@ -419,6 +419,7 @@ class SellFormsVM extends BaseViewModel {
     itemCondition = 1;
     transmission = 0;
     mainImagePath = "";
+    adStatus = "";
     selectedOption = "";
     imagesList.clear();
     amenities.clear();

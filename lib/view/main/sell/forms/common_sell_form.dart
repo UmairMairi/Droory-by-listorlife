@@ -59,7 +59,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 10),
                 width: double.infinity,
-                height: 300,
+                height: 220,
                 decoration: BoxDecoration(
                     border: Border.all(color: Colors.black),
                     color: Colors.white,
@@ -68,20 +68,19 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                     onTap: () async {
                       viewModel.mainImagePath =
                           await ImagePickerHelper.openImagePicker(
-                                  context: context, isCropping: true) ??
+                              context: context, isCropping: true) ??
                               '';
                     },
                     child: ImageView.rect(
                         image: viewModel.mainImagePath,
                         borderRadius: 10,
                         width: context.width,
-                        fit: BoxFit.fill,
                         placeholder: AssetsRes.IC_CAMERA,
                         height: 220)),
               ),
               Wrap(
                 children:
-                    List.generate(viewModel.imagesList.length + 1, (index) {
+                List.generate(viewModel.imagesList.length + 1, (index) {
                   if (index < viewModel.imagesList.length) {
                     return Stack(
                       alignment: Alignment.topRight,
@@ -121,7 +120,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                       onTap: () async {
                         if (viewModel.imagesList.length < 10) {
                           var image = await ImagePickerHelper.openImagePicker(
-                                  context: context, isCropping: true) ??
+                              context: context, isCropping: true) ??
                               '';
                           if (image.isNotEmpty) {
                             viewModel.addImage(image);

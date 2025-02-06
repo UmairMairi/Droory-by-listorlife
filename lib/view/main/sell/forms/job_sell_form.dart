@@ -49,31 +49,31 @@ class JobSellForm extends BaseView<SellFormsVM> {
               StringHelper.uploadImages,
               style: context.textTheme.titleMedium,
             ),
-            GestureDetector(
-              onTap: () async {
-                viewModel.mainImagePath =
-                    await ImagePickerHelper.openImagePicker(
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              width: double.infinity,
+              height: 220,
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10)),
+              child: GestureDetector(
+                  onTap: () async {
+                    viewModel.mainImagePath =
+                        await ImagePickerHelper.openImagePicker(
                             context: context, isCropping: true) ??
-                        '';
-              },
-              child: Container(
-                margin: const EdgeInsets.symmetric(vertical: 10),
-                width: double.infinity,
-                height: 220,
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black),
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10)),
-                child: ImageView.rect(
-                    image: viewModel.mainImagePath,
-                    borderRadius: 10,
-                    width: context.width,
-                    placeholder: AssetsRes.IC_CAMERA,
-                    height: 220),
-              ),
+                            '';
+                  },
+                  child: ImageView.rect(
+                      image: viewModel.mainImagePath,
+                      borderRadius: 10,
+                      width: context.width,
+                      placeholder: AssetsRes.IC_CAMERA,
+                      height: 220)),
             ),
             Wrap(
-              children: List.generate(viewModel.imagesList.length + 1, (index) {
+              children:
+              List.generate(viewModel.imagesList.length + 1, (index) {
                 if (index < viewModel.imagesList.length) {
                   return Stack(
                     alignment: Alignment.topRight,
@@ -87,15 +87,10 @@ class JobSellForm extends BaseView<SellFormsVM> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: ImageView.rect(
+                        child: ImageView.rect(
                             image: viewModel.imagesList[index].media ?? '',
-                            fit: BoxFit.contain,
                             height: 80,
-                            width: 100,
-                          ),
-                        ),
+                            width: 120),
                       ),
                       Container(
                         decoration: const BoxDecoration(
@@ -116,11 +111,16 @@ class JobSellForm extends BaseView<SellFormsVM> {
                 } else {
                   return GestureDetector(
                     onTap: () async {
-                      var image = await ImagePickerHelper.openImagePicker(
-                              context: context, isCropping: true) ??
-                          '';
-                      if (image.isNotEmpty) {
-                        viewModel.addImage(image);
+                      if (viewModel.imagesList.length < 10) {
+                        var image = await ImagePickerHelper.openImagePicker(
+                            context: context, isCropping: true) ??
+                            '';
+                        if (image.isNotEmpty) {
+                          viewModel.addImage(image);
+                        }
+                      } else {
+                        DialogHelper.showToast(
+                            message: StringHelper.imageMaxLimit);
                       }
                     },
                     child: Container(

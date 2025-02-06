@@ -70,32 +70,31 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                 StringHelper.uploadImages,
                 style: context.textTheme.titleMedium,
               ),
-              GestureDetector(
-                onTap: () async {
-                  viewModel.mainImagePath =
-                      await ImagePickerHelper.openImagePicker(
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 10),
+                width: double.infinity,
+                height: 220,
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10)),
+                child: GestureDetector(
+                    onTap: () async {
+                      viewModel.mainImagePath =
+                          await ImagePickerHelper.openImagePicker(
                               context: context, isCropping: true) ??
-                          '';
-                },
-                child: Container(
-                  margin: const EdgeInsets.symmetric(vertical: 10),
-                  width: double.infinity,
-                  height: 220,
-                  decoration: BoxDecoration(
-                      border: Border.all(),
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10)),
-                  child:ImageView.rect(
-                          image: viewModel.mainImagePath,
-                          borderRadius: 10,
-                          width: context.width,
-                          placeholder: AssetsRes.IC_CAMERA,
-                          height: 220),
-                ),
+                              '';
+                    },
+                    child: ImageView.rect(
+                        image: viewModel.mainImagePath,
+                        borderRadius: 10,
+                        width: context.width,
+                        placeholder: AssetsRes.IC_CAMERA,
+                        height: 220)),
               ),
               Wrap(
                 children:
-                    List.generate(viewModel.imagesList.length + 1, (index) {
+                List.generate(viewModel.imagesList.length + 1, (index) {
                   if (index < viewModel.imagesList.length) {
                     return Stack(
                       alignment: Alignment.topRight,
@@ -109,15 +108,10 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: ImageView.rect(
+                          child: ImageView.rect(
                               image: viewModel.imagesList[index].media ?? '',
-                              fit: BoxFit.contain,
                               height: 80,
-                              width: 100,
-                            ),
-                          ),
+                              width: 120),
                         ),
                         Container(
                           decoration: const BoxDecoration(
@@ -126,7 +120,6 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                             onTap: () {
                               viewModel.removeImage(index,
                                   data: viewModel.imagesList[index]);
-                              /* viewModel.deletedImageIds.add(value)*/
                             },
                             child: const Icon(
                               Icons.cancel,
@@ -141,7 +134,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                       onTap: () async {
                         if (viewModel.imagesList.length < 10) {
                           var image = await ImagePickerHelper.openImagePicker(
-                                  context: context, isCropping: true) ??
+                              context: context, isCropping: true) ??
                               '';
                           if (image.isNotEmpty) {
                             viewModel.addImage(image);
@@ -160,7 +153,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child:  Column(
+                        child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(Icons.add),
