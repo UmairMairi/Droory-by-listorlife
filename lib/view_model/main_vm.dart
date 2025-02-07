@@ -104,10 +104,10 @@ class MainVM extends BaseViewModel {
   @override
   void onReady() {
     // TODO: implement onReady
-    if (!isGuest)  {
-      var model = context.read<ChatVM>();
-      model.initListeners();
-    }
+    // if (!isGuest)  {
+    //   var model = context.read<ChatVM>();
+    //   model.initListeners();
+    // }
     super.onReady();
   }
 
@@ -122,7 +122,7 @@ class MainVM extends BaseViewModel {
           context.push(Routes.guestLogin);
           navController.jumpToTab(0);
         } else {
-          context.read<ChatVM>().getInboxList();
+          //context.read<ChatVM>().getInboxList();
           getChatNotifyCount();
         }
       case 2:

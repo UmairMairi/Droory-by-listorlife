@@ -39,27 +39,27 @@ class _MessageViewState extends State<MessageView> {
     super.initState();
     log("message11111 ${widget.chat?.toJson()}");
     viewModel = context.read<ChatVM>();
+    WidgetsBinding.instance.addPostFrameCallback((d) {
       viewModel.initListeners();
       viewModel.chatItems.clear();
       viewModel.messageStreamController.sink.add([]);
-    viewModel.updateChatScreenId(
-      roomId: widget.chat?.lastMessageDetail?.roomId,
-    );
-
-    viewModel.readChatStatus(
-      receiverId: widget.chat?.senderId == DbHelper.getUserModel()?.id
-          ? widget.chat?.receiverDetail?.id
-          : widget.chat?.senderDetail?.id,
-      roomId: widget.chat?.lastMessageDetail?.roomId ?? 0,
-    );
-    viewModel.getMessageList(
-      receiverId: widget.chat?.senderId == DbHelper.getUserModel()?.id
-          ? widget.chat?.receiverDetail?.id
-          : widget.chat?.senderDetail?.id,
-      productId: widget.chat?.productId,
-    );
-    WidgetsBinding.instance.addPostFrameCallback((d) {
       viewModel.currentProductId = widget.chat?.productId ?? 0;
+      viewModel.updateChatScreenId(
+        roomId: widget.chat?.lastMessageDetail?.roomId,
+      );
+      viewModel.readChatStatus(
+        receiverId: widget.chat?.senderId == DbHelper.getUserModel()?.id
+            ? widget.chat?.receiverDetail?.id
+            : widget.chat?.senderDetail?.id,
+        roomId: widget.chat?.lastMessageDetail?.roomId ?? 0,
+      );
+      viewModel.getMessageList(
+        receiverId: widget.chat?.senderId == DbHelper.getUserModel()?.id
+            ? widget.chat?.receiverDetail?.id
+            : widget.chat?.senderDetail?.id,
+        productId: widget.chat?.productId,
+      );
+
     });
 
   }
@@ -72,8 +72,8 @@ class _MessageViewState extends State<MessageView> {
       appBar: AppBar(
         leading: InkWell(
           onTap: (){
-            context.pop();
             viewModel.currentProductId = 0;
+            context.pop();
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),

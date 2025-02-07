@@ -67,10 +67,6 @@ class SocketHelper {
     _socketIO.off(SocketConstants.connectUser);
     _socketIO.on(SocketConstants.connectUser, (data) {
       isUserConnected = true;
-      final context = AppPages.rootNavigatorKey.currentContext!;
-      if(context.mounted) {
-        Provider.of<ChatVM>(context, listen: false).initListeners();
-      }
       if (kDebugMode) {
         print("User Connected --------------->  $data");
       }

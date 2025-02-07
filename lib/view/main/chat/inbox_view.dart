@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/base/base_view.dart';
 import 'package:list_and_life/base/helpers/db_helper.dart';
 import 'package:list_and_life/base/helpers/string_helper.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
@@ -14,16 +15,36 @@ import 'package:list_and_life/widgets/app_empty_widget.dart';
 import 'package:list_and_life/widgets/app_error_widget.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:list_and_life/widgets/image_view.dart';
+import 'package:provider/provider.dart';
 
+import '../../../base/sockets/socket_helper.dart';
 import '../../../res/assets_res.dart';
 
-class InboxView extends BaseView<ChatVM> {
+class InboxView extends StatefulWidget {
   const InboxView({super.key});
+
+  @override
+  State<InboxView> createState() => _InboxViewState();
+}
+
+class _InboxViewState extends State<InboxView> {
+
+  late ChatVM viewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    viewModel = Provider.of<ChatVM>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((d) {
+      viewModel.initListeners();
+      viewModel.getInboxList();
+    });
+  }
 
 
 
   @override
-  Widget build(BuildContext context, ChatVM viewModel) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(StringHelper.myChats),
@@ -71,7 +92,6 @@ class InboxView extends BaseView<ChatVM> {
                                       //     ? data.receiverDetail?.id
                                       //     : data.senderDetail?.id,
                                       //   roomId: data.lastMessageDetail?.roomId);
-                                      viewModel.initListeners();
                                       viewModel.updateChatScreenId(roomId: null);
                                     });
                                   },

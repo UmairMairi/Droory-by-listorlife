@@ -13,6 +13,9 @@ import '../../models/product_detail_model.dart';
 import '../../routes/app_pages.dart';
 import '../../routes/app_pages.dart' as r;
 import '../../routes/app_routes.dart';
+import '../../view/main/chat/message_view.dart';
+import '../../view/notifications/notification_view.dart';
+import '../../view/product/my_product_view.dart';
 import '../helpers/db_helper.dart';
 import 'notification_entity.dart';
 
@@ -525,43 +528,43 @@ class NotificationService {
       case 'send_message_user_driver':
 
         // //Provider.of<ChatVM>(AppPages.rootNavigatorKey.currentContext!, listen: false).initListeners();
-        // Navigator.push(AppPages.rootNavigatorKey.currentContext!,
-        //     MaterialPageRoute(
-        //         settings: RouteSettings(name: '/message'),
-        //         builder: (context)=>MessageView(chat: InboxModel(
-        //     senderId: DbHelper.getUserModel()?.id,
-        //     receiverId: num.parse("${notificationEntity?.senderId}"),
-        //     productId: num.parse("${notificationEntity?.productId}"),
-        //     lastMessageDetail: MessageModel(roomId: "${notificationEntity?.roomId??""}"),
-        //     productDetail: ProductDetailModel(
-        //         image: "${notificationEntity?.productImage??""}",
-        //         name: "${notificationEntity?.productName??""}",
-        //         sellStatus: "${notificationEntity?.sellStatus??""}",
-        //         id: int.parse("${notificationEntity?.productId}")),
-        //     receiverDetail: SenderDetail(
-        //         id: num.parse("${notificationEntity?.senderId}"),
-        //         lastName: "${notificationEntity?.senderLastName??""}",
-        //         profilePic: "${notificationEntity?.profilePic??""}",
-        //         name: notificationEntity?.senderName),
-        //     senderDetail: SenderDetail(
-        //         id: DbHelper.getUserModel()?.id,
-        //         profilePic: DbHelper.getUserModel()?.profilePic,
-        //         lastName: DbHelper.getUserModel()?.lastName,
-        //         name: DbHelper.getUserModel()?.name)),
-        // )));
-        navigateToMessageView(notificationEntity);
+        Navigator.push(AppPages.rootNavigatorKey.currentContext!,
+            MaterialPageRoute(
+                settings: RouteSettings(name: '/message'),
+                builder: (context)=>MessageView(chat: InboxModel(
+            senderId: DbHelper.getUserModel()?.id,
+            receiverId: num.parse("${notificationEntity?.senderId}"),
+            productId: num.parse("${notificationEntity?.productId}"),
+            lastMessageDetail: MessageModel(roomId: "${notificationEntity?.roomId??""}"),
+            productDetail: ProductDetailModel(
+                image: "${notificationEntity?.productImage??""}",
+                name: "${notificationEntity?.productName??""}",
+                sellStatus: "${notificationEntity?.sellStatus??""}",
+                id: int.parse("${notificationEntity?.productId}")),
+            receiverDetail: SenderDetail(
+                id: num.parse("${notificationEntity?.senderId}"),
+                lastName: "${notificationEntity?.senderLastName??""}",
+                profilePic: "${notificationEntity?.profilePic??""}",
+                name: notificationEntity?.senderName),
+            senderDetail: SenderDetail(
+                id: DbHelper.getUserModel()?.id,
+                profilePic: DbHelper.getUserModel()?.profilePic,
+                lastName: DbHelper.getUserModel()?.lastName,
+                name: DbHelper.getUserModel()?.name)),
+        )));
+        //navigateToMessageView(notificationEntity);
         break;
       case 'product_status':
-        // Navigator.push(AppPages.rootNavigatorKey.currentContext!, MaterialPageRoute(builder: (context)=> MyProductView(
-        //   data: ProductDetailModel(
-        //       id: int.parse("${notificationEntity?.productId}")),
-        // )
-        // ));
-        navigateToMyProduct(notificationEntity);
+        Navigator.push(AppPages.rootNavigatorKey.currentContext!, MaterialPageRoute(builder: (context)=> MyProductView(
+          data: ProductDetailModel(
+              id: int.parse("${notificationEntity?.productId}")),
+        )
+        ));
+        //navigateToMyProduct(notificationEntity);
         break;
       default:
-        navigateToNotification(notificationEntity);
-        //Navigator.push(AppPages.rootNavigatorKey.currentContext!, MaterialPageRoute(builder: (context)=>NotificationView(),));
+        //navigateToNotification(notificationEntity);
+        Navigator.push(AppPages.rootNavigatorKey.currentContext!, MaterialPageRoute(builder: (context)=>NotificationView(),));
     }
   }
   void navigateToMessageView(NotificationEntity? notificationEntity) {
