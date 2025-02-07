@@ -570,9 +570,9 @@ class NotificationService {
 
     if (context.mounted) {
       final String currentRoute = GoRouter.of(context).routeInformationProvider.value.uri.path;
-      if (currentRoute == Routes.message && context.canPop()) {
-        context.pop();
-      }
+      // if (currentRoute == Routes.message && context.canPop()) {
+      //   context.pop();
+      // }
 
       context.push(Routes.message, extra: InboxModel(
         senderId: userModel?.id,
@@ -598,53 +598,35 @@ class NotificationService {
           name: userModel?.name,
         ),
       ));
+      return;
     }
+    AppPages.rootNavigatorKey.currentContext!.push(Routes.message, extra: InboxModel(
+      senderId: userModel?.id,
+      receiverId: num.parse("${notificationEntity?.senderId}"),
+      productId: num.parse("${notificationEntity?.productId}"),
+      lastMessageDetail: MessageModel(roomId: notificationEntity?.roomId),
+      productDetail: ProductDetailModel(
+        image: "${notificationEntity?.productImage ?? ""}",
+        name: "${notificationEntity?.productName ?? ""}",
+        sellStatus: "${notificationEntity?.sellStatus ?? ""}",
+        id: int.parse("${notificationEntity?.productId}"),
+      ),
+      receiverDetail: SenderDetail(
+        id: num.parse("${notificationEntity?.senderId}"),
+        lastName: "${notificationEntity?.senderLastName ?? ""}",
+        profilePic: "${notificationEntity?.profilePic ?? ""}",
+        name: notificationEntity?.senderName,
+      ),
+      senderDetail: SenderDetail(
+        id: userModel?.id,
+        profilePic: userModel?.profilePic,
+        lastName: userModel?.lastName,
+        name: userModel?.name,
+      ),
+    ));
   }
 
 
-  // void navigateToMessageView(NotificationEntity? notificationEntity) {
-  //   final context = AppPages.rootNavigatorKey.currentContext!;
-  //   final userModel = DbHelper.getUserModel();
-  //
-  //   if (context.mounted) {
-  //     String? previousRoute = GoRouter.of(context).r;
-  //     print("Previous Route: $previousRoute");
-  //
-  //     if (previousRoute == Routes.message) {
-  //       context.pop();
-  //     }
-  //
-  //     final String currentRoute = GoRouter.of(context).rou;
-  //     print("currentRoute $currentRoute");
-  //     if(currentRoute == Routes.message){
-  //       context.pop();
-  //     }
-  //     context.push(Routes.message, extra: InboxModel(
-  //       senderId: userModel?.id,
-  //       receiverId: num.parse("${notificationEntity?.senderId}"),
-  //       productId: num.parse("${notificationEntity?.productId}"),
-  //       lastMessageDetail: MessageModel(roomId: "${notificationEntity?.roomId ?? ""}"),
-  //       productDetail: ProductDetailModel(
-  //         image: "${notificationEntity?.productImage ?? ""}",
-  //         name: "${notificationEntity?.productName ?? ""}",
-  //         sellStatus: "${notificationEntity?.sellStatus ?? ""}",
-  //         id: int.parse("${notificationEntity?.productId}"),
-  //       ),
-  //       receiverDetail: SenderDetail(
-  //         id: num.parse("${notificationEntity?.senderId}"),
-  //         lastName: "${notificationEntity?.senderLastName ?? ""}",
-  //         profilePic: "${notificationEntity?.profilePic ?? ""}",
-  //         name: notificationEntity?.senderName,
-  //       ),
-  //       senderDetail: SenderDetail(
-  //         id: userModel?.id,
-  //         profilePic: userModel?.profilePic,
-  //         lastName: userModel?.lastName,
-  //         name: userModel?.name,
-  //       ),
-  //     ));
-  //   }
-  // }
 
   void navigateToMyProduct(NotificationEntity? notificationEntity) {
     final context = AppPages.rootNavigatorKey.currentContext!;
@@ -652,7 +634,9 @@ class NotificationService {
     if (context.mounted) {
       final String currentRoute = GoRouter.of(context).routeInformationProvider.value.uri.path;
       context.push(Routes.myProduct, extra: ProductDetailModel(id: int.parse("${notificationEntity?.productId}")));
+      return;
     }
+    AppPages.rootNavigatorKey.currentContext!.push(Routes.myProduct, extra: ProductDetailModel(id: int.parse("${notificationEntity?.productId}")));
   }
 
   void navigateToNotification(NotificationEntity? notificationEntity) {
@@ -661,6 +645,8 @@ class NotificationService {
     if (context.mounted) {
       final String currentRoute = GoRouter.of(context).routeInformationProvider.value.uri.path;
       context.push(Routes.notifications);
+      return;
     }
+    AppPages.rootNavigatorKey.currentContext!.push(Routes.notifications);
   }
 }
