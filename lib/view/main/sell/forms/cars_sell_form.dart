@@ -36,11 +36,6 @@ class CarsSellForm extends BaseView<SellFormsVM> {
       this.brands});
   @override
   Widget build(BuildContext context, SellFormsVM viewModel) {
-    int currentYear = DateTime.now().year;
-    for (int i = 0; i < 20; i++) {
-      viewModel.yearsType.add((currentYear - i).toString());
-    }
-
     return Form(
       key: viewModel.formKey,
       child: KeyboardActions(

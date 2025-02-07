@@ -250,6 +250,15 @@ class SellFormsVM extends BaseViewModel {
     notifyListeners();
   }
 
+  List<String> getYearList(){
+    List<String> years = [];
+    int currentYear = DateTime.now().year;
+    for (int i = 0; i < 20; i++) {
+      years.add((currentYear - i).toString());
+    }
+    return years;
+  }
+
   ///---------------------
   final FocusNode priceText = FocusNode();
   final FocusNode yearText = FocusNode();
@@ -354,6 +363,7 @@ class SellFormsVM extends BaseViewModel {
     }
 
     brandTextController.text = item.brand?.name ?? '';
+    modelTextController.text = item.model?.name ?? '';
     ramTextController.text =
     (item.ram != null && "${item.ram??" "}".isNotEmpty) ? "${item.ram} GB" : '';
     storageTextController.text =
@@ -421,6 +431,8 @@ class SellFormsVM extends BaseViewModel {
     mainImagePath = "";
     adStatus = "";
     selectedOption = "";
+    yearsType.clear();
+    yearsType = getYearList();
     imagesList.clear();
     amenities.clear();
     jobPositionTextController.clear();
