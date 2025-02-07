@@ -98,6 +98,7 @@ class ChatVM extends BaseViewModel {
       filteredInboxList = inboxList;
       inboxStreamController.add(filteredInboxList);
     });
+    notifyListeners();
   }
 
   getMessageListener() {
@@ -148,6 +149,7 @@ class ChatVM extends BaseViewModel {
         receiverId: data['receiver_id'],
       );
     });
+    notifyListeners();
   }
 
   sendMessageListener() {
@@ -191,7 +193,8 @@ class ChatVM extends BaseViewModel {
                  : message.senderId,
         productId: message.productId
       );
-      //getInboxList();
+      getInboxList();
+      notifyListeners();
     });
   }
 
@@ -236,6 +239,7 @@ class ChatVM extends BaseViewModel {
           // }
           // messageStreamController.sink.add(chatItems);
         }
+        notifyListeners();
     });
   }
 
@@ -244,6 +248,7 @@ class ChatVM extends BaseViewModel {
     _socketIO.on(SocketConstants.updateChatScreenId, (data) {
       log("Listen ${SocketConstants.updateChatScreenId} => $data");
       getInboxList();
+      notifyListeners();
     });
   }
 
