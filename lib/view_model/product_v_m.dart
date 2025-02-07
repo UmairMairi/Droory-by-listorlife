@@ -291,6 +291,10 @@ class ProductVM extends BaseViewModel {
 
     // Mobiles & Tablets Specifications
     if (data?.categoryId == 10) {
+      if (data?.brand != null && (data?.brand?.name??"").isNotEmpty) {
+        specs.add(
+            _buildSpecRow(context, "${data?.brand?.name}", Icons.tablet_mac, 'Breed'));
+      }
       if ("${data?.modelId??0}" != "0") {
         specs.add(
             _buildSpecRow(context, '${data?.model?.name}', Icons.tablet_mac, 'Model'));

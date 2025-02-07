@@ -36,10 +36,6 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
 
   @override
   Widget build(BuildContext context, SellFormsVM viewModel) {
-    int currentYear = DateTime.now().year;
-    for (int i = 0; i < 20; i++) {
-      viewModel.yearsType.add((currentYear - i).toString());
-    }
     return Form(
       key: viewModel.formKey,
       child: KeyboardActions(
@@ -567,11 +563,11 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                       return;
                     }
 
-                    if (viewModel.kmDrivenTextController.text.trim().isEmpty) {
-                      DialogHelper.showToast(
-                          message: StringHelper.kMDrivenIsRequired);
-                      return;
-                    }
+                    // if (viewModel.kmDrivenTextController.text.trim().isEmpty) {
+                    //   DialogHelper.showToast(
+                    //       message: StringHelper.kMDrivenIsRequired);
+                    //   return;
+                    // }
 
                     if (viewModel.adTitleTextController.text.trim().isEmpty) {
                       DialogHelper.showToast(
@@ -648,11 +644,11 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                       return;
                     }
 
-                    if (viewModel.kmDrivenTextController.text.trim().isEmpty) {
-                      DialogHelper.showToast(
-                          message: StringHelper.kMDrivenIsRequired);
-                      return;
-                    }
+                    // if (viewModel.kmDrivenTextController.text.trim().isEmpty) {
+                    //   DialogHelper.showToast(
+                    //       message: StringHelper.kMDrivenIsRequired);
+                    //   return;
+                    // }
 
                     if (viewModel.adTitleTextController.text.trim().isEmpty) {
                       DialogHelper.showToast(
