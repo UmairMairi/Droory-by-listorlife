@@ -24,7 +24,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'firebase_options.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-
+bool isMessageScreenOpen = false;
 @pragma('vm:entry-point')
 Future<void> _firebaseBackgroundHandler(RemoteMessage message) async {
   debugPrint("_firebaseBackgroundHandler ${message.data} ");
@@ -156,9 +156,7 @@ class AppStateObserver extends WidgetsBindingObserver {
       case AppLifecycleState.inactive:
       case AppLifecycleState.detached:
       case AppLifecycleState.hidden:
-        SocketHelper().init();
-        SocketHelper().updateChatScreenId();
-        break;
+      case AppLifecycleState.hidden:
       case AppLifecycleState.resumed:
         SocketHelper().init();
         break;

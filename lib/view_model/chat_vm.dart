@@ -156,10 +156,25 @@ class ChatVM extends BaseViewModel {
       log("Listen ${SocketConstants.sendMessage} => data $data");
       MessageModel message = MessageModel.fromJson(data);
 
+
       if(message.senderId != DbHelper.getUserModel()?.id && message.productId == currentProductId) {
         chatItems.insert(0, message);
         messageStreamController.sink.add(chatItems);
         notifyListeners();
+      }
+      if( message.productId == currentProductId) {
+        readChatStatus(
+            receiverId: message.senderId == DbHelper.getUserModel()?.id
+                ? message.receiverId
+                : message.senderId,
+            senderId:message.senderId == DbHelper.getUserModel()?.id
+                ? message.senderId
+                : message.receiverId,
+            roomId: message.roomId
+        );
+        updateChatScreenId(
+            roomId: message.roomId
+        );
       }
       // getMessageList(
       //     receiverId: message.senderId == DbHelper.getUserModel()?.id
@@ -320,9 +335,9 @@ class ChatVM extends BaseViewModel {
     notifyListeners();
   }
 
-  void readChatStatus({required dynamic roomId, required dynamic receiverId}) {
+  void readChatStatus({required dynamic roomId, required dynamic receiverId, required dynamic senderId}) {
     Map<String, dynamic> map = {
-      "sender_id": DbHelper.getUserModel()?.id,
+      "sender_id": senderId,
       "receiver_id": receiverId,
       "room_id": roomId,
     };

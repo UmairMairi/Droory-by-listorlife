@@ -20,6 +20,7 @@ import 'package:provider/provider.dart';
 import '../../../base/helpers/string_helper.dart';
 import '../../../base/network/api_constants.dart';
 import '../../../chat_bubble/message_bar_with_suggetion.dart';
+import '../../../main.dart';
 import '../../../res/font_res.dart';
 import '../../../routes/app_routes.dart';
 
@@ -40,6 +41,7 @@ class _MessageViewState extends State<MessageView> {
     log("message11111 ${widget.chat?.toJson()}");
     viewModel = context.read<ChatVM>();
     WidgetsBinding.instance.addPostFrameCallback((d) {
+      isMessageScreenOpen = true;
       viewModel.initListeners();
       viewModel.chatItems.clear();
       viewModel.messageStreamController.sink.add([]);
@@ -51,6 +53,9 @@ class _MessageViewState extends State<MessageView> {
         receiverId: widget.chat?.senderId == DbHelper.getUserModel()?.id
             ? widget.chat?.receiverDetail?.id
             : widget.chat?.senderDetail?.id,
+        senderId: widget.chat?.senderId == DbHelper.getUserModel()?.id
+            ? widget.chat?.senderDetail?.id
+            : widget.chat?.receiverDetail?.id,
         roomId: widget.chat?.lastMessageDetail?.roomId ?? 0,
       );
       viewModel.getMessageList(
@@ -62,6 +67,12 @@ class _MessageViewState extends State<MessageView> {
 
     });
 
+  }
+
+  @override
+  void dispose() {
+    isMessageScreenOpen = false;
+    super.dispose();
   }
 
 

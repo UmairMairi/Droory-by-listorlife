@@ -32,7 +32,6 @@ class SocketHelper {
       isConnected = true;
       if (DbHelper.getUserModel()?.id != null) {
         connectUser();
-        updateChatScreenId();
       }
       if (kDebugMode) {
         print('socket connected');
@@ -67,6 +66,7 @@ class SocketHelper {
     _socketIO.off(SocketConstants.connectUser);
     _socketIO.on(SocketConstants.connectUser, (data) {
       isUserConnected = true;
+      updateChatScreenId();
       if (kDebugMode) {
         print("User Connected --------------->  $data");
       }
@@ -91,9 +91,12 @@ class SocketHelper {
   }
 
   void updateChatScreenId() {
-    if (DbHelper.getUserModel()?.id == null) {
-      return;
-    }
+    _socketIO.off(SocketConstants.updateChatScreenId);
+    _socketIO.on(SocketConstants.updateChatScreenId, (map){
+      if (kDebugMode) {
+        print("updateChatScreenId $map");
+      }
+    });
     Map<String, dynamic> map = {
       "sender_id": DbHelper.getUserModel()?.id,
       "room_id": null,
