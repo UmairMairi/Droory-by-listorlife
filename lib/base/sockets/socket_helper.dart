@@ -90,7 +90,7 @@ class SocketHelper {
     });
   }
 
-  void updateChatScreenId() {
+  void updateChatScreenId({dynamic roomId}) {
     _socketIO.off(SocketConstants.updateChatScreenId);
     _socketIO.on(SocketConstants.updateChatScreenId, (map){
       if (kDebugMode) {
@@ -99,7 +99,7 @@ class SocketHelper {
     });
     Map<String, dynamic> map = {
       "sender_id": DbHelper.getUserModel()?.id,
-      "room_id": null,
+      "room_id": roomId,
     };
     _socketIO.emit(SocketConstants.updateChatScreenId, map);
     debugPrint("updateChatScreenId $map");

@@ -6,6 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:go_router/go_router.dart';
+import 'package:list_and_life/base/sockets/socket_helper.dart';
 import '../../firebase_options.dart';
 import '../../main.dart';
 import '../../models/inbox_model.dart';
@@ -527,7 +528,7 @@ class NotificationService {
 
     switch ("${notificationEntity?.notificationType}") {
       case 'send_message_user_driver':
-
+        SocketHelper().updateChatScreenId(roomId: notificationEntity?.roomId);
         if (isMessageScreenOpen) {
           Navigator.of(AppPages.rootNavigatorKey.currentContext!).pop();
         }

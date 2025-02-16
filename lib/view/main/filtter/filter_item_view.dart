@@ -177,6 +177,15 @@ class _FilterItemViewState extends State<FilterItemView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              context.go(Routes.main);
+            },
+            icon: Icon(Icons.arrow_back_ios,
+                size: 20,
+                textDirection: TextDirection.ltr,
+                color: Colors.black)
+        ),
         title: PreferredSize(
           preferredSize: const Size.fromHeight(60.0),
           child: Row(
