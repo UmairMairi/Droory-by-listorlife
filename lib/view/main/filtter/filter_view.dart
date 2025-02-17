@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -671,13 +672,46 @@ class _FilterViewState extends State<FilterView> {
                 const SizedBox(
                   height: 10,
                 ),
-                CommonDropdown(
+                AppTextField(
                   title: StringHelper.mileage,
-                  hint: viewModel.mileageTextController.text,
-                  onSelected: (value) {
-                    viewModel.mileageTextController.text = value??"";
+                  controller: viewModel.mileageTextController,
+                  hint: StringHelper.mileage,
+                  maxLength: 6,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(6),
+                    FilteringTextInputFormatter.deny(
+                        RegExp(viewModel.regexToRemoveEmoji)),
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                  validator: (value) {
+                    // if (value != null || (value??"").trim().isNotEmpty) {
+                    //   final amount = num.tryParse("${value??0}");
+                    //
+                    //   if (amount == null) {
+                    //     return '* Please enter a valid mileage';
+                    //   }
+                    //
+                    //   if (amount < 1000) {
+                    //     return '* The minimum valid mileage is 1000';
+                    //   }
+                    //
+                    //   if (amount > 100000) {
+                    //     return '* The maximum valid mileage is 100,000';
+                    //   }
+                    // }
+
+                    return null;
                   },
-                  options: viewModel.mileageRanges,
+
+                ),
+                // CommonDropdown(
+                //   title: StringHelper.mileage,
+                //   hint: viewModel.mileageTextController.text,
+                //   onSelected: (value) {
+                //     viewModel.mileageTextController.text = value??"";
+                //   },
+                //   options: viewModel.mileageRanges,
                   // hint: StringHelper.select,
                   // readOnly: true,
                   // suffix: PopupMenuButton<String>(
@@ -698,7 +732,7 @@ class _FilterViewState extends State<FilterView> {
                   //     }).toList();
                   //   },
                   // ),
-                ),
+                //),
                 const SizedBox(
                   height: 10,
                 ),

@@ -205,15 +205,13 @@ class CompleteProfileView extends BaseView<AuthVM> {
                       message: FormFieldErrors.lastNameRequired);
                   return;
                 }
-                if (viewModel.emailTextController.text.trim().isEmpty) {
-                  DialogHelper.showToast(
-                      message: FormFieldErrors.emailRequired);
-                  return;
+                if (viewModel.emailTextController.text.trim().isNotEmpty) {
+                  if (viewModel.emailTextController.text.trim().isNotEmail()) {
+                    DialogHelper.showToast(message: FormFieldErrors.invalidEmail);
+                    return;
+                  }
                 }
-                if (viewModel.emailTextController.text.trim().isNotEmail()) {
-                  DialogHelper.showToast(message: FormFieldErrors.invalidEmail);
-                  return;
-                }
+
                 if (viewModel.agreedToTerms.isFalse) {
                   DialogHelper.showToast(
                       message: FormFieldErrors.acceptTermsRequired);

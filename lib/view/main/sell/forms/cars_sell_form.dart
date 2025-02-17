@@ -1,6 +1,4 @@
-import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
@@ -340,44 +338,47 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                   // textInputAction: TextInputAction.done,
                 )
               },
-              CommonDropdown(
-                title: StringHelper.year,
-                titleColor: Colors.black,
-                hint: viewModel.yearTextController.text,
-                onSelected: (String? value) {
-                  viewModel.yearTextController.text = value ?? '';
-                },
-                options: viewModel.yearsType,
-                // readOnly: true,
-                // focusNode: viewModel.yearText,
-                // hint: StringHelper.enter,
-                // hintStyle:
-                //     const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                // fillColor: Colors.white,
-                // contentPadding: const EdgeInsets.only(left: 20),
-                // suffix: PopupMenuButton<String>(
-                //   icon: const Icon(Icons.arrow_drop_down),
-                //   onSelected: (value) {
-                //     viewModel.yearTextController.text = value ?? '';
-                //   },
-                //   itemBuilder: (BuildContext context) {
-                //     return viewModel.yearsType.map((option) {
-                //       return PopupMenuItem(
-                //         value: option,
-                //         child: Text(option),
-                //       );
-                //     }).toList();
-                //   },
-                // ),
-                // inputFormatters: [
-                //   LengthLimitingTextInputFormatter(4),
-                //   FilteringTextInputFormatter.digitsOnly,
-                //   FilteringTextInputFormatter.deny(
-                //     RegExp(viewModel.regexToRemoveEmoji),
-                //   ),
-                // ],
-                // keyboardType: TextInputType.number,
-                // textInputAction: TextInputAction.done,
+              Visibility(
+                visible: [13,26,98,27].contains(subCategory?.id),
+                child: CommonDropdown(
+                  title: StringHelper.year,
+                  titleColor: Colors.black,
+                  hint: viewModel.yearTextController.text,
+                  onSelected: (String? value) {
+                    viewModel.yearTextController.text = value ?? '';
+                  },
+                  options: viewModel.yearsType,
+                  // readOnly: true,
+                  // focusNode: viewModel.yearText,
+                  // hint: StringHelper.enter,
+                  // hintStyle:
+                  //     const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  // fillColor: Colors.white,
+                  // contentPadding: const EdgeInsets.only(left: 20),
+                  // suffix: PopupMenuButton<String>(
+                  //   icon: const Icon(Icons.arrow_drop_down),
+                  //   onSelected: (value) {
+                  //     viewModel.yearTextController.text = value ?? '';
+                  //   },
+                  //   itemBuilder: (BuildContext context) {
+                  //     return viewModel.yearsType.map((option) {
+                  //       return PopupMenuItem(
+                  //         value: option,
+                  //         child: Text(option),
+                  //       );
+                  //     }).toList();
+                  //   },
+                  // ),
+                  // inputFormatters: [
+                  //   LengthLimitingTextInputFormatter(4),
+                  //   FilteringTextInputFormatter.digitsOnly,
+                  //   FilteringTextInputFormatter.deny(
+                  //     RegExp(viewModel.regexToRemoveEmoji),
+                  //   ),
+                  // ],
+                  // keyboardType: TextInputType.number,
+                  // textInputAction: TextInputAction.done,
+                ),
               ),
               CommonDropdown(
                 title: StringHelper.fuel,
@@ -415,48 +416,81 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                 // ],
                 // textInputAction: TextInputAction.done,
               ),
-              CommonDropdown(
+              AppTextField(
                 title: StringHelper.mileage,
-                titleColor: Colors.black,
-                hint: viewModel.mileageTextController.text,
-                onSelected: (String? value) {
-                  viewModel.mileageTextController.text = value??"";
+                controller: viewModel.mileageTextController,
+                hint: StringHelper.mileage,
+                maxLength: 6,
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(6),
+                  FilteringTextInputFormatter.deny(
+                      RegExp(viewModel.regexToRemoveEmoji)),
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+                validator: (value) {
+                  if (value != null || (value??"").trim().isNotEmpty) {
+                    final amount = num.tryParse("$value");
+
+                    if (amount == null) {
+                      return '* Please enter a valid mileage';
+                    }
+
+                    if (amount < 1000) {
+                      return '* The minimum valid mileage is 1000';
+                    }
+
+                    if (amount > 100000) {
+                      return '* The maximum valid mileage is 100,000';
+                    }
+                  }
+
+                  return null;
                 },
-                options: viewModel.mileageRanges,
-                // readOnly: true,
-                // hint: StringHelper.enter,
-                // hintStyle:
-                //     const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                // fillColor: Colors.white,
-                // contentPadding: const EdgeInsets.only(left: 20),
-                // suffix: PopupMenuButton<String>(
-                //   clipBehavior: Clip.hardEdge,
-                //   icon: const Icon(
-                //     Icons.arrow_drop_down,
-                //     color: Colors.black,
-                //   ),
-                //   onSelected: (value) {
-                //     viewModel.mileageTextController.text = value;
-                //   },
-                //   itemBuilder: (BuildContext context) {
-                //     return viewModel.mileageRanges.map((option) {
-                //       return PopupMenuItem(
-                //         value: option,
-                //         child: Text(option ?? ''),
-                //       );
-                //     }).toList();
-                //   },
-                // ),
-                // inputFormatters: [
-                //   LengthLimitingTextInputFormatter(4),
-                //   FilteringTextInputFormatter.digitsOnly,
-                //   FilteringTextInputFormatter.deny(
-                //     RegExp(viewModel.regexToRemoveEmoji),
-                //   ),
-                // ],
-                // keyboardType: TextInputType.number,
-                // textInputAction: TextInputAction.done,
+
               ),
+              // CommonDropdown(
+              //   title: StringHelper.mileage,
+              //   titleColor: Colors.black,
+              //   hint: viewModel.mileageTextController.text,
+              //   onSelected: (String? value) {
+              //     viewModel.mileageTextController.text = value??"";
+              //   },
+              //   options: viewModel.mileageRanges,
+              //   // readOnly: true,
+              //   // hint: StringHelper.enter,
+              //   // hintStyle:
+              //   //     const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+              //   // fillColor: Colors.white,
+              //   // contentPadding: const EdgeInsets.only(left: 20),
+              //   // suffix: PopupMenuButton<String>(
+              //   //   clipBehavior: Clip.hardEdge,
+              //   //   icon: const Icon(
+              //   //     Icons.arrow_drop_down,
+              //   //     color: Colors.black,
+              //   //   ),
+              //   //   onSelected: (value) {
+              //   //     viewModel.mileageTextController.text = value;
+              //   //   },
+              //   //   itemBuilder: (BuildContext context) {
+              //   //     return viewModel.mileageRanges.map((option) {
+              //   //       return PopupMenuItem(
+              //   //         value: option,
+              //   //         child: Text(option ?? ''),
+              //   //       );
+              //   //     }).toList();
+              //   //   },
+              //   // ),
+              //   // inputFormatters: [
+              //   //   LengthLimitingTextInputFormatter(4),
+              //   //   FilteringTextInputFormatter.digitsOnly,
+              //   //   FilteringTextInputFormatter.deny(
+              //   //     RegExp(viewModel.regexToRemoveEmoji),
+              //   //   ),
+              //   // ],
+              //   // keyboardType: TextInputType.number,
+              //   // textInputAction: TextInputAction.done,
+              // ),
               RichText(
                   text: TextSpan(children: [
                 TextSpan(

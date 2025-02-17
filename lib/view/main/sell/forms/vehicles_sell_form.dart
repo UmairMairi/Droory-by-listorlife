@@ -265,44 +265,47 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                 )
               },
               // Year Text Field
-              CommonDropdown(
-                title: StringHelper.year,
-                titleColor: Colors.black,
-                hint: viewModel.yearTextController.text,
-                onSelected: (String? value) {
-                  viewModel.yearTextController.text = value ?? '';
-                },
-                options: viewModel.yearsType,
-                // readOnly: true,
-                // focusNode: viewModel.yearText,
-                // hint: StringHelper.enter,
-                // hintStyle:
-                //     const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                // fillColor: Colors.white,
-                // contentPadding: const EdgeInsets.only(left: 20),
-                // suffix: PopupMenuButton<String>(
-                //   icon: const Icon(Icons.arrow_drop_down),
-                //   onSelected: (value) {
-                //     viewModel.yearTextController.text = value ?? '';
-                //   },
-                //   itemBuilder: (BuildContext context) {
-                //     return viewModel.yearsType.map((option) {
-                //       return PopupMenuItem(
-                //         value: option,
-                //         child: Text(option),
-                //       );
-                //     }).toList();
-                //   },
-                // ),
-                // inputFormatters: [
-                //   LengthLimitingTextInputFormatter(4),
-                //   FilteringTextInputFormatter.digitsOnly,
-                //   FilteringTextInputFormatter.deny(
-                //     RegExp(viewModel.regexToRemoveEmoji),
-                //   ),
-                // ],
-                // keyboardType: TextInputType.number,
-                // textInputAction: TextInputAction.done,
+              Visibility(
+                visible: [13,26,98,27].contains(subCategory?.id),
+                child: CommonDropdown(
+                  title: StringHelper.year,
+                  titleColor: Colors.black,
+                  hint: viewModel.yearTextController.text,
+                  onSelected: (String? value) {
+                    viewModel.yearTextController.text = value ?? '';
+                  },
+                  options: viewModel.yearsType,
+                  // readOnly: true,
+                  // focusNode: viewModel.yearText,
+                  // hint: StringHelper.enter,
+                  // hintStyle:
+                  //     const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  // fillColor: Colors.white,
+                  // contentPadding: const EdgeInsets.only(left: 20),
+                  // suffix: PopupMenuButton<String>(
+                  //   icon: const Icon(Icons.arrow_drop_down),
+                  //   onSelected: (value) {
+                  //     viewModel.yearTextController.text = value ?? '';
+                  //   },
+                  //   itemBuilder: (BuildContext context) {
+                  //     return viewModel.yearsType.map((option) {
+                  //       return PopupMenuItem(
+                  //         value: option,
+                  //         child: Text(option),
+                  //       );
+                  //     }).toList();
+                  //   },
+                  // ),
+                  // inputFormatters: [
+                  //   LengthLimitingTextInputFormatter(4),
+                  //   FilteringTextInputFormatter.digitsOnly,
+                  //   FilteringTextInputFormatter.deny(
+                  //     RegExp(viewModel.regexToRemoveEmoji),
+                  //   ),
+                  // ],
+                  // keyboardType: TextInputType.number,
+                  // textInputAction: TextInputAction.done,
+                ),
               ),
               // AppTextField(
               //   title: StringHelper.year,

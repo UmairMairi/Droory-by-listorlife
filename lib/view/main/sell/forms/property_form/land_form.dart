@@ -636,7 +636,7 @@ class LandForm extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleSmall
               ),
               value: status,
-              groupValue: viewModel.currentPaymentOption.capitalized,
+              groupValue: viewModel.currentPaymentOption.isNotEmpty?viewModel.currentPaymentOption.capitalized:"",
               onChanged: (String? value) {
                 viewModel.paymentTypeTextController.text = value ?? "";
                 viewModel.currentPaymentOption = value??"";
