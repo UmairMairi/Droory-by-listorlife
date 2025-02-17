@@ -391,25 +391,46 @@ class ChatVM extends BaseViewModel {
   }
 
   void searchInbox(String query) {
+    final searchTerm = query.toLowerCase();
     _debounce.run(() {
-      if (query.isEmpty) {
+      if (searchTerm.isEmpty) {
         filteredInboxList = inboxList;
       } else {
         filteredInboxList = inboxList.where((inbox) {
-          String senderName = inbox.senderDetail?.name?.toLowerCase() ?? '';
-          String receiverName = inbox.receiverDetail?.name?.toLowerCase() ?? '';
-          String productName = inbox.productDetail?.name?.toLowerCase() ?? '';
-          String lastMessage =
-              inbox.lastMessageDetail?.message?.toLowerCase() ?? '';
-          return senderName.contains(query.toLowerCase()) ||
-              receiverName.contains(query.toLowerCase()) ||
-              productName.contains(query.toLowerCase()) ||
-              lastMessage.contains(query.toLowerCase());
+          return [
+            inbox.senderDetail?.name?.toLowerCase(),
+            inbox.receiverDetail?.name?.toLowerCase(),
+            inbox.productDetail?.name?.toLowerCase(),
+            inbox.lastMessageDetail?.message?.toLowerCase()
+          ].any((field) => field?.contains(searchTerm) ?? false);
         }).toList();
       }
-      inboxStreamController.add(filteredInboxList);
+      inboxStreamController.sink.add(filteredInboxList);
     });
+    notifyListeners();
   }
+
+  // void searchInbox(String query) {
+  //   _debounce.run(() {
+  //     if (query.isEmpty) {
+  //       filteredInboxList = inboxList;
+  //     } else {
+  //       filteredInboxList = inboxList.where((inbox) {
+  //         String senderName = inbox.senderDetail?.name?.toLowerCase() ?? '';
+  //         String receiverName = inbox.receiverDetail?.name?.toLowerCase() ?? '';
+  //         String productName = inbox.productDetail?.name?.toLowerCase() ?? '';
+  //         String lastMessage =
+  //             inbox.lastMessageDetail?.message?.toLowerCase() ?? '';
+  //         return senderName.contains(query.toLowerCase()) ||
+  //             receiverName.contains(query.toLowerCase()) ||
+  //             productName.contains(query.toLowerCase()) ||
+  //             lastMessage.contains(query.toLowerCase());
+  //       }).toList();
+  //     }
+  //     inboxStreamController.sink.add(filteredInboxList);
+  //   });
+  //   notifyListeners();
+  // }
 
   String getCreatedAt({String? time}) {
     String dateTimeString = "2024-06-25T01:01:47.000Z";
