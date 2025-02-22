@@ -28,7 +28,7 @@ class _AppMapWidgetState extends State<AppMapWidget> {
       Completer<GoogleMapController>();
 
   static const CameraPosition _kGooglePlex = CameraPosition(
-      target: LatLng(37.42796133580664, -122.085749655962), zoom: 14.4746);
+      target: LatLng(31.2341262, 30.0282809), zoom: 14.4746);
 
   TextEditingController searchController = TextEditingController();
   TextEditingController controller = TextEditingController();
