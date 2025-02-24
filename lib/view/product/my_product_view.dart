@@ -39,430 +39,433 @@ class _MyProductViewState extends State<MyProductView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: !viewModel.isAppBarVisible?AppBar(backgroundColor: Colors.transparent,automaticallyImplyLeading: false,toolbarHeight: 0,elevation: 0,):null,
-      body: StreamBuilder<ProductDetailModel?>(
-          stream:viewModel.productStream.stream,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              ProductDetailModel? productDetails = snapshot.data;
-              return SingleChildScrollView(
-                controller: viewModel.scrollController,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Stack(
-                      children: [
-                        CardSwipeWidget(
-                          height: 350,
-                          data: productDetails,
-                          imagesList: productDetails?.productMedias,
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20),
-                          ),
-                        ),
-                        Positioned(
-                            top: 0,
-                            left: 0,
-                            child: SafeArea(
-                              child: IconButton(
-                                  onPressed: () {
-                                    context.pop();
-                                  },
-                                  icon: Container(
-                                    padding: EdgeInsets.only(left:15,right: 8,top: 5,bottom: 5),
-                                    decoration: BoxDecoration(
-                                        color: Colors.black,
-                                        shape: BoxShape.circle
-                                    ),
-                                    child: Icon(Icons.arrow_back_ios,
-                                        size: 20,
-                                        textDirection: TextDirection.ltr,
-                                        color: Colors.white),
-                                  )),
-                            )),
-                        Positioned(
-                            top: 0,
-                            right: 50,
-                            child: SafeArea(
-                              child: IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(Icons.share, color: Colors.white)),
-                            )),
-                        Positioned(
-                            top: 0,
-                            right: 10,
-                            child: SafeArea(
-                              child: PopupMenuButton<int>(
-                                icon: const Icon(
-                                  Icons.more_vert_outlined,
-                                  color: Colors.white,
-                                ),
-                                offset: const Offset(0, 40),
-                                shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(15.0))),
-                                onSelected: (int value) {
-                                  var vm = context.read<MyAdsVM>();
-
-                                  vm.handelPopupMenuItemClick(
-                                      context: context,
-                                      index: value,
-                                      item: productDetails);
-                                },
-                                itemBuilder: (BuildContext context) =>
-                                    <PopupMenuEntry<int>>[
-                                      if ("${productDetails?.status}" == "1" && productDetails?.sellStatus?.toLowerCase() != StringHelper.sold.toLowerCase()) ...{
-                                        PopupMenuItem(
-                                          value: 1,
-                                          child: Text(
-                                              StringHelper.edit),
-                                        )
-                                      },
-                                      if ("${productDetails?.adStatus}" != "deactivate" && "${productDetails?.status}" == "0" && productDetails?.sellStatus?.toLowerCase() != StringHelper.sold.toLowerCase()) ...{
-                                        PopupMenuItem(
-                                          value: 2,
-                                          child: Text(StringHelper
-                                              .deactivate),
-                                        ),
-                                      },
-                                      if ("${productDetails?.adStatus}" == "deactivate" && "${productDetails?.status}" == "0" && productDetails?.sellStatus?.toLowerCase() != StringHelper.sold.toLowerCase()) ...{
-                                        PopupMenuItem(
-                                          value: 4,
-                                          child: Text("Republish"),
-                                        ),
-                                      },
-                                  PopupMenuItem(
-                                    value: 3,
-                                    child: Text(StringHelper.remove),
-                                  ),
-                                ],
-                              ),
-                            )),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 10,
-                        right: 20,
-                        left: 20,
-                        bottom: 40,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
+      //appBar: !viewModel.isAppBarVisible?AppBar(backgroundColor: Colors.transparent,automaticallyImplyLeading: false,toolbarHeight: 0,elevation: 0,):null,
+      body: SafeArea(
+        child: StreamBuilder<ProductDetailModel?>(
+            stream:viewModel.productStream.stream,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                ProductDetailModel? productDetails = snapshot.data;
+                return SingleChildScrollView(
+                  controller: viewModel.scrollController,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Stack(
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  productDetails?.name ?? '',
-                                  style: context.textTheme.titleMedium,
-                                ),
-                              ),
-                              if ("${productDetails?.status}" != "0" && productDetails?.sellStatus !=
-                                  StringHelper.sold.toLowerCase()) ...{
-                                viewModel.getRemainDays(item: productDetails)
-                              }
-                            ],
-                          ),
-                          const Gap(5),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Image.asset(
-                                AssetsRes.IC_ITEM_LOCATION,
-                                scale: 2.5,
-                                color: Colors.black,
-                              ),
-                              const Gap(10),
-                              Flexible(
-                                child: Text(
-                                  productDetails?.nearby ?? '',
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Gap(10),
-                          if (productDetails?.categoryId == 9) ...{
-                            Text(
-                              "${StringHelper.egp} ${parseAmount(productDetails?.salleryFrom)}",
-                              //"${StringHelper.egp} ${data?.salleryFrom} - ${data?.salleryTo}",
-                              style: context.textTheme.titleLarge
-                                  ?.copyWith(color: Colors.red),
+                          CardSwipeWidget(
+                            height: 350,
+                            radius: 0,
+                            data: productDetails,
+                            imagesList: productDetails?.productMedias,
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              topRight: Radius.circular(20),
                             ),
-                          } else ...{
-                            Text(
-                              "${StringHelper.egp} ${parseAmount(productDetails?.price)}",
-                              style: context.textTheme.titleLarge
-                                  ?.copyWith(color: Colors.red),
-                            ),
-                          },
-                          const Gap(10),
-                          productDetails?.sellStatus != StringHelper.soldText
-                              ? Row(
-                                  children: [
-                                    if("${productDetails?.adStatus}" != "deactivate" && productDetails?.sellStatus != StringHelper.sold.toLowerCase() && "${productDetails?.status}" != "0" && "${productDetails?.status}" != "2")...{
-                                      Expanded(
-                                        child: InkWell(
-                                          onTap: () async {
-                                            DialogHelper.showLoading();
-                                            await viewModel.markAsSoldApi(
-                                                product: productDetails!);
-                                          },
-                                          child: Container(
-                                            alignment: Alignment.center,
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 10, vertical: 08),
-                                            decoration: BoxDecoration(
-                                              color: Colors.black54,
-                                              borderRadius:
-                                              BorderRadius.circular(10),
-                                            ),
-                                            child: Text(
-                                              StringHelper.markAsSold,
-                                              style: context.textTheme.labelLarge
-                                                  ?.copyWith(
-                                                  color: Colors.white,
-                                                  fontSize: 12,
-                                                  fontWeight:
-                                                  FontWeight.w600),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      const Gap(10),
+                          ),
+                          Positioned(
+                              top: 0,
+                              left: 0,
+                              child: SafeArea(
+                                child: IconButton(
+                                    onPressed: () {
+                                      context.pop();
                                     },
-
-
-                                    if("${productDetails?.adStatus}" != "deactivate" && "${productDetails?.status}" == "0" || "${productDetails?.status}" == "2")...[
-                                      Expanded(
-                                        child: InkWell(
-                                          onTap: () async {
-                                            var vm = context.read<MyAdsVM>();
-
-                                            vm.handelPopupMenuItemClick(
-                                                context: context, item: productDetails, index: 1);
-                                          },
-                                          child: Container(
-                                            alignment: Alignment.center,
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 10, vertical: 08),
-                                            decoration: BoxDecoration(
-                                              color: Colors.black54,
-                                              borderRadius:
-                                              BorderRadius.circular(08),
-                                            ),
+                                    icon: Container(
+                                      padding: EdgeInsets.only(left:15,right: 8,top: 5,bottom: 5),
+                                      decoration: BoxDecoration(
+                                          color: Colors.black,
+                                          shape: BoxShape.circle
+                                      ),
+                                      child: Icon(Icons.arrow_back_ios,
+                                          size: 20,
+                                          textDirection: TextDirection.ltr,
+                                          color: Colors.white),
+                                    )),
+                              )),
+                          Positioned(
+                              top: 0,
+                              right: 50,
+                              child: SafeArea(
+                                child: IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(Icons.share, color: Colors.white)),
+                              )),
+                          Positioned(
+                              top: 0,
+                              right: 10,
+                              child: SafeArea(
+                                child: PopupMenuButton<int>(
+                                  icon: const Icon(
+                                    Icons.more_vert_outlined,
+                                    color: Colors.white,
+                                  ),
+                                  offset: const Offset(0, 40),
+                                  shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(15.0))),
+                                  onSelected: (int value) {
+                                    var vm = context.read<MyAdsVM>();
+        
+                                    vm.handelPopupMenuItemClick(
+                                        context: context,
+                                        index: value,
+                                        item: productDetails);
+                                  },
+                                  itemBuilder: (BuildContext context) =>
+                                      <PopupMenuEntry<int>>[
+                                        if ("${productDetails?.status}" == "1" && productDetails?.sellStatus?.toLowerCase() != StringHelper.sold.toLowerCase()) ...{
+                                          PopupMenuItem(
+                                            value: 1,
                                             child: Text(
-                                              StringHelper.edit,
-                                              style: context.textTheme.labelLarge
-                                                  ?.copyWith(
-                                                  color: Colors.white,
-                                                  fontSize: 12,
-                                                  fontWeight:
-                                                  FontWeight.w600),
+                                                StringHelper.edit),
+                                          )
+                                        },
+                                        if ("${productDetails?.adStatus}" != "deactivate" && "${productDetails?.status}" == "0" && productDetails?.sellStatus?.toLowerCase() != StringHelper.sold.toLowerCase()) ...{
+                                          PopupMenuItem(
+                                            value: 2,
+                                            child: Text(StringHelper
+                                                .deactivate),
+                                          ),
+                                        },
+                                        if ("${productDetails?.adStatus}" == "deactivate" && "${productDetails?.status}" == "0" && productDetails?.sellStatus?.toLowerCase() != StringHelper.sold.toLowerCase()) ...{
+                                          PopupMenuItem(
+                                            value: 4,
+                                            child: Text("Republish"),
+                                          ),
+                                        },
+                                    PopupMenuItem(
+                                      value: 3,
+                                      child: Text(StringHelper.remove),
+                                    ),
+                                  ],
+                                ),
+                              )),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 10,
+                          right: 20,
+                          left: 20,
+                          bottom: 40,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    productDetails?.name ?? '',
+                                    style: context.textTheme.titleMedium,
+                                  ),
+                                ),
+                                if ("${productDetails?.status}" != "0" && productDetails?.sellStatus !=
+                                    StringHelper.sold.toLowerCase()) ...{
+                                  viewModel.getRemainDays(item: productDetails)
+                                }
+                              ],
+                            ),
+                            const Gap(5),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Image.asset(
+                                  AssetsRes.IC_ITEM_LOCATION,
+                                  scale: 2.5,
+                                  color: Colors.black,
+                                ),
+                                const Gap(10),
+                                Flexible(
+                                  child: Text(
+                                    productDetails?.nearby ?? '',
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const Gap(10),
+                            if (productDetails?.categoryId == 9) ...{
+                              Text(
+                                "${StringHelper.egp} ${parseAmount(productDetails?.salleryFrom)}",
+                                //"${StringHelper.egp} ${data?.salleryFrom} - ${data?.salleryTo}",
+                                style: context.textTheme.titleLarge
+                                    ?.copyWith(color: Colors.red),
+                              ),
+                            } else ...{
+                              Text(
+                                "${StringHelper.egp} ${parseAmount(productDetails?.price)}",
+                                style: context.textTheme.titleLarge
+                                    ?.copyWith(color: Colors.red),
+                              ),
+                            },
+                            const Gap(10),
+                            productDetails?.sellStatus != StringHelper.soldText
+                                ? Row(
+                                    children: [
+                                      if("${productDetails?.adStatus}" != "deactivate" && productDetails?.sellStatus != StringHelper.sold.toLowerCase() && "${productDetails?.status}" != "0" && "${productDetails?.status}" != "2")...{
+                                        Expanded(
+                                          child: InkWell(
+                                            onTap: () async {
+                                              DialogHelper.showLoading();
+                                              await viewModel.markAsSoldApi(
+                                                  product: productDetails!);
+                                            },
+                                            child: Container(
+                                              alignment: Alignment.center,
+                                              padding: const EdgeInsets.symmetric(
+                                                  horizontal: 10, vertical: 08),
+                                              decoration: BoxDecoration(
+                                                color: Colors.black54,
+                                                borderRadius:
+                                                BorderRadius.circular(10),
+                                              ),
+                                              child: Text(
+                                                StringHelper.markAsSold,
+                                                style: context.textTheme.labelLarge
+                                                    ?.copyWith(
+                                                    color: Colors.white,
+                                                    fontSize: 12,
+                                                    fontWeight:
+                                                    FontWeight.w600),
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    ]
-
-                                    /*Expanded(
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 10, vertical: 08),
-                                        decoration: BoxDecoration(
-                                          color: Colors.black54,
-                                          borderRadius:
-                                              BorderRadius.circular(10),
+                                        const Gap(10),
+                                      },
+        
+        
+                                      if("${productDetails?.adStatus}" != "deactivate" && "${productDetails?.status}" == "0" || "${productDetails?.status}" == "2")...[
+                                        Expanded(
+                                          child: InkWell(
+                                            onTap: () async {
+                                              var vm = context.read<MyAdsVM>();
+        
+                                              vm.handelPopupMenuItemClick(
+                                                  context: context, item: productDetails, index: 1);
+                                            },
+                                            child: Container(
+                                              alignment: Alignment.center,
+                                              padding: const EdgeInsets.symmetric(
+                                                  horizontal: 10, vertical: 08),
+                                              decoration: BoxDecoration(
+                                                color: Colors.black54,
+                                                borderRadius:
+                                                BorderRadius.circular(08),
+                                              ),
+                                              child: Text(
+                                                StringHelper.edit,
+                                                style: context.textTheme.labelLarge
+                                                    ?.copyWith(
+                                                    color: Colors.white,
+                                                    fontSize: 12,
+                                                    fontWeight:
+                                                    FontWeight.w600),
+                                              ),
+                                            ),
+                                          ),
                                         ),
-                                        child: Text(
-                                          StringHelper.sellFasterNow,
-                                          style: context.textTheme.labelLarge
-                                              ?.copyWith(
-                                                  color: Colors.white,
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w600),
+                                      ]
+        
+                                      /*Expanded(
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 08),
+                                          decoration: BoxDecoration(
+                                            color: Colors.black54,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          child: Text(
+                                            StringHelper.sellFasterNow,
+                                            style: context.textTheme.labelLarge
+                                                ?.copyWith(
+                                                    color: Colors.white,
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w600),
+                                          ),
                                         ),
-                                      ),
-                                    ),*/
-                                  ],
-                                )
-                              : AppElevatedButton(
-                                  title: StringHelper.soldText,
-                                  height: 30,
-                                  width: 100,
-                                  backgroundColor: Colors.grey,
-                                ),
-                          Divider(),
-                          if (productDetails?.categoryId != 11) ...{
-                            if (viewModel.getSpecifications(context: context, data: productDetails)
-                                .isNotEmpty) ...{
-                              Text(StringHelper.specifications,
-                                  style: context.textTheme.titleSmall),
-                              const SizedBox(height: 10),
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Colors.white,
-                                ),
-                                child: Wrap(
-                                  spacing: 20, // Horizontal spacing between items
-                                  runSpacing: 15, // Vertical spacing between items
-                                  children: viewModel
-                                      .getSpecifications(context: context, data: productDetails)
-                                      .map((spec) => SizedBox(child: spec))
-                                      .toList(),
-                                )
-                                // child: GridView(
-                                //   shrinkWrap: true,
-                                //   physics: const NeverScrollableScrollPhysics(),
-                                //   padding: const EdgeInsets.all(10),
-                                //   gridDelegate:
-                                //       const SliverGridDelegateWithFixedCrossAxisCount(
-                                //           crossAxisCount: 3,
-                                //           mainAxisExtent: 50,
-                                //           mainAxisSpacing: 5,
-                                //           crossAxisSpacing: 20),
-                                //   children: viewModel.getSpecifications(
-                                //       context: context, data: productDetails),
-                                // ),
-                              ),
-                            }
-                          },
-                          if (productDetails?.categoryId == 11) ...{
-                            Text(
-                              StringHelper.propertyInformation,
-                              style: context.titleMedium,
-                            ),
-                            Gap(10),
-                            getPropertyInformation(
-                                    context: context, data: productDetails) ??
-                                SizedBox.shrink(),
-                          },
-                          if (productDetails?.categoryId == 11) ...{
-                            Divider(),
-                            Text(
-                              StringHelper.amenities,
-                              style: context.textTheme.titleMedium,
-                            ),
-                            Gap(10),
-                            Visibility(
-                              visible: false,
-                                child:Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: List.generate(
-                                  productDetails?.productAmenities?.length ?? 0, (index) {
-                                return Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 5.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      getAmenityIcon(productDetails
-                                              ?.productAmenities?[index]
-                                              .amnity
-                                              ?.name ??
-                                          ''),
-                                      Gap(05),
-                                      Text(DbHelper.getLanguage() == 'en'
-                                          ? "${productDetails?.productAmenities?[index].amnity?.name}"
-                                          : "${productDetails?.productAmenities?[index].amnity?.nameAr}"),
+                                      ),*/
                                     ],
+                                  )
+                                : AppElevatedButton(
+                                    title: StringHelper.soldText,
+                                    height: 30,
+                                    width: 100,
+                                    backgroundColor: Colors.grey,
                                   ),
-                                );
-                              }),
-                            )),
-                            CommonGridView(
-                              physics: NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              //mainAxisExtent: 120,
-                              crossAxisCount: 3,
-                              childAspectRatio: 16/16,
-                              itemCount: viewModel.showAll
-                                  ? productDetails?.productAmenities?.length ?? 0
-                                  : (productDetails?.productAmenities?.length ?? 0) < 5
-                                  ? productDetails?.productAmenities?.length ?? 0
-                                  : 5,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Card(
-                                  color: Colors.grey.shade300,
-                                  elevation: 0,
-                                  margin: EdgeInsets.zero,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)
+                            Divider(),
+                            if (productDetails?.categoryId != 11) ...{
+                              if (viewModel.getSpecifications(context: context, data: productDetails)
+                                  .isNotEmpty) ...{
+                                Text(StringHelper.specifications,
+                                    style: context.textTheme.titleSmall),
+                                const SizedBox(height: 10),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.white,
                                   ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Column(
+                                  child: Wrap(
+                                    spacing: 20, // Horizontal spacing between items
+                                    runSpacing: 15, // Vertical spacing between items
+                                    children: viewModel
+                                        .getSpecifications(context: context, data: productDetails)
+                                        .map((spec) => SizedBox(child: spec))
+                                        .toList(),
+                                  )
+                                  // child: GridView(
+                                  //   shrinkWrap: true,
+                                  //   physics: const NeverScrollableScrollPhysics(),
+                                  //   padding: const EdgeInsets.all(10),
+                                  //   gridDelegate:
+                                  //       const SliverGridDelegateWithFixedCrossAxisCount(
+                                  //           crossAxisCount: 3,
+                                  //           mainAxisExtent: 50,
+                                  //           mainAxisSpacing: 5,
+                                  //           crossAxisSpacing: 20),
+                                  //   children: viewModel.getSpecifications(
+                                  //       context: context, data: productDetails),
+                                  // ),
+                                ),
+                              }
+                            },
+                            if (productDetails?.categoryId == 11) ...{
+                              Text(
+                                StringHelper.propertyInformation,
+                                style: context.titleMedium,
+                              ),
+                              Gap(10),
+                              getPropertyInformation(
+                                      context: context, data: productDetails) ??
+                                  SizedBox.shrink(),
+                            },
+                            if (productDetails?.categoryId == 11) ...{
+                              Divider(),
+                              Text(
+                                StringHelper.amenities,
+                                style: context.textTheme.titleMedium,
+                              ),
+                              Gap(10),
+                              Visibility(
+                                visible: false,
+                                  child:Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: List.generate(
+                                    productDetails?.productAmenities?.length ?? 0, (index) {
+                                  return Padding(
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 5.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         getAmenityIcon(productDetails
-                                            ?.productAmenities?[index]
-                                            .amnity
-                                            ?.name ??
+                                                ?.productAmenities?[index]
+                                                .amnity
+                                                ?.name ??
                                             ''),
                                         Gap(05),
                                         Text(DbHelper.getLanguage() == 'en'
                                             ? "${productDetails?.productAmenities?[index].amnity?.name}"
-                                            : "${productDetails?.productAmenities?[index].amnity?.nameAr}",textAlign: TextAlign.center,),
+                                            : "${productDetails?.productAmenities?[index].amnity?.nameAr}"),
                                       ],
                                     ),
-                                  ),
-                                );
-                              },),
-                            Gap(10),
-                            Visibility(
-                                visible: (productDetails?.productAmenities?.length ?? 0) > 5,
-                                child:GestureDetector(
-                                onTap: (){
-                                  viewModel.showAll = !viewModel.showAll;
-                                },
-                                child:Align(
-                                    alignment: Alignment.topRight,
-                                    child:Text(
-                                      viewModel.showAll ? StringHelper.seeLess : StringHelper.seeMore,
-                                      style: context.textTheme.titleSmall,
-                                    )))),
-                          },
-                          Divider(),
-                          Text(
-                            StringHelper.description,
-                            style: context.textTheme.titleMedium,
-                          ),
-                          const Gap(05),
-                          Text(productDetails?.description ?? ''),
-                          const Gap(20),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
+                                  );
+                                }),
+                              )),
+                              CommonGridView(
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                //mainAxisExtent: 120,
+                                crossAxisCount: 3,
+                                childAspectRatio: 16/16,
+                                itemCount: viewModel.showAll
+                                    ? productDetails?.productAmenities?.length ?? 0
+                                    : (productDetails?.productAmenities?.length ?? 0) < 5
+                                    ? productDetails?.productAmenities?.length ?? 0
+                                    : 5,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Card(
+                                    color: Colors.grey.shade300,
+                                    elevation: 0,
+                                    margin: EdgeInsets.zero,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10)
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          getAmenityIcon(productDetails
+                                              ?.productAmenities?[index]
+                                              .amnity
+                                              ?.name ??
+                                              ''),
+                                          Gap(05),
+                                          Text(DbHelper.getLanguage() == 'en'
+                                              ? "${productDetails?.productAmenities?[index].amnity?.name}"
+                                              : "${productDetails?.productAmenities?[index].amnity?.nameAr}",textAlign: TextAlign.center,),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },),
+                              Gap(10),
+                              Visibility(
+                                  visible: (productDetails?.productAmenities?.length ?? 0) > 5,
+                                  child:GestureDetector(
+                                  onTap: (){
+                                    viewModel.showAll = !viewModel.showAll;
+                                  },
+                                  child:Align(
+                                      alignment: Alignment.topRight,
+                                      child:Text(
+                                        viewModel.showAll ? StringHelper.seeLess : StringHelper.seeMore,
+                                        style: context.textTheme.titleSmall,
+                                      )))),
+                            },
+                            Divider(),
+                            Text(
+                              StringHelper.description,
+                              style: context.textTheme.titleMedium,
+                            ),
+                            const Gap(05),
+                            Text(productDetails?.description ?? ''),
+                            const Gap(20),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              }
+              if (snapshot.hasError) {
+                return const AppErrorWidget();
+              }
+              return MyProductSkeleton(
+                isLoading: snapshot.connectionState == ConnectionState.waiting,
               );
-            }
-            if (snapshot.hasError) {
-              return const AppErrorWidget();
-            }
-            return MyProductSkeleton(
-              isLoading: snapshot.connectionState == ConnectionState.waiting,
-            );
-          }),
+            }),
+      ),
     );
   }
 

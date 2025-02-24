@@ -10,6 +10,7 @@ import '../res/assets_res.dart';
 
 class CardSwipeWidget extends StatefulWidget {
   final double? height;
+  final double? radius;
   final ProductDetailModel? data;
   final List<ProductMedias>? imagesList;
   final BorderRadiusGeometry? borderRadius;
@@ -24,7 +25,7 @@ class CardSwipeWidget extends StatefulWidget {
     this.imagesList,
     this.borderRadius,
     this.screenType,
-    this.fit, this.onItemTapped,
+    this.fit, this.onItemTapped, this.radius,
   });
 
   @override
@@ -111,6 +112,7 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget>
                             "${ApiConstants.imageUrl}/${bannerImages[index]}",
                         placeholder: AssetsRes.APP_LOGO,
                         width: context.width,
+                        borderRadius: widget.radius,
                         height: widget.height ?? 220,
                         fit: widget.fit ?? BoxFit.cover,
                         /*onTap: () => Navigator.push(

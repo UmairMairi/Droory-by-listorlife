@@ -412,6 +412,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
               inputFormatters: [
                 FilteringTextInputFormatter.deny(
                     RegExp(viewModel.regexToRemoveEmoji)),
+                LengthLimitingTextInputFormatter(65),
               ],
             ),
 

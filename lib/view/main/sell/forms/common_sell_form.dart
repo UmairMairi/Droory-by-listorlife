@@ -577,6 +577,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                 inputFormatters: [
                   FilteringTextInputFormatter.deny(
                       RegExp(viewModel.regexToRemoveEmoji)),
+                  LengthLimitingTextInputFormatter(65),
                 ],
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.done,

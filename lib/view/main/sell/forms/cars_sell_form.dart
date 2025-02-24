@@ -630,6 +630,7 @@ class CarsSellForm extends BaseView<SellFormsVM> {
                   FilteringTextInputFormatter.deny(
                     RegExp(viewModel.regexToRemoveEmoji),
                   ),
+                  LengthLimitingTextInputFormatter(65),
                 ],
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.done,

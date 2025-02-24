@@ -90,6 +90,7 @@ class BusinessForm extends StatelessWidget {
             FilteringTextInputFormatter.deny(
               RegExp(viewModel.regexToRemoveEmoji),
             ),
+            LengthLimitingTextInputFormatter(65),
           ],
           keyboardType: TextInputType.text,
           textInputAction: TextInputAction.done,

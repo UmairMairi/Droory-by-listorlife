@@ -30,7 +30,7 @@ class ProductDetailView extends BaseView<ProductVM> {
   @override
   Widget build(BuildContext context, ProductVM viewModel) {
     return Scaffold(
-      appBar: !viewModel.isAppBarVisible?AppBar(backgroundColor: Colors.transparent,automaticallyImplyLeading: false,toolbarHeight: 0,elevation: 0,):null,
+      //appBar: !viewModel.isAppBarVisible?AppBar(backgroundColor: Colors.transparent,automaticallyImplyLeading: false,toolbarHeight: 0,elevation: 0,):null,
       /*appBar: AppBar(
         title: Text(StringHelper.details),
         centerTitle: true,
@@ -64,597 +64,600 @@ class ProductDetailView extends BaseView<ProductVM> {
           ),
         ],
       ),*/
-      body: Stack(
-        children: [
-          FutureBuilder<ProductDetailModel?>(
-              future: viewModel.getProductDetails(id: productDetails?.id),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  ProductDetailModel? productData = snapshot.data;
-                  // productData?.productMedias
-                  //     ?.insert(0, ProductMedias(media: productData.image));
-                  return SingleChildScrollView(
-                    controller: viewModel.scrollController,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Stack(
-                          children: [
-                            CardSwipeWidget(
-                              height: 350,
-                              data: productData,
-                              fit: BoxFit.fill,
-                              imagesList: productData?.productMedias,
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20),
-                              ),
-                            ),
-                            Positioned(
-                                top: 0,
-                                left: 0,
-                                child: SafeArea(
-                                  child: IconButton(
-                                      onPressed: () {
-                                        context.pop();
-                                      },
-                                      icon: Container(
-                                        padding: EdgeInsets.only(left:15,right: 8,top: 5,bottom: 5),
-                                        decoration: BoxDecoration(
-                                          color: Colors.black,
-                                          shape: BoxShape.circle
-                                        ),
-                                        child: Icon(Icons.arrow_back_ios,
-                                            size: 20,
-                                            textDirection: TextDirection.ltr,
-                                            color: Colors.white),
-                                      )),
-                                )),
-                            Positioned(
-                                top: 0,
-                                right: 50,
-                                child: SafeArea(
-                                  child: LikeButton(
-                                      isFav: productData?.isFavourite == 1,
-                                      onTap: () async => {
-                                            await viewModel.onLikeButtonTapped(
-                                                id: productData?.id)
-                                          }),
-                                )),
-                            Positioned(
-                                top: 0,
-                                right: 10,
-                                child: SafeArea(
-                                  child: IconButton(
-                                      onPressed: () {},
-                                      icon: Icon(Icons.share,
-                                          color: Colors.white)),
-                                )),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            top: 10,
-                            right: 20,
-                            left: 20,
-                            bottom: 40,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
+      body: SafeArea(
+        child: Stack(
+          children: [
+            FutureBuilder<ProductDetailModel?>(
+                future: viewModel.getProductDetails(id: productDetails?.id),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    ProductDetailModel? productData = snapshot.data;
+                    // productData?.productMedias
+                    //     ?.insert(0, ProductMedias(media: productData.image));
+                    return SingleChildScrollView(
+                      controller: viewModel.scrollController,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Stack(
                             children: [
-                              Text(
-                                "${productData?.name}",
-                                style: context.textTheme.titleMedium,
-                              ),
-                              const Gap(5),
-                              getSpecifications(context: context, productData: productData),
-                              const Gap(5),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Image.asset(
-                                    AssetsRes.IC_ITEM_LOCATION,
-                                    scale: 2.5,
-                                    color: Colors.black,
-                                  ),
-                                  const Gap(10),
-                                  Flexible(
-                                    child: Text(
-                                      productData?.nearby ?? '',
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const Gap(10),
-                              if (productData?.categoryId == 9) ...{
-                                Text(
-                                  "${StringHelper.egp} ${parseAmount(productData?.salleryFrom)}",
-                                //  "${StringHelper.egp} ${productData?.salleryFrom} - ${productData?.salleryTo}",
-                                  style: context.textTheme.titleLarge
-                                      ?.copyWith(color: Colors.red),
+                              CardSwipeWidget(
+                                radius: 0,
+                                height: 350,
+                                data: productData,
+                                fit: BoxFit.fill,
+                                imagesList: productData?.productMedias,
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20),
                                 ),
-                              } else ...{
-                                Text(
-                                  "${StringHelper.egp} ${parseAmount(productData?.price)}",
-                                  style: context.textTheme.titleLarge
-                                      ?.copyWith(color: Colors.red),
-                                ),
-                              },
-                              const Gap(10),
-                              Divider(),
-                              Text(
-                                StringHelper.description,
-                                style: context.textTheme.titleMedium,
                               ),
-                              const Gap(05),
-                              Text(productData?.description ?? ''),
-                              Divider(),
-                              if (productData?.categoryId != 11) ...{
-                                if (viewModel
-                                    .getSpecifications(
-                                        context: context, data: productData)
-                                    .isNotEmpty) ...{
-                                  Text(StringHelper.specifications,
-                                      style: context.textTheme.titleSmall),
-                                  const SizedBox(height: 10),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: Colors.white,
-                                    ),
-                                    child: Wrap(
-                                spacing: 20, // Horizontal spacing between items
-                                runSpacing: 15, // Vertical spacing between items
-                                children: viewModel
-                                    .getSpecifications(context: context, data: productDetails)
-                                    .map((spec) => SizedBox(child: spec))
-                                    .toList()),
-                                    // child: GridView(
-                                    //   shrinkWrap: true,
-                                    //   physics:
-                                    //       const NeverScrollableScrollPhysics(),
-                                    //   padding: const EdgeInsets.all(10),
-                                    //   gridDelegate:
-                                    //       const SliverGridDelegateWithFixedCrossAxisCount(
-                                    //           crossAxisCount: 3,
-                                    //           mainAxisExtent: 50,
-                                    //           mainAxisSpacing: 5,
-                                    //           crossAxisSpacing: 20),
-                                    //   children: viewModel.getSpecifications(
-                                    //       context: context, data: productData),
-                                    // ),
-                                  ),
-                                }
-                              },
-                              if (productData?.categoryId == 11) ...{
+                              Positioned(
+                                  top: 0,
+                                  left: 0,
+                                  child: SafeArea(
+                                    child: IconButton(
+                                        onPressed: () {
+                                          context.pop();
+                                        },
+                                        icon: Container(
+                                          padding: EdgeInsets.only(left:15,right: 8,top: 5,bottom: 5),
+                                          decoration: BoxDecoration(
+                                            color: Colors.black,
+                                            shape: BoxShape.circle
+                                          ),
+                                          child: Icon(Icons.arrow_back_ios,
+                                              size: 20,
+                                              textDirection: TextDirection.ltr,
+                                              color: Colors.white),
+                                        )),
+                                  )),
+                              Positioned(
+                                  top: 0,
+                                  right: 50,
+                                  child: SafeArea(
+                                    child: LikeButton(
+                                        isFav: productData?.isFavourite == 1,
+                                        onTap: () async => {
+                                              await viewModel.onLikeButtonTapped(
+                                                  id: productData?.id)
+                                            }),
+                                  )),
+                              Positioned(
+                                  top: 0,
+                                  right: 10,
+                                  child: SafeArea(
+                                    child: IconButton(
+                                        onPressed: () {},
+                                        icon: Icon(Icons.share,
+                                            color: Colors.white)),
+                                  )),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              top: 10,
+                              right: 20,
+                              left: 20,
+                              bottom: 40,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
                                 Text(
-                                  StringHelper.propertyInformation,
-                                  style: context.titleMedium,
-                                ),
-                                Gap(10),
-                                getPropertyInformation(
-                                        context: context, data: productData) ??
-                                    SizedBox.shrink(),
-                              },
-                              if (productData?.categoryId == 11) ...{
-                                Divider(),
-                                Text(
-                                  StringHelper.amenities,
+                                  "${productData?.name}",
                                   style: context.textTheme.titleMedium,
                                 ),
-                                Gap(10),
-                                Visibility(
-                                  visible: false,
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: List.generate(
-                                        productData?.productAmenities?.length ?? 0,
-                                            (index) {
-                                          return Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 5.0),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                getAmenityIcon(productData
-                                                    ?.productAmenities?[index]
-                                                    .amnity
-                                                    ?.name ??
-                                                    ''),
-                                                Gap(05),
-                                                Text(DbHelper.getLanguage() == 'en'
-                                                    ? "${productData?.productAmenities?[index].amnity?.name}"
-                                                    : "${productData?.productAmenities?[index].amnity?.nameAr}"),
-                                              ],
-                                            ),
-                                          );
-                                        }),
-                                  ),
-                                ),
-                                CommonGridView(
-                                  physics: NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  //mainAxisExtent: 120,
-                                  crossAxisCount: 3,
-                                  childAspectRatio: 16/16,
-                                  itemCount: viewModel.showAll
-                                      ? productData?.productAmenities?.length ?? 0
-                                      : (productData?.productAmenities?.length ?? 0) < 5
-                                      ? productData?.productAmenities?.length ?? 0
-                                      : 5,
-                                  itemBuilder: (BuildContext context, int index) {
-                                  return Card(
-                                    color: Colors.grey.shade300,
-                                    elevation: 0,
-                                    margin: EdgeInsets.zero,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)
+                                const Gap(5),
+                                getSpecifications(context: context, productData: productData),
+                                const Gap(5),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Image.asset(
+                                      AssetsRes.IC_ITEM_LOCATION,
+                                      scale: 2.5,
+                                      color: Colors.black,
                                     ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(5.0),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          getAmenityIcon(productData
-                                              ?.productAmenities?[index]
-                                              .amnity
-                                              ?.name ??
-                                              ''),
-                                          Gap(05),
-                                          Text(DbHelper.getLanguage() == 'en'
-                                              ? "${productData?.productAmenities?[index].amnity?.name}"
-                                              : "${productData?.productAmenities?[index].amnity?.nameAr}",textAlign: TextAlign.center,),
-                                        ],
+                                    const Gap(10),
+                                    Flexible(
+                                      child: Text(
+                                        productData?.nearby ?? '',
                                       ),
                                     ),
-                                  );
-                                },),
-                                Gap(10),
-                                Visibility(
-                                    visible: (productData?.productAmenities?.length ?? 0) > 5,
-                                    child:GestureDetector(
-                                        onTap: (){
-                                          viewModel.showAll = !viewModel.showAll;
-                                        },
-                                        child:Align(
-                                            alignment: Alignment.topRight,
-                                            child:Text(
-                                              viewModel.showAll ? StringHelper.seeLess : StringHelper.seeMore,
-                                              style: context.textTheme.titleSmall,
-                                            )))),
-                              },
-                              Divider(),
-                              Text(
-                                StringHelper.mapView,
-                                style: context.titleMedium,
-                              ),
-                              const Gap(5),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    AssetsRes.IC_LOACTION_ICON,
-                                    height: 16,
+                                  ],
+                                ),
+                                const Gap(10),
+                                if (productData?.categoryId == 9) ...{
+                                  Text(
+                                    "${StringHelper.egp} ${parseAmount(productData?.salleryFrom)}",
+                                  //  "${StringHelper.egp} ${productData?.salleryFrom} - ${productData?.salleryTo}",
+                                    style: context.textTheme.titleLarge
+                                        ?.copyWith(color: Colors.red),
                                   ),
-                                  const Gap(05),
-                                  Expanded(
-                                    child: Text(
-                                      productData?.nearby ?? '',
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 5,
-                                      style: context.textTheme.bodyMedium,
-                                    ),
+                                } else ...{
+                                  Text(
+                                    "${StringHelper.egp} ${parseAmount(productData?.price)}",
+                                    style: context.textTheme.titleLarge
+                                        ?.copyWith(color: Colors.red),
                                   ),
-                                ],
-                              ),
-                              const Gap(05),
-                              InkWell(
-                                onTap: () async {
-                                  if (DbHelper.getIsGuest()) {
-                                    DialogHelper.showLoginDialog(
-                                        context: context);
-                                    return;
-                                  }
-                                  final availableMaps =
-                                      await MapLauncher.installedMaps;
-                                  debugPrint(
-                                      "$availableMaps"); // [AvailableMap { mapName: Google Maps, mapType: google }, ...]
-
-                                  await availableMaps.first.showMarker(
-                                    coords: Coords(
-                                        double.parse("${productData?.latitude}"),
-                                        double.parse("${productData?.longitude}")),
-                                    title: "Ocean Beach",
-                                  );
                                 },
-                                child: Text(
-                                  StringHelper.getDirection,
-                                  style: context.textTheme.titleSmall?.copyWith(
-                                      color: Colors.red,
-                                      decorationColor: Colors.red,
-                                      decoration: TextDecoration.underline),
+                                const Gap(10),
+                                Divider(),
+                                Text(
+                                  StringHelper.description,
+                                  style: context.textTheme.titleMedium,
                                 ),
-                              ),
-                              const Gap(5),
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: SizedBox(
-                                  height: 150,
-                                  width: context.width,
-                                  child: AddressMapWidget(
-                                    latLng: LatLng(
-                                      double.parse(productData?.latitude ?? '0'),
-                                      double.parse(productData?.longitude ?? '0'),
+                                const Gap(05),
+                                Text(productData?.description ?? ''),
+                                Divider(),
+                                if (productData?.categoryId != 11) ...{
+                                  if (viewModel
+                                      .getSpecifications(
+                                          context: context, data: productData)
+                                      .isNotEmpty) ...{
+                                    Text(StringHelper.specifications,
+                                        style: context.textTheme.titleSmall),
+                                    const SizedBox(height: 10),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: Colors.white,
+                                      ),
+                                      child: Wrap(
+                                  spacing: 20, // Horizontal spacing between items
+                                  runSpacing: 15, // Vertical spacing between items
+                                  children: viewModel
+                                      .getSpecifications(context: context, data: productDetails)
+                                      .map((spec) => SizedBox(child: spec))
+                                      .toList()),
+                                      // child: GridView(
+                                      //   shrinkWrap: true,
+                                      //   physics:
+                                      //       const NeverScrollableScrollPhysics(),
+                                      //   padding: const EdgeInsets.all(10),
+                                      //   gridDelegate:
+                                      //       const SliverGridDelegateWithFixedCrossAxisCount(
+                                      //           crossAxisCount: 3,
+                                      //           mainAxisExtent: 50,
+                                      //           mainAxisSpacing: 5,
+                                      //           crossAxisSpacing: 20),
+                                      //   children: viewModel.getSpecifications(
+                                      //       context: context, data: productData),
+                                      // ),
+                                    ),
+                                  }
+                                },
+                                if (productData?.categoryId == 11) ...{
+                                  Text(
+                                    StringHelper.propertyInformation,
+                                    style: context.titleMedium,
+                                  ),
+                                  Gap(10),
+                                  getPropertyInformation(
+                                          context: context, data: productData) ??
+                                      SizedBox.shrink(),
+                                },
+                                if (productData?.categoryId == 11) ...{
+                                  Divider(),
+                                  Text(
+                                    StringHelper.amenities,
+                                    style: context.textTheme.titleMedium,
+                                  ),
+                                  Gap(10),
+                                  Visibility(
+                                    visible: false,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: List.generate(
+                                          productData?.productAmenities?.length ?? 0,
+                                              (index) {
+                                            return Padding(
+                                              padding: const EdgeInsets.symmetric(
+                                                  vertical: 5.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  getAmenityIcon(productData
+                                                      ?.productAmenities?[index]
+                                                      .amnity
+                                                      ?.name ??
+                                                      ''),
+                                                  Gap(05),
+                                                  Text(DbHelper.getLanguage() == 'en'
+                                                      ? "${productData?.productAmenities?[index].amnity?.name}"
+                                                      : "${productData?.productAmenities?[index].amnity?.nameAr}"),
+                                                ],
+                                              ),
+                                            );
+                                          }),
+                                    ),
+                                  ),
+                                  CommonGridView(
+                                    physics: NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    //mainAxisExtent: 120,
+                                    crossAxisCount: 3,
+                                    childAspectRatio: 16/16,
+                                    itemCount: viewModel.showAll
+                                        ? productData?.productAmenities?.length ?? 0
+                                        : (productData?.productAmenities?.length ?? 0) < 5
+                                        ? productData?.productAmenities?.length ?? 0
+                                        : 5,
+                                    itemBuilder: (BuildContext context, int index) {
+                                    return Card(
+                                      color: Colors.grey.shade300,
+                                      elevation: 0,
+                                      margin: EdgeInsets.zero,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10)
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            getAmenityIcon(productData
+                                                ?.productAmenities?[index]
+                                                .amnity
+                                                ?.name ??
+                                                ''),
+                                            Gap(05),
+                                            Text(DbHelper.getLanguage() == 'en'
+                                                ? "${productData?.productAmenities?[index].amnity?.name}"
+                                                : "${productData?.productAmenities?[index].amnity?.nameAr}",textAlign: TextAlign.center,),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },),
+                                  Gap(10),
+                                  Visibility(
+                                      visible: (productData?.productAmenities?.length ?? 0) > 5,
+                                      child:GestureDetector(
+                                          onTap: (){
+                                            viewModel.showAll = !viewModel.showAll;
+                                          },
+                                          child:Align(
+                                              alignment: Alignment.topRight,
+                                              child:Text(
+                                                viewModel.showAll ? StringHelper.seeLess : StringHelper.seeMore,
+                                                style: context.textTheme.titleSmall,
+                                              )))),
+                                },
+                                Divider(),
+                                Text(
+                                  StringHelper.mapView,
+                                  style: context.titleMedium,
+                                ),
+                                const Gap(5),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      AssetsRes.IC_LOACTION_ICON,
+                                      height: 16,
+                                    ),
+                                    const Gap(05),
+                                    Expanded(
+                                      child: Text(
+                                        productData?.nearby ?? '',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 5,
+                                        style: context.textTheme.bodyMedium,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const Gap(05),
+                                InkWell(
+                                  onTap: () async {
+                                    if (DbHelper.getIsGuest()) {
+                                      DialogHelper.showLoginDialog(
+                                          context: context);
+                                      return;
+                                    }
+                                    final availableMaps =
+                                        await MapLauncher.installedMaps;
+                                    debugPrint(
+                                        "$availableMaps"); // [AvailableMap { mapName: Google Maps, mapType: google }, ...]
+        
+                                    await availableMaps.first.showMarker(
+                                      coords: Coords(
+                                          double.parse("${productData?.latitude}"),
+                                          double.parse("${productData?.longitude}")),
+                                      title: "Ocean Beach",
+                                    );
+                                  },
+                                  child: Text(
+                                    StringHelper.getDirection,
+                                    style: context.textTheme.titleSmall?.copyWith(
+                                        color: Colors.red,
+                                        decorationColor: Colors.red,
+                                        decoration: TextDecoration.underline),
+                                  ),
+                                ),
+                                const Gap(5),
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: SizedBox(
+                                    height: 150,
+                                    width: context.width,
+                                    child: AddressMapWidget(
+                                      latLng: LatLng(
+                                        double.parse(productData?.latitude ?? '0'),
+                                        double.parse(productData?.longitude ?? '0'),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              const Gap(10),
-                              Card(
-                                color: const Color(0xfff5f5f5),
-                                elevation: 0,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      ImageView.circle(
-                                          placeholder: AssetsRes.IC_USER_ICON,
-                                          image:
-                                              "${ApiConstants.imageUrl}/${productData?.user?.profilePic}",
-                                          width: 80,
-                                          height: 80),
-                                      /*const CircleAvatar(
-                                      radius: 40,
-                                      backgroundImage:
-                                      AssetImage(AssetsRes.DUMMY_PROFILE),
-                                    ),*/
-                                      const Gap(20),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            StringHelper.postedBy,
-                                            style: context.textTheme.titleSmall
-                                                ?.copyWith(color: Colors.grey),
-                                          ),
-                                          Text(
-                                            "${productData?.user?.name} ${productData?.user?.lastName}",
-                                            style: context.textTheme.titleMedium
-                                                ?.copyWith(
-                                                    fontFamily: FontRes
-                                                        .MONTSERRAT_SEMIBOLD),
-                                          ),
-                                          Text(
-                                            '${StringHelper.postedOn} ${DateHelper.joiningDate(DateTime.parse('${productData?.createdAt}'))}',
-                                            style: context.textTheme.titleSmall
-                                                ?.copyWith(color: Colors.grey),
-                                          ),
-                                          const Gap(10),
-                                          InkWell(
-                                            onTap: () {
-                                              if (DbHelper.getIsGuest()) {
-                                                DialogHelper.showLoginDialog(
-                                                    context: context);
-                                                return;
-                                              }
-
-                                              productData?.user?.id = productData.userId;
-
-                                              context.push(Routes.seeProfile,
-                                                  extra: productData?.user);
-                                            },
-                                            child: Text(
-                                              StringHelper.seeProfile,
-                                              style: context
-                                                  .textTheme.titleSmall
-                                                  ?.copyWith(
-                                                      color: Colors.red,
-                                                      decorationColor:
-                                                          Colors.red,
-                                                      decoration: TextDecoration
-                                                          .underline),
+                                const Gap(10),
+                                Card(
+                                  color: const Color(0xfff5f5f5),
+                                  elevation: 0,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        ImageView.circle(
+                                            placeholder: AssetsRes.IC_USER_ICON,
+                                            image:
+                                                "${ApiConstants.imageUrl}/${productData?.user?.profilePic}",
+                                            width: 80,
+                                            height: 80),
+                                        /*const CircleAvatar(
+                                        radius: 40,
+                                        backgroundImage:
+                                        AssetImage(AssetsRes.DUMMY_PROFILE),
+                                      ),*/
+                                        const Gap(20),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              StringHelper.postedBy,
+                                              style: context.textTheme.titleSmall
+                                                  ?.copyWith(color: Colors.grey),
                                             ),
-                                          )
-                                        ],
-                                      )
-                                    ],
+                                            Text(
+                                              "${productData?.user?.name} ${productData?.user?.lastName}",
+                                              style: context.textTheme.titleMedium
+                                                  ?.copyWith(
+                                                      fontFamily: FontRes
+                                                          .MONTSERRAT_SEMIBOLD),
+                                            ),
+                                            Text(
+                                              '${StringHelper.postedOn} ${DateHelper.joiningDate(DateTime.parse('${productData?.createdAt}'))}',
+                                              style: context.textTheme.titleSmall
+                                                  ?.copyWith(color: Colors.grey),
+                                            ),
+                                            const Gap(10),
+                                            InkWell(
+                                              onTap: () {
+                                                if (DbHelper.getIsGuest()) {
+                                                  DialogHelper.showLoginDialog(
+                                                      context: context);
+                                                  return;
+                                                }
+        
+                                                productData?.user?.id = productData.userId;
+        
+                                                context.push(Routes.seeProfile,
+                                                    extra: productData?.user);
+                                              },
+                                              child: Text(
+                                                StringHelper.seeProfile,
+                                                style: context
+                                                    .textTheme.titleSmall
+                                                    ?.copyWith(
+                                                        color: Colors.red,
+                                                        decorationColor:
+                                                            Colors.red,
+                                                        decoration: TextDecoration
+                                                            .underline),
+                                              ),
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const Gap(30),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
+                                const Gap(30),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  }
+                  if (snapshot.hasError) {
+                    return const AppErrorWidget();
+                  }
+                  return ProductDetailSkeleton(
+                    isLoading:
+                        snapshot.connectionState == ConnectionState.waiting,
                   );
-                }
-                if (snapshot.hasError) {
-                  return const AppErrorWidget();
-                }
-                return ProductDetailSkeleton(
-                  isLoading:
-                      snapshot.connectionState == ConnectionState.waiting,
-                );
-              }),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              alignment: Alignment.center,
-              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              height: 35,
-              child: CommunicationButtons(
-                data: productDetails, // Pass any additional data required
-              ),
-              /*Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          if (DbHelper.getIsGuest()) {
-                            DialogHelper.showLoginDialog(context: context);
-
-                            return;
-                          }
-
-                          DialogHelper.goToUrl(
-                              uri: Uri.parse("tel://+919876543210"));
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 08),
-                          decoration: BoxDecoration(
-                            color: Colors.black54,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Image.asset(
-                                AssetsRes.IC_CALL_ICON,
-                                height: 16,
-                              ),
-                              const Gap(05),
-                              Text(
-                                StringHelper.call,
-                                style: context.textTheme.labelLarge?.copyWith(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    const Gap(08),
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          if (DbHelper.getIsGuest()) {
-                            DialogHelper.showLoginDialog(context: context);
-                            return;
-                          }
-                          context.push(
-                            Routes.message,
-                            extra: InboxModel(
-                                senderId: DbHelper.getUserModel()?.id,
-                                receiverId: data?.userId,
-                                productId: data?.id,
-                                productDetail: data,
-                                receiverDetail: SenderDetail(
-                                    id: data?.userId,
-                                    lastName: data?.user?.lastName,
-                                    profilePic: data?.user?.profilePic,
-                                    name: data?.user?.name),
-                                senderDetail: SenderDetail(
-                                    id: DbHelper.getUserModel()?.id,
-                                    profilePic:
-                                        DbHelper.getUserModel()?.profilePic,
-                                    lastName: DbHelper.getUserModel()?.lastName,
-                                    name: DbHelper.getUserModel()?.name)),
-                          );
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 08),
-                          decoration: BoxDecoration(
-                            color: Colors.black54,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Image.asset(
-                                AssetsRes.IC_CHAT_ICON,
-                                height: 16,
-                              ),
-                              const Gap(05),
-                              Text(
-                                StringHelper.chat,
-                                style: context.textTheme.labelLarge?.copyWith(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    const Gap(08),
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          if (DbHelper.getIsGuest()) {
-                            DialogHelper.showLoginDialog(context: context);
-
-                            return;
-                          }
-                          DialogHelper.goToUrl(
-                              uri: Uri.parse(
-                                  'https://wa.me/+919876543210?text=Hii, I am from List & Live app and interested in your ad.'));
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 08),
-                          decoration: BoxDecoration(
-                            color: Colors.black54,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Image.asset(
-                                AssetsRes.IC_WHATSAPP_ICON,
-                                height: 18,
-                              ),
-                              const Gap(05),
-                              Text(
-                                StringHelper.whatsapp,
-                                style: context.textTheme.labelLarge?.copyWith(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
+                }),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                alignment: Alignment.center,
+                margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                height: 35,
+                child: CommunicationButtons(
+                  data: productDetails, // Pass any additional data required
+                ),
+                /*Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            if (DbHelper.getIsGuest()) {
+                              DialogHelper.showLoginDialog(context: context);
+        
+                              return;
+                            }
+        
+                            DialogHelper.goToUrl(
+                                uri: Uri.parse("tel://+919876543210"));
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 08),
+                            decoration: BoxDecoration(
+                              color: Colors.black54,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Image.asset(
+                                  AssetsRes.IC_CALL_ICON,
+                                  height: 16,
                                 ),
-                              )
-                            ],
+                                const Gap(05),
+                                Text(
+                                  StringHelper.call,
+                                  style: context.textTheme.labelLarge?.copyWith(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ])*/
-            ),
-          )
-        ],
+                      const Gap(08),
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            if (DbHelper.getIsGuest()) {
+                              DialogHelper.showLoginDialog(context: context);
+                              return;
+                            }
+                            context.push(
+                              Routes.message,
+                              extra: InboxModel(
+                                  senderId: DbHelper.getUserModel()?.id,
+                                  receiverId: data?.userId,
+                                  productId: data?.id,
+                                  productDetail: data,
+                                  receiverDetail: SenderDetail(
+                                      id: data?.userId,
+                                      lastName: data?.user?.lastName,
+                                      profilePic: data?.user?.profilePic,
+                                      name: data?.user?.name),
+                                  senderDetail: SenderDetail(
+                                      id: DbHelper.getUserModel()?.id,
+                                      profilePic:
+                                          DbHelper.getUserModel()?.profilePic,
+                                      lastName: DbHelper.getUserModel()?.lastName,
+                                      name: DbHelper.getUserModel()?.name)),
+                            );
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 08),
+                            decoration: BoxDecoration(
+                              color: Colors.black54,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Image.asset(
+                                  AssetsRes.IC_CHAT_ICON,
+                                  height: 16,
+                                ),
+                                const Gap(05),
+                                Text(
+                                  StringHelper.chat,
+                                  style: context.textTheme.labelLarge?.copyWith(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      const Gap(08),
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            if (DbHelper.getIsGuest()) {
+                              DialogHelper.showLoginDialog(context: context);
+        
+                              return;
+                            }
+                            DialogHelper.goToUrl(
+                                uri: Uri.parse(
+                                    'https://wa.me/+919876543210?text=Hii, I am from List & Live app and interested in your ad.'));
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 08),
+                            decoration: BoxDecoration(
+                              color: Colors.black54,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Image.asset(
+                                  AssetsRes.IC_WHATSAPP_ICON,
+                                  height: 18,
+                                ),
+                                const Gap(05),
+                                Text(
+                                  StringHelper.whatsapp,
+                                  style: context.textTheme.labelLarge?.copyWith(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ])*/
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
