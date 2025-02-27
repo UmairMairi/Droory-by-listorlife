@@ -176,6 +176,8 @@ class StringHelper {
   static String upload = LocaleService.translate('upload') ?? 'Upload';
   static String itemCondition =
       LocaleService.translate('itemCondition') ?? 'Item Condition';
+  static String condition =
+      LocaleService.translate('condition') ?? 'Condition';
   static String brand = LocaleService.translate('brand') ?? 'Brand';
   static String select = LocaleService.translate('select') ?? 'Select';
   static String models = LocaleService.translate('models') ?? 'Models';
@@ -350,6 +352,8 @@ class StringHelper {
       "Check my this product on Daroory app url: www.google.com";
   static String postedBy = LocaleService.translate('postedBy') ?? "Posted by";
   static String postedOn = LocaleService.translate('postedOn') ?? "Posted On:";
+  static String posted = LocaleService.translate('posted') ?? "Posted";
+  static String expired = LocaleService.translate('expired') ?? "Expired";
   static String seeProfile =
       LocaleService.translate('seeProfile') ?? "See Profile";
   static String getDirection =
@@ -428,6 +432,12 @@ class StringHelper {
 
   static String lookingFor =
       LocaleService.translate('lookingFor') ?? 'Looking For';
+
+  static String lookingJob =
+      LocaleService.translate('lookingJob') ?? 'I am looking job';
+
+  static String hiringJob =
+      LocaleService.translate('hiringJob') ?? 'I am hiring';
 
   ///new keys added
   static String salary = LocaleService.translate('salary') ?? 'Salary';
@@ -802,6 +812,8 @@ static String locationAlert =
     upload = LocaleService.translate('upload') ?? 'Upload';
     itemCondition =
         LocaleService.translate('itemCondition') ?? 'Item Condition';
+    condition =
+        LocaleService.translate('condition') ?? 'Condition';
     brand = LocaleService.translate('brand') ?? 'Brand';
     select = LocaleService.translate('select') ?? 'Select';
     models = LocaleService.translate('models') ?? 'Models';
@@ -938,6 +950,8 @@ static String locationAlert =
         "Check my this product on Daroory app url: www.google.com";
     postedBy = LocaleService.translate('postedBy') ?? "Posted by";
     postedOn = LocaleService.translate('postedOn') ?? "Posted On:";
+    posted = LocaleService.translate('posted') ?? "Posted";
+    expired = LocaleService.translate('expired') ?? "Expired";
     seeProfile = LocaleService.translate('seeProfile') ?? "See Profile";
     getDirection = LocaleService.translate('getDirection') ?? "Get Direction";
     call = LocaleService.translate('call') ?? "Call";
@@ -995,6 +1009,10 @@ static String locationAlert =
     underReview = LocaleService.translate('underReview') ?? 'Under Review';
     rejectedAds = LocaleService.translate('rejectedAds') ?? 'Rejected Ads';
     lookingFor = LocaleService.translate('lookingFor') ?? 'Looking For';
+    lookingJob =
+        LocaleService.translate('lookingJob') ?? 'I am looking job';
+    hiringJob =
+        LocaleService.translate('hiringJob') ?? 'I am hiring';
     call = LocaleService.translate('call') ?? 'Call';
     chat = LocaleService.translate('chat') ?? 'Chat';
     whatsapp = LocaleService.translate('whatsapp') ?? 'Whatsapp';

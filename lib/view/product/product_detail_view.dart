@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
+import 'package:list_and_life/base/utils/utils.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:list_and_life/models/product_detail_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
@@ -129,7 +130,13 @@ class ProductDetailView extends BaseView<ProductVM> {
                                   right: 10,
                                   child: SafeArea(
                                     child: IconButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          Utils.shareProduct(
+                                                         title:'Hello, Please check this useful product on',
+                                             context: context,
+                                            image: "${ApiConstants.imageUrl}/${productData?.image}"
+                                          );
+                                        },
                                         icon: Icon(Icons.share,
                                             color: Colors.white)),
                                   )),
@@ -378,7 +385,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                       coords: Coords(
                                           double.parse("${productData?.latitude}"),
                                           double.parse("${productData?.longitude}")),
-                                      title: "Ocean Beach",
+                                      title: productData?.nearby ?? '',
                                     );
                                   },
                                   child: Text(
@@ -400,6 +407,7 @@ class ProductDetailView extends BaseView<ProductVM> {
                                         double.parse(productData?.latitude ?? '0'),
                                         double.parse(productData?.longitude ?? '0'),
                                       ),
+                                      address: productData?.nearby??"",
                                     ),
                                   ),
                                 ),
@@ -886,7 +894,8 @@ class ProductDetailView extends BaseView<ProductVM> {
 
 class AddressMapWidget extends StatelessWidget {
   final LatLng latLng;
-  const AddressMapWidget({super.key, required this.latLng});
+  final String address;
+  const AddressMapWidget({super.key, required this.latLng, required this.address});
 
   @override
   Widget build(BuildContext context) {
@@ -916,7 +925,7 @@ class AddressMapWidget extends StatelessWidget {
 
               await availableMaps.first.showMarker(
                 coords: Coords(latLng.latitude, latLng.longitude),
-                title: "Ocean Beach",
+                title:address,
               );
             })
       },

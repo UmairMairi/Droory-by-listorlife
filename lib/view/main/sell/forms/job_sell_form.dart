@@ -158,7 +158,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
               onSelected: (String? value) {
                 viewModel.lookingForController.text = value ?? '';
               },
-              options: ['I am looking job', 'I am hiring'],
+              options: [StringHelper.lookingJob, StringHelper.hiringJob],
               // hint: StringHelper.select,
               // readOnly: true,
               // suffix: PopupMenuButton<String?>(

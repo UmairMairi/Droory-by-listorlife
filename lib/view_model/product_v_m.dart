@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/db_helper.dart';
+import 'package:list_and_life/base/helpers/string_helper.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/base/network/api_request.dart';
 import 'package:list_and_life/base/network/base_client.dart';
@@ -139,23 +140,23 @@ class ProductVM extends BaseViewModel {
     if (data?.categoryId == 1) {
       if ((data?.modelId??0) != 0) {
         specs.add(_buildSpecRow(
-            context, data?.model?.name??"", Icons.smartphone, 'Model'));
+            context, data?.model?.name??"", Icons.smartphone, StringHelper.models));
       }
       if ((data?.ram??0) != 0) {
         specs
-            .add(_buildSpecRow(context, '${data?.ram} GB', Icons.memory, 'RAM'));
+            .add(_buildSpecRow(context, '${data?.ram} GB', Icons.memory, StringHelper.ram));
       }
       if ((data?.storage??0) != 0) {
         specs.add(_buildSpecRow(
-            context, '${data?.storage} GB', Icons.sd_storage, 'Storage'));
+            context, '${data?.storage} GB', Icons.sd_storage, StringHelper.strong));
       }
       if ((data?.screenSize??"").isNotEmpty) {
         specs.add(_buildSpecRow(
-            context, "${data?.screenSize}", Icons.aspect_ratio, 'Screen Size'));
+            context, "${data?.screenSize}", Icons.aspect_ratio, StringHelper.screenSize));
       }
       if ((data?.itemCondition??"").isNotEmpty) {
         specs.add(_buildSpecRow(context, "${data?.itemCondition}",
-            Icons.verified_user, 'Condition'));
+            Icons.verified_user, StringHelper.condition));
       }
     }
 
@@ -163,11 +164,11 @@ class ProductVM extends BaseViewModel {
     if (data?.categoryId == 2) {
       if ((data?.itemCondition??"").isNotEmpty) {
         specs.add(_buildSpecRow(
-            context, "${data?.itemCondition}", Icons.chair, 'Condition'));
+            context, "${data?.itemCondition}", Icons.chair, StringHelper.condition));
       }
       if ((data?.material??"").isNotEmpty) {
         specs.add(_buildSpecRow(
-            context, "${data?.material}", Icons.inbox, 'Material'));
+            context, "${data?.material}", Icons.inbox, StringHelper.material));
       }
     }
 
@@ -175,11 +176,11 @@ class ProductVM extends BaseViewModel {
     if (data?.categoryId == 3) {
       if ((data?.modelId??0) != 0) {
         specs.add(_buildSpecRow(
-            context, '${data?.model?.name}', Icons.checkroom, 'Model'));
+            context, '${data?.model?.name}', Icons.checkroom, StringHelper.models));
       }
       if ((data?.itemCondition??"").isNotEmpty) {
         specs.add(_buildSpecRow(
-            context, "${data?.itemCondition}", Icons.visibility, 'Condition'));
+            context, "${data?.itemCondition}", Icons.visibility, StringHelper.condition));
       }
     }
 
@@ -187,39 +188,39 @@ class ProductVM extends BaseViewModel {
     if (data?.categoryId == 4) {
       if ((data?.modelId??0) != 0) {
         specs.add(_buildSpecRow(
-            context, '${data?.model?.name}', Icons.directions_car, 'Model'));
+            context, '${data?.model?.name}', Icons.directions_car, StringHelper.models));
       }
       if ((data?.year??0) != 0) {
         specs.add(_buildSpecRow(
-            context, "${data?.year}", Icons.calendar_today, 'Year'));
+            context, "${data?.year}", Icons.calendar_today, StringHelper.year));
       }
       if ((data?.fuel ??"").isNotEmpty) {
         specs.add(_buildSpecRow(
-            context, '${data?.fuel}', Icons.local_gas_station, 'Fuel'));
+            context, '${data?.fuel}', Icons.local_gas_station, StringHelper.fuel));
       }
       if ((data?.milleage??"").isNotEmpty) {
         specs.add(_buildSpecRow(
-            context, '${data?.milleage}', Icons.battery_full, 'Mileage'));
+            context, '${data?.milleage}', Icons.battery_full, StringHelper.mileage));
       }
       if ((data?.kmDriven??0) != 0) {
         specs.add(_buildSpecRow(
-            context, '${data?.kmDriven} km', Icons.speed, 'KM Driven'));
+            context, '${data?.kmDriven} km', Icons.speed, StringHelper.kmDriven));
       }
       if ((data?.transmission??"").isNotEmpty) {
         specs.add(_buildSpecRow(
-            context, "${data?.transmission}", Icons.autorenew, 'Transmission'));
+            context, "${data?.transmission}", Icons.autorenew, StringHelper.transmission));
       }
       if (("${data?.numberOfOwner??0}") != "0") {
         specs.add(_buildSpecRow(context, '${data?.numberOfOwner} Owners',
-            Icons.account_circle, 'Number of Owners'));
+            Icons.account_circle, StringHelper.noOfOwners));
       }
       if ((data?.itemCondition??"").isNotEmpty) {
         specs.add(_buildSpecRow(context, "${data?.itemCondition}",
-            Icons.verified_user, 'Condition'));
+            Icons.verified_user, StringHelper.condition));
       }
       if (data?.brand != null && (data?.brand?.name??"").isNotEmpty) {
         specs.add(
-            _buildSpecRow(context, "${data?.brand?.name}", Icons.directions_car, 'Brand'));
+            _buildSpecRow(context, "${data?.brand?.name}", Icons.directions_car, StringHelper.brand));
       }
     }
 
@@ -227,7 +228,7 @@ class ProductVM extends BaseViewModel {
     if (data?.categoryId == 5) {
       if ((data?.itemCondition??"").isNotEmpty) {
         specs.add(_buildSpecRow(
-            context, data?.itemCondition??"", Icons.art_track, 'Condition'));
+            context, data?.itemCondition??"", Icons.art_track, StringHelper.condition));
       }
     }
 
@@ -235,7 +236,7 @@ class ProductVM extends BaseViewModel {
     if (data?.categoryId == 6) {
       if (data?.brand != null && (data?.brand?.name??"").isNotEmpty) {
         specs.add(
-            _buildSpecRow(context, "${data?.brand?.name}", Icons.pets, 'Breed'));
+            _buildSpecRow(context, "${data?.brand?.name}", Icons.pets, StringHelper.breed));
       }
     }
 
@@ -243,11 +244,11 @@ class ProductVM extends BaseViewModel {
     if (data?.categoryId == 7) {
       if ("${data?.modelId??0}" != "0") {
         specs.add(_buildSpecRow(
-            context, '${data?.model?.name}', Icons.business, 'Model'));
+            context, '${data?.model?.name}', Icons.business, StringHelper.models));
       }
       if ((data?.itemCondition??"").isNotEmpty) {
         specs.add(_buildSpecRow(context, data?.itemCondition??"",
-            Icons.visibility, 'Condition'));
+            Icons.visibility, StringHelper.condition));
       }
     }
 
@@ -255,23 +256,23 @@ class ProductVM extends BaseViewModel {
     if (data?.categoryId == 9) {
       if ((data?.subCategoryId??0) != 0) {
         specs.add(_buildSpecRow(
-            context, data?.subCategory?.name??"", Icons.work, 'Job Type'));
+            context, data?.subCategory?.name??"", Icons.work, StringHelper.jobType));
       }
       if ((data?.positionType??"").isNotEmpty) {
         specs.add(_buildSpecRow(
-            context, "${data?.positionType}", Icons.work, 'Position Type'));
+            context, "${data?.positionType}", Icons.work, StringHelper.positionType));
       }
       if ((data?.lookingFor??"").isNotEmpty) {
         specs.add(_buildSpecRow(context, data?.lookingFor??"",
-            Icons.person, 'Looking For'));
+            Icons.person, StringHelper.lookingFor));
       }
       if ((data?.salleryFrom??"").isNotEmpty) {
         specs.add(_buildSpecRow(context, num.parse(data?.salleryFrom??" ").toStringAsFixed(0),
-            Icons.attach_money, 'Salary'));
+            Icons.attach_money, StringHelper.salary));
       }
       if ((data?.salleryPeriod??"").isNotEmpty) {
         specs.add(_buildSpecRow(context, data?.salleryPeriod??" ",
-            Icons.watch_later, 'Salary Period'));
+            Icons.watch_later, StringHelper.salaryPeriod));
       }
       // if (data?.salleryFrom != null && data?.salleryTo != null) {
       //   specs.add(_buildSpecRow(
@@ -293,23 +294,23 @@ class ProductVM extends BaseViewModel {
     if (data?.categoryId == 10) {
       if (data?.brand != null && (data?.brand?.name??"").isNotEmpty) {
         specs.add(
-            _buildSpecRow(context, "${data?.brand?.name}", Icons.tablet_mac, 'Breed'));
+            _buildSpecRow(context, "${data?.brand?.name}", Icons.tablet_mac, StringHelper.breed));
       }
       if ("${data?.modelId??0}" != "0") {
         specs.add(
-            _buildSpecRow(context, '${data?.model?.name}', Icons.tablet_mac, 'Model'));
+            _buildSpecRow(context, '${data?.model?.name}', Icons.tablet_mac, StringHelper.models));
       }
       if ("${data?.ram ??0 }" != "0") {
         specs
-            .add(_buildSpecRow(context, '${data?.ram} GB', Icons.memory, 'RAM'));
+            .add(_buildSpecRow(context, '${data?.ram} GB', Icons.memory, StringHelper.ram));
       }
       if ("${data?.storage??0}" != "0") {
         specs.add(_buildSpecRow(
-            context, '${data?.storage} GB', Icons.sd_storage, 'Storage'));
+            context, '${data?.storage} GB', Icons.sd_storage, StringHelper.strong));
       }
       if ((data?.itemCondition??"").isNotEmpty) {
         specs.add(_buildSpecRow(
-            context, "${data?.itemCondition}", Icons.visibility, 'Condition'));
+            context, "${data?.itemCondition}", Icons.visibility, StringHelper.condition));
       }
     }
 
@@ -317,53 +318,53 @@ class ProductVM extends BaseViewModel {
     if (data?.categoryId == 11) {
       if ((data?.propertyFor??"").isNotEmpty) {
         specs.add(_buildSpecRow(
-            context, "${data?.propertyFor}", Icons.house, 'Property For'));
+            context, "${data?.propertyFor}", Icons.house, StringHelper.propertyType));
       }
       if ("${data?.area??0}"  != "0") {
         specs.add(
-            _buildSpecRow(context, "${data?.area}", Icons.straighten, 'Area'));
+            _buildSpecRow(context, "${data?.area}", Icons.straighten, StringHelper.areaSize));
       }
       if ("${data?.bedrooms??0}" != "0") {
         specs.add(
-            _buildSpecRow(context, "${data?.bedrooms}", Icons.bed, 'Bedrooms'));
+            _buildSpecRow(context, "${data?.bedrooms}", Icons.bed, StringHelper.noOfBedrooms));
       }
       if (("${data?.bathrooms??0}") != "0") {
         specs.add(_buildSpecRow(
-            context, "${data?.bathrooms}", Icons.bathtub, 'Bathrooms'));
+            context, "${data?.bathrooms}", Icons.bathtub, StringHelper.noOfBathrooms));
       }
       if ((data?.furnishedType ??"").isNotEmpty) {
         specs.add(_buildSpecRow(
-            context, data?.furnishedType??"", Icons.chair, 'Furnished Type'));
+            context, data?.furnishedType??"", Icons.chair, StringHelper.furnished));
       }
       if ((data?.ownership??"").isNotEmpty) {
         specs.add(_buildSpecRow(
-            context, data?.ownership??"", Icons.account_balance, 'Ownership'));
+            context, data?.ownership??"", Icons.account_balance, StringHelper.owner));
       }
       if ((data?.paymentType??"").isNotEmpty) {
         specs.add(_buildSpecRow(
-            context, data?.paymentType??"", Icons.payment, 'Payment Type'));
+            context, data?.paymentType??"", Icons.payment, StringHelper.paymentType));
       }
       if ((data?.completionStatus??"").isNotEmpty) {
         specs.add(_buildSpecRow(context, data?.completionStatus??"",
-            Icons.check_circle, 'Completion Status'));
+            Icons.check_circle, StringHelper.completionStatus));
       }
       if ((data?.deliveryTerm??"").isNotEmpty) {
         specs.add(_buildSpecRow(context, data?.deliveryTerm??"",
-            Icons.local_shipping, 'Delivery Term'));
+            Icons.local_shipping, StringHelper.deliveryTerm));
       }
     }
 
     // Common specifications
     if ((data?.nearby??"").isNotEmpty) {
       specs.add(_buildSpecRow(context, (data?.nearby??"").split(',').last,
-          Icons.location_on, 'Location'));
+          Icons.location_on, StringHelper.location));
     }
     if ((data?.createdAt??"").isNotEmpty) {
       specs.add(_buildSpecRow(
         context,
         DateFormat('dd MMM yyyy').format(DateTime.parse(data?.createdAt??"")),
         Icons.access_time,
-        'Posted',
+        StringHelper.posted,
       ));
     }
 
@@ -427,7 +428,7 @@ class ProductVM extends BaseViewModel {
       // Check if the date is expired
       if (remainingDays <= 0) {
         return Text(
-          'Expired',
+          StringHelper.expired,
           style: TextStyle(
               color: Colors.red, fontWeight: FontWeight.bold, fontSize: 12),
         );

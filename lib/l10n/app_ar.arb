@@ -218,7 +218,7 @@
    "paymentType": "نوع الدفع",
    "completionStatus": "حالة الإكمال",
    "deliveryTerms": "شروط التسليم",
-   "lookingFor": "شروط التسليم"
-
-
+   "lookingFor": "شروط التسليم",
+  "lookingJob": "أبحث عن عمل",
+  "hiringJob": "أنا أقوم بالتوظيف"
 }

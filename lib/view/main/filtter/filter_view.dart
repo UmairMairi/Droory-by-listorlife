@@ -1289,8 +1289,8 @@ class _FilterViewState extends State<FilterView> {
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 onTap: () {
                   resetFilters();
-                  context.pop();
-                  context.push(Routes.filterDetails, extra: filter);
+                   context.pop();
+                  // context.push(Routes.filterDetails, extra: filter);
                 },
               ),
             ],
@@ -1380,6 +1380,7 @@ class _FilterViewState extends State<FilterView> {
     brands.clear();
     selectedAmenities.clear();
     subCategoriesList.clear();
+    filter.categoryId = "";
     vm.categoryTextController.clear();
     vm.subCategoryTextController.clear();
     vm.sortByTextController.clear();

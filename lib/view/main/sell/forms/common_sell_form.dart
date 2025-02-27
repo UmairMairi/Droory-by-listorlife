@@ -332,78 +332,87 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                   },
                 ),
               },
-              Text(
-                StringHelper.itemCondition,
-                style: context.textTheme.titleMedium,
+              Visibility(
+                visible: ![23,46].contains(subCategory?.id),
+                child: Text(
+                  StringHelper.itemCondition,
+                  style: context.textTheme.titleMedium,
+                ),
               ),
-              Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      viewModel.itemCondition = 1;
-                    },
-                    child: Container(
-                      width: 105,
-                      height: 42,
-                      margin: const EdgeInsets.only(top: 10, right: 10),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            color: viewModel.itemCondition == 1
-                                ? Colors.transparent
-                                : Colors.grey.withOpacity(0.5)),
-                        color: viewModel.itemCondition == 1
-                            ? Colors.black
-                            : const Color(0xffFCFCFD),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Center(
-                          child: Text(
-                        StringHelper.newText,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
+              Visibility(
+                visible: ![23,46].contains(subCategory?.id),
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        viewModel.itemCondition = 1;
+                      },
+                      child: Container(
+                        width: 105,
+                        height: 42,
+                        margin: const EdgeInsets.only(top: 10, right: 10),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                              color: viewModel.itemCondition == 1
+                                  ? Colors.transparent
+                                  : Colors.grey.withOpacity(0.5)),
                           color: viewModel.itemCondition == 1
-                              ? Colors.white
-                              : Colors.black,
+                              ? Colors.black
+                              : const Color(0xffFCFCFD),
+                          borderRadius: BorderRadius.circular(5),
                         ),
-                      )),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      viewModel.itemCondition = 2;
-                    },
-                    child: Container(
-                      width: 105,
-                      height: 42,
-                      margin: const EdgeInsets.only(top: 10, left: 10),
-                      decoration: BoxDecoration(
-                        color: viewModel.itemCondition == 2
-                            ? Colors.black
-                            : const Color(0xffFCFCFD),
-                        border: Border.all(
-                            color: viewModel.itemCondition == 2
-                                ? Colors.transparent
-                                : Colors.grey.withOpacity(0.5)),
-                        borderRadius: BorderRadius.circular(5),
+                        child: Center(
+                            child: Text(
+                          StringHelper.newText,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                            color: viewModel.itemCondition == 1
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        )),
                       ),
-                      child: Center(
-                          child: Text(
-                        StringHelper.used,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                          color: viewModel.itemCondition == 2
-                              ? Colors.white
-                              : Colors.black,
-                        ),
-                      )),
                     ),
-                  ),
-                ],
+                    GestureDetector(
+                      onTap: () {
+                        viewModel.itemCondition = 2;
+                      },
+                      child: Container(
+                        width: 105,
+                        height: 42,
+                        margin: const EdgeInsets.only(top: 10, left: 10),
+                        decoration: BoxDecoration(
+                          color: viewModel.itemCondition == 2
+                              ? Colors.black
+                              : const Color(0xffFCFCFD),
+                          border: Border.all(
+                              color: viewModel.itemCondition == 2
+                                  ? Colors.transparent
+                                  : Colors.grey.withOpacity(0.5)),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Center(
+                            child: Text(
+                          StringHelper.used,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                            color: viewModel.itemCondition == 2
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        )),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(
-                height: 25,
+              Visibility(
+                visible: ![23,46].contains(subCategory?.id),
+                child: const SizedBox(
+                  height: 25,
+                ),
               ),
               if (category?.id == 1) ...{
                 /// RAM SPECIFICATION

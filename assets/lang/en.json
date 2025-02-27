@@ -87,6 +87,7 @@
   "uploadImages": "Upload Images",
   "upload": "Upload",
   "itemCondition": "Item Condition",
+  "condition": "Condition",
   "brand": "Brand",
   "select": "Select",
   "models": "Models",
@@ -329,5 +330,9 @@
   "locationAlert": "Location Alert",
   "locationAlertMsg": "Please note that our app is currently only available for users in Egypt. Please select Egypt location for add product.",
   "accountDeleteMsg": "Are you sure you want to delete this account?",
-  "notificationDeleteMsg": "Are you sure you want to delete notifications?"
+  "notificationDeleteMsg": "Are you sure you want to delete notifications?",
+  "lookingJob": "I am looking job",
+  "hiringJob": "I am hiring",
+  "posted": "Posted",
+  "expired": "Expired"
 }

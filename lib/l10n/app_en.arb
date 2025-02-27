@@ -88,6 +88,7 @@
   "uploadImages": "Upload Images",
   "upload": "Upload",
   "itemCondition": "Item Condition",
+  "condition": "Condition",
   "brand": "Brand",
   "select": "Select",
   "models": "Models",
@@ -218,5 +219,7 @@
   "paymentType": "Payment Type",
   "completionStatus": "Completion Status",
   "deliveryTerms": "Delivery Terms",
-  "lookingFor": "Looking For"
+  "lookingFor": "Looking For",
+  "lookingJob": "I am looking job",
+  "hiringJob": "I am hiring"
 }

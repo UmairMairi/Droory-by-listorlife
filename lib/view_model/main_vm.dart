@@ -15,6 +15,7 @@ import 'package:list_and_life/providers/language_provider.dart';
 import 'package:list_and_life/view_model/chat_vm.dart';
 import 'package:list_and_life/view_model/home_vm.dart';
 import 'package:list_and_life/view_model/my_ads_v_m.dart';
+import 'package:list_and_life/view_model/sell_v_m.dart';
 import 'package:persistent_bottom_nav_bar_plus/persistent_bottom_nav_bar_plus.dart';
 import 'package:provider/provider.dart';
 
@@ -126,6 +127,13 @@ class MainVM extends BaseViewModel {
           getChatNotifyCount();
         }
       case 2:
+        if (DbHelper.getIsGuest()) {
+          context.push(Routes.guestLogin);
+          navController.jumpToTab(0);
+        } else {
+          context.read<SellVM>().getCategoryListApi();
+        }
+        return;
       case 3:
         if (DbHelper.getIsGuest()) {
           context.push(Routes.guestLogin);

@@ -58,7 +58,7 @@ class _AmenitiesWidgetState extends State<AmenitiesWidget> {
 
     // Return the icon if found in the map, otherwise return a default icon
     return Icon(
-      amenityIconMap[amenityName] ??
+      amenityIconMap[(amenityName).replaceAll('\n', '')] ??
           Icons.help_outline, // "help_outline" as a default icon
       size: 18,
     );

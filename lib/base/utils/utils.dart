@@ -1,8 +1,10 @@
 import 'dart:io';
-
+import 'package:share_plus/share_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Utils {
@@ -58,4 +60,19 @@ class Utils {
   // static Future<String?> getFcmToken() async {
   //   return await FirebaseMessaging.instance.getToken()??"";
   // }
+
+  static void shareProduct(
+      {required String title, required String image,required BuildContext context}) async {
+    final box = context.findRenderObject() as RenderBox?;
+    Directory tempDir = await getTemporaryDirectory();
+    final path = '${tempDir.path}/daroory.jpeg';
+    await Dio().download(image, path);
+    await Share.shareXFiles(
+      [XFile(path)],
+      text: title,
+      subject: 'check out on Daroory',
+      sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+    );
+  }
+
 }

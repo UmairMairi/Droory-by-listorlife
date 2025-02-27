@@ -557,7 +557,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
           onTap: (){
             viewModel.learnMore = !viewModel.learnMore;
           },
-          child: Text("Learn More",
+          child: Text("Learn More.",
             style: context.textTheme.titleSmall?.copyWith(color: Colors.blue),
           ),
         ),

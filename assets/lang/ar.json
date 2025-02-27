@@ -86,6 +86,7 @@
   "uploadImages": "تحميل الصور",
   "upload": "تحميل",
   "itemCondition": "حالة المنتج",
+  "condition": "حالة",
   "brand": "العلامة التجارية",
   "select": "اختر",
   "models": "النماذج",
@@ -329,7 +330,11 @@
   "notificationDeleteMsg": "هل أنت متأكد أنك تريد حذف الإخطارات؟",
   "locationAlert": "تنبيه الموقع",
   "locationAlertMsg": "يرجى ملاحظة أن تطبيقنا متاح حاليًا للمستخدمين في مصر فقط. الرجاء تحديد موقع مصر لإضافة المنتج.",
-  "propertyType": "نوع العقار"
+  "propertyType": "نوع العقار",
+  "lookingJob": "أبحث عن عمل",
+  "hiringJob": "أنا أقوم بالتوظيف",
+  "posted": "نشر",
+  "expired": "منتهي الصلاحية"
 }
 
 
