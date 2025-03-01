@@ -1,5 +1,5 @@
 {
-  "listLife": "داروري",
+  "listLife": "قائمة ورفع",
   "next": "التالي",
   "unverifiedToast": "يرجى التحقق من رقم هاتفك في ملفك الشخصي قبل نشر الإعلانات.",
   "amenities": "وسائل الراحة",
@@ -102,10 +102,10 @@
   "noOfOwners": "عدد المالكين",
   "adTitle": "عنوان الإعلان",
   "priceEgp": "السعر (بالجنيه)",
-  "describeWhatYouAreSelling": "وصف",
+  "describeWhatYouAreSelling": "وصف ما تبيعه",
   "enterPrice": "أدخل السعر",
   "pleaseUploadMainImage": "يرجى تحميل الصورة الرئيسية",
-  "pleaseUploadAddAtLeastOneImage": "يرجى تحميل إضافة صورتين على الأقل",
+  "pleaseUploadAddAtLeastOneImage": "يرجى تحميل صورة واحدة على الأقل",
   "yearIsRequired": "السنة مطلوبة",
   "kMDrivenIsRequired": "عدد الكيلومترات المقطوعة مطلوب",
   "adTitleIsRequired": "عنوان الإعلان مطلوب",
@@ -123,7 +123,6 @@
   "size": "الحجم",
   "postNow": "انشر الآن",
   "updateNow": "تحديث",
-  "updateRepublish": "تحديث",
   "ram": "الذاكرة العشوائية",
   "strong": "التخزين",
   "screenSize": "حجم الشاشة",
@@ -136,7 +135,7 @@
   "salaryTo": "الراتب إلى",
   "congratulations": "تهانينا!",
   "yourAdWillGoLiveShortly": "إعلانك سيظهر قريباً...",
-  "listOrLiftAllowsFreeAds": "يسمح تطبيق داروري بـ 2 إعلانات مجانية لمدة 180 يوماً للسيارات",
+  "listOrLiftAllowsFreeAds": "يسمح تطبيق قائمة ورفع بـ 2 إعلانات مجانية لمدة 180 يوماً للسيارات",
   "reachMoreBuyersAndSellFaster": "تواصل مع المزيد من المشترين وبع بشكل أسرع",
   "upgradingAnAdHelpsYouToReachMoreBuyers": "ترقية الإعلان تساعدك على الوصول إلى المزيد من المشترين",
   "reviewAd": "مراجعة الإعلان",
@@ -169,7 +168,7 @@
   "city": "المدينة",
   "postingDate": "تاريخ النشر",
   "soldText": "تم البيع",
-  "checkProductUrl": "تحقق من هذا المنتج على تطبيق داروري على الرابط: www.google.com",
+  "checkProductUrl": "تحقق من هذا المنتج على تطبيق قائمة ورفع على الرابط: www.google.com",
   "postedBy": "نشر بواسطة",
   "postedOn": "نشر في:",
   "seeProfile": "عرض الملف الشخصي",
@@ -218,7 +217,7 @@
    "paymentType": "نوع الدفع",
    "completionStatus": "حالة الإكمال",
    "deliveryTerms": "شروط التسليم",
-   "lookingFor": "شروط التسليم",
-  "lookingJob": "أبحث عن عمل",
-  "hiringJob": "أنا أقوم بالتوظيف"
+   "lookingFor": "شروط التسليم"
+
+
 }
