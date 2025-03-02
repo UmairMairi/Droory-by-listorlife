@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
@@ -6,6 +7,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../res/assets_res.dart';
 
 class Utils {
   static DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
@@ -70,9 +73,31 @@ class Utils {
     await Share.shareXFiles(
       [XFile(path)],
       text: title,
-      subject: 'check out on Daroory',
+      subject: 'Check out this listing on Daroory',
       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
     );
+  }
+
+  static void onShareProduct(BuildContext context,String title) async {
+    final box = context.findRenderObject() as RenderBox?;
+    try {
+      final data = await rootBundle.load(AssetsRes.APP_LOGO);
+      final buffer = data.buffer;
+      await Share.shareXFiles(
+        [
+          XFile.fromData(
+            buffer.asUint8List(data.offsetInBytes, data.lengthInBytes),
+            name: AssetsRes.APP_LOGO,
+            mimeType: 'image/png',
+          ),
+        ],
+        text: title,
+        subject: 'Check out this listing on Daroory',
+        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+      );
+    } catch (e) {
+     debugPrint("share error $e");
+    }
   }
 
 }

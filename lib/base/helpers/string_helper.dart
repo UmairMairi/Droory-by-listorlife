@@ -541,6 +541,9 @@ class StringHelper {
       LocaleService.translate('showAllAdsInEgypt') ?? "Show All Ads in Egypt";
   static String recentSearches =
       LocaleService.translate('recentSearches') ?? "Recent Searches";
+
+   static String clearAll =
+      LocaleService.translate('clearAll') ?? "Clear All";
   static String seeAll = LocaleService.translate('seeAll') ?? "See All";
   static String insurance = LocaleService.translate('insurance') ?? "Insurance";
   static String deposit = LocaleService.translate('deposit') ?? "Deposit";
@@ -1102,6 +1105,8 @@ static String locationAlert =
         LocaleService.translate('showAllAdsInEgypt') ?? "Show All Ads in Egypt";
     recentSearches =
         LocaleService.translate('recentSearches') ?? "Recent Searches";
+    clearAll =
+        LocaleService.translate('clearAll') ?? "Clear All";
     seeAll = LocaleService.translate('seeAll') ?? "See All";
     insurance = LocaleService.translate('insurance') ?? "Insurance";
     deposit = LocaleService.translate('deposit') ?? "Deposit";

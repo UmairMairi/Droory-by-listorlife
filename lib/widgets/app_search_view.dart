@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/base/helpers/string_helper.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/base/network/api_request.dart';
 import 'package:list_and_life/base/network/base_client.dart';
@@ -436,7 +437,7 @@ class _AppSearchViewState extends State<AppSearchView> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Recent Search",
+                Text(StringHelper.recentSearches,
                   style: context.textTheme.titleSmall,
                   textAlign: TextAlign.center,
                 ),
@@ -444,7 +445,7 @@ class _AppSearchViewState extends State<AppSearchView> {
                   onTap: (){
                     deleteSearches();
                   },
-                  child: Text("Clear All",
+                  child: Text(StringHelper.clearAll,
                     style: context.textTheme.titleSmall,
                     textAlign: TextAlign.center,
                   ),

@@ -131,10 +131,8 @@ class ProductDetailView extends BaseView<ProductVM> {
                                   child: SafeArea(
                                     child: IconButton(
                                         onPressed: () {
-                                          Utils.shareProduct(
-                                                         title:'Hello, Please check this useful product on',
-                                             context: context,
-                                            image: "${ApiConstants.imageUrl}/${productData?.image}"
+                                          Utils.onShareProduct(context,
+                                                         "Hello, Please check this useful product on following link",
                                           );
                                         },
                                         icon: Icon(Icons.share,

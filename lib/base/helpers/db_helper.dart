@@ -171,6 +171,11 @@ class DbHelper {
     return List<String>.from(readData(_locationSearchHistory) ?? []);
   }
 
+  static void clearLocationSearchHistory() {
+    deleteData(_locationSearchHistory);
+  }
+
+
   static void saveLanguage(String lang) {
     writeData(_language, lang);
   }

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_places_autocomplete_text_field/google_places_autocomplete_text_field.dart';
@@ -442,17 +443,49 @@ class _LocationSearchPopupState extends State<LocationSearchPopup> {
 
                     isLatLngRequired: true,
                     getPlaceDetailWithLatLng: (Prediction prediction) async {
+                      // Navigator.pop(context);
+                      //
+                      // searchController.text =
+                      //     prediction.description ?? 'Cario, Egypt';
+                      // DbHelper.saveLocationSearchQuery(
+                      //     "${prediction.description}");
+                      // widget.viewModel.updateLatLong(
+                      //   type: "search",
+                      //     address: prediction.description ?? 'Cario, Egypt',
+                      //     lat: double.parse(prediction.lat ?? '$lat'),
+                      //     long: double.parse(prediction.lng ?? '$lng'));
                       Navigator.pop(context);
+                      String formattedAddress = _formatAddress(Placemark(
+                        // Main text (like street name or primary address part)
+                        name: prediction.structuredFormatting?.mainText,
 
-                      searchController.text =
-                          prediction.description ?? 'Cario, Egypt';
-                      DbHelper.saveLocationSearchQuery(
-                          "${prediction.description}");
+                        // Locality (City or Town) if available
+                        locality: (prediction.terms?.length ?? 0) > 1
+                            ? (prediction.terms?[1].value ?? '')
+                            : '',
+
+                        // Administrative area (State or Province) if available
+                        administrativeArea: (prediction.terms?.length ?? 0) > 2
+                            ? (prediction.terms?[2].value ?? '')
+                            : '',
+
+                        // Country if available
+                        country: (prediction.terms?.length ?? 0) > 3
+                            ? (prediction.terms?.last.value ?? '')
+                            : '',
+                      ));
+
+
+
+                      searchController.text = formattedAddress;
+                      DbHelper.saveLocationSearchQuery(formattedAddress);
+
                       widget.viewModel.updateLatLong(
                         type: "search",
-                          address: prediction.description ?? 'Cario, Egypt',
-                          lat: double.parse(prediction.lat ?? '$lat'),
-                          long: double.parse(prediction.lng ?? '$lng'));
+                        address: formattedAddress,
+                        lat: double.parse(prediction.lat ?? '$lat'),
+                        long: double.parse(prediction.lng ?? '$lng'),
+                      );
                     },
                     itmClick: (Prediction prediction) async {}),
               ),
@@ -482,7 +515,19 @@ class _LocationSearchPopupState extends State<LocationSearchPopup> {
                 )),
 
             const SizedBox(height: 10),
-            Text('${StringHelper.recentSearches}:', style: context.textTheme.titleMedium),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('${StringHelper.recentSearches}:', style: context.textTheme.titleMedium),
+                GestureDetector(
+                    onTap: (){
+                      Navigator.pop(context);
+                      searchHistory = [];
+                      widget.viewModel.clearLocation();
+                    },
+                    child: Text(StringHelper.clearAll, style: context.textTheme.titleSmall)),
+              ],
+            ),
             const Divider(),
             // Add other search-related features here
             Expanded(
@@ -519,5 +564,23 @@ class _LocationSearchPopupState extends State<LocationSearchPopup> {
         ),
       ),
     );
+  }
+
+  static String _formatAddress(Placemark place) {
+    StringBuffer addressBuffer = StringBuffer();
+    if ((place.name??"").isNotEmpty) {
+      addressBuffer.write('${place.name}, ');
+    }
+    if ((place.locality??"").isNotEmpty) {
+      addressBuffer.write('${place.locality}, ');
+    }
+    if ((place.administrativeArea??"").isNotEmpty) {
+      addressBuffer.write('${place.administrativeArea}, ');
+    }
+    if ((place.country??"").isNotEmpty) {
+      addressBuffer.write('${place.country}');
+    }
+    String address = addressBuffer.toString().replaceAll(RegExp(r',\s*$'), '');
+    return address;
   }
 }

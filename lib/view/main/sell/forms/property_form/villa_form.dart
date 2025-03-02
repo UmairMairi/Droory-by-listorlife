@@ -279,46 +279,46 @@ class VillaForm extends StatelessWidget {
           // fillColor: Colors.white,
           // elevation: 6,
         ),
-        CommonDropdown(
-          title: StringHelper.level,
-          //hint: StringHelper.select,
-          hint: viewModel.levelTextController.text,
-          onSelected: (String? value) {
-            viewModel.levelTextController.text = value??"";
-          },
-          options: [StringHelper.ground, "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+", "Last Floor"],
-          // readOnly: true,
-          // suffix: PopupMenuButton<String>(
-          //   clipBehavior: Clip.hardEdge,
-          //   icon: const Icon(
-          //     Icons.arrow_drop_down,
-          //     color: Colors.black,
-          //   ),
-          //   onSelected: (String value) {
-          //     viewModel.levelTextController.text = value;
-          //   },
-          //   itemBuilder: (BuildContext context) {
-          //     return ["Ground", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+", "Last Floor"]
-          //         .map((option) {
-          //       return PopupMenuItem(
-          //         value: option,
-          //         child: Text(option),
-          //       );
-          //     }).toList();
-          //   },
-          // ),
-          // contentPadding:
-          // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-          // inputFormatters: [
-          //   FilteringTextInputFormatter.deny(
-          //     RegExp(viewModel.regexToRemoveEmoji),
-          //   ),
-          // ],
-          // keyboardType: TextInputType.text,
-          // textInputAction: TextInputAction.done,
-          // fillColor: Colors.white,
-          // elevation: 6,
-        ),
+        // CommonDropdown(
+        //   title: StringHelper.level,
+        //   //hint: StringHelper.select,
+        //   hint: viewModel.levelTextController.text,
+        //   onSelected: (String? value) {
+        //     viewModel.levelTextController.text = value??"";
+        //   },
+        //   options: [StringHelper.ground, "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+", "Last Floor"],
+        //   // readOnly: true,
+        //   // suffix: PopupMenuButton<String>(
+        //   //   clipBehavior: Clip.hardEdge,
+        //   //   icon: const Icon(
+        //   //     Icons.arrow_drop_down,
+        //   //     color: Colors.black,
+        //   //   ),
+        //   //   onSelected: (String value) {
+        //   //     viewModel.levelTextController.text = value;
+        //   //   },
+        //   //   itemBuilder: (BuildContext context) {
+        //   //     return ["Ground", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+", "Last Floor"]
+        //   //         .map((option) {
+        //   //       return PopupMenuItem(
+        //   //         value: option,
+        //   //         child: Text(option),
+        //   //       );
+        //   //     }).toList();
+        //   //   },
+        //   // ),
+        //   // contentPadding:
+        //   // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+        //   // inputFormatters: [
+        //   //   FilteringTextInputFormatter.deny(
+        //   //     RegExp(viewModel.regexToRemoveEmoji),
+        //   //   ),
+        //   // ],
+        //   // keyboardType: TextInputType.text,
+        //   // textInputAction: TextInputAction.done,
+        //   // fillColor: Colors.white,
+        //   // elevation: 6,
+        // ),
         furnishedWidget(context),
 
         Visibility(
@@ -577,11 +577,11 @@ class VillaForm extends StatelessWidget {
                     message: StringHelper.plsSelectBathrooms);
                 return;
               }
-              if (viewModel.levelTextController.text.isEmpty) {
-                DialogHelper.showToast(
-                    message: StringHelper.plsSelectLevel);
-                return;
-              }
+              // if (viewModel.levelTextController.text.isEmpty) {
+              //   DialogHelper.showToast(
+              //       message: StringHelper.plsSelectLevel);
+              //   return;
+              // }
               if (viewModel.furnishingStatusTextController.text.isEmpty) {
                 DialogHelper.showToast(
                     message: StringHelper.plsSelectFurnishing);
@@ -709,11 +709,11 @@ class VillaForm extends StatelessWidget {
                     message: StringHelper.plsSelectBathrooms);
                 return;
               }
-              if (viewModel.levelTextController.text.isEmpty) {
-                DialogHelper.showToast(
-                    message: StringHelper.plsSelectLevel);
-                return;
-              }
+              // if (viewModel.levelTextController.text.isEmpty) {
+              //   DialogHelper.showToast(
+              //       message: StringHelper.plsSelectLevel);
+              //   return;
+              // }
               if (viewModel.furnishingStatusTextController.text.isEmpty) {
                 DialogHelper.showToast(
                     message: StringHelper.plsSelectFurnishing);

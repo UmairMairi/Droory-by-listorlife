@@ -109,6 +109,7 @@ class HomeVM extends BaseViewModel {
     }else{
       latitude = 0.0;
       longitude = 0.0;
+      currentLocation = address ?? "";
     }
     notifyListeners();
     onRefresh();
@@ -457,4 +458,9 @@ class HomeVM extends BaseViewModel {
 
   var regexToRemoveEmoji =
       r'(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])';
+
+  void clearLocation() {
+    DbHelper.clearLocationSearchHistory();
+    notifyListeners();
+  }
 }

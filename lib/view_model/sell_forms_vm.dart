@@ -52,17 +52,17 @@ class SellFormsVM extends BaseViewModel {
   TextEditingController noOfBathroomsTextController = TextEditingController();
   TextEditingController noOfBedroomsTextController = TextEditingController();
   TextEditingController furnishingStatusTextController =
-  TextEditingController();
+      TextEditingController();
 
   TextEditingController accessToUtilitiesTextController =
-  TextEditingController();
+      TextEditingController();
   TextEditingController ownershipStatusTextController = TextEditingController();
   TextEditingController paymentTypeTextController = TextEditingController();
   TextEditingController listedByTextController = TextEditingController();
   TextEditingController rentalTermsTextController = TextEditingController();
   TextEditingController rentalPriceTextController = TextEditingController();
   TextEditingController completionStatusTextController =
-  TextEditingController();
+      TextEditingController();
   TextEditingController deliveryTermTextController = TextEditingController();
   TextEditingController areaSizeTextController = TextEditingController();
   TextEditingController insuranceTextController = TextEditingController();
@@ -73,12 +73,16 @@ class SellFormsVM extends BaseViewModel {
   String adStatus = '';
   int _itemCondition = 1;
   int _transmission = 0;
+
   int get itemCondition => _itemCondition;
+
   int get transmission => _transmission;
+
   set itemCondition(int index) {
     _itemCondition = index;
     notifyListeners();
   }
+
   set transmission(int value) {
     _transmission = value;
     notifyListeners();
@@ -86,7 +90,9 @@ class SellFormsVM extends BaseViewModel {
 
   ///---------------------
   bool _isEditProduct = false;
+
   bool get isEditProduct => _isEditProduct;
+
   set isEditProduct(bool value) {
     _isEditProduct = value;
     notifyListeners();
@@ -97,7 +103,8 @@ class SellFormsVM extends BaseViewModel {
   String? city = '';
   String? state = '';
   String _mainImagePath = "";
-  String _communicationChoice = DbHelper.getUserModel()?.communicationChoice ?? '';
+  String _communicationChoice =
+      DbHelper.getUserModel()?.communicationChoice ?? '';
   String _currentPropertyType = "Sell";
   String _currentFurnishing = "";
   String _currentAccessToUtilities = "";
@@ -107,47 +114,63 @@ class SellFormsVM extends BaseViewModel {
   String _selectedOption = 'Select';
 
   String get selectedOption => _selectedOption;
+
   String get currentDeliveryTerm => _currentDeliveryTerm;
+
   String get currentCompletion => _currentCompletion;
+
   String get currentPaymentOption => _currentPaymentOption;
+
   String get currentAccessToUtilities => _currentAccessToUtilities;
+
   String get currentFurnishing => _currentFurnishing;
+
   String get currentPropertyType => _currentPropertyType;
+
   String get communicationChoice => _communicationChoice;
+
   String get mainImagePath => _mainImagePath;
 
   set communicationChoice(String value) {
     _communicationChoice = value;
     notifyListeners();
   }
+
   set mainImagePath(String image) {
     _mainImagePath = image;
     notifyListeners();
   }
+
   set currentPropertyType(String index) {
     _currentPropertyType = index;
     notifyListeners();
   }
+
   set currentFurnishing(String index) {
     _currentFurnishing = index;
     notifyListeners();
   }
+
   set currentAccessToUtilities(String index) {
     _currentAccessToUtilities = index;
     notifyListeners();
   }
+
   set currentPaymentOption(String index) {
     _currentPaymentOption = index;
     notifyListeners();
   }
+
   set currentCompletion(String index) {
     _currentCompletion = index;
     notifyListeners();
   }
+
   set currentDeliveryTerm(String index) {
     _currentDeliveryTerm = index;
     notifyListeners();
   }
+
   set selectedOption(String value) {
     _selectedOption = value;
     notifyListeners();
@@ -170,6 +193,7 @@ class SellFormsVM extends BaseViewModel {
     'Temporary'
   ];
   List<String> salaryPeriodList = ['Hourly', 'Monthly', 'Weekly', 'Yearly'];
+
   // List of mileage ranges
   final List<String> mileageRanges = [
     '0-5 km',
@@ -209,13 +233,31 @@ class SellFormsVM extends BaseViewModel {
     '6.7"',
     '7.0"'
   ];
+  final List<String> experienceOptions = [
+    "No experience",
+    "Just graduated",
+    "1–3 yrs",
+    "3–5 yrs",
+    "5–10 yrs",
+    "+10 yrs"
+  ];
+  final List<String> educationTypeOptions = ["Student", "High School"];
+  final List<String> workSettingOptions = [
+    "Remote",
+    "Office-based",
+    "Mixed (Home & Office)",
+    "Field-based"
+  ];
   final List<String> materialOptions = ['Wood', 'Metal', 'Fabric'];
   final List<CategoryModel> sizeOptions = [];
   List<CategoryModel?> _allModels = [];
   List<String> yearsType = [];
   List<String> fuelsType = ['Petrol', 'Diesel', 'Electric', 'Hybrid', 'Gas'];
+
   List<int?> get amenities => _amenities;
+
   List<CategoryModel?> get allModels => _allModels;
+
   set amenities(List<int?> value) {
     _amenities = value;
     notifyListeners();
@@ -231,8 +273,11 @@ class SellFormsVM extends BaseViewModel {
   CategoryModel? _selectedBrand;
   CategoryModel? _selectedModel;
   CategoryModel? _selectedSize;
+
   CategoryModel? get selectedBrand => _selectedBrand;
+
   CategoryModel? get selectedSize => _selectedSize;
+
   CategoryModel? get selectedModel => _selectedModel;
 
   set selectedBrand(CategoryModel? value) {
@@ -250,7 +295,7 @@ class SellFormsVM extends BaseViewModel {
     notifyListeners();
   }
 
-  List<String> getYearList(){
+  List<String> getYearList() {
     List<String> years = [];
     int currentYear = DateTime.now().year;
     for (int i = 0; i < 20; i++) {
@@ -295,6 +340,7 @@ class SellFormsVM extends BaseViewModel {
         return 'hourly';
     }
   }
+
   @override
   void onReady() {
     // TODO: implement onInit
@@ -306,11 +352,13 @@ class SellFormsVM extends BaseViewModel {
     imagesList.add(ProductMedias(media: path));
     notifyListeners();
   }
+
   void removeImage(int index, {required ProductMedias data}) {
     imagesList.removeAt(index);
     deletedImageIds.add("${data.id}");
     notifyListeners();
   }
+
   void updateTextFieldsItems({ProductDetailModel? item}) async {
     resetTextFields();
     if (item == null) {
@@ -355,19 +403,22 @@ class SellFormsVM extends BaseViewModel {
     addressTextController.text = item.nearby ?? '';
     priceTextController.text = item.price ?? '';
     productStatus = (item.status ?? 0).toInt();
-    adStatus = item.adStatus??"";
-    if((item.itemCondition??"").isNotEmpty){
+    adStatus = item.adStatus ?? "";
+    if ((item.itemCondition ?? "").isNotEmpty) {
       itemCondition =
-      (item.itemCondition?.toLowerCase().contains('used') ?? false) ? 2 : 1;
-
+          (item.itemCondition?.toLowerCase().contains('used') ?? false) ? 2 : 1;
     }
 
     brandTextController.text = item.brand?.name ?? '';
     modelTextController.text = item.model?.name ?? '';
     ramTextController.text =
-    (item.ram != null && "${item.ram??" "}".isNotEmpty) ? "${item.ram} GB" : '';
+        (item.ram != null && "${item.ram ?? " "}".isNotEmpty)
+            ? "${item.ram} GB"
+            : '';
     storageTextController.text =
-    (item.storage != null && "${item.storage??" "}".isNotEmpty) ? "${item.storage} GB" : '';
+        (item.storage != null && "${item.storage ?? " "}".isNotEmpty)
+            ? "${item.storage} GB"
+            : '';
     screenSizeTextController.text = item.screenSize ?? '';
     jobPositionTextController.text = item.positionType ?? '';
     jobSalaryTextController.text = item.salleryPeriod ?? '';
@@ -395,8 +446,8 @@ class SellFormsVM extends BaseViewModel {
     propertyForTextController.text = item.propertyFor ?? '';
     currentPropertyType = item.propertyFor ?? '';
 
-    noOfBedroomsTextController.text = "${item.bedrooms?? ''}";
-    noOfBathroomsTextController.text = "${item.bathrooms?? ''}";
+    noOfBedroomsTextController.text = "${item.bedrooms ?? ''}";
+    noOfBathroomsTextController.text = "${item.bathrooms ?? ''}";
     levelTextController.text = item.level ?? '';
     propertyAgeTextController.text = item.buildingAge ?? '';
     depositTextController.text = item.deposit ?? '';
@@ -417,9 +468,12 @@ class SellFormsVM extends BaseViewModel {
     currentCompletion = item.completionStatus ?? '';
     currentDeliveryTerm = item.deliveryTerm ?? '';
     deliveryTermTextController.text = item.deliveryTerm ?? '';
-    amenities = item.productAmenities?.map((element) => element.amnityId).toList() ?? [];
+    amenities =
+        item.productAmenities?.map((element) => element.amnityId).toList() ??
+            [];
   }
-  void resetTextFields() async{
+
+  void resetTextFields() async {
     currentPropertyType = "Sell";
     currentFurnishing = "";
     currentAccessToUtilities = "";
@@ -479,9 +533,11 @@ class SellFormsVM extends BaseViewModel {
     selectedModel = null;
     selectedSize = null;
     Position? position = await LocationHelper.getCurrentLocation();
-    if(position != null){
-      addressTextController.text = await LocationHelper.getAddressFromCoordinates(position.latitude, position.longitude);
-    }else{
+    if (position != null) {
+      addressTextController.text =
+          await LocationHelper.getAddressFromCoordinates(
+              position.latitude, position.longitude);
+    } else {
       addressTextController.text = DbHelper.getUserModel()?.address ?? '';
     }
   }
@@ -522,9 +578,9 @@ class SellFormsVM extends BaseViewModel {
 
   String? transformToSnakeCase(String? value) =>
       value?.toLowerCase().split(' ').join('_');
+
   String? trimController(TextEditingController controller) =>
       controller.text.trim().isNotEmpty ? controller.text.trim() : null;
-
 
   Map<String, dynamic> _filterValidFields(Map<String, dynamic> fields) {
     final body = <String, dynamic>{};
@@ -550,8 +606,8 @@ class SellFormsVM extends BaseViewModel {
   }
 
   Future<bool> _validateLocationIsEgypt(Position? position) async {
-    var latitude = double.parse("${position?.latitude??0.0}");
-    var longitude = double.parse("${position?.longitude??0.0}");
+    var latitude = double.parse("${position?.latitude ?? 0.0}");
+    var longitude = double.parse("${position?.longitude ?? 0.0}");
     bool isEgypt = await LocationHelper.checkLocationIsEgypt(
       latitude: latitude,
       longitude: longitude,
@@ -601,7 +657,6 @@ class SellFormsVM extends BaseViewModel {
 
     if (!await _validateLocationIsEgypt(position)) return;
 
-
     String mainImage = await _uploadMainImage();
     final images = await _uploadMediaImages();
     final communication = _getCommunicationChoice();
@@ -641,9 +696,12 @@ class SellFormsVM extends BaseViewModel {
       "bathrooms": trimController(noOfBathroomsTextController),
       "furnished_type": trimController(furnishingStatusTextController),
       "ownership": trimController(ownershipStatusTextController),
-      "payment_type": transformToSnakeCase(trimController(paymentTypeTextController)),
-      "completion_status": transformToSnakeCase(trimController(completionStatusTextController)),
-      "delivery_term": transformToSnakeCase(trimController(deliveryTermTextController)),
+      "payment_type":
+          transformToSnakeCase(trimController(paymentTypeTextController)),
+      "completion_status":
+          transformToSnakeCase(trimController(completionStatusTextController)),
+      "delivery_term":
+          transformToSnakeCase(trimController(deliveryTermTextController)),
       "selected_amnities": amenities.isNotEmpty ? amenities.join(',') : "",
       "area": trimController(areaSizeTextController),
       "type": trimController(propertyForTypeTextController),
@@ -657,13 +715,13 @@ class SellFormsVM extends BaseViewModel {
       "access_to_utilities": trimController(accessToUtilitiesTextController),
     };
 
-    if(mainImage.isNotEmpty){
+    if (mainImage.isNotEmpty) {
       fields.addAll({
         "image": mainImage,
       });
     }
 
-    if(images.isNotEmpty){
+    if (images.isNotEmpty) {
       fields.addAll({
         "medias": images.reversed.toList().join(','),
       });
@@ -672,12 +730,15 @@ class SellFormsVM extends BaseViewModel {
     // Adding dynamic fields
     if (category != null) fields["category_id"] = category.id;
     if (subCategory != null) fields["sub_category_id"] = subCategory.id;
-    if (subSubCategory != null) fields["sub_sub_category_id"] = subSubCategory.id;
+    if (subSubCategory != null)
+      fields["sub_sub_category_id"] = subSubCategory.id;
     if (brand != null) fields["brand_id"] = brand.id;
     if (models != null) fields["model_id"] = models.id;
     if (selectedSize != null) fields["size_id"] = selectedSize?.id;
 
-    if (category?.id != null && ![6, 8, 9, 11].contains(category?.id) && itemCondition != 0) {
+    if (category?.id != null &&
+        ![6, 8, 9, 11].contains(category?.id) &&
+        itemCondition != 0) {
       fields["item_condition"] = itemCondition == 1 ? "new" : "used";
     }
 
@@ -698,13 +759,13 @@ class SellFormsVM extends BaseViewModel {
     DialogHelper.hideLoading();
     DialogHelper.showToast(
         message:
-        "Your ad has been submitted to the admin and will be approved soon!");
+            "Your ad has been submitted to the admin and will be approved soon!");
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
           builder: (context) => PostAddedFinalView(
-            data: model.body,
-          )),
+                data: model.body,
+              )),
     );
   }
 
@@ -730,7 +791,7 @@ class SellFormsVM extends BaseViewModel {
       "name": trimController(adTitleTextController),
       "description": trimController(descriptionTextController),
       "looking_for ": trimController(lookingForController),
-      "price": trimController(priceTextController)??"0",
+      "price": trimController(priceTextController) ?? "0",
       "year": trimController(yearTextController),
       "fuel": trimController(fuelTextController),
       "milleage": trimController(mileageTextController),
@@ -763,9 +824,12 @@ class SellFormsVM extends BaseViewModel {
       'bathrooms': trimController(noOfBathroomsTextController),
       'furnished_type': trimController(furnishingStatusTextController),
       'ownership': trimController(ownershipStatusTextController),
-      'payment_type': transformToSnakeCase(trimController(paymentTypeTextController)),
-      'completion_status': transformToSnakeCase(trimController(completionStatusTextController)),
-      'delivery_term': transformToSnakeCase(trimController(deliveryTermTextController)),
+      'payment_type':
+          transformToSnakeCase(trimController(paymentTypeTextController)),
+      'completion_status':
+          transformToSnakeCase(trimController(completionStatusTextController)),
+      'delivery_term':
+          transformToSnakeCase(trimController(deliveryTermTextController)),
       'selected_amnities': amenities.isNotEmpty ? amenities.join(',') : "",
       'area': trimController(areaSizeTextController),
       'type': trimController(propertyForTypeTextController),
@@ -777,16 +841,15 @@ class SellFormsVM extends BaseViewModel {
       'deposit': trimController(depositTextController),
       'insurance': trimController(insuranceTextController),
       'access_to_utilities': trimController(accessToUtilitiesTextController),
-
     };
 
-    if(mainImage.isNotEmpty){
+    if (mainImage.isNotEmpty) {
       fields.addAll({
         "image": mainImage,
       });
     }
 
-    if(images.isNotEmpty){
+    if (images.isNotEmpty) {
       fields.addAll({
         "medias": images.reversed.toList().join(','),
       });
@@ -794,13 +857,15 @@ class SellFormsVM extends BaseViewModel {
     // Adding dynamic fields
     if (category != null) fields["category_id"] = category.id;
     if (subCategory != null) fields["sub_category_id"] = subCategory.id;
-    if (subSubCategory != null) fields["sub_sub_category_id"] = subSubCategory.id;
+    if (subSubCategory != null)
+      fields["sub_sub_category_id"] = subSubCategory.id;
     if (brand != null) fields["brand_id"] = brand.id;
     if (models != null) fields["model_id"] = models.id;
     if (selectedSize != null) fields["size_id"] = selectedSize?.id;
 
     if (category?.id != null &&
-        ![6, 8, 9, 11].contains(category?.id) && itemCondition != 0) {
+        ![6, 8, 9, 11].contains(category?.id) &&
+        itemCondition != 0) {
       fields["item_condition"] = itemCondition == 1 ? "new" : "used";
     }
 
@@ -811,7 +876,6 @@ class SellFormsVM extends BaseViewModel {
       fields["ad_status"] = "activate";
     }
     fields['status'] = 0;
-
 
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.editProductsUrl(),
@@ -825,7 +889,7 @@ class SellFormsVM extends BaseViewModel {
         response, (json) => ProductDetailModel.fromJson(json));
     DialogHelper.hideLoading();
     DialogHelper.showToast(message: model.message);
-    Navigator.pop(context,true);
+    Navigator.pop(context, true);
     /*Navigator.pushReplacement(
       context,
       MaterialPageRoute(
