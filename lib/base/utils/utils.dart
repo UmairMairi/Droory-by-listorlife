@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/services.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
@@ -12,6 +13,7 @@ import '../../res/assets_res.dart';
 
 class Utils {
   static DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+
   static void goToUrl({required String url}) async {
     if (!await launchUrl(Uri.parse(url), mode: LaunchMode.inAppWebView)) {
       throw Exception('Could not launch $url');
@@ -42,17 +44,17 @@ class Utils {
       String? apnsToken = await FirebaseMessaging.instance.getAPNSToken();
       if (apnsToken != null) {
         fcmToken = await FirebaseMessaging.instance.getToken();
-      }
-      else {
+      } else {
         // add a delay and retry getting APN token
-        await Future<void>.delayed(const Duration(seconds: 3,));
+        await Future<void>.delayed(const Duration(
+          seconds: 3,
+        ));
         apnsToken = await FirebaseMessaging.instance.getAPNSToken();
         if (apnsToken != null) {
           fcmToken = await FirebaseMessaging.instance.getToken();
         }
       }
-    }
-    else {
+    } else {
       // android platform
       fcmToken = await FirebaseMessaging.instance.getToken();
     }
@@ -65,7 +67,9 @@ class Utils {
   // }
 
   static void shareProduct(
-      {required String title, required String image,required BuildContext context}) async {
+      {required String title,
+      required String image,
+      required BuildContext context}) async {
     final box = context.findRenderObject() as RenderBox?;
     Directory tempDir = await getTemporaryDirectory();
     final path = '${tempDir.path}/daroory.jpeg';
@@ -78,7 +82,7 @@ class Utils {
     );
   }
 
-  static void onShareProduct(BuildContext context,String title) async {
+  static void onShareProduct(BuildContext context, String title) async {
     final box = context.findRenderObject() as RenderBox?;
     try {
       final data = await rootBundle.load(AssetsRes.APP_LOGO);
@@ -96,8 +100,57 @@ class Utils {
         sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
       );
     } catch (e) {
-     debugPrint("share error $e");
+      debugPrint("share error $e");
     }
   }
 
+  static void showColorPickerDialog(
+      {required Function(Color) onColorSelected,
+      required BuildContext context,
+      Color initialColor = const Color(0xffff0004)}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        Color selectedColor = initialColor;
+        return AlertDialog(
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text("Select Color"),
+                ColorPicker(
+                  pickerColor: selectedColor,
+                  paletteType: PaletteType.hsv,
+                  onColorChanged: (Color color) {
+                    selectedColor = color;
+                  },
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                      style: TextButton.styleFrom(backgroundColor: Colors.red),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text("Cancel"),
+                    ),
+                    TextButton(
+                      style:
+                          TextButton.styleFrom(backgroundColor: Colors.black),
+                      onPressed: () {
+                        onColorSelected(selectedColor);
+                        Navigator.pop(context);
+                      },
+                      child: const Text("Select"),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 }
