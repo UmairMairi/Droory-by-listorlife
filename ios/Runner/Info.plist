@@ -33,6 +33,30 @@
 			</array>
 		</dict>
 	</array>
+	<key>CFBundleURLTypes</key>
+    <array>
+      <dict>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>fb2346950282326086</string>
+        </array>
+      </dict>
+    </array>
+
+    <key>FacebookAppID</key>
+    <string>2346950282326086</string>
+    <key>FacebookClientToken</key>
+    <string>6e21770ecc2ad9a5d5ee82701956adb0</string>
+    <key>FacebookDisplayName</key>
+    <string>Daroory</string>
+
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>fbapi</string>
+      <string>fb-messenger-share-api</string>
+      <string>fbauth2</string>
+      <string>fbshareextension</string>
+    </array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>FirebaseAppDelegateProxyEnabled</key>

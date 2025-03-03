@@ -40,6 +40,9 @@ class StringHelper {
       LocaleService.translate('orConnectWith') ?? 'Or Connect With';
   static String loginWithGoogle =
       LocaleService.translate('loginWithGoogle') ?? 'Log In With Google';
+
+  static String loginWithFb =
+      LocaleService.translate('loginWithFb') ?? 'Log In With Facebook';
   static String loginWithIos =
       LocaleService.translate('loginWithIos') ?? 'Log In With IOS';
 
@@ -691,6 +694,8 @@ static String locationAlert =
         LocaleService.translate('orConnectWith') ?? 'Or Connect With';
     loginWithGoogle =
         LocaleService.translate('loginWithGoogle') ?? 'Log In With Google';
+    loginWithFb =
+        LocaleService.translate('loginWithFb') ?? 'Log In With Facebook';
     loginWithIos = LocaleService.translate('loginWithIos') ?? 'Log In With IOS';
 
     // Verification Screen

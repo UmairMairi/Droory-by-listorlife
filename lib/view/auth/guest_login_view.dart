@@ -184,7 +184,49 @@ class GuestLoginView extends BaseView<AuthVM> {
                       ),
                     )),
                 const SizedBox(
-                  height: 30,
+                  height: 15,
+                ),
+                GestureDetector(
+                    onTap: () async {
+                      Utils.hideKeyboard(context);
+                      viewModel.socialLogin(type: 2);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              offset: const Offset(0, 1),
+                              blurRadius: 6,
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(100)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          ImageView.circle(
+                            image: AssetsRes.IC_FACEBOOK,
+                            height: 30,
+                            width: 30,
+                          ),
+                          Text(
+                            StringHelper.loginWithFb,
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                                fontFamily: FontRes.MONTSERRAT_BOLD,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          SizedBox(
+                            width: 15,
+                          )
+                        ],
+                      ),
+                    )),
+                const SizedBox(
+                  height: 15,
                 ),
                 if (Platform.isIOS) ...{
                   GestureDetector(
