@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -25,6 +26,7 @@ import 'firebase_options.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 bool isMessageScreenOpen = false;
+
 @pragma('vm:entry-point')
 Future<void> _firebaseBackgroundHandler(RemoteMessage message) async {
   debugPrint("_firebaseBackgroundHandler ${message.data} ");
@@ -51,8 +53,10 @@ void main() async {
   SocketHelper().init();
   await initializeDateFormatting('en', null);
   await initializeDateFormatting('en_US,', null);
-  runApp(
-      MultiProvider(providers: Providers.getProviders(), child: const MyApp()));
+  SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
+      .then((value) => runApp(MultiProvider(
+          providers: Providers.getProviders(), child: const MyApp())));
 }
 
 class MyApp extends StatefulWidget {
@@ -87,7 +91,8 @@ class _MyAppState extends State<MyApp> {
           return const AppLoadingWidget();
         },
         child: MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(1.0)),
+          data: MediaQuery.of(context)
+              .copyWith(textScaler: TextScaler.linear(1.0)),
           child: ToastificationWrapper(
             child: Consumer<LanguageProvider>(
               builder: (BuildContext context, value, Widget? child) {
@@ -118,7 +123,8 @@ class _MyAppState extends State<MyApp> {
                     supportedLocales: const [Locale('en'), Locale('ar')],
                     routeInformationProvider:
                         AppPages.router.routeInformationProvider,
-                    routeInformationParser: AppPages.router.routeInformationParser,
+                    routeInformationParser:
+                        AppPages.router.routeInformationParser,
                     routerDelegate: AppPages.router.routerDelegate,
                   ),
                 );
