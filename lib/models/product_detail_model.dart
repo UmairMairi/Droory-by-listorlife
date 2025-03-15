@@ -242,7 +242,8 @@ class ProductDetailModel {
         : null;
     model =
         json['model'] != null ? CategoryModel.fromJson(json['model']) : null;
-    fashionSize = json['fashion_size'];
+    fashionSize =
+        json['fashion_size'] != null ? CategoryModel.fromJson(json['fashion_size']) : null;
     brand =
         json['brand'] != null ? CategoryModel.fromJson(json['brand']) : null;
     user = json['user'] != null ? UserModel.fromJson(json['user']) : null;
@@ -341,7 +342,7 @@ class ProductDetailModel {
       data['model'] = model!.toJson();
     }
     if (fashionSize != null) {
-      data['fashion_size'] = fashionSize;
+      data['fashion_size'] = fashionSize!.toJson();
     }
     if (brand != null) {
       data['brand'] = brand!.toJson();
