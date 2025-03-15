@@ -27,6 +27,7 @@ import '../../../routes/app_routes.dart';
 import '../../../skeletons/product_list_skeleton.dart';
 import '../../../widgets/app_empty_widget.dart';
 import '../../../widgets/app_product_item_widget.dart';
+import '../../../widgets/app_search_view.dart';
 
 class FilterItemView extends StatefulWidget {
   final FilterModel? model;
@@ -173,6 +174,21 @@ class _FilterItemViewState extends State<FilterItemView> {
   //   });
   // }
 
+  Future<String>? getSearchedData(BuildContext context, {String? query}) async {
+    var value = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => AppSearchView(
+              value: query,
+            )));
+
+    if (value != null) {
+      return value.name ?? '';
+    }
+
+    return '';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -193,6 +209,11 @@ class _FilterItemViewState extends State<FilterItemView> {
               Expanded(
                 child: TextField(
                   autofocus: false,
+                  readOnly: true,
+                  onTap: ()async{
+                    String? value = await getSearchedData(context,
+                        query: "");
+                  },
                   focusNode: searchFocusNode,
                   onChanged: onSearchChanged,
                   decoration: InputDecoration(
