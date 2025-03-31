@@ -1,6 +1,4 @@
-
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:list_and_life/base/base.dart';
@@ -8,7 +6,6 @@ import 'package:list_and_life/models/category_model.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:list_and_life/widgets/common_dropdown.dart';
 import 'package:list_and_life/widgets/multi_select_category.dart';
-
 import '../../../../base/helpers/dialog_helper.dart';
 import '../../../../base/helpers/image_picker_helper.dart';
 import '../../../../base/helpers/string_helper.dart';
@@ -25,14 +22,15 @@ class JobSellForm extends BaseView<SellFormsVM> {
   final CategoryModel? subSubCategory;
   final List<CategoryModel>? brands;
   final ProductDetailModel? item;
-  const JobSellForm(
-      {required this.type,
-      required this.category,
-      required this.subCategory,
-      this.subSubCategory,
-      this.item,
-      required this.brands,
-      super.key});
+  const JobSellForm({
+    required this.type,
+    required this.category,
+    required this.subCategory,
+    this.subSubCategory,
+    this.item,
+    required this.brands,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, SellFormsVM viewModel) {
@@ -54,26 +52,30 @@ class JobSellForm extends BaseView<SellFormsVM> {
               width: double.infinity,
               height: 220,
               decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10)),
+                border: Border.all(color: Colors.black),
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
               child: GestureDetector(
-                  onTap: () async {
-                    viewModel.mainImagePath =
-                        await ImagePickerHelper.openImagePicker(
-                            context: context, isCropping: true) ??
-                            '';
-                  },
-                  child: ImageView.rect(
-                      image: viewModel.mainImagePath,
-                      borderRadius: 10,
-                      width: context.width,
-                      placeholder: AssetsRes.IC_CAMERA,
-                      height: 220)),
+                onTap: () async {
+                  viewModel.mainImagePath =
+                      await ImagePickerHelper.openImagePicker(
+                            context: context,
+                            isCropping: true,
+                          ) ??
+                          '';
+                },
+                child: ImageView.rect(
+                  image: viewModel.mainImagePath,
+                  borderRadius: 10,
+                  width: context.width,
+                  placeholder: AssetsRes.IC_CAMERA,
+                  height: 220,
+                ),
+              ),
             ),
             Wrap(
-              children:
-              List.generate(viewModel.imagesList.length + 1, (index) {
+              children: List.generate(viewModel.imagesList.length + 1, (index) {
                 if (index < viewModel.imagesList.length) {
                   return Stack(
                     alignment: Alignment.topRight,
@@ -88,13 +90,16 @@ class JobSellForm extends BaseView<SellFormsVM> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: ImageView.rect(
-                            image: viewModel.imagesList[index].media ?? '',
-                            height: 80,
-                            width: 120),
+                          image: viewModel.imagesList[index].media ?? '',
+                          height: 80,
+                          width: 120,
+                        ),
                       ),
                       Container(
                         decoration: const BoxDecoration(
-                            color: Colors.white, shape: BoxShape.circle),
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                        ),
                         child: InkWell(
                           onTap: () {
                             viewModel.removeImage(index,
@@ -105,7 +110,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
                             color: Colors.red,
                           ),
                         ),
-                      )
+                      ),
                     ],
                   );
                 } else {
@@ -113,7 +118,9 @@ class JobSellForm extends BaseView<SellFormsVM> {
                     onTap: () async {
                       if (viewModel.imagesList.length < 10) {
                         var image = await ImagePickerHelper.openImagePicker(
-                            context: context, isCropping: true) ??
+                              context: context,
+                              isCropping: true,
+                            ) ??
                             '';
                         if (image.isNotEmpty) {
                           viewModel.addImage(image);
@@ -135,15 +142,11 @@ class JobSellForm extends BaseView<SellFormsVM> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.add),
-                          SizedBox(
-                            height: 2,
-                          ),
+                          const Icon(Icons.add),
+                          const SizedBox(height: 2),
                           Text(
                             StringHelper.add,
-                            style: TextStyle(
-                              fontSize: 14,
-                            ),
+                            style: const TextStyle(fontSize: 14),
                           ),
                         ],
                       ),
@@ -152,255 +155,288 @@ class JobSellForm extends BaseView<SellFormsVM> {
                 }
               }),
             ),
-            CommonDropdown(
-              title: StringHelper.lookingFor,
-              hint: viewModel.lookingForController.text,
-              onSelected: (String? value) {
-                viewModel.lookingForController.text = value ?? '';
+            const SizedBox(height: 12), // Added spacing
+
+            // Looking For Dropdown (Required)
+            FormField<String?>(
+              initialValue: viewModel.lookingForController.text,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'This field is required';
+                }
+                return null;
               },
-              options: [StringHelper.lookingJob, StringHelper.hiringJob],
-              // hint: StringHelper.select,
-              // readOnly: true,
-              // suffix: PopupMenuButton<String?>(
-              //   icon: const Icon(Icons.arrow_drop_down, color: Colors.black),
-              //   onSelected: (String? value) {
-              //     viewModel.lookingForController.text = value ?? '';
-              //   },
-              //   itemBuilder: (context) {
-              //     return ['I am looking job', 'I am hiring'].map((option) {
-              //       return PopupMenuItem(
-              //         value: option,
-              //         child: Text(option),
-              //       );
-              //     }).toList();
-              //   },
-              // ),
-              // inputFormatters: [
-              //   FilteringTextInputFormatter.deny(
-              //       RegExp(viewModel.regexToRemoveEmoji)),
-              // ],
-            ),
-            // if (brands?.isNotEmpty ?? false) ...{
-            //   CommonDropdown<CategoryModel?>(
-            //     title: StringHelper.brand,
-            //     hint: viewModel.brandTextController.text,
-            //     listItemBuilder: (context,model,selected,fxn){
-            //       return Text(model?.name ?? '');
-            //     },
-            //     headerBuilder: (context, selectedItem, enabled) {
-            //       return Text(selectedItem?.name??"");
-            //     },
-            //     options: brands??[],
-            //     onSelected: (CategoryModel? value) {
-            //       DialogHelper.showLoading();
-            //       viewModel.getModels(brandId: value?.id);
-            //       viewModel.selectedBrand = value;
-            //       viewModel.brandTextController.text = value?.name ?? '';
-            //     },
-            //     // readOnly: true,
-            //     // suffix: PopupMenuButton(
-            //     //   clipBehavior: Clip.hardEdge,
-            //     //   icon: const Icon(
-            //     //     Icons.arrow_drop_down,
-            //     //     color: Colors.black,
-            //     //   ),
-            //     //   onSelected: (CategoryModel value) {
-            //     //     DialogHelper.showLoading();
-            //     //     viewModel.getModels(brandId: value.id);
-            //     //     viewModel.selectedBrand = value;
-            //     //     viewModel.brandTextController.text = value.name ?? '';
-            //     //     viewModel.getModels(brandId: value.id);
-            //     //   },
-            //     //   itemBuilder: (BuildContext context) {
-            //     //     return brands!.map((option) {
-            //     //       return PopupMenuItem(
-            //     //         value: option,
-            //     //         child: Text(option.name ?? ''),
-            //     //       );
-            //     //     }).toList();
-            //     //   },
-            //     // ),
-            //     // hint: StringHelper.select,
-            //     // hintStyle:
-            //     //     const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-            //     // keyboardType: TextInputType.text,
-            //     // textInputAction: TextInputAction.done,
-            //     // inputFormatters: [
-            //     //   FilteringTextInputFormatter.deny(
-            //     //       RegExp(viewModel.regexToRemoveEmoji)),
-            //     // ],
-            //   ),
-            //   CommonDropdown<CategoryModel?>(
-            //     title: StringHelper.models,
-            //     titleColor: Colors.black,
-            //     hint: viewModel.modelTextController.text,
-            //     //readOnly: true,
-            //     //hint: StringHelper.select,
-            //     listItemBuilder: (context,model,selected,fxn){
-            //       return Text(model?.name ?? '');
-            //     },
-            //     headerBuilder: (context, selectedItem, enabled) {
-            //       return Text(selectedItem?.name??"");
-            //     },
-            //     onSelected: (value) {
-            //       viewModel.selectedModel = value;
-            //       viewModel.modelTextController.text = value?.name ?? '';
-            //     },
-            //     options: viewModel.allModels,
-            //     // hintStyle:
-            //     //     const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-            //     // fillColor: Colors.white,
-            //     // contentPadding: const EdgeInsets.only(left: 20),
-            //     // suffix: PopupMenuButton<CategoryModel>(
-            //     //   clipBehavior: Clip.hardEdge,
-            //     //   icon: const Icon(
-            //     //     Icons.arrow_drop_down,
-            //     //     color: Colors.black,
-            //     //   ),
-            //     //   onSelected: (value) {
-            //     //     viewModel.selectedModel = value;
-            //     //     viewModel.modelTextController.text = value.name ?? '';
-            //     //   },
-            //     //   itemBuilder: (BuildContext context) {
-            //     //     return viewModel.allModels.map((option) {
-            //     //       return PopupMenuItem(
-            //     //         value: option,
-            //     //         child: Text(option?.name ?? ''),
-            //     //       );
-            //     //     }).toList();
-            //     //   },
-            //     // ),
-            //     // inputFormatters: [
-            //     //   FilteringTextInputFormatter.deny(
-            //     //     RegExp(viewModel.regexToRemoveEmoji),
-            //     //   ),
-            //     // ],
-            //     // keyboardType: TextInputType.text,
-            //     // textInputAction: TextInputAction.done,
-            //   )
-            // },
-            // Job Position Dropdown
-            CommonDropdown(
-              title: StringHelper.positionType,
-              onSelected: (String? value) {
-                viewModel.jobPositionTextController.text = value??"";
+              builder: (field) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CommonDropdown(
+                      title: "${StringHelper.lookingFor} *", // Added asterisk
+                      hint: viewModel.lookingForController.text,
+                      onSelected: (String? value) {
+                        field.didChange(value);
+                        field.validate(); // Revalidate to clear error
+                        viewModel.lookingForController.text = value ?? '';
+                      },
+                      options: [
+                        StringHelper.lookingJob,
+                        StringHelper.hiringJob
+                      ],
+                    ),
+                    if (field.hasError)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10.0, top: 2),
+                        child: Text(
+                          field.errorText!,
+                          style: const TextStyle(
+                            color: Colors.red,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                  ],
+                );
               },
-              hint: viewModel.jobPositionTextController.text,
-              options: viewModel.jobPositionList,
-              // hint: StringHelper.select,
-              // readOnly: true,
-              // suffix: PopupMenuButton(
-              //   icon: const Icon(Icons.arrow_drop_down, color: Colors.black),
-              //   onSelected: (String value) {
-              //     viewModel.jobPositionTextController.text = value;
-              //   },
-              //   itemBuilder: (context) {
-              //     return viewModel.jobPositionList.map((option) {
-              //       return PopupMenuItem(
-              //         value: option,
-              //         child: Text(option),
-              //       );
-              //     }).toList();
-              //   },
-              // ),
-              // inputFormatters: [
-              //   FilteringTextInputFormatter.deny(
-              //       RegExp(viewModel.regexToRemoveEmoji)),
-              // ],
             ),
+            const SizedBox(height: 10), // Added spacing
+
+            // Specialty Dropdown (Required if available)
+            if (brands?.isNotEmpty ?? false)
+              FormField<CategoryModel?>(
+                initialValue: viewModel.selectedBrand,
+                validator: (value) {
+                  if (value == null) {
+                    return 'This field is required';
+                  }
+                  return null;
+                },
+                builder: (field) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CommonDropdown<CategoryModel?>(
+                        title: "${StringHelper.specialty} *", // Added asterisk
+                        hint: viewModel.brandTextController.text,
+                        listItemBuilder: (context, model, selected, fxn) {
+                          return Text(model?.name ?? '');
+                        },
+                        headerBuilder: (context, selectedItem, enabled) {
+                          return Text(selectedItem?.name ?? "");
+                        },
+                        options: brands ?? [],
+                        onSelected: (CategoryModel? value) {
+                          field.didChange(value);
+                          field.validate(); // Revalidate to clear error
+                          DialogHelper.showLoading();
+                          viewModel.getModels(brandId: value?.id);
+                          viewModel.selectedBrand = value;
+                          viewModel.brandTextController.text =
+                              value?.name ?? '';
+                        },
+                      ),
+                      if (field.hasError)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10.0, top: 2),
+                          child: Text(
+                            field.errorText!,
+                            style: const TextStyle(
+                              color: Colors.red,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                    ],
+                  );
+                },
+              ),
+            const SizedBox(height: 12), // Added spacing
+
+            // Position Type Dropdown (Required)
+            FormField<String?>(
+              initialValue: viewModel.jobPositionTextController.text,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'This field is required';
+                }
+                return null;
+              },
+              builder: (field) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CommonDropdown(
+                      title: "${StringHelper.positionType} *", // Added asterisk
+                      hint: viewModel.jobPositionTextController.text,
+                      onSelected: (String? value) {
+                        field.didChange(value);
+                        field.validate(); // Revalidate to clear error
+                        viewModel.jobPositionTextController.text = value ?? "";
+                      },
+                      options: viewModel.jobPositionList,
+                    ),
+                    if (field.hasError)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10.0, top: 2),
+                        child: Text(
+                          field.errorText!,
+                          style: const TextStyle(
+                            color: Colors.red,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                  ],
+                );
+              },
+            ),
+            const SizedBox(height: 16), // Added spacing
 
             // Salary Period Dropdown
             CommonDropdown(
               title: StringHelper.salaryPeriod,
               hint: viewModel.jobSalaryTextController.text,
               onSelected: (String? value) {
-                viewModel.jobSalaryTextController.text = value??"";
+                viewModel.jobSalaryTextController.text = value ?? "";
               },
               options: viewModel.salaryPeriodList,
-              // hint: StringHelper.select,
-              // readOnly: true,
-              // suffix: PopupMenuButton(
-              //   icon: const Icon(Icons.arrow_drop_down, color: Colors.black),
-              //   onSelected: (String value) {
-              //     viewModel.jobSalaryTextController.text = value;
-              //   },
-              //   itemBuilder: (context) {
-              //     return viewModel.salaryPeriodList.map((option) {
-              //       return PopupMenuItem(
-              //         value: option,
-              //         child: Text(option),
-              //       );
-              //     }).toList();
-              //   },
-              // ),
-              // inputFormatters: [
-              //   FilteringTextInputFormatter.deny(
-              //       RegExp(viewModel.regexToRemoveEmoji)),
-              // ],
             ),
+            const SizedBox(height: 16), // Added spacing
+
+            // Work Setting Dropdown
+            CommonDropdown(
+              title: StringHelper.workSetting,
+              hint: viewModel.workSettingTextController.text.isEmpty
+                  ? ""
+                  : viewModel.workSettingTextController.text,
+              onSelected: (String? value) {
+                viewModel.workSettingTextController.text = value ?? "";
+              },
+              options: viewModel.workSettingOptions,
+            ),
+            const SizedBox(height: 12), // Added spacing
+
+            // Work Experience Dropdown (Required)
+            FormField<String?>(
+              initialValue: viewModel.workExperienceTextController.text,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'This field is required';
+                }
+                return null;
+              },
+              builder: (field) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CommonDropdown(
+                      title:
+                          "${StringHelper.workExperience} *", // Added asterisk
+                      hint: viewModel.workExperienceTextController.text.isEmpty
+                          ? ""
+                          : viewModel.workExperienceTextController.text,
+                      onSelected: (String? value) {
+                        field.didChange(value);
+                        field.validate(); // Revalidate to clear error
+                        viewModel.workExperienceTextController.text =
+                            value ?? "";
+                      },
+                      options: viewModel.experienceOptions,
+                    ),
+                    if (field.hasError)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10.0, top: 2),
+                        child: Text(
+                          field.errorText!,
+                          style: const TextStyle(
+                            color: Colors.red,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                  ],
+                );
+              },
+            ),
+            const SizedBox(height: 12), // Added spacing
+
+            // Work Education Dropdown (Required)
+            FormField<String?>(
+              initialValue: viewModel.workEducationTextController.text,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'This field is required';
+                }
+                return null;
+              },
+              builder: (field) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CommonDropdown(
+                      title:
+                          "${StringHelper.workEducation} *", // Added asterisk
+                      hint: viewModel.workEducationTextController.text.isEmpty
+                          ? ""
+                          : viewModel.workEducationTextController.text,
+                      onSelected: (String? value) {
+                        field.didChange(value);
+                        field.validate(); // Revalidate to clear error
+                        viewModel.workEducationTextController.text =
+                            value ?? "";
+                      },
+                      options: viewModel.workEducationOptions,
+                    ),
+                    if (field.hasError)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10.0, top: 2),
+                        child: Text(
+                          field.errorText!,
+                          style: const TextStyle(
+                            color: Colors.red,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                  ],
+                );
+              },
+            ),
+            const SizedBox(height: 12), // Added spacing
 
             // Salary From Field
             AppTextField(
-              title: StringHelper.salary,
+              title: StringHelper.salaryFrom,
               hint: StringHelper.enter,
               controller: viewModel.jobSalaryFromController,
               keyboardType: TextInputType.number,
-              maxLength: 6,
               inputFormatters: [
-                LengthLimitingTextInputFormatter(6),
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(9),
                 FilteringTextInputFormatter.deny(
                     RegExp(viewModel.regexToRemoveEmoji)),
-                FilteringTextInputFormatter.digitsOnly,
               ],
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return '* This field is required';
-                }
-
-                final amount = num.tryParse(value);
-
-                if (amount == null) {
-                  return '* Please enter a valid number';
-                }
-
-                if (amount < 1000) {
-                  return '* The minimum valid salary is EGP 1000';
-                }
-
-                if (amount > 100000) {
-                  return '* The maximum valid salary is EGP 100,000';
-                }
-
-                return null;
-              },
             ),
+            const SizedBox(height: 12), // Added spacing
 
-            // AppTextField(
-            //   title: StringHelper.salaryFrom,
-            //   hint: StringHelper.enter,
-            //   controller: viewModel.jobSalaryFromController,
-            //   keyboardType: TextInputType.number,
-            //   inputFormatters: [
-            //     FilteringTextInputFormatter.digitsOnly,
-            //     LengthLimitingTextInputFormatter(8),
-            //     FilteringTextInputFormatter.deny(
-            //         RegExp(viewModel.regexToRemoveEmoji)),
-            //   ],
-            // ),
-            //
-            // // Salary To Field
-            // AppTextField(
-            //   title: StringHelper.salaryTo,
-            //   hint: StringHelper.enter,
-            //   controller: viewModel.jobSalaryToController,
-            //   keyboardType: TextInputType.number,
-            //   inputFormatters: [
-            //     FilteringTextInputFormatter.digitsOnly,
-            //     LengthLimitingTextInputFormatter(8),
-            //     FilteringTextInputFormatter.deny(
-            //         RegExp(viewModel.regexToRemoveEmoji)),
-            //   ],
-            // ),
+            // Salary To Field
+            AppTextField(
+              title: StringHelper.salaryTo,
+              hint: StringHelper.enter,
+              controller: viewModel.jobSalaryToController,
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(9),
+                FilteringTextInputFormatter.deny(
+                    RegExp(viewModel.regexToRemoveEmoji)),
+              ],
+            ),
+            const SizedBox(height: 12), // Added spacing
 
             // Ad Title Field
             AppTextField(
@@ -415,6 +451,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
                 LengthLimitingTextInputFormatter(65),
               ],
             ),
+            const SizedBox(height: 12), // Added spacing
 
             // Description Field
             AppTextField(
@@ -427,6 +464,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
                     RegExp(viewModel.regexToRemoveEmoji)),
               ],
             ),
+            const SizedBox(height: 12), // Added spacing
 
             // Location Field
             AppTextField(
@@ -442,7 +480,6 @@ class JobSellForm extends BaseView<SellFormsVM> {
                 );
                 if (value != null && value.isNotEmpty) {
                   String address = "";
-
                   if ("${value['location'] ?? ""}".isNotEmpty) {
                     address = "${value['location'] ?? ""}";
                   }
@@ -452,7 +489,6 @@ class JobSellForm extends BaseView<SellFormsVM> {
                   if ("${value['state'] ?? ""}".isNotEmpty) {
                     address += ", ${value['state'] ?? ""}";
                   }
-
                   viewModel.addressTextController.text = address;
                 }
               },
@@ -462,6 +498,8 @@ class JobSellForm extends BaseView<SellFormsVM> {
               ],
               maxLines: 2,
             ),
+            const SizedBox(height: 12), // Added spacing
+
             Text(
               StringHelper.howToConnect,
               style: context.textTheme.titleSmall,
@@ -472,29 +510,12 @@ class JobSellForm extends BaseView<SellFormsVM> {
                 viewModel.communicationChoice = value.name;
               },
             ),
+            const SizedBox(height: 12), // Added spacing
+
             if (viewModel.isEditProduct) ...{
               GestureDetector(
                 onTap: () {
-                  viewModel.formKey.currentState?.validate();
-
-                  /* if (viewModel.mainImagePath.isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.pleaseUploadMainImage);
-                    return;
-                  }
-                  if (viewModel.imagesList.isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.pleaseUploadAddAtLeastOneImage);
-                    return;
-                  }*/
-                  if (viewModel.jobPositionTextController.text.trim().isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.pleasesSelectPositionType);
-                    return;
-                  }
-                  if (viewModel.jobSalaryTextController.text.trim().isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.pleaseSelectSalaryPeriod);
+                  if (viewModel.formKey.currentState?.validate() != true) {
                     return;
                   }
                   if (viewModel.jobSalaryFromController.text.trim().isEmpty) {
@@ -502,13 +523,6 @@ class JobSellForm extends BaseView<SellFormsVM> {
                         message: StringHelper.pleaseSelectSalaryForm);
                     return;
                   }
-
-                  // if (viewModel.jobSalaryToController.text.trim().isEmpty) {
-                  //   DialogHelper.showToast(
-                  //       message: StringHelper.pleaseSelectSalaryTo);
-                  //   return;
-                  // }
-
                   if (viewModel.adTitleTextController.text.trim().isEmpty) {
                     DialogHelper.showToast(
                         message: StringHelper.adTitleIsRequired);
@@ -532,53 +546,39 @@ class JobSellForm extends BaseView<SellFormsVM> {
                   }
                   DialogHelper.showLoading();
                   viewModel.editProduct(
-                      productId: item?.id,
-                      category: category,
-                      subCategory: subCategory,
-                      subSubCategory: subSubCategory,
-                      brand: viewModel.selectedBrand,
-                      models: viewModel.selectedModel);
+                    productId: item?.id,
+                    category: category,
+                    subCategory: subCategory,
+                    subSubCategory: subSubCategory,
+                    brand: viewModel.selectedBrand,
+                    models: viewModel.selectedModel,
+                  );
                 },
                 child: Container(
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(vertical: 15),
                   margin: const EdgeInsets.symmetric(vertical: 20),
                   decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(100)),
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(100),
+                  ),
                   child: Text(
-                    viewModel.adStatus == "deactivate"?StringHelper.updateRepublish:StringHelper.updateNow,
+                    viewModel.adStatus == "deactivate"
+                        ? StringHelper.updateRepublish
+                        : StringHelper.updateNow,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),
             } else ...{
               GestureDetector(
                 onTap: () {
-                  viewModel.formKey.currentState?.validate();
-
-                  /*  if (viewModel.mainImagePath.isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.pleaseUploadMainImage);
-                    return;
-                  }
-                  if (viewModel.imagesList.isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.pleaseUploadAddAtLeastOneImage);
-                    return;
-                  }*/
-                  if (viewModel.jobPositionTextController.text.trim().isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.pleasesSelectPositionType);
-                    return;
-                  }
-                  if (viewModel.jobSalaryTextController.text.trim().isEmpty) {
-                    DialogHelper.showToast(
-                        message: StringHelper.pleaseSelectSalaryPeriod);
+                  if (viewModel.formKey.currentState?.validate() != true) {
                     return;
                   }
                   if (viewModel.jobSalaryFromController.text.trim().isEmpty) {
@@ -586,13 +586,6 @@ class JobSellForm extends BaseView<SellFormsVM> {
                         message: StringHelper.pleaseSelectSalaryForm);
                     return;
                   }
-
-                  // if (viewModel.jobSalaryToController.text.trim().isEmpty) {
-                  //   DialogHelper.showToast(
-                  //       message: StringHelper.pleaseSelectSalaryTo);
-                  //   return;
-                  // }
-
                   if (viewModel.adTitleTextController.text.trim().isEmpty) {
                     DialogHelper.showToast(
                         message: StringHelper.adTitleIsRequired);
@@ -616,33 +609,34 @@ class JobSellForm extends BaseView<SellFormsVM> {
                   }
                   DialogHelper.showLoading();
                   viewModel.addProduct(
-                      category: category,
-                      subCategory: subCategory,
-                      subSubCategory: subSubCategory,
-                      brand: viewModel.selectedBrand,
-                      models: viewModel.selectedModel);
+                    category: category,
+                    subCategory: subCategory,
+                    subSubCategory: subSubCategory,
+                    brand: viewModel.selectedBrand,
+                    models: viewModel.selectedModel,
+                  );
                 },
                 child: Container(
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(vertical: 15),
                   margin: const EdgeInsets.symmetric(vertical: 20),
                   decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(100)),
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(100),
+                  ),
                   child: Text(
                     StringHelper.postNow,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),
             },
-            const SizedBox(
-              height: 30,
-            )
+            const SizedBox(height: 30),
           ],
         ),
       ),

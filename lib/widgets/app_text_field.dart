@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:list_and_life/base/helpers/string_helper.dart';
 
 class AppTextField extends StatelessWidget {
   final String? title;
@@ -28,6 +29,7 @@ class AppTextField extends StatelessWidget {
   final String? placeholderText;
   final String? errorText;
   final Widget? prefix;
+  final bool removeTextFieldBorder;
   final int? maxLength;
   final Function(bool)? onPrefixTap;
   final String? prefixText;
@@ -67,6 +69,7 @@ class AppTextField extends StatelessWidget {
     this.keyboardType,
     this.textInputAction,
     this.textAlign = TextAlign.start,
+    this.removeTextFieldBorder = false,
     this.suffix,
     this.isPassword = false,
     this.verticalPadding = 15.0,
@@ -125,74 +128,82 @@ class AppTextField extends StatelessWidget {
           const SizedBox(height: 6),
         ],
         TextFormField(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          controller: controller,
-          keyboardType: keyboardType,
-          autofocus: autofocus!,
-          textCapitalization: textCapitalization!,
-          keyboardAppearance: keyboardAppearance,
-          scrollPadding: scrollPadding,
-          textDirection: textDirection,
-          autocorrect: autocorrect!,
-          toolbarOptions: toolbarOptions,
-          maxLengthEnforcement: maxLengthEnforcement,
-          readOnly: readOnly,
-          onTap: onTap,
-          cursorColor: cursorColor ?? Colors.black,
-          maxLines: isPassword == true ? 1 : maxLines,
-          minLines: minLines,
-          obscureText: isPassword == true,
-          validator: validator ??
-              (value) {
-                if (value == null || value.isEmpty) {
-                  return "*This field is required";
-                }
-                return null;
-              },
-          maxLength: maxLength,
-          textAlign: textAlign,
-          focusNode: focusNode,
-          enabled: isEditable,
-          textInputAction: textInputAction ?? TextInputAction.done,
-          onChanged: onChanged,
-          inputFormatters: inputFormatters,
-          enableInteractiveSelection: enableCopyPaste!,
-          style: Theme.of(context).textTheme.bodyMedium,
-          decoration: InputDecoration(
-            hintText: hint != null ? capitalize(hint!) : "",
-            counterText: "",
-            hintStyle: hintStyle ?? TextStyle(color: Colors.grey.shade500),
-            errorText: errorText,
-            filled: fillColor != null,
-            fillColor: fillColor,
-            errorMaxLines: 2,
-            prefixIcon: prefix,
-            prefixIconColor: Theme.of(context).colorScheme.primary,
-            suffixIcon: suffix,
-            suffixIconColor: Theme.of(context).colorScheme.primary,
-            contentPadding: contentPadding,
-            border: OutlineInputBorder(
-              borderSide:
-                  BorderSide(color: borderSideColor ?? Colors.grey.shade300),
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide:
-                  BorderSide(color: borderSideColor ?? Colors.grey.shade300),
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide:
-                  BorderSide(color: borderSideColor ?? Colors.grey.shade300),
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.red),
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-          ),
-        ),
-        const SizedBox(height: 6),
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            controller: controller,
+            keyboardType: keyboardType,
+            autofocus: autofocus!,
+            textCapitalization: textCapitalization!,
+            keyboardAppearance: keyboardAppearance,
+            scrollPadding: scrollPadding,
+            textAlignVertical: TextAlignVertical.center,
+            textDirection: textDirection,
+            autocorrect: autocorrect!,
+            toolbarOptions: toolbarOptions,
+            maxLengthEnforcement: maxLengthEnforcement,
+            readOnly: readOnly,
+            onTap: onTap,
+            cursorColor: cursorColor ?? Colors.black,
+            maxLines: isPassword == true ? 1 : maxLines,
+            minLines: minLines,
+            obscureText: isPassword == true,
+            validator: validator ??
+                (value) {
+                  if (value == null || value.isEmpty) {
+                    return "*${StringHelper.fieldShouldNotBeEmpty}";
+                  }
+                  return null;
+                },
+            maxLength: maxLength,
+            textAlign: textAlign,
+            focusNode: focusNode,
+            enabled: isEditable,
+            textInputAction: textInputAction ?? TextInputAction.done,
+            onChanged: onChanged,
+            inputFormatters: inputFormatters,
+            enableInteractiveSelection: enableCopyPaste!,
+            style: Theme.of(context).textTheme.bodyMedium,
+            decoration: InputDecoration(
+              hintText: hint != null ? capitalize(hint!) : "",
+              counterText: "",
+              hintStyle: hintStyle ?? TextStyle(color: Colors.grey.shade500),
+              errorText: errorText,
+              filled: fillColor != null,
+              fillColor: fillColor,
+              errorMaxLines: 2,
+              prefixIcon: prefix,
+              prefixIconColor: Theme.of(context).colorScheme.primary,
+              suffixIcon: suffix,
+              suffixIconColor: Theme.of(context).colorScheme.primary,
+              contentPadding: contentPadding,
+              border: removeTextFieldBorder
+                  ? InputBorder.none
+                  : OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: borderSideColor ?? Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+              enabledBorder: removeTextFieldBorder
+                  ? InputBorder.none
+                  : OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: borderSideColor ?? Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+              focusedBorder: removeTextFieldBorder
+                  ? InputBorder.none
+                  : OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: borderSideColor ?? Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+              errorBorder: removeTextFieldBorder
+                  ? InputBorder.none
+                  : OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.red),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+            )),
+        // const SizedBox(height: 6),
       ],
     );
   }

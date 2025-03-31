@@ -8,6 +8,7 @@ import 'package:list_and_life/base/helpers/location_helper.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/base/network/api_request.dart';
 import 'package:list_and_life/base/network/base_client.dart';
+import '../base/helpers/string_helper.dart';
 import 'package:list_and_life/models/common/map_response.dart';
 import 'package:list_and_life/models/home_list_model.dart';
 import 'package:list_and_life/models/product_detail_model.dart';
@@ -91,22 +92,19 @@ class HomeVM extends BaseViewModel {
   double longitude = 0.0;
 
   void updateLatLong(
-      { double? lat,
-       double? long,
-      String? type,
-      String? address}) async {
-    if(lat != null && long != null){
+      {double? lat, double? long, String? type, String? address}) async {
+    if (lat != null && long != null) {
       latitude = lat;
       longitude = long;
       if (type == null) {
         currentLocation =
-        await LocationHelper.getAddressFromCoordinates(lat, long);
+            await LocationHelper.getAddressFromCoordinates(lat, long);
       } else {
         currentLocation = address ?? "";
       }
       DbHelper.saveLastLocation(UserModel(
           latitude: latitude, longitude: longitude, address: currentLocation));
-    }else{
+    } else {
       latitude = 0.0;
       longitude = 0.0;
       currentLocation = address ?? "";
@@ -122,7 +120,7 @@ class HomeVM extends BaseViewModel {
       latitude = userAddress.latitude;
       longitude = userAddress.longitude;
       currentLocation = userAddress.address;
-    }else{
+    } else {
       Position? position;
       try {
         position = await LocationHelper.getCurrentLocation();
@@ -172,7 +170,6 @@ class HomeVM extends BaseViewModel {
     }
   }
 
-
   TextEditingController startPriceTextController =
       TextEditingController(text: '0');
   TextEditingController endPriceTextController =
@@ -182,19 +179,38 @@ class HomeVM extends BaseViewModel {
   TextEditingController categoryTextController = TextEditingController();
   TextEditingController subCategoryTextController = TextEditingController();
   TextEditingController brandsTextController = TextEditingController();
+  TextEditingController sizesTextController = TextEditingController();
+  TextEditingController subSubCategoryTextController = TextEditingController();
   TextEditingController genderTextController = TextEditingController();
   TextEditingController sortByTextController = TextEditingController();
   TextEditingController postedWithinTextController = TextEditingController();
   TextEditingController yearTextController = TextEditingController();
   TextEditingController transmissionTextController = TextEditingController();
   TextEditingController fuelTextController = TextEditingController();
+  TextEditingController screenSizeTextController = TextEditingController();
   TextEditingController mileageTextController = TextEditingController();
-  TextEditingController kmDrivenTextController = TextEditingController();
+  TextEditingController carRentalTermController = TextEditingController();
+  TextEditingController minKmDrivenTextController =
+      TextEditingController(text: '0');
+  TextEditingController maxKmDrivenTextController =
+      TextEditingController(text: '1000000');
+  TextEditingController bodyTypeTextController = TextEditingController();
+  TextEditingController horsePowerTextController = TextEditingController();
+  TextEditingController carColorTextController = TextEditingController();
   TextEditingController modelTextController = TextEditingController();
   TextEditingController jobPositionTextController = TextEditingController();
   TextEditingController jobSalaryTextController = TextEditingController();
   TextEditingController jobSalaryToController = TextEditingController();
   TextEditingController jobSalaryFromController = TextEditingController();
+  TextEditingController workSettingTextController = TextEditingController();
+  TextEditingController workExperienceTextController = TextEditingController();
+  TextEditingController ramTextController = TextEditingController();
+  TextEditingController storageTextController = TextEditingController();
+  TextEditingController workEducationTextController = TextEditingController();
+  TextEditingController engineCapacityTextController = TextEditingController();
+  TextEditingController interiorColorTextController = TextEditingController();
+  TextEditingController numbCylindersTextController = TextEditingController();
+  TextEditingController numbDoorsTextController = TextEditingController();
 
   // List of mileage ranges
   final List<String> mileageRanges = [
@@ -215,14 +231,139 @@ class HomeVM extends BaseViewModel {
   List<String> searchQueryesList = [];
 
   List<String> jobPositionList = [
-    'Contract',
-    'Full Time',
-    'Part-time',
-    'Temporary'
+    StringHelper.contract,
+    StringHelper.fullTime,
+    StringHelper.partTime,
+    StringHelper.temporary
   ];
 
   List<String> salaryPeriodList = ['Hourly', 'Monthly', 'Weekly', 'Yearly'];
+  final List<String> carRentalTermOptions = ['Daily', 'Monthly', 'Yearly'];
+  final List<String> bodyTypeOptions = [
+    'SUV',
+    'Hatchback',
+    '4x4',
+    'Sedan',
+    'Coupe',
+    'Convertible',
+    'Estate',
+    'MPV',
+    'Pickup',
+    'Crossover',
+    'Van/bus',
+    'Other',
+  ];
 
+  final List<String> horsepowerOptions = [
+    'Less than 100 HP',
+    '100 - 200 HP',
+    '200 - 300 HP',
+    '300 - 400 HP',
+    '400 - 500 HP',
+    '500 - 600 HP',
+    '600 - 700 HP',
+    '700 - 800 HP',
+    '800+ HP',
+    'Other',
+  ];
+
+  final List<String> engineCapacityOptions = [
+    'Below 500 cc',
+    '500 - 999 cc',
+    '1000 - 1499 cc',
+    '1500 - 1999 cc',
+    '2000 - 2499 cc',
+    '2500 - 2999 cc',
+    '3000 - 3499 cc',
+    '3500 - 3999 cc',
+    '4000+ cc',
+    'Other',
+  ];
+
+  final List<String> numbCylindersOptions = [
+    '2 Cylinders',
+    '3 Cylinders',
+    '4 Cylinders',
+    '5 Cylinders',
+    '6 Cylinders',
+    '7 Cylinders',
+    '8 Cylinders',
+    'Other',
+  ];
+  List<String> ramOptions = ['2 GB', '4 GB', '6 GB', '8 GB', '12 GB', '16 GB'];
+  List<String> storageOptions = [
+    '1 GB',
+    '2 GB',
+    '4 GB',
+    '8 GB',
+    '64 GB',
+    '128 GB',
+    '256 GB',
+    '512 GB',
+    '1 TB'
+  ];
+  final List<String?> phoneRamOptions = [
+    "2 GB",
+    "3 GB",
+    "4 GB",
+    "6 GB",
+    "8 GB",
+    "12 GB",
+    "16 GB",
+  ];
+  final List<String?> phoneStorageOptions = [
+    "16 GB",
+    "32 GB",
+    "64 GB",
+    "128 GB",
+    "256 GB",
+    "512 GB",
+    "1 TB",
+  ];
+  final List<String> numbDoorsOptions = [
+    '2 Doors',
+    '3 Doors',
+    '4 Doors',
+    '5+ Doors',
+  ];
+  final List<String> experienceOptions = [
+    "No experience/Just graduated",
+    "1–3 yrs",
+    "3–5 yrs",
+    "5–10 yrs",
+    "10+ yrs"
+  ];
+  final List<String> workSettingOptions = [
+    "Remote",
+    "Office-based",
+    "Mixed (Home & Office)",
+    "Field-based"
+  ];
+  final List<String> tvSizeOptions = [
+    '24',
+    '28',
+    '32',
+    '40',
+    '43',
+    '48',
+    '50',
+    '55',
+    '58',
+    '65',
+    '70',
+    '75',
+    '85',
+    'Other'
+  ];
+  final List<String> workEducationOptions = [
+    "None",
+    "Student",
+    "High-Secondary School",
+    "Diploma",
+    "Bachelors Degree",
+    "Masters Degree",
+    "Doctorate/PhD"
+  ];
   @override
   void onInit() {
     // TODO: implement onInit
@@ -252,7 +393,6 @@ class HomeVM extends BaseViewModel {
     cachedCategoryList = getCategoryListApi();
   }
 
-
   @override
   void onClose() {
     // TODO: implement onClose
@@ -276,8 +416,8 @@ class HomeVM extends BaseViewModel {
 
     MapResponse<UserModel?> model = MapResponse<UserModel>.fromJson(
         response, (json) => UserModel.fromJson(json));
-    if(model.body != null){
-      countMessage = model.body?.count_notification??0;
+    if (model.body != null) {
+      countMessage = model.body?.count_notification ?? 0;
       notifyListeners();
     }
   }
@@ -287,7 +427,7 @@ class HomeVM extends BaseViewModel {
     try {
       page = 1;
       productsList.clear();
-      if(!DbHelper.getIsGuest()) {
+      if (!DbHelper.getIsGuest()) {
         getChatNotifyCount();
       }
       await getProductsApi(loading: true);
@@ -373,7 +513,7 @@ class HomeVM extends BaseViewModel {
 
     ListResponse<CategoryModel> model = ListResponse<CategoryModel>.fromJson(
         response, (json) => CategoryModel.fromJson(json));
-    return model.body??[];
+    return model.body ?? [];
   }
 
   Future<void> getSubSubCategoryListApi(
@@ -388,11 +528,11 @@ class HomeVM extends BaseViewModel {
     ListResponse<CategoryModel> model =
         ListResponse.fromJson(response, (json) => CategoryModel.fromJson(json));
     List<CategoryModel> modelList = [];
-    if(category?.id == 11 && [83, 84, 87, 88,90].contains(subCategory.id)){
+    if (category?.id == 11 && [83, 84, 87, 88, 90].contains(subCategory.id)) {
       modelList.add(CategoryModel(name: "Rent"));
       modelList.add(CategoryModel(name: "Sell"));
-    }else{
-      modelList =  model.body ?? [];
+    } else {
+      modelList = model.body ?? [];
     }
 
     if (modelList.isNotEmpty) {

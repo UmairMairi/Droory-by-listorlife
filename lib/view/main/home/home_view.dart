@@ -8,6 +8,9 @@ import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_places_autocomplete_text_field/google_places_autocomplete_text_field.dart';
 import 'package:google_places_autocomplete_text_field/model/prediction.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:iconsax/iconsax.dart';
+
 // import 'package:google_places_flutter/google_places_flutter.dart';
 // import 'package:google_places_flutter/model/prediction.dart';
 import 'package:list_and_life/base/base.dart';
@@ -49,8 +52,8 @@ class HomeView extends BaseView<HomeVM> {
             ),
             const Gap(01),
             GestureDetector(
-              onTap: (){
-                showLocationSheet(context,viewModel);
+              onTap: () {
+                showLocationSheet(context, viewModel);
               },
               child: Row(
                 children: [
@@ -76,7 +79,7 @@ class HomeView extends BaseView<HomeVM> {
               if (DbHelper.getIsGuest()) {
                 context.push(Routes.guestLogin);
               } else {
-                context.push(Routes.notifications).then((value){
+                context.push(Routes.notifications).then((value) {
                   viewModel.getChatNotifyCount();
                 });
               }
@@ -109,7 +112,7 @@ class HomeView extends BaseView<HomeVM> {
                           "${(viewModel.countMessage) > 9 ? '9+' : viewModel.countMessage}",
                           style: context.textTheme.labelSmall?.copyWith(
                             color: Colors.white, // Ensure contrast
-                            fontSize:(viewModel.countMessage) > 9? 8:9,
+                            fontSize: (viewModel.countMessage) > 9 ? 8 : 9,
                             fontWeight: FontWeight.w500,
                             fontFamily: FontRes.MONTSERRAT_MEDIUM,
                           ),
@@ -123,73 +126,71 @@ class HomeView extends BaseView<HomeVM> {
           )
         ],
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(60.0),
+          preferredSize: const Size.fromHeight(50),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
-            child: Row(
-              children: [
-                Expanded(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            child: Container(
+              height: 50, // Enough space for centered text & icons
+              decoration: BoxDecoration(
+                color: Colors.grey.shade200, // Light grey background
+                borderRadius: BorderRadius.circular(25), // Rounded corners
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
                     child: AppTextField(
-                  hint: '${StringHelper.search}...',
-                  readOnly: true,
-                  validator: (value) {},
-                  controller: viewModel.searchController,
-                  onTap: () async {
-                    String? value = await getSearchedData(context,
-                        query: viewModel.searchController.text);
-                    viewModel.searchController.text = value ?? '';
-                    viewModel.onSearchChanged(value ?? '');
-                    // Perform the search or navigate to the results page
-                  },
-                  prefix: Icon(Icons.search),
-                )),
-
-                /* Expanded(
-                  child: AppAutoCompleteTextField<String>(
-                    onChanged: (search) => viewModel.onSearchChanged(search),
-                    suggestions: viewModel.searchQueryesList
-                        .map(
-                          (e) => SearchFieldListItem<String>(
-                            e ?? '',
-                            item: e,
-                            // Use child to show Custom Widgets in the suggestions
-                            // defaults to Text widget
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(e ?? ''),
-                            ),
-                          ),
-                        )
-                        .toList(),
-                    controller: viewModel.categoryTextController,
-                    onSuggestionSelected: (suggestion) {
-                      viewModel.searchController.text = suggestion.searchKey;
-                      DbHelper.saveSearchQuery(
-                          suggestion.searchKey); // Save the selected search
-                      viewModel.onSearchChanged(suggestion.searchKey);
-                      // Perform the search or navigate to the results page
-                    },
-                    suggestionToString: (String category) => category,
-                  ),
-                ),*/
-                const Gap(10),
-                InkWell(
-                  onTap: () {
-                    context.push(Routes.filter,extra: FilterModel(screenFrom: "home"));
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        color: const Color(0xffd5d5d5),
-                        borderRadius: BorderRadius.circular(8)),
-                    child: Image.asset(
-                      AssetsRes.IC_FILTER_ICON,
-                      height: 24,
+                      hint:
+                          '${StringHelper.search}...', // "search..." placeholder
+                      readOnly: true,
+                      removeTextFieldBorder: true, // Removes the inner outline
+                      controller: viewModel.searchController,
+                      onTap: () async {
+                        String? value = await getSearchedData(
+                          context,
+                          query: viewModel.searchController.text,
+                        );
+                        viewModel.searchController.text = value ?? '';
+                        viewModel.onSearchChanged(value ?? '');
+                      },
+                      prefix: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Icon(
+                          Icons.search,
+                          color: Colors.black54,
+                          size: 20, // Slightly smaller for a clean look
+                        ),
+                      ),
+                      // Minimal padding to keep things compact
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 0,
+                      ),
                     ),
                   ),
-                ),
-                const Gap(10),
-              ],
+
+                  // Filter icon as an image inside a white, rounded container
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                    child: IconButton(
+                      icon: Image.asset(
+                        AssetsRes.IC_FILTER_ICON,
+                        height: 28,
+                      ),
+                      onPressed: () {
+                        context.push(
+                          Routes.filter,
+                          extra: FilterModel(screenFrom: "home"),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -213,7 +214,7 @@ class HomeView extends BaseView<HomeVM> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Gap(20),
+              const Gap(5),
               FutureBuilder<List<CategoryModel>>(
                   future: viewModel.cachedCategoryList,
                   builder: (context, snapshot) {
@@ -248,17 +249,24 @@ class HomeView extends BaseView<HomeVM> {
                                         CrossAxisAlignment.center,
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      CircleAvatar(
-                                        backgroundColor: Colors.white70,
-                                        radius: 30,
-                                        child: ImageView.rect(
-                                          image:
-                                              "${ApiConstants.imageUrl}/${categoryItems[index].image}",
-                                          height: 35,
-                                          placeholder:
-                                              AssetsRes.IC_IMAGE_PLACEHOLDER,
-                                          width: 35,
-                                          fit: BoxFit.contain,
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          border:
+                                              Border.all(color: Colors.grey),
+                                        ),
+                                        child: CircleAvatar(
+                                          backgroundColor: Colors.white70,
+                                          radius: 30,
+                                          child: ImageView.rect(
+                                            image:
+                                                "${ApiConstants.imageUrl}/${categoryItems[index].image}",
+                                            height: 35,
+                                            placeholder:
+                                                AssetsRes.IC_IMAGE_PLACEHOLDER,
+                                            width: 35,
+                                            fit: BoxFit.contain,
+                                          ),
                                         ),
                                       ),
                                       const Gap(10),
@@ -310,18 +318,18 @@ class HomeView extends BaseView<HomeVM> {
                           var productDetails = viewModel.productsList[index];
                           return AppProductItemWidget(
                             data: productDetails,
-                            onItemTapped: (){
+                            onItemTapped: () {
                               if (productDetails.userId ==
                                   DbHelper.getUserModel()?.id) {
                                 context.push(Routes.myProduct,
                                     extra: productDetails);
-                              }else{
+                              } else {
                                 context.push(Routes.productDetails,
                                     extra: productDetails);
                               }
                             },
                             onLikeTapped: () {
-                              if(!DbHelper.getIsGuest()){
+                              if (!DbHelper.getIsGuest()) {
                                 if (productDetails.isFavourite == 1) {
                                   productDetails.isFavourite = 0;
                                   return;
@@ -417,24 +425,24 @@ class _LocationSearchPopupState extends State<LocationSearchPopup> {
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: GooglePlacesAutoCompleteTextFormField(
-                  //showError: false,
-                  keyboardType: TextInputType.text,
+                    //showError: false,
+                    keyboardType: TextInputType.text,
                     textEditingController: searchController,
                     countries: const ['eg'],
                     googleAPIKey: "AIzaSyBDLT4xDcywIynEnoHJn6GdPisZLr4G5TU",
-                    decoration:  InputDecoration(
+                    decoration: InputDecoration(
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide(color: Colors.black,width: 1)
-                      ),
+                          borderSide:
+                              BorderSide(color: Colors.black, width: 1)),
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide(color: Colors.black,width: 1)
-                      ),
+                          borderSide:
+                              BorderSide(color: Colors.black, width: 1)),
                       enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide(color: Colors.black,width: 1)
-                      ),
+                          borderSide:
+                              BorderSide(color: Colors.black, width: 1)),
                       prefixIcon: Icon(Icons.search),
                       hintText: StringHelper.search,
                     ),
@@ -475,8 +483,6 @@ class _LocationSearchPopupState extends State<LocationSearchPopup> {
                             : '',
                       ));
 
-
-
                       searchController.text = formattedAddress;
                       DbHelper.saveLocationSearchQuery(formattedAddress);
 
@@ -493,11 +499,11 @@ class _LocationSearchPopupState extends State<LocationSearchPopup> {
             TextButton(
                 onPressed: () {
                   Navigator.pop(context);
-                  widget.viewModel.locationTextController.text ="Cairo, Egypt";
+                  widget.viewModel.locationTextController.text = "Cairo, Egypt";
                   //StringHelper.showAllAdsInEgypt;
                   widget.viewModel.updateLatLong(address: "Cairo, Egypt");
-                      // lat: 30.0444,
-                      // long: 31.2357);
+                  // lat: 30.0444,
+                  // long: 31.2357);
                 },
                 child: Text(
                   '📍${StringHelper.showAllAdsInEgypt}',
@@ -518,14 +524,16 @@ class _LocationSearchPopupState extends State<LocationSearchPopup> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('${StringHelper.recentSearches}:', style: context.textTheme.titleMedium),
+                Text('${StringHelper.recentSearches}:',
+                    style: context.textTheme.titleMedium),
                 GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       Navigator.pop(context);
                       searchHistory = [];
                       widget.viewModel.clearLocation();
                     },
-                    child: Text(StringHelper.clearAll, style: context.textTheme.titleSmall)),
+                    child: Text(StringHelper.clearAll,
+                        style: context.textTheme.titleSmall)),
               ],
             ),
             const Divider(),
@@ -551,7 +559,7 @@ class _LocationSearchPopupState extends State<LocationSearchPopup> {
                             widget.viewModel.locationTextController.text =
                                 searchHistory[index];
                             widget.viewModel.updateLatLong(
-                              type: "history",
+                                type: "history",
                                 address: searchHistory[index],
                                 lat: position?.latitude ?? lat,
                                 long: position?.longitude ?? lng);
@@ -568,16 +576,16 @@ class _LocationSearchPopupState extends State<LocationSearchPopup> {
 
   static String _formatAddress(Placemark place) {
     StringBuffer addressBuffer = StringBuffer();
-    if ((place.name??"").isNotEmpty) {
+    if ((place.name ?? "").isNotEmpty) {
       addressBuffer.write('${place.name}, ');
     }
-    if ((place.locality??"").isNotEmpty) {
+    if ((place.locality ?? "").isNotEmpty) {
       addressBuffer.write('${place.locality}, ');
     }
-    if ((place.administrativeArea??"").isNotEmpty) {
+    if ((place.administrativeArea ?? "").isNotEmpty) {
       addressBuffer.write('${place.administrativeArea}, ');
     }
-    if ((place.country??"").isNotEmpty) {
+    if ((place.country ?? "").isNotEmpty) {
       addressBuffer.write('${place.country}');
     }
     String address = addressBuffer.toString().replaceAll(RegExp(r',\s*$'), '');

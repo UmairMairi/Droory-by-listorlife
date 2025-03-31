@@ -36,10 +36,8 @@ class LoginView extends BaseView<AuthVM> {
               },
               child: Text(
                 StringHelper.guestLogin,
-                style: context.textTheme.titleSmall?.copyWith(
-                    color: Colors.red,
-                    decoration: TextDecoration.underline,
-                    decorationColor: Colors.red),
+                style: context.textTheme.titleSmall
+                    ?.copyWith(color: Colors.red, decorationColor: Colors.red),
               ))
         ],
       ),
@@ -64,9 +62,9 @@ class LoginView extends BaseView<AuthVM> {
                 const Gap(25),
                 Image.asset(
                   AssetsRes.APP_LOGO,
-                  height: 90,
+                  height: 40,
                 ),
-                const Flexible(child: Gap(100)),
+                const Flexible(child: Gap(40)),
                 AppTextField(
                   title: StringHelper.phoneNumber,
                   hint: StringHelper.phoneNumber,
@@ -93,7 +91,7 @@ class LoginView extends BaseView<AuthVM> {
                       showCurrencyISO: false,
                       onChanged: (country) => viewModel.updateCountry(country)),
                 ),
-                const Flexible(child: Gap(20)),
+                const Flexible(child: Gap(15)),
                 AppElevatedButton(
                   width: context.width,
                   onTap: () {

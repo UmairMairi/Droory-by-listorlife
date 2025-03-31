@@ -106,8 +106,11 @@ class MyAdsView extends BaseView<MyAdsVM> {
                               itemBuilder: (context, index) {
                                 var productDetails =
                                     viewModel.productsList[index];
-                                var soldStatus = productDetails.sellStatus?.toLowerCase() != StringHelper.sold.toLowerCase();
-                                var productStatus = "${productDetails.status}" == "0";
+                                var soldStatus =
+                                    productDetails.sellStatus?.toLowerCase() !=
+                                        StringHelper.sold.toLowerCase();
+                                var productStatus =
+                                    "${productDetails.status}" == "0";
                                 return InkWell(
                                   onTap: () async {
                                     await context.push(Routes.myProduct,
@@ -171,33 +174,36 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                           item: productDetails);
                                                 },
                                                 itemBuilder:
-                                                    (BuildContext context) => <PopupMenuEntry<int>>[
-                                                  if ("${productDetails.status}" == "1" && soldStatus) ...{
+                                                    (BuildContext context) =>
+                                                        <PopupMenuEntry<int>>[
+                                                  if ("${productDetails.status}" ==
+                                                          "1" &&
+                                                      soldStatus) ...{
                                                     PopupMenuItem(
                                                       value: 1,
                                                       child: Text(
                                                           StringHelper.edit),
                                                     )
                                                   },
-
-                                                      if ("${productDetails.adStatus}" != "deactivate" && productStatus && soldStatus) ...{
-
+                                                  if ("${productDetails.adStatus}" !=
+                                                          "deactivate" &&
+                                                      productStatus &&
+                                                      soldStatus) ...{
                                                     PopupMenuItem(
                                                       value: 2,
                                                       child: Text(StringHelper
                                                           .deactivate),
                                                     ),
                                                   },
-
-                                                      if ("${productDetails.adStatus}" == "deactivate" && productStatus && soldStatus) ...{
-
-                                                        PopupMenuItem(
-                                                          value: 4,
-                                                          child: Text("Republish"),
-                                                        ),
-                                                      },
-
-
+                                                  if ("${productDetails.adStatus}" ==
+                                                          "deactivate" &&
+                                                      productStatus &&
+                                                      soldStatus) ...{
+                                                    PopupMenuItem(
+                                                      value: 4,
+                                                      child: Text("Republish"),
+                                                    ),
+                                                  },
                                                   PopupMenuItem(
                                                     value: 3,
                                                     child: Text(
@@ -258,18 +264,30 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                               color:
                                                                   Colors.grey),
                                                     ),
-                                                    if (productDetails.categoryId == 9) ...{
+                                                    if (productDetails
+                                                            .categoryId ==
+                                                        9) ...{
                                                       Text(
                                                         "${StringHelper.egp} ${parseAmount(productDetails.salleryFrom)}",
                                                         //"${StringHelper.egp} ${data?.salleryFrom} - ${data?.salleryTo}",
-                                                        style: context.textTheme.titleMedium
-                                                            ?.copyWith(color: context.theme.colorScheme.error),
+                                                        style: context.textTheme
+                                                            .titleMedium
+                                                            ?.copyWith(
+                                                                color: context
+                                                                    .theme
+                                                                    .colorScheme
+                                                                    .error),
                                                       ),
                                                     } else ...{
                                                       Text(
                                                         "${StringHelper.egp} ${parseAmount(productDetails.price)}",
-                                                        style: context.textTheme.titleMedium
-                                                            ?.copyWith(color: context.theme.colorScheme.error),
+                                                        style: context.textTheme
+                                                            .titleMedium
+                                                            ?.copyWith(
+                                                                color: context
+                                                                    .theme
+                                                                    .colorScheme
+                                                                    .error),
                                                       ),
                                                     },
                                                   ],
@@ -391,10 +409,11 @@ class MyAdsView extends BaseView<MyAdsVM> {
           );
   }
 
-  String parseAmount(dynamic amount){
-    if("${amount??""}".isEmpty)return "0";
-    return num.parse("${amount??0}").toStringAsFixed(0);
+  String parseAmount(dynamic amount) {
+    if ("${amount ?? ""}".isEmpty) return "0";
+    return num.parse("${amount ?? 0}").toStringAsFixed(0);
   }
+
   detailsWidget(
     BuildContext context,
     MyAdsVM viewModel,
@@ -413,18 +432,21 @@ class MyAdsView extends BaseView<MyAdsVM> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if("${productDetails.adStatus}" != "deactivate")...{
+          if ("${productDetails.adStatus}" != "deactivate") ...{
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                viewModel.getStatus(context: context,productDetails: productDetails),
-                if ("${productDetails.status}" != "0" && productDetails.sellStatus != StringHelper.sold.toLowerCase()) ...{
+                viewModel.getStatus(
+                    context: context, productDetails: productDetails),
+                if ("${productDetails.status}" != "0" &&
+                    productDetails.sellStatus !=
+                        StringHelper.sold.toLowerCase()) ...{
                   viewModel.getRemainDays(item: productDetails)
                 }
               ],
             )
-          }else...{
+          } else ...{
             AppElevatedButton(
               title: StringHelper.deactivate,
               height: 30,
@@ -447,23 +469,23 @@ class MyAdsView extends BaseView<MyAdsVM> {
                   style: context.textTheme.labelMedium
                       ?.copyWith(fontFamily: FontRes.MONTSERRAT_MEDIUM),
                 ),
-
-          if("${productDetails.adStatus}" != "deactivate"  && "${productDetails.status}" == "0" || "${productDetails.status}" == "2")...{
+          if ("${productDetails.adStatus}" != "deactivate" &&
+                  "${productDetails.status}" == "0" ||
+              "${productDetails.status}" == "2") ...{
             AppElevatedButton(
               onTap: () {
-                viewModel
-                    .handelPopupMenuItemClick(
-                    context: context,
-                    index: 1,
-                    item: productDetails);
+                viewModel.handelPopupMenuItemClick(
+                    context: context, index: 1, item: productDetails);
               },
               title: StringHelper.edit,
               height: 30,
               width: context.width,
               backgroundColor: Colors.grey,
             ),
-          }else...{
-            if ("${productDetails.adStatus}" != "deactivate"  && productDetails.sellStatus != StringHelper.sold.toLowerCase()) ...{
+          } else ...{
+            if ("${productDetails.adStatus}" != "deactivate" &&
+                productDetails.sellStatus !=
+                    StringHelper.sold.toLowerCase()) ...{
               const Gap(10),
               InkWell(
                 onTap: () async {
@@ -473,7 +495,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                 child: Container(
                   alignment: Alignment.center,
                   padding:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 08),
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 08),
                   decoration: BoxDecoration(
                     color: Colors.black54,
                     borderRadius: BorderRadius.circular(08),
@@ -539,33 +561,94 @@ class MyAdsView extends BaseView<MyAdsVM> {
               // )
             }
           },
-
-          if("${productDetails.status}" == "2")...[
-            rejectedReason(context,viewModel,productDetails)
+          if ("${productDetails.status}" == "2") ...[
+            rejectedReason(context, viewModel, productDetails)
           ]
         ],
       ),
     );
   }
 
-  rejectedReason(BuildContext context, MyAdsVM viewModel, ProductDetailModel productDetails) {
+  rejectedReason(BuildContext context, MyAdsVM viewModel,
+      ProductDetailModel productDetails) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Gap(10),
+        SizedBox(height: 10), // Spacing before the link
         GestureDetector(
-          onTap: (){
-            viewModel.learnMore = !viewModel.learnMore;
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return Dialog(
+                  backgroundColor: Colors.white, // White background
+                  shape: RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.circular(12.0), // Rounded corners
+                  ),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width *
+                        0.98, // Increased to 95%
+                    constraints: BoxConstraints(
+                      maxHeight: MediaQuery.of(context).size.height *
+                          0.7, // Increased to 60%
+                    ),
+                    child: Stack(
+                      children: [
+                        Padding(
+                          padding:
+                              const EdgeInsets.all(24.0), // Padding for content
+                          child: SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Rejected Reason",
+                                  style: TextStyle(
+                                    color: Colors.black, // Black text
+                                    fontSize: 22, // Bold title
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(
+                                    height: 16), // Space between title and text
+                                Text(
+                                  productDetails.rejectedReason ??
+                                      "No reason provided.",
+                                  style: TextStyle(
+                                    color: Colors.black, // Black text
+                                    fontSize: 16, // Readable size
+                                  ),
+                                  softWrap: true, // Wraps long text
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          right: 0,
+                          top: 0,
+                          child: IconButton(
+                            icon: Icon(Icons.close,
+                                color: Colors.black, size: 30),
+                            onPressed: () {
+                              Navigator.of(context).pop(); // Close dialog
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            );
           },
-          child: Text("Learn More.",
-            style: context.textTheme.titleSmall?.copyWith(color: Colors.blue),
-          ),
-        ),
-
-        Visibility(
-          visible: viewModel.learnMore,
-          child: Text(productDetails.rejectedReason??"",
-            style: context.textTheme.bodyMedium?.copyWith(color: Colors.red),
+          child: Text(
+            StringHelper.learnMore,
+            style: Theme.of(context)
+                .textTheme
+                .titleSmall
+                ?.copyWith(color: Colors.blue),
           ),
         ),
       ],

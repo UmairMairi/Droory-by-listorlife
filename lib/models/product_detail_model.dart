@@ -15,13 +15,24 @@ class ProductDetailModel {
   String? itemCondition;
   String? positionType;
   String? salleryPeriod;
+  String? carColor;
+  String? bodyType;
+  String? horsePower;
+  String? engineCapacity;
+  String? interiorColor;
+  String? numbCylinders;
+  String? numbDoors;
+  String? carRentalTerm;
   String? educationType;
   String? salleryFrom;
   String? salleryTo;
+  String? workSetting;
+  String? workExperience;
+  String? workEducation;
   String? approvalDate;
   String? price;
   String? description;
-  String? lookingFor ;
+  String? lookingFor;
   num? year;
   String? fuel;
   String? material;
@@ -99,8 +110,19 @@ class ProductDetailModel {
     this.educationType,
     this.salleryFrom,
     this.salleryTo,
+    this.workSetting,
+    this.workExperience,
+    this.workEducation,
     this.approvalDate,
     this.price,
+    this.bodyType,
+    this.carColor,
+    this.horsePower,
+    this.engineCapacity,
+    this.interiorColor,
+    this.numbCylinders,
+    this.numbDoors,
+    this.carRentalTerm,
     this.description,
     this.lookingFor,
     this.year,
@@ -178,8 +200,12 @@ class ProductDetailModel {
     positionType = json['position_type'];
     salleryPeriod = json['sallery_period'];
     educationType = json['education_type'];
+    carRentalTerm = json['car_rental_term'];
     salleryFrom = json['sallery_from'];
     salleryTo = json['sallery_to'];
+    workSetting = json['work_setting'];
+    workExperience = json['work_experience'];
+    workEducation = json['work_education'];
     price = json['price'];
     description = json['description'];
     lookingFor = json['looking_for'];
@@ -194,6 +220,13 @@ class ProductDetailModel {
     screenSize = json['screen_size'];
     transmission = json['transmission'];
     kmDriven = json['km_driven'];
+    horsePower = json['horse_power'];
+    carColor = json['car_color'];
+    bodyType = json['body_type'];
+    engineCapacity = json['engine_capacity'];
+    interiorColor = json['interior_color'];
+    numbCylinders = json['numb_cylinders'];
+    numbDoors = json['numb_doors'];
     numberOfOwner = json['number_of_owner'];
     country = json['country'];
     state = json['state'];
@@ -242,8 +275,9 @@ class ProductDetailModel {
         : null;
     model =
         json['model'] != null ? CategoryModel.fromJson(json['model']) : null;
-    fashionSize =
-        json['fashion_size'] != null ? CategoryModel.fromJson(json['fashion_size']) : null;
+    fashionSize = json['fashion_size'] != null
+        ? CategoryModel.fromJson(json['fashion_size'])
+        : null;
     brand =
         json['brand'] != null ? CategoryModel.fromJson(json['brand']) : null;
     user = json['user'] != null ? UserModel.fromJson(json['user']) : null;
@@ -286,6 +320,9 @@ class ProductDetailModel {
     data['education_type'] = educationType;
     data['sallery_from'] = salleryFrom;
     data['sallery_to'] = salleryTo;
+    data['work_setting'] = workSetting;
+    data['work_experience'] = workExperience;
+    data['work_education'] = workEducation;
     data['price'] = price;
     data['description'] = description;
     data['looking_for'] = lookingFor;
@@ -297,6 +334,14 @@ class ProductDetailModel {
     data['storage'] = storage;
     data['size_id'] = sizeId;
     data['milleage'] = milleage;
+    data['body_type'] = bodyType;
+    data['horse_power'] = horsePower;
+    data['car_color'] = carColor;
+    data['engine_capacity'] = engineCapacity;
+    data['interior_color'] = interiorColor;
+    data['numb_cylinders'] = numbCylinders;
+    data['numb_doors'] = numbDoors;
+    data['car_rental_term'] = carRentalTerm;
     data['screen_size'] = screenSize;
     data['transmission'] = transmission;
     data['km_driven'] = kmDriven;
@@ -318,7 +363,6 @@ class ProductDetailModel {
     data['favourites_count'] = favouritesCount;
     data['count_views'] = countViews;
     data['communication_choice'] = communicationChoice;
-
 
     // Serialize the new productAmenities field
     if (productAmenities != null) {
@@ -402,8 +446,7 @@ class AmenitiesProductModel {
   AmenitiesProductModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     amnityId = json['amnity_id'];
-    amnity =
-        json['amnity'] != null ? Amnity.fromJson(json['amnity']) : null;
+    amnity = json['amnity'] != null ? Amnity.fromJson(json['amnity']) : null;
   }
 
   Map<String, dynamic> toJson() {

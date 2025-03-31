@@ -248,16 +248,20 @@
 //   }
 // }
 
-
 class FilterModel {
-  String? screenFrom; /// for check route
+  String? screenFrom;
+
+  /// for check route
   String? limit;
   String? page;
   String? categoryId;
   String? subcategoryId;
   String? subSubCategoryId;
   String? brandId;
+  String? sizeId;
   String? userId;
+  String? ram;
+  String? storage;
   String? favourite;
   String? latitude;
   String? longitude;
@@ -268,7 +272,11 @@ class FilterModel {
   String? fuel;
   String? numberOfOwner;
   String? year;
+  String? horsePower;
+  String? bodyType;
+  String? carColor;
   String? sellStatus;
+  String? screenSize;
   String? search;
   String? datePublished;
   String? sortByPrice;
@@ -279,6 +287,7 @@ class FilterModel {
   String? transmission;
   String? modelId;
   String? selectedAmnities;
+  String? carRentalTerm;
 
   // New keys
   String? propertyFor;
@@ -301,7 +310,14 @@ class FilterModel {
   String? minAreaSize;
   String? salleryFrom;
   String? salleryTo;
+  String? workSetting;
+  String? workExperience;
+  String? workEducation;
   String? milleage;
+  String? engineCapacity;
+  String? interiorColor;
+  String? numbCylinders;
+  String? numbDoors;
 
   FilterModel({
     this.screenFrom,
@@ -312,6 +328,7 @@ class FilterModel {
     this.subSubCategoryId,
     this.brandId,
     this.userId,
+    this.sizeId,
     this.favourite,
     this.latitude,
     this.longitude,
@@ -322,6 +339,9 @@ class FilterModel {
     this.fuel,
     this.numberOfOwner,
     this.year,
+    this.horsePower,
+    this.carColor,
+    this.bodyType,
     this.sellStatus,
     this.search,
     this.datePublished,
@@ -332,6 +352,7 @@ class FilterModel {
     this.endDate,
     this.transmission,
     this.modelId,
+    this.screenSize,
     this.selectedAmnities,
     this.propertyFor,
     this.bedrooms,
@@ -353,7 +374,15 @@ class FilterModel {
     this.minAreaSize,
     this.salleryFrom,
     this.salleryTo,
+    this.workSetting,
+    this.workExperience,
+    this.workEducation,
     this.milleage,
+    this.engineCapacity,
+    this.interiorColor,
+    this.numbCylinders,
+    this.numbDoors,
+    this.carRentalTerm,
   });
 
   // fromJson method
@@ -364,17 +393,24 @@ class FilterModel {
     subcategoryId = json['sub_category_id'];
     subSubCategoryId = json['sub_sub_category_id'];
     brandId = json['brand_id'];
+    sizeId = json['size_id'];
     userId = json['user_id'];
     favourite = json['favourite'];
     latitude = json['latitude'];
     longitude = json['longitude'];
     minPrice = json['min_price'];
     maxPrice = json['max_price'];
+    carColor = json['car_color'];
+    horsePower = json['horse_power'];
+    screenSize = json['screen_size'];
+    bodyType = json['body_type'];
     minKmDriven = json['min_km_driven'];
     maxKmDriven = json['max_km_driven'];
     fuel = json['fuel'];
     numberOfOwner = json['number_of_owner'];
     year = json['year'];
+    ram = json['ram'];
+    storage = json['storage'];
     sellStatus = json['sell_status'];
     search = json['search'];
     datePublished = json['date_published'];
@@ -406,7 +442,15 @@ class FilterModel {
     minAreaSize = json['min_area_size'];
     salleryFrom = json['sallery_from'];
     salleryTo = json['sallery_to'];
+    workSetting = json['work_setting'];
+    workExperience = json['work_experience'];
+    workEducation = json['work_education'];
     milleage = json['milleage'];
+    engineCapacity = json['engine_capacity'];
+    interiorColor = json['interior_color'];
+    numbCylinders = json['numb_cylinders'];
+    numbDoors = json['numb_doors'];
+    carRentalTerm = json['car_rental_term'];
   }
 
   // toJson method
@@ -423,9 +467,14 @@ class FilterModel {
     data['latitude'] = latitude;
     data['longitude'] = longitude;
     data['min_price'] = minPrice;
+    data['size_id'] = sizeId;
     data['max_price'] = maxPrice;
     data['min_km_driven'] = minKmDriven;
     data['max_km_driven'] = maxKmDriven;
+    data['car_color'] = carColor;
+    data['body_type'] = bodyType;
+    data['horse_power'] = horsePower;
+    data['screen_size'] = screenSize;
     data['fuel'] = fuel;
     data['number_of_owner'] = numberOfOwner;
     data['year'] = year;
@@ -460,7 +509,17 @@ class FilterModel {
     data['min_area_size'] = minAreaSize;
     data['sallery_from'] = salleryFrom;
     data['sallery_to'] = salleryTo;
+    data['work_setting'] = workSetting;
+    data['work_experience'] = workExperience;
+    data['work_education'] = workEducation;
     data['milleage'] = milleage;
+    data['engine_capacity'] = engineCapacity;
+    data['interior_color'] = interiorColor;
+    data['numb_cylinders'] = numbCylinders;
+    data['numb_doors'] = numbDoors;
+    data['car_rental_term'] = carRentalTerm;
+    data['ram'] = ram;
+    data['storage'] = storage;
     data.removeWhere((key, value) => value == "" || value == null);
     return data;
   }

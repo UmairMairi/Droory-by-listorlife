@@ -22,7 +22,6 @@ class CommunicationButtons extends StatelessWidget {
     required this.data,
   });
 
-  // Map the string values to generate corresponding buttons
   List<Widget> _buildButtons(BuildContext context) {
     String selectedChoice = data?.communicationChoice ?? '';
     List<Widget> buttons = [];
@@ -40,7 +39,6 @@ class CommunicationButtons extends StatelessWidget {
     return buttons;
   }
 
-  // Helper methods to build individual buttons (same as previous example)
   Widget _buildCallButton(BuildContext context) {
     return Expanded(
       child: InkWell(
@@ -58,6 +56,8 @@ class CommunicationButtons extends StatelessWidget {
           context,
           iconPath: AssetsRes.IC_CALL_ICON,
           label: StringHelper.call,
+          backgroundColor: Colors.red[50]!,
+          textColor: Colors.red,
         ),
       ),
     );
@@ -71,30 +71,34 @@ class CommunicationButtons extends StatelessWidget {
             DialogHelper.showLoginDialog(context: context);
             return;
           }
-          //context.read<ChatVM>().initListeners();
           context.push(
             Routes.message,
             extra: InboxModel(
-                senderId: DbHelper.getUserModel()?.id,
-                receiverId: data?.userId,
-                productId: data?.id,
-                productDetail: data,
-                receiverDetail: SenderDetail(
-                    id: data?.userId,
-                    lastName: data?.user?.lastName,
-                    profilePic: data?.user?.profilePic,
-                    name: data?.user?.name),
-                senderDetail: SenderDetail(
-                    id: DbHelper.getUserModel()?.id,
-                    profilePic: DbHelper.getUserModel()?.profilePic,
-                    lastName: DbHelper.getUserModel()?.lastName,
-                    name: DbHelper.getUserModel()?.name)),
+              senderId: DbHelper.getUserModel()?.id,
+              receiverId: data?.userId,
+              productId: data?.id,
+              productDetail: data,
+              receiverDetail: SenderDetail(
+                id: data?.userId,
+                lastName: data?.user?.lastName,
+                profilePic: data?.user?.profilePic,
+                name: data?.user?.name,
+              ),
+              senderDetail: SenderDetail(
+                id: DbHelper.getUserModel()?.id,
+                profilePic: DbHelper.getUserModel()?.profilePic,
+                lastName: DbHelper.getUserModel()?.lastName,
+                name: DbHelper.getUserModel()?.name,
+              ),
+            ),
           );
         },
         child: _buildButtonContainer(
           context,
           iconPath: AssetsRes.IC_CHAT_ICON,
           label: StringHelper.chat,
+          backgroundColor: Colors.blue[50]!,
+          textColor: Colors.blue,
         ),
       ),
     );
@@ -110,26 +114,35 @@ class CommunicationButtons extends StatelessWidget {
           }
           String phone = "${data?.user?.countryCode}${data?.user?.phoneNo}";
           DialogHelper.goToUrl(
-              uri: Uri.parse(
-                  'https://wa.me/$phone?text=Hi, I am interested in your ad.'));
+            uri: Uri.parse(
+              'https://wa.me/$phone?text=Hi, I am interested in your ad.',
+            ),
+          );
         },
         child: _buildButtonContainer(
           context,
           iconPath: AssetsRes.IC_WHATSAPP_ICON,
           label: StringHelper.whatsapp,
+          backgroundColor: Colors.green[50]!,
+          textColor: Colors.green,
         ),
       ),
     );
   }
 
-  Widget _buildButtonContainer(BuildContext context,
-      {required String iconPath, required String label}) {
+  Widget _buildButtonContainer(
+    BuildContext context, {
+    required String iconPath,
+    required String label,
+    required Color backgroundColor,
+    required Color textColor,
+  }) {
     return Container(
       alignment: Alignment.center,
       margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 0),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
-        color: const Color(0xff5A5B55),
+        color: backgroundColor,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
@@ -140,12 +153,13 @@ class CommunicationButtons extends StatelessWidget {
           Image.asset(
             iconPath,
             height: 16,
+            color: textColor,
           ),
           const SizedBox(width: 5),
           Text(
             label,
             style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  color: Colors.white,
+                  color: textColor,
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
                 ),
@@ -165,8 +179,9 @@ class CommunicationButtons extends StatelessWidget {
 
   Future<void> callClickedApi({required String productId}) async {
     ApiRequest apiRequest = ApiRequest(
-        url: ApiConstants.callOnUrl(productId: productId),
-        requestType: RequestType.get);
+      url: ApiConstants.callOnUrl(productId: productId),
+      requestType: RequestType.get,
+    );
     var response = await BaseClient.handleRequest(apiRequest);
     debugPrint("$response");
     DialogHelper.hideLoading();
@@ -181,7 +196,6 @@ class CommunicationButtons2 extends StatelessWidget {
     required this.data,
   });
 
-  // Map the string values to generate corresponding buttons
   List<Widget> _buildButtons(BuildContext context) {
     String selectedChoice = data?.communicationChoice ?? '';
     List<Widget> buttons = [];
@@ -199,94 +213,112 @@ class CommunicationButtons2 extends StatelessWidget {
     return buttons;
   }
 
-  // Helper methods to build individual buttons (same as previous example)
   Widget _buildCallButton(BuildContext context) {
-    return InkWell(
-      onTap: () async {
-        if (DbHelper.getIsGuest()) {
-          DialogHelper.showLoginDialog(context: context);
-          return;
-        }
-        DialogHelper.showLoading();
-        await callClickedApi(productId: "${data?.id}");
-        String phone = "${data?.user?.countryCode}${data?.user?.phoneNo}";
-        DialogHelper.goToUrl(uri: Uri.parse("tel://$phone"));
-      },
-      child: _buildButtonContainer(
-        context,
-        iconPath: AssetsRes.IC_CALL_ICON,
-        label: StringHelper.call,
+    return Expanded(
+      child: InkWell(
+        onTap: () async {
+          if (DbHelper.getIsGuest()) {
+            DialogHelper.showLoginDialog(context: context);
+            return;
+          }
+          DialogHelper.showLoading();
+          await callClickedApi(productId: "${data?.id}");
+          String phone = "${data?.user?.countryCode}${data?.user?.phoneNo}";
+          DialogHelper.goToUrl(uri: Uri.parse("tel://$phone"));
+        },
+        child: _buildButtonContainer(
+          context,
+          iconPath: AssetsRes.IC_CALL_ICON,
+          label: StringHelper.call,
+          backgroundColor: Colors.red[50]!, // Darker red background
+          textColor: Colors.red[800]!, // Darker red text/icon
+        ),
       ),
     );
   }
 
   Widget _buildChatButton(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        if (DbHelper.getIsGuest()) {
-          DialogHelper.showLoginDialog(context: context);
-          return;
-        }
-
-        //context.read<ChatVM>().initListeners();
-        context.push(
-          Routes.message,
-          extra: InboxModel(
+    return Expanded(
+      child: InkWell(
+        onTap: () {
+          if (DbHelper.getIsGuest()) {
+            DialogHelper.showLoginDialog(context: context);
+            return;
+          }
+          context.push(
+            Routes.message,
+            extra: InboxModel(
               senderId: DbHelper.getUserModel()?.id,
               receiverId: data?.userId,
               productId: data?.id,
               productDetail: data,
               receiverDetail: SenderDetail(
-                  id: data?.userId,
-                  lastName: data?.user?.lastName,
-                  profilePic: data?.user?.profilePic,
-                  name: data?.user?.name),
+                id: data?.userId,
+                lastName: data?.user?.lastName,
+                profilePic: data?.user?.profilePic,
+                name: data?.user?.name,
+              ),
               senderDetail: SenderDetail(
-                  id: DbHelper.getUserModel()?.id,
-                  profilePic: DbHelper.getUserModel()?.profilePic,
-                  lastName: DbHelper.getUserModel()?.lastName,
-                  name: DbHelper.getUserModel()?.name)),
-        );
-      },
-      child: _buildButtonContainer(
-        context,
-        iconPath: AssetsRes.IC_COMMENT_ICON,
-        label: StringHelper.chat,
+                id: DbHelper.getUserModel()?.id,
+                profilePic: DbHelper.getUserModel()?.profilePic,
+                lastName: DbHelper.getUserModel()?.lastName,
+                name: DbHelper.getUserModel()?.name,
+              ),
+            ),
+          );
+        },
+        child: _buildButtonContainer(
+          context,
+          iconPath: AssetsRes.IC_CHAT_ICON,
+          label: StringHelper.chat,
+          backgroundColor: Colors.blue[100]!, // Darker blue background
+          textColor: Colors.blue[800]!, // Darker blue text/icon
+        ),
       ),
     );
   }
 
   Widget _buildWhatsAppButton(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        if (DbHelper.getIsGuest()) {
-          DialogHelper.showLoginDialog(context: context);
-          return;
-        }
-        String phone = "${data?.user?.countryCode}${data?.user?.phoneNo}";
-        DialogHelper.goToUrl(
+    return Expanded(
+      child: InkWell(
+        onTap: () {
+          if (DbHelper.getIsGuest()) {
+            DialogHelper.showLoginDialog(context: context);
+            return;
+          }
+          String phone = "${data?.user?.countryCode}${data?.user?.phoneNo}";
+          DialogHelper.goToUrl(
             uri: Uri.parse(
-                'https://wa.me/$phone?text=Hi, I am interested in your ad.'));
-      },
-      child: _buildButtonContainer(
-        context,
-        iconPath: AssetsRes.IC_WHATSAPP_ICON,
-        label: StringHelper.whatsapp,
+              'https://wa.me/$phone?text=Hi, I am interested in your ad.',
+            ),
+          );
+        },
+        child: _buildButtonContainer(
+          context,
+          iconPath: AssetsRes.IC_WHATSAPP_ICON,
+          label: StringHelper.whatsapp,
+          backgroundColor: Colors.green[100]!, // Darker green background
+          textColor:
+              const Color.fromARGB(255, 79, 150, 83)!, // Darker green text/icon
+        ),
       ),
     );
   }
 
-  Widget _buildButtonContainer(BuildContext context,
-      {required String iconPath, required String label}) {
+  Widget _buildButtonContainer(
+    BuildContext context, {
+    required String iconPath,
+    required String label,
+    required Color backgroundColor,
+    required Color textColor,
+  }) {
     return Container(
-      width: 85,
       alignment: Alignment.center,
       margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 0),
-      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.red),
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(5),
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -295,15 +327,15 @@ class CommunicationButtons2 extends StatelessWidget {
         children: [
           Image.asset(
             iconPath,
-            height: 12,
-            color: Colors.red,
+            height: 16,
+            color: textColor,
           ),
-          const SizedBox(width: 2),
+          const SizedBox(width: 5),
           Text(
             label,
             style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  color: Colors.red,
-                  fontSize: 10,
+                  color: textColor,
+                  fontSize: 12,
                   fontWeight: FontWeight.w600,
                 ),
           ),
@@ -315,8 +347,7 @@ class CommunicationButtons2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: _buildButtons(context),
     );
   }

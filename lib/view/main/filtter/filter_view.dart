@@ -38,15 +38,24 @@ class _FilterViewState extends State<FilterView> {
   SfRangeValues salaryFromTo = const SfRangeValues(00, 100000);
   SfRangeValues downValues = const SfRangeValues(00, 100000);
   SfRangeValues areaValues = const SfRangeValues(00, 100000);
+  SfRangeValues kmDrivenValues = const SfRangeValues(0, 1000000);
   FilterModel filter = FilterModel();
   List<CategoryModel> categoriesList = [];
   List<CategoryModel> subCategoriesList = [];
+  List<CategoryModel> subSubCategories = [];
   List<CategoryModel> brands = [];
   List<CategoryModel> allModels = [];
+  List<CategoryModel> fashionSizes = [];
 
   List<int> selectedAmenities = [];
   List<String> yearsType = [];
-  List<String> fuelsType = [StringHelper.petrol, StringHelper.diesel, StringHelper.electric, StringHelper.hybrid, StringHelper.gas];
+  List<String> fuelsType = [
+    StringHelper.petrol,
+    StringHelper.diesel,
+    StringHelper.electric,
+    StringHelper.hybrid,
+    StringHelper.gas
+  ];
   List<String> transmissionType = [
     StringHelper.manual,
     StringHelper.automatic,
@@ -69,8 +78,45 @@ class _FilterViewState extends State<FilterView> {
   // Map of filters based on category ID
   Map<int, List<String>> filters = {
     // Vehicles// Services
-    9: [StringHelper.jobType, StringHelper.education, StringHelper.salaryRange, StringHelper.experience], // Jobs
+    9: [
+      StringHelper.jobType,
+      StringHelper.education,
+      StringHelper.salaryRange,
+      StringHelper.experience
+    ], // Jobs
   };
+  List<String> brandSubSubCategoryIds = [
+    '1',
+    '2',
+    '14',
+    '15',
+    '27',
+    '29',
+    '30',
+    '31',
+    '32',
+    '33',
+    '98',
+    '114',
+    '69',
+  ];
+
+  List<String> breedSubSubCategoryIds = [
+    '70',
+    '71',
+  ];
+
+// Helper function to determine the size title
+  String _getSizeTitle(String? subSubCategoryId) {
+    if (brandSubSubCategoryIds.contains(subSubCategoryId ?? '')) {
+      return StringHelper.brand;
+    }
+    if (breedSubSubCategoryIds.contains(subSubCategoryId ?? '')) {
+      return StringHelper.breed;
+    }
+    return StringHelper.type;
+  }
+
   List<String> filtersCat = [];
   // Method to get filters based on the selected category ID
   List<String> getFiltersByCategory(int? categoryId) {
@@ -136,15 +182,15 @@ class _FilterViewState extends State<FilterView> {
                       ),
                       child: Center(
                           child: Text(
-                            StringHelper.newText,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                              color: viewModel.itemCondition == 1
-                                  ? Colors.white
-                                  : Colors.black,
-                            ),
-                          )),
+                        StringHelper.newText,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          color: viewModel.itemCondition == 1
+                              ? Colors.white
+                              : Colors.black,
+                        ),
+                      )),
                     ),
                   ),
                   GestureDetector(
@@ -167,15 +213,15 @@ class _FilterViewState extends State<FilterView> {
                       ),
                       child: Center(
                           child: Text(
-                            StringHelper.used,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                              color: viewModel.itemCondition == 2
-                                  ? Colors.white
-                                  : Colors.black,
-                            ),
-                          )),
+                        StringHelper.used,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          color: viewModel.itemCondition == 2
+                              ? Colors.white
+                              : Colors.black,
+                        ),
+                      )),
                     ),
                   ),
                 ],
@@ -215,16 +261,16 @@ class _FilterViewState extends State<FilterView> {
                                     if (value.isEmpty) {
                                       values = SfRangeValues(
                                           0,
-                                          int.parse(
-                                              viewModel.endPriceTextController.text));
+                                          int.parse(viewModel
+                                              .endPriceTextController.text));
                                       return;
                                     }
 
                                     values = SfRangeValues(
-                                        int.parse(
-                                            viewModel.startPriceTextController.text),
-                                        int.parse(
-                                            viewModel.endPriceTextController.text));
+                                        int.parse(viewModel
+                                            .startPriceTextController.text),
+                                        int.parse(viewModel
+                                            .endPriceTextController.text));
                                   });
                                 },
                                 decoration: InputDecoration(
@@ -233,13 +279,13 @@ class _FilterViewState extends State<FilterView> {
                                     hintText: StringHelper.egp0,
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
-                                      borderSide:
-                                      const BorderSide(color: Color(0xffEFEFEF)),
+                                      borderSide: const BorderSide(
+                                          color: Color(0xffEFEFEF)),
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
-                                      borderSide:
-                                      const BorderSide(color: Color(0xffEFEFEF)),
+                                      borderSide: const BorderSide(
+                                          color: Color(0xffEFEFEF)),
                                     ))),
                           ),
                         ),
@@ -268,17 +314,17 @@ class _FilterViewState extends State<FilterView> {
                                 setState(() {
                                   if (value.isEmpty) {
                                     values = SfRangeValues(
-                                        int.parse(
-                                            viewModel.startPriceTextController.text),
+                                        int.parse(viewModel
+                                            .startPriceTextController.text),
                                         100000);
                                     return;
                                   }
 
                                   values = SfRangeValues(
-                                      int.parse(
-                                          viewModel.startPriceTextController.text),
-                                      int.parse(
-                                          viewModel.endPriceTextController.text));
+                                      int.parse(viewModel
+                                          .startPriceTextController.text),
+                                      int.parse(viewModel
+                                          .endPriceTextController.text));
                                 });
                               },
                               decoration: InputDecoration(
@@ -287,8 +333,8 @@ class _FilterViewState extends State<FilterView> {
                                   hintText: "EGP0",
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
-                                      borderSide:
-                                      const BorderSide(color: Color(0xffEFEFEF))),
+                                      borderSide: const BorderSide(
+                                          color: Color(0xffEFEFEF))),
                                   focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: const BorderSide(
@@ -301,35 +347,41 @@ class _FilterViewState extends State<FilterView> {
                     const SizedBox(
                       height: 15,
                     ),
-                StatefulBuilder(
-                  builder: (context, setState) {
-                    return SfRangeSlider(
-                      min: 0,
-                      max: 100000,
-                      values: values,
-                      inactiveColor: Colors.grey,
-                      activeColor: const Color(0xffFF385C),
-                      showLabels: false,
-                      interval: 1000, // Controls label intervals
-                      stepSize: 1000, // Ensures the slider moves in steps of 1000
-                      labelFormatterCallback: (dynamic actualValue, String formattedText) {
-                        return actualValue == 99999 ? ' $formattedText+' : ' $formattedText';
+                    StatefulBuilder(
+                      builder: (context, setState) {
+                        return SfRangeSlider(
+                          min: 0,
+                          max: 100000,
+                          values: values,
+                          inactiveColor: Colors.grey,
+                          activeColor: const Color(0xffFF385C),
+                          showLabels: false,
+                          interval: 1000, // Controls label intervals
+                          stepSize:
+                              1000, // Ensures the slider moves in steps of 1000
+                          labelFormatterCallback:
+                              (dynamic actualValue, String formattedText) {
+                            return actualValue == 99999
+                                ? ' $formattedText+'
+                                : ' $formattedText';
+                          },
+                          onChanged: (SfRangeValues newValues) {
+                            if ((newValues.end - newValues.start) >= 1000) {
+                              debugPrint("newValues==> ${newValues.end}");
+                              debugPrint(
+                                  "newValues start==> ${newValues.start}");
+                              viewModel.startPriceTextController.text =
+                                  "${newValues.start.round()}";
+                              viewModel.endPriceTextController.text =
+                                  "${newValues.end.round()}";
+                              setState(() {
+                                values = newValues;
+                              });
+                            }
+                          },
+                        );
                       },
-                      onChanged: (SfRangeValues newValues) {
-        if ((newValues.end - newValues.start) >= 1000) {
-          debugPrint("newValues==> ${newValues.end}");
-          debugPrint("newValues start==> ${newValues.start}");
-          viewModel.startPriceTextController.text =
-          "${newValues.start.round()}";
-          viewModel.endPriceTextController.text = "${newValues.end.round()}";
-          setState(() {
-            values = newValues;
-          });
-        }
-                      },
-                    );
-                  },
-                ),
+                    ),
                     const SizedBox(
                       height: 10,
                     ),
@@ -343,11 +395,11 @@ class _FilterViewState extends State<FilterView> {
               CommonDropdown<CategoryModel?>(
                 title: StringHelper.category,
                 hint: viewModel.categoryTextController.text,
-                listItemBuilder: (context,model,selected,fxn){
+                listItemBuilder: (context, model, selected, fxn) {
                   return Text(model?.name ?? '');
                 },
                 headerBuilder: (context, selectedItem, enabled) {
-                  return Text(selectedItem?.name??"");
+                  return Text(selectedItem?.name ?? "");
                 },
                 options: categoriesList,
                 onSelected: (CategoryModel? value) {
@@ -359,7 +411,7 @@ class _FilterViewState extends State<FilterView> {
                   getSubCategory(id: "${value?.id}");
                   viewModel.categoryTextController.text = value?.name ?? '';
                   filter.categoryId = "${value?.id}";
-                  if(filter.categoryId == "8" || filter.categoryId == "9" ){
+                  if (filter.categoryId == "8" || filter.categoryId == "9") {
                     viewModel.itemCondition = 0;
                   }
                   filter.subcategoryId = "";
@@ -370,7 +422,6 @@ class _FilterViewState extends State<FilterView> {
                   viewModel.brandsTextController.clear();
                   viewModel.modelTextController.clear();
                   viewModel.subCategoryTextController.clear();
-
                 },
                 //hint: StringHelper.selectCategory,
                 // readOnly: true,
@@ -412,11 +463,13 @@ class _FilterViewState extends State<FilterView> {
                       : filter.categoryId == '9'
                           ? StringHelper.jobType
                           : StringHelper.subCategory,
-                  hint: viewModel.subCategoryTextController.text.trim().isEmpty?filter.categoryId == '8'
-                      ? StringHelper.selectServices
-                      : filter.categoryId == '9'
-                          ? StringHelper.selectJobType
-                          : StringHelper.selectSubCategory:viewModel.subCategoryTextController.text,
+                  hint: viewModel.subCategoryTextController.text.trim().isEmpty
+                      ? filter.categoryId == '8'
+                          ? StringHelper.selectServices
+                          : filter.categoryId == '9'
+                              ? StringHelper.selectJobType
+                              : StringHelper.selectSubCategory
+                      : viewModel.subCategoryTextController.text,
                   onSelected: (CategoryModel? value) async {
                     viewModel.subCategoryTextController.text =
                         value?.name ?? '';
@@ -426,6 +479,8 @@ class _FilterViewState extends State<FilterView> {
                     brands.clear();
                     allModels.clear();
                     selectedAmenities.clear();
+                    subSubCategories.clear(); // Clear sub-subcategories
+                    fashionSizes.clear();
                     viewModel.propertyForTextController.clear();
                     viewModel.brandsTextController.clear();
                     viewModel.modelTextController.clear();
@@ -441,13 +496,18 @@ class _FilterViewState extends State<FilterView> {
                     viewModel.completionStatusTextController.clear();
                     viewModel.deliveryTermTextController.clear();
                     viewModel.levelTextController.clear();
+                    viewModel.ramTextController.clear();
+                    viewModel.storageTextController.clear();
                     await getBrands(id: "${filter.subcategoryId}");
+                    getSubSubCategories(id: "${filter.subcategoryId}");
+                    filter.ram = "";
+                    filter.storage = "";
                   },
-                  listItemBuilder: (context,model,selected,fxn){
+                  listItemBuilder: (context, model, selected, fxn) {
                     return Text(model?.name ?? '');
                   },
                   headerBuilder: (context, selectedItem, enabled) {
-                    return Text(selectedItem?.name??"");
+                    return Text(selectedItem?.name ?? "");
                   },
                   options: subCategoriesList,
                   // controller: viewModel.subCategoryTextController,
@@ -472,7 +532,7 @@ class _FilterViewState extends State<FilterView> {
                   //       return PopupMenuItem(
                   //         value: option,
                   //         child: Text(option.name ?? ''),
-                  //       );
+                  //       );vm.tvSizeTextController.clear();
                   //     }).toList();
                   //   },
                   // ),
@@ -480,17 +540,79 @@ class _FilterViewState extends State<FilterView> {
                 const SizedBox(
                   height: 10,
                 ),
+                if (subSubCategories.isNotEmpty) ...[
+                  CommonDropdown<CategoryModel?>(
+                    title: "Sub-Subcategory",
+                    hint: (filter.subSubCategoryId == null ||
+                            filter.subSubCategoryId!.isEmpty)
+                        ? "Select Sub-Subcategory"
+                        : getSubSubCategoryName(id: filter.subSubCategoryId),
+                    onSelected: (CategoryModel? value) async {
+                      filter.subSubCategoryId = "${value?.id}";
+                      fashionSizes.clear();
+                      viewModel.sizesTextController.clear();
+                      // Clear the text
+                      filter.sizeId = null; // Reset the sizeId in the filter
+                      setState(() {
+                        fashionSizes
+                            .clear(); // Clear fashion sizes when sub-subcategory changes
+                      });
+                      await getFashionSizes(id: "${filter.subSubCategoryId}");
+                    },
+                    listItemBuilder: (context, model, selected, fxn) {
+                      return Text(model?.name ?? '');
+                    },
+                    headerBuilder: (context, selectedItem, enabled) {
+                      return Text(selectedItem?.name ?? "");
+                    },
+                    options: subSubCategories,
+                  ),
+                ],
               },
+
               Visibility(
-                  visible: subCategoriesList.isNotEmpty && (filter.subcategoryId??"").isNotEmpty,
-                  child:commonWidget(context,filter.subcategoryId,viewModel)),
-              if (brands.isNotEmpty)...[
+                  visible: subCategoriesList.isNotEmpty &&
+                      (filter.subcategoryId ?? "").isNotEmpty,
+                  child:
+                      commonWidget(context, filter.subcategoryId, viewModel)),
+              if (brands.isNotEmpty) ...[
                 CommonDropdown<CategoryModel?>(
-                  title:
-                      filter.categoryId == '6' ? StringHelper.breed : StringHelper.brand,
-                  hint: viewModel.brandsTextController.text.trim().isEmpty?filter.categoryId == '6'
-                      ? StringHelper.selectBreeds
-                      : StringHelper.selectBrands:viewModel.brandsTextController.text,
+                  title: (filter.subcategoryId ?? '') == '26' ||
+                          (filter.subcategoryId ?? '') == '27' ||
+                          (filter.subcategoryId ?? '') == '95' ||
+                          (filter.subcategoryId ?? '') == '97' ||
+                          (filter.subcategoryId ?? '') == '99' ||
+                          (filter.subcategoryId ?? '') == '22' ||
+                          (filter.categoryId ?? '') == '5' ||
+                          (filter.categoryId ?? '') == '7' ||
+                          (filter.categoryId ?? '') == '8'
+                      ? StringHelper.type
+                      : (filter.subcategoryId ?? '') == '23'
+                          ? "telecom"
+                          : (filter.categoryId ?? '') == '9'
+                              ? StringHelper.specialty
+                              : (filter.categoryId ?? '') == '6'
+                                  ? StringHelper.breed
+                                  : StringHelper.brand,
+                  hint: viewModel.brandsTextController.text.trim().isEmpty
+                      ? (filter.subcategoryId ?? '') == '26' ||
+                              (filter.subcategoryId ?? '') == '27' ||
+                              (filter.subcategoryId ?? '') == '95' ||
+                              (filter.subcategoryId ?? '') == '97' ||
+                              (filter.subcategoryId ?? '') == '99' ||
+                              (filter.subcategoryId ?? '') == '22' ||
+                              (filter.categoryId ?? '') == '5' ||
+                              (filter.categoryId ?? '') == '7' ||
+                              (filter.categoryId ?? '') == '8'
+                          ? ""
+                          : (filter.subcategoryId ?? '') == '23'
+                              ? ""
+                              : (filter.categoryId ?? '') == '9'
+                                  ? StringHelper.specialty
+                                  : (filter.categoryId ?? '') == '6'
+                                      ? StringHelper.selectBreeds
+                                      : StringHelper.selectBrands
+                      : viewModel.brandsTextController.text,
                   onSelected: (CategoryModel? value) async {
                     viewModel.brandsTextController.text = value?.name ?? '';
                     filter.brandId = "${value?.id}";
@@ -498,12 +620,13 @@ class _FilterViewState extends State<FilterView> {
                     await getModels(brandId: int.parse("${filter.brandId}"));
                   },
                   options: brands,
-                  listItemBuilder: (context,model,selected,fxn){
+                  listItemBuilder: (context, model, selected, fxn) {
                     return Text(model?.name ?? '');
                   },
                   headerBuilder: (context, selectedItem, enabled) {
-                    return Text(selectedItem?.name??"");
+                    return Text(selectedItem?.name ?? "");
                   },
+
                   // controller: viewModel.brandsTextController,
                   // readOnly: true,
                   // suffix: PopupMenuButton(
@@ -524,6 +647,25 @@ class _FilterViewState extends State<FilterView> {
                   //   },
                   // ),
                 ),
+                if (filter.subSubCategoryId == '7') ...[
+                  CommonDropdown<String?>(
+                    title: "TV Size",
+                    hint: viewModel.screenSizeTextController.text.isEmpty
+                        ? "Select TV Size"
+                        : viewModel.screenSizeTextController.text,
+                    onSelected: (String? value) {
+                      viewModel.screenSizeTextController.text = value ?? "";
+                    },
+                    options: viewModel.tvSizeOptions, // Already in HomeVM
+                    listItemBuilder: (context, model, selected, fxn) {
+                      return Text(model ?? '');
+                    },
+                    headerBuilder: (context, selectedItem, enabled) {
+                      return Text(selectedItem ?? "");
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                ],
                 // const SizedBox(
                 //   height: 10,
                 // ),
@@ -565,20 +707,42 @@ class _FilterViewState extends State<FilterView> {
                   height: 10,
                 ),
               ],
+              if (fashionSizes.isNotEmpty) ...[
+                CommonDropdown<CategoryModel?>(
+                  title: _getSizeTitle(filter.subSubCategoryId),
+                  hint: viewModel.sizesTextController.text.trim().isEmpty
+                      ? "Select Size"
+                      : viewModel.sizesTextController.text,
+                  onSelected: (CategoryModel? value) {
+                    viewModel.sizesTextController.text = value?.name ?? '';
+                    filter.sizeId = "${value?.id}";
+                  },
+                  options: fashionSizes,
+                  listItemBuilder: (context, model, selected, fxn) {
+                    return Text(model?.name ?? '');
+                  },
+                  headerBuilder: (context, selectedItem, enabled) {
+                    return Text(selectedItem?.name ?? "");
+                  },
+                ),
+                const SizedBox(height: 10),
+              ],
               if (allModels.isNotEmpty && filter.categoryId != '3') ...{
                 CommonDropdown<CategoryModel?>(
                   title: StringHelper.models,
-                  hint: viewModel.modelTextController.text.trim().isEmpty?StringHelper.selectModel:viewModel.modelTextController.text,
+                  hint: viewModel.modelTextController.text.trim().isEmpty
+                      ? StringHelper.selectModel
+                      : viewModel.modelTextController.text,
                   onSelected: (value) {
                     viewModel.modelTextController.text = value?.name ?? '';
                     filter.modelId = "${value?.id}";
                   },
                   options: allModels,
-                  listItemBuilder: (context,model,selected,fxn){
+                  listItemBuilder: (context, model, selected, fxn) {
                     return Text(model?.name ?? '');
                   },
                   headerBuilder: (context, selectedItem, enabled) {
-                    return Text(selectedItem?.name??"");
+                    return Text(selectedItem?.name ?? "");
                   },
                   // readOnly: true,
                   // controller: viewModel.modelTextController,
@@ -606,203 +770,442 @@ class _FilterViewState extends State<FilterView> {
                 ),
                 const Gap(10),
               },
-              if (filter.categoryId == '4') ...[
-                CommonDropdown(
-                  title: StringHelper.year,
-                  hint: viewModel.yearTextController.text.isEmpty?StringHelper.selectYear:viewModel.yearTextController.text,
-                  onSelected: (value) {
-                    viewModel.yearTextController.text = value ?? '';
-                    filter.year = value;
-                  },
-                  options: yearsType,
-                  // readOnly: true,
-                  // controller: viewModel.yearTextController,
-                  // suffix: PopupMenuButton<String>(
-                  //   icon: const Icon(Icons.arrow_drop_down),
-                  //   onSelected: (value) {
-                  //     viewModel.yearTextController.text = value ?? '';
-                  //     filter.year = value;
-                  //   },
-                  //   itemBuilder: (BuildContext context) {
-                  //     return yearsType.map((option) {
-                  //       return PopupMenuItem(
-                  //         value: option,
-                  //         child: Text(option),
-                  //       );
-                  //     }).toList();
-                  //   },
-                  // ),
-                  // inputFormatters: [
-                  //   LengthLimitingTextInputFormatter(4),
-                  //   FilteringTextInputFormatter.digitsOnly,
-                  // ],
-                  // keyboardType: TextInputType.number,
-                  // textInputAction: TextInputAction.done,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                CommonDropdown(
-                  title: StringHelper.fuel,
-                  hint: viewModel.fuelTextController.text,
-                  onSelected: (value) {
-                    viewModel.fuelTextController.text = value ?? '';
-                    filter.fuel = value;
-                  },
-                  options: fuelsType,
-                  //hint: StringHelper.enter,
-                  // textInputAction: TextInputAction.done,
-                  // readOnly: true,
-                  // suffix: PopupMenuButton<String>(
-                  //   icon: const Icon(Icons.arrow_drop_down),
-                  //   onSelected: (value) {
-                  //     viewModel.fuelTextController.text = value ?? '';
-                  //     filter.fuel = value;
-                  //   },
-                  //   itemBuilder: (BuildContext context) {
-                  //     return fuelsType.map((option) {
-                  //       return PopupMenuItem(
-                  //         value: option,
-                  //         child: Text(option),
-                  //       );
-                  //     }).toList();
-                  //   },
-                  // ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                AppTextField(
-                  title: StringHelper.mileage,
-                  controller: viewModel.mileageTextController,
-                  hint: StringHelper.mileage,
-                  maxLength: 6,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(6),
-                    FilteringTextInputFormatter.deny(
-                        RegExp(viewModel.regexToRemoveEmoji)),
-                    FilteringTextInputFormatter.digitsOnly,
-                  ],
-                  validator: (value) {
-                    // if (value != null || (value??"").trim().isNotEmpty) {
-                    //   final amount = num.tryParse("${value??0}");
-                    //
-                    //   if (amount == null) {
-                    //     return '* Please enter a valid mileage';
-                    //   }
-                    //
-                    //   if (amount < 1000) {
-                    //     return '* The minimum valid mileage is 1000';
-                    //   }
-                    //
-                    //   if (amount > 100000) {
-                    //     return '* The maximum valid mileage is 100,000';
-                    //   }
-                    // }
+              // if (filter.categoryId == '4') ...[
+              //   CommonDropdown(
+              //     title: StringHelper.year,
+              //     hint: viewModel.yearTextController.text.isEmpty
+              //         ? StringHelper.selectYear
+              //         : viewModel.yearTextController.text,
+              //     onSelected: (value) {
+              //       viewModel.yearTextController.text = value ?? '';
+              //       filter.year = value;
+              //     },
+              //     options: yearsType,
+              //     // readOnly: true,
+              //     // controller: viewModel.yearTextController,
+              //     // suffix: PopupMenuButton<String>(
+              //     //   icon: const Icon(Icons.arrow_drop_down),
+              //     //   onSelected: (value) {
+              //     //     viewModel.yearTextController.text = value ?? '';
+              //     //     filter.year = value;
+              //     //   },
+              //     //   itemBuilder: (BuildContext context) {
+              //     //     return yearsType.map((option) {
+              //     //       return PopupMenuItem(
+              //     //         value: option,
+              //     //         child: Text(option),
+              //     //       );
+              //     //     }).toList();
+              //     //   },
+              //     // ),
+              //     // inputFormatters: [
+              //     //   LengthLimitingTextInputFormatter(4),
+              //     //   FilteringTextInputFormatter.digitsOnly,
+              //     // ],
+              //     // keyboardType: TextInputType.number,
+              //     // textInputAction: TextInputAction.done,
+              //   ),
+              //   const SizedBox(
+              //     height: 10,
+              //   ),
+              //   CommonDropdown(
+              //     title: StringHelper.fuel,
+              //     hint: viewModel.fuelTextController.text,
+              //     onSelected: (value) {
+              //       viewModel.fuelTextController.text = value ?? '';
+              //       filter.fuel = value;
+              //     },
+              //     options: fuelsType,
 
-                    return null;
-                  },
+              //     //hint: StringHelper.enter,
+              //     // textInputAction: TextInputAction.done,
+              //     // readOnly: true,
+              //     // suffix: PopupMenuButton<String>(
+              //     //   icon: const Icon(Icons.arrow_drop_down),
+              //     //   onSelected: (value) {
+              //     //     viewModel.fuelTextController.text = value ?? '';
+              //     //     filter.fuel = value;
+              //     //   },
+              //     //   itemBuilder: (BuildContext context) {
+              //     //     return fuelsType.map((option) {
+              //     //       return PopupMenuItem(
+              //     //         value: option,
+              //     //         child: Text(option),
+              //     //       );
+              //     //     }).toList();
+              //     //   },
+              //     // ),
+              //   ),
+              //   const SizedBox(
+              //     height: 10,
+              //   ),
 
-                ),
-                // CommonDropdown(
-                //   title: StringHelper.mileage,
-                //   hint: viewModel.mileageTextController.text,
-                //   onSelected: (value) {
-                //     viewModel.mileageTextController.text = value??"";
-                //   },
-                //   options: viewModel.mileageRanges,
-                  // hint: StringHelper.select,
-                  // readOnly: true,
-                  // suffix: PopupMenuButton<String>(
-                  //   clipBehavior: Clip.hardEdge,
-                  //   icon: const Icon(
-                  //     Icons.arrow_drop_down,
-                  //     color: Colors.black,
-                  //   ),
-                  //   onSelected: (value) {
-                  //     viewModel.mileageTextController.text = value;
-                  //   },
-                  //   itemBuilder: (BuildContext context) {
-                  //     return viewModel.mileageRanges.map((option) {
-                  //       return PopupMenuItem(
-                  //         value: option,
-                  //         child: Text(option ?? ''),
-                  //       );
-                  //     }).toList();
-                  //   },
-                  // ),
-                //),
-                const SizedBox(
-                  height: 10,
-                ),
-                CommonDropdown(
-                  title: StringHelper.transmission,
-                  hint: viewModel.transmissionTextController.text.isEmpty?StringHelper.selectTransmission:viewModel.transmissionTextController.text,
-                  onSelected: (value) {
-                    viewModel.transmissionTextController.text = value??"";
-                    filter.transmission = value?.toLowerCase();
+              //   const SizedBox(height: 10),
+              //   AppTextField(
+              //     title: StringHelper.mileage,
+              //     controller: viewModel.mileageTextController,
+              //     hint: StringHelper.mileage,
+              //     maxLength: 6,
+              //     keyboardType: TextInputType.number,
+              //     inputFormatters: [
+              //       LengthLimitingTextInputFormatter(6),
+              //       FilteringTextInputFormatter.deny(
+              //           RegExp(viewModel.regexToRemoveEmoji)),
+              //       FilteringTextInputFormatter.digitsOnly,
+              //     ],
+              //     validator: (value) {
+              //       // if (value != null || (value??"").trim().isNotEmpty) {
+              //       //   final amount = num.tryParse("${value??0}");
+              //       //
+              //       //   if (amount == null) {
+              //       //     return '* Please enter a valid mileage';
+              //       //   }
+              //       //
+              //       //   if (amount < 1000) {
+              //       //     return '* The minimum valid mileage is 1000';
+              //       //   }
+              //       //
+              //       //   if (amount > 100000) {
+              //       //     return '* The maximum valid mileage is 100,000';
+              //       //   }
+              //       // }
+
+              //       return null;
+              //     },
+              //   ),
+              //   CommonDropdown<String>(
+              //     title: StringHelper
+              //         .carColorTitle, // Uses the localized title from StringHelper
+              //     titleColor: Colors.black,
+              //     hint: viewModel.carColorTextController.text,
+              //     onSelected: (String? value) {
+              //       viewModel.carColorTextController.text = value ?? '';
+              //     },
+              //     options: StringHelper
+              //         .carColorOptions, // Uses your localized color list
+              //   ),
+              //   CommonDropdown<String>(
+              //     title: StringHelper.horsepowerTitle, // Localized title
+              //     titleColor: Colors.black,
+              //     hint: viewModel.horsePowerTextController.text.isEmpty
+              //         ? ""
+              //         : viewModel.horsePowerTextController.text,
+              //     onSelected: (String? value) {
+              //       viewModel.horsePowerTextController.text = value ?? '';
+              //     },
+              //     options:
+              //         viewModel.horsepowerOptions, // Localized options list
+              //   ),
+              //   const SizedBox(height: 10),
+              //   CommonDropdown<String>(
+              //     title: StringHelper.rentalCarTerm, // Localized title
+              //     titleColor: Colors.black,
+              //     hint: viewModel.carRentalTermController.text.isEmpty
+              //         ? ""
+              //         : viewModel.carRentalTermController.text,
+              //     onSelected: (String? value) {
+              //       viewModel.carRentalTermController.text = value ?? "";
+              //     },
+              //     options: viewModel.carRentalTermOptions,
+              //   ),
+              //   CommonDropdown<String>(
+              //     title: StringHelper.engineCapacityTitle, // Localized title
+              //     titleColor: Colors.black,
+              //     hint: viewModel.engineCapacityTextController.text.isEmpty
+              //         ? ""
+              //         : viewModel.engineCapacityTextController.text,
+              //     onSelected: (String? value) {
+              //       viewModel.engineCapacityTextController.text = value ?? '';
+              //     },
+              //     options:
+              //         viewModel.engineCapacityOptions, // Localized options list
+              //   ),
+              //   CommonDropdown<String>(
+              //     title: StringHelper.interiorColorTitle, // Localized title
+              //     titleColor: Colors.black,
+              //     hint: viewModel.interiorColorTextController.text.isEmpty
+              //         ? ""
+              //         : viewModel.interiorColorTextController.text,
+              //     onSelected: (String? value) {
+              //       viewModel.interiorColorTextController.text = value ?? '';
+              //     },
+              //     options:
+              //         StringHelper.carColorOptions, // Localized options list
+              //   ),
+              //   CommonDropdown<String>(
+              //     title: StringHelper.numbDoorsTitle, // Localized title
+              //     titleColor: Colors.black,
+              //     hint: viewModel.numbDoorsTextController.text.isEmpty
+              //         ? ""
+              //         : viewModel.numbDoorsTextController.text,
+              //     onSelected: (String? value) {
+              //       viewModel.numbDoorsTextController.text = value ?? '';
+              //     },
+              //     options: viewModel.numbDoorsOptions, // Localized options list
+              //   ),
+              //   CommonDropdown<String>(
+              //     title: StringHelper.bodyTypeTitle, // Using localized title
+              //     titleColor: Colors.black,
+              //     hint: viewModel.bodyTypeTextController.text.isEmpty
+              //         ? ""
+              //         : viewModel.bodyTypeTextController.text,
+              //     onSelected: (String? value) {
+              //       viewModel.bodyTypeTextController.text = value ?? '';
+              //     },
+              //     options:
+              //         StringHelper.bodyTypeOptions, // Using localized options
+              //   ),
+              //   // CommonDropdown(
+              //   //   title: StringHelper.mileage,
+              //   //   hint: viewModel.mileageTextController.text,
+              //   //   onSelected: (value) {
+              //   //     viewModel.mileageTextController.text = value??"";
+              //   //   },
+              //   //   options: viewModel.mileageRanges,
+              //   // hint: StringHelper.select,
+              //   // readOnly: true,
+              //   // suffix: PopupMenuButton<String>(
+              //   //   clipBehavior: Clip.hardEdge,
+              //   //   icon: const Icon(
+              //   //     Icons.arrow_drop_down,
+              //   //     color: Colors.black,
+              //   //   ),
+              //   //   onSelected: (value) {
+              //   //     viewModel.mileageTextController.text = value;
+              //   //   },
+              //   //   itemBuilder: (BuildContext context) {
+              //   //     return viewModel.mileageRanges.map((option) {
+              //   //       return PopupMenuItem(
+              //   //         value: option,
+              //   //         child: Text(option ?? ''),
+              //   //       );
+              //   //     }).toList();
+              //   //   },
+              //   // ),
+              //   //),
+              //   const SizedBox(
+              //     height: 10,
+              //   ),
+              //   CommonDropdown(
+              //     title: StringHelper.transmission,
+              //     hint: viewModel.transmissionTextController.text.isEmpty
+              //         ? StringHelper.selectTransmission
+              //         : viewModel.transmissionTextController.text,
+              //     onSelected: (value) {
+              //       viewModel.transmissionTextController.text = value ?? "";
+              //       filter.transmission = value?.toLowerCase();
+              //     },
+              //     options: transmissionType,
+              //     // readOnly: true,
+              //     // controller: viewModel.transmissionTextController,
+              //     // suffix: PopupMenuButton<String>(
+              //     //   icon: const Icon(Icons.arrow_drop_down),
+              //     //   onSelected: (value) {
+              //     //     viewModel.transmissionTextController.text = value;
+              //     //     filter.transmission = value.toLowerCase();
+              //     //   },
+              //     //   itemBuilder: (BuildContext context) {
+              //     //     return transmissionType.map((option) {
+              //     //       return PopupMenuItem(
+              //     //         value: option,
+              //     //         child: Text(option),
+              //     //       );
+              //     //     }).toList();
+              //     //   },
+              //     // ),
+              //     // inputFormatters: [
+              //     //   LengthLimitingTextInputFormatter(4),
+              //     //   FilteringTextInputFormatter.digitsOnly,
+              //     // ],
+              //     // keyboardType: TextInputType.number,
+              //     // textInputAction: TextInputAction.done,
+              //   ),
+              //   // const SizedBox(
+              //   //   height: 10,
+              //   // ),
+              //   Text(
+              //     StringHelper.kmDriven,
+              //     style: context.textTheme.titleSmall,
+              //   ),
+              //   const Gap(10),
+              //   Row(
+              //     children: [
+              //       Expanded(
+              //         child: SizedBox(
+              //           width: context.width,
+              //           height: 50,
+              //           child: TextFormField(
+              //             keyboardType: TextInputType.number,
+              //             textAlign: TextAlign.center,
+              //             controller: viewModel.minKmDrivenTextController,
+              //             cursorColor: Colors.black,
+              //             maxLength: 7,
+              //             readOnly: true,
+              //             decoration: InputDecoration(
+              //               counterText: "",
+              //               fillColor: const Color(0xffFCFCFD),
+              //               hintText: "0 KM",
+              //               border: OutlineInputBorder(
+              //                 borderRadius: BorderRadius.circular(10),
+              //                 borderSide:
+              //                     const BorderSide(color: Color(0xffEFEFEF)),
+              //               ),
+              //               focusedBorder: OutlineInputBorder(
+              //                 borderRadius: BorderRadius.circular(10),
+              //                 borderSide:
+              //                     const BorderSide(color: Color(0xffEFEFEF)),
+              //               ),
+              //             ),
+              //           ),
+              //         ),
+              //       ),
+              //       const SizedBox(width: 5),
+              //       Text(StringHelper.to, style: context.textTheme.titleSmall),
+              //       const SizedBox(width: 5),
+              //       Expanded(
+              //         child: SizedBox(
+              //           width: context.width,
+              //           height: 50,
+              //           child: TextFormField(
+              //             keyboardType: TextInputType.number,
+              //             textAlign: TextAlign.center,
+              //             controller: viewModel.maxKmDrivenTextController,
+              //             cursorColor: Colors.black,
+              //             maxLength: 7,
+              //             readOnly: true,
+              //             decoration: InputDecoration(
+              //               counterText: "",
+              //               fillColor: const Color(0xffFCFCFD),
+              //               hintText: "1,000,000 KM",
+              //               border: OutlineInputBorder(
+              //                 borderRadius: BorderRadius.circular(10),
+              //                 borderSide:
+              //                     const BorderSide(color: Color(0xffEFEFEF)),
+              //               ),
+              //               focusedBorder: OutlineInputBorder(
+              //                 borderRadius: BorderRadius.circular(10),
+              //                 borderSide:
+              //                     const BorderSide(color: Color(0xffEFEFEF)),
+              //               ),
+              //             ),
+              //           ),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              //   const SizedBox(height: 15),
+              //   StatefulBuilder(
+              //     builder: (context, setState) {
+              //       return SfRangeSlider(
+              //         min: 0,
+              //         max: 1000000,
+              //         values: kmDrivenValues,
+              //         inactiveColor: Colors.grey,
+              //         activeColor: const Color(0xffFF385C),
+              //         showLabels: false,
+              //         interval: 100000, // Every 100,000 KM for visual markers
+              //         stepSize: 1000, // Move in steps of 1,000 KM
+              //         labelFormatterCallback:
+              //             (dynamic actualValue, String formattedText) {
+              //           return actualValue == 1000000
+              //               ? '1,000,000+'
+              //               : formattedText;
+              //         },
+              //         onChanged: (SfRangeValues newValues) {
+              //           if ((newValues.end - newValues.start) >= 1000) {
+              //             viewModel.minKmDrivenTextController.text =
+              //                 "${newValues.start.round()}";
+              //             viewModel.maxKmDrivenTextController.text =
+              //                 "${newValues.end.round()}";
+              //             setState(() {
+              //               kmDrivenValues = newValues;
+              //             });
+              //           }
+              //         },
+              //       );
+              //     },
+              //   ),
+              //   const SizedBox(height: 10),
+              //   const SizedBox(
+              //     height: 10,
+              //   ),
+              // ],
+              if (filter.categoryId == '10' &&
+                  filter.subcategoryId == '20') ...[
+                CommonDropdown<String?>(
+                  title: "RAM",
+                  hint: viewModel.ramTextController.text.isEmpty
+                      ? "Select RAM"
+                      : viewModel.ramTextController.text,
+                  onSelected: (String? value) {
+                    viewModel.ramTextController.text = value ?? "";
+                    filter.ram =
+                        value != null ? value.replaceAll(" GB", "") : "";
                   },
-                  options: transmissionType,
-                  // readOnly: true,
-                  // controller: viewModel.transmissionTextController,
-                  // suffix: PopupMenuButton<String>(
-                  //   icon: const Icon(Icons.arrow_drop_down),
-                  //   onSelected: (value) {
-                  //     viewModel.transmissionTextController.text = value;
-                  //     filter.transmission = value.toLowerCase();
-                  //   },
-                  //   itemBuilder: (BuildContext context) {
-                  //     return transmissionType.map((option) {
-                  //       return PopupMenuItem(
-                  //         value: option,
-                  //         child: Text(option),
-                  //       );
-                  //     }).toList();
-                  //   },
-                  // ),
-                  // inputFormatters: [
-                  //   LengthLimitingTextInputFormatter(4),
-                  //   FilteringTextInputFormatter.digitsOnly,
-                  // ],
-                  // keyboardType: TextInputType.number,
-                  // textInputAction: TextInputAction.done,
+                  options: viewModel.phoneRamOptions,
                 ),
-                // const SizedBox(
-                //   height: 10,
-                // ),
-                // AppTextField(
-                //   title: StringHelper.kmDriven,
-                //   hint: StringHelper.enter,
-                //   controller: viewModel.kmDrivenTextController,
-                //   readOnly: false,
-                //   inputFormatters: [
-                //     LengthLimitingTextInputFormatter(10),
-                //     FilteringTextInputFormatter.digitsOnly,
-                //   ],
-                //   keyboardType: TextInputType.number,
-                //   textInputAction: TextInputAction.done,
-                // ),
-                const SizedBox(
-                  height: 10,
+                const SizedBox(height: 10),
+                CommonDropdown<String?>(
+                  title: "Storage",
+                  hint: viewModel.storageTextController.text.isEmpty
+                      ? "Select Storage"
+                      : viewModel.storageTextController.text,
+                  onSelected: (String? value) {
+                    viewModel.storageTextController.text = value ?? "";
+                    filter.storage =
+                        value != null ? value.replaceAll(" GB", "") : "";
+                  },
+                  options: viewModel.phoneStorageOptions,
                 ),
+                const SizedBox(height: 10),
               ],
-              if (filter.categoryId == '11' && (filter.subcategoryId??"").isNotEmpty) ...{
-                Visibility(
-                    visible:filter.subcategoryId != "90" ,
-                    child:AmenitiesWidget(
-                      amenitiesChecked: selectedAmenities,
-                  selectedAmenities: (List<int?> ids) {
-                    filter.selectedAmnities = ids.join(',');
+              if (filter.categoryId == '1' &&
+                  (filter.subSubCategoryId == '1' ||
+                      filter.subSubCategoryId == '2')) ...[
+                CommonDropdown(
+                  title: "RAM",
+                  hint: viewModel.ramTextController.text.isEmpty
+                      ? "Select RAM"
+                      : viewModel.ramTextController.text,
+                  onSelected: (String? value) {
+                    viewModel.ramTextController.text = value ?? "";
+                    filter.ram =
+                        value != null ? value.replaceAll(" GB", "") : "";
                   },
-                ))
+                  options: viewModel.storageOptions,
+                ),
+                const SizedBox(height: 10),
+                CommonDropdown(
+                  title: "Storage",
+                  hint: viewModel.storageTextController.text.isEmpty
+                      ? "Select Storage"
+                      : viewModel.storageTextController.text,
+                  onSelected: (String? value) {
+                    viewModel.storageTextController.text = value ?? "";
+                    filter.storage =
+                        value != null ? value.replaceAll(" GB", "") : "";
+                  },
+                  options: viewModel.storageOptions,
+                ),
+                const SizedBox(height: 10),
+              ],
+              if (filter.categoryId == '11' &&
+                  (filter.subcategoryId ?? "").isNotEmpty) ...{
+                Visibility(
+                    visible: filter.subcategoryId != "90",
+                    child: AmenitiesWidget(
+                      amenitiesChecked: selectedAmenities,
+                      selectedAmenities: (List<int?> ids) {
+                        filter.selectedAmnities = ids.join(',');
+                      },
+                    ))
               },
               if (filter.categoryId == '9') ...[
                 CommonDropdown(
                   title: StringHelper.positionType,
                   hint: viewModel.jobPositionTextController.text,
                   onSelected: (String? value) {
-                    viewModel.jobPositionTextController.text = value??"";
+                    viewModel.jobPositionTextController.text = value ?? "";
                   },
                   options: viewModel.jobPositionList,
                   // hint: StringHelper.select,
@@ -826,6 +1229,31 @@ class _FilterViewState extends State<FilterView> {
                   //   },
                   // ),
                 ),
+                CommonDropdown(
+                  title: StringHelper.workSetting,
+                  hint: viewModel.workSettingTextController.text,
+                  onSelected: (String? value) {
+                    viewModel.workSettingTextController.text = value ?? "";
+                  },
+                  options: viewModel.workSettingOptions,
+                ),
+                CommonDropdown(
+                  title: StringHelper.workExperience,
+                  hint: viewModel.workExperienceTextController.text,
+                  onSelected: (String? value) {
+                    viewModel.workExperienceTextController.text = value ?? "";
+                  },
+                  options: viewModel.experienceOptions,
+                ),
+                CommonDropdown(
+                  title: StringHelper.workEducation,
+                  hint: viewModel.workEducationTextController.text,
+                  onSelected: (String? value) {
+                    viewModel.workEducationTextController.text = value ?? "";
+                  },
+                  options: viewModel.workEducationOptions,
+                ),
+
                 const SizedBox(
                   height: 15,
                 ),
@@ -852,8 +1280,8 @@ class _FilterViewState extends State<FilterView> {
                                 if (value.isEmpty) {
                                   salaryFromTo = SfRangeValues(
                                       0,
-                                      int.parse(
-                                          viewModel.jobSalaryToController.text));
+                                      int.parse(viewModel
+                                          .jobSalaryToController.text));
                                   return;
                                 }
 
@@ -870,13 +1298,13 @@ class _FilterViewState extends State<FilterView> {
                                 hintText: StringHelper.egp0,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
-                                  borderSide:
-                                  const BorderSide(color: Color(0xffEFEFEF)),
+                                  borderSide: const BorderSide(
+                                      color: Color(0xffEFEFEF)),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
-                                  borderSide:
-                                  const BorderSide(color: Color(0xffEFEFEF)),
+                                  borderSide: const BorderSide(
+                                      color: Color(0xffEFEFEF)),
                                 ))),
                       ),
                     ),
@@ -924,8 +1352,8 @@ class _FilterViewState extends State<FilterView> {
                               hintText: "EGP0",
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
-                                  borderSide:
-                                  const BorderSide(color: Color(0xffEFEFEF))),
+                                  borderSide: const BorderSide(
+                                      color: Color(0xffEFEFEF))),
                               focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                   borderSide: const BorderSide(
@@ -955,15 +1383,15 @@ class _FilterViewState extends State<FilterView> {
                           : ' $formattedText';
                     },
                     onChanged: (SfRangeValues newValues) {
-        if ((newValues.end - newValues.start) >= 1000) {
-          viewModel.jobSalaryFromController.text =
-          "${newValues.start.round()}";
-          viewModel.jobSalaryToController.text =
-          "${newValues.end.round()}";
-          setState(() {
-            salaryFromTo = newValues;
-          });
-        }
+                      if ((newValues.end - newValues.start) >= 1000) {
+                        viewModel.jobSalaryFromController.text =
+                            "${newValues.start.round()}";
+                        viewModel.jobSalaryToController.text =
+                            "${newValues.end.round()}";
+                        setState(() {
+                          salaryFromTo = newValues;
+                        });
+                      }
                     },
                   );
                 }),
@@ -1057,20 +1485,22 @@ class _FilterViewState extends State<FilterView> {
               ),
               CommonDropdown<CategoryModel?>(
                 title: StringHelper.sortBy,
-                hint: viewModel.sortByTextController.text.isEmpty?StringHelper.sortBy:viewModel.sortByTextController.text,
+                hint: viewModel.sortByTextController.text.isEmpty
+                    ? StringHelper.sortBy
+                    : viewModel.sortByTextController.text,
                 onSelected: (value) {
                   viewModel.sortByTextController.text = value?.name ?? '';
                   filter.sortByPrice =
-                  value?.name == StringHelper.priceLowToHigh
-                      ? 'asc'
-                      : 'desc';
+                      value?.name == StringHelper.priceLowToHigh
+                          ? 'asc'
+                          : 'desc';
                 },
                 options: sortByList,
-                listItemBuilder: (context,model,selected,fxn){
+                listItemBuilder: (context, model, selected, fxn) {
                   return Text(model?.name ?? '');
                 },
                 headerBuilder: (context, selectedItem, enabled) {
-                  return Text(selectedItem?.name??"");
+                  return Text(selectedItem?.name ?? "");
                 },
                 // readOnly: true,
                 // suffix: PopupMenuButton(
@@ -1097,18 +1527,19 @@ class _FilterViewState extends State<FilterView> {
               ),
               CommonDropdown<CategoryModel?>(
                 title: StringHelper.postedWithin,
-                hint: viewModel.postedWithinTextController.text.isEmpty?StringHelper.postedWithin:viewModel.postedWithinTextController.text,
+                hint: viewModel.postedWithinTextController.text.isEmpty
+                    ? StringHelper.postedWithin
+                    : viewModel.postedWithinTextController.text,
                 onSelected: (value) {
-                  viewModel.postedWithinTextController.text =
-                      value?.name ?? '';
+                  viewModel.postedWithinTextController.text = value?.name ?? '';
                   setDatePosted(value: value);
                 },
                 options: postedWithinList,
-                listItemBuilder: (context,model,selected,fxn){
+                listItemBuilder: (context, model, selected, fxn) {
                   return Text(model?.name ?? '');
                 },
                 headerBuilder: (context, selectedItem, enabled) {
-                  return Text(selectedItem?.name??"");
+                  return Text(selectedItem?.name ?? "");
                 },
                 // controller: viewModel.postedWithinTextController,
                 // readOnly: true,
@@ -1140,13 +1571,16 @@ class _FilterViewState extends State<FilterView> {
                 width: context.width,
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 onTap: () {
-                  if(viewModel.itemCondition != 0 && filter.categoryId != "8" && filter.categoryId != "9" ){
+                  if (viewModel.itemCondition != 0 &&
+                      filter.categoryId != "8" &&
+                      filter.categoryId != "9") {
                     filter.itemCondition = viewModel.itemCondition == 1
                         ? StringHelper.newText
                         : StringHelper.used;
                   }
 
-                  if((filter.categoryId??"").isNotEmpty && filter.categoryId != '9' ) {
+                  if ((filter.categoryId ?? "").isNotEmpty &&
+                      filter.categoryId != '9') {
                     if (values.start >= 0 && values.end <= 100000) {
                       filter.minPrice =
                           viewModel.startPriceTextController.text.trim();
@@ -1154,12 +1588,20 @@ class _FilterViewState extends State<FilterView> {
                           viewModel.endPriceTextController.text.trim();
                     }
                   }
-                  if (filter.categoryId == '9' && salaryFromTo.start >= 0 && values.end <= 100000) {
-                  filter.salleryFrom = viewModel.jobSalaryFromController.text.trim();
-                  filter.salleryTo = viewModel.jobSalaryToController.text.trim();
+                  // if (viewModel.sizesTextController.text.trim().isNotEmpty) {
+                  //   filter.sizeId = viewModel.sizesTextController.text.trim();
+                  // }
+                  if (filter.categoryId == '9' &&
+                      salaryFromTo.start >= 0 &&
+                      values.end <= 100000) {
+                    filter.salleryFrom =
+                        viewModel.jobSalaryFromController.text.trim();
+                    filter.salleryTo =
+                        viewModel.jobSalaryToController.text.trim();
                   }
 
-                  if ("${viewModel.latitude}" != "0.0" && "${viewModel.longitude}" != "0.0") {
+                  if ("${viewModel.latitude}" != "0.0" &&
+                      "${viewModel.longitude}" != "0.0") {
                     filter.latitude = viewModel.latitude.toString();
                     filter.longitude = viewModel.longitude.toString();
                   }
@@ -1167,45 +1609,139 @@ class _FilterViewState extends State<FilterView> {
                   if (viewModel.yearTextController.text.trim().isNotEmpty) {
                     filter.year = viewModel.yearTextController.text.trim();
                   }
-
+                  if (viewModel.carRentalTermController.text
+                      .trim()
+                      .isNotEmpty) {
+                    filter.carRentalTerm =
+                        viewModel.carRentalTermController.text.trim();
+                  }
                   if (viewModel.fuelTextController.text.trim().isNotEmpty) {
                     filter.fuel = viewModel.fuelTextController.text.trim();
                   }
-
-                  if (viewModel.propertyForTextController.text.trim().isNotEmpty) {
-                    filter.propertyFor = viewModel.propertyForTextController.text.trim();
+                  if (viewModel.carColorTextController.text.trim().isNotEmpty) {
+                    // Added
+                    filter.carColor =
+                        viewModel.carColorTextController.text.trim();
+                  }
+                  if (viewModel.horsePowerTextController.text
+                      .trim()
+                      .isNotEmpty) {
+                    filter.horsePower =
+                        viewModel.horsePowerTextController.text.trim();
+                  }
+                  if (viewModel.engineCapacityTextController.text
+                      .trim()
+                      .isNotEmpty) {
+                    filter.engineCapacity =
+                        viewModel.engineCapacityTextController.text.trim();
+                  }
+                  if (viewModel.screenSizeTextController.text
+                      .trim()
+                      .isNotEmpty) {
+                    filter.screenSize =
+                        viewModel.screenSizeTextController.text.trim();
+                  }
+                  if (viewModel.interiorColorTextController.text
+                      .trim()
+                      .isNotEmpty) {
+                    filter.interiorColor =
+                        viewModel.interiorColorTextController.text.trim();
+                  }
+                  if (viewModel.numbCylindersTextController.text
+                      .trim()
+                      .isNotEmpty) {
+                    filter.numbCylinders =
+                        viewModel.numbCylindersTextController.text.trim();
+                  }
+                  if (viewModel.numbDoorsTextController.text
+                      .trim()
+                      .isNotEmpty) {
+                    filter.numbDoors =
+                        viewModel.numbDoorsTextController.text.trim();
+                  }
+                  if (viewModel.bodyTypeTextController.text.trim().isNotEmpty) {
+                    filter.bodyType =
+                        viewModel.bodyTypeTextController.text.trim();
+                  }
+                  if (viewModel.workSettingTextController.text
+                      .trim()
+                      .isNotEmpty) {
+                    filter.workSetting =
+                        viewModel.workSettingTextController.text.trim();
+                  }
+                  if (viewModel.workExperienceTextController.text
+                      .trim()
+                      .isNotEmpty) {
+                    filter.workExperience =
+                        viewModel.workExperienceTextController.text.trim();
+                  }
+                  if (viewModel.workEducationTextController.text
+                      .trim()
+                      .isNotEmpty) {
+                    filter.workEducation =
+                        viewModel.workEducationTextController.text.trim();
+                  }
+                  if (viewModel.propertyForTextController.text
+                      .trim()
+                      .isNotEmpty) {
+                    filter.propertyFor =
+                        viewModel.propertyForTextController.text.trim();
                   }
 
-                  if (viewModel.noOfBedroomsTextController.text.trim().isNotEmpty) {
-                    filter.bedrooms = viewModel.noOfBedroomsTextController.text.trim();
+                  if (viewModel.noOfBedroomsTextController.text
+                      .trim()
+                      .isNotEmpty) {
+                    filter.bedrooms =
+                        viewModel.noOfBedroomsTextController.text.trim();
                   }
 
-                  if (viewModel.noOfBathroomsTextController.text.trim().isNotEmpty) {
-                    filter.bathrooms = viewModel.noOfBathroomsTextController.text.trim();
+                  if (viewModel.noOfBathroomsTextController.text
+                      .trim()
+                      .isNotEmpty) {
+                    filter.bathrooms =
+                        viewModel.noOfBathroomsTextController.text.trim();
                   }
 
-                  if (viewModel.furnishingStatusTextController.text.trim().isNotEmpty) {
-                    filter.furnishedType = viewModel.furnishingStatusTextController.text.trim();
+                  if (viewModel.furnishingStatusTextController.text
+                      .trim()
+                      .isNotEmpty) {
+                    filter.furnishedType =
+                        viewModel.furnishingStatusTextController.text.trim();
                   }
 
-                  if (viewModel.ownershipStatusTextController.text.trim().isNotEmpty) {
-                    filter.ownership = viewModel.ownershipStatusTextController.text.trim();
+                  if (viewModel.ownershipStatusTextController.text
+                      .trim()
+                      .isNotEmpty) {
+                    filter.ownership =
+                        viewModel.ownershipStatusTextController.text.trim();
                   }
 
-                  if (viewModel.paymentTypeTextController.text.trim().isNotEmpty) {
-                    filter.paymentType = viewModel.paymentTypeTextController.text.trim();
+                  if (viewModel.paymentTypeTextController.text
+                      .trim()
+                      .isNotEmpty) {
+                    filter.paymentType =
+                        viewModel.paymentTypeTextController.text.trim();
                   }
 
-                  if (viewModel.completionStatusTextController.text.trim().isNotEmpty) {
-                    filter.completionStatus = viewModel.completionStatusTextController.text.trim();
+                  if (viewModel.completionStatusTextController.text
+                      .trim()
+                      .isNotEmpty) {
+                    filter.completionStatus =
+                        viewModel.completionStatusTextController.text.trim();
                   }
 
-                  if (viewModel.deliveryTermTextController.text.trim().isNotEmpty) {
-                    filter.deliveryTerm = viewModel.deliveryTermTextController.text.trim();
+                  if (viewModel.deliveryTermTextController.text
+                      .trim()
+                      .isNotEmpty) {
+                    filter.deliveryTerm =
+                        viewModel.deliveryTermTextController.text.trim();
                   }
 
-                  if (viewModel.propertyForTypeTextController.text.trim().isNotEmpty) {
-                    filter.type = viewModel.propertyForTypeTextController.text.trim();
+                  if (viewModel.propertyForTypeTextController.text
+                      .trim()
+                      .isNotEmpty) {
+                    filter.type =
+                        viewModel.propertyForTypeTextController.text.trim();
                   }
 
                   if (viewModel.levelTextController.text.trim().isNotEmpty) {
@@ -1213,17 +1749,25 @@ class _FilterViewState extends State<FilterView> {
                   }
 
                   if (viewModel.listedByTextController.text.trim().isNotEmpty) {
-                    filter.listedBy = viewModel.listedByTextController.text.trim();
+                    filter.listedBy =
+                        viewModel.listedByTextController.text.trim();
                   }
 
-                  if (viewModel.rentalTermsTextController.text.trim().isNotEmpty) {
-                    filter.rentalTerm = viewModel.rentalTermsTextController.text.trim();
+                  if (viewModel.rentalTermsTextController.text
+                      .trim()
+                      .isNotEmpty) {
+                    filter.rentalTerm =
+                        viewModel.rentalTermsTextController.text.trim();
                   }
 
-                  if (viewModel.accessToUtilitiesTextController.text.trim().isNotEmpty) {
-                    filter.accessToUtilities = viewModel.accessToUtilitiesTextController.text.trim();
+                  if (viewModel.accessToUtilitiesTextController.text
+                      .trim()
+                      .isNotEmpty) {
+                    filter.accessToUtilities =
+                        viewModel.accessToUtilitiesTextController.text.trim();
                   }
-                  if(filter.categoryId == "11" && ["83", "84", "87"].contains(filter.subcategoryId)) {
+                  if (filter.categoryId == "11" &&
+                      ["83", "84", "87"].contains(filter.subcategoryId)) {
                     if (downValues.start >= 0 && downValues.end <= 100000) {
                       filter.minDownPrice =
                           viewModel.startDownPriceTextController.text.trim();
@@ -1231,17 +1775,48 @@ class _FilterViewState extends State<FilterView> {
                           viewModel.endDownPriceTextController.text.trim();
                     }
                   }
-
-                  if (filter.categoryId == "11" && areaValues.start >= 0 && areaValues.end <= 100000) {
-                  filter.minAreaSize = viewModel.startAreaTextController.text.trim();
-                  filter.maxAreaSize = viewModel.endAreaTextController.text.trim();
+                  if (viewModel.ramTextController.text.trim().isNotEmpty) {
+                    filter.ram = viewModel.ramTextController.text.trim();
+                  }
+                  if (viewModel.storageTextController.text.trim().isNotEmpty) {
+                    filter.storage =
+                        viewModel.storageTextController.text.trim();
                   }
 
-                  if (viewModel.kmDrivenTextController.text.trim().isNotEmpty) {
-                    filter.minKmDriven = viewModel.kmDrivenTextController.text.trim();
+                  if (filter.categoryId == "11" &&
+                      areaValues.start >= 0 &&
+                      areaValues.end <= 100000) {
+                    filter.minAreaSize =
+                        viewModel.startAreaTextController.text.trim();
+                    filter.maxAreaSize =
+                        viewModel.endAreaTextController.text.trim();
+                  }
+                  // if (filter.categoryId == "4" &&
+                  //     kmDrivenValues.start >= 0 &&
+                  //     kmDrivenValues.end <= 1000000) {
+                  //   filter.minKmDriven =
+                  //       viewModel.minKmDrivenTextController.text.trim();
+                  //   filter.maxKmDriven =
+                  //       viewModel.maxKmDrivenTextController.text.trim();
+                  // }
+
+                  // if (viewModel.kmDrivenTextController.text.trim().isNotEmpty) {
+                  //   filter.minKmDriven =
+                  //       viewModel.kmDrivenTextController.text.trim();
+                  // }
+                  if (filter.categoryId == "4" &&
+                      (filter.subcategoryId == "13" ||
+                          filter.subcategoryId == "26") &&
+                      kmDrivenValues.start >= 0 &&
+                      kmDrivenValues.end <= 1000000) {
+                    filter.minKmDriven =
+                        viewModel.minKmDrivenTextController.text.trim();
+                    filter.maxKmDriven =
+                        viewModel.maxKmDrivenTextController.text.trim();
                   }
                   if (viewModel.mileageTextController.text.trim().isNotEmpty) {
-                    filter.milleage = viewModel.mileageTextController.text.trim();
+                    filter.milleage =
+                        viewModel.mileageTextController.text.trim();
                   }
 
                   // filter.minPrice =
@@ -1274,10 +1849,11 @@ class _FilterViewState extends State<FilterView> {
                   // filter.minKmDriven =
                   //     viewModel.kmDrivenTextController.text.trim();
                   context.pop();
-                  if(widget.filters?.screenFrom == "home") {
+                  if (widget.filters?.screenFrom == "home") {
                     context.push(Routes.filterDetails, extra: filter);
-                  }else {
-                    context.pushReplacement(Routes.filterDetails, extra: filter);
+                  } else {
+                    context.pushReplacement(Routes.filterDetails,
+                        extra: filter);
                   }
                 },
                 title: StringHelper.apply,
@@ -1289,7 +1865,7 @@ class _FilterViewState extends State<FilterView> {
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 onTap: () {
                   resetFilters();
-                   context.pop();
+                  context.pop();
                   // context.push(Routes.filterDetails, extra: filter);
                 },
               ),
@@ -1304,13 +1880,15 @@ class _FilterViewState extends State<FilterView> {
     categoriesList = vm.categories;
     resetFilters();
     if (widget.filters != null) {
-
       brands.clear();
+      fashionSizes.clear();
       filter = widget.filters!;
-      vm.currentPropertyType = filter.propertyFor??"";
-      vm.itemCondition = (filter.itemCondition??"").isEmpty
+      vm.currentPropertyType = filter.propertyFor ?? "";
+      vm.itemCondition = (filter.itemCondition ?? "").isEmpty
           ? 0
-          : (filter.itemCondition?.toLowerCase().contains('used') ?? false) ? 2 : 1;
+          : (filter.itemCondition?.toLowerCase().contains('used') ?? false)
+              ? 2
+              : 1;
       debugPrint("vm.itemCondition ${vm.itemCondition}");
       vm.latitude = double.parse(filter.latitude ?? '0.0');
       vm.longitude = double.parse(filter.longitude ?? '0.0');
@@ -1322,35 +1900,103 @@ class _FilterViewState extends State<FilterView> {
       vm.jobSalaryToController.text =
           filter.salleryTo != '0' ? filter.salleryTo ?? '100000' : '100000';
 
-      vm.kmDrivenTextController.text = filter.minKmDriven ?? '';
+      // vm.kmDrivenTextController.text = filter.minKmDriven ?? '';
       vm.yearTextController.text = filter.year ?? '';
       vm.fuelTextController.text = filter.fuel ?? '';
+      vm.carColorTextController.text = filter.carColor ?? '';
+      vm.horsePowerTextController.text = filter.horsePower ?? '';
+      vm.ramTextController.text = filter.ram ?? "";
+      vm.storageTextController.text = filter.storage ?? "";
+      vm.bodyTypeTextController.text = filter.bodyType ?? "";
+      vm.engineCapacityTextController.text = filter.engineCapacity ?? '';
+      vm.interiorColorTextController.text = filter.interiorColor ?? '';
+      vm.numbCylindersTextController.text = filter.numbCylinders ?? '';
+      vm.numbDoorsTextController.text = filter.numbDoors ?? '';
+      vm.carRentalTermController.text = filter.carRentalTerm ?? '';
       vm.mileageTextController.text = filter.milleage ?? '';
+      vm.screenSizeTextController.text = filter.screenSize ?? '';
       vm.propertyForTextController.text = filter.propertyFor ?? '';
+      vm.workSettingTextController.text = filter.workSetting ?? '';
+      vm.workExperienceTextController.text = filter.workExperience ?? '';
+      vm.workEducationTextController.text = filter.workEducation ?? '';
+      filter.ram = "";
+      filter.storage = "";
 
       // vm.currentLocation = await LocationHelper.getAddressFromCoordinates(
       //     vm.latitude, vm.longitude);
       vm.categoryTextController.text = getCategoryName(id: filter.categoryId);
-      if ((filter.categoryId??"").isNotEmpty && filter.categoryId != '0') {
+      if ((filter.categoryId ?? "").isNotEmpty && filter.categoryId != '0') {
         await getSubCategory(id: filter.categoryId);
       }
-      if ((filter.subcategoryId??"").isNotEmpty) {
+      if ((filter.subcategoryId ?? "").isNotEmpty) {
         await getBrands(id: filter.subcategoryId);
         vm.subCategoryTextController.text =
             getSubCategoryName(id: filter.subcategoryId);
+        await getSubSubCategories(id: filter.subcategoryId);
       }
-      vm.brandsTextController.clear();
-      if ((filter.brandId??"").isNotEmpty) {
+
+      // if ((filter.sizeId ?? "").isNotEmpty) {
+      //   vm.sizesTextController.text = getFashionSizeName(id: filter.sizeId);
+      // }
+      if ((filter.subSubCategoryId ?? "").isNotEmpty) {
+        // Maybe update UI or fetch additional data based on sub-subcategory
+        await getFashionSizes(id: filter.subSubCategoryId);
+      }
+
+      // if (filter.categoryId == "4") {
+      //   vm.minKmDrivenTextController.text = widget.filters?.minKmDriven ?? '0';
+      //   vm.maxKmDrivenTextController.text =
+      //       widget.filters?.maxKmDriven ?? '1000000';
+      //   setState(() {
+      //     kmDrivenValues = SfRangeValues(
+      //       double.tryParse(vm.minKmDrivenTextController.text) ?? 0,
+      //       double.tryParse(vm.maxKmDrivenTextController.text) ?? 1000000,
+      //     );
+      //   });
+      // }
+      if (filter.categoryId == '4' &&
+          (filter.subcategoryId == '13' || filter.subcategoryId == '26')) {
+        // Only set KM driven for cars for sale and motorcycles
+        vm.minKmDrivenTextController.text = widget.filters?.minKmDriven ?? '0';
+        vm.maxKmDrivenTextController.text =
+            widget.filters?.maxKmDriven ?? '1000000';
+        setState(() {
+          kmDrivenValues = SfRangeValues(
+            double.tryParse(vm.minKmDrivenTextController.text) ?? 0,
+            double.tryParse(vm.maxKmDrivenTextController.text) ?? 1000000,
+          );
+        });
+      } else {
+        // For other subcategories, don't set KM driven values
+        vm.minKmDrivenTextController.text = '0';
+        vm.maxKmDrivenTextController.text = '1000000';
+        kmDrivenValues = SfRangeValues(0, 1000000);
+      }
+      // vm.brandsTextController.clear();
+      if ((filter.brandId ?? "").isNotEmpty) {
         vm.brandsTextController.text = getBrandName(id: filter.brandId);
       }
+      vm.sizesTextController.clear();
+      if ((filter.sizeId ?? "").isNotEmpty) {
+        vm.sizesTextController.text = getFashionSizeName(id: filter.sizeId);
+      }
+      vm.minKmDrivenTextController.text = '0';
+      vm.maxKmDrivenTextController.text = '1000000';
+      kmDrivenValues = SfRangeValues(
+        double.tryParse(vm.minKmDrivenTextController.text) ?? 0,
+        double.tryParse(vm.maxKmDrivenTextController.text) ?? 1000000,
+      );
 
       values = SfRangeValues(
           int.parse(vm.startPriceTextController.text.isEmpty
               ? '0'
               : vm.startPriceTextController.text),
           int.parse(vm.endPriceTextController.text));
-      if((filter.selectedAmnities??"").isNotEmpty) {
-        selectedAmenities = (filter.selectedAmnities??"").split(',').map((e) => int.parse(e)).toList();
+      if ((filter.selectedAmnities ?? "").isNotEmpty) {
+        selectedAmenities = (filter.selectedAmnities ?? "")
+            .split(',')
+            .map((e) => int.parse(e))
+            .toList();
       }
       //vm.locationTextController.text = vm.currentLocation;
     }
@@ -1378,6 +2024,7 @@ class _FilterViewState extends State<FilterView> {
             ? '100000'
             : vm.endPriceTextController.text));
     brands.clear();
+    fashionSizes.clear();
     selectedAmenities.clear();
     subCategoriesList.clear();
     filter.categoryId = "";
@@ -1388,6 +2035,21 @@ class _FilterViewState extends State<FilterView> {
     vm.brandsTextController.clear();
     vm.propertyForTextController.clear();
     vm.currentPropertyType = "Sell";
+    vm.carColorTextController.clear();
+    vm.horsePowerTextController.clear();
+    vm.engineCapacityTextController.clear();
+    vm.interiorColorTextController.clear();
+    vm.numbCylindersTextController.clear();
+    vm.screenSizeTextController.clear();
+    vm.numbDoorsTextController.clear();
+    vm.sizesTextController.clear();
+    vm.ramTextController.clear();
+    vm.storageTextController.clear();
+    vm.carRentalTermController.clear();
+    vm.workSettingTextController.clear();
+    vm.workExperienceTextController.clear();
+    vm.workEducationTextController.clear();
+    vm.bodyTypeTextController.clear();
     vm.noOfBathroomsTextController.clear();
     vm.noOfBedroomsTextController.clear();
     vm.furnishingStatusTextController.clear();
@@ -1454,6 +2116,14 @@ class _FilterViewState extends State<FilterView> {
     return ''; // Return empty string if category not found
   }
 
+  String getSubSubCategoryName({String? id}) {
+    if (id == null || id.isEmpty) return '';
+    for (var subSub in subSubCategories) {
+      if (subSub.id.toString() == id) return subSub.name ?? '';
+    }
+    return '';
+  }
+
   String getBrandName({String? id}) {
     if (id == null) return '';
 
@@ -1464,6 +2134,18 @@ class _FilterViewState extends State<FilterView> {
     }
 
     return ''; // Return empty string if category not found
+  }
+
+  String getFashionSizeName({String? id}) {
+    if (id == null) return '';
+
+    for (var size in fashionSizes) {
+      if (size.id.toString() == id) {
+        return size.name ?? '';
+      }
+    }
+
+    return ''; // Return empty string if size not found
   }
 
   Future<void> getSubCategory({String? id}) async {
@@ -1495,18 +2177,46 @@ class _FilterViewState extends State<FilterView> {
     setState(() {});
   }
 
+  Future<void> getSubSubCategories({String? id}) async {
+    DialogHelper.showLoading();
+    ApiRequest apiRequest = ApiRequest(
+        url: ApiConstants.getSubSubCategoriesUrl(id: "$id"),
+        requestType: RequestType.get);
+    var response = await BaseClient.handleRequest(apiRequest);
+    ListResponse<CategoryModel> model = ListResponse<CategoryModel>.fromJson(
+        response, (json) => CategoryModel.fromJson(json));
+    subSubCategories = model.body ?? [];
+    DialogHelper.hideLoading();
+    setState(() {});
+  }
+
+  Future<void> getFashionSizes({String? id}) async {
+    DialogHelper.showLoading();
+    ApiRequest apiRequest = ApiRequest(
+      url: ApiConstants.getFashionSizeUrl(id: "$id"),
+      requestType: RequestType.get,
+    );
+    var response = await BaseClient.handleRequest(apiRequest);
+
+    ListResponse<CategoryModel> model = ListResponse<CategoryModel>.fromJson(
+        response, (json) => CategoryModel.fromJson(json));
+    fashionSizes = model.body ?? [];
+    DialogHelper.hideLoading();
+    setState(() {});
+  }
+
   void setDatePosted({CategoryModel? value}) {
     var now = DateTime.now();
     switch (value?.id) {
       case 1:
         filter.startDate = DateFormat('yyyy-MM-dd').format(now);
-        filter.endDate = DateFormat('yyyy-MM-dd').format(now.add(const Duration(days: 1)));
+        filter.endDate =
+            DateFormat('yyyy-MM-dd').format(now.add(const Duration(days: 1)));
         break;
       case 2:
         filter.startDate = DateFormat('yyyy-MM-dd')
             .format(now.subtract(const Duration(days: 1)));
-        filter.endDate = DateFormat('yyyy-MM-dd')
-            .format(now);
+        filter.endDate = DateFormat('yyyy-MM-dd').format(now);
         break;
       case 3:
         filter.endDate = DateFormat('yyyy-MM-dd').format(now);
@@ -1522,21 +2232,542 @@ class _FilterViewState extends State<FilterView> {
     }
   }
 
-  Widget commonWidget(BuildContext context, String? subcategoryId,HomeVM viewModel){
-    switch(subcategoryId){
-      case "83":
-        return apartmentWidget(viewModel);
-        case "84":
-        return villaWidget(viewModel);
-        case "87":
-        return businessWidget(viewModel);
-        case "88":
-        return vacationWidget(viewModel);
-        case "90":
-        return landWidget(viewModel);
+  Widget commonWidget(
+      BuildContext context, String? subcategoryId, HomeVM viewModel) {
+    if (filter.categoryId == '4') {
+      // Vehicles
+      switch (subcategoryId) {
+        case '13': // Cars for Sale
+          return carsForSaleWidget(viewModel);
+        case '25': // Cars for Rent
+          return carsForRentWidget(viewModel);
+        case '26': // Motorcycles
+          return motorcyclesWidget(viewModel);
+        case '98': // Trucks
+          return trucksWidget(viewModel);
         default:
-        return Container();
+          return const SizedBox.shrink(); // Empty widget if no match
+      }
     }
+    if (filter.categoryId == '11') {
+      // Properties
+      switch (subcategoryId) {
+        case '83': // Apartments
+          return apartmentWidget(
+              viewModel); // You’ll need to define this if not already
+        case '84': // Villas
+          return villaWidget(viewModel); // Already defined in your code
+        case '85': // Businesses
+          return businessWidget(viewModel); // Already defined
+        case '86': // Lands
+          return landWidget(viewModel); // Already defined
+        default:
+          return const SizedBox.shrink();
+      }
+    }
+    return const SizedBox.shrink(); // Default empty widget
+  }
+
+  Widget carsForSaleWidget(HomeVM viewModel) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CommonDropdown(
+          title: StringHelper.year,
+          hint: viewModel.yearTextController.text.isEmpty
+              ? StringHelper.selectYear
+              : viewModel.yearTextController.text,
+          onSelected: (value) {
+            viewModel.yearTextController.text = value ?? '';
+            filter.year = value;
+          },
+          options: yearsType,
+        ),
+        const SizedBox(height: 10),
+        CommonDropdown(
+          title: StringHelper.fuel,
+          hint: viewModel.fuelTextController.text,
+          onSelected: (value) {
+            viewModel.fuelTextController.text = value ?? '';
+            filter.fuel = value;
+          },
+          options: fuelsType,
+        ),
+        const SizedBox(height: 10),
+        AppTextField(
+          title: StringHelper.mileage,
+          controller: viewModel.mileageTextController,
+          hint: StringHelper.mileage,
+          maxLength: 6,
+          keyboardType: TextInputType.number,
+          inputFormatters: [
+            LengthLimitingTextInputFormatter(6),
+            FilteringTextInputFormatter.deny(
+                RegExp(viewModel.regexToRemoveEmoji)),
+            FilteringTextInputFormatter.digitsOnly,
+          ],
+        ),
+        const SizedBox(height: 10),
+        CommonDropdown<String>(
+          title: StringHelper.carColorTitle,
+          titleColor: Colors.black,
+          hint: viewModel.carColorTextController.text,
+          onSelected: (String? value) {
+            viewModel.carColorTextController.text = value ?? '';
+          },
+          options: StringHelper.carColorOptions,
+        ),
+        const SizedBox(height: 10),
+        CommonDropdown<String>(
+          title: StringHelper.horsepowerTitle,
+          titleColor: Colors.black,
+          hint: viewModel.horsePowerTextController.text.isEmpty
+              ? ""
+              : viewModel.horsePowerTextController.text,
+          onSelected: (String? value) {
+            viewModel.horsePowerTextController.text = value ?? '';
+          },
+          options: viewModel.horsepowerOptions,
+        ),
+        const SizedBox(height: 10),
+        CommonDropdown<String>(
+          title: StringHelper.engineCapacityTitle,
+          titleColor: Colors.black,
+          hint: viewModel.engineCapacityTextController.text.isEmpty
+              ? ""
+              : viewModel.engineCapacityTextController.text,
+          onSelected: (String? value) {
+            viewModel.engineCapacityTextController.text = value ?? '';
+          },
+          options: viewModel.engineCapacityOptions,
+        ),
+        const SizedBox(height: 10),
+        CommonDropdown<String>(
+          title: StringHelper.interiorColorTitle,
+          titleColor: Colors.black,
+          hint: viewModel.interiorColorTextController.text.isEmpty
+              ? ""
+              : viewModel.interiorColorTextController.text,
+          onSelected: (String? value) {
+            viewModel.interiorColorTextController.text = value ?? '';
+          },
+          options: StringHelper.carColorOptions,
+        ),
+        const SizedBox(height: 10),
+        CommonDropdown<String>(
+          title: StringHelper.numbDoorsTitle,
+          titleColor: Colors.black,
+          hint: viewModel.numbDoorsTextController.text.isEmpty
+              ? ""
+              : viewModel.numbDoorsTextController.text,
+          onSelected: (String? value) {
+            viewModel.numbDoorsTextController.text = value ?? '';
+          },
+          options: viewModel.numbDoorsOptions,
+        ),
+        const SizedBox(height: 10),
+        CommonDropdown<String>(
+          title: StringHelper.bodyTypeTitle,
+          titleColor: Colors.black,
+          hint: viewModel.bodyTypeTextController.text.isEmpty
+              ? ""
+              : viewModel.bodyTypeTextController.text,
+          onSelected: (String? value) {
+            viewModel.bodyTypeTextController.text = value ?? '';
+          },
+          options: StringHelper.bodyTypeOptions,
+        ),
+        const SizedBox(height: 10),
+        CommonDropdown(
+          title: StringHelper.transmission,
+          hint: viewModel.transmissionTextController.text.isEmpty
+              ? StringHelper.selectTransmission
+              : viewModel.transmissionTextController.text,
+          onSelected: (value) {
+            viewModel.transmissionTextController.text = value ?? "";
+            filter.transmission = value?.toLowerCase();
+          },
+          options: transmissionType,
+        ),
+        const SizedBox(height: 10),
+        Text(StringHelper.kmDriven, style: context.textTheme.titleSmall),
+        const Gap(10),
+        Row(
+          children: [
+            Expanded(
+              child: SizedBox(
+                width: context.width,
+                height: 50,
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  textAlign: TextAlign.center,
+                  controller: viewModel.minKmDrivenTextController,
+                  cursorColor: Colors.black,
+                  maxLength: 7,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    counterText: "",
+                    fillColor: const Color(0xffFCFCFD),
+                    hintText: "0 KM",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Color(0xffEFEFEF)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Color(0xffEFEFEF)),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 5),
+            Text(StringHelper.to, style: context.textTheme.titleSmall),
+            const SizedBox(width: 5),
+            Expanded(
+              child: SizedBox(
+                width: context.width,
+                height: 50,
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  textAlign: TextAlign.center,
+                  controller: viewModel.maxKmDrivenTextController,
+                  cursorColor: Colors.black,
+                  maxLength: 7,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    counterText: "",
+                    fillColor: const Color(0xffFCFCFD),
+                    hintText: "1,000,000 KM",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Color(0xffEFEFEF)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Color(0xffEFEFEF)),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 15),
+        StatefulBuilder(
+          builder: (context, setState) {
+            return SfRangeSlider(
+              min: 0,
+              max: 1000000,
+              values: kmDrivenValues,
+              inactiveColor: Colors.grey,
+              activeColor: const Color(0xffFF385C),
+              showLabels: false,
+              interval: 100000,
+              stepSize: 1000,
+              labelFormatterCallback:
+                  (dynamic actualValue, String formattedText) {
+                return actualValue == 1000000 ? '1,000,000+' : formattedText;
+              },
+              onChanged: (SfRangeValues newValues) {
+                if ((newValues.end - newValues.start) >= 1000) {
+                  viewModel.minKmDrivenTextController.text =
+                      "${newValues.start.round()}";
+                  viewModel.maxKmDrivenTextController.text =
+                      "${newValues.end.round()}";
+                  setState(() {
+                    kmDrivenValues = newValues;
+                  });
+                }
+              },
+            );
+          },
+        ),
+        const SizedBox(height: 10),
+      ],
+    );
+  }
+
+  Widget carsForRentWidget(HomeVM viewModel) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CommonDropdown<String>(
+          title: StringHelper.rentalCarTerm,
+          titleColor: Colors.black,
+          hint: viewModel.carRentalTermController.text.isEmpty
+              ? ""
+              : viewModel.carRentalTermController.text,
+          onSelected: (String? value) {
+            viewModel.carRentalTermController.text = value ?? "";
+            filter.carRentalTerm = value;
+          },
+          options: viewModel.carRentalTermOptions,
+        ),
+        const SizedBox(height: 10),
+        CommonDropdown(
+          title: StringHelper.fuel,
+          hint: viewModel.fuelTextController.text,
+          onSelected: (value) {
+            viewModel.fuelTextController.text = value ?? '';
+            filter.fuel = value;
+          },
+          options: fuelsType,
+        ),
+        const SizedBox(height: 10),
+        CommonDropdown<String>(
+          title: StringHelper.bodyTypeTitle,
+          titleColor: Colors.black,
+          hint: viewModel.bodyTypeTextController.text.isEmpty
+              ? ""
+              : viewModel.bodyTypeTextController.text,
+          onSelected: (String? value) {
+            viewModel.bodyTypeTextController.text = value ?? '';
+          },
+          options: StringHelper.bodyTypeOptions,
+        ),
+        const SizedBox(height: 10),
+        CommonDropdown(
+          title: StringHelper.transmission,
+          hint: viewModel.transmissionTextController.text.isEmpty
+              ? StringHelper.selectTransmission
+              : viewModel.transmissionTextController.text,
+          onSelected: (value) {
+            viewModel.transmissionTextController.text = value ?? "";
+            filter.transmission = value?.toLowerCase();
+          },
+          options: transmissionType,
+        ),
+      ],
+    );
+  }
+
+  Widget trucksWidget(HomeVM viewModel) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CommonDropdown(
+          title: StringHelper.year,
+          hint: viewModel.yearTextController.text.isEmpty
+              ? StringHelper.selectYear
+              : viewModel.yearTextController.text,
+          onSelected: (value) {
+            viewModel.yearTextController.text = value ?? '';
+            filter.year = value;
+          },
+          options: yearsType,
+        ),
+        const SizedBox(height: 10),
+        Text(StringHelper.kmDriven, style: context.textTheme.titleSmall),
+        const Gap(10),
+        Row(
+          children: [
+            Expanded(
+              child: SizedBox(
+                width: context.width,
+                height: 50,
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  textAlign: TextAlign.center,
+                  controller: viewModel.minKmDrivenTextController,
+                  cursorColor: Colors.black,
+                  maxLength: 7,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    counterText: "",
+                    fillColor: const Color(0xffFCFCFD),
+                    hintText: "0 KM",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Color(0xffEFEFEF)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Color(0xffEFEFEF)),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 5),
+            Text(StringHelper.to, style: context.textTheme.titleSmall),
+            const SizedBox(width: 5),
+            Expanded(
+              child: SizedBox(
+                width: context.width,
+                height: 50,
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  textAlign: TextAlign.center,
+                  controller: viewModel.maxKmDrivenTextController,
+                  cursorColor: Colors.black,
+                  maxLength: 7,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    counterText: "",
+                    fillColor: const Color(0xffFCFCFD),
+                    hintText: "1,000,000 KM",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Color(0xffEFEFEF)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Color(0xffEFEFEF)),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 15),
+        StatefulBuilder(
+          builder: (context, setState) {
+            return SfRangeSlider(
+              min: 0,
+              max: 1000000,
+              values: kmDrivenValues,
+              inactiveColor: Colors.grey,
+              activeColor: const Color(0xffFF385C),
+              showLabels: false,
+              interval: 100000,
+              stepSize: 1000,
+              labelFormatterCallback:
+                  (dynamic actualValue, String formattedText) {
+                return actualValue == 1000000 ? '1,000,000+' : formattedText;
+              },
+              onChanged: (SfRangeValues newValues) {
+                if ((newValues.end - newValues.start) >= 1000) {
+                  viewModel.minKmDrivenTextController.text =
+                      "${newValues.start.round()}";
+                  viewModel.maxKmDrivenTextController.text =
+                      "${newValues.end.round()}";
+                  setState(() {
+                    kmDrivenValues = newValues;
+                  });
+                }
+              },
+            );
+          },
+        ),
+        const SizedBox(height: 10),
+      ],
+    );
+  }
+
+  Widget motorcyclesWidget(HomeVM viewModel) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CommonDropdown(
+          title: StringHelper.year,
+          hint: viewModel.yearTextController.text.isEmpty
+              ? StringHelper.selectYear
+              : viewModel.yearTextController.text,
+          onSelected: (value) {
+            viewModel.yearTextController.text = value ?? '';
+            filter.year = value;
+          },
+          options: yearsType,
+        ),
+        const SizedBox(height: 10),
+        Text(StringHelper.kmDriven, style: context.textTheme.titleSmall),
+        const Gap(10),
+        Row(
+          children: [
+            Expanded(
+              child: SizedBox(
+                width: context.width,
+                height: 50,
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  textAlign: TextAlign.center,
+                  controller: viewModel.minKmDrivenTextController,
+                  cursorColor: Colors.black,
+                  maxLength: 7,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    counterText: "",
+                    fillColor: const Color(0xffFCFCFD),
+                    hintText: "0 KM",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Color(0xffEFEFEF)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Color(0xffEFEFEF)),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 5),
+            Text(StringHelper.to, style: context.textTheme.titleSmall),
+            const SizedBox(width: 5),
+            Expanded(
+              child: SizedBox(
+                width: context.width,
+                height: 50,
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  textAlign: TextAlign.center,
+                  controller: viewModel.maxKmDrivenTextController,
+                  cursorColor: Colors.black,
+                  maxLength: 7,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    counterText: "",
+                    fillColor: const Color(0xffFCFCFD),
+                    hintText: "1,000,000 KM",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Color(0xffEFEFEF)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Color(0xffEFEFEF)),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 15),
+        StatefulBuilder(
+          builder: (context, setState) {
+            return SfRangeSlider(
+              min: 0,
+              max: 1000000,
+              values: kmDrivenValues,
+              inactiveColor: Colors.grey,
+              activeColor: const Color(0xffFF385C),
+              showLabels: false,
+              interval: 100000,
+              stepSize: 1000,
+              labelFormatterCallback:
+                  (dynamic actualValue, String formattedText) {
+                return actualValue == 1000000 ? '1,000,000+' : formattedText;
+              },
+              onChanged: (SfRangeValues newValues) {
+                if ((newValues.end - newValues.start) >= 1000) {
+                  viewModel.minKmDrivenTextController.text =
+                      "${newValues.start.round()}";
+                  viewModel.maxKmDrivenTextController.text =
+                      "${newValues.end.round()}";
+                  setState(() {
+                    kmDrivenValues = newValues;
+                  });
+                }
+              },
+            );
+          },
+        ),
+        const SizedBox(height: 10),
+      ],
+    );
   }
 
   Widget apartmentWidget(HomeVM viewModel) {
@@ -1548,8 +2779,8 @@ class _FilterViewState extends State<FilterView> {
           //hint: StringHelper.select,
           hint: viewModel.propertyForTextController.text,
           onSelected: (String? value) {
-            viewModel.currentPropertyType = value??"";
-            viewModel.propertyForTextController.text = value??"";
+            viewModel.currentPropertyType = value ?? "";
+            viewModel.propertyForTextController.text = value ?? "";
           },
           options: ['Sell', 'Rent'],
           // readOnly: true,
@@ -1584,14 +2815,20 @@ class _FilterViewState extends State<FilterView> {
           // fillColor: Colors.white,
           // elevation: 6,
         ),
-
         CommonDropdown(
           title: StringHelper.type,
           //hint: StringHelper.select,
           hint: viewModel.propertyForTypeTextController.text,
-          options: ["Apartment", "Duplex", "Penthouse", "Studio", "Hotel" "Apartment", "Roof"],
+          options: [
+            "Apartment",
+            "Duplex",
+            "Penthouse",
+            "Studio",
+            "Hotel" "Apartment",
+            "Roof"
+          ],
           onSelected: (String? value) {
-            viewModel.propertyForTypeTextController.text = value??"";
+            viewModel.propertyForTypeTextController.text = value ?? "";
           },
           // readOnly: true,
           // suffix: PopupMenuButton<String>(
@@ -1624,7 +2861,6 @@ class _FilterViewState extends State<FilterView> {
           // fillColor: Colors.white,
           // elevation: 6,
         ),
-
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() != "rent",
           child: CommonDropdown(
@@ -1632,7 +2868,7 @@ class _FilterViewState extends State<FilterView> {
             //hint: StringHelper.select,
             hint: viewModel.ownershipStatusTextController.text,
             onSelected: (String? value) {
-              viewModel.ownershipStatusTextController.text = value??"";
+              viewModel.ownershipStatusTextController.text = value ?? "";
             },
             options: [StringHelper.primary, StringHelper.resell],
             // readOnly: true,
@@ -1667,7 +2903,7 @@ class _FilterViewState extends State<FilterView> {
             // elevation: 6,
           ),
         ),
-        if(viewModel.currentPropertyType.toLowerCase() != "rent")...{
+        if (viewModel.currentPropertyType.toLowerCase() != "rent") ...{
           Text(
             //StringHelper.downPayment,
             StringHelper.deposit,
@@ -1705,18 +2941,18 @@ class _FilterViewState extends State<FilterView> {
                         });
                       },
                       decoration: InputDecoration(
-                        counterText: "",
+                          counterText: "",
                           fillColor: const Color(0xffFCFCFD),
                           hintText: StringHelper.egp0,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide:
-                            const BorderSide(color: Color(0xffEFEFEF)),
+                                const BorderSide(color: Color(0xffEFEFEF)),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide:
-                            const BorderSide(color: Color(0xffEFEFEF)),
+                                const BorderSide(color: Color(0xffEFEFEF)),
                           ))),
                 ),
               ),
@@ -1759,17 +2995,17 @@ class _FilterViewState extends State<FilterView> {
                       });
                     },
                     decoration: InputDecoration(
-                      counterText: "",
+                        counterText: "",
                         fillColor: const Color(0xffFCFCFD),
                         hintText: "EGP0",
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide:
-                            const BorderSide(color: Color(0xffEFEFEF))),
+                                const BorderSide(color: Color(0xffEFEFEF))),
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                                color: Color(0xffEFEFEF)))),
+                            borderSide:
+                                const BorderSide(color: Color(0xffEFEFEF)))),
                   ),
                 ),
               ),
@@ -1795,15 +3031,15 @@ class _FilterViewState extends State<FilterView> {
                     : ' $formattedText';
               },
               onChanged: (SfRangeValues newValues) {
-    if ((newValues.end - newValues.start) >= 1000) {
-      viewModel.startDownPriceTextController.text =
-      "${newValues.start.round()}";
-      viewModel.endDownPriceTextController.text =
-      "${newValues.end.round()}";
-      setState(() {
-        downValues = newValues;
-      });
-    }
+                if ((newValues.end - newValues.start) >= 1000) {
+                  viewModel.startDownPriceTextController.text =
+                      "${newValues.start.round()}";
+                  viewModel.endDownPriceTextController.text =
+                      "${newValues.end.round()}";
+                  setState(() {
+                    downValues = newValues;
+                  });
+                }
               },
             );
           }),
@@ -1830,33 +3066,29 @@ class _FilterViewState extends State<FilterView> {
                     onChanged: (value) {
                       setState(() {
                         if (value.isEmpty) {
-                          areaValues = SfRangeValues(
-                              0,
-                              int.parse(
-                                  viewModel.endAreaTextController.text));
+                          areaValues = SfRangeValues(0,
+                              int.parse(viewModel.endAreaTextController.text));
                           return;
                         }
 
                         areaValues = SfRangeValues(
-                            int.parse(
-                                viewModel.startAreaTextController.text),
-                            int.parse(
-                                viewModel.endAreaTextController.text));
+                            int.parse(viewModel.startAreaTextController.text),
+                            int.parse(viewModel.endAreaTextController.text));
                       });
                     },
                     decoration: InputDecoration(
-                      counterText: "",
+                        counterText: "",
                         fillColor: const Color(0xffFCFCFD),
                         hintText: StringHelper.egp0,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide:
-                          const BorderSide(color: Color(0xffEFEFEF)),
+                              const BorderSide(color: Color(0xffEFEFEF)),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide:
-                          const BorderSide(color: Color(0xffEFEFEF)),
+                              const BorderSide(color: Color(0xffEFEFEF)),
                         ))),
               ),
             ),
@@ -1885,31 +3117,28 @@ class _FilterViewState extends State<FilterView> {
                     setState(() {
                       if (value.isEmpty) {
                         areaValues = SfRangeValues(
-                            int.parse(
-                                viewModel.startAreaTextController.text),
+                            int.parse(viewModel.startAreaTextController.text),
                             100000);
                         return;
                       }
 
                       areaValues = SfRangeValues(
-                          int.parse(
-                              viewModel.startAreaTextController.text),
-                          int.parse(
-                              viewModel.endAreaTextController.text));
+                          int.parse(viewModel.startAreaTextController.text),
+                          int.parse(viewModel.endAreaTextController.text));
                     });
                   },
                   decoration: InputDecoration(
-                    counterText: "",
+                      counterText: "",
                       fillColor: const Color(0xffFCFCFD),
                       hintText: "0",
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide:
-                          const BorderSide(color: Color(0xffEFEFEF))),
+                              const BorderSide(color: Color(0xffEFEFEF))),
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(
-                              color: Color(0xffEFEFEF)))),
+                          borderSide:
+                              const BorderSide(color: Color(0xffEFEFEF)))),
                 ),
               ),
             ),
@@ -1935,27 +3164,26 @@ class _FilterViewState extends State<FilterView> {
                   : ' $formattedText';
             },
             onChanged: (SfRangeValues newValues) {
-    if ((newValues.end - newValues.start) >= 1000) {
-      viewModel.startAreaTextController.text =
-      "${newValues.start.round()}";
-      viewModel.endAreaTextController.text =
-      "${newValues.end.round()}";
-      setState(() {
-        areaValues = newValues;
-      });
-    }
+              if ((newValues.end - newValues.start) >= 1000) {
+                viewModel.startAreaTextController.text =
+                    "${newValues.start.round()}";
+                viewModel.endAreaTextController.text =
+                    "${newValues.end.round()}";
+                setState(() {
+                  areaValues = newValues;
+                });
+              }
             },
           );
         }),
         Gap(10),
-
         CommonDropdown(
           title: StringHelper.noOfBedrooms,
           //hint: StringHelper.select,
           hint: viewModel.noOfBedroomsTextController.text,
           options: ["Studio", "1", "2", "3", "4", "5", "6+"],
           onSelected: (String? value) {
-            viewModel.noOfBedroomsTextController.text = value??"";
+            viewModel.noOfBedroomsTextController.text = value ?? "";
           },
           // readOnly: true,
           // suffix: PopupMenuButton<String>(
@@ -1988,14 +3216,13 @@ class _FilterViewState extends State<FilterView> {
           // fillColor: Colors.white,
           // elevation: 6,
         ),
-
         CommonDropdown(
           title: StringHelper.noOfBathrooms,
           //hint: StringHelper.select,
           hint: viewModel.noOfBathroomsTextController.text,
           options: ['1', '2', '3', '4', '5', '6', '7', '7+'],
           onSelected: (String? value) {
-            viewModel.noOfBathroomsTextController.text = value??"";
+            viewModel.noOfBathroomsTextController.text = value ?? "";
           },
           // readOnly: true,
           // suffix: PopupMenuButton<String>(
@@ -2029,14 +3256,17 @@ class _FilterViewState extends State<FilterView> {
           // fillColor: Colors.white,
           // elevation: 6,
         ),
-
         CommonDropdown(
           title: StringHelper.furnishing,
           //hint: StringHelper.select,
           hint: viewModel.furnishingStatusTextController.text,
-          options: [StringHelper.furnished, StringHelper.unfurnished, StringHelper.semiFurnished],
+          options: [
+            StringHelper.furnished,
+            StringHelper.unfurnished,
+            StringHelper.semiFurnished
+          ],
           onSelected: (String? value) {
-            viewModel.furnishingStatusTextController.text = value??"";
+            viewModel.furnishingStatusTextController.text = value ?? "";
           },
           // readOnly: true,
           // suffix: PopupMenuButton<String>(
@@ -2070,14 +3300,26 @@ class _FilterViewState extends State<FilterView> {
           // fillColor: Colors.white,
           // elevation: 6,
         ),
-
         CommonDropdown(
           title: StringHelper.level,
           //hint: StringHelper.select,
           hint: viewModel.levelTextController.text,
-          options: [StringHelper.ground, "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+", "Last Floor"],
+          options: [
+            StringHelper.ground,
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10+",
+            "Last Floor"
+          ],
           onSelected: (String? value) {
-            viewModel.levelTextController.text = value??"";
+            viewModel.levelTextController.text = value ?? "";
           },
           // readOnly: true,
           // suffix: PopupMenuButton<String>(
@@ -2111,7 +3353,6 @@ class _FilterViewState extends State<FilterView> {
           // fillColor: Colors.white,
           // elevation: 6,
         ),
-
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() != "rent",
           child: CommonDropdown(
@@ -2120,7 +3361,7 @@ class _FilterViewState extends State<FilterView> {
             hint: viewModel.completionStatusTextController.text,
             options: [StringHelper.ready, StringHelper.offPlan],
             onSelected: (String? value) {
-              viewModel.completionStatusTextController.text = value??"";
+              viewModel.completionStatusTextController.text = value ?? "";
             },
             // readOnly: true,
             // suffix: PopupMenuButton<String>(
@@ -2154,16 +3395,19 @@ class _FilterViewState extends State<FilterView> {
             // elevation: 6,
           ),
         ),
-
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() != "rent",
           child: CommonDropdown(
             title: StringHelper.paymentType,
             //hint: StringHelper.select,
             hint: viewModel.paymentTypeTextController.text,
-            options: [StringHelper.installment, StringHelper.cashOrInstallment, StringHelper.cash],
+            options: [
+              StringHelper.installment,
+              StringHelper.cashOrInstallment,
+              StringHelper.cash
+            ],
             onSelected: (String? value) {
-              viewModel.paymentTypeTextController.text = value??"";
+              viewModel.paymentTypeTextController.text = value ?? "";
             },
             // readOnly: true,
             // suffix: PopupMenuButton<String>(
@@ -2198,7 +3442,6 @@ class _FilterViewState extends State<FilterView> {
             // elevation: 6,
           ),
         ),
-
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() != "rent",
           child: CommonDropdown(
@@ -2207,7 +3450,7 @@ class _FilterViewState extends State<FilterView> {
             hint: viewModel.listedByTextController.text,
             options: [StringHelper.agent, StringHelper.landlord],
             onSelected: (String? value) {
-              viewModel.listedByTextController.text = value??"";
+              viewModel.listedByTextController.text = value ?? "";
             },
             // readOnly: true,
             // suffix: PopupMenuButton<String>(
@@ -2242,11 +3485,10 @@ class _FilterViewState extends State<FilterView> {
             // elevation: 6,
           ),
         ),
-
-
       ],
     );
   }
+
   Widget vacationWidget(HomeVM viewModel) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -2256,8 +3498,8 @@ class _FilterViewState extends State<FilterView> {
           //hint: StringHelper.select,
           hint: viewModel.propertyForTextController.text,
           onSelected: (String? value) {
-            viewModel.currentPropertyType = value??"";
-            viewModel.propertyForTextController.text = value??"";
+            viewModel.currentPropertyType = value ?? "";
+            viewModel.propertyForTextController.text = value ?? "";
           },
           options: ['Sell', 'Rent'],
           // readOnly: true,
@@ -2292,14 +3534,21 @@ class _FilterViewState extends State<FilterView> {
           // fillColor: Colors.white,
           // elevation: 6,
         ),
-
         CommonDropdown(
           title: StringHelper.type,
           //hint: StringHelper.select,
           hint: viewModel.propertyForTypeTextController.text,
-          options: ["Chalet", "Duplex", "Penthouse", "Standalone Villa", "Studio", "Townhouse Twin house", "Cabin"],
+          options: [
+            "Chalet",
+            "Duplex",
+            "Penthouse",
+            "Standalone Villa",
+            "Studio",
+            "Townhouse Twin house",
+            "Cabin"
+          ],
           onSelected: (String? value) {
-            viewModel.propertyForTypeTextController.text = value??"";
+            viewModel.propertyForTypeTextController.text = value ?? "";
           },
           // readOnly: true,
           // suffix: PopupMenuButton<String>(
@@ -2332,7 +3581,6 @@ class _FilterViewState extends State<FilterView> {
           // fillColor: Colors.white,
           // elevation: 6,
         ),
-
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() != "rent",
           child: CommonDropdown(
@@ -2340,7 +3588,7 @@ class _FilterViewState extends State<FilterView> {
             //hint: StringHelper.select,
             hint: viewModel.ownershipStatusTextController.text,
             onSelected: (String? value) {
-              viewModel.ownershipStatusTextController.text = value??"";
+              viewModel.ownershipStatusTextController.text = value ?? "";
             },
             options: [StringHelper.primary, StringHelper.resell],
             // readOnly: true,
@@ -2375,7 +3623,7 @@ class _FilterViewState extends State<FilterView> {
             // elevation: 6,
           ),
         ),
-        if(viewModel.currentPropertyType.toLowerCase() != "rent")...{
+        if (viewModel.currentPropertyType.toLowerCase() != "rent") ...{
           Text(
             //StringHelper.downPayment,
             StringHelper.deposit,
@@ -2413,18 +3661,18 @@ class _FilterViewState extends State<FilterView> {
                         });
                       },
                       decoration: InputDecoration(
-                        counterText: "",
+                          counterText: "",
                           fillColor: const Color(0xffFCFCFD),
                           hintText: StringHelper.egp0,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide:
-                            const BorderSide(color: Color(0xffEFEFEF)),
+                                const BorderSide(color: Color(0xffEFEFEF)),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide:
-                            const BorderSide(color: Color(0xffEFEFEF)),
+                                const BorderSide(color: Color(0xffEFEFEF)),
                           ))),
                 ),
               ),
@@ -2467,17 +3715,17 @@ class _FilterViewState extends State<FilterView> {
                       });
                     },
                     decoration: InputDecoration(
-                      counterText: "",
+                        counterText: "",
                         fillColor: const Color(0xffFCFCFD),
                         hintText: "EGP0",
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide:
-                            const BorderSide(color: Color(0xffEFEFEF))),
+                                const BorderSide(color: Color(0xffEFEFEF))),
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                                color: Color(0xffEFEFEF)))),
+                            borderSide:
+                                const BorderSide(color: Color(0xffEFEFEF)))),
                   ),
                 ),
               ),
@@ -2503,15 +3751,15 @@ class _FilterViewState extends State<FilterView> {
                     : ' $formattedText';
               },
               onChanged: (SfRangeValues newValues) {
-    if ((newValues.end - newValues.start) >= 1000) {
-      viewModel.startDownPriceTextController.text =
-      "${newValues.start.round()}";
-      viewModel.endDownPriceTextController.text =
-      "${newValues.end.round()}";
-      setState(() {
-        downValues = newValues;
-      });
-    }
+                if ((newValues.end - newValues.start) >= 1000) {
+                  viewModel.startDownPriceTextController.text =
+                      "${newValues.start.round()}";
+                  viewModel.endDownPriceTextController.text =
+                      "${newValues.end.round()}";
+                  setState(() {
+                    downValues = newValues;
+                  });
+                }
               },
             );
           }),
@@ -2538,33 +3786,29 @@ class _FilterViewState extends State<FilterView> {
                     onChanged: (value) {
                       setState(() {
                         if (value.isEmpty) {
-                          areaValues = SfRangeValues(
-                              0,
-                              int.parse(
-                                  viewModel.endAreaTextController.text));
+                          areaValues = SfRangeValues(0,
+                              int.parse(viewModel.endAreaTextController.text));
                           return;
                         }
 
                         areaValues = SfRangeValues(
-                            int.parse(
-                                viewModel.startAreaTextController.text),
-                            int.parse(
-                                viewModel.endAreaTextController.text));
+                            int.parse(viewModel.startAreaTextController.text),
+                            int.parse(viewModel.endAreaTextController.text));
                       });
                     },
                     decoration: InputDecoration(
-                      counterText: "",
+                        counterText: "",
                         fillColor: const Color(0xffFCFCFD),
                         hintText: StringHelper.egp0,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide:
-                          const BorderSide(color: Color(0xffEFEFEF)),
+                              const BorderSide(color: Color(0xffEFEFEF)),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide:
-                          const BorderSide(color: Color(0xffEFEFEF)),
+                              const BorderSide(color: Color(0xffEFEFEF)),
                         ))),
               ),
             ),
@@ -2593,31 +3837,28 @@ class _FilterViewState extends State<FilterView> {
                     setState(() {
                       if (value.isEmpty) {
                         areaValues = SfRangeValues(
-                            int.parse(
-                                viewModel.startAreaTextController.text),
+                            int.parse(viewModel.startAreaTextController.text),
                             100000);
                         return;
                       }
 
                       areaValues = SfRangeValues(
-                          int.parse(
-                              viewModel.startAreaTextController.text),
-                          int.parse(
-                              viewModel.endAreaTextController.text));
+                          int.parse(viewModel.startAreaTextController.text),
+                          int.parse(viewModel.endAreaTextController.text));
                     });
                   },
                   decoration: InputDecoration(
-                    counterText: "",
+                      counterText: "",
                       fillColor: const Color(0xffFCFCFD),
                       hintText: "0",
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide:
-                          const BorderSide(color: Color(0xffEFEFEF))),
+                              const BorderSide(color: Color(0xffEFEFEF))),
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(
-                              color: Color(0xffEFEFEF)))),
+                          borderSide:
+                              const BorderSide(color: Color(0xffEFEFEF)))),
                 ),
               ),
             ),
@@ -2643,15 +3884,15 @@ class _FilterViewState extends State<FilterView> {
                   : ' $formattedText';
             },
             onChanged: (SfRangeValues newValues) {
-    if ((newValues.end - newValues.start) >= 1000) {
-      viewModel.startAreaTextController.text =
-      "${newValues.start.round()}";
-      viewModel.endAreaTextController.text =
-      "${newValues.end.round()}";
-      setState(() {
-        areaValues = newValues;
-      });
-    }
+              if ((newValues.end - newValues.start) >= 1000) {
+                viewModel.startAreaTextController.text =
+                    "${newValues.start.round()}";
+                viewModel.endAreaTextController.text =
+                    "${newValues.end.round()}";
+                setState(() {
+                  areaValues = newValues;
+                });
+              }
             },
           );
         }),
@@ -2662,7 +3903,7 @@ class _FilterViewState extends State<FilterView> {
           hint: viewModel.noOfBedroomsTextController.text,
           options: ["Studio", "1", "2", "3", "4", "5", "6+"],
           onSelected: (String? value) {
-            viewModel.noOfBedroomsTextController.text = value??"";
+            viewModel.noOfBedroomsTextController.text = value ?? "";
           },
           // readOnly: true,
           // suffix: PopupMenuButton<String>(
@@ -2695,14 +3936,13 @@ class _FilterViewState extends State<FilterView> {
           // fillColor: Colors.white,
           // elevation: 6,
         ),
-
         CommonDropdown(
           title: StringHelper.noOfBathrooms,
           //hint: StringHelper.select,
           hint: viewModel.noOfBathroomsTextController.text,
           options: ['1', '2', '3', '4', '5', '6', '7', '7+'],
           onSelected: (String? value) {
-            viewModel.noOfBathroomsTextController.text = value??"";
+            viewModel.noOfBathroomsTextController.text = value ?? "";
           },
           // readOnly: true,
           // suffix: PopupMenuButton<String>(
@@ -2736,14 +3976,13 @@ class _FilterViewState extends State<FilterView> {
           // fillColor: Colors.white,
           // elevation: 6,
         ),
-
         CommonDropdown(
           title: StringHelper.furnishing,
           //hint: StringHelper.select,
           hint: viewModel.furnishingStatusTextController.text,
-          options: [StringHelper.yes,StringHelper.no],
+          options: [StringHelper.yes, StringHelper.no],
           onSelected: (String? value) {
-            viewModel.furnishingStatusTextController.text = value??"";
+            viewModel.furnishingStatusTextController.text = value ?? "";
           },
           // readOnly: true,
           // suffix: PopupMenuButton<String>(
@@ -2777,14 +4016,26 @@ class _FilterViewState extends State<FilterView> {
           // fillColor: Colors.white,
           // elevation: 6,
         ),
-
         CommonDropdown(
           title: StringHelper.level,
           //hint: StringHelper.select,
           hint: viewModel.levelTextController.text,
-          options: [StringHelper.ground, "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+", "Last Floor"],
+          options: [
+            StringHelper.ground,
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10+",
+            "Last Floor"
+          ],
           onSelected: (String? value) {
-            viewModel.levelTextController.text = value??"";
+            viewModel.levelTextController.text = value ?? "";
           },
           // readOnly: true,
           // suffix: PopupMenuButton<String>(
@@ -2818,7 +4069,6 @@ class _FilterViewState extends State<FilterView> {
           // fillColor: Colors.white,
           // elevation: 6,
         ),
-
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() != "rent",
           child: CommonDropdown(
@@ -2827,7 +4077,7 @@ class _FilterViewState extends State<FilterView> {
             hint: viewModel.completionStatusTextController.text,
             options: [StringHelper.ready, StringHelper.offPlan],
             onSelected: (String? value) {
-              viewModel.completionStatusTextController.text = value??"";
+              viewModel.completionStatusTextController.text = value ?? "";
             },
             // readOnly: true,
             // suffix: PopupMenuButton<String>(
@@ -2861,16 +4111,19 @@ class _FilterViewState extends State<FilterView> {
             // elevation: 6,
           ),
         ),
-
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() != "rent",
           child: CommonDropdown(
             title: StringHelper.paymentType,
             //hint: StringHelper.select,
             hint: viewModel.paymentTypeTextController.text,
-            options: [StringHelper.installment, StringHelper.cashOrInstallment, StringHelper.cash],
+            options: [
+              StringHelper.installment,
+              StringHelper.cashOrInstallment,
+              StringHelper.cash
+            ],
             onSelected: (String? value) {
-              viewModel.paymentTypeTextController.text = value??"";
+              viewModel.paymentTypeTextController.text = value ?? "";
             },
             // readOnly: true,
             // suffix: PopupMenuButton<String>(
@@ -2905,17 +4158,20 @@ class _FilterViewState extends State<FilterView> {
             // elevation: 6,
           ),
         ),
-
-
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() != "rent",
           child: CommonDropdown(
             title: StringHelper.deliveryTerms,
             //hint: StringHelper.select,
             hint: viewModel.deliveryTermTextController.text,
-            options: [StringHelper.moveInReady,StringHelper.underConstruction,StringHelper.shellAndCore,StringHelper.semiFurnished],
+            options: [
+              StringHelper.moveInReady,
+              StringHelper.underConstruction,
+              StringHelper.shellAndCore,
+              StringHelper.semiFurnished
+            ],
             onSelected: (String? value) {
-              viewModel.deliveryTermTextController.text = value??"";
+              viewModel.deliveryTermTextController.text = value ?? "";
             },
             // readOnly: true,
             // suffix: PopupMenuButton<String>(
@@ -2950,16 +4206,20 @@ class _FilterViewState extends State<FilterView> {
             // elevation: 6,
           ),
         ),
-
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() == "rent",
           child: CommonDropdown(
             title: StringHelper.rentalTerm,
             //hint: StringHelper.select,
             hint: viewModel.rentalTermsTextController.text,
-            options: [StringHelper.daily, StringHelper.weekly, StringHelper.monthly, StringHelper.yearly],
+            options: [
+              StringHelper.daily,
+              StringHelper.weekly,
+              StringHelper.monthly,
+              StringHelper.yearly
+            ],
             onSelected: (String? value) {
-              viewModel.rentalTermsTextController.text = value??"";
+              viewModel.rentalTermsTextController.text = value ?? "";
             },
             // readOnly: true,
             // suffix: PopupMenuButton<String>(
@@ -2997,6 +4257,7 @@ class _FilterViewState extends State<FilterView> {
       ],
     );
   }
+
   Widget villaWidget(HomeVM viewModel) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -3006,8 +4267,8 @@ class _FilterViewState extends State<FilterView> {
           //hint: StringHelper.select,
           hint: viewModel.propertyForTextController.text,
           onSelected: (String? value) {
-            viewModel.currentPropertyType = value??"";
-            viewModel.propertyForTextController.text = value??"";
+            viewModel.currentPropertyType = value ?? "";
+            viewModel.propertyForTextController.text = value ?? "";
           },
           options: ['Sell', 'Rent'],
           // readOnly: true,
@@ -3042,14 +4303,19 @@ class _FilterViewState extends State<FilterView> {
           // fillColor: Colors.white,
           // elevation: 6,
         ),
-
         CommonDropdown(
           title: StringHelper.type,
           //hint: StringHelper.select,
           hint: viewModel.propertyForTypeTextController.text,
-          options: ["Stand Alone","Townhouse","Twin House","I-Villa","Mansion"],
+          options: [
+            "Stand Alone",
+            "Townhouse",
+            "Twin House",
+            "I-Villa",
+            "Mansion"
+          ],
           onSelected: (String? value) {
-            viewModel.propertyForTypeTextController.text = value??"";
+            viewModel.propertyForTypeTextController.text = value ?? "";
           },
           // readOnly: true,
           // suffix: PopupMenuButton<String>(
@@ -3082,9 +4348,7 @@ class _FilterViewState extends State<FilterView> {
           // fillColor: Colors.white,
           // elevation: 6,
         ),
-
-
-        if(viewModel.currentPropertyType.toLowerCase() != "rent")...{
+        if (viewModel.currentPropertyType.toLowerCase() != "rent") ...{
           Text(
             //StringHelper.downPayment,
             StringHelper.deposit,
@@ -3122,18 +4386,18 @@ class _FilterViewState extends State<FilterView> {
                         });
                       },
                       decoration: InputDecoration(
-                        counterText: "",
+                          counterText: "",
                           fillColor: const Color(0xffFCFCFD),
                           hintText: StringHelper.egp0,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide:
-                            const BorderSide(color: Color(0xffEFEFEF)),
+                                const BorderSide(color: Color(0xffEFEFEF)),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide:
-                            const BorderSide(color: Color(0xffEFEFEF)),
+                                const BorderSide(color: Color(0xffEFEFEF)),
                           ))),
                 ),
               ),
@@ -3176,17 +4440,17 @@ class _FilterViewState extends State<FilterView> {
                       });
                     },
                     decoration: InputDecoration(
-                      counterText: "",
+                        counterText: "",
                         fillColor: const Color(0xffFCFCFD),
                         hintText: "EGP0",
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide:
-                            const BorderSide(color: Color(0xffEFEFEF))),
+                                const BorderSide(color: Color(0xffEFEFEF))),
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                                color: Color(0xffEFEFEF)))),
+                            borderSide:
+                                const BorderSide(color: Color(0xffEFEFEF)))),
                   ),
                 ),
               ),
@@ -3212,21 +4476,20 @@ class _FilterViewState extends State<FilterView> {
                     : ' $formattedText';
               },
               onChanged: (SfRangeValues newValues) {
-    if ((newValues.end - newValues.start) >= 1000) {
-      viewModel.startDownPriceTextController.text =
-      "${newValues.start.round()}";
-      viewModel.endDownPriceTextController.text =
-      "${newValues.end.round()}";
-      setState(() {
-        downValues = newValues;
-      });
-    }
+                if ((newValues.end - newValues.start) >= 1000) {
+                  viewModel.startDownPriceTextController.text =
+                      "${newValues.start.round()}";
+                  viewModel.endDownPriceTextController.text =
+                      "${newValues.end.round()}";
+                  setState(() {
+                    downValues = newValues;
+                  });
+                }
               },
             );
           }),
           Gap(10),
         },
-
         Text(
           StringHelper.areaSize,
           style: context.textTheme.titleSmall,
@@ -3248,33 +4511,29 @@ class _FilterViewState extends State<FilterView> {
                     onChanged: (value) {
                       setState(() {
                         if (value.isEmpty) {
-                          areaValues = SfRangeValues(
-                              0,
-                              int.parse(
-                                  viewModel.endAreaTextController.text));
+                          areaValues = SfRangeValues(0,
+                              int.parse(viewModel.endAreaTextController.text));
                           return;
                         }
 
                         areaValues = SfRangeValues(
-                            int.parse(
-                                viewModel.startAreaTextController.text),
-                            int.parse(
-                                viewModel.endAreaTextController.text));
+                            int.parse(viewModel.startAreaTextController.text),
+                            int.parse(viewModel.endAreaTextController.text));
                       });
                     },
                     decoration: InputDecoration(
-                      counterText: "",
+                        counterText: "",
                         fillColor: const Color(0xffFCFCFD),
                         hintText: StringHelper.egp0,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide:
-                          const BorderSide(color: Color(0xffEFEFEF)),
+                              const BorderSide(color: Color(0xffEFEFEF)),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide:
-                          const BorderSide(color: Color(0xffEFEFEF)),
+                              const BorderSide(color: Color(0xffEFEFEF)),
                         ))),
               ),
             ),
@@ -3303,31 +4562,28 @@ class _FilterViewState extends State<FilterView> {
                     setState(() {
                       if (value.isEmpty) {
                         areaValues = SfRangeValues(
-                            int.parse(
-                                viewModel.startAreaTextController.text),
+                            int.parse(viewModel.startAreaTextController.text),
                             100000);
                         return;
                       }
 
                       areaValues = SfRangeValues(
-                          int.parse(
-                              viewModel.startAreaTextController.text),
-                          int.parse(
-                              viewModel.endAreaTextController.text));
+                          int.parse(viewModel.startAreaTextController.text),
+                          int.parse(viewModel.endAreaTextController.text));
                     });
                   },
                   decoration: InputDecoration(
-                    counterText: "",
+                      counterText: "",
                       fillColor: const Color(0xffFCFCFD),
                       hintText: "0",
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide:
-                          const BorderSide(color: Color(0xffEFEFEF))),
+                              const BorderSide(color: Color(0xffEFEFEF))),
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(
-                              color: Color(0xffEFEFEF)))),
+                          borderSide:
+                              const BorderSide(color: Color(0xffEFEFEF)))),
                 ),
               ),
             ),
@@ -3353,27 +4609,26 @@ class _FilterViewState extends State<FilterView> {
                   : ' $formattedText';
             },
             onChanged: (SfRangeValues newValues) {
-    if ((newValues.end - newValues.start) >= 1000) {
-      viewModel.startAreaTextController.text =
-      "${newValues.start.round()}";
-      viewModel.endAreaTextController.text =
-      "${newValues.end.round()}";
-      setState(() {
-        areaValues = newValues;
-      });
-    }
+              if ((newValues.end - newValues.start) >= 1000) {
+                viewModel.startAreaTextController.text =
+                    "${newValues.start.round()}";
+                viewModel.endAreaTextController.text =
+                    "${newValues.end.round()}";
+                setState(() {
+                  areaValues = newValues;
+                });
+              }
             },
           );
         }),
         Gap(10),
-
         CommonDropdown(
           title: StringHelper.noOfBedrooms,
           //hint: StringHelper.select,
           hint: viewModel.noOfBedroomsTextController.text,
           options: ["Studio", "1", "2", "3", "4", "5", "6+"],
           onSelected: (String? value) {
-            viewModel.noOfBedroomsTextController.text = value??"";
+            viewModel.noOfBedroomsTextController.text = value ?? "";
           },
           // readOnly: true,
           // suffix: PopupMenuButton<String>(
@@ -3406,14 +4661,13 @@ class _FilterViewState extends State<FilterView> {
           // fillColor: Colors.white,
           // elevation: 6,
         ),
-
         CommonDropdown(
           title: StringHelper.noOfBathrooms,
           //hint: StringHelper.select,
           hint: viewModel.noOfBathroomsTextController.text,
           options: ['1', '2', '3', '4', '5', '6', '7', '7+'],
           onSelected: (String? value) {
-            viewModel.noOfBathroomsTextController.text = value??"";
+            viewModel.noOfBathroomsTextController.text = value ?? "";
           },
           // readOnly: true,
           // suffix: PopupMenuButton<String>(
@@ -3447,14 +4701,17 @@ class _FilterViewState extends State<FilterView> {
           // fillColor: Colors.white,
           // elevation: 6,
         ),
-
         CommonDropdown(
           title: StringHelper.furnishing,
           //hint: StringHelper.select,
           hint: viewModel.furnishingStatusTextController.text,
-          options: [StringHelper.furnished, StringHelper.unfurnished, StringHelper.semiFurnished],
+          options: [
+            StringHelper.furnished,
+            StringHelper.unfurnished,
+            StringHelper.semiFurnished
+          ],
           onSelected: (String? value) {
-            viewModel.furnishingStatusTextController.text = value??"";
+            viewModel.furnishingStatusTextController.text = value ?? "";
           },
           // readOnly: true,
           // suffix: PopupMenuButton<String>(
@@ -3488,7 +4745,6 @@ class _FilterViewState extends State<FilterView> {
           // fillColor: Colors.white,
           // elevation: 6,
         ),
-
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() != "rent",
           child: CommonDropdown(
@@ -3497,7 +4753,7 @@ class _FilterViewState extends State<FilterView> {
             hint: viewModel.completionStatusTextController.text,
             options: [StringHelper.ready, StringHelper.offPlan],
             onSelected: (String? value) {
-              viewModel.completionStatusTextController.text = value??"";
+              viewModel.completionStatusTextController.text = value ?? "";
             },
             // readOnly: true,
             // suffix: PopupMenuButton<String>(
@@ -3531,16 +4787,19 @@ class _FilterViewState extends State<FilterView> {
             // elevation: 6,
           ),
         ),
-
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() != "rent",
           child: CommonDropdown(
             title: StringHelper.paymentType,
             //hint: StringHelper.select,
             hint: viewModel.paymentTypeTextController.text,
-            options: [StringHelper.installment, StringHelper.cashOrInstallment, StringHelper.cash],
+            options: [
+              StringHelper.installment,
+              StringHelper.cashOrInstallment,
+              StringHelper.cash
+            ],
             onSelected: (String? value) {
-              viewModel.paymentTypeTextController.text = value??"";
+              viewModel.paymentTypeTextController.text = value ?? "";
             },
             // readOnly: true,
             // suffix: PopupMenuButton<String>(
@@ -3575,16 +4834,20 @@ class _FilterViewState extends State<FilterView> {
             // elevation: 6,
           ),
         ),
-
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() != "rent",
           child: CommonDropdown(
             title: StringHelper.deliveryTerms,
             //hint: StringHelper.select,
             hint: viewModel.deliveryTermTextController.text,
-            options: [StringHelper.moveInReady,StringHelper.underConstruction,StringHelper.shellAndCore,StringHelper.semiFinished],
+            options: [
+              StringHelper.moveInReady,
+              StringHelper.underConstruction,
+              StringHelper.shellAndCore,
+              StringHelper.semiFinished
+            ],
             onSelected: (String? value) {
-              viewModel.deliveryTermTextController.text = value??"";
+              viewModel.deliveryTermTextController.text = value ?? "";
             },
             // readOnly: true,
             // suffix: PopupMenuButton<String>(
@@ -3619,16 +4882,20 @@ class _FilterViewState extends State<FilterView> {
             // elevation: 6,
           ),
         ),
-
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() == "rent",
           child: CommonDropdown(
             title: StringHelper.rentalTerm,
             //hint: StringHelper.select,
             hint: viewModel.rentalTermsTextController.text,
-            options: [StringHelper.daily, StringHelper.weekly, StringHelper.monthly, StringHelper.yearly],
+            options: [
+              StringHelper.daily,
+              StringHelper.weekly,
+              StringHelper.monthly,
+              StringHelper.yearly
+            ],
             onSelected: (String? value) {
-              viewModel.rentalTermsTextController.text = value??"";
+              viewModel.rentalTermsTextController.text = value ?? "";
             },
             // readOnly: true,
             // suffix: PopupMenuButton<String>(
@@ -3666,6 +4933,7 @@ class _FilterViewState extends State<FilterView> {
       ],
     );
   }
+
   Widget businessWidget(HomeVM viewModel) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -3675,8 +4943,8 @@ class _FilterViewState extends State<FilterView> {
           //hint: StringHelper.select,
           hint: viewModel.propertyForTextController.text,
           onSelected: (String? value) {
-            viewModel.currentPropertyType = value??"";
-            viewModel.propertyForTextController.text = value??"";
+            viewModel.currentPropertyType = value ?? "";
+            viewModel.propertyForTextController.text = value ?? "";
           },
           options: ['Sell', 'Rent'],
           // readOnly: true,
@@ -3711,14 +4979,29 @@ class _FilterViewState extends State<FilterView> {
           // fillColor: Colors.white,
           // elevation: 6,
         ),
-
         CommonDropdown(
           title: StringHelper.type,
           //hint: StringHelper.select,
           hint: viewModel.propertyForTypeTextController.text,
-          options: ["Factory", "Full building", "Garage", "Warehouse", "Clinic", "Restraunt/ cafe", "Offices", "Factory", "Pharmacy", "Medical facility", "Showroom", "Hotel/ motel", "Gas station", "Storage facility", "other"],
+          options: [
+            "Factory",
+            "Full building",
+            "Garage",
+            "Warehouse",
+            "Clinic",
+            "Restraunt/ cafe",
+            "Offices",
+            "Factory",
+            "Pharmacy",
+            "Medical facility",
+            "Showroom",
+            "Hotel/ motel",
+            "Gas station",
+            "Storage facility",
+            "other"
+          ],
           onSelected: (String? value) {
-            viewModel.propertyForTypeTextController.text = value??"";
+            viewModel.propertyForTypeTextController.text = value ?? "";
           },
           // readOnly: true,
           // suffix: PopupMenuButton<String>(
@@ -3751,7 +5034,6 @@ class _FilterViewState extends State<FilterView> {
           // fillColor: Colors.white,
           // elevation: 6,
         ),
-
         Text(
           StringHelper.areaSize,
           style: context.textTheme.titleSmall,
@@ -3773,33 +5055,29 @@ class _FilterViewState extends State<FilterView> {
                     onChanged: (value) {
                       setState(() {
                         if (value.isEmpty) {
-                          areaValues = SfRangeValues(
-                              0,
-                              int.parse(
-                                  viewModel.endAreaTextController.text));
+                          areaValues = SfRangeValues(0,
+                              int.parse(viewModel.endAreaTextController.text));
                           return;
                         }
 
                         areaValues = SfRangeValues(
-                            int.parse(
-                                viewModel.startAreaTextController.text),
-                            int.parse(
-                                viewModel.endAreaTextController.text));
+                            int.parse(viewModel.startAreaTextController.text),
+                            int.parse(viewModel.endAreaTextController.text));
                       });
                     },
                     decoration: InputDecoration(
-                      counterText: "",
+                        counterText: "",
                         fillColor: const Color(0xffFCFCFD),
                         hintText: StringHelper.egp0,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide:
-                          const BorderSide(color: Color(0xffEFEFEF)),
+                              const BorderSide(color: Color(0xffEFEFEF)),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide:
-                          const BorderSide(color: Color(0xffEFEFEF)),
+                              const BorderSide(color: Color(0xffEFEFEF)),
                         ))),
               ),
             ),
@@ -3828,31 +5106,28 @@ class _FilterViewState extends State<FilterView> {
                     setState(() {
                       if (value.isEmpty) {
                         areaValues = SfRangeValues(
-                            int.parse(
-                                viewModel.startAreaTextController.text),
+                            int.parse(viewModel.startAreaTextController.text),
                             100000);
                         return;
                       }
 
                       areaValues = SfRangeValues(
-                          int.parse(
-                              viewModel.startAreaTextController.text),
-                          int.parse(
-                              viewModel.endAreaTextController.text));
+                          int.parse(viewModel.startAreaTextController.text),
+                          int.parse(viewModel.endAreaTextController.text));
                     });
                   },
                   decoration: InputDecoration(
-                    counterText: "",
+                      counterText: "",
                       fillColor: const Color(0xffFCFCFD),
                       hintText: "0",
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide:
-                          const BorderSide(color: Color(0xffEFEFEF))),
+                              const BorderSide(color: Color(0xffEFEFEF))),
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(
-                              color: Color(0xffEFEFEF)))),
+                          borderSide:
+                              const BorderSide(color: Color(0xffEFEFEF)))),
                 ),
               ),
             ),
@@ -3878,27 +5153,26 @@ class _FilterViewState extends State<FilterView> {
                   : ' $formattedText';
             },
             onChanged: (SfRangeValues newValues) {
-    if ((newValues.end - newValues.start) >= 1000) {
-      viewModel.startAreaTextController.text =
-      "${newValues.start.round()}";
-      viewModel.endAreaTextController.text =
-      "${newValues.end.round()}";
-      setState(() {
-        areaValues = newValues;
-      });
-    }
+              if ((newValues.end - newValues.start) >= 1000) {
+                viewModel.startAreaTextController.text =
+                    "${newValues.start.round()}";
+                viewModel.endAreaTextController.text =
+                    "${newValues.end.round()}";
+                setState(() {
+                  areaValues = newValues;
+                });
+              }
             },
           );
         }),
         Gap(10),
-
         CommonDropdown(
           title: StringHelper.noOfBedrooms,
           //hint: StringHelper.select,
           hint: viewModel.noOfBedroomsTextController.text,
           options: ["Studio", "1", "2", "3", "4", "5", "6+"],
           onSelected: (String? value) {
-            viewModel.noOfBedroomsTextController.text = value??"";
+            viewModel.noOfBedroomsTextController.text = value ?? "";
           },
           // readOnly: true,
           // suffix: PopupMenuButton<String>(
@@ -3931,14 +5205,13 @@ class _FilterViewState extends State<FilterView> {
           // fillColor: Colors.white,
           // elevation: 6,
         ),
-
         CommonDropdown(
           title: StringHelper.noOfBathrooms,
           //hint: StringHelper.select,
           hint: viewModel.noOfBathroomsTextController.text,
           options: ['1', '2', '3', '4', '5', '6', '7', '7+'],
           onSelected: (String? value) {
-            viewModel.noOfBathroomsTextController.text = value??"";
+            viewModel.noOfBathroomsTextController.text = value ?? "";
           },
           // readOnly: true,
           // suffix: PopupMenuButton<String>(
@@ -3972,14 +5245,26 @@ class _FilterViewState extends State<FilterView> {
           // fillColor: Colors.white,
           // elevation: 6,
         ),
-
         CommonDropdown(
           title: StringHelper.level,
           //hint: StringHelper.select,
           hint: viewModel.levelTextController.text,
-          options: [StringHelper.ground, "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+", "Last Floor"],
+          options: [
+            StringHelper.ground,
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10+",
+            "Last Floor"
+          ],
           onSelected: (String? value) {
-            viewModel.levelTextController.text = value??"";
+            viewModel.levelTextController.text = value ?? "";
           },
           // readOnly: true,
           // suffix: PopupMenuButton<String>(
@@ -4013,14 +5298,13 @@ class _FilterViewState extends State<FilterView> {
           // fillColor: Colors.white,
           // elevation: 6,
         ),
-
         CommonDropdown(
           title: StringHelper.furnishing,
           //hint: StringHelper.select,
           hint: viewModel.furnishingStatusTextController.text,
-          options: [StringHelper.yes,StringHelper.no],
+          options: [StringHelper.yes, StringHelper.no],
           onSelected: (String? value) {
-            viewModel.furnishingStatusTextController.text = value??"";
+            viewModel.furnishingStatusTextController.text = value ?? "";
           },
           // readOnly: true,
           // suffix: PopupMenuButton<String>(
@@ -4054,7 +5338,6 @@ class _FilterViewState extends State<FilterView> {
           // fillColor: Colors.white,
           // elevation: 6,
         ),
-
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() != "rent",
           child: CommonDropdown(
@@ -4063,7 +5346,7 @@ class _FilterViewState extends State<FilterView> {
             hint: viewModel.completionStatusTextController.text,
             options: [StringHelper.ready, StringHelper.offPlan],
             onSelected: (String? value) {
-              viewModel.completionStatusTextController.text = value??"";
+              viewModel.completionStatusTextController.text = value ?? "";
             },
             // readOnly: true,
             // suffix: PopupMenuButton<String>(
@@ -4097,16 +5380,19 @@ class _FilterViewState extends State<FilterView> {
             // elevation: 6,
           ),
         ),
-
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() != "rent",
           child: CommonDropdown(
             title: StringHelper.paymentType,
             //hint: StringHelper.select,
             hint: viewModel.paymentTypeTextController.text,
-            options: [StringHelper.installment, StringHelper.cashOrInstallment, StringHelper.cash],
+            options: [
+              StringHelper.installment,
+              StringHelper.cashOrInstallment,
+              StringHelper.cash
+            ],
             onSelected: (String? value) {
-              viewModel.paymentTypeTextController.text = value??"";
+              viewModel.paymentTypeTextController.text = value ?? "";
             },
             // readOnly: true,
             // suffix: PopupMenuButton<String>(
@@ -4141,16 +5427,20 @@ class _FilterViewState extends State<FilterView> {
             // elevation: 6,
           ),
         ),
-
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() == "rent",
           child: CommonDropdown(
             title: StringHelper.rentalTerm,
             //hint: StringHelper.select,
             hint: viewModel.rentalTermsTextController.text,
-            options: [StringHelper.daily, StringHelper.weekly, StringHelper.monthly, StringHelper.yearly],
+            options: [
+              StringHelper.daily,
+              StringHelper.weekly,
+              StringHelper.monthly,
+              StringHelper.yearly
+            ],
             onSelected: (String? value) {
-              viewModel.rentalTermsTextController.text = value??"";
+              viewModel.rentalTermsTextController.text = value ?? "";
             },
             // readOnly: true,
             // suffix: PopupMenuButton<String>(
@@ -4188,6 +5478,7 @@ class _FilterViewState extends State<FilterView> {
       ],
     );
   }
+
   Widget landWidget(HomeVM viewModel) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -4197,8 +5488,8 @@ class _FilterViewState extends State<FilterView> {
           //hint: StringHelper.select,
           hint: viewModel.propertyForTextController.text,
           onSelected: (String? value) {
-            viewModel.currentPropertyType = value??"";
-            viewModel.propertyForTextController.text = value??"";
+            viewModel.currentPropertyType = value ?? "";
+            viewModel.propertyForTextController.text = value ?? "";
           },
           options: ['Sell', 'Rent'],
           // readOnly: true,
@@ -4233,14 +5524,20 @@ class _FilterViewState extends State<FilterView> {
           // fillColor: Colors.white,
           // elevation: 6,
         ),
-
         CommonDropdown(
           title: StringHelper.type,
           //hint: StringHelper.select,
           hint: viewModel.propertyForTypeTextController.text,
-          options: ["Agricultural Land","Commercial Land","Residential Land","Industrial Land","Mixed-Use Land","Farm Land"],
+          options: [
+            "Agricultural Land",
+            "Commercial Land",
+            "Residential Land",
+            "Industrial Land",
+            "Mixed-Use Land",
+            "Farm Land"
+          ],
           onSelected: (String? value) {
-            viewModel.propertyForTypeTextController.text = value??"";
+            viewModel.propertyForTypeTextController.text = value ?? "";
           },
           // readOnly: true,
           // suffix: PopupMenuButton<String>(
@@ -4273,7 +5570,6 @@ class _FilterViewState extends State<FilterView> {
           // fillColor: Colors.white,
           // elevation: 6,
         ),
-
         Text(
           StringHelper.areaSize,
           style: context.textTheme.titleSmall,
@@ -4295,33 +5591,29 @@ class _FilterViewState extends State<FilterView> {
                     onChanged: (value) {
                       setState(() {
                         if (value.isEmpty) {
-                          areaValues = SfRangeValues(
-                              0,
-                              int.parse(
-                                  viewModel.endAreaTextController.text));
+                          areaValues = SfRangeValues(0,
+                              int.parse(viewModel.endAreaTextController.text));
                           return;
                         }
 
                         areaValues = SfRangeValues(
-                            int.parse(
-                                viewModel.startAreaTextController.text),
-                            int.parse(
-                                viewModel.endAreaTextController.text));
+                            int.parse(viewModel.startAreaTextController.text),
+                            int.parse(viewModel.endAreaTextController.text));
                       });
                     },
                     decoration: InputDecoration(
-                      counterText: "",
+                        counterText: "",
                         fillColor: const Color(0xffFCFCFD),
                         hintText: StringHelper.egp0,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide:
-                          const BorderSide(color: Color(0xffEFEFEF)),
+                              const BorderSide(color: Color(0xffEFEFEF)),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide:
-                          const BorderSide(color: Color(0xffEFEFEF)),
+                              const BorderSide(color: Color(0xffEFEFEF)),
                         ))),
               ),
             ),
@@ -4350,31 +5642,28 @@ class _FilterViewState extends State<FilterView> {
                     setState(() {
                       if (value.isEmpty) {
                         areaValues = SfRangeValues(
-                            int.parse(
-                                viewModel.startAreaTextController.text),
+                            int.parse(viewModel.startAreaTextController.text),
                             100000);
                         return;
                       }
 
                       areaValues = SfRangeValues(
-                          int.parse(
-                              viewModel.startAreaTextController.text),
-                          int.parse(
-                              viewModel.endAreaTextController.text));
+                          int.parse(viewModel.startAreaTextController.text),
+                          int.parse(viewModel.endAreaTextController.text));
                     });
                   },
                   decoration: InputDecoration(
-                    counterText: "",
+                      counterText: "",
                       fillColor: const Color(0xffFCFCFD),
                       hintText: "0",
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide:
-                          const BorderSide(color: Color(0xffEFEFEF))),
+                              const BorderSide(color: Color(0xffEFEFEF))),
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(
-                              color: Color(0xffEFEFEF)))),
+                          borderSide:
+                              const BorderSide(color: Color(0xffEFEFEF)))),
                 ),
               ),
             ),
@@ -4400,26 +5689,32 @@ class _FilterViewState extends State<FilterView> {
                   : ' $formattedText';
             },
             onChanged: (SfRangeValues newValues) {
-    if ((newValues.end - newValues.start) >= 1000) {
-      viewModel.startAreaTextController.text =
-      "${newValues.start.round()}";
-      viewModel.endAreaTextController.text =
-      "${newValues.end.round()}";
-      setState(() {
-        areaValues = newValues;
-      });
-    }
+              if ((newValues.end - newValues.start) >= 1000) {
+                viewModel.startAreaTextController.text =
+                    "${newValues.start.round()}";
+                viewModel.endAreaTextController.text =
+                    "${newValues.end.round()}";
+                setState(() {
+                  areaValues = newValues;
+                });
+              }
             },
           );
         }),
         Gap(10),
         CommonDropdown(
-          title:StringHelper.accessToUtilities,
+          title: StringHelper.accessToUtilities,
           //hint: StringHelper.select,
           hint: viewModel.accessToUtilitiesTextController.text,
-          options: [StringHelper.waterSupply,StringHelper.electricity,StringHelper.gas,StringHelper.sewageSystem,StringHelper.roadAccess],
+          options: [
+            StringHelper.waterSupply,
+            StringHelper.electricity,
+            StringHelper.gas,
+            StringHelper.sewageSystem,
+            StringHelper.roadAccess
+          ],
           onSelected: (String? value) {
-            viewModel.accessToUtilitiesTextController.text = value??"";
+            viewModel.accessToUtilitiesTextController.text = value ?? "";
           },
           // readOnly: true,
           // suffix: PopupMenuButton<String>(
@@ -4458,9 +5753,14 @@ class _FilterViewState extends State<FilterView> {
             title: StringHelper.rentalTerm,
             //hint: StringHelper.select,
             hint: viewModel.rentalTermsTextController.text,
-            options: [StringHelper.daily, StringHelper.weekly, StringHelper.monthly, StringHelper.yearly],
+            options: [
+              StringHelper.daily,
+              StringHelper.weekly,
+              StringHelper.monthly,
+              StringHelper.yearly
+            ],
             onSelected: (String? value) {
-              viewModel.rentalTermsTextController.text = value??"";
+              viewModel.rentalTermsTextController.text = value ?? "";
             },
             // readOnly: true,
             // suffix: PopupMenuButton<String>(
@@ -4498,5 +5798,4 @@ class _FilterViewState extends State<FilterView> {
       ],
     );
   }
-
 }

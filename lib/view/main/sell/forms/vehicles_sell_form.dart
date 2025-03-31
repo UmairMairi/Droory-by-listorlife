@@ -25,14 +25,16 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
   final CategoryModel? subSubCategory;
   final List<CategoryModel>? brands;
   final ProductDetailModel? item;
-  const VehiclesSellForm(
-      {super.key,
-      this.type,
-      this.item,
-      this.category,
-      this.subSubCategory,
-      this.subCategory,
-      this.brands});
+
+  const VehiclesSellForm({
+    super.key,
+    this.type,
+    this.item,
+    this.category,
+    this.subSubCategory,
+    this.subCategory,
+    this.brands,
+  });
 
   @override
   Widget build(BuildContext context, SellFormsVM viewModel) {
@@ -40,24 +42,20 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
       key: viewModel.formKey,
       child: KeyboardActions(
         config: KeyboardActionsConfig(
-            keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
-            keyboardBarColor: Colors.grey[200],
-            actions: [
-              KeyboardActionsItem(
-                focusNode: viewModel.priceText,
-              ),
-              KeyboardActionsItem(
-                focusNode: viewModel.yearText,
-              ),
-              KeyboardActionsItem(
-                focusNode: viewModel.kmDrivenText,
-              ),
-            ]),
+          keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
+          keyboardBarColor: Colors.grey[200],
+          actions: [
+            KeyboardActionsItem(focusNode: viewModel.priceText),
+            KeyboardActionsItem(focusNode: viewModel.yearText),
+            KeyboardActionsItem(focusNode: viewModel.kmDrivenText),
+          ],
+        ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Picture Section (unchanged)
               Text(
                 StringHelper.uploadImages,
                 style: context.textTheme.titleMedium,
@@ -67,26 +65,31 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                 width: double.infinity,
                 height: 220,
                 decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black),
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10)),
+                  border: Border.all(color: Colors.black),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 child: GestureDetector(
-                    onTap: () async {
-                      viewModel.mainImagePath =
-                          await ImagePickerHelper.openImagePicker(
-                              context: context, isCropping: true) ??
-                              '';
-                    },
-                    child: ImageView.rect(
-                        image: viewModel.mainImagePath,
-                        borderRadius: 10,
-                        width: context.width,
-                        placeholder: AssetsRes.IC_CAMERA,
-                        height: 220)),
+                  onTap: () async {
+                    viewModel.mainImagePath =
+                        await ImagePickerHelper.openImagePicker(
+                              context: context,
+                              isCropping: true,
+                            ) ??
+                            '';
+                  },
+                  child: ImageView.rect(
+                    image: viewModel.mainImagePath,
+                    borderRadius: 10,
+                    width: context.width,
+                    placeholder: AssetsRes.IC_CAMERA,
+                    height: 220,
+                  ),
+                ),
               ),
               Wrap(
                 children:
-                List.generate(viewModel.imagesList.length + 1, (index) {
+                    List.generate(viewModel.imagesList.length + 1, (index) {
                   if (index < viewModel.imagesList.length) {
                     return Stack(
                       alignment: Alignment.topRight,
@@ -101,24 +104,24 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: ImageView.rect(
-                              image: viewModel.imagesList[index].media ?? '',
-                              height: 80,
-                              width: 120),
+                            image: viewModel.imagesList[index].media ?? '',
+                            height: 80,
+                            width: 120,
+                          ),
                         ),
                         Container(
                           decoration: const BoxDecoration(
-                              color: Colors.white, shape: BoxShape.circle),
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                          ),
                           child: InkWell(
                             onTap: () {
                               viewModel.removeImage(index,
                                   data: viewModel.imagesList[index]);
                             },
-                            child: const Icon(
-                              Icons.cancel,
-                              color: Colors.red,
-                            ),
+                            child: const Icon(Icons.cancel, color: Colors.red),
                           ),
-                        )
+                        ),
                       ],
                     );
                   } else {
@@ -126,11 +129,11 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                       onTap: () async {
                         if (viewModel.imagesList.length < 10) {
                           var image = await ImagePickerHelper.openImagePicker(
-                              context: context, isCropping: true) ??
+                                context: context,
+                                isCropping: true,
+                              ) ??
                               '';
-                          if (image.isNotEmpty) {
-                            viewModel.addImage(image);
-                          }
+                          if (image.isNotEmpty) viewModel.addImage(image);
                         } else {
                           DialogHelper.showToast(
                               message: StringHelper.imageMaxLimit);
@@ -148,15 +151,11 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.add),
-                            SizedBox(
-                              height: 2,
-                            ),
+                            const Icon(Icons.add),
+                            const SizedBox(height: 2),
                             Text(
                               StringHelper.add,
-                              style: TextStyle(
-                                fontSize: 14,
-                              ),
+                              style: const TextStyle(fontSize: 14),
                             ),
                           ],
                         ),
@@ -165,189 +164,151 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                   }
                 }),
               ),
+
+              // Brand Field (required when shown)
               if (brands?.isNotEmpty ?? false) ...{
-                CommonDropdown<CategoryModel?>(
-                  title: StringHelper.brand,
-                  hint: viewModel.brandTextController.text,
-                  listItemBuilder: (context,model,selected,fxn){
-                    return Text(model?.name ?? '');
-                  },
-                  headerBuilder: (context, selectedItem, enabled) {
-                    return Text(selectedItem?.name??"");
-                  },
-                  options: brands??[],
-                  onSelected: (CategoryModel? value) {
-                    DialogHelper.showLoading();
-                    viewModel.getModels(brandId: value?.id);
-                    viewModel.selectedBrand = value;
-                    viewModel.brandTextController.text = value?.name ?? '';
-                  },
-                  // readOnly: true,
-                  // suffix: PopupMenuButton(
-                  //   clipBehavior: Clip.hardEdge,
-                  //   icon: const Icon(
-                  //     Icons.arrow_drop_down,
-                  //     color: Colors.black,
-                  //   ),
-                  //   onSelected: (CategoryModel value) {
-                  //     DialogHelper.showLoading();
-                  //     viewModel.getModels(brandId: value.id);
-                  //     viewModel.selectedBrand = value;
-                  //     viewModel.brandTextController.text = value.name ?? '';
-                  //     viewModel.getModels(brandId: value.id);
-                  //   },
-                  //   itemBuilder: (BuildContext context) {
-                  //     return brands!.map((option) {
-                  //       return PopupMenuItem(
-                  //         value: option,
-                  //         child: Text(option.name ?? ''),
-                  //       );
-                  //     }).toList();
-                  //   },
-                  // ),
-                  // hint: StringHelper.select,
-                  // hintStyle:
-                  //     const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                  // keyboardType: TextInputType.text,
-                  // textInputAction: TextInputAction.done,
-                  // inputFormatters: [
-                  //   FilteringTextInputFormatter.deny(
-                  //       RegExp(viewModel.regexToRemoveEmoji)),
-                  // ],
-                ),
-                CommonDropdown<CategoryModel?>(
-                  title: StringHelper.models,
-                  titleColor: Colors.black,
-                  hint: viewModel.modelTextController.text,
-                  //readOnly: true,
-                  //hint: StringHelper.select,
-                  listItemBuilder: (context,model,selected,fxn){
-                    return Text(model?.name ?? '');
-                  },
-                  headerBuilder: (context, selectedItem, enabled) {
-                    return Text(selectedItem?.name??"");
-                  },
-                  onSelected: (value) {
-                    viewModel.selectedModel = value;
-                    viewModel.modelTextController.text = value?.name ?? '';
-                  },
-                  options: viewModel.allModels,
-                  // hintStyle:
-                  //     const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                  // fillColor: Colors.white,
-                  // contentPadding: const EdgeInsets.only(left: 20),
-                  // suffix: PopupMenuButton<CategoryModel>(
-                  //   clipBehavior: Clip.hardEdge,
-                  //   icon: const Icon(
-                  //     Icons.arrow_drop_down,
-                  //     color: Colors.black,
-                  //   ),
-                  //   onSelected: (value) {
-                  //     viewModel.selectedModel = value;
-                  //     viewModel.modelTextController.text = value.name ?? '';
-                  //   },
-                  //   itemBuilder: (BuildContext context) {
-                  //     return viewModel.allModels.map((option) {
-                  //       return PopupMenuItem(
-                  //         value: option,
-                  //         child: Text(option?.name ?? ''),
-                  //       );
-                  //     }).toList();
-                  //   },
-                  // ),
-                  // inputFormatters: [
-                  //   FilteringTextInputFormatter.deny(
-                  //     RegExp(viewModel.regexToRemoveEmoji),
-                  //   ),
-                  // ],
-                  // keyboardType: TextInputType.text,
-                  // textInputAction: TextInputAction.done,
-                )
+                if ([26, 27, 95, 97, 98, 99].contains(subCategory?.id)) ...{
+                  FormField<CategoryModel?>(
+                    initialValue: viewModel.selectedBrand,
+                    validator: (value) {
+                      if (value == null) {
+                        return "* ${StringHelper.fieldShouldNotBeEmpty}";
+                      }
+                      return null;
+                    },
+                    builder: (field) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CommonDropdown<CategoryModel?>(
+                            title: [98, 99].contains(subCategory?.id)
+                                ? "${StringHelper.brand} *"
+                                : "${StringHelper.type} *",
+                            hint: viewModel.brandTextController.text,
+                            listItemBuilder: (context, model, selected, fxn) {
+                              return Text(model?.name ?? '');
+                            },
+                            headerBuilder: (context, selectedItem, enabled) {
+                              return Text(selectedItem?.name ?? "");
+                            },
+                            options: brands ?? [],
+                            onSelected: (CategoryModel? value) {
+                              field.didChange(value);
+                              field.validate();
+                              viewModel.selectedBrand = value;
+                              viewModel.brandTextController.text =
+                                  value?.name ?? '';
+                            },
+                          ),
+                          if (field.hasError)
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 10.0, top: 2),
+                              child: Text(
+                                field.errorText!,
+                                style: const TextStyle(
+                                  color: Color.fromARGB(
+                                      255, 146, 47, 40), // Updated color
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                        ],
+                      );
+                    },
+                  ),
+                },
               },
-              // Year Text Field
-              Visibility(
-                visible: [13,26,98,27].contains(subCategory?.id),
-                child: CommonDropdown(
-                  title: StringHelper.year,
-                  titleColor: Colors.black,
-                  hint: viewModel.yearTextController.text,
-                  onSelected: (String? value) {
-                    viewModel.yearTextController.text = value ?? '';
+
+              // Year Field (required when shown)
+              if ([26, 98].contains(subCategory?.id)) ...{
+                FormField<String?>(
+                  initialValue: viewModel.yearTextController.text.isNotEmpty
+                      ? viewModel.yearTextController.text
+                      : null,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return '* ${StringHelper.fieldShouldNotBeEmpty}';
+                    }
+                    return null;
                   },
-                  options: viewModel.yearsType,
-                  // readOnly: true,
-                  // focusNode: viewModel.yearText,
-                  // hint: StringHelper.enter,
-                  // hintStyle:
-                  //     const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                  // fillColor: Colors.white,
-                  // contentPadding: const EdgeInsets.only(left: 20),
-                  // suffix: PopupMenuButton<String>(
-                  //   icon: const Icon(Icons.arrow_drop_down),
-                  //   onSelected: (value) {
-                  //     viewModel.yearTextController.text = value ?? '';
-                  //   },
-                  //   itemBuilder: (BuildContext context) {
-                  //     return viewModel.yearsType.map((option) {
-                  //       return PopupMenuItem(
-                  //         value: option,
-                  //         child: Text(option),
-                  //       );
-                  //     }).toList();
-                  //   },
-                  // ),
-                  // inputFormatters: [
-                  //   LengthLimitingTextInputFormatter(4),
-                  //   FilteringTextInputFormatter.digitsOnly,
-                  //   FilteringTextInputFormatter.deny(
-                  //     RegExp(viewModel.regexToRemoveEmoji),
-                  //   ),
-                  // ],
-                  // keyboardType: TextInputType.number,
-                  // textInputAction: TextInputAction.done,
+                  builder: (field) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CommonDropdown<String?>(
+                          title: "${StringHelper.year} *",
+                          titleColor: Colors.black,
+                          hint: viewModel.yearTextController.text,
+                          onSelected: (String? value) {
+                            field.didChange(value);
+                            field.validate();
+                            viewModel.yearTextController.text = value ?? '';
+                          },
+                          options: viewModel.yearsType,
+                        ),
+                        if (field.hasError)
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10.0, top: 2),
+                            child: Text(
+                              field.errorText!,
+                              style: const TextStyle(
+                                color: Color.fromARGB(
+                                    255, 146, 47, 40), // Updated color
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                      ],
+                    );
+                  },
                 ),
-              ),
-              // AppTextField(
-              //   title: StringHelper.year,
-              //   titleColor: Colors.black,
-              //   controller: viewModel.yearTextController,
-              //   readOnly: true,
-              //   focusNode: viewModel.yearText,
-              //   hint: StringHelper.enter,
-              //   hintStyle:
-              //       const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-              //   fillColor: Colors.white,
-              //   contentPadding: const EdgeInsets.only(left: 20),
-              //   inputFormatters: [
-              //     LengthLimitingTextInputFormatter(4),
-              //     FilteringTextInputFormatter.digitsOnly,
-              //     FilteringTextInputFormatter.deny(
-              //       RegExp(viewModel.regexToRemoveEmoji),
-              //     ),
-              //   ],
-              //   keyboardType: TextInputType.number,
-              //   textInputAction: TextInputAction.done,
-              // ),
-              // KM Driven Text Field
-              Visibility(
-                visible: false,
-                child: AppTextField(
-                  title: StringHelper.kmDriven,
+              },
+
+              // KM Driven Field (required when shown)
+              if ([26, 98].contains(subCategory?.id)) ...{
+                AppTextField(
+                  title: "${StringHelper.kmDriven} *",
+                  titleColor: Colors.black,
                   controller: viewModel.kmDrivenTextController,
                   focusNode: viewModel.kmDrivenText,
                   readOnly: false,
-                  cursorColor: Colors.black,
+                  hint: StringHelper.enter,
+                  hintStyle:
+                      const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  fillColor: Colors.white,
+                  contentPadding: const EdgeInsets.only(left: 20),
+                  keyboardType: TextInputType.number,
                   inputFormatters: [
                     LengthLimitingTextInputFormatter(10),
                     FilteringTextInputFormatter.digitsOnly,
                     FilteringTextInputFormatter.deny(
-                        RegExp(viewModel.regexToRemoveEmoji)),
+                      RegExp(viewModel.regexToRemoveEmoji),
+                    ),
                   ],
-                  keyboardType: TextInputType.number,
                   textInputAction: TextInputAction.done,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return '* Please enter KM driven';
+                    }
+                    final km = num.tryParse(value);
+                    if (km == null) {
+                      return '* Please enter a valid number';
+                    }
+                    if (km < 0) {
+                      return '* KM driven cannot be negative';
+                    }
+                    if (km > 1000000) {
+                      return '* KM driven cannot exceed 1000000';
+                    }
+                    return null;
+                  },
                 ),
-              ),
+              },
 
+              // Item Condition (unchanged)
               Text(
                 StringHelper.itemCondition,
                 style: context.textTheme.titleMedium,
@@ -355,40 +316,38 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
               Row(
                 children: [
                   GestureDetector(
-                    onTap: () {
-                      viewModel.itemCondition = 1;
-                    },
+                    onTap: () => viewModel.itemCondition = 1,
                     child: Container(
                       width: 105,
                       height: 42,
                       margin: const EdgeInsets.only(top: 10, right: 10),
                       decoration: BoxDecoration(
                         border: Border.all(
-                            color: viewModel.itemCondition == 1
-                                ? Colors.transparent
-                                : Colors.grey.withOpacity(0.5)),
+                          color: viewModel.itemCondition == 1
+                              ? Colors.transparent
+                              : Colors.grey.withOpacity(0.5),
+                        ),
                         color: viewModel.itemCondition == 1
                             ? Colors.black
                             : const Color(0xffFCFCFD),
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: Center(
-                          child: Text(
-                        StringHelper.newText,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                          color: viewModel.itemCondition == 1
-                              ? Colors.white
-                              : Colors.black,
+                        child: Text(
+                          StringHelper.newText,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                            color: viewModel.itemCondition == 1
+                                ? Colors.white
+                                : Colors.black,
+                          ),
                         ),
-                      )),
+                      ),
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {
-                      viewModel.itemCondition = 2;
-                    },
+                    onTap: () => viewModel.itemCondition = 2,
                     child: Container(
                       width: 105,
                       height: 42,
@@ -398,30 +357,31 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                             ? Colors.black
                             : const Color(0xffFCFCFD),
                         border: Border.all(
-                            color: viewModel.itemCondition == 2
-                                ? Colors.transparent
-                                : Colors.grey.withOpacity(0.5)),
+                          color: viewModel.itemCondition == 2
+                              ? Colors.transparent
+                              : Colors.grey.withOpacity(0.5),
+                        ),
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: Center(
-                          child: Text(
-                        StringHelper.used,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                          color: viewModel.itemCondition == 2
-                              ? Colors.white
-                              : Colors.black,
+                        child: Text(
+                          StringHelper.used,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                            color: viewModel.itemCondition == 2
+                                ? Colors.white
+                                : Colors.black,
+                          ),
                         ),
-                      )),
+                      ),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 25,
-              ),
-              // Ad Title Text Field
+              const SizedBox(height: 25),
+
+              // Ad Title (unchanged)
               AppTextField(
                 title: StringHelper.adTitle,
                 hint: StringHelper.enter,
@@ -438,7 +398,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                 textInputAction: TextInputAction.done,
               ),
 
-// Description Text Field
+              // Description (unchanged)
               AppTextField(
                 title: StringHelper.describeWhatYouAreSelling,
                 hint: StringHelper.enter,
@@ -453,7 +413,7 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                 textInputAction: TextInputAction.done,
               ),
 
-// Location Text Field (Read-Only)
+              // Location (unchanged)
               AppTextField(
                 title: StringHelper.location,
                 hint: StringHelper.select,
@@ -466,31 +426,24 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                   Map<String, dynamic>? value = await Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const AppMapWidget(),
-                    ),
+                        builder: (context) => const AppMapWidget()),
                   );
                   if (value != null && value.isNotEmpty) {
                     String address = "";
-
-                    if ("${value['location'] ?? ""}".isNotEmpty) {
+                    if ("${value['location'] ?? ""}".isNotEmpty)
                       address = "${value['location'] ?? ""}";
-                    }
-                    if ("${value['city'] ?? ""}".isNotEmpty) {
+                    if ("${value['city'] ?? ""}".isNotEmpty)
                       address += ", ${value['city'] ?? ""}";
-                    }
-                    if ("${value['state'] ?? ""}".isNotEmpty) {
+                    if ("${value['state'] ?? ""}".isNotEmpty)
                       address += ", ${value['state'] ?? ""}";
-                    }
-
                     viewModel.addressTextController.text = address;
                   }
                 },
                 contentPadding:
-                const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
                 inputFormatters: [
                   FilteringTextInputFormatter.deny(
-                    RegExp(viewModel.regexToRemoveEmoji),
-                  ),
+                      RegExp(viewModel.regexToRemoveEmoji)),
                 ],
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.done,
@@ -498,44 +451,42 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                 elevation: 6,
               ),
 
-// Price Text Field
+              // Price (unchanged)
               AppTextField(
                 title: StringHelper.priceEgp,
                 controller: viewModel.priceTextController,
                 hint: StringHelper.enterPrice,
-                maxLength: 6,
+                maxLength: 9,
                 keyboardType: TextInputType.number,
                 inputFormatters: [
-                  LengthLimitingTextInputFormatter(6),
+                  LengthLimitingTextInputFormatter(9),
                   FilteringTextInputFormatter.deny(
                       RegExp(viewModel.regexToRemoveEmoji)),
                   FilteringTextInputFormatter.digitsOnly,
                 ],
                 focusNode: viewModel.priceText,
                 validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return '* This field is required';
-                  }
-
+                  if (value == null || value.trim().isEmpty)
+                    return '* ${StringHelper.fieldShouldNotBeEmpty}';
                   final amount = num.tryParse(value);
-
-                  if (amount == null) {
-                    return '* Please enter a valid number';
+                  if (amount == null)
+                    return '* ${StringHelper.enterValidEmail}';
+                  if (amount < 50) return '* ${StringHelper.minValidPrice} 50';
+                  if ([26, 27].contains(subCategory?.id)) {
+                    if (amount > 150000000)
+                      return '* ${StringHelper.maxValidPrice}150,000,000';
+                  } else if ([95, 97].contains(subCategory?.id)) {
+                    if (amount > 400000)
+                      return '* ${StringHelper.maxValidPrice} 400,000';
+                  } else {
+                    if (amount > 3000000)
+                      return '* ${StringHelper.maxValidPrice} 3,000,000';
                   }
-
-                  if (amount < 1000) {
-                    return '* The minimum valid price is EGP 1000';
-                  }
-
-                  if (amount > 100000) {
-                    return '* The maximum valid price is EGP 100,000';
-                  }
-
                   return null;
                 },
-
               ),
 
+              // How to Connect (unchanged)
               Text(
                 StringHelper.howToConnect,
                 style: context.textTheme.titleSmall,
@@ -546,6 +497,8 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                   viewModel.communicationChoice = value.name;
                 },
               ),
+
+              // Submit Button (unchanged)
               if (viewModel.isEditProduct) ...{
                 GestureDetector(
                   onTap: () {
@@ -560,28 +513,14 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                           message: StringHelper.pleaseUploadAddAtLeastOneImage);
                       return;
                     }
-
-                    if (viewModel.yearTextController.text.trim().isEmpty) {
-                      DialogHelper.showToast(
-                          message: StringHelper.yearIsRequired);
-                      return;
-                    }
-
-                    // if (viewModel.kmDrivenTextController.text.trim().isEmpty) {
-                    //   DialogHelper.showToast(
-                    //       message: StringHelper.kMDrivenIsRequired);
-                    //   return;
-                    // }
-
                     if (viewModel.adTitleTextController.text.trim().isEmpty) {
                       DialogHelper.showToast(
                           message: StringHelper.adTitleIsRequired);
                       return;
                     }
-                    if (viewModel.adTitleTextController.text.trim().length < 10) {
-                      DialogHelper.showToast(
-                        message: StringHelper.adLength,
-                      );
+                    if (viewModel.adTitleTextController.text.trim().length <
+                        10) {
+                      DialogHelper.showToast(message: StringHelper.adLength);
                       return;
                     }
                     if (viewModel.descriptionTextController.text
@@ -603,27 +542,31 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                     }
                     DialogHelper.showLoading();
                     viewModel.editProduct(
-                        productId: item?.id,
-                        category: category,
-                        subCategory: subCategory,
-                        subSubCategory: subSubCategory,
-                        brand: viewModel.selectedBrand,
-                        models: viewModel.selectedModel);
+                      productId: item?.id,
+                      category: category,
+                      subCategory: subCategory,
+                      subSubCategory: subSubCategory,
+                      brand: viewModel.selectedBrand,
+                    );
                   },
                   child: Container(
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     margin: const EdgeInsets.symmetric(vertical: 20),
                     decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(100)),
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(100),
+                    ),
                     child: Text(
-                      viewModel.adStatus == "deactivate"?StringHelper.updateRepublish:StringHelper.updateNow,
+                      viewModel.adStatus == "deactivate"
+                          ? StringHelper.updateRepublish
+                          : StringHelper.updateNow,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ),
@@ -641,28 +584,14 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                           message: StringHelper.pleaseUploadAddAtLeastOneImage);
                       return;
                     }
-
-                    if (viewModel.yearTextController.text.trim().isEmpty) {
-                      DialogHelper.showToast(
-                          message: StringHelper.yearIsRequired);
-                      return;
-                    }
-
-                    // if (viewModel.kmDrivenTextController.text.trim().isEmpty) {
-                    //   DialogHelper.showToast(
-                    //       message: StringHelper.kMDrivenIsRequired);
-                    //   return;
-                    // }
-
                     if (viewModel.adTitleTextController.text.trim().isEmpty) {
                       DialogHelper.showToast(
                           message: StringHelper.adTitleIsRequired);
                       return;
                     }
-                    if (viewModel.adTitleTextController.text.trim().length < 10) {
-                      DialogHelper.showToast(
-                        message: StringHelper.adLength,
-                      );
+                    if (viewModel.adTitleTextController.text.trim().length <
+                        10) {
+                      DialogHelper.showToast(message: StringHelper.adLength);
                       return;
                     }
                     if (viewModel.descriptionTextController.text
@@ -684,33 +613,33 @@ class VehiclesSellForm extends BaseView<SellFormsVM> {
                     }
                     DialogHelper.showLoading();
                     viewModel.addProduct(
-                        category: category,
-                        subCategory: subCategory,
-                        subSubCategory: subSubCategory,
-                        brand: viewModel.selectedBrand,
-                        models: viewModel.selectedModel);
+                      category: category,
+                      subCategory: subCategory,
+                      subSubCategory: subSubCategory,
+                      brand: viewModel.selectedBrand,
+                    );
                   },
                   child: Container(
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     margin: const EdgeInsets.symmetric(vertical: 20),
                     decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(100)),
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(100),
+                    ),
                     child: Text(
                       StringHelper.postNow,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ),
               },
-              const SizedBox(
-                height: 30,
-              )
+              const SizedBox(height: 30),
             ],
           ),
         ),

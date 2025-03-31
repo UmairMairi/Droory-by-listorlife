@@ -25,6 +25,7 @@ class ApiConstants {
   static String addProductsUrl() => "$_baseUrl/add/products";
   static String editProductsUrl() => "$_baseUrl/edit/product";
   static String storeSearchesUrl() => "$_baseUrl/store/searches";
+  static String contactFormUrl() => "$_baseUrl/contact";
   static String getSearchesUrl() => "$_baseUrl/get/searches";
   static String deleteSearchesUrl() => "$_baseUrl/delete/searches";
   static String getProductsUrl({
@@ -42,16 +43,19 @@ class ApiConstants {
       'sell_status': sellStatus,
     };
 
-    if(latitude != 0.0 && longitude != 0.0){
+    if (latitude != 0.0 && longitude != 0.0) {
       queryParams.addAll({
         'latitude': latitude,
         'longitude': longitude,
       });
     }
 
-    queryParams.removeWhere((key, value) => value == null || value.toString().isEmpty);
+    queryParams
+        .removeWhere((key, value) => value == null || value.toString().isEmpty);
 
-    final queryString = queryParams.entries.map((entry) => '${entry.key}=${entry.value}').join('&');
+    final queryString = queryParams.entries
+        .map((entry) => '${entry.key}=${entry.value}')
+        .join('&');
 
     return "$_baseUrl/get/products?$queryString";
   }
@@ -67,13 +71,15 @@ class ApiConstants {
       'user_id': userId,
     };
 
-    queryParams.removeWhere((key, value) => value == null || value.toString().isEmpty);
+    queryParams
+        .removeWhere((key, value) => value == null || value.toString().isEmpty);
 
-    final queryString = queryParams.entries.map((entry) => '${entry.key}=${entry.value}').join('&');
+    final queryString = queryParams.entries
+        .map((entry) => '${entry.key}=${entry.value}')
+        .join('&');
 
     return "$_baseUrl/get/products?$queryString";
   }
-
 
   static String getFavouritesUrl({int? limit = 10, int? page = 1}) {
     final Map<String, dynamic> queryParams = {
@@ -81,13 +87,15 @@ class ApiConstants {
       'page': page,
       'favourite': true,
     };
-    queryParams.removeWhere((key, value) => value == null || value.toString().isEmpty);
+    queryParams
+        .removeWhere((key, value) => value == null || value.toString().isEmpty);
 
-    final queryString = queryParams.entries.map((entry) => '${entry.key}=${entry.value}').join('&');
+    final queryString = queryParams.entries
+        .map((entry) => '${entry.key}=${entry.value}')
+        .join('&');
 
     return "$_baseUrl/get/products?$queryString";
   }
-
 
   static String addFavouriteUrl() => "$_baseUrl/add/favourite";
   static String getModelsUrl({String? brandId}) =>
@@ -131,11 +139,13 @@ class ApiConstants {
       'page': page,
     };
 
-    queryParams.removeWhere((key, value) => value == null || value.toString().isEmpty);
+    queryParams
+        .removeWhere((key, value) => value == null || value.toString().isEmpty);
 
-    final queryString = queryParams.entries.map((entry) => '${entry.key}=${entry.value}').join('&');
+    final queryString = queryParams.entries
+        .map((entry) => '${entry.key}=${entry.value}')
+        .join('&');
 
     return "$_baseUrl/get/products?$queryString";
   }
-
 }

@@ -29,7 +29,8 @@ class LandForm extends StatelessWidget {
     this.subCategory,
     this.subSubCategory,
     this.brands,
-    this.item});
+    this.item,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +64,7 @@ class LandForm extends StatelessWidget {
               },
             ),
             contentPadding:
-            const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+                const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
             inputFormatters: [
               FilteringTextInputFormatter.deny(
                 RegExp(viewModel.regexToRemoveEmoji),
@@ -75,7 +76,6 @@ class LandForm extends StatelessWidget {
             elevation: 6,
           ),
         ),
-
         AppTextField(
           title: StringHelper.adTitle,
           hint: StringHelper.enter,
@@ -83,7 +83,7 @@ class LandForm extends StatelessWidget {
           maxLines: 4,
           minLines: 1,
           contentPadding:
-          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+              const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
           inputFormatters: [
             FilteringTextInputFormatter.deny(
               RegExp(viewModel.regexToRemoveEmoji),
@@ -95,54 +95,28 @@ class LandForm extends StatelessWidget {
           fillColor: Colors.white,
           elevation: 6,
         ),
-
         CommonDropdown(
           title: StringHelper.type,
-          //hint: StringHelper.select,
           hint: viewModel.propertyForTypeTextController.text,
           onSelected: (String? value) {
-            viewModel.propertyForTypeTextController.text = value??"";
+            viewModel.propertyForTypeTextController.text = value ?? "";
           },
-          options: ["Agricultural Land","Commercial Land","Residential Land","Industrial Land","Mixed-Use Land","Farm Land"],
-          // readOnly: true,
-          // suffix: PopupMenuButton<String>(
-          //   clipBehavior: Clip.hardEdge,
-          //   icon: const Icon(
-          //     Icons.arrow_drop_down,
-          //     color: Colors.black,
-          //   ),
-          //   onSelected: (String value) {
-          //     viewModel.propertyForTypeTextController.text = value;
-          //   },
-          //   itemBuilder: (BuildContext context) {
-          //     return ["Agricultural Land","Commercial Land","Residential Land","Industrial Land","Mixed-Use Land","Farm Land"].map((option) {
-          //       return PopupMenuItem(
-          //         value: option,
-          //         child: Text(option),
-          //       );
-          //     }).toList();
-          //   },
-          // ),
-          // contentPadding:
-          // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-          // inputFormatters: [
-          //   FilteringTextInputFormatter.deny(
-          //     RegExp(viewModel.regexToRemoveEmoji),
-          //   ),
-          // ],
-          // keyboardType: TextInputType.text,
-          // textInputAction: TextInputAction.done,
-          // fillColor: Colors.white,
-          // elevation: 6,
+          options: [
+            "Agricultural Land",
+            "Commercial Land",
+            "Residential Land",
+            "Industrial Land",
+            "Mixed-Use Land",
+            "Farm Land"
+          ],
         ),
-
         AppTextField(
           title: StringHelper.areaSize,
           hint: StringHelper.enter,
           controller: viewModel.areaSizeTextController,
           contentPadding:
-          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-          maxLength: 6,
+              const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          maxLength: 7, // Adjusted for max 2,000,000
           keyboardType: TextInputType.number,
           inputFormatters: [
             FilteringTextInputFormatter.deny(
@@ -160,12 +134,12 @@ class LandForm extends StatelessWidget {
               return '* Please enter a valid number';
             }
 
-            if (amount < 100) {
-              return '* The minimum valid area size 100';
+            if (amount < 10) {
+              return '* ${StringHelper.minValidAreaSize} 10';
             }
 
-            if (amount > 100000) {
-              return '* The maximum valid area size is 100,000';
+            if (amount > 2000000) {
+              return '* ${StringHelper.maxValidAreaSize} 2,000,000';
             }
 
             return null;
@@ -174,56 +148,62 @@ class LandForm extends StatelessWidget {
           fillColor: Colors.white,
           elevation: 6,
         ),
-
-
         accessToUtilitiesWidget(context),
-
         paymentOptionWidget(context),
-
         Visibility(
           visible: viewModel.currentPropertyType.toLowerCase() == "rent",
           child: CommonDropdown(
             title: StringHelper.rentalTerm,
-            //hint: StringHelper.select,
             hint: viewModel.rentalTermsTextController.text,
             onSelected: (String? value) {
-              viewModel.rentalTermsTextController.text = value??"";
+              viewModel.rentalTermsTextController.text = value ?? "";
             },
-            options: [StringHelper.daily, StringHelper.weekly, StringHelper.monthly, StringHelper.yearly],
-            // readOnly: true,
-            // suffix: PopupMenuButton<String>(
-            //   clipBehavior: Clip.hardEdge,
-            //   icon: const Icon(
-            //     Icons.arrow_drop_down,
-            //     color: Colors.black,
-            //   ),
-            //   onSelected: (String value) {
-            //     viewModel.rentalTermsTextController.text = value;
-            //   },
-            //   itemBuilder: (BuildContext context) {
-            //     return ['Daily', 'Weekly', 'Monthly', 'Yearly']
-            //         .map((option) {
-            //       return PopupMenuItem(
-            //         value: option,
-            //         child: Text(option),
-            //       );
-            //     }).toList();
-            //   },
-            // ),
-            // contentPadding:
-            // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-            // inputFormatters: [
-            //   FilteringTextInputFormatter.deny(
-            //     RegExp(viewModel.regexToRemoveEmoji),
-            //   ),
-            // ],
-            // keyboardType: TextInputType.text,
-            // textInputAction: TextInputAction.done,
-            // fillColor: Colors.white,
-            // elevation: 6,
+            options: [
+              StringHelper.daily,
+              StringHelper.weekly,
+              StringHelper.monthly,
+              StringHelper.yearly
+            ],
           ),
         ),
-
+        // Commented out as per previous requirements
+        // Visibility(
+        //   visible: viewModel.currentPropertyType.toLowerCase() == "rent",
+        //   child: AppTextField(
+        //     title: StringHelper.rentalPrice,
+        //     controller: viewModel.rentalPriceTextController,
+        //     hint: StringHelper.enterPrice,
+        //     keyboardType: TextInputType.number,
+        //     textInputAction: TextInputAction.done,
+        //     maxLength: 6,
+        //     inputFormatters: [
+        //       FilteringTextInputFormatter.deny(
+        //           RegExp(viewModel.regexToRemoveEmoji)),
+        //       FilteringTextInputFormatter.digitsOnly,
+        //     ],
+        //     validator: (value) {
+        //       if (value == null || value.trim().isEmpty) {
+        //         return '* This field is required';
+        //       }
+        //
+        //       final amount = num.tryParse(value);
+        //
+        //       if (amount == null) {
+        //         return '* Please enter a valid number';
+        //       }
+        //
+        //       if (amount < 1000) {
+        //         return '* The minimum valid price is EGP 1000';
+        //       }
+        //
+        //       if (amount > 3000000) {
+        //         return '* The maximum valid price is EGP 1,000,000';
+        //       }
+        //
+        //       return null;
+        //     },
+        //   ),
+        // ),
         AppTextField(
           title: StringHelper.location,
           controller: viewModel.addressTextController,
@@ -231,9 +211,9 @@ class LandForm extends StatelessWidget {
           readOnly: true,
           onTap: () async {
             Map<String, dynamic>? value = await Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const AppMapWidget()));
+              context,
+              MaterialPageRoute(builder: (context) => const AppMapWidget()),
+            );
             if (value != null && value.isNotEmpty) {
               viewModel.state = value['state'];
               viewModel.city = value['city'];
@@ -263,52 +243,14 @@ class LandForm extends StatelessWidget {
           keyboardType: TextInputType.text,
           textInputAction: TextInputAction.done,
         ),
-
-        Visibility(
-          visible: viewModel.currentPropertyType.toLowerCase() == "rent",
-          child: AppTextField(
-            title: StringHelper.rentalPrice,
-            controller: viewModel.rentalPriceTextController,
-            hint: StringHelper.enterPrice,
-            keyboardType: TextInputType.number,
-            textInputAction: TextInputAction.done,
-            maxLength: 6,
-            inputFormatters: [
-              FilteringTextInputFormatter.deny(
-                  RegExp(viewModel.regexToRemoveEmoji)),
-              FilteringTextInputFormatter.digitsOnly,
-            ],
-            validator: (value) {
-              if (value == null || value.trim().isEmpty) {
-                return '* This field is required';
-              }
-
-              final amount = num.tryParse(value);
-
-              if (amount == null) {
-                return '* Please enter a valid number';
-              }
-
-              if (amount < 1000) {
-                return '* The minimum valid price is EGP 1000';
-              }
-
-              if (amount > 100000) {
-                return '* The maximum valid price is EGP 100,000';
-              }
-
-              return null;
-            },
-          ),
-        ),
         AppTextField(
           title: StringHelper.priceEgp,
           controller: viewModel.priceTextController,
           hint: StringHelper.enterPrice,
-          maxLength: 6,
+          maxLength: 10, // Adjusted for max 2,500,000,000
           keyboardType: TextInputType.number,
           inputFormatters: [
-            LengthLimitingTextInputFormatter(6),
+            LengthLimitingTextInputFormatter(10),
             FilteringTextInputFormatter.deny(
                 RegExp(viewModel.regexToRemoveEmoji)),
             FilteringTextInputFormatter.digitsOnly,
@@ -329,15 +271,96 @@ class LandForm extends StatelessWidget {
               return '* The minimum valid price is EGP 1000';
             }
 
-            if (amount > 100000) {
-              return '* The maximum valid price is EGP 100,000';
+            if (viewModel.currentPropertyType.toLowerCase() == "rent") {
+              if (amount > 5000000) {
+                return '* The maximum valid price for rent is EGP 5,000,000';
+              }
+            } else if (viewModel.currentPropertyType.toLowerCase() == "sell") {
+              if (amount > 2500000000) {
+                return '* The maximum valid price for sale is EGP 2,500,000,000';
+              }
             }
 
             return null;
           },
-
         ),
-
+        Visibility(
+          visible: viewModel.currentPropertyType.toLowerCase() == "rent",
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: 3,
+                child: AppTextField(
+                  title: StringHelper.deposit,
+                  controller: viewModel.depositTextController,
+                  hint: StringHelper.enter,
+                  keyboardType: TextInputType.number,
+                  textInputAction: TextInputAction.done,
+                  maxLength: 7, // Adjusted for max 5,000,000
+                  inputFormatters: [
+                    FilteringTextInputFormatter.deny(
+                        RegExp(viewModel.regexToRemoveEmoji)),
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                  validator: (value) {
+                    if (value != null && value.trim().isNotEmpty) {
+                      final amount = num.tryParse(value);
+                      if (amount == null) {
+                        return '* ${StringHelper.enterValidNumber}';
+                      }
+                      final rentAmount =
+                          num.tryParse(viewModel.priceTextController.text) ?? 0;
+                      if (rentAmount > 0 && amount > rentAmount) {
+                        return '* ${StringHelper.depositExceedPrice}';
+                      }
+                      if (amount > 5000000) {
+                        return '* ${StringHelper.maxValidPrice} 5,000,000';
+                      }
+                    }
+                    return null; // Deposit is not required
+                  },
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                flex: 1,
+                child: AppTextField(
+                  title: "${StringHelper.depositPercentage} ",
+                  controller: viewModel.percentageController,
+                  hint: "%",
+                  keyboardType: TextInputType.number,
+                  textInputAction: TextInputAction.done,
+                  maxLength: 3,
+                  readOnly: viewModel.priceTextController.text.isEmpty ||
+                      num.tryParse(viewModel.priceTextController.text) == null,
+                  onTap: viewModel.priceTextController.text.isEmpty ||
+                          num.tryParse(viewModel.priceTextController.text) ==
+                              null
+                      ? null
+                      : () {},
+                  inputFormatters: [
+                    FilteringTextInputFormatter.deny(
+                        RegExp(viewModel.regexToRemoveEmoji)),
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                  validator: (value) {
+                    if (value != null && value.trim().isNotEmpty) {
+                      final percentage = num.tryParse(value);
+                      if (percentage == null)
+                        return '* ${StringHelper.invalidPercentage}';
+                      if (percentage <= 0)
+                        return '* ${StringHelper.mustBeGreaterThanZero}';
+                      if (percentage > 100)
+                        return '* ${StringHelper.maxOneHundredPercent}';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
         AppTextField(
           title: StringHelper.describeWhatYouAreSelling,
           controller: viewModel.descriptionTextController,
@@ -350,23 +373,21 @@ class LandForm extends StatelessWidget {
           keyboardType: TextInputType.text,
           textInputAction: TextInputAction.done,
         ),
-
         Visibility(
           visible: false,
           child: AmenitiesWidget(
-              amenitiesChecked: viewModel.amenities,
-              selectedAmenities: (List<int?> selectedIds) {
-                debugPrint("$selectedIds");
-                viewModel.amenities = selectedIds;
-                debugPrint("${viewModel.amenities}");
-              }),
+            amenitiesChecked: viewModel.amenities,
+            selectedAmenities: (List<int?> selectedIds) {
+              debugPrint("$selectedIds");
+              viewModel.amenities = selectedIds;
+              debugPrint("${viewModel.amenities}");
+            },
+          ),
         ),
-
         Text(
           StringHelper.howToConnect,
           style: context.textTheme.titleSmall,
         ),
-
         MultiSelectCategory(
           choiceString: viewModel.communicationChoice,
           onSelectedCommunicationChoice: (CommunicationChoice value) {
@@ -393,8 +414,7 @@ class LandForm extends StatelessWidget {
                 return;
               }
               if (viewModel.adTitleTextController.text.trim().isEmpty) {
-                DialogHelper.showToast(
-                    message: StringHelper.adTitleIsRequired);
+                DialogHelper.showToast(message: StringHelper.adTitleIsRequired);
                 return;
               }
               if (viewModel.adTitleTextController.text.trim().length < 10) {
@@ -404,17 +424,16 @@ class LandForm extends StatelessWidget {
                 return;
               }
               if (viewModel.propertyForTypeTextController.text.trim().isEmpty) {
-                DialogHelper.showToast(
-                    message: StringHelper.plsSelectType);
+                DialogHelper.showToast(message: StringHelper.plsSelectType);
                 return;
               }
               if (viewModel.areaSizeTextController.text.trim().isEmpty) {
-                DialogHelper.showToast(
-                    message: StringHelper.plsAddArea);
+                DialogHelper.showToast(message: StringHelper.plsAddArea);
                 return;
               }
               if (viewModel.accessToUtilitiesTextController.text.isEmpty) {
-                DialogHelper.showToast(message: StringHelper.plsEnterAccessUtilities);
+                DialogHelper.showToast(
+                    message: StringHelper.plsEnterAccessUtilities);
                 return;
               }
               if (viewModel.paymentTypeTextController.text.isEmpty) {
@@ -422,7 +441,8 @@ class LandForm extends StatelessWidget {
                     message: StringHelper.plsSelectPaymentType);
                 return;
               }
-              if (viewModel.currentPropertyType.toLowerCase() == "rent" &&viewModel.rentalTermsTextController.text.trim().isEmpty) {
+              if (viewModel.currentPropertyType.toLowerCase() == "rent" &&
+                  viewModel.rentalTermsTextController.text.trim().isEmpty) {
                 DialogHelper.showToast(
                     message: StringHelper.plsSelectRentalTerms);
                 return;
@@ -433,9 +453,54 @@ class LandForm extends StatelessWidget {
                 return;
               }
               if (viewModel.priceTextController.text.trim().isEmpty) {
-                DialogHelper.showToast(
-                    message: StringHelper.priceIsRequired);
+                DialogHelper.showToast(message: StringHelper.priceIsRequired);
                 return;
+              }
+              if (viewModel.currentPropertyType.toLowerCase() == "rent" &&
+                  viewModel.depositTextController.text.isNotEmpty) {
+                // Validate deposit amount
+                final depositAmount =
+                    num.tryParse(viewModel.depositTextController.text);
+                final priceAmount =
+                    num.tryParse(viewModel.priceTextController.text) ?? 0;
+
+                if (depositAmount == null) {
+                  DialogHelper.showToast(
+                      message: StringHelper.depositValidAmount);
+                  return;
+                }
+
+                if (priceAmount > 0 && depositAmount > priceAmount) {
+                  DialogHelper.showToast(
+                      message: StringHelper.depositExceedPrice);
+                  return;
+                }
+              }
+
+// Check if deposit percentage is valid when present
+              if (viewModel.currentPropertyType.toLowerCase() == "rent" &&
+                  viewModel.percentageController.text.isNotEmpty) {
+                // Validate deposit percentage
+                final percentage =
+                    num.tryParse(viewModel.percentageController.text);
+
+                if (percentage == null) {
+                  DialogHelper.showToast(
+                      message: StringHelper.percentageValidAmount);
+                  return;
+                }
+
+                if (percentage <= 0) {
+                  DialogHelper.showToast(
+                      message: StringHelper.percentageGreaterZero);
+                  return;
+                }
+
+                if (percentage > 100) {
+                  DialogHelper.showToast(
+                      message: StringHelper.percentageExceed100);
+                  return;
+                }
               }
               if (viewModel.descriptionTextController.text.trim().isEmpty) {
                 DialogHelper.showToast(
@@ -459,21 +524,21 @@ class LandForm extends StatelessWidget {
                   color: Colors.black,
                   borderRadius: BorderRadius.circular(100)),
               child: Text(
-                viewModel.adStatus == "deactivate"?StringHelper.updateRepublish:StringHelper.updateNow,
+                viewModel.adStatus == "deactivate"
+                    ? StringHelper.updateRepublish
+                    : StringHelper.updateNow,
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 16,
                     color: Colors.white,
                     fontWeight: FontWeight.w600),
               ),
             ),
           ),
-        }
-        else ...{
+        } else ...{
           GestureDetector(
             onTap: () {
               viewModel.formKey.currentState?.validate();
-
               if (viewModel.mainImagePath.isEmpty) {
                 DialogHelper.showToast(
                     message: StringHelper.pleaseUploadMainImage);
@@ -490,8 +555,7 @@ class LandForm extends StatelessWidget {
                 return;
               }
               if (viewModel.adTitleTextController.text.trim().isEmpty) {
-                DialogHelper.showToast(
-                    message: StringHelper.adTitleIsRequired);
+                DialogHelper.showToast(message: StringHelper.adTitleIsRequired);
                 return;
               }
               if (viewModel.adTitleTextController.text.trim().length < 10) {
@@ -501,17 +565,16 @@ class LandForm extends StatelessWidget {
                 return;
               }
               if (viewModel.propertyForTypeTextController.text.trim().isEmpty) {
-                DialogHelper.showToast(
-                    message: StringHelper.plsSelectType);
+                DialogHelper.showToast(message: StringHelper.plsSelectType);
                 return;
               }
               if (viewModel.areaSizeTextController.text.trim().isEmpty) {
-                DialogHelper.showToast(
-                    message: StringHelper.plsAddArea);
+                DialogHelper.showToast(message: StringHelper.plsAddArea);
                 return;
               }
               if (viewModel.accessToUtilitiesTextController.text.isEmpty) {
-                DialogHelper.showToast(message: StringHelper.plsEnterAccessUtilities);
+                DialogHelper.showToast(
+                    message: StringHelper.plsEnterAccessUtilities);
                 return;
               }
               if (viewModel.paymentTypeTextController.text.isEmpty) {
@@ -519,7 +582,8 @@ class LandForm extends StatelessWidget {
                     message: StringHelper.plsSelectPaymentType);
                 return;
               }
-              if (viewModel.currentPropertyType.toLowerCase() == "rent" &&viewModel.rentalTermsTextController.text.trim().isEmpty) {
+              if (viewModel.currentPropertyType.toLowerCase() == "rent" &&
+                  viewModel.rentalTermsTextController.text.trim().isEmpty) {
                 DialogHelper.showToast(
                     message: StringHelper.plsSelectRentalTerms);
                 return;
@@ -530,9 +594,54 @@ class LandForm extends StatelessWidget {
                 return;
               }
               if (viewModel.priceTextController.text.trim().isEmpty) {
-                DialogHelper.showToast(
-                    message: StringHelper.priceIsRequired);
+                DialogHelper.showToast(message: StringHelper.priceIsRequired);
                 return;
+              }
+              if (viewModel.currentPropertyType.toLowerCase() == "rent" &&
+                  viewModel.depositTextController.text.isNotEmpty) {
+                // Validate deposit amount
+                final depositAmount =
+                    num.tryParse(viewModel.depositTextController.text);
+                final priceAmount =
+                    num.tryParse(viewModel.priceTextController.text) ?? 0;
+
+                if (depositAmount == null) {
+                  DialogHelper.showToast(
+                      message: StringHelper.depositValidAmount);
+                  return;
+                }
+
+                if (priceAmount > 0 && depositAmount > priceAmount) {
+                  DialogHelper.showToast(
+                      message: StringHelper.depositExceedPrice);
+                  return;
+                }
+              }
+
+// Check if deposit percentage is valid when present
+              if (viewModel.currentPropertyType.toLowerCase() == "rent" &&
+                  viewModel.percentageController.text.isNotEmpty) {
+                // Validate deposit percentage
+                final percentage =
+                    num.tryParse(viewModel.percentageController.text);
+
+                if (percentage == null) {
+                  DialogHelper.showToast(
+                      message: StringHelper.percentageValidAmount);
+                  return;
+                }
+
+                if (percentage <= 0) {
+                  DialogHelper.showToast(
+                      message: StringHelper.percentageGreaterZero);
+                  return;
+                }
+
+                if (percentage > 100) {
+                  DialogHelper.showToast(
+                      message: StringHelper.percentageExceed100);
+                  return;
+                }
               }
               if (viewModel.descriptionTextController.text.trim().isEmpty) {
                 DialogHelper.showToast(
@@ -557,7 +666,7 @@ class LandForm extends StatelessWidget {
               child: Text(
                 StringHelper.postNow,
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 16,
                     color: Colors.white,
                     fontWeight: FontWeight.w600),
@@ -580,33 +689,48 @@ class LandForm extends StatelessWidget {
         ),
         Column(
           mainAxisSize: MainAxisSize.min,
-          children: [StringHelper.waterSupply, StringHelper.electricity, StringHelper.gas, StringHelper.sewageSystem, StringHelper.roadAccess].map((status) {
+          children: [
+            StringHelper.waterSupply,
+            StringHelper.electricity,
+            StringHelper.gas,
+            StringHelper.sewageSystem,
+            StringHelper.roadAccess
+          ].map((status) {
             return StatefulBuilder(
               builder: (context, setState) {
-                bool isSelected = viewModel.currentAccessToUtilities.split(",").contains(status);
+                bool isSelected = viewModel.currentAccessToUtilities
+                    .split(",")
+                    .contains(status);
 
                 return ListTile(
                   contentPadding: EdgeInsets.zero,
                   dense: true,
                   leading: isSelected
-                      ? Icon(Icons.radio_button_checked, color: Theme.of(context).primaryColor)
-                      : Icon(Icons.radio_button_unchecked, color: Theme.of(context).disabledColor),
+                      ? Icon(Icons.radio_button_checked,
+                          color: Theme.of(context).primaryColor)
+                      : Icon(Icons.radio_button_unchecked,
+                          color: Theme.of(context).disabledColor),
                   title: Text(
                     status,
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
                   onTap: () {
-                    List<String> utilities = viewModel.currentAccessToUtilities.split(",").where((e) => e.isNotEmpty).toList();
+                    List<String> utilities = viewModel.currentAccessToUtilities
+                        .split(",")
+                        .where((e) => e.isNotEmpty)
+                        .toList();
 
                     if (isSelected) {
-                      utilities.remove(status); // Remove the status if already selected
+                      utilities.remove(
+                          status); // Remove the status if already selected
                     } else {
                       utilities.add(status); // Add the status if not selected
                     }
 
                     // Update viewModel variables
                     viewModel.currentAccessToUtilities = utilities.join(",");
-                    viewModel.accessToUtilitiesTextController.text = viewModel.currentAccessToUtilities;
+                    viewModel.accessToUtilitiesTextController.text =
+                        viewModel.currentAccessToUtilities;
 
                     setState(() {}); // Rebuild the UI
                   },
@@ -618,6 +742,7 @@ class LandForm extends StatelessWidget {
       ],
     );
   }
+
   paymentOptionWidget(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -629,18 +754,23 @@ class LandForm extends StatelessWidget {
         ),
         Column(
           mainAxisSize: MainAxisSize.min,
-          children: [StringHelper.installment, StringHelper.cashOrInstallment, StringHelper.cash].map((status) {
+          children: [
+            StringHelper.installment,
+            StringHelper.cashOrInstallment,
+            StringHelper.cash
+          ].map((status) {
             return RadioListTile<String>(
               contentPadding: EdgeInsets.zero,
               dense: true,
-              title: Text(status,
-                  style: Theme.of(context).textTheme.titleSmall
-              ),
+              title:
+                  Text(status, style: Theme.of(context).textTheme.titleSmall),
               value: status,
-              groupValue: viewModel.currentPaymentOption.isNotEmpty?viewModel.currentPaymentOption.capitalized:"",
+              groupValue: viewModel.currentPaymentOption.isNotEmpty
+                  ? viewModel.currentPaymentOption.capitalized
+                  : "",
               onChanged: (String? value) {
                 viewModel.paymentTypeTextController.text = value ?? "";
-                viewModel.currentPaymentOption = value??"";
+                viewModel.currentPaymentOption = value ?? "";
               },
             );
           }).toList(),
@@ -664,14 +794,13 @@ class LandForm extends StatelessWidget {
             return RadioListTile<String>(
               contentPadding: EdgeInsets.zero,
               dense: true,
-              title: Text(status,
-                  style: Theme.of(context).textTheme.titleSmall
-              ),
+              title:
+                  Text(status, style: Theme.of(context).textTheme.titleSmall),
               value: status,
               groupValue: viewModel.currentCompletion.capitalized,
               onChanged: (String? value) {
                 viewModel.completionStatusTextController.text = value ?? "";
-                viewModel.currentCompletion = value??"";
+                viewModel.currentCompletion = value ?? "";
               },
             );
           }).toList(),
@@ -691,18 +820,22 @@ class LandForm extends StatelessWidget {
         ),
         Column(
           mainAxisSize: MainAxisSize.min,
-          children: [StringHelper.moveInReady,StringHelper.underConstruction,StringHelper.shellAndCore,StringHelper.semiFinished].map((status) {
+          children: [
+            StringHelper.moveInReady,
+            StringHelper.underConstruction,
+            StringHelper.shellAndCore,
+            StringHelper.semiFinished
+          ].map((status) {
             return RadioListTile<String>(
               contentPadding: EdgeInsets.zero,
               dense: true,
-              title: Text(status,
-                  style: Theme.of(context).textTheme.titleSmall
-              ),
+              title:
+                  Text(status, style: Theme.of(context).textTheme.titleSmall),
               value: status,
               groupValue: viewModel.currentDeliveryTerm.capitalized,
               onChanged: (String? value) {
                 viewModel.deliveryTermTextController.text = value ?? "";
-                viewModel.currentDeliveryTerm = value??"";
+                viewModel.currentDeliveryTerm = value ?? "";
               },
             );
           }).toList(),
@@ -710,5 +843,4 @@ class LandForm extends StatelessWidget {
       ],
     );
   }
-
 }

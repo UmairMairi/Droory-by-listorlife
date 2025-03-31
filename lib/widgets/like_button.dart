@@ -5,7 +5,8 @@ class LikeButton extends StatefulWidget {
   final bool isFav;
   final Color? color;
 
-  const LikeButton({super.key, required this.onTap, required this.isFav, this.color});
+  const LikeButton(
+      {super.key, required this.onTap, required this.isFav, this.color});
 
   @override
   State<LikeButton> createState() => _LikeButtonState();
@@ -52,10 +53,10 @@ class _LikeButtonState extends State<LikeButton>
                     size: 30,
                     color: Colors.red,
                   )
-                :  Icon(
+                : Icon(
                     Icons.favorite_border_outlined,
                     size: 30,
-                    color: widget.color??Colors.white,
+                    color: widget.color ?? const Color.fromARGB(255, 6, 5, 5),
                   )),
       ),
     );

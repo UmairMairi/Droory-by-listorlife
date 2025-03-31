@@ -12,17 +12,17 @@ class OnBoardingVM extends BaseViewModel {
         image: AssetsRes.ON_BOARD_FIRST,
         title: 'Welcome To Daroory',
         description:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry."),
+            "The easiest way to buy and sell. Quickly, simply, and without stress."),
     OnBoardingModel(
         image: AssetsRes.ON_BOARD_SECOND,
-        title: 'Welcome To Daroory',
+        title: 'Chat, Agree, Done!',
         description:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry."),
+            "Connect instantly with buyers or sellers. No drama, just smooth deals with a few taps."),
     OnBoardingModel(
         image: AssetsRes.ON_BOARD_THIRD,
-        title: 'Welcome To Daroory',
+        title: 'Your Next Best Deal Awaits!',
         description:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry."),
+            "Explore amazing deals or post your own effortlessly. Your next great find is just a tap away."),
   ];
 
   int get currentIndexPage => _currentIndexPage;

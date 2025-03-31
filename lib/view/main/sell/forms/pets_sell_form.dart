@@ -1,12 +1,10 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:list_and_life/widgets/multi_select_category.dart';
-
 import '../../../../base/helpers/dialog_helper.dart';
 import '../../../../base/helpers/image_picker_helper.dart';
 import '../../../../base/helpers/string_helper.dart';
@@ -25,28 +23,61 @@ class PetsSellForm extends BaseView<SellFormsVM> {
   final CategoryModel? subSubCategory;
   final List<CategoryModel>? brands;
   final ProductDetailModel? item;
-  const PetsSellForm(
-      {super.key,
-      this.type,
-      this.category,
-      this.item,
-      this.subSubCategory,
-      this.subCategory,
-      this.brands});
+  final List<CategoryModel>? sizes;
+  const PetsSellForm({
+    super.key,
+    this.type,
+    this.category,
+    this.item,
+    this.subSubCategory,
+    this.subCategory,
+    this.brands,
+    this.sizes,
+  });
 
   @override
   Widget build(BuildContext context, SellFormsVM viewModel) {
+    // Determine if the brands dropdown should be shown
+    bool showBrandDropdown = (brands?.isNotEmpty ?? false) &&
+        (subSubCategory == null || ![70, 71, 73].contains(subSubCategory?.id));
+
+    // Determine the title for the brands dropdown
+    String brandTitle;
+    if (subSubCategory != null && subSubCategory?.id == 73) {
+      brandTitle = StringHelper.type;
+    } else if (subSubCategory == null && subCategory?.id == 40) {
+      brandTitle = StringHelper.type;
+    } else {
+      brandTitle = StringHelper.breed;
+    }
+    if (category?.id == 8) {
+      brandTitle = StringHelper.type;
+    }
+
+    // Determine if the sizes dropdown should be shown
+    bool showSizesDropdown =
+        subSubCategory != null && [69, 70, 71, 73].contains(subSubCategory?.id);
+
+    // Determine the title for the sizes dropdown
+    String sizeTitle;
+    if (subSubCategory?.id == 73) {
+      sizeTitle = StringHelper.type;
+    } else {
+      sizeTitle = StringHelper.breed; // For 69, 70, 71
+    }
+
     return Form(
       key: viewModel.formKey,
       child: KeyboardActions(
         config: KeyboardActionsConfig(
-            keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
-            keyboardBarColor: Colors.grey[200],
-            actions: [
-              KeyboardActionsItem(
-                focusNode: viewModel.priceText,
-              ),
-            ]),
+          keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
+          keyboardBarColor: Colors.grey[200],
+          actions: [
+            KeyboardActionsItem(
+              focusNode: viewModel.priceText,
+            ),
+          ],
+        ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Column(
@@ -61,26 +92,31 @@ class PetsSellForm extends BaseView<SellFormsVM> {
                 width: double.infinity,
                 height: 220,
                 decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black),
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10)),
+                  border: Border.all(color: Colors.black),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 child: GestureDetector(
-                    onTap: () async {
-                      viewModel.mainImagePath =
-                          await ImagePickerHelper.openImagePicker(
-                              context: context, isCropping: true) ??
-                              '';
-                    },
-                    child: ImageView.rect(
-                        image: viewModel.mainImagePath,
-                        borderRadius: 10,
-                        width: context.width,
-                        placeholder: AssetsRes.IC_CAMERA,
-                        height: 220)),
+                  onTap: () async {
+                    viewModel.mainImagePath =
+                        await ImagePickerHelper.openImagePicker(
+                              context: context,
+                              isCropping: true,
+                            ) ??
+                            '';
+                  },
+                  child: ImageView.rect(
+                    image: viewModel.mainImagePath,
+                    borderRadius: 10,
+                    width: context.width,
+                    placeholder: AssetsRes.IC_CAMERA,
+                    height: 220,
+                  ),
+                ),
               ),
               Wrap(
                 children:
-                List.generate(viewModel.imagesList.length + 1, (index) {
+                    List.generate(viewModel.imagesList.length + 1, (index) {
                   if (index < viewModel.imagesList.length) {
                     return Stack(
                       alignment: Alignment.topRight,
@@ -95,13 +131,16 @@ class PetsSellForm extends BaseView<SellFormsVM> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: ImageView.rect(
-                              image: viewModel.imagesList[index].media ?? '',
-                              height: 80,
-                              width: 120),
+                            image: viewModel.imagesList[index].media ?? '',
+                            height: 80,
+                            width: 120,
+                          ),
                         ),
                         Container(
                           decoration: const BoxDecoration(
-                              color: Colors.white, shape: BoxShape.circle),
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                          ),
                           child: InkWell(
                             onTap: () {
                               viewModel.removeImage(index,
@@ -112,7 +151,7 @@ class PetsSellForm extends BaseView<SellFormsVM> {
                               color: Colors.red,
                             ),
                           ),
-                        )
+                        ),
                       ],
                     );
                   } else {
@@ -120,7 +159,7 @@ class PetsSellForm extends BaseView<SellFormsVM> {
                       onTap: () async {
                         if (viewModel.imagesList.length < 10) {
                           var image = await ImagePickerHelper.openImagePicker(
-                              context: context, isCropping: true) ??
+                                  context: context, isCropping: true) ??
                               '';
                           if (image.isNotEmpty) {
                             viewModel.addImage(image);
@@ -142,15 +181,11 @@ class PetsSellForm extends BaseView<SellFormsVM> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.add),
-                            SizedBox(
-                              height: 2,
-                            ),
+                            const Icon(Icons.add),
+                            const SizedBox(height: 2),
                             Text(
                               StringHelper.add,
-                              style: TextStyle(
-                                fontSize: 14,
-                              ),
+                              style: const TextStyle(fontSize: 14),
                             ),
                           ],
                         ),
@@ -159,60 +194,117 @@ class PetsSellForm extends BaseView<SellFormsVM> {
                   }
                 }),
               ),
-              if (brands?.isNotEmpty ?? false)
-                CommonDropdown<CategoryModel?>(
-                  title: StringHelper.breed,
-                  hint: viewModel.brandTextController.text,
-                  listItemBuilder: (context,model,selected,fxn){
-                    return Text(model?.name ?? '');
+              // Brand Dropdown with FormField validation
+              if (showBrandDropdown)
+                FormField<CategoryModel?>(
+                  initialValue: viewModel.selectedBrand,
+                  validator: (value) {
+                    if (value == null) {
+                      return StringHelper.fieldShouldNotBeEmpty;
+                    }
+                    return null;
                   },
-                  headerBuilder: (context, selectedItem, enabled) {
-                    return Text(selectedItem?.name??"");
+                  builder: (field) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CommonDropdown<CategoryModel?>(
+                          title: "$brandTitle *",
+                          hint: viewModel.brandTextController.text,
+                          listItemBuilder: (context, model, selected, fxn) {
+                            return Text(model?.name ?? '');
+                          },
+                          headerBuilder: (context, selectedItem, enabled) {
+                            return Text(selectedItem?.name ?? "");
+                          },
+                          options: brands ?? [],
+                          onSelected: (CategoryModel? value) {
+                            field.didChange(value);
+                            field.validate();
+                            DialogHelper.showLoading();
+                            viewModel.getModels(brandId: value?.id);
+                            viewModel.selectedBrand = value;
+                            viewModel.brandTextController.text =
+                                value?.name ?? '';
+                          },
+                        ),
+                        if (field.hasError)
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10.0, top: 2),
+                            child: Text(
+                              field.errorText!,
+                              style: const TextStyle(
+                                color: Colors.red,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                      ],
+                    );
                   },
-                  options: brands??[],
-                  onSelected: (CategoryModel? value) {
-                    DialogHelper.showLoading();
-                    viewModel.getModels(brandId: value?.id);
-                    viewModel.selectedBrand = value;
-                    viewModel.brandTextController.text = value?.name ?? '';
-                  },
-                  // readOnly: true,
-                  // suffix: PopupMenuButton(
-                  //   clipBehavior: Clip.hardEdge,
-                  //   icon: const Icon(
-                  //     Icons.arrow_drop_down,
-                  //     color: Colors.black,
-                  //   ),
-                  //   onSelected: (CategoryModel value) {
-                  //     DialogHelper.showLoading();
-                  //     viewModel.getModels(brandId: value.id);
-                  //     viewModel.selectedBrand = value;
-                  //     viewModel.brandTextController.text = value.name ?? '';
-                  //     viewModel.getModels(brandId: value.id);
-                  //   },
-                  //   itemBuilder: (BuildContext context) {
-                  //     return brands!.map((option) {
-                  //       return PopupMenuItem(
-                  //         value: option,
-                  //         child: Text(option.name ?? ''),
-                  //       );
-                  //     }).toList();
-                  //   },
-                  // ),
-                  // hint: StringHelper.select,
-                  // hintStyle:
-                  //     const TextStyle(color: Color(0xffACACAC), fontSize: 14),
-                  // keyboardType: TextInputType.text,
-                  // textInputAction: TextInputAction.done,
-                  // inputFormatters: [
-                  //   FilteringTextInputFormatter.deny(
-                  //       RegExp(viewModel.regexToRemoveEmoji)),
-                  // ],
                 ),
-
-              const SizedBox(
-                height: 25,
-              ),
+              // Size Dropdown with FormField validation
+              if (showSizesDropdown)
+                FutureBuilder<List<CategoryModel>>(
+                  future: viewModel.getSizeOptions("${subSubCategory?.id}"),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData &&
+                        (snapshot.data?.isNotEmpty ?? false)) {
+                      return FormField<CategoryModel?>(
+                        initialValue: viewModel.selectedSize,
+                        validator: (value) {
+                          if (value == null) {
+                            return StringHelper.fieldShouldNotBeEmpty;
+                          }
+                          return null;
+                        },
+                        builder: (field) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CommonDropdown<CategoryModel?>(
+                                title: "$sizeTitle *",
+                                hint: viewModel.sizeTextController.text,
+                                onSelected: (CategoryModel? value) {
+                                  field.didChange(value);
+                                  viewModel.selectedSize = value;
+                                  viewModel.selectedSize = value;
+                                  viewModel.sizeTextController.text =
+                                      value?.name ?? '';
+                                },
+                                options: snapshot.data!,
+                                listItemBuilder:
+                                    (context, model, selected, fxn) {
+                                  return Text(model?.name ?? '');
+                                },
+                                headerBuilder:
+                                    (context, selectedItem, enabled) {
+                                  return Text(selectedItem?.name ?? "");
+                                },
+                              ),
+                              if (field.hasError)
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 10.0, top: 2),
+                                  child: Text(
+                                    field.errorText!,
+                                    style: const TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          );
+                        },
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
+                ),
+              const SizedBox(height: 25),
               // Ad Title
               AppTextField(
                 title: StringHelper.adTitle,
@@ -232,7 +324,6 @@ class PetsSellForm extends BaseView<SellFormsVM> {
                 textInputAction: TextInputAction.done,
                 elevation: 6,
               ),
-
               // Description
               AppTextField(
                 title: StringHelper.describeWhatYouAreSelling,
@@ -251,7 +342,6 @@ class PetsSellForm extends BaseView<SellFormsVM> {
                 fillColor: Colors.white,
                 elevation: 6,
               ),
-
               // Location
               AppTextField(
                 title: StringHelper.location,
@@ -270,7 +360,6 @@ class PetsSellForm extends BaseView<SellFormsVM> {
                   );
                   if (value != null && value.isNotEmpty) {
                     String address = "";
-
                     if ("${value['location'] ?? ""}".isNotEmpty) {
                       address = "${value['location'] ?? ""}";
                     }
@@ -280,7 +369,6 @@ class PetsSellForm extends BaseView<SellFormsVM> {
                     if ("${value['state'] ?? ""}".isNotEmpty) {
                       address += ", ${value['state'] ?? ""}";
                     }
-
                     viewModel.addressTextController.text = address;
                   }
                 },
@@ -296,16 +384,15 @@ class PetsSellForm extends BaseView<SellFormsVM> {
                 fillColor: Colors.white,
                 elevation: 6,
               ),
-
               // Price
               AppTextField(
                 title: StringHelper.priceEgp,
                 controller: viewModel.priceTextController,
                 hint: StringHelper.enterPrice,
-                maxLength: 6,
+                maxLength: 10,
                 keyboardType: TextInputType.number,
                 inputFormatters: [
-                  LengthLimitingTextInputFormatter(6),
+                  LengthLimitingTextInputFormatter(10),
                   FilteringTextInputFormatter.deny(
                       RegExp(viewModel.regexToRemoveEmoji)),
                   FilteringTextInputFormatter.digitsOnly,
@@ -313,28 +400,21 @@ class PetsSellForm extends BaseView<SellFormsVM> {
                 focusNode: viewModel.priceText,
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return '* This field is required';
+                    return StringHelper.fieldShouldNotBeEmpty;
                   }
-
                   final amount = num.tryParse(value);
-
                   if (amount == null) {
-                    return '* Please enter a valid number';
+                    return StringHelper.enterValidNumber;
                   }
-
-                  if (amount < 1000) {
-                    return '* The minimum valid price is EGP 1000';
+                  if (amount < 50) {
+                    return '* ${StringHelper.minValidPrice} 50';
                   }
-
-                  if (amount > 100000) {
-                    return '* The maximum valid price is EGP 100,000';
+                  if (amount > 1000000) {
+                    return '* ${StringHelper.maxValidPrice} 1,000,000';
                   }
-
                   return null;
                 },
-
               ),
-
               Text(
                 StringHelper.howToConnect,
                 style: context.textTheme.titleSmall,
@@ -348,8 +428,9 @@ class PetsSellForm extends BaseView<SellFormsVM> {
               if (viewModel.isEditProduct) ...{
                 GestureDetector(
                   onTap: () {
-                    viewModel.formKey.currentState?.validate();
-
+                    if (viewModel.formKey.currentState?.validate() != true) {
+                      return;
+                    }
                     if (viewModel.mainImagePath.isEmpty) {
                       DialogHelper.showToast(
                           message: StringHelper.pleaseUploadMainImage);
@@ -360,13 +441,13 @@ class PetsSellForm extends BaseView<SellFormsVM> {
                           message: StringHelper.pleaseUploadAddAtLeastOneImage);
                       return;
                     }
-
                     if (viewModel.adTitleTextController.text.trim().isEmpty) {
                       DialogHelper.showToast(
                           message: StringHelper.adTitleIsRequired);
                       return;
                     }
-                    if (viewModel.adTitleTextController.text.trim().length < 10) {
+                    if (viewModel.adTitleTextController.text.trim().length <
+                        10) {
                       DialogHelper.showToast(
                         message: StringHelper.adLength,
                       );
@@ -391,35 +472,41 @@ class PetsSellForm extends BaseView<SellFormsVM> {
                     }
                     DialogHelper.showLoading();
                     viewModel.editProduct(
-                        productId: item?.id,
-                        category: category,
-                        subCategory: subCategory,
-                        subSubCategory: subSubCategory,
-                        brand: viewModel.selectedBrand,
-                        models: viewModel.selectedModel);
+                      productId: item?.id,
+                      category: category,
+                      subCategory: subCategory,
+                      subSubCategory: subSubCategory,
+                      brand: viewModel.selectedBrand,
+                      models: viewModel.selectedModel,
+                    );
                   },
                   child: Container(
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     margin: const EdgeInsets.symmetric(vertical: 20),
                     decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(100)),
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(100),
+                    ),
                     child: Text(
-                      viewModel.adStatus == "deactivate"?StringHelper.updateRepublish:StringHelper.updateNow,
+                      viewModel.adStatus == "deactivate"
+                          ? StringHelper.updateRepublish
+                          : StringHelper.updateNow,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ),
               } else ...{
                 GestureDetector(
                   onTap: () {
-                    viewModel.formKey.currentState?.validate();
-
+                    if (viewModel.formKey.currentState?.validate() != true) {
+                      return;
+                    }
                     if (viewModel.mainImagePath.isEmpty) {
                       DialogHelper.showToast(
                           message: StringHelper.pleaseUploadMainImage);
@@ -430,13 +517,13 @@ class PetsSellForm extends BaseView<SellFormsVM> {
                           message: StringHelper.pleaseUploadAddAtLeastOneImage);
                       return;
                     }
-
                     if (viewModel.adTitleTextController.text.trim().isEmpty) {
                       DialogHelper.showToast(
                           message: StringHelper.adTitleIsRequired);
                       return;
                     }
-                    if (viewModel.adTitleTextController.text.trim().length < 10) {
+                    if (viewModel.adTitleTextController.text.trim().length <
+                        10) {
                       DialogHelper.showToast(
                         message: StringHelper.adLength,
                       );
@@ -461,33 +548,34 @@ class PetsSellForm extends BaseView<SellFormsVM> {
                     }
                     DialogHelper.showLoading();
                     viewModel.addProduct(
-                        category: category,
-                        subCategory: subCategory,
-                        subSubCategory: subSubCategory,
-                        brand: viewModel.selectedBrand,
-                        models: viewModel.selectedModel);
+                      category: category,
+                      subCategory: subCategory,
+                      subSubCategory: subSubCategory,
+                      brand: viewModel.selectedBrand,
+                      models: viewModel.selectedModel,
+                    );
                   },
                   child: Container(
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     margin: const EdgeInsets.symmetric(vertical: 20),
                     decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(100)),
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(100),
+                    ),
                     child: Text(
                       StringHelper.postNow,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ),
               },
-              const SizedBox(
-                height: 30,
-              )
+              const SizedBox(height: 30),
             ],
           ),
         ),

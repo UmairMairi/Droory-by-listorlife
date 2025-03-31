@@ -68,7 +68,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                     onTap: () async {
                       viewModel.mainImagePath =
                           await ImagePickerHelper.openImagePicker(
-                              context: context, isCropping: true) ??
+                                  context: context, isCropping: true) ??
                               '';
                     },
                     child: ImageView.rect(
@@ -80,7 +80,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
               ),
               Wrap(
                 children:
-                List.generate(viewModel.imagesList.length + 1, (index) {
+                    List.generate(viewModel.imagesList.length + 1, (index) {
                   if (index < viewModel.imagesList.length) {
                     return Stack(
                       alignment: Alignment.topRight,
@@ -120,7 +120,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                       onTap: () async {
                         if (viewModel.imagesList.length < 10) {
                           var image = await ImagePickerHelper.openImagePicker(
-                              context: context, isCropping: true) ??
+                                  context: context, isCropping: true) ??
                               '';
                           if (image.isNotEmpty) {
                             viewModel.addImage(image);
@@ -163,7 +163,7 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                 title: StringHelper.type,
                 hint: viewModel.educationTypeTextController.text,
                 onSelected: (String? value) {
-                  viewModel.educationTypeTextController.text = value??"";
+                  viewModel.educationTypeTextController.text = value ?? "";
                 },
                 options: viewModel.educationList,
                 // readOnly: true,
@@ -200,13 +200,13 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                 CommonDropdown<CategoryModel?>(
                   title: StringHelper.brand,
                   hint: viewModel.brandTextController.text,
-                  listItemBuilder: (context,model,selected,fxn){
+                  listItemBuilder: (context, model, selected, fxn) {
                     return Text(model?.name ?? '');
                   },
                   headerBuilder: (context, selectedItem, enabled) {
-                    return Text(selectedItem?.name??"");
+                    return Text(selectedItem?.name ?? "");
                   },
-                  options: brands??[],
+                  options: brands ?? [],
                   onSelected: (CategoryModel? value) {
                     DialogHelper.showLoading();
                     viewModel.getModels(brandId: value?.id);
@@ -254,11 +254,11 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                   hint: viewModel.modelTextController.text,
                   //readOnly: true,
                   //hint: StringHelper.select,
-                  listItemBuilder: (context,model,selected,fxn){
+                  listItemBuilder: (context, model, selected, fxn) {
                     return Text(model?.name ?? '');
                   },
                   headerBuilder: (context, selectedItem, enabled) {
-                    return Text(selectedItem?.name??"");
+                    return Text(selectedItem?.name ?? "");
                   },
                   onSelected: (value) {
                     viewModel.selectedModel = value;
@@ -366,10 +366,10 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                 title: StringHelper.priceEgp,
                 controller: viewModel.priceTextController,
                 hint: StringHelper.enterPrice,
-                maxLength: 6,
+                maxLength: 10,
                 keyboardType: TextInputType.number,
                 inputFormatters: [
-                  LengthLimitingTextInputFormatter(6),
+                  LengthLimitingTextInputFormatter(10),
                   FilteringTextInputFormatter.deny(
                       RegExp(viewModel.regexToRemoveEmoji)),
                   FilteringTextInputFormatter.digitsOnly,
@@ -390,13 +390,12 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                     return '* The minimum valid price is EGP 1000';
                   }
 
-                  if (amount > 100000) {
-                    return '* The maximum valid price is EGP 100,000';
+                  if (amount > 8000000) {
+                    return '* The maximum valid price is EGP 800,000';
                   }
 
                   return null;
                 },
-
               ),
 
               Text(
@@ -436,7 +435,8 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                           message: StringHelper.adTitleIsRequired);
                       return;
                     }
-                    if (viewModel.adTitleTextController.text.trim().length < 10) {
+                    if (viewModel.adTitleTextController.text.trim().length <
+                        10) {
                       DialogHelper.showToast(
                         message: StringHelper.adLength,
                       );
@@ -476,7 +476,9 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                         color: Colors.black,
                         borderRadius: BorderRadius.circular(100)),
                     child: Text(
-                      viewModel.adStatus == "deactivate"?StringHelper.updateRepublish:StringHelper.updateNow,
+                      viewModel.adStatus == "deactivate"
+                          ? StringHelper.updateRepublish
+                          : StringHelper.updateNow,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 16,
@@ -513,7 +515,8 @@ class EducationSellForm extends BaseView<SellFormsVM> {
                           message: StringHelper.adTitleIsRequired);
                       return;
                     }
-                    if (viewModel.adTitleTextController.text.trim().length < 10) {
+                    if (viewModel.adTitleTextController.text.trim().length <
+                        10) {
                       DialogHelper.showToast(
                         message: StringHelper.adLength,
                       );

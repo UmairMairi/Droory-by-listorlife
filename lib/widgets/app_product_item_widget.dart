@@ -21,7 +21,7 @@ import '../base/network/base_client.dart';
 class AppProductItemWidget extends StatelessWidget {
   final ProductDetailModel? data;
   final Function()? onLikeTapped;
-  final Function()  onItemTapped;
+  final Function() onItemTapped;
 
   const AppProductItemWidget(
       {super.key, this.data, this.onLikeTapped, required this.onItemTapped});
@@ -58,23 +58,34 @@ class AppProductItemWidget extends StatelessWidget {
                   screenType: "home",
                   data: data,
                   imagesList: data?.productMedias,
-                  height: 300,
+                  height: 250,
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20),
                   ),
                 ),
                 Positioned(
-                    top: 10,
-                    right: 10,
-                    child: LikeButton(
+                  top: 10,
+                  right: 10,
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: LikeButton(
                         isFav: data?.isFavourite == 1,
-                        onTap: () async => {
-                          if(!DbHelper.getIsGuest()){
-                            await onLikeButtonTapped(id: data?.id),
+                        onTap: () async {
+                          if (!DbHelper.getIsGuest()) {
+                            await onLikeButtonTapped(id: data?.id);
                           }
-
-                            })),
+                        },
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
             Padding(
@@ -99,14 +110,14 @@ class AppProductItemWidget extends StatelessWidget {
                         Text(
                           "${StringHelper.egp} ${parseAmount(data?.salleryFrom)}",
                           //"${StringHelper.egp} ${data?.salleryFrom} - ${data?.salleryTo}",
-                          style: context.textTheme.titleMedium
-                              ?.copyWith(color: context.theme.colorScheme.error),
+                          style: context.textTheme.titleMedium?.copyWith(
+                              color: context.theme.colorScheme.error),
                         ),
                       } else ...{
                         Text(
                           "${StringHelper.egp} ${parseAmount(data?.price)}",
-                          style: context.textTheme.titleMedium
-                              ?.copyWith(color: context.theme.colorScheme.error),
+                          style: context.textTheme.titleMedium?.copyWith(
+                              color: context.theme.colorScheme.error),
                         ),
                       },
                     ],
@@ -155,10 +166,10 @@ class AppProductItemWidget extends StatelessWidget {
                     ],
                   ),
                   const Gap(10),
-                  if(data?.userId != DbHelper.getUserModel()?.id)
-                  CommunicationButtons2(
-                    data: data,
-                  ),
+                  if (data?.userId != DbHelper.getUserModel()?.id)
+                    CommunicationButtons2(
+                      data: data,
+                    ),
                   const Gap(10),
 
                   /*Row(
@@ -330,9 +341,9 @@ class AppProductItemWidget extends StatelessWidget {
     );
   }
 
-  String parseAmount(dynamic amount){
-    if("${amount??""}".isEmpty)return "0";
-    return num.parse("${amount??0}").toStringAsFixed(0);
+  String parseAmount(dynamic amount) {
+    if ("${amount ?? ""}".isEmpty) return "0";
+    return num.parse("${amount ?? 0}").toStringAsFixed(0);
   }
 
   String getCreatedAt({String? time}) {
@@ -371,9 +382,10 @@ class AppProductItemWidget extends StatelessWidget {
         specs.add(_buildSpecRow(
             context, "${data.year}", Icons.event)); // Icon for year
       }
-      if (data?.milleage != null && data!.milleage!.isNotEmpty) {
-        specs.add(_buildSpecRow(
-            context, '${data.milleage}', Icons.speed)); // Icon for mileage
+      if (data?.kmDriven != null) {
+        specs.add(
+          _buildSpecRow(context, '${data?.kmDriven}', Icons.speed),
+        );
       }
       if (data?.fuel != null && data!.fuel!.isNotEmpty) {
         specs.add(_buildSpecRow(
@@ -384,56 +396,49 @@ class AppProductItemWidget extends StatelessWidget {
     if (data?.categoryId == 11) {
       // Real Estate category
       if (data?.bedrooms != null && data!.bedrooms != 0) {
-        specs.add(_buildSpecRow(context, "${data.bedrooms} Beds",
+        specs.add(_buildSpecRow(context, "${data.bedrooms} ${StringHelper.beds}",
             Icons.king_bed)); // Icon for bedrooms
       }
       if (data?.bathrooms != null && data!.bathrooms != 0) {
-        specs.add(_buildSpecRow(context, "${data.bathrooms} Baths",
+        specs.add(_buildSpecRow(context, "${data.bathrooms} ${StringHelper.baths}",
             Icons.bathtub)); // Icon for bathrooms
       }
       if (data?.area != null && data!.area != 0) {
         specs.add(_buildSpecRow(
-            context, "${data.area} Sqft", Icons.square_foot)); // Icon for area
+            context, "${data.area} ${StringHelper.sqft}", Icons.square_foot)); // Icon for area
       }
     }
-
     if (specs.isNotEmpty) {
-      return SizedBox(
-        height: 20,
-        child: ListView(
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          children: specs,
-        ),
+      // Use a Wrap to allow them to sit closer together
+      return Wrap(
+        spacing: 8, // Adjust spacing to taste
+        runSpacing: 0,
+        children: specs,
       );
     }
-    return SizedBox.shrink();
+    return const SizedBox.shrink();
   }
 
+  /// A small icon + text for a spec
   Widget _buildSpecRow(BuildContext context, String specValue, IconData icon) {
-    return SizedBox(
-      width: 100,
-      child: Row(
-        children: [
-          Icon(
-            icon,
-            size: 16.0, // A slightly larger, professional size
-            color: Colors.blueGrey, // Neutral color for professionalism
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(
+          icon,
+          size: 16.0,
+          color: Colors.black87,
+        ),
+        const SizedBox(width: 4),
+        Text(
+          specValue,
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: Colors.black87,
           ),
-          const SizedBox(width: 4), // Slightly increased spacing for balance
-          Expanded(
-            child: Text(
-              specValue,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: Colors.black87, // Darker font color for readability
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

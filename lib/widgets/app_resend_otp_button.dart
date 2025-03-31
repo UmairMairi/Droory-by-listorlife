@@ -1,5 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+// Adjust paths as needed for your project:
+import '../../base/helpers/string_helper.dart';
+import '../../res/font_res.dart'; // <--- Import FontRes
 
 class AppResendOtpButton extends StatefulWidget {
   final int seconds;
@@ -21,9 +24,9 @@ class _AppResendOtpButtonState extends State<AppResendOtpButton> {
 
   @override
   void initState() {
+    super.initState();
     _countdown = widget.seconds;
     _startTimer();
-    super.initState();
   }
 
   @override
@@ -59,13 +62,19 @@ class _AppResendOtpButtonState extends State<AppResendOtpButton> {
     return InkWell(
       onTap: _countdown == 0 ? _handleResend : null,
       child: Text(
-        _countdown == 0 ? "Resend" : "Resend OTP ($_countdown)",
-        style: TextStyle(
-          color: _countdown == 0 ? Colors.red : Colors.grey,
+        // If countdown is zero, show the localized “Resend.”
+        // Otherwise, show the localized “Resend code in” plus countdown.
+        _countdown == 0
+            ? StringHelper.resend
+            : '${StringHelper.resendCodeIn} ($_countdown)',
+        style: const TextStyle(
+          fontFamily:
+              FontRes.MONTSERRAT_BOLD, // <--- Use a specific FontRes constant
+          fontSize: 18,
           fontWeight: FontWeight.w800,
           decorationColor: Colors.red,
-          decoration:
-              _countdown == 0 ? TextDecoration.underline : TextDecoration.none,
+        ).copyWith(
+          color: _countdown == 0 ? Colors.red : Colors.grey,
         ),
       ),
     );

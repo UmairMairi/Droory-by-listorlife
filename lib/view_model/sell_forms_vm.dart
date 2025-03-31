@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:list_and_life/base/helpers/db_helper.dart';
@@ -9,6 +8,7 @@ import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/base/network/api_request.dart';
 import 'package:list_and_life/base/network/base_client.dart';
 import 'package:list_and_life/models/category_model.dart';
+import '../base/helpers/string_helper.dart';
 import 'package:list_and_life/models/common/list_response.dart';
 import 'package:list_and_life/models/common/map_response.dart';
 import 'package:list_and_life/models/product_detail_model.dart';
@@ -27,6 +27,9 @@ class SellFormsVM extends BaseViewModel {
   TextEditingController jobSalaryTextController = TextEditingController();
   TextEditingController jobSalaryFromController = TextEditingController();
   TextEditingController jobSalaryToController = TextEditingController();
+  TextEditingController workSettingTextController = TextEditingController();
+  TextEditingController workExperienceTextController = TextEditingController();
+  TextEditingController workEducationTextController = TextEditingController();
   TextEditingController lookingForController = TextEditingController();
   TextEditingController brandTextController = TextEditingController();
   TextEditingController modelTextController = TextEditingController();
@@ -36,6 +39,14 @@ class SellFormsVM extends BaseViewModel {
   TextEditingController fuelTextController = TextEditingController();
   TextEditingController kmDrivenTextController = TextEditingController();
   TextEditingController numOfOwnerTextController = TextEditingController();
+  TextEditingController carColorTextController = TextEditingController();
+  TextEditingController horsePowerTextController = TextEditingController();
+  TextEditingController bodyTypeTextController = TextEditingController();
+  TextEditingController engineCapacityTextController = TextEditingController();
+  TextEditingController interiorColorTextController = TextEditingController();
+  TextEditingController numbCylindersTextController = TextEditingController();
+  TextEditingController numbDoorsTextController = TextEditingController();
+  TextEditingController carRentalTermTextController = TextEditingController();
   TextEditingController adTitleTextController = TextEditingController();
   TextEditingController descriptionTextController = TextEditingController();
   TextEditingController priceTextController = TextEditingController();
@@ -67,6 +78,11 @@ class SellFormsVM extends BaseViewModel {
   TextEditingController areaSizeTextController = TextEditingController();
   TextEditingController insuranceTextController = TextEditingController();
   TextEditingController levelTextController = TextEditingController();
+  TextEditingController percentageController = TextEditingController();
+  SellFormsVM() {
+    priceTextController.addListener(_updateDeposit);
+    percentageController.addListener(_updateDeposit);
+  }
 
   ///---------------------
   int productStatus = 0;
@@ -187,26 +203,26 @@ class SellFormsVM extends BaseViewModel {
     'Others'
   ];
   List<String> jobPositionList = [
-    'Contract',
-    'Full Time',
-    'Part-time',
-    'Temporary'
+    StringHelper.contract,
+    StringHelper.fullTime,
+    StringHelper.partTime,
+    StringHelper.temporary
   ];
   List<String> salaryPeriodList = ['Hourly', 'Monthly', 'Weekly', 'Yearly'];
 
   // List of mileage ranges
-  final List<String> mileageRanges = [
-    '0-5 km',
-    '5-10 km',
-    '10-15 km',
-    '15-20 km',
-    '20-25 km',
-    '25-30 km',
-    '30-35 km',
-    '35-40 km',
-    '40-45 km',
-    '45-50 km',
-  ];
+  // final List<String> mileageRanges = [
+  //   '0-5 km',
+  //   '5-10 km',
+  //   '10-15 km',
+  //   '15-20 km',
+  //   '20-25 km',
+  //   '25-30 km',
+  //   '30-35 km',
+  //   '35-40 km',
+  //   '40-45 km',
+  //   '45-50 km',
+  // ];
   final List<String> ramOptions = [
     '2 GB',
     '4 GB',
@@ -226,29 +242,216 @@ class SellFormsVM extends BaseViewModel {
     '512 GB',
     '1 TB'
   ];
-  final List<String> screenSizeOptions = [
-    '5.5"',
-    '6.1"',
-    '6.5"',
-    '6.7"',
-    '7.0"'
+  final List<String> tvSizeOptions = [
+    '24',
+    '28',
+    '32',
+    '40',
+    '43',
+    '48',
+    '50',
+    '55',
+    '58',
+    '65',
+    '70',
+    '75',
+    '85',
+    'Other'
+  ];
+  final List<String?> phoneRamOptions = [
+    "2 GB",
+    "3 GB",
+    "4 GB",
+    "6 GB",
+    "8 GB",
+    "12 GB",
+    "16 GB",
+  ];
+  final List<String?> phoneStorageOptions = [
+    "16 GB",
+    "32 GB",
+    "64 GB",
+    "128 GB",
+    "256 GB",
+    "512 GB",
+    "1 TB",
   ];
   final List<String> experienceOptions = [
-    "No experience",
-    "Just graduated",
+    "No experience/Just graduated",
     "1–3 yrs",
     "3–5 yrs",
     "5–10 yrs",
-    "+10 yrs"
+    "10+ yrs"
   ];
-  final List<String> educationTypeOptions = ["Student", "High School"];
   final List<String> workSettingOptions = [
     "Remote",
     "Office-based",
     "Mixed (Home & Office)",
     "Field-based"
   ];
-  final List<String> materialOptions = ['Wood', 'Metal', 'Fabric'];
+  final List<String> workEducationOptions = [
+    "None",
+    "Student",
+    "High-Secondary School",
+    "Diploma",
+    "Bachelors Degree",
+    "Masters Degree",
+    "Doctorate/PhD"
+  ];
+
+  final List<String> educationTypeOptions = ["Student", "High School"];
+  final List<String> carRentalTermOptions = ['Daily', 'Monthly', 'Yearly'];
+
+  final List<String> bodyTypeOptions = [
+    'SUV',
+    'Hatchback',
+    '4x4',
+    'Sedan',
+    'Coupe',
+    'Convertible',
+    'Estate',
+    'MPV',
+    'Pickup',
+    'Crossover',
+    'Van/bus',
+    'Other',
+  ];
+
+  final List<String> horsepowerOptions = [
+    'Less than 100 HP',
+    '100 - 200 HP',
+    '200 - 300 HP',
+    '300 - 400 HP',
+    '400 - 500 HP',
+    '500 - 600 HP',
+    '600 - 700 HP',
+    '700 - 800 HP',
+    '800+ HP',
+    'Other',
+  ];
+
+  final List<String> engineCapacityOptions = [
+    'Below 500 cc',
+    '500 - 999 cc',
+    '1000 - 1499 cc',
+    '1500 - 1999 cc',
+    '2000 - 2499 cc',
+    '2500 - 2999 cc',
+    '3000 - 3499 cc',
+    '3500 - 3999 cc',
+    '4000+ cc',
+    'Other',
+  ];
+
+  final List<String> numbCylindersOptions = [
+    '2 Cylinders',
+    '3 Cylinders',
+    '4 Cylinders',
+    '5 Cylinders',
+    '6 Cylinders',
+    '7 Cylinders',
+    '8 Cylinders',
+    'Other',
+  ];
+
+  final List<String> numbDoorsOptions = [
+    '2 Doors',
+    '3 Doors',
+    '4 Doors',
+    '5+ Doors',
+  ];
+  Map<int, Map<String, num>> getCategoryPriceRanges() {
+    // For category-level prices
+    return {
+      1: {"min": 50, "max": 1000000}, // Electronics
+      2: {"min": 100, "max": 1000000}, // Home and Living
+      3: {"min": 50, "max": 500000}, // Fashion (default)
+      5: {"min": 50, "max": 400000}, // Hobbies, Music, Art and Books (default)
+      7: {"min": 1000, "max": 500000000}, // Business and Industrial
+      8: {"min": 50, "max": 800000}, // Services
+      6: {"min": 50, "max": 1000000},
+      10: {"min": 500, "max": 1000000}, // Mobile and Tablets
+      // Default range
+      0: {"min": 1000, "max": 100000}, // Default
+    };
+  }
+
+  Map<int, Map<String, num>> getSubCategoryPriceRanges() {
+    // For sub-category specific prices
+    return {
+      31: {"min": 50, "max": 50000000}, // Hobbies music and art sub-category 31
+    };
+  }
+
+  Map<int, Map<String, num>> getSubSubCategoryPriceRanges() {
+    // For sub-sub-category specific prices
+    return {
+      104: {"min": 50, "max": 50000000}, // Fashion sub-sub-category 104
+      106: {"min": 50, "max": 50000000}, // Fashion sub-sub-category 106
+    };
+  }
+
+  num getMinPrice(CategoryModel? categoryModel, CategoryModel? subCategory,
+      CategoryModel? subSubCategory) {
+    // Check sub-sub-category first
+    if (subSubCategory != null) {
+      var subSubRanges = getSubSubCategoryPriceRanges();
+      if (subSubRanges.containsKey(subSubCategory.id)) {
+        return subSubRanges[subSubCategory.id]!["min"]!;
+      }
+    }
+
+    // Then check sub-category
+    if (subCategory != null) {
+      var subRanges = getSubCategoryPriceRanges();
+      if (subRanges.containsKey(subCategory.id)) {
+        return subRanges[subCategory.id]!["min"]!;
+      }
+    }
+
+    // Finally default to category
+    var ranges = getCategoryPriceRanges();
+    int categoryId = categoryModel?.id ?? 0;
+    return ranges.containsKey(categoryId)
+        ? ranges[categoryId]!["min"]!
+        : ranges[0]!["min"]!;
+  }
+
+  num getMaxPrice(CategoryModel? categoryModel, CategoryModel? subCategory,
+      CategoryModel? subSubCategory) {
+    // Check sub-sub-category first
+    if (subSubCategory != null) {
+      var subSubRanges = getSubSubCategoryPriceRanges();
+      if (subSubRanges.containsKey(subSubCategory.id)) {
+        return subSubRanges[subSubCategory.id]!["max"]!;
+      }
+    }
+
+    // Then check sub-category
+    if (subCategory != null) {
+      var subRanges = getSubCategoryPriceRanges();
+      if (subRanges.containsKey(subCategory.id)) {
+        return subRanges[subCategory.id]!["max"]!;
+      }
+    }
+
+    // Finally default to category
+    var ranges = getCategoryPriceRanges();
+    int categoryId = categoryModel?.id ?? 0;
+    return ranges.containsKey(categoryId)
+        ? ranges[categoryId]!["max"]!
+        : ranges[0]!["max"]!;
+  }
+
+  String formatPrice(num price) {
+    // Format with thousands separator
+    if (price >= 1000) {
+      return price.toString().replaceAllMapped(
+          RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
+    }
+    return price.toString();
+  }
+
   final List<CategoryModel> sizeOptions = [];
   List<CategoryModel?> _allModels = [];
   List<String> yearsType = [];
@@ -348,6 +551,16 @@ class SellFormsVM extends BaseViewModel {
     super.onReady();
   }
 
+  void _updateDeposit() {
+    final price = num.tryParse(priceTextController.text) ?? 0;
+    final percentage = num.tryParse(percentageController.text) ?? 0;
+    if (price > 0 && percentage > 0 && percentage <= 100) {
+      final deposit = (price * percentage / 100).round();
+      depositTextController.text = deposit.toString();
+    }
+    notifyListeners();
+  }
+
   void addImage(String path) {
     imagesList.add(ProductMedias(media: path));
     notifyListeners();
@@ -426,8 +639,19 @@ class SellFormsVM extends BaseViewModel {
     jobSalaryToController.text = item.salleryTo ?? '';
     mileageTextController.text = item.milleage ?? '';
     educationTypeTextController.text = item.educationType ?? '';
+    workSettingTextController.text = item.workSetting ?? '';
+    workExperienceTextController.text = item.workExperience ?? '';
+    workEducationTextController.text = item.workEducation ?? '';
     yearTextController.text = item.year?.toString() ?? '';
     fuelTextController.text = item.fuel ?? '';
+    horsePowerTextController.text = item.horsePower ?? '';
+    bodyTypeTextController.text = item.bodyType ?? '';
+    carColorTextController.text = item.carColor ?? '';
+    engineCapacityTextController.text = item.engineCapacity ?? '';
+    interiorColorTextController.text = item.interiorColor ?? '';
+    numbCylindersTextController.text = item.numbCylinders ?? '';
+    carRentalTermTextController.text = item.carRentalTerm ?? '';
+    numbDoorsTextController.text = item.numbDoors ?? '';
     kmDrivenTextController.text = item.kmDriven?.toString() ?? '';
     numOfOwnerTextController.text = item.numberOfOwner?.toString() ?? '';
     sizeTextController.text = "${item.fashionSize ?? ''}";
@@ -462,6 +686,8 @@ class SellFormsVM extends BaseViewModel {
     paymentTypeTextController.text = item.paymentType ?? '';
     currentPaymentOption = item.paymentType ?? '';
     accessToUtilitiesTextController.text = item.accessToUtilities ?? '';
+    sizeTextController.text = item.fashionSize?.name ?? '';
+
     currentAccessToUtilities = item.accessToUtilities ?? '';
     areaSizeTextController.text = "${item.area ?? ''}";
     completionStatusTextController.text = item.completionStatus ?? '';
@@ -473,7 +699,15 @@ class SellFormsVM extends BaseViewModel {
             [];
   }
 
+  bool _showValidationErrors = false;
+  bool get showValidationErrors => _showValidationErrors;
+  set showValidationErrors(bool value) {
+    _showValidationErrors = value;
+    notifyListeners();
+  }
+
   void resetTextFields() async {
+    showValidationErrors = false;
     currentPropertyType = "Sell";
     currentFurnishing = "";
     currentAccessToUtilities = "";
@@ -493,8 +727,12 @@ class SellFormsVM extends BaseViewModel {
     jobSalaryTextController.clear();
     jobSalaryFromController.clear();
     jobSalaryToController.clear();
+    workSettingTextController.clear();
+    workExperienceTextController.clear();
+    workEducationTextController.clear();
     lookingForController.clear();
     brandTextController.clear();
+    percentageController.clear();
     modelTextController.clear();
     mileageTextController.clear();
     educationTypeTextController.clear();
@@ -502,6 +740,14 @@ class SellFormsVM extends BaseViewModel {
     fuelTextController.clear();
     kmDrivenTextController.clear();
     numOfOwnerTextController.clear();
+    carColorTextController.clear();
+    horsePowerTextController.clear();
+    bodyTypeTextController.clear();
+    engineCapacityTextController.clear();
+    interiorColorTextController.clear();
+    numbCylindersTextController.clear();
+    carRentalTermTextController.clear();
+    numbDoorsTextController.clear();
     adTitleTextController.clear();
     descriptionTextController.clear();
     priceTextController.clear();
@@ -528,6 +774,7 @@ class SellFormsVM extends BaseViewModel {
     deliveryTermTextController.clear();
     areaSizeTextController.clear();
     insuranceTextController.clear();
+
     levelTextController.clear();
     selectedBrand = null;
     selectedModel = null;
@@ -671,7 +918,15 @@ class SellFormsVM extends BaseViewModel {
       "milleage": trimController(mileageTextController),
       "km_driven": trimController(kmDrivenTextController),
       "number_of_owner": trimController(numOfOwnerTextController),
+      "car_color": trimController(carColorTextController),
+      "horse_power": trimController(horsePowerTextController),
       "education_type": trimController(educationTypeTextController),
+      "body_type": trimController(bodyTypeTextController),
+      "engine_capacity": trimController(engineCapacityTextController),
+      "interior_color": trimController(interiorColorTextController),
+      "numb_cylinders": trimController(numbCylindersTextController),
+      "numb_doors": trimController(numbDoorsTextController),
+      "car_rental_term": trimController(carRentalTermTextController),
       "country": country,
       "state": state,
       "city": city,
@@ -686,6 +941,9 @@ class SellFormsVM extends BaseViewModel {
           : "",
       "sallery_from": trimController(jobSalaryFromController),
       "sallery_to": trimController(jobSalaryToController),
+      "work_setting": trimController(workSettingTextController),
+      "work_experience": trimController(workExperienceTextController),
+      "work_education": trimController(workEducationTextController),
       "material": trimController(materialTextController),
       "ram": trimController(ramTextController),
       "storage": trimController(storageTextController),
@@ -812,10 +1070,21 @@ class SellFormsVM extends BaseViewModel {
           : "",
       "sallery_from": trimController(jobSalaryFromController),
       "sallery_to": trimController(jobSalaryToController),
+      "work_setting": trimController(workSettingTextController),
+      "work_experience": trimController(workExperienceTextController),
+      "work_education": trimController(workEducationTextController),
       "material": trimController(materialTextController),
       "ram": trimController(ramTextController),
       "storage": trimController(storageTextController),
+      "body_type": trimController(bodyTypeTextController),
+      "car_color": trimController(carColorTextController),
+      "car_rental_term": trimController(carRentalTermTextController),
       "screen_size": trimController(screenSizeTextController),
+      "horse_power": trimController(horsePowerTextController),
+      "engine_capacity": trimController(engineCapacityTextController),
+      "interior_color": trimController(interiorColorTextController),
+      "numb_cylinders": trimController(numbCylindersTextController),
+      "numb_doors": trimController(numbDoorsTextController),
       "delete_img_id":
           deletedImageIds.isNotEmpty ? deletedImageIds.join(',') : "",
       'communication_choice': communication,

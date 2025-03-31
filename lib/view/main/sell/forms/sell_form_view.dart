@@ -29,14 +29,15 @@ class SellFormView extends StatefulWidget {
   final CategoryModel? subSubCategory;
   final ProductDetailModel? item;
 
-  const SellFormView(
-      {super.key,
-      required this.category,
-      required this.subCategory,
-      this.subSubCategory,
-      this.screenType,
-      this.item,
-      required this.type});
+  const SellFormView({
+    super.key,
+    required this.category,
+    required this.subCategory,
+    this.subSubCategory,
+    this.screenType,
+    this.item,
+    required this.type,
+  });
 
   @override
   State<SellFormView> createState() => _SellFormViewState();
@@ -49,45 +50,64 @@ class _SellFormViewState extends State<SellFormView> {
     WidgetsBinding.instance.addPostFrameCallback((callback) {
       context.read<SellFormsVM>().updateTextFieldsItems(item: widget.item);
     });
-
     super.initState();
   }
 
   Future<List<CategoryModel>> getBrands({CategoryModel? data}) async {
     ApiRequest apiRequest = ApiRequest(
-        url: ApiConstants.getBrandsUrl(id: "${data?.id}"),
-        requestType: RequestType.get);
+      url: ApiConstants.getBrandsUrl(id: "${data?.id}"),
+      requestType: RequestType.get,
+    );
     var response = await BaseClient.handleRequest(apiRequest);
-
     ListResponse<CategoryModel> model =
         ListResponse.fromJson(response, (json) => CategoryModel.fromJson(json));
+    return model.body ?? [];
+  }
 
+  Future<List<CategoryModel>> getSizes({CategoryModel? data}) async {
+    ApiRequest apiRequest = ApiRequest(
+      url: ApiConstants.getFashionSizeUrl(id: "${data?.id}"),
+      requestType: RequestType.get,
+    );
+    var response = await BaseClient.handleRequest(apiRequest);
+    ListResponse<CategoryModel> model =
+        ListResponse.fromJson(response, (json) => CategoryModel.fromJson(json));
     return model.body ?? [];
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:  widget.type != 'real estate'?AppBar(
-        title: Text(StringHelper.includeSomeDetails),
-      ):null,
-      body: FutureBuilder<List<CategoryModel>>(
-          future: getBrands(data: widget.subCategory),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return _buildBody(context, snapshot.data ?? []);
-            }
-            if (snapshot.hasError) {
-              return const AppErrorWidget();
-            }
-            return SellFormSkeleton(
-              isLoading: snapshot.connectionState == ConnectionState.waiting,
-            );
-          }),
+      appBar: widget.type != 'real estate'
+          ? AppBar(
+              title: Text(StringHelper.includeSomeDetails),
+            )
+          : null,
+      body: FutureBuilder<List<List<CategoryModel>>>(
+        future: Future.wait([
+          getBrands(data: widget.subCategory),
+          getSizes(data: widget.subSubCategory),
+        ]),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final brands = snapshot.data![0];
+            final sizes = snapshot.data![1];
+            return _buildBody(context, brands, sizes);
+          }
+          if (snapshot.hasError) {
+            return const AppErrorWidget();
+          }
+          return SellFormSkeleton(
+            isLoading: snapshot.connectionState == ConnectionState.waiting,
+          );
+        },
+      ),
     );
   }
 
-  Widget _buildBody(BuildContext context, List<CategoryModel>? brands) {
+  Widget _buildBody(BuildContext context, List<CategoryModel>? brands,
+      List<CategoryModel>? sizes) {
+    debugPrint(" widget.type ${widget.type}");
     switch (widget.type) {
       case 'jobs':
         return JobSellForm(
@@ -95,16 +115,18 @@ class _SellFormViewState extends State<SellFormView> {
           category: widget.category,
           subSubCategory: widget.subSubCategory,
           brands: brands,
+          // sizes: sizes,
           subCategory: widget.subCategory,
           item: widget.item,
         );
       case 'services':
-        if (widget.subCategory?.type == 'Education') {
+        if (widget.subCategory?.type == 'services') {
           return EducationSellForm(
             type: widget.type,
             category: widget.category,
             subSubCategory: widget.subSubCategory,
             brands: brands,
+            // sizes: sizes,
             subCategory: widget.subCategory,
             item: widget.item,
           );
@@ -114,6 +136,7 @@ class _SellFormViewState extends State<SellFormView> {
           category: widget.category,
           subSubCategory: widget.subSubCategory,
           brands: brands,
+          sizes: sizes,
           item: widget.item,
           subCategory: widget.subCategory,
         );
@@ -122,11 +145,11 @@ class _SellFormViewState extends State<SellFormView> {
           type: widget.type,
           category: widget.category,
           brands: brands,
+          sizes: sizes,
           subSubCategory: widget.subSubCategory,
           subCategory: widget.subCategory,
           item: widget.item,
         );
-
       case 'vehicles':
         if (widget.subCategory?.type?.toLowerCase().contains('parts') ??
             false) {
@@ -135,6 +158,7 @@ class _SellFormViewState extends State<SellFormView> {
             category: widget.category,
             subSubCategory: widget.subSubCategory,
             brands: brands,
+            sizes: sizes,
             subCategory: widget.subCategory,
             item: widget.item,
           );
@@ -145,21 +169,22 @@ class _SellFormViewState extends State<SellFormView> {
             category: widget.category,
             subSubCategory: widget.subSubCategory,
             brands: brands,
+            // sizes: sizes,
             subCategory: widget.subCategory,
             item: widget.item,
           );
         }
-
         return VehiclesSellForm(
           type: widget.type,
           category: widget.category,
           subSubCategory: widget.subSubCategory,
           brands: brands,
+          // sizes: sizes,
           subCategory: widget.subCategory,
           item: widget.item,
         );
       case 'real estate':
-        if(widget.screenType != null){
+        if (widget.screenType != null) {
           return PropertySellForm(
             type: widget.type,
             category: widget.category,
@@ -177,13 +202,13 @@ class _SellFormViewState extends State<SellFormView> {
           subCategory: widget.subCategory,
           item: widget.item,
         );
-
       default:
         return CommonSellForm(
           type: widget.type,
           category: widget.category,
           subSubCategory: widget.subSubCategory,
           brands: brands,
+          sizes: sizes,
           item: widget.item,
           subCategory: widget.subCategory,
         );

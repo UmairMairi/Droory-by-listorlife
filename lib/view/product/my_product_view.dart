@@ -8,7 +8,8 @@ import 'package:list_and_life/skeletons/my_product_skeleton.dart';
 import 'package:list_and_life/view_model/product_v_m.dart';
 import 'package:list_and_life/widgets/app_error_widget.dart';
 import 'package:provider/provider.dart';
-
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:list_and_life/base/utils/utils.dart';
 import '../../base/helpers/dialog_helper.dart';
 import '../../base/helpers/string_helper.dart';
 import '../../res/assets_res.dart';
@@ -26,8 +27,7 @@ class MyProductView extends StatefulWidget {
 }
 
 class _MyProductViewState extends State<MyProductView> {
-
-  late  ProductVM viewModel;
+  late ProductVM viewModel;
 
   @override
   void initState() {
@@ -42,7 +42,7 @@ class _MyProductViewState extends State<MyProductView> {
       //appBar: !viewModel.isAppBarVisible?AppBar(backgroundColor: Colors.transparent,automaticallyImplyLeading: false,toolbarHeight: 0,elevation: 0,):null,
       body: SafeArea(
         child: StreamBuilder<ProductDetailModel?>(
-            stream:viewModel.productStream.stream,
+            stream: viewModel.productStream.stream,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 ProductDetailModel? productDetails = snapshot.data;
@@ -66,49 +66,132 @@ class _MyProductViewState extends State<MyProductView> {
                             ),
                           ),
                           Positioned(
-                              top: 0,
-                              left: 0,
-                              child: SafeArea(
+                            top: 0,
+                            left:
+                                Directionality.of(context) == TextDirection.ltr
+                                    ? 0
+                                    : null,
+                            right:
+                                Directionality.of(context) == TextDirection.rtl
+                                    ? 0
+                                    : null,
+                            child: SafeArea(
+                              child: Container(
+                                margin: const EdgeInsets.all(8),
+                                width: 40,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      spreadRadius: 1,
+                                      blurRadius: 3,
+                                      offset: const Offset(0, 1),
+                                    ),
+                                  ],
+                                ),
                                 child: IconButton(
-                                    onPressed: () {
-                                      context.pop();
-                                    },
-                                    icon: Container(
-                                      padding: EdgeInsets.only(left:15,right: 8,top: 5,bottom: 5),
-                                      decoration: BoxDecoration(
-                                          color: Colors.black,
-                                          shape: BoxShape.circle
-                                      ),
-                                      child: Icon(Icons.arrow_back_ios,
-                                          size: 20,
-                                          textDirection: TextDirection.ltr,
-                                          color: Colors.white),
-                                    )),
-                              )),
-                          Positioned(
-                              top: 0,
-                              right: 50,
-                              child: SafeArea(
-                                child: IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(Icons.share, color: Colors.white)),
-                              )),
-                          Positioned(
-                              top: 0,
-                              right: 10,
-                              child: SafeArea(
-                                child: PopupMenuButton<int>(
-                                  icon: const Icon(
-                                    Icons.more_vert_outlined,
-                                    color: Colors.white,
+                                  padding: EdgeInsets.zero,
+                                  constraints: const BoxConstraints(),
+                                  onPressed: () {
+                                    context.pop();
+                                  },
+                                  icon: Icon(
+                                    Directionality.of(context) ==
+                                            TextDirection.ltr
+                                        ? LineAwesomeIcons.arrow_left_solid
+                                        : LineAwesomeIcons.arrow_right_solid,
+                                    size: 28,
+                                    color: Colors.black,
                                   ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          // Share Button
+                          Positioned(
+                            top: 0,
+                            left:
+                                Directionality.of(context) == TextDirection.rtl
+                                    ? 60
+                                    : null,
+                            right:
+                                Directionality.of(context) == TextDirection.ltr
+                                    ? 60
+                                    : null,
+                            child: SafeArea(
+                              child: Container(
+                                margin: const EdgeInsets.all(8),
+                                width: 40,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      spreadRadius: 1,
+                                      blurRadius: 3,
+                                      offset: const Offset(0, 1),
+                                    ),
+                                  ],
+                                ),
+                                child: IconButton(
+                                  padding: EdgeInsets.zero,
+                                  constraints: const BoxConstraints(),
+                                  onPressed: () {
+                                    Utils.onShareProduct(
+                                      context,
+                                      "Hello, Please check this useful product on following link",
+                                    );
+                                  },
+                                  icon: const Icon(
+                                    Icons.share,
+                                    size: 22,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          // Popup Menu Button
+                          Positioned(
+                            top: 0,
+                            left:
+                                Directionality.of(context) == TextDirection.rtl
+                                    ? 10
+                                    : null,
+                            right:
+                                Directionality.of(context) == TextDirection.ltr
+                                    ? 10
+                                    : null,
+                            child: SafeArea(
+                              child: Container(
+                                margin: const EdgeInsets.all(8),
+                                width: 40,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      spreadRadius: 1,
+                                      blurRadius: 3,
+                                      offset: const Offset(0, 1),
+                                    ),
+                                  ],
+                                ),
+                                child: PopupMenuButton<int>(
                                   offset: const Offset(0, 40),
                                   shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(15.0))),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(15.0)),
+                                  ),
                                   onSelected: (int value) {
                                     var vm = context.read<MyAdsVM>();
-        
                                     vm.handelPopupMenuItemClick(
                                         context: context,
                                         index: value,
@@ -116,33 +199,54 @@ class _MyProductViewState extends State<MyProductView> {
                                   },
                                   itemBuilder: (BuildContext context) =>
                                       <PopupMenuEntry<int>>[
-                                        if ("${productDetails?.status}" == "1" && productDetails?.sellStatus?.toLowerCase() != StringHelper.sold.toLowerCase()) ...{
-                                          PopupMenuItem(
-                                            value: 1,
-                                            child: Text(
-                                                StringHelper.edit),
-                                          )
-                                        },
-                                        if ("${productDetails?.adStatus}" != "deactivate" && "${productDetails?.status}" == "0" && productDetails?.sellStatus?.toLowerCase() != StringHelper.sold.toLowerCase()) ...{
-                                          PopupMenuItem(
-                                            value: 2,
-                                            child: Text(StringHelper
-                                                .deactivate),
-                                          ),
-                                        },
-                                        if ("${productDetails?.adStatus}" == "deactivate" && "${productDetails?.status}" == "0" && productDetails?.sellStatus?.toLowerCase() != StringHelper.sold.toLowerCase()) ...{
-                                          PopupMenuItem(
-                                            value: 4,
-                                            child: Text("Republish"),
-                                          ),
-                                        },
+                                    if ("${productDetails?.status}" == "1" &&
+                                        productDetails?.sellStatus
+                                                ?.toLowerCase() !=
+                                            StringHelper.sold
+                                                .toLowerCase()) ...{
+                                      PopupMenuItem(
+                                        value: 1,
+                                        child: Text(StringHelper.edit),
+                                      )
+                                    },
+                                    if ("${productDetails?.adStatus}" !=
+                                            "deactivate" &&
+                                        "${productDetails?.status}" == "0" &&
+                                        productDetails?.sellStatus
+                                                ?.toLowerCase() !=
+                                            StringHelper.sold
+                                                .toLowerCase()) ...{
+                                      PopupMenuItem(
+                                        value: 2,
+                                        child: Text(StringHelper.deactivate),
+                                      ),
+                                    },
+                                    if ("${productDetails?.adStatus}" ==
+                                            "deactivate" &&
+                                        "${productDetails?.status}" == "0" &&
+                                        productDetails?.sellStatus
+                                                ?.toLowerCase() !=
+                                            StringHelper.sold
+                                                .toLowerCase()) ...{
+                                      PopupMenuItem(
+                                        value: 4,
+                                        child: Text("Republish"),
+                                      ),
+                                    },
                                     PopupMenuItem(
                                       value: 3,
                                       child: Text(StringHelper.remove),
                                     ),
                                   ],
+                                  child: const Icon(
+                                    Icons.more_vert_outlined,
+                                    size: 24,
+                                    color: Colors.black,
+                                  ),
                                 ),
-                              )),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                       Padding(
@@ -169,8 +273,9 @@ class _MyProductViewState extends State<MyProductView> {
                                     style: context.textTheme.titleMedium,
                                   ),
                                 ),
-                                if ("${productDetails?.status}" != "0" && productDetails?.sellStatus !=
-                                    StringHelper.sold.toLowerCase()) ...{
+                                if ("${productDetails?.status}" != "0" &&
+                                    productDetails?.sellStatus !=
+                                        StringHelper.sold.toLowerCase()) ...{
                                   viewModel.getRemainDays(item: productDetails)
                                 }
                               ],
@@ -196,8 +301,7 @@ class _MyProductViewState extends State<MyProductView> {
                             const Gap(10),
                             if (productDetails?.categoryId == 9) ...{
                               Text(
-                                "${StringHelper.egp} ${parseAmount(productDetails?.salleryFrom)}",
-                                //"${StringHelper.egp} ${data?.salleryFrom} - ${data?.salleryTo}",
+                                "${StringHelper.egp} ${parseAmount(productDetails?.salleryFrom)} - ${StringHelper.egp} ${parseAmount(productDetails?.salleryTo)}",
                                 style: context.textTheme.titleLarge
                                     ?.copyWith(color: Colors.red),
                               ),
@@ -212,7 +316,13 @@ class _MyProductViewState extends State<MyProductView> {
                             productDetails?.sellStatus != StringHelper.soldText
                                 ? Row(
                                     children: [
-                                      if("${productDetails?.adStatus}" != "deactivate" && productDetails?.sellStatus != StringHelper.sold.toLowerCase() && "${productDetails?.status}" != "0" && "${productDetails?.status}" != "2")...{
+                                      if ("${productDetails?.adStatus}" !=
+                                              "deactivate" &&
+                                          productDetails?.sellStatus !=
+                                              StringHelper.sold.toLowerCase() &&
+                                          "${productDetails?.status}" != "0" &&
+                                          "${productDetails?.status}" !=
+                                              "2") ...{
                                         Expanded(
                                           child: InkWell(
                                             onTap: () async {
@@ -222,61 +332,72 @@ class _MyProductViewState extends State<MyProductView> {
                                             },
                                             child: Container(
                                               alignment: Alignment.center,
-                                              padding: const EdgeInsets.symmetric(
-                                                  horizontal: 10, vertical: 08),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 10,
+                                                      vertical: 08),
                                               decoration: BoxDecoration(
                                                 color: Colors.black54,
                                                 borderRadius:
-                                                BorderRadius.circular(10),
+                                                    BorderRadius.circular(10),
                                               ),
                                               child: Text(
                                                 StringHelper.markAsSold,
-                                                style: context.textTheme.labelLarge
+                                                style: context
+                                                    .textTheme.labelLarge
                                                     ?.copyWith(
-                                                    color: Colors.white,
-                                                    fontSize: 12,
-                                                    fontWeight:
-                                                    FontWeight.w600),
+                                                        color: Colors.white,
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w600),
                                               ),
                                             ),
                                           ),
                                         ),
                                         const Gap(10),
                                       },
-        
-        
-                                      if("${productDetails?.adStatus}" != "deactivate" && "${productDetails?.status}" == "0" || "${productDetails?.status}" == "2")...[
+                                      if ("${productDetails?.adStatus}" !=
+                                                  "deactivate" &&
+                                              "${productDetails?.status}" ==
+                                                  "0" ||
+                                          "${productDetails?.status}" ==
+                                              "2") ...[
                                         Expanded(
                                           child: InkWell(
                                             onTap: () async {
                                               var vm = context.read<MyAdsVM>();
-        
+
                                               vm.handelPopupMenuItemClick(
-                                                  context: context, item: productDetails, index: 1);
+                                                  context: context,
+                                                  item: productDetails,
+                                                  index: 1);
                                             },
                                             child: Container(
                                               alignment: Alignment.center,
-                                              padding: const EdgeInsets.symmetric(
-                                                  horizontal: 10, vertical: 08),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 10,
+                                                      vertical: 08),
                                               decoration: BoxDecoration(
                                                 color: Colors.black54,
                                                 borderRadius:
-                                                BorderRadius.circular(08),
+                                                    BorderRadius.circular(08),
                                               ),
                                               child: Text(
                                                 StringHelper.edit,
-                                                style: context.textTheme.labelLarge
+                                                style: context
+                                                    .textTheme.labelLarge
                                                     ?.copyWith(
-                                                    color: Colors.white,
-                                                    fontSize: 12,
-                                                    fontWeight:
-                                                    FontWeight.w600),
+                                                        color: Colors.white,
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w600),
                                               ),
                                             ),
                                           ),
                                         ),
                                       ]
-        
+
                                       /*Expanded(
                                         child: Container(
                                           alignment: Alignment.center,
@@ -307,38 +428,44 @@ class _MyProductViewState extends State<MyProductView> {
                                   ),
                             Divider(),
                             if (productDetails?.categoryId != 11) ...{
-                              if (viewModel.getSpecifications(context: context, data: productDetails)
+                              if (viewModel
+                                  .getSpecifications(
+                                      context: context, data: productDetails)
                                   .isNotEmpty) ...{
                                 Text(StringHelper.specifications,
                                     style: context.textTheme.titleSmall),
                                 const SizedBox(height: 10),
                                 Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: Colors.white,
-                                  ),
-                                  child: Wrap(
-                                    spacing: 20, // Horizontal spacing between items
-                                    runSpacing: 15, // Vertical spacing between items
-                                    children: viewModel
-                                        .getSpecifications(context: context, data: productDetails)
-                                        .map((spec) => SizedBox(child: spec))
-                                        .toList(),
-                                  )
-                                  // child: GridView(
-                                  //   shrinkWrap: true,
-                                  //   physics: const NeverScrollableScrollPhysics(),
-                                  //   padding: const EdgeInsets.all(10),
-                                  //   gridDelegate:
-                                  //       const SliverGridDelegateWithFixedCrossAxisCount(
-                                  //           crossAxisCount: 3,
-                                  //           mainAxisExtent: 50,
-                                  //           mainAxisSpacing: 5,
-                                  //           crossAxisSpacing: 20),
-                                  //   children: viewModel.getSpecifications(
-                                  //       context: context, data: productDetails),
-                                  // ),
-                                ),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: Colors.white,
+                                    ),
+                                    child: Wrap(
+                                      spacing:
+                                          20, // Horizontal spacing between items
+                                      runSpacing:
+                                          15, // Vertical spacing between items
+                                      children: viewModel
+                                          .getSpecifications(
+                                              context: context,
+                                              data: productDetails)
+                                          .map((spec) => SizedBox(child: spec))
+                                          .toList(),
+                                    )
+                                    // child: GridView(
+                                    //   shrinkWrap: true,
+                                    //   physics: const NeverScrollableScrollPhysics(),
+                                    //   padding: const EdgeInsets.all(10),
+                                    //   gridDelegate:
+                                    //       const SliverGridDelegateWithFixedCrossAxisCount(
+                                    //           crossAxisCount: 3,
+                                    //           mainAxisExtent: 50,
+                                    //           mainAxisSpacing: 5,
+                                    //           crossAxisSpacing: 20),
+                                    //   children: viewModel.getSpecifications(
+                                    //       context: context, data: productDetails),
+                                    // ),
+                                    ),
                               }
                             },
                             if (productDetails?.categoryId == 11) ...{
@@ -359,89 +486,111 @@ class _MyProductViewState extends State<MyProductView> {
                               ),
                               Gap(10),
                               Visibility(
-                                visible: false,
-                                  child:Column(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: List.generate(
-                                    productDetails?.productAmenities?.length ?? 0, (index) {
-                                  return Padding(
-                                    padding:
-                                        const EdgeInsets.symmetric(vertical: 5.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        getAmenityIcon(productDetails
-                                                ?.productAmenities?[index]
-                                                .amnity
-                                                ?.name ??
-                                            ''),
-                                        Gap(05),
-                                        Text(DbHelper.getLanguage() == 'en'
-                                            ? "${productDetails?.productAmenities?[index].amnity?.name}"
-                                            : "${productDetails?.productAmenities?[index].amnity?.nameAr}"),
-                                      ],
-                                    ),
-                                  );
-                                }),
-                              )),
+                                  visible: false,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: List.generate(
+                                        productDetails
+                                                ?.productAmenities?.length ??
+                                            0, (index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 5.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            getAmenityIcon(productDetails
+                                                    ?.productAmenities?[index]
+                                                    .amnity
+                                                    ?.name ??
+                                                ''),
+                                            Gap(05),
+                                            Text(DbHelper.getLanguage() == 'en'
+                                                ? "${productDetails?.productAmenities?[index].amnity?.name}"
+                                                : "${productDetails?.productAmenities?[index].amnity?.nameAr}"),
+                                          ],
+                                        ),
+                                      );
+                                    }),
+                                  )),
                               CommonGridView(
                                 physics: NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 //mainAxisExtent: 120,
                                 crossAxisCount: 3,
-                                childAspectRatio: 16/16,
+                                childAspectRatio: 16 / 16,
                                 itemCount: viewModel.showAll
-                                    ? productDetails?.productAmenities?.length ?? 0
-                                    : (productDetails?.productAmenities?.length ?? 0) < 5
-                                    ? productDetails?.productAmenities?.length ?? 0
-                                    : 5,
+                                    ? productDetails
+                                            ?.productAmenities?.length ??
+                                        0
+                                    : (productDetails?.productAmenities
+                                                    ?.length ??
+                                                0) <
+                                            5
+                                        ? productDetails
+                                                ?.productAmenities?.length ??
+                                            0
+                                        : 5,
                                 itemBuilder: (BuildContext context, int index) {
                                   return Card(
                                     color: Colors.grey.shade300,
                                     elevation: 0,
                                     margin: EdgeInsets.zero,
                                     shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10)
-                                    ),
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
                                     child: Padding(
                                       padding: const EdgeInsets.all(5.0),
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
                                           getAmenityIcon(productDetails
-                                              ?.productAmenities?[index]
-                                              .amnity
-                                              ?.name ??
+                                                  ?.productAmenities?[index]
+                                                  .amnity
+                                                  ?.name ??
                                               ''),
                                           Gap(05),
-                                          Text(DbHelper.getLanguage() == 'en'
-                                              ? "${productDetails?.productAmenities?[index].amnity?.name}"
-                                              : "${productDetails?.productAmenities?[index].amnity?.nameAr}",textAlign: TextAlign.center,),
+                                          Text(
+                                            DbHelper.getLanguage() == 'en'
+                                                ? "${productDetails?.productAmenities?[index].amnity?.name}"
+                                                : "${productDetails?.productAmenities?[index].amnity?.nameAr}",
+                                            textAlign: TextAlign.center,
+                                          ),
                                         ],
                                       ),
                                     ),
                                   );
-                                },),
+                                },
+                              ),
                               Gap(10),
                               Visibility(
-                                  visible: (productDetails?.productAmenities?.length ?? 0) > 5,
-                                  child:GestureDetector(
-                                  onTap: (){
-                                    viewModel.showAll = !viewModel.showAll;
-                                  },
-                                  child:Align(
-                                      alignment: Alignment.topRight,
-                                      child:Text(
-                                        viewModel.showAll ? StringHelper.seeLess : StringHelper.seeMore,
-                                        style: context.textTheme.titleSmall,
-                                      )))),
+                                  visible: (productDetails
+                                              ?.productAmenities?.length ??
+                                          0) >
+                                      5,
+                                  child: GestureDetector(
+                                      onTap: () {
+                                        viewModel.showAll = !viewModel.showAll;
+                                      },
+                                      child: Align(
+                                          alignment: Alignment.topRight,
+                                          child: Text(
+                                            viewModel.showAll
+                                                ? StringHelper.seeLess
+                                                : StringHelper.seeMore,
+                                            style: context.textTheme.titleSmall,
+                                          )))),
                             },
                             Divider(),
                             Text(
@@ -469,9 +618,9 @@ class _MyProductViewState extends State<MyProductView> {
     );
   }
 
-  String parseAmount(dynamic amount){
-    if("${amount??""}".isEmpty)return "0";
-    return num.parse("${amount??0}").toStringAsFixed(0);
+  String parseAmount(dynamic amount) {
+    if ("${amount ?? ""}".isEmpty) return "0";
+    return num.parse("${amount ?? 0}").toStringAsFixed(0);
   }
 
   getPropertyInformation(
@@ -479,79 +628,91 @@ class _MyProductViewState extends State<MyProductView> {
     {
       List<Widget> specs = [];
 
-      if ((data?.propertyFor??"").isNotEmpty) {
-        specs.add(_buildInfoRow(
-            context, "${data?.propertyFor?.capitalized}", '🏠', 'Property For'));
+      if ((data?.propertyFor ?? "").isNotEmpty) {
+        specs.add(_buildInfoRow(context, "${data?.propertyFor?.capitalized}",
+            '🏠', 'Property For'));
       }
-      if ((data?.area??0) != 0) {
+      if ((data?.area ?? 0) != 0) {
         specs.add(_buildInfoRow(context, "${data?.area} sqft", '📏', 'Area'));
       }
-      if ((data?.bedrooms??0) != 0) {
-        specs
-            .add(_buildInfoRow(context, "${data?.bedrooms}", '🛏️', 'Bedrooms'));
+      if ((data?.bedrooms ?? 0) != 0) {
+        specs.add(
+            _buildInfoRow(context, "${data?.bedrooms}", '🛏️', 'Bedrooms'));
       }
-      if ((data?.bathrooms??0) != 0) {
+      if ((data?.bathrooms ?? 0) != 0) {
         specs.add(
             _buildInfoRow(context, "${data?.bathrooms}", '🚽', 'Bathrooms'));
       }
-      if ((data?.furnishedType??"").isNotEmpty) {
+      if ((data?.furnishedType ?? "").isNotEmpty) {
         specs.add(_buildInfoRow(context, "${data?.furnishedType?.capitalized}",
             '🛋️', 'Furnished Type'));
       }
-      if ((data?.ownership??"").isNotEmpty) {
+      if ((data?.ownership ?? "").isNotEmpty) {
         specs.add(_buildInfoRow(
             context, "${data?.ownership?.capitalized}", '📜', 'Ownership'));
       }
-      if ((data?.paymentType??"").isNotEmpty) {
-        specs.add(_buildInfoRow(
-            context, "${data?.paymentType?.capitalized}", '💳', 'Payment Type'));
+      if ((data?.paymentType ?? "").isNotEmpty) {
+        specs.add(_buildInfoRow(context, "${data?.paymentType?.capitalized}",
+            '💳', 'Payment Type'));
       }
-      if ((data?.completionStatus??"") .isNotEmpty) {
-        specs.add(_buildInfoRow(context,
-            "${data?.completionStatus?.capitalized}", '✅', 'Completion Status'));
+      if ((data?.completionStatus ?? "").isNotEmpty) {
+        specs.add(_buildInfoRow(
+            context,
+            "${data?.completionStatus?.capitalized}",
+            '✅',
+            'Completion Status'));
       }
 
-      if ((data?.deliveryTerm??"").isNotEmpty) {
-        specs.add(_buildInfoRow(context, (data?.deliveryTerm??"").capitalized,
+      if ((data?.deliveryTerm ?? "").isNotEmpty) {
+        specs.add(_buildInfoRow(context, (data?.deliveryTerm ?? "").capitalized,
             '🚚', 'Delivery Term'));
       }
 
       /// new data add without icon
-      if ((data?.type??"").isNotEmpty) {
+      if ((data?.type ?? "").isNotEmpty) {
         specs.add(_buildInfoRow(
             context, "${data?.type?.capitalized}", '💳', 'Property Type'));
       }
-      if ((data?.level??"") .isNotEmpty) {
-        specs.add(_buildInfoRow(context,
-            "${data?.level?.capitalized}", '✅', 'Level'));
+      if ((data?.level ?? "").isNotEmpty) {
+        specs.add(_buildInfoRow(
+            context, "${data?.level?.capitalized}", '✅', 'Level'));
       }
-      if ((data?.buildingAge??"") .isNotEmpty) {
-        specs.add(_buildInfoRow(context,
-            "${data?.buildingAge?.capitalized}", '✅', 'Building Age'));
+      if ((data?.buildingAge ?? "").isNotEmpty) {
+        specs.add(_buildInfoRow(
+            context, "${data?.buildingAge?.capitalized}", '✅', 'Building Age'));
       }
-      if ((data?.listedBy??"") .isNotEmpty) {
-        specs.add(_buildInfoRow(context,
-            "${data?.listedBy?.capitalized}", '✅', 'Listed By'));
+      if ((data?.listedBy ?? "").isNotEmpty) {
+        specs.add(_buildInfoRow(
+            context, "${data?.listedBy?.capitalized}", '✅', 'Listed By'));
       }
-      if ((data?.rentalPrice??"") .isNotEmpty) {
-        specs.add(_buildInfoRow(context,
-            num.parse("${data?.rentalPrice??0}").toStringAsFixed(0), '✅', 'Rental Price'));
+      if ((data?.rentalPrice ?? "").isNotEmpty) {
+        specs.add(_buildInfoRow(
+            context,
+            num.parse("${data?.rentalPrice ?? 0}").toStringAsFixed(0),
+            '✅',
+            'Rental Price'));
       }
-      if ((data?.rentalTerm??"") .isNotEmpty) {
-        specs.add(_buildInfoRow(context,
-            "${data?.rentalTerm?.capitalized}", '✅', 'Rental Term'));
+      if ((data?.rentalTerm ?? "").isNotEmpty) {
+        specs.add(_buildInfoRow(
+            context, "${data?.rentalTerm?.capitalized}", '✅', 'Rental Term'));
       }
-      if ((data?.deposit??"") .isNotEmpty) {
-        specs.add(_buildInfoRow(context,
-            num.parse("${data?.deposit??0}").toStringAsFixed(0), '✅', 'Deposit'));
+      if ((data?.deposit ?? "").isNotEmpty) {
+        specs.add(_buildInfoRow(
+            context,
+            num.parse("${data?.deposit ?? 0}").toStringAsFixed(0),
+            '✅',
+            'Deposit'));
       }
-      if ((data?.insurance??"") .isNotEmpty) {
-        specs.add(_buildInfoRow(context,
-            "${data?.insurance?.capitalized}", '✅', 'Insurance'));
+      if ((data?.insurance ?? "").isNotEmpty) {
+        specs.add(_buildInfoRow(
+            context, "${data?.insurance?.capitalized}", '✅', 'Insurance'));
       }
-      if ((data?.accessToUtilities??"") .isNotEmpty) {
-        specs.add(_buildInfoRow(context,
-            "${data?.accessToUtilities?.capitalized}", '✅', 'Access To Utilities'));
+      if ((data?.accessToUtilities ?? "").isNotEmpty) {
+        specs.add(_buildInfoRow(
+            context,
+            "${data?.accessToUtilities?.capitalized}",
+            '✅',
+            'Access To Utilities'));
       }
       return Column(
         mainAxisSize: MainAxisSize.min,
@@ -579,6 +740,100 @@ class _MyProductViewState extends State<MyProductView> {
       ),
     );
   }
+
+  // Widget getSpecifications({
+  //   required BuildContext context,
+  //   ProductDetailModel? productData,
+  // }) {
+  //   List<Widget> specs = [];
+
+  //   if (productData?.categoryId == 4) {
+  //     if (productData?.year != null && productData!.year != 0) {
+  //       specs.add(_buildSpecRow(context, "${productData.year}", Icons.event));
+  //     }
+  //     if (productData?.kmDriven != null) {
+  //       specs.add(
+  //         _buildSpecRow(context, '${productData?.kmDriven}', Icons.speed),
+  //       );
+  //     }
+  //     if (productData?.fuel != null && productData!.fuel!.isNotEmpty) {
+  //       specs.add(_buildSpecRow(
+  //         context,
+  //         '${productData.fuel}',
+  //         Icons.local_gas_station,
+  //       ));
+  //     }
+  //   }
+
+  //   if (productData?.categoryId == 11) {
+  //     if (productData?.bedrooms != null && productData!.bedrooms != 0) {
+  //       specs.add(_buildSpecRow(
+  //         context,
+  //         "${productData.bedrooms} Beds",
+  //         Icons.king_bed,
+  //       ));
+  //     }
+  //     if (productData?.bathrooms != null && productData!.bathrooms != 0) {
+  //       specs.add(_buildSpecRow(
+  //         context,
+  //         "${productData.bathrooms} Baths",
+  //         Icons.bathtub,
+  //       ));
+  //     }
+  //     if (productData?.area != null && productData!.area != 0) {
+  //       specs.add(_buildSpecRow(
+  //         context,
+  //         "${productData.area} Sqft",
+  //         Icons.square_foot,
+  //       ));
+  //     }
+  //   }
+
+  //   if (specs.isNotEmpty) {
+  //     return SizedBox(
+  //       height: 20, // Enough height to display icon and text
+  //       child: ListView.separated(
+  //         scrollDirection: Axis.horizontal,
+  //         shrinkWrap: true,
+  //         itemCount: specs.length,
+  //         itemBuilder: (context, index) => specs[index],
+  //         separatorBuilder: (context, index) => VerticalDivider(
+  //           width: 8, // The horizontal spacing between spec items
+  //           thickness: 2, // How thick you want the divider line
+  //           color: Colors.grey.shade400,
+  //         ),
+  //       ),
+  //     );
+  //   }
+
+  //   return const SizedBox.shrink();
+  // }
+
+  // /// The spec row has no fixed width, so items can sit closer together.
+  // Widget _buildSpecRow(BuildContext context, String specValue, IconData icon) {
+  //   return Row(
+  //     mainAxisSize: MainAxisSize.min, // Ensures the row is as small as needed
+  //     children: [
+  //       Icon(
+  //         icon,
+  //         size: 16.0,
+  //         color: Colors.black87,
+  //       ),
+  //       const SizedBox(width: 4),
+  //       Flexible(
+  //         child: Text(
+  //           specValue,
+  //           style: const TextStyle(
+  //             fontSize: 14,
+  //             fontWeight: FontWeight.w600,
+  //             color: Colors.black87,
+  //             overflow: TextOverflow.ellipsis,
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Icon getAmenityIcon(String amenityName) {
     // Define a map that links each amenity name to an icon
