@@ -1,0 +1,8 @@
+{
+  "ar": [
+    "minPriceEgp5000",
+    "maxPriceEgp50M",
+    "minValidAreaSize",
+    "maxValidAreaSize"
+  ]
+}

@@ -102,12 +102,12 @@ class LandForm extends StatelessWidget {
             viewModel.propertyForTypeTextController.text = value ?? "";
           },
           options: [
-            "Agricultural Land",
-            "Commercial Land",
-            "Residential Land",
-            "Industrial Land",
-            "Mixed-Use Land",
-            "Farm Land"
+            StringHelper.agriculturalLand,
+            StringHelper.commercialLand,
+            StringHelper.residentialLand,
+            StringHelper.industrialLand,
+            StringHelper.mixedLand,
+            StringHelper.farmLand,
           ],
         ),
         AppTextField(
@@ -347,12 +347,15 @@ class LandForm extends StatelessWidget {
                   validator: (value) {
                     if (value != null && value.trim().isNotEmpty) {
                       final percentage = num.tryParse(value);
-                      if (percentage == null)
+                      if (percentage == null) {
                         return '* ${StringHelper.invalidPercentage}';
-                      if (percentage <= 0)
+                      }
+                      if (percentage <= 0) {
                         return '* ${StringHelper.mustBeGreaterThanZero}';
-                      if (percentage > 100)
+                      }
+                      if (percentage > 100) {
                         return '* ${StringHelper.maxOneHundredPercent}';
+                      }
                     }
                     return null;
                   },
@@ -809,38 +812,4 @@ class LandForm extends StatelessWidget {
     );
   }
 
-  deliveryTermWidget(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          StringHelper.deliveryTerm,
-          style: context.textTheme.titleSmall,
-        ),
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            StringHelper.moveInReady,
-            StringHelper.underConstruction,
-            StringHelper.shellAndCore,
-            StringHelper.semiFinished
-          ].map((status) {
-            return RadioListTile<String>(
-              contentPadding: EdgeInsets.zero,
-              dense: true,
-              title:
-                  Text(status, style: Theme.of(context).textTheme.titleSmall),
-              value: status,
-              groupValue: viewModel.currentDeliveryTerm.capitalized,
-              onChanged: (String? value) {
-                viewModel.deliveryTermTextController.text = value ?? "";
-                viewModel.currentDeliveryTerm = value ?? "";
-              },
-            );
-          }).toList(),
-        ),
-      ],
-    );
-  }
 }

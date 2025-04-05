@@ -16,6 +16,7 @@ import 'package:list_and_life/widgets/app_empty_widget.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../base/helpers/string_helper.dart';
+import '../../../base/utils/utils.dart';
 import '../../../res/assets_res.dart';
 import '../../../view_model/my_ads_v_m.dart';
 import '../../../widgets/app_elevated_button.dart';
@@ -411,7 +412,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
 
   String parseAmount(dynamic amount) {
     if ("${amount ?? ""}".isEmpty) return "0";
-    return num.parse("${amount ?? 0}").toStringAsFixed(0);
+    return Utils.formatPrice(num.parse("${amount ?? 0}").toStringAsFixed(0));
   }
 
   detailsWidget(

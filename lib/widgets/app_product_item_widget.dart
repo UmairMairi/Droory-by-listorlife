@@ -13,6 +13,7 @@ import 'package:list_and_life/widgets/like_button.dart';
 
 import '../base/helpers/db_helper.dart';
 import '../base/helpers/string_helper.dart';
+import '../base/utils/utils.dart';
 import '../models/common/map_response.dart';
 import '../base/network/api_constants.dart';
 import '../base/network/api_request.dart';
@@ -343,7 +344,7 @@ class AppProductItemWidget extends StatelessWidget {
 
   String parseAmount(dynamic amount) {
     if ("${amount ?? ""}".isEmpty) return "0";
-    return num.parse("${amount ?? 0}").toStringAsFixed(0);
+    return Utils.formatPrice(num.parse("${amount ?? 0}").toStringAsFixed(0));
   }
 
   String getCreatedAt({String? time}) {
@@ -389,7 +390,7 @@ class AppProductItemWidget extends StatelessWidget {
       }
       if (data?.fuel != null && data!.fuel!.isNotEmpty) {
         specs.add(_buildSpecRow(
-            context, '${data.fuel}', Icons.local_gas_station)); // Icon for fuel
+            context, Utils.getFuel('${data.fuel}'), Icons.local_gas_station)); // Icon for fuel
       }
     }
 

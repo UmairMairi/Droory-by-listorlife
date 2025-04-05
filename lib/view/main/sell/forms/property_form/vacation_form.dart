@@ -102,13 +102,13 @@ class VacationForm extends StatelessWidget {
             viewModel.propertyForTypeTextController.text = value ?? "";
           },
           options: [
-            "Chalet",
-            "Duplex",
-            "Penthouse",
-            "Standalone Villa",
-            "Studio",
-            "Townhouse Twin house",
-            "Cabin"
+            StringHelper.chalet,
+            StringHelper.duplex,
+            StringHelper.penthouse,
+            StringHelper.standaloneVilla,
+            StringHelper.studio,
+            StringHelper.townhouse,
+            StringHelper.cabin
           ],
         ),
         Visibility(
@@ -212,7 +212,7 @@ class VacationForm extends StatelessWidget {
             viewModel.levelTextController.text = value ?? "";
           },
           options: [
-            StringHelper.ground,
+            "Ground",
             "1",
             "2",
             "3",

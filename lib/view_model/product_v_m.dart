@@ -15,6 +15,7 @@ import 'package:list_and_life/models/common/map_response.dart';
 import 'package:list_and_life/models/product_detail_model.dart';
 
 import '../base/helpers/dialog_helper.dart';
+import '../base/utils/utils.dart';
 
 class ProductVM extends BaseViewModel {
   final ScrollController scrollController = ScrollController();
@@ -279,7 +280,7 @@ class ProductVM extends BaseViewModel {
             context, "${data?.year}", Icons.calendar_today, StringHelper.year));
       }
       if ((data?.fuel ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, '${data?.fuel}',
+        specs.add(_buildSpecRow(context, Utils.getFuel('${data?.fuel}'),
             Icons.local_gas_station, StringHelper.fuel));
       }
       if ((data?.milleage ?? "").isNotEmpty) {
@@ -327,7 +328,7 @@ class ProductVM extends BaseViewModel {
             Icons.verified_user, StringHelper.numbDoorsTitle));
       }
       if ((data?.carRentalTerm ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, "${data?.carRentalTerm}", Icons.timer,
+        specs.add(_buildSpecRow(context, Utils.carRentalTerm("${data?.carRentalTerm}"), Icons.timer,
             StringHelper.rentalCarTerm));
       }
     }
@@ -394,7 +395,7 @@ class ProductVM extends BaseViewModel {
       }
       if (data?.brand != null && (data?.brand?.name ?? "").isNotEmpty) {
         specs.add(_buildSpecRow(
-            context, "${data?.brand?.name}", Icons.cast_for_education, "Type"));
+            context, "${data?.brand?.name}", Icons.cast_for_education, StringHelper.type));
       }
     }
 
@@ -443,7 +444,7 @@ class ProductVM extends BaseViewModel {
       }
 
       if ((data?.workEducation ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, data?.workEducation ?? " ",
+        specs.add(_buildSpecRow(context, Utils.getEducationOptions(data?.workEducation ?? " "),
             Icons.school, StringHelper.workEducation));
       }
     }
@@ -484,7 +485,7 @@ class ProductVM extends BaseViewModel {
     // Real Estate Specifications
     if (data?.categoryId == 11) {
       if ((data?.propertyFor ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, "${data?.propertyFor}", Icons.house,
+        specs.add(_buildSpecRow(context, Utils.getPropertyType("${data?.propertyFor}"), Icons.house,
             StringHelper.propertyType));
       }
       if ("${data?.area ?? 0}" != "0") {
@@ -500,7 +501,7 @@ class ProductVM extends BaseViewModel {
             StringHelper.noOfBathrooms));
       }
       if ((data?.furnishedType ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, data?.furnishedType ?? "", Icons.chair,
+        specs.add(_buildSpecRow(context, Utils.getFurnished(data?.furnishedType ?? ""), Icons.chair,
             StringHelper.furnished));
       }
       if ((data?.ownership ?? "").isNotEmpty) {
@@ -557,7 +558,7 @@ class ProductVM extends BaseViewModel {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Specifications',
+                    StringHelper.specifications,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -661,7 +662,7 @@ class ProductVM extends BaseViewModel {
         );
       } else {
         return Text(
-          'Ad Expires in : $remainingDays Days',
+          '${StringHelper.adExpire} : $remainingDays Days',
           style: TextStyle(
               color: Colors.green, fontWeight: FontWeight.w800, fontSize: 12),
         );

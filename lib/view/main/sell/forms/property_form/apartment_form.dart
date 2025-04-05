@@ -99,12 +99,12 @@ class ApartmentForm extends StatelessWidget {
           hint: viewModel.propertyForTypeTextController.text,
           //controller: viewModel.propertyForTypeTextController,
           options: [
-            "Apartment",
-            "Duplex",
-            "Penthouse",
-            "Studio",
-            "Hotel" "Apartment",
-            "Roof"
+            StringHelper.apartment,
+            StringHelper.duplex,
+            StringHelper.penthouse,
+            StringHelper.studio,
+            StringHelper.hotelApartment,
+            StringHelper.roof
           ],
           onSelected: (String? value) {
             viewModel.propertyForTypeTextController.text = value ?? "";
@@ -385,7 +385,7 @@ class ApartmentForm extends StatelessWidget {
             viewModel.levelTextController.text = value ?? "";
           },
           options: [
-            StringHelper.ground,
+            "Ground",
             "1",
             "2",
             "3",
@@ -800,12 +800,15 @@ class ApartmentForm extends StatelessWidget {
                   validator: (value) {
                     if (value != null && value.trim().isNotEmpty) {
                       final percentage = num.tryParse(value);
-                      if (percentage == null)
+                      if (percentage == null) {
                         return '* ${StringHelper.invalidPercentage}';
-                      if (percentage <= 0)
+                      }
+                      if (percentage <= 0) {
                         return '* ${StringHelper.mustBeGreaterThanZero}';
-                      if (percentage > 100)
+                      }
+                      if (percentage > 100) {
                         return '* ${StringHelper.maxOneHundredPercent}';
+                      }
                     }
                     return null;
                   },

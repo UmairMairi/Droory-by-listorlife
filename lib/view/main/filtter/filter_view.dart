@@ -34,11 +34,11 @@ class FilterView extends StatefulWidget {
 }
 
 class _FilterViewState extends State<FilterView> {
-  SfRangeValues values = const SfRangeValues(00, 100000);
-  SfRangeValues salaryFromTo = const SfRangeValues(00, 100000);
-  SfRangeValues downValues = const SfRangeValues(00, 100000);
-  SfRangeValues areaValues = const SfRangeValues(00, 100000);
-  SfRangeValues kmDrivenValues = const SfRangeValues(0, 1000000);
+  //SfRangeValues values = const SfRangeValues(00, 100000);
+  //SfRangeValues salaryFromTo = const SfRangeValues(00, 100000);
+  //SfRangeValues downValues = const SfRangeValues(00, 100000);
+  //SfRangeValues areaValues = const SfRangeValues(00, 100000);
+  //SfRangeValues kmDrivenValues = const SfRangeValues(0, 1000000);
   FilterModel filter = FilterModel();
   List<CategoryModel> categoriesList = [];
   List<CategoryModel> subCategoriesList = [];
@@ -255,28 +255,28 @@ class _FilterViewState extends State<FilterView> {
                                 controller: viewModel.startPriceTextController,
                                 cursorColor: Colors.black,
                                 maxLength: 7,
-                                readOnly: true,
-                                onChanged: (value) {
-                                  setState(() {
-                                    if (value.isEmpty) {
-                                      values = SfRangeValues(
-                                          0,
-                                          int.parse(viewModel
-                                              .endPriceTextController.text));
-                                      return;
-                                    }
-
-                                    values = SfRangeValues(
-                                        int.parse(viewModel
-                                            .startPriceTextController.text),
-                                        int.parse(viewModel
-                                            .endPriceTextController.text));
-                                  });
-                                },
+                                //readOnly: true,
+                                // onChanged: (value) {
+                                //   setState(() {
+                                //     if (value.isEmpty) {
+                                //       values = SfRangeValues(
+                                //           0,
+                                //           int.parse(viewModel
+                                //               .endPriceTextController.text));
+                                //       return;
+                                //     }
+                                //
+                                //     values = SfRangeValues(
+                                //         int.parse(viewModel
+                                //             .startPriceTextController.text),
+                                //         int.parse(viewModel
+                                //             .endPriceTextController.text));
+                                //   });
+                                // },
                                 decoration: InputDecoration(
                                     counterText: "",
                                     fillColor: const Color(0xffFCFCFD),
-                                    hintText: StringHelper.egp0,
+                                    hintText: StringHelper.minPrice,
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: const BorderSide(
@@ -309,28 +309,28 @@ class _FilterViewState extends State<FilterView> {
                               controller: viewModel.endPriceTextController,
                               cursorColor: Colors.black,
                               maxLength: 7,
-                              readOnly: true,
-                              onChanged: (value) {
-                                setState(() {
-                                  if (value.isEmpty) {
-                                    values = SfRangeValues(
-                                        int.parse(viewModel
-                                            .startPriceTextController.text),
-                                        100000);
-                                    return;
-                                  }
-
-                                  values = SfRangeValues(
-                                      int.parse(viewModel
-                                          .startPriceTextController.text),
-                                      int.parse(viewModel
-                                          .endPriceTextController.text));
-                                });
-                              },
+                              //readOnly: true,
+                              // onChanged: (value) {
+                              //   setState(() {
+                              //     if (value.isEmpty) {
+                              //       values = SfRangeValues(
+                              //           int.parse(viewModel
+                              //               .startPriceTextController.text),
+                              //           100000);
+                              //       return;
+                              //     }
+                              //
+                              //     values = SfRangeValues(
+                              //         int.parse(viewModel
+                              //             .startPriceTextController.text),
+                              //         int.parse(viewModel
+                              //             .endPriceTextController.text));
+                              //   });
+                              // },
                               decoration: InputDecoration(
                                   counterText: "",
                                   fillColor: const Color(0xffFCFCFD),
-                                  hintText: "EGP0",
+                                  hintText: StringHelper.maxPrice,
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: const BorderSide(
@@ -344,44 +344,44 @@ class _FilterViewState extends State<FilterView> {
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    StatefulBuilder(
-                      builder: (context, setState) {
-                        return SfRangeSlider(
-                          min: 0,
-                          max: 100000,
-                          values: values,
-                          inactiveColor: Colors.grey,
-                          activeColor: const Color(0xffFF385C),
-                          showLabels: false,
-                          interval: 1000, // Controls label intervals
-                          stepSize:
-                              1000, // Ensures the slider moves in steps of 1000
-                          labelFormatterCallback:
-                              (dynamic actualValue, String formattedText) {
-                            return actualValue == 99999
-                                ? ' $formattedText+'
-                                : ' $formattedText';
-                          },
-                          onChanged: (SfRangeValues newValues) {
-                            if ((newValues.end - newValues.start) >= 1000) {
-                              debugPrint("newValues==> ${newValues.end}");
-                              debugPrint(
-                                  "newValues start==> ${newValues.start}");
-                              viewModel.startPriceTextController.text =
-                                  "${newValues.start.round()}";
-                              viewModel.endPriceTextController.text =
-                                  "${newValues.end.round()}";
-                              setState(() {
-                                values = newValues;
-                              });
-                            }
-                          },
-                        );
-                      },
-                    ),
+                    // const SizedBox(
+                    //   height: 15,
+                    // ),
+                    // StatefulBuilder(
+                    //   builder: (context, setState) {
+                    //     return SfRangeSlider(
+                    //       min: 0,
+                    //       max: 100000,
+                    //       values: values,
+                    //       inactiveColor: Colors.grey,
+                    //       activeColor: const Color(0xffFF385C),
+                    //       showLabels: false,
+                    //       interval: 1000, // Controls label intervals
+                    //       stepSize:
+                    //           1000, // Ensures the slider moves in steps of 1000
+                    //       labelFormatterCallback:
+                    //           (dynamic actualValue, String formattedText) {
+                    //         return actualValue == 99999
+                    //             ? ' $formattedText+'
+                    //             : ' $formattedText';
+                    //       },
+                    //       onChanged: (SfRangeValues newValues) {
+                    //         if ((newValues.end - newValues.start) >= 1000) {
+                    //           debugPrint("newValues==> ${newValues.end}");
+                    //           debugPrint(
+                    //               "newValues start==> ${newValues.start}");
+                    //           viewModel.startPriceTextController.text =
+                    //               "${newValues.start.round()}";
+                    //           viewModel.endPriceTextController.text =
+                    //               "${newValues.end.round()}";
+                    //           setState(() {
+                    //             values = newValues;
+                    //           });
+                    //         }
+                    //       },
+                    //     );
+                    //   },
+                    // ),
                     const SizedBox(
                       height: 10,
                     ),
@@ -1274,28 +1274,28 @@ class _FilterViewState extends State<FilterView> {
                             controller: viewModel.jobSalaryFromController,
                             cursorColor: Colors.black,
                             maxLength: 7,
-                            readOnly: true,
-                            onChanged: (value) {
-                              setState(() {
-                                if (value.isEmpty) {
-                                  salaryFromTo = SfRangeValues(
-                                      0,
-                                      int.parse(viewModel
-                                          .jobSalaryToController.text));
-                                  return;
-                                }
-
-                                salaryFromTo = SfRangeValues(
-                                    int.parse(
-                                        viewModel.jobSalaryFromController.text),
-                                    int.parse(
-                                        viewModel.jobSalaryToController.text));
-                              });
-                            },
+                            // readOnly: true,
+                            // onChanged: (value) {
+                            //   setState(() {
+                            //     if (value.isEmpty) {
+                            //       salaryFromTo = SfRangeValues(
+                            //           0,
+                            //           int.parse(viewModel
+                            //               .jobSalaryToController.text));
+                            //       return;
+                            //     }
+                            //
+                            //     salaryFromTo = SfRangeValues(
+                            //         int.parse(
+                            //             viewModel.jobSalaryFromController.text),
+                            //         int.parse(
+                            //             viewModel.jobSalaryToController.text));
+                            //   });
+                            // },
                             decoration: InputDecoration(
                                 counterText: "",
                                 fillColor: const Color(0xffFCFCFD),
-                                hintText: StringHelper.egp0,
+                                hintText: StringHelper.minPrice,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                   borderSide: const BorderSide(
@@ -1328,28 +1328,28 @@ class _FilterViewState extends State<FilterView> {
                           controller: viewModel.jobSalaryToController,
                           cursorColor: Colors.black,
                           maxLength: 7,
-                          readOnly: true,
-                          onChanged: (value) {
-                            setState(() {
-                              if (value.isEmpty) {
-                                salaryFromTo = SfRangeValues(
-                                    int.parse(
-                                        viewModel.jobSalaryFromController.text),
-                                    100000);
-                                return;
-                              }
-
-                              salaryFromTo = SfRangeValues(
-                                  int.parse(
-                                      viewModel.jobSalaryFromController.text),
-                                  int.parse(
-                                      viewModel.jobSalaryToController.text));
-                            });
-                          },
+                          // readOnly: true,
+                          // onChanged: (value) {
+                          //   setState(() {
+                          //     if (value.isEmpty) {
+                          //       salaryFromTo = SfRangeValues(
+                          //           int.parse(
+                          //               viewModel.jobSalaryFromController.text),
+                          //           100000);
+                          //       return;
+                          //     }
+                          //
+                          //     salaryFromTo = SfRangeValues(
+                          //         int.parse(
+                          //             viewModel.jobSalaryFromController.text),
+                          //         int.parse(
+                          //             viewModel.jobSalaryToController.text));
+                          //   });
+                          // },
                           decoration: InputDecoration(
                               counterText: "",
                               fillColor: const Color(0xffFCFCFD),
-                              hintText: "EGP0",
+                              hintText: StringHelper.maxPrice,
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                   borderSide: const BorderSide(
@@ -1363,38 +1363,38 @@ class _FilterViewState extends State<FilterView> {
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 15,
-                ),
-                StatefulBuilder(builder: (context, setState) {
-                  return SfRangeSlider(
-                    min: 0,
-                    max: 100000,
-                    values: salaryFromTo,
-                    inactiveColor: Colors.grey,
-                    activeColor: const Color(0xffFF385C),
-                    showLabels: false,
-                    interval: 1000, // Controls label intervals
-                    stepSize: 1000, // Ensures the slider moves in steps of 1000
-                    labelFormatterCallback:
-                        (dynamic actualValue, String formattedText) {
-                      return actualValue == 99999
-                          ? ' $formattedText+'
-                          : ' $formattedText';
-                    },
-                    onChanged: (SfRangeValues newValues) {
-                      if ((newValues.end - newValues.start) >= 1000) {
-                        viewModel.jobSalaryFromController.text =
-                            "${newValues.start.round()}";
-                        viewModel.jobSalaryToController.text =
-                            "${newValues.end.round()}";
-                        setState(() {
-                          salaryFromTo = newValues;
-                        });
-                      }
-                    },
-                  );
-                }),
+                // const SizedBox(
+                //   height: 15,
+                // ),
+                // StatefulBuilder(builder: (context, setState) {
+                //   return SfRangeSlider(
+                //     min: 0,
+                //     max: 100000,
+                //     values: salaryFromTo,
+                //     inactiveColor: Colors.grey,
+                //     activeColor: const Color(0xffFF385C),
+                //     showLabels: false,
+                //     interval: 1000, // Controls label intervals
+                //     stepSize: 1000, // Ensures the slider moves in steps of 1000
+                //     labelFormatterCallback:
+                //         (dynamic actualValue, String formattedText) {
+                //       return actualValue == 99999
+                //           ? ' $formattedText+'
+                //           : ' $formattedText';
+                //     },
+                //     onChanged: (SfRangeValues newValues) {
+                //       if ((newValues.end - newValues.start) >= 1000) {
+                //         viewModel.jobSalaryFromController.text =
+                //             "${newValues.start.round()}";
+                //         viewModel.jobSalaryToController.text =
+                //             "${newValues.end.round()}";
+                //         setState(() {
+                //           salaryFromTo = newValues;
+                //         });
+                //       }
+                //     },
+                //   );
+                // }),
                 const SizedBox(
                   height: 10,
                 ),
@@ -1581,7 +1581,8 @@ class _FilterViewState extends State<FilterView> {
 
                   if ((filter.categoryId ?? "").isNotEmpty &&
                       filter.categoryId != '9') {
-                    if (values.start >= 0 && values.end <= 100000) {
+                   // if (values.start >= 0 && values.end <= 100000) {
+                    if (viewModel.startPriceTextController.text.trim().isNotEmpty && viewModel.endPriceTextController.text.trim().isNotEmpty) {
                       filter.minPrice =
                           viewModel.startPriceTextController.text.trim();
                       filter.maxPrice =
@@ -1591,9 +1592,8 @@ class _FilterViewState extends State<FilterView> {
                   // if (viewModel.sizesTextController.text.trim().isNotEmpty) {
                   //   filter.sizeId = viewModel.sizesTextController.text.trim();
                   // }
-                  if (filter.categoryId == '9' &&
-                      salaryFromTo.start >= 0 &&
-                      values.end <= 100000) {
+                 // if (filter.categoryId == '9' && salaryFromTo.start >= 0 && salaryFromTo.end <= 100000) {
+                  if (filter.categoryId == '9' && viewModel.jobSalaryFromController.text.trim().isNotEmpty&& viewModel.jobSalaryToController.text.trim().isNotEmpty) {
                     filter.salleryFrom =
                         viewModel.jobSalaryFromController.text.trim();
                     filter.salleryTo =
@@ -1768,7 +1768,8 @@ class _FilterViewState extends State<FilterView> {
                   }
                   if (filter.categoryId == "11" &&
                       ["83", "84", "87"].contains(filter.subcategoryId)) {
-                    if (downValues.start >= 0 && downValues.end <= 100000) {
+                    //if (downValues.start >= 0 && downValues.end <= 100000) {
+                    if (viewModel.startDownPriceTextController.text.trim().isNotEmpty && viewModel.endDownPriceTextController.text.trim().isNotEmpty) {
                       filter.minDownPrice =
                           viewModel.startDownPriceTextController.text.trim();
                       filter.maxDownPrice =
@@ -1783,9 +1784,8 @@ class _FilterViewState extends State<FilterView> {
                         viewModel.storageTextController.text.trim();
                   }
 
-                  if (filter.categoryId == "11" &&
-                      areaValues.start >= 0 &&
-                      areaValues.end <= 100000) {
+                 // if (filter.categoryId == "11" && areaValues.start >= 0 && areaValues.end <= 100000) {
+                  if (filter.categoryId == "11" && viewModel.startAreaTextController.text.trim().isNotEmpty && viewModel.endAreaTextController.text.trim().isNotEmpty) {
                     filter.minAreaSize =
                         viewModel.startAreaTextController.text.trim();
                     filter.maxAreaSize =
@@ -1805,10 +1805,8 @@ class _FilterViewState extends State<FilterView> {
                   //       viewModel.kmDrivenTextController.text.trim();
                   // }
                   if (filter.categoryId == "4" &&
-                      (filter.subcategoryId == "13" ||
-                          filter.subcategoryId == "26") &&
-                      kmDrivenValues.start >= 0 &&
-                      kmDrivenValues.end <= 1000000) {
+                      //(filter.subcategoryId == "13" || filter.subcategoryId == "26") && kmDrivenValues.start >= 0 && kmDrivenValues.end <= 1000000) {
+                      (filter.subcategoryId == "13" || filter.subcategoryId == "26") && viewModel.minKmDrivenTextController.text.trim().isNotEmpty && viewModel.maxKmDrivenTextController.text.trim().isNotEmpty) {
                     filter.minKmDriven =
                         viewModel.minKmDrivenTextController.text.trim();
                     filter.maxKmDriven =
@@ -1957,20 +1955,23 @@ class _FilterViewState extends State<FilterView> {
       if (filter.categoryId == '4' &&
           (filter.subcategoryId == '13' || filter.subcategoryId == '26')) {
         // Only set KM driven for cars for sale and motorcycles
-        vm.minKmDrivenTextController.text = widget.filters?.minKmDriven ?? '0';
-        vm.maxKmDrivenTextController.text =
-            widget.filters?.maxKmDriven ?? '1000000';
-        setState(() {
-          kmDrivenValues = SfRangeValues(
-            double.tryParse(vm.minKmDrivenTextController.text) ?? 0,
-            double.tryParse(vm.maxKmDrivenTextController.text) ?? 1000000,
-          );
-        });
+        //vm.minKmDrivenTextController.text = widget.filters?.minKmDriven ?? '0';
+        //vm.maxKmDrivenTextController.text = widget.filters?.maxKmDriven ?? '1000000';
+        vm.minKmDrivenTextController.text = widget.filters?.minKmDriven ?? '';
+        vm.maxKmDrivenTextController.text = widget.filters?.maxKmDriven ?? '';
+        // setState(() {
+        //   kmDrivenValues = SfRangeValues(
+        //     double.tryParse(vm.minKmDrivenTextController.text) ?? 0,
+        //     double.tryParse(vm.maxKmDrivenTextController.text) ?? 1000000,
+        //   );
+        // });
       } else {
         // For other subcategories, don't set KM driven values
-        vm.minKmDrivenTextController.text = '0';
-        vm.maxKmDrivenTextController.text = '1000000';
-        kmDrivenValues = SfRangeValues(0, 1000000);
+        vm.minKmDrivenTextController.clear();
+        vm.maxKmDrivenTextController.clear();
+        // vm.minKmDrivenTextController.text = '0';
+        // vm.maxKmDrivenTextController.text = '1000000';
+        // kmDrivenValues = SfRangeValues(0, 1000000);
       }
       // vm.brandsTextController.clear();
       if ((filter.brandId ?? "").isNotEmpty) {
@@ -1980,18 +1981,20 @@ class _FilterViewState extends State<FilterView> {
       if ((filter.sizeId ?? "").isNotEmpty) {
         vm.sizesTextController.text = getFashionSizeName(id: filter.sizeId);
       }
-      vm.minKmDrivenTextController.text = '0';
-      vm.maxKmDrivenTextController.text = '1000000';
-      kmDrivenValues = SfRangeValues(
-        double.tryParse(vm.minKmDrivenTextController.text) ?? 0,
-        double.tryParse(vm.maxKmDrivenTextController.text) ?? 1000000,
-      );
+      vm.minKmDrivenTextController.clear();
+      vm.maxKmDrivenTextController.clear();
+      // vm.minKmDrivenTextController.text = '0';
+      // vm.maxKmDrivenTextController.text = '1000000';
+      // kmDrivenValues = SfRangeValues(
+      //   double.tryParse(vm.minKmDrivenTextController.text) ?? 0,
+      //   double.tryParse(vm.maxKmDrivenTextController.text) ?? 1000000,
+      // );
 
-      values = SfRangeValues(
-          int.parse(vm.startPriceTextController.text.isEmpty
-              ? '0'
-              : vm.startPriceTextController.text),
-          int.parse(vm.endPriceTextController.text));
+      // values = SfRangeValues(
+      //     int.parse(vm.startPriceTextController.text.isEmpty
+      //         ? '0'
+      //         : vm.startPriceTextController.text),
+      //     int.parse(vm.endPriceTextController.text));
       if ((filter.selectedAmnities ?? "").isNotEmpty) {
         selectedAmenities = (filter.selectedAmnities ?? "")
             .split(',')
@@ -2014,15 +2017,17 @@ class _FilterViewState extends State<FilterView> {
     vm.latitude = 0.0;
     vm.longitude = 0.0;
     vm.locationTextController.text = "Cairo, Egypt";
-    vm.startPriceTextController.text = '0';
-    vm.endPriceTextController.text = '100000';
-    values = SfRangeValues(
-        int.parse(vm.startPriceTextController.text.isEmpty
-            ? '0'
-            : vm.startPriceTextController.text),
-        int.parse(vm.endPriceTextController.text.isEmpty
-            ? '100000'
-            : vm.endPriceTextController.text));
+    //vm.startPriceTextController.text = '0';
+    vm.startPriceTextController.clear();
+    //vm.endPriceTextController.text = '100000';
+    vm.endPriceTextController.clear();
+    // values = SfRangeValues(
+    //     int.parse(vm.startPriceTextController.text.isEmpty
+    //         ? '0'
+    //         : vm.startPriceTextController.text),
+    //     int.parse(vm.endPriceTextController.text.isEmpty
+    //         ? '100000'
+    //         : vm.endPriceTextController.text));
     brands.clear();
     fashionSizes.clear();
     selectedAmenities.clear();
@@ -2063,33 +2068,39 @@ class _FilterViewState extends State<FilterView> {
     vm.deliveryTermTextController.clear();
     vm.levelTextController.clear();
     vm.mileageTextController.clear();
-    downValues = SfRangeValues(
-        int.parse(vm.startDownPriceTextController.text.isEmpty
-            ? '0'
-            : vm.startDownPriceTextController.text),
-        int.parse(vm.endDownPriceTextController.text.isEmpty
-            ? '100000'
-            : vm.endDownPriceTextController.text));
-    areaValues = SfRangeValues(
-        int.parse(vm.startAreaTextController.text.isEmpty
-            ? '0'
-            : vm.startAreaTextController.text),
-        int.parse(vm.endAreaTextController.text.isEmpty
-            ? '100000'
-            : vm.endAreaTextController.text));
-    vm.startDownPriceTextController.text = '0';
-    vm.endDownPriceTextController.text = '100000';
-    vm.startAreaTextController.text = '0';
-    vm.endAreaTextController.text = '100000';
-    salaryFromTo = SfRangeValues(
-        int.parse(vm.jobSalaryFromController.text.isEmpty
-            ? '0'
-            : vm.jobSalaryFromController.text),
-        int.parse(vm.jobSalaryToController.text.isEmpty
-            ? '100000'
-            : vm.jobSalaryToController.text));
-    vm.jobSalaryFromController.text = '0';
-    vm.jobSalaryToController.text = '100000';
+    // downValues = SfRangeValues(
+    //     int.parse(vm.startDownPriceTextController.text.isEmpty
+    //         ? '0'
+    //         : vm.startDownPriceTextController.text),
+    //     int.parse(vm.endDownPriceTextController.text.isEmpty
+    //         ? '100000'
+    //         : vm.endDownPriceTextController.text));
+    // vm.startDownPriceTextController.text = '0';
+    // vm.endDownPriceTextController.text = '100000';
+    vm.startDownPriceTextController.clear();
+    vm.endDownPriceTextController.clear();
+    //areaValues = SfRangeValues(
+    //     int.parse(vm.startAreaTextController.text.isEmpty
+    //         ? '0'
+    //         : vm.startAreaTextController.text),
+    //     int.parse(vm.endAreaTextController.text.isEmpty
+    //         ? '100000'
+    //         : vm.endAreaTextController.text));
+    // vm.startAreaTextController.text = '0';
+    // vm.endAreaTextController.text = '100000';
+    vm.startAreaTextController.clear();
+    vm.endAreaTextController.clear();
+    // salaryFromTo = SfRangeValues(
+    //     int.parse(vm.jobSalaryFromController.text.isEmpty
+    //         ? '0'
+    //         : vm.jobSalaryFromController.text),
+    //     int.parse(vm.jobSalaryToController.text.isEmpty
+    //         ? '100000'
+    //         : vm.jobSalaryToController.text));
+    // vm.jobSalaryFromController.text = '0';
+    // vm.jobSalaryToController.text = '100000';
+    vm.jobSalaryFromController.clear();
+    vm.jobSalaryToController.clear();
     setState(() {});
   }
 
@@ -2404,11 +2415,11 @@ class _FilterViewState extends State<FilterView> {
                   controller: viewModel.minKmDrivenTextController,
                   cursorColor: Colors.black,
                   maxLength: 7,
-                  readOnly: true,
+                  //readOnly: true,
                   decoration: InputDecoration(
                     counterText: "",
                     fillColor: const Color(0xffFCFCFD),
-                    hintText: "0 KM",
+                    hintText: StringHelper.minKm,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(color: Color(0xffEFEFEF)),
@@ -2434,11 +2445,11 @@ class _FilterViewState extends State<FilterView> {
                   controller: viewModel.maxKmDrivenTextController,
                   cursorColor: Colors.black,
                   maxLength: 7,
-                  readOnly: true,
+                  //readOnly: true,
                   decoration: InputDecoration(
                     counterText: "",
                     fillColor: const Color(0xffFCFCFD),
-                    hintText: "1,000,000 KM",
+                    hintText: StringHelper.maxKm,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(color: Color(0xffEFEFEF)),
@@ -2453,36 +2464,36 @@ class _FilterViewState extends State<FilterView> {
             ),
           ],
         ),
-        const SizedBox(height: 15),
-        StatefulBuilder(
-          builder: (context, setState) {
-            return SfRangeSlider(
-              min: 0,
-              max: 1000000,
-              values: kmDrivenValues,
-              inactiveColor: Colors.grey,
-              activeColor: const Color(0xffFF385C),
-              showLabels: false,
-              interval: 100000,
-              stepSize: 1000,
-              labelFormatterCallback:
-                  (dynamic actualValue, String formattedText) {
-                return actualValue == 1000000 ? '1,000,000+' : formattedText;
-              },
-              onChanged: (SfRangeValues newValues) {
-                if ((newValues.end - newValues.start) >= 1000) {
-                  viewModel.minKmDrivenTextController.text =
-                      "${newValues.start.round()}";
-                  viewModel.maxKmDrivenTextController.text =
-                      "${newValues.end.round()}";
-                  setState(() {
-                    kmDrivenValues = newValues;
-                  });
-                }
-              },
-            );
-          },
-        ),
+        // const SizedBox(height: 15),
+        // StatefulBuilder(
+        //   builder: (context, setState) {
+        //     return SfRangeSlider(
+        //       min: 0,
+        //       max: 1000000,
+        //       values: kmDrivenValues,
+        //       inactiveColor: Colors.grey,
+        //       activeColor: const Color(0xffFF385C),
+        //       showLabels: false,
+        //       interval: 100000,
+        //       stepSize: 1000,
+        //       labelFormatterCallback:
+        //           (dynamic actualValue, String formattedText) {
+        //         return actualValue == 1000000 ? '1,000,000+' : formattedText;
+        //       },
+        //       onChanged: (SfRangeValues newValues) {
+        //         if ((newValues.end - newValues.start) >= 1000) {
+        //           viewModel.minKmDrivenTextController.text =
+        //               "${newValues.start.round()}";
+        //           viewModel.maxKmDrivenTextController.text =
+        //               "${newValues.end.round()}";
+        //           setState(() {
+        //             kmDrivenValues = newValues;
+        //           });
+        //         }
+        //       },
+        //     );
+        //   },
+        // ),
         const SizedBox(height: 10),
       ],
     );
@@ -2572,11 +2583,11 @@ class _FilterViewState extends State<FilterView> {
                   controller: viewModel.minKmDrivenTextController,
                   cursorColor: Colors.black,
                   maxLength: 7,
-                  readOnly: true,
+                  //readOnly: true,
                   decoration: InputDecoration(
                     counterText: "",
                     fillColor: const Color(0xffFCFCFD),
-                    hintText: "0 KM",
+                    hintText: StringHelper.minKm,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(color: Color(0xffEFEFEF)),
@@ -2602,11 +2613,11 @@ class _FilterViewState extends State<FilterView> {
                   controller: viewModel.maxKmDrivenTextController,
                   cursorColor: Colors.black,
                   maxLength: 7,
-                  readOnly: true,
+                  //readOnly: true,
                   decoration: InputDecoration(
                     counterText: "",
                     fillColor: const Color(0xffFCFCFD),
-                    hintText: "1,000,000 KM",
+                    hintText: StringHelper.maxKm,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(color: Color(0xffEFEFEF)),
@@ -2621,36 +2632,36 @@ class _FilterViewState extends State<FilterView> {
             ),
           ],
         ),
-        const SizedBox(height: 15),
-        StatefulBuilder(
-          builder: (context, setState) {
-            return SfRangeSlider(
-              min: 0,
-              max: 1000000,
-              values: kmDrivenValues,
-              inactiveColor: Colors.grey,
-              activeColor: const Color(0xffFF385C),
-              showLabels: false,
-              interval: 100000,
-              stepSize: 1000,
-              labelFormatterCallback:
-                  (dynamic actualValue, String formattedText) {
-                return actualValue == 1000000 ? '1,000,000+' : formattedText;
-              },
-              onChanged: (SfRangeValues newValues) {
-                if ((newValues.end - newValues.start) >= 1000) {
-                  viewModel.minKmDrivenTextController.text =
-                      "${newValues.start.round()}";
-                  viewModel.maxKmDrivenTextController.text =
-                      "${newValues.end.round()}";
-                  setState(() {
-                    kmDrivenValues = newValues;
-                  });
-                }
-              },
-            );
-          },
-        ),
+        // const SizedBox(height: 15),
+        // StatefulBuilder(
+        //   builder: (context, setState) {
+        //     return SfRangeSlider(
+        //       min: 0,
+        //       max: 1000000,
+        //       values: kmDrivenValues,
+        //       inactiveColor: Colors.grey,
+        //       activeColor: const Color(0xffFF385C),
+        //       showLabels: false,
+        //       interval: 100000,
+        //       stepSize: 1000,
+        //       labelFormatterCallback:
+        //           (dynamic actualValue, String formattedText) {
+        //         return actualValue == 1000000 ? '1,000,000+' : formattedText;
+        //       },
+        //       onChanged: (SfRangeValues newValues) {
+        //         if ((newValues.end - newValues.start) >= 1000) {
+        //           viewModel.minKmDrivenTextController.text =
+        //               "${newValues.start.round()}";
+        //           viewModel.maxKmDrivenTextController.text =
+        //               "${newValues.end.round()}";
+        //           setState(() {
+        //             kmDrivenValues = newValues;
+        //           });
+        //         }
+        //       },
+        //     );
+        //   },
+        // ),
         const SizedBox(height: 10),
       ],
     );
@@ -2686,11 +2697,11 @@ class _FilterViewState extends State<FilterView> {
                   controller: viewModel.minKmDrivenTextController,
                   cursorColor: Colors.black,
                   maxLength: 7,
-                  readOnly: true,
+                  //readOnly: true,
                   decoration: InputDecoration(
                     counterText: "",
                     fillColor: const Color(0xffFCFCFD),
-                    hintText: "0 KM",
+                    hintText: StringHelper.minKm,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(color: Color(0xffEFEFEF)),
@@ -2716,11 +2727,11 @@ class _FilterViewState extends State<FilterView> {
                   controller: viewModel.maxKmDrivenTextController,
                   cursorColor: Colors.black,
                   maxLength: 7,
-                  readOnly: true,
+                  //readOnly: true,
                   decoration: InputDecoration(
                     counterText: "",
                     fillColor: const Color(0xffFCFCFD),
-                    hintText: "1,000,000 KM",
+                    hintText: StringHelper.maxKm,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(color: Color(0xffEFEFEF)),
@@ -2735,36 +2746,36 @@ class _FilterViewState extends State<FilterView> {
             ),
           ],
         ),
-        const SizedBox(height: 15),
-        StatefulBuilder(
-          builder: (context, setState) {
-            return SfRangeSlider(
-              min: 0,
-              max: 1000000,
-              values: kmDrivenValues,
-              inactiveColor: Colors.grey,
-              activeColor: const Color(0xffFF385C),
-              showLabels: false,
-              interval: 100000,
-              stepSize: 1000,
-              labelFormatterCallback:
-                  (dynamic actualValue, String formattedText) {
-                return actualValue == 1000000 ? '1,000,000+' : formattedText;
-              },
-              onChanged: (SfRangeValues newValues) {
-                if ((newValues.end - newValues.start) >= 1000) {
-                  viewModel.minKmDrivenTextController.text =
-                      "${newValues.start.round()}";
-                  viewModel.maxKmDrivenTextController.text =
-                      "${newValues.end.round()}";
-                  setState(() {
-                    kmDrivenValues = newValues;
-                  });
-                }
-              },
-            );
-          },
-        ),
+        // const SizedBox(height: 15),
+        // StatefulBuilder(
+        //   builder: (context, setState) {
+        //     return SfRangeSlider(
+        //       min: 0,
+        //       max: 1000000,
+        //       values: kmDrivenValues,
+        //       inactiveColor: Colors.grey,
+        //       activeColor: const Color(0xffFF385C),
+        //       showLabels: false,
+        //       interval: 100000,
+        //       stepSize: 1000,
+        //       labelFormatterCallback:
+        //           (dynamic actualValue, String formattedText) {
+        //         return actualValue == 1000000 ? '1,000,000+' : formattedText;
+        //       },
+        //       onChanged: (SfRangeValues newValues) {
+        //         if ((newValues.end - newValues.start) >= 1000) {
+        //           viewModel.minKmDrivenTextController.text =
+        //               "${newValues.start.round()}";
+        //           viewModel.maxKmDrivenTextController.text =
+        //               "${newValues.end.round()}";
+        //           setState(() {
+        //             kmDrivenValues = newValues;
+        //           });
+        //         }
+        //       },
+        //     );
+        //   },
+        // ),
         const SizedBox(height: 10),
       ],
     );
@@ -2920,30 +2931,30 @@ class _FilterViewState extends State<FilterView> {
                       maxLength: 7,
                       keyboardType: TextInputType.number,
                       textAlign: TextAlign.center,
-                      readOnly: true,
                       controller: viewModel.startDownPriceTextController,
                       cursorColor: Colors.black,
-                      onChanged: (value) {
-                        setState(() {
-                          if (value.isEmpty) {
-                            downValues = SfRangeValues(
-                                0,
-                                int.parse(
-                                    viewModel.endDownPriceTextController.text));
-                            return;
-                          }
-
-                          downValues = SfRangeValues(
-                              int.parse(
-                                  viewModel.startDownPriceTextController.text),
-                              int.parse(
-                                  viewModel.endDownPriceTextController.text));
-                        });
-                      },
+                      //readOnly: true,
+                      // onChanged: (value) {
+                      //   setState(() {
+                      //     if (value.isEmpty) {
+                      //       downValues = SfRangeValues(
+                      //           0,
+                      //           int.parse(
+                      //               viewModel.endDownPriceTextController.text));
+                      //       return;
+                      //     }
+                      //
+                      //     downValues = SfRangeValues(
+                      //         int.parse(
+                      //             viewModel.startDownPriceTextController.text),
+                      //         int.parse(
+                      //             viewModel.endDownPriceTextController.text));
+                      //   });
+                      // },
                       decoration: InputDecoration(
                           counterText: "",
                           fillColor: const Color(0xffFCFCFD),
-                          hintText: StringHelper.egp0,
+                          hintText: StringHelper.minPrice,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide:
@@ -2974,30 +2985,30 @@ class _FilterViewState extends State<FilterView> {
                     maxLength: 7,
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
-                    readOnly: true,
                     controller: viewModel.endDownPriceTextController,
                     cursorColor: Colors.black,
-                    onChanged: (value) {
-                      setState(() {
-                        if (value.isEmpty) {
-                          downValues = SfRangeValues(
-                              int.parse(
-                                  viewModel.startDownPriceTextController.text),
-                              100000);
-                          return;
-                        }
-
-                        downValues = SfRangeValues(
-                            int.parse(
-                                viewModel.startDownPriceTextController.text),
-                            int.parse(
-                                viewModel.endDownPriceTextController.text));
-                      });
-                    },
+                    // readOnly: true,
+                    // onChanged: (value) {
+                    //   setState(() {
+                    //     if (value.isEmpty) {
+                    //       downValues = SfRangeValues(
+                    //           int.parse(
+                    //               viewModel.startDownPriceTextController.text),
+                    //           100000);
+                    //       return;
+                    //     }
+                    //
+                    //     downValues = SfRangeValues(
+                    //         int.parse(
+                    //             viewModel.startDownPriceTextController.text),
+                    //         int.parse(
+                    //             viewModel.endDownPriceTextController.text));
+                    //   });
+                    // },
                     decoration: InputDecoration(
                         counterText: "",
                         fillColor: const Color(0xffFCFCFD),
-                        hintText: "EGP0",
+                        hintText: StringHelper.maxPrice,
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide:
@@ -3011,38 +3022,38 @@ class _FilterViewState extends State<FilterView> {
               ),
             ],
           ),
-          const SizedBox(
-            height: 15,
-          ),
-          StatefulBuilder(builder: (context, setState) {
-            return SfRangeSlider(
-              min: 0,
-              max: 100000,
-              values: downValues,
-              inactiveColor: Colors.grey,
-              activeColor: const Color(0xffFF385C),
-              showLabels: false,
-              interval: 1000, // Controls label intervals
-              stepSize: 1000, // Ensures the slider moves in steps of 1000
-              labelFormatterCallback:
-                  (dynamic actualValue, String formattedText) {
-                return actualValue == 99999
-                    ? ' $formattedText+'
-                    : ' $formattedText';
-              },
-              onChanged: (SfRangeValues newValues) {
-                if ((newValues.end - newValues.start) >= 1000) {
-                  viewModel.startDownPriceTextController.text =
-                      "${newValues.start.round()}";
-                  viewModel.endDownPriceTextController.text =
-                      "${newValues.end.round()}";
-                  setState(() {
-                    downValues = newValues;
-                  });
-                }
-              },
-            );
-          }),
+          // const SizedBox(
+          //   height: 15,
+          // ),
+          // StatefulBuilder(builder: (context, setState) {
+          //   return SfRangeSlider(
+          //     min: 0,
+          //     max: 100000,
+          //     values: downValues,
+          //     inactiveColor: Colors.grey,
+          //     activeColor: const Color(0xffFF385C),
+          //     showLabels: false,
+          //     interval: 1000, // Controls label intervals
+          //     stepSize: 1000, // Ensures the slider moves in steps of 1000
+          //     labelFormatterCallback:
+          //         (dynamic actualValue, String formattedText) {
+          //       return actualValue == 99999
+          //           ? ' $formattedText+'
+          //           : ' $formattedText';
+          //     },
+          //     onChanged: (SfRangeValues newValues) {
+          //       if ((newValues.end - newValues.start) >= 1000) {
+          //         viewModel.startDownPriceTextController.text =
+          //             "${newValues.start.round()}";
+          //         viewModel.endDownPriceTextController.text =
+          //             "${newValues.end.round()}";
+          //         setState(() {
+          //           downValues = newValues;
+          //         });
+          //       }
+          //     },
+          //   );
+          // }),
           Gap(10),
         },
         Text(
@@ -3058,28 +3069,28 @@ class _FilterViewState extends State<FilterView> {
                 height: 50,
                 child: TextFormField(
                     maxLength: 7,
-                    readOnly: true,
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
                     controller: viewModel.startAreaTextController,
                     cursorColor: Colors.black,
-                    onChanged: (value) {
-                      setState(() {
-                        if (value.isEmpty) {
-                          areaValues = SfRangeValues(0,
-                              int.parse(viewModel.endAreaTextController.text));
-                          return;
-                        }
-
-                        areaValues = SfRangeValues(
-                            int.parse(viewModel.startAreaTextController.text),
-                            int.parse(viewModel.endAreaTextController.text));
-                      });
-                    },
+                    // readOnly: true,
+                    // onChanged: (value) {
+                    //   setState(() {
+                    //     if (value.isEmpty) {
+                    //       areaValues = SfRangeValues(0,
+                    //           int.parse(viewModel.endAreaTextController.text));
+                    //       return;
+                    //     }
+                    //
+                    //     areaValues = SfRangeValues(
+                    //         int.parse(viewModel.startAreaTextController.text),
+                    //         int.parse(viewModel.endAreaTextController.text));
+                    //   });
+                    // },
                     decoration: InputDecoration(
                         counterText: "",
                         fillColor: const Color(0xffFCFCFD),
-                        hintText: StringHelper.egp0,
+                        hintText: StringHelper.minArea,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide:
@@ -3110,27 +3121,27 @@ class _FilterViewState extends State<FilterView> {
                   maxLength: 7,
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
-                  readOnly: true,
                   controller: viewModel.endAreaTextController,
                   cursorColor: Colors.black,
-                  onChanged: (value) {
-                    setState(() {
-                      if (value.isEmpty) {
-                        areaValues = SfRangeValues(
-                            int.parse(viewModel.startAreaTextController.text),
-                            100000);
-                        return;
-                      }
-
-                      areaValues = SfRangeValues(
-                          int.parse(viewModel.startAreaTextController.text),
-                          int.parse(viewModel.endAreaTextController.text));
-                    });
-                  },
+                  // readOnly: true,
+                  // onChanged: (value) {
+                  //   setState(() {
+                  //     if (value.isEmpty) {
+                  //       areaValues = SfRangeValues(
+                  //           int.parse(viewModel.startAreaTextController.text),
+                  //           100000);
+                  //       return;
+                  //     }
+                  //
+                  //     areaValues = SfRangeValues(
+                  //         int.parse(viewModel.startAreaTextController.text),
+                  //         int.parse(viewModel.endAreaTextController.text));
+                  //   });
+                  // },
                   decoration: InputDecoration(
                       counterText: "",
                       fillColor: const Color(0xffFCFCFD),
-                      hintText: "0",
+                      hintText: StringHelper.maxArea,
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide:
@@ -3144,38 +3155,38 @@ class _FilterViewState extends State<FilterView> {
             ),
           ],
         ),
-        const SizedBox(
-          height: 15,
-        ),
-        StatefulBuilder(builder: (context, setState) {
-          return SfRangeSlider(
-            min: 0,
-            max: 100000,
-            values: areaValues,
-            inactiveColor: Colors.grey,
-            activeColor: const Color(0xffFF385C),
-            showLabels: false,
-            interval: 1000, // Controls label intervals
-            stepSize: 1000, // Ensures the slider moves in steps of 1000
-            labelFormatterCallback:
-                (dynamic actualValue, String formattedText) {
-              return actualValue == 99999
-                  ? ' $formattedText+'
-                  : ' $formattedText';
-            },
-            onChanged: (SfRangeValues newValues) {
-              if ((newValues.end - newValues.start) >= 1000) {
-                viewModel.startAreaTextController.text =
-                    "${newValues.start.round()}";
-                viewModel.endAreaTextController.text =
-                    "${newValues.end.round()}";
-                setState(() {
-                  areaValues = newValues;
-                });
-              }
-            },
-          );
-        }),
+        // const SizedBox(
+        //   height: 15,
+        // ),
+        // StatefulBuilder(builder: (context, setState) {
+        //   return SfRangeSlider(
+        //     min: 0,
+        //     max: 100000,
+        //     values: areaValues,
+        //     inactiveColor: Colors.grey,
+        //     activeColor: const Color(0xffFF385C),
+        //     showLabels: false,
+        //     interval: 1000, // Controls label intervals
+        //     stepSize: 1000, // Ensures the slider moves in steps of 1000
+        //     labelFormatterCallback:
+        //         (dynamic actualValue, String formattedText) {
+        //       return actualValue == 99999
+        //           ? ' $formattedText+'
+        //           : ' $formattedText';
+        //     },
+        //     onChanged: (SfRangeValues newValues) {
+        //       if ((newValues.end - newValues.start) >= 1000) {
+        //         viewModel.startAreaTextController.text =
+        //             "${newValues.start.round()}";
+        //         viewModel.endAreaTextController.text =
+        //             "${newValues.end.round()}";
+        //         setState(() {
+        //           areaValues = newValues;
+        //         });
+        //       }
+        //     },
+        //   );
+        // }),
         Gap(10),
         CommonDropdown(
           title: StringHelper.noOfBedrooms,
@@ -3640,39 +3651,39 @@ class _FilterViewState extends State<FilterView> {
                       maxLength: 7,
                       keyboardType: TextInputType.number,
                       textAlign: TextAlign.center,
-                      readOnly: true,
                       controller: viewModel.startDownPriceTextController,
                       cursorColor: Colors.black,
-                      onChanged: (value) {
-                        setState(() {
-                          if (value.isEmpty) {
-                            downValues = SfRangeValues(
-                                0,
-                                int.parse(
-                                    viewModel.endDownPriceTextController.text));
-                            return;
-                          }
-
-                          downValues = SfRangeValues(
-                              int.parse(
-                                  viewModel.startDownPriceTextController.text),
-                              int.parse(
-                                  viewModel.endDownPriceTextController.text));
-                        });
-                      },
+                      //readOnly: true,
+                      // onChanged: (value) {
+                      //   setState(() {
+                      //     if (value.isEmpty) {
+                      //       downValues = SfRangeValues(
+                      //           0,
+                      //           int.parse(
+                      //               viewModel.endDownPriceTextController.text));
+                      //       return;
+                      //     }
+                      //
+                      //     downValues = SfRangeValues(
+                      //         int.parse(
+                      //             viewModel.startDownPriceTextController.text),
+                      //         int.parse(
+                      //             viewModel.endDownPriceTextController.text));
+                      //   });
+                      // },
                       decoration: InputDecoration(
                           counterText: "",
                           fillColor: const Color(0xffFCFCFD),
-                          hintText: StringHelper.egp0,
+                          hintText: StringHelper.minPrice,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide:
-                                const BorderSide(color: Color(0xffEFEFEF)),
+                            const BorderSide(color: Color(0xffEFEFEF)),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide:
-                                const BorderSide(color: Color(0xffEFEFEF)),
+                            const BorderSide(color: Color(0xffEFEFEF)),
                           ))),
                 ),
               ),
@@ -3693,76 +3704,76 @@ class _FilterViewState extends State<FilterView> {
                   child: TextFormField(
                     maxLength: 7,
                     keyboardType: TextInputType.number,
-                    readOnly: true,
                     textAlign: TextAlign.center,
                     controller: viewModel.endDownPriceTextController,
                     cursorColor: Colors.black,
-                    onChanged: (value) {
-                      setState(() {
-                        if (value.isEmpty) {
-                          downValues = SfRangeValues(
-                              int.parse(
-                                  viewModel.startDownPriceTextController.text),
-                              100000);
-                          return;
-                        }
-
-                        downValues = SfRangeValues(
-                            int.parse(
-                                viewModel.startDownPriceTextController.text),
-                            int.parse(
-                                viewModel.endDownPriceTextController.text));
-                      });
-                    },
+                    // readOnly: true,
+                    // onChanged: (value) {
+                    //   setState(() {
+                    //     if (value.isEmpty) {
+                    //       downValues = SfRangeValues(
+                    //           int.parse(
+                    //               viewModel.startDownPriceTextController.text),
+                    //           100000);
+                    //       return;
+                    //     }
+                    //
+                    //     downValues = SfRangeValues(
+                    //         int.parse(
+                    //             viewModel.startDownPriceTextController.text),
+                    //         int.parse(
+                    //             viewModel.endDownPriceTextController.text));
+                    //   });
+                    // },
                     decoration: InputDecoration(
                         counterText: "",
                         fillColor: const Color(0xffFCFCFD),
-                        hintText: "EGP0",
+                        hintText: StringHelper.maxPrice,
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide:
-                                const BorderSide(color: Color(0xffEFEFEF))),
+                            const BorderSide(color: Color(0xffEFEFEF))),
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide:
-                                const BorderSide(color: Color(0xffEFEFEF)))),
+                            const BorderSide(color: Color(0xffEFEFEF)))),
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(
-            height: 15,
-          ),
-          StatefulBuilder(builder: (context, setState) {
-            return SfRangeSlider(
-              min: 0,
-              max: 100000,
-              values: downValues,
-              inactiveColor: Colors.grey,
-              activeColor: const Color(0xffFF385C),
-              showLabels: false,
-              interval: 1000, // Controls label intervals
-              stepSize: 1000, // Ensures the slider moves in steps of 1000
-              labelFormatterCallback:
-                  (dynamic actualValue, String formattedText) {
-                return actualValue == 99999
-                    ? ' $formattedText+'
-                    : ' $formattedText';
-              },
-              onChanged: (SfRangeValues newValues) {
-                if ((newValues.end - newValues.start) >= 1000) {
-                  viewModel.startDownPriceTextController.text =
-                      "${newValues.start.round()}";
-                  viewModel.endDownPriceTextController.text =
-                      "${newValues.end.round()}";
-                  setState(() {
-                    downValues = newValues;
-                  });
-                }
-              },
-            );
-          }),
+          // const SizedBox(
+          //   height: 15,
+          // ),
+          // StatefulBuilder(builder: (context, setState) {
+          //   return SfRangeSlider(
+          //     min: 0,
+          //     max: 100000,
+          //     values: downValues,
+          //     inactiveColor: Colors.grey,
+          //     activeColor: const Color(0xffFF385C),
+          //     showLabels: false,
+          //     interval: 1000, // Controls label intervals
+          //     stepSize: 1000, // Ensures the slider moves in steps of 1000
+          //     labelFormatterCallback:
+          //         (dynamic actualValue, String formattedText) {
+          //       return actualValue == 99999
+          //           ? ' $formattedText+'
+          //           : ' $formattedText';
+          //     },
+          //     onChanged: (SfRangeValues newValues) {
+          //       if ((newValues.end - newValues.start) >= 1000) {
+          //         viewModel.startDownPriceTextController.text =
+          //             "${newValues.start.round()}";
+          //         viewModel.endDownPriceTextController.text =
+          //             "${newValues.end.round()}";
+          //         setState(() {
+          //           downValues = newValues;
+          //         });
+          //       }
+          //     },
+          //   );
+          // }),
           Gap(10),
         },
         Text(
@@ -3778,37 +3789,37 @@ class _FilterViewState extends State<FilterView> {
                 height: 50,
                 child: TextFormField(
                     maxLength: 7,
-                    readOnly: true,
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
                     controller: viewModel.startAreaTextController,
                     cursorColor: Colors.black,
-                    onChanged: (value) {
-                      setState(() {
-                        if (value.isEmpty) {
-                          areaValues = SfRangeValues(0,
-                              int.parse(viewModel.endAreaTextController.text));
-                          return;
-                        }
-
-                        areaValues = SfRangeValues(
-                            int.parse(viewModel.startAreaTextController.text),
-                            int.parse(viewModel.endAreaTextController.text));
-                      });
-                    },
+                    // readOnly: true,
+                    // onChanged: (value) {
+                    //   setState(() {
+                    //     if (value.isEmpty) {
+                    //       areaValues = SfRangeValues(0,
+                    //           int.parse(viewModel.endAreaTextController.text));
+                    //       return;
+                    //     }
+                    //
+                    //     areaValues = SfRangeValues(
+                    //         int.parse(viewModel.startAreaTextController.text),
+                    //         int.parse(viewModel.endAreaTextController.text));
+                    //   });
+                    // },
                     decoration: InputDecoration(
                         counterText: "",
                         fillColor: const Color(0xffFCFCFD),
-                        hintText: StringHelper.egp0,
+                        hintText: StringHelper.minArea,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide:
-                              const BorderSide(color: Color(0xffEFEFEF)),
+                          const BorderSide(color: Color(0xffEFEFEF)),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide:
-                              const BorderSide(color: Color(0xffEFEFEF)),
+                          const BorderSide(color: Color(0xffEFEFEF)),
                         ))),
               ),
             ),
@@ -3830,72 +3841,72 @@ class _FilterViewState extends State<FilterView> {
                   maxLength: 7,
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
-                  readOnly: true,
                   controller: viewModel.endAreaTextController,
                   cursorColor: Colors.black,
-                  onChanged: (value) {
-                    setState(() {
-                      if (value.isEmpty) {
-                        areaValues = SfRangeValues(
-                            int.parse(viewModel.startAreaTextController.text),
-                            100000);
-                        return;
-                      }
-
-                      areaValues = SfRangeValues(
-                          int.parse(viewModel.startAreaTextController.text),
-                          int.parse(viewModel.endAreaTextController.text));
-                    });
-                  },
+                  // readOnly: true,
+                  // onChanged: (value) {
+                  //   setState(() {
+                  //     if (value.isEmpty) {
+                  //       areaValues = SfRangeValues(
+                  //           int.parse(viewModel.startAreaTextController.text),
+                  //           100000);
+                  //       return;
+                  //     }
+                  //
+                  //     areaValues = SfRangeValues(
+                  //         int.parse(viewModel.startAreaTextController.text),
+                  //         int.parse(viewModel.endAreaTextController.text));
+                  //   });
+                  // },
                   decoration: InputDecoration(
                       counterText: "",
                       fillColor: const Color(0xffFCFCFD),
-                      hintText: "0",
+                      hintText: StringHelper.maxArea,
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide:
-                              const BorderSide(color: Color(0xffEFEFEF))),
+                          const BorderSide(color: Color(0xffEFEFEF))),
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide:
-                              const BorderSide(color: Color(0xffEFEFEF)))),
+                          const BorderSide(color: Color(0xffEFEFEF)))),
                 ),
               ),
             ),
           ],
         ),
-        const SizedBox(
-          height: 15,
-        ),
-        StatefulBuilder(builder: (context, setState) {
-          return SfRangeSlider(
-            min: 0,
-            max: 100000,
-            values: areaValues,
-            inactiveColor: Colors.grey,
-            activeColor: const Color(0xffFF385C),
-            showLabels: false,
-            interval: 1000, // Controls label intervals
-            stepSize: 1000, // Ensures the slider moves in steps of 1000
-            labelFormatterCallback:
-                (dynamic actualValue, String formattedText) {
-              return actualValue == 99999
-                  ? ' $formattedText+'
-                  : ' $formattedText';
-            },
-            onChanged: (SfRangeValues newValues) {
-              if ((newValues.end - newValues.start) >= 1000) {
-                viewModel.startAreaTextController.text =
-                    "${newValues.start.round()}";
-                viewModel.endAreaTextController.text =
-                    "${newValues.end.round()}";
-                setState(() {
-                  areaValues = newValues;
-                });
-              }
-            },
-          );
-        }),
+        // const SizedBox(
+        //   height: 15,
+        // ),
+        // StatefulBuilder(builder: (context, setState) {
+        //   return SfRangeSlider(
+        //     min: 0,
+        //     max: 100000,
+        //     values: areaValues,
+        //     inactiveColor: Colors.grey,
+        //     activeColor: const Color(0xffFF385C),
+        //     showLabels: false,
+        //     interval: 1000, // Controls label intervals
+        //     stepSize: 1000, // Ensures the slider moves in steps of 1000
+        //     labelFormatterCallback:
+        //         (dynamic actualValue, String formattedText) {
+        //       return actualValue == 99999
+        //           ? ' $formattedText+'
+        //           : ' $formattedText';
+        //     },
+        //     onChanged: (SfRangeValues newValues) {
+        //       if ((newValues.end - newValues.start) >= 1000) {
+        //         viewModel.startAreaTextController.text =
+        //             "${newValues.start.round()}";
+        //         viewModel.endAreaTextController.text =
+        //             "${newValues.end.round()}";
+        //         setState(() {
+        //           areaValues = newValues;
+        //         });
+        //       }
+        //     },
+        //   );
+        // }),
         Gap(10),
         CommonDropdown(
           title: StringHelper.noOfBedrooms,
@@ -4365,39 +4376,39 @@ class _FilterViewState extends State<FilterView> {
                       maxLength: 7,
                       keyboardType: TextInputType.number,
                       textAlign: TextAlign.center,
-                      readOnly: true,
                       controller: viewModel.startDownPriceTextController,
                       cursorColor: Colors.black,
-                      onChanged: (value) {
-                        setState(() {
-                          if (value.isEmpty) {
-                            downValues = SfRangeValues(
-                                0,
-                                int.parse(
-                                    viewModel.endDownPriceTextController.text));
-                            return;
-                          }
-
-                          downValues = SfRangeValues(
-                              int.parse(
-                                  viewModel.startDownPriceTextController.text),
-                              int.parse(
-                                  viewModel.endDownPriceTextController.text));
-                        });
-                      },
+                      //readOnly: true,
+                      // onChanged: (value) {
+                      //   setState(() {
+                      //     if (value.isEmpty) {
+                      //       downValues = SfRangeValues(
+                      //           0,
+                      //           int.parse(
+                      //               viewModel.endDownPriceTextController.text));
+                      //       return;
+                      //     }
+                      //
+                      //     downValues = SfRangeValues(
+                      //         int.parse(
+                      //             viewModel.startDownPriceTextController.text),
+                      //         int.parse(
+                      //             viewModel.endDownPriceTextController.text));
+                      //   });
+                      // },
                       decoration: InputDecoration(
                           counterText: "",
                           fillColor: const Color(0xffFCFCFD),
-                          hintText: StringHelper.egp0,
+                          hintText: StringHelper.minPrice,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide:
-                                const BorderSide(color: Color(0xffEFEFEF)),
+                            const BorderSide(color: Color(0xffEFEFEF)),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide:
-                                const BorderSide(color: Color(0xffEFEFEF)),
+                            const BorderSide(color: Color(0xffEFEFEF)),
                           ))),
                 ),
               ),
@@ -4419,75 +4430,75 @@ class _FilterViewState extends State<FilterView> {
                     maxLength: 7,
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
-                    readOnly: true,
                     controller: viewModel.endDownPriceTextController,
                     cursorColor: Colors.black,
-                    onChanged: (value) {
-                      setState(() {
-                        if (value.isEmpty) {
-                          downValues = SfRangeValues(
-                              int.parse(
-                                  viewModel.startDownPriceTextController.text),
-                              100000);
-                          return;
-                        }
-
-                        downValues = SfRangeValues(
-                            int.parse(
-                                viewModel.startDownPriceTextController.text),
-                            int.parse(
-                                viewModel.endDownPriceTextController.text));
-                      });
-                    },
+                    // readOnly: true,
+                    // onChanged: (value) {
+                    //   setState(() {
+                    //     if (value.isEmpty) {
+                    //       downValues = SfRangeValues(
+                    //           int.parse(
+                    //               viewModel.startDownPriceTextController.text),
+                    //           100000);
+                    //       return;
+                    //     }
+                    //
+                    //     downValues = SfRangeValues(
+                    //         int.parse(
+                    //             viewModel.startDownPriceTextController.text),
+                    //         int.parse(
+                    //             viewModel.endDownPriceTextController.text));
+                    //   });
+                    // },
                     decoration: InputDecoration(
                         counterText: "",
                         fillColor: const Color(0xffFCFCFD),
-                        hintText: "EGP0",
+                        hintText: StringHelper.maxPrice,
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide:
-                                const BorderSide(color: Color(0xffEFEFEF))),
+                            const BorderSide(color: Color(0xffEFEFEF))),
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide:
-                                const BorderSide(color: Color(0xffEFEFEF)))),
+                            const BorderSide(color: Color(0xffEFEFEF)))),
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(
-            height: 15,
-          ),
-          StatefulBuilder(builder: (context, setState) {
-            return SfRangeSlider(
-              min: 0,
-              max: 100000,
-              values: downValues,
-              inactiveColor: Colors.grey,
-              activeColor: const Color(0xffFF385C),
-              showLabels: false,
-              interval: 1000, // Controls label intervals
-              stepSize: 1000, // Ensures the slider moves in steps of 1000
-              labelFormatterCallback:
-                  (dynamic actualValue, String formattedText) {
-                return actualValue == 99999
-                    ? ' $formattedText+'
-                    : ' $formattedText';
-              },
-              onChanged: (SfRangeValues newValues) {
-                if ((newValues.end - newValues.start) >= 1000) {
-                  viewModel.startDownPriceTextController.text =
-                      "${newValues.start.round()}";
-                  viewModel.endDownPriceTextController.text =
-                      "${newValues.end.round()}";
-                  setState(() {
-                    downValues = newValues;
-                  });
-                }
-              },
-            );
-          }),
+          // const SizedBox(
+          //   height: 15,
+          // ),
+          // StatefulBuilder(builder: (context, setState) {
+          //   return SfRangeSlider(
+          //     min: 0,
+          //     max: 100000,
+          //     values: downValues,
+          //     inactiveColor: Colors.grey,
+          //     activeColor: const Color(0xffFF385C),
+          //     showLabels: false,
+          //     interval: 1000, // Controls label intervals
+          //     stepSize: 1000, // Ensures the slider moves in steps of 1000
+          //     labelFormatterCallback:
+          //         (dynamic actualValue, String formattedText) {
+          //       return actualValue == 99999
+          //           ? ' $formattedText+'
+          //           : ' $formattedText';
+          //     },
+          //     onChanged: (SfRangeValues newValues) {
+          //       if ((newValues.end - newValues.start) >= 1000) {
+          //         viewModel.startDownPriceTextController.text =
+          //             "${newValues.start.round()}";
+          //         viewModel.endDownPriceTextController.text =
+          //             "${newValues.end.round()}";
+          //         setState(() {
+          //           downValues = newValues;
+          //         });
+          //       }
+          //     },
+          //   );
+          // }),
           Gap(10),
         },
         Text(
@@ -4505,35 +4516,35 @@ class _FilterViewState extends State<FilterView> {
                     maxLength: 7,
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
-                    readOnly: true,
                     controller: viewModel.startAreaTextController,
                     cursorColor: Colors.black,
-                    onChanged: (value) {
-                      setState(() {
-                        if (value.isEmpty) {
-                          areaValues = SfRangeValues(0,
-                              int.parse(viewModel.endAreaTextController.text));
-                          return;
-                        }
-
-                        areaValues = SfRangeValues(
-                            int.parse(viewModel.startAreaTextController.text),
-                            int.parse(viewModel.endAreaTextController.text));
-                      });
-                    },
+                    // readOnly: true,
+                    // onChanged: (value) {
+                    //   setState(() {
+                    //     if (value.isEmpty) {
+                    //       areaValues = SfRangeValues(0,
+                    //           int.parse(viewModel.endAreaTextController.text));
+                    //       return;
+                    //     }
+                    //
+                    //     areaValues = SfRangeValues(
+                    //         int.parse(viewModel.startAreaTextController.text),
+                    //         int.parse(viewModel.endAreaTextController.text));
+                    //   });
+                    // },
                     decoration: InputDecoration(
                         counterText: "",
                         fillColor: const Color(0xffFCFCFD),
-                        hintText: StringHelper.egp0,
+                        hintText: StringHelper.minArea,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide:
-                              const BorderSide(color: Color(0xffEFEFEF)),
+                          const BorderSide(color: Color(0xffEFEFEF)),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide:
-                              const BorderSide(color: Color(0xffEFEFEF)),
+                          const BorderSide(color: Color(0xffEFEFEF)),
                         ))),
               ),
             ),
@@ -4555,72 +4566,72 @@ class _FilterViewState extends State<FilterView> {
                   maxLength: 7,
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
-                  readOnly: true,
                   controller: viewModel.endAreaTextController,
                   cursorColor: Colors.black,
-                  onChanged: (value) {
-                    setState(() {
-                      if (value.isEmpty) {
-                        areaValues = SfRangeValues(
-                            int.parse(viewModel.startAreaTextController.text),
-                            100000);
-                        return;
-                      }
-
-                      areaValues = SfRangeValues(
-                          int.parse(viewModel.startAreaTextController.text),
-                          int.parse(viewModel.endAreaTextController.text));
-                    });
-                  },
+                  // readOnly: true,
+                  // onChanged: (value) {
+                  //   setState(() {
+                  //     if (value.isEmpty) {
+                  //       areaValues = SfRangeValues(
+                  //           int.parse(viewModel.startAreaTextController.text),
+                  //           100000);
+                  //       return;
+                  //     }
+                  //
+                  //     areaValues = SfRangeValues(
+                  //         int.parse(viewModel.startAreaTextController.text),
+                  //         int.parse(viewModel.endAreaTextController.text));
+                  //   });
+                  // },
                   decoration: InputDecoration(
                       counterText: "",
                       fillColor: const Color(0xffFCFCFD),
-                      hintText: "0",
+                      hintText: StringHelper.maxArea,
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide:
-                              const BorderSide(color: Color(0xffEFEFEF))),
+                          const BorderSide(color: Color(0xffEFEFEF))),
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide:
-                              const BorderSide(color: Color(0xffEFEFEF)))),
+                          const BorderSide(color: Color(0xffEFEFEF)))),
                 ),
               ),
             ),
           ],
         ),
-        const SizedBox(
-          height: 15,
-        ),
-        StatefulBuilder(builder: (context, setState) {
-          return SfRangeSlider(
-            min: 0,
-            max: 100000,
-            values: areaValues,
-            inactiveColor: Colors.grey,
-            activeColor: const Color(0xffFF385C),
-            showLabels: false,
-            interval: 1000, // Controls label intervals
-            stepSize: 1000, // Ensures the slider moves in steps of 1000
-            labelFormatterCallback:
-                (dynamic actualValue, String formattedText) {
-              return actualValue == 99999
-                  ? ' $formattedText+'
-                  : ' $formattedText';
-            },
-            onChanged: (SfRangeValues newValues) {
-              if ((newValues.end - newValues.start) >= 1000) {
-                viewModel.startAreaTextController.text =
-                    "${newValues.start.round()}";
-                viewModel.endAreaTextController.text =
-                    "${newValues.end.round()}";
-                setState(() {
-                  areaValues = newValues;
-                });
-              }
-            },
-          );
-        }),
+        // const SizedBox(
+        //   height: 15,
+        // ),
+        // StatefulBuilder(builder: (context, setState) {
+        //   return SfRangeSlider(
+        //     min: 0,
+        //     max: 100000,
+        //     values: areaValues,
+        //     inactiveColor: Colors.grey,
+        //     activeColor: const Color(0xffFF385C),
+        //     showLabels: false,
+        //     interval: 1000, // Controls label intervals
+        //     stepSize: 1000, // Ensures the slider moves in steps of 1000
+        //     labelFormatterCallback:
+        //         (dynamic actualValue, String formattedText) {
+        //       return actualValue == 99999
+        //           ? ' $formattedText+'
+        //           : ' $formattedText';
+        //     },
+        //     onChanged: (SfRangeValues newValues) {
+        //       if ((newValues.end - newValues.start) >= 1000) {
+        //         viewModel.startAreaTextController.text =
+        //             "${newValues.start.round()}";
+        //         viewModel.endAreaTextController.text =
+        //             "${newValues.end.round()}";
+        //         setState(() {
+        //           areaValues = newValues;
+        //         });
+        //       }
+        //     },
+        //   );
+        // }),
         Gap(10),
         CommonDropdown(
           title: StringHelper.noOfBedrooms,
@@ -5049,35 +5060,35 @@ class _FilterViewState extends State<FilterView> {
                     maxLength: 7,
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
-                    readOnly: true,
                     controller: viewModel.startAreaTextController,
                     cursorColor: Colors.black,
-                    onChanged: (value) {
-                      setState(() {
-                        if (value.isEmpty) {
-                          areaValues = SfRangeValues(0,
-                              int.parse(viewModel.endAreaTextController.text));
-                          return;
-                        }
-
-                        areaValues = SfRangeValues(
-                            int.parse(viewModel.startAreaTextController.text),
-                            int.parse(viewModel.endAreaTextController.text));
-                      });
-                    },
+                    // readOnly: true,
+                    // onChanged: (value) {
+                    //   setState(() {
+                    //     if (value.isEmpty) {
+                    //       areaValues = SfRangeValues(0,
+                    //           int.parse(viewModel.endAreaTextController.text));
+                    //       return;
+                    //     }
+                    //
+                    //     areaValues = SfRangeValues(
+                    //         int.parse(viewModel.startAreaTextController.text),
+                    //         int.parse(viewModel.endAreaTextController.text));
+                    //   });
+                    // },
                     decoration: InputDecoration(
                         counterText: "",
                         fillColor: const Color(0xffFCFCFD),
-                        hintText: StringHelper.egp0,
+                        hintText: StringHelper.minArea,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide:
-                              const BorderSide(color: Color(0xffEFEFEF)),
+                          const BorderSide(color: Color(0xffEFEFEF)),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide:
-                              const BorderSide(color: Color(0xffEFEFEF)),
+                          const BorderSide(color: Color(0xffEFEFEF)),
                         ))),
               ),
             ),
@@ -5099,72 +5110,72 @@ class _FilterViewState extends State<FilterView> {
                   maxLength: 7,
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
-                  readOnly: true,
                   controller: viewModel.endAreaTextController,
                   cursorColor: Colors.black,
-                  onChanged: (value) {
-                    setState(() {
-                      if (value.isEmpty) {
-                        areaValues = SfRangeValues(
-                            int.parse(viewModel.startAreaTextController.text),
-                            100000);
-                        return;
-                      }
-
-                      areaValues = SfRangeValues(
-                          int.parse(viewModel.startAreaTextController.text),
-                          int.parse(viewModel.endAreaTextController.text));
-                    });
-                  },
+                  // readOnly: true,
+                  // onChanged: (value) {
+                  //   setState(() {
+                  //     if (value.isEmpty) {
+                  //       areaValues = SfRangeValues(
+                  //           int.parse(viewModel.startAreaTextController.text),
+                  //           100000);
+                  //       return;
+                  //     }
+                  //
+                  //     areaValues = SfRangeValues(
+                  //         int.parse(viewModel.startAreaTextController.text),
+                  //         int.parse(viewModel.endAreaTextController.text));
+                  //   });
+                  // },
                   decoration: InputDecoration(
                       counterText: "",
                       fillColor: const Color(0xffFCFCFD),
-                      hintText: "0",
+                      hintText: StringHelper.maxArea,
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide:
-                              const BorderSide(color: Color(0xffEFEFEF))),
+                          const BorderSide(color: Color(0xffEFEFEF))),
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide:
-                              const BorderSide(color: Color(0xffEFEFEF)))),
+                          const BorderSide(color: Color(0xffEFEFEF)))),
                 ),
               ),
             ),
           ],
         ),
-        const SizedBox(
-          height: 15,
-        ),
-        StatefulBuilder(builder: (context, setState) {
-          return SfRangeSlider(
-            min: 0,
-            max: 100000,
-            values: areaValues,
-            inactiveColor: Colors.grey,
-            activeColor: const Color(0xffFF385C),
-            showLabels: false,
-            interval: 1000, // Controls label intervals
-            stepSize: 1000, // Ensures the slider moves in steps of 1000
-            labelFormatterCallback:
-                (dynamic actualValue, String formattedText) {
-              return actualValue == 99999
-                  ? ' $formattedText+'
-                  : ' $formattedText';
-            },
-            onChanged: (SfRangeValues newValues) {
-              if ((newValues.end - newValues.start) >= 1000) {
-                viewModel.startAreaTextController.text =
-                    "${newValues.start.round()}";
-                viewModel.endAreaTextController.text =
-                    "${newValues.end.round()}";
-                setState(() {
-                  areaValues = newValues;
-                });
-              }
-            },
-          );
-        }),
+        // const SizedBox(
+        //   height: 15,
+        // ),
+        // StatefulBuilder(builder: (context, setState) {
+        //   return SfRangeSlider(
+        //     min: 0,
+        //     max: 100000,
+        //     values: areaValues,
+        //     inactiveColor: Colors.grey,
+        //     activeColor: const Color(0xffFF385C),
+        //     showLabels: false,
+        //     interval: 1000, // Controls label intervals
+        //     stepSize: 1000, // Ensures the slider moves in steps of 1000
+        //     labelFormatterCallback:
+        //         (dynamic actualValue, String formattedText) {
+        //       return actualValue == 99999
+        //           ? ' $formattedText+'
+        //           : ' $formattedText';
+        //     },
+        //     onChanged: (SfRangeValues newValues) {
+        //       if ((newValues.end - newValues.start) >= 1000) {
+        //         viewModel.startAreaTextController.text =
+        //             "${newValues.start.round()}";
+        //         viewModel.endAreaTextController.text =
+        //             "${newValues.end.round()}";
+        //         setState(() {
+        //           areaValues = newValues;
+        //         });
+        //       }
+        //     },
+        //   );
+        // }),
         Gap(10),
         CommonDropdown(
           title: StringHelper.noOfBedrooms,
@@ -5585,35 +5596,35 @@ class _FilterViewState extends State<FilterView> {
                     maxLength: 7,
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
-                    readOnly: true,
                     controller: viewModel.startAreaTextController,
                     cursorColor: Colors.black,
-                    onChanged: (value) {
-                      setState(() {
-                        if (value.isEmpty) {
-                          areaValues = SfRangeValues(0,
-                              int.parse(viewModel.endAreaTextController.text));
-                          return;
-                        }
-
-                        areaValues = SfRangeValues(
-                            int.parse(viewModel.startAreaTextController.text),
-                            int.parse(viewModel.endAreaTextController.text));
-                      });
-                    },
+                    // readOnly: true,
+                    // onChanged: (value) {
+                    //   setState(() {
+                    //     if (value.isEmpty) {
+                    //       areaValues = SfRangeValues(0,
+                    //           int.parse(viewModel.endAreaTextController.text));
+                    //       return;
+                    //     }
+                    //
+                    //     areaValues = SfRangeValues(
+                    //         int.parse(viewModel.startAreaTextController.text),
+                    //         int.parse(viewModel.endAreaTextController.text));
+                    //   });
+                    // },
                     decoration: InputDecoration(
                         counterText: "",
                         fillColor: const Color(0xffFCFCFD),
-                        hintText: StringHelper.egp0,
+                        hintText: StringHelper.minArea,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide:
-                              const BorderSide(color: Color(0xffEFEFEF)),
+                          const BorderSide(color: Color(0xffEFEFEF)),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide:
-                              const BorderSide(color: Color(0xffEFEFEF)),
+                          const BorderSide(color: Color(0xffEFEFEF)),
                         ))),
               ),
             ),
@@ -5635,72 +5646,72 @@ class _FilterViewState extends State<FilterView> {
                   maxLength: 7,
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.center,
-                  readOnly: true,
                   controller: viewModel.endAreaTextController,
                   cursorColor: Colors.black,
-                  onChanged: (value) {
-                    setState(() {
-                      if (value.isEmpty) {
-                        areaValues = SfRangeValues(
-                            int.parse(viewModel.startAreaTextController.text),
-                            100000);
-                        return;
-                      }
-
-                      areaValues = SfRangeValues(
-                          int.parse(viewModel.startAreaTextController.text),
-                          int.parse(viewModel.endAreaTextController.text));
-                    });
-                  },
+                  // readOnly: true,
+                  // onChanged: (value) {
+                  //   setState(() {
+                  //     if (value.isEmpty) {
+                  //       areaValues = SfRangeValues(
+                  //           int.parse(viewModel.startAreaTextController.text),
+                  //           100000);
+                  //       return;
+                  //     }
+                  //
+                  //     areaValues = SfRangeValues(
+                  //         int.parse(viewModel.startAreaTextController.text),
+                  //         int.parse(viewModel.endAreaTextController.text));
+                  //   });
+                  // },
                   decoration: InputDecoration(
                       counterText: "",
                       fillColor: const Color(0xffFCFCFD),
-                      hintText: "0",
+                      hintText: StringHelper.maxArea,
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide:
-                              const BorderSide(color: Color(0xffEFEFEF))),
+                          const BorderSide(color: Color(0xffEFEFEF))),
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide:
-                              const BorderSide(color: Color(0xffEFEFEF)))),
+                          const BorderSide(color: Color(0xffEFEFEF)))),
                 ),
               ),
             ),
           ],
         ),
-        const SizedBox(
-          height: 15,
-        ),
-        StatefulBuilder(builder: (context, setState) {
-          return SfRangeSlider(
-            min: 0,
-            max: 100000,
-            values: areaValues,
-            inactiveColor: Colors.grey,
-            activeColor: const Color(0xffFF385C),
-            showLabels: false,
-            interval: 1000, // Controls label intervals
-            stepSize: 1000, // Ensures the slider moves in steps of 1000
-            labelFormatterCallback:
-                (dynamic actualValue, String formattedText) {
-              return actualValue == 99999
-                  ? ' $formattedText+'
-                  : ' $formattedText';
-            },
-            onChanged: (SfRangeValues newValues) {
-              if ((newValues.end - newValues.start) >= 1000) {
-                viewModel.startAreaTextController.text =
-                    "${newValues.start.round()}";
-                viewModel.endAreaTextController.text =
-                    "${newValues.end.round()}";
-                setState(() {
-                  areaValues = newValues;
-                });
-              }
-            },
-          );
-        }),
+        // const SizedBox(
+        //   height: 15,
+        // ),
+        // StatefulBuilder(builder: (context, setState) {
+        //   return SfRangeSlider(
+        //     min: 0,
+        //     max: 100000,
+        //     values: areaValues,
+        //     inactiveColor: Colors.grey,
+        //     activeColor: const Color(0xffFF385C),
+        //     showLabels: false,
+        //     interval: 1000, // Controls label intervals
+        //     stepSize: 1000, // Ensures the slider moves in steps of 1000
+        //     labelFormatterCallback:
+        //         (dynamic actualValue, String formattedText) {
+        //       return actualValue == 99999
+        //           ? ' $formattedText+'
+        //           : ' $formattedText';
+        //     },
+        //     onChanged: (SfRangeValues newValues) {
+        //       if ((newValues.end - newValues.start) >= 1000) {
+        //         viewModel.startAreaTextController.text =
+        //             "${newValues.start.round()}";
+        //         viewModel.endAreaTextController.text =
+        //             "${newValues.end.round()}";
+        //         setState(() {
+        //           areaValues = newValues;
+        //         });
+        //       }
+        //     },
+        //   );
+        // }),
         Gap(10),
         CommonDropdown(
           title: StringHelper.accessToUtilities,

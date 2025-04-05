@@ -136,6 +136,12 @@ class StringHelper {
   static String newText = LocaleService.translate('newText') ?? 'New';
   static String used = LocaleService.translate('used') ?? 'Used';
   static String price = LocaleService.translate('price') ?? 'Price';
+  static String minPrice = LocaleService.translate('minPrice') ?? 'Min Price';
+  static String maxPrice = LocaleService.translate('maxPrice') ?? 'Max Price';
+  static String minArea = LocaleService.translate('minArea') ?? 'Min Area';
+  static String maxArea = LocaleService.translate('maxArea') ?? 'Max Area';
+  static String minKm = LocaleService.translate('minKm') ?? 'Min Km';
+  static String maxKm = LocaleService.translate('maxKm') ?? 'Max Km';
   static String egp0 = LocaleService.translate('egp0') ?? 'EGP 0';
   static String to = LocaleService.translate('to') ?? 'to';
   static String category = LocaleService.translate('category') ?? 'Category';
@@ -178,6 +184,8 @@ class StringHelper {
 
   /// Sell Screen
   static String sell = LocaleService.translate('sell') ?? 'Sell';
+  static String rent = LocaleService.translate('rent') ?? 'Rent';
+
   static String whatAreYouOffering =
       LocaleService.translate('whatAreYouOffering') ?? 'What are you offering?';
   static String uploadImages =
@@ -208,6 +216,8 @@ class StringHelper {
       LocaleService.translate('describeWhatYouAreSelling') ?? 'Description';
   static String enterPrice =
       LocaleService.translate('enterPrice') ?? 'Enter Price';
+  static String propertyFor =
+      LocaleService.translate('propertyFor') ?? 'Property For';
   static String propertyType =
       LocaleService.translate('propertyType') ?? 'Property Type';
 
@@ -548,6 +558,7 @@ class StringHelper {
   static String rentalTerm =
       LocaleService.translate('rentalTerm') ?? "Rental Term";
   static String daily = LocaleService.translate('daily') ?? "Daily";
+  static String hourly = LocaleService.translate('hourly') ?? "Hourly";
   static String weekly = LocaleService.translate('weekly') ?? "Weekly";
   static String monthly = LocaleService.translate('monthly') ?? "Monthly";
   static String yearly = LocaleService.translate('yearly') ?? "Yearly";
@@ -777,6 +788,7 @@ class StringHelper {
 
   static String engineCapacityTitle =
       LocaleService.translate('engine_capacity') ?? 'Engine Capacity';
+
   static List<String> get carColorOptions => [
         LocaleService.translate('red') ?? 'Red',
         LocaleService.translate('blue') ?? 'Blue',
@@ -805,6 +817,7 @@ class StringHelper {
   static String transmissionRequired =
       LocaleService.translate('selectTransmission') ??
           'Please select transmission';
+
   // Example: Body Type Options using the common "Other"
   static List<String> get bodyTypeOptions => [
         LocaleService.translate('suv') ?? 'SUV',
@@ -871,76 +884,147 @@ class StringHelper {
   static String maxOneHundredPercent =
       LocaleService.translate('maxOneHundredPercent') ?? 'Max 100%';
 
-  // static List<String> get horsepowerOptions => [
-  //       // LocaleService.translate('less_than_100_hp') ?? 'Less than 100 HP',
-  //       // LocaleService.translate('100_200_hp') ?? '100 - 200 HP',
-  //       // LocaleService.translate('200_300_hp') ?? '200 - 300 HP',
-  //       // LocaleService.translate('300_400_hp') ?? '300 - 400 HP',
-  //       // LocaleService.translate('400_500_hp') ?? '400 - 500 HP',
-  //       // LocaleService.translate('500_600_hp') ?? '500 - 600 HP',
-  //       // LocaleService.translate('600_700_hp') ?? '600 - 700 HP',
-  //       // LocaleService.translate('700_800_hp') ?? '700 - 800 HP',
-  //       // LocaleService.translate('800_plus_hp') ?? '800+ HP',
-  //       // other, // reusing the common "Other" translation
-  //       'less_than_100_hp',
-  //       '100_200_hp',
-  //       '200_300_hp',
-  //       '300_400_hp',
-  //       '400_500_hp',
-  //       '500_600_hp',
-  //       '600_700_hp',
-  //       '700_800_hp',
-  //       '800_plus_hp',
-  //       'other',
-  //     ];
-  // static List<String> get engineCapacityOptions => [
-  //       LocaleService.translate('below_500_cc') ?? 'Below 500 cc',
-  //       LocaleService.translate('500_999_cc') ?? '500 - 999 cc',
-  //       LocaleService.translate('1000_1499_cc') ?? '1000 - 1499 cc',
-  //       LocaleService.translate('1500_1999_cc') ?? '1500 - 1999 cc',
-  //       LocaleService.translate('2000_2499_cc') ?? '2000 - 2499 cc',
-  //       LocaleService.translate('2500_2999_cc') ?? '2500 - 2999 cc',
-  //       LocaleService.translate('3000_3499_cc') ?? '3000 - 3499 cc',
-  //       LocaleService.translate('3500_3999_cc') ?? '3500 - 3999 cc',
-  //       LocaleService.translate('4000_plus_cc') ?? '4000+ cc',
-  //       other
-  //     ];
-  // static List<String> get numbCylindersOptions => [
-  //       LocaleService.translate('two_cylinders') ?? '2 Cylinders',
-  //       LocaleService.translate('three_cylinders') ?? '3 Cylinders',
-  //       LocaleService.translate('four_cylinders') ?? '4 Cylinders',
-  //       LocaleService.translate('five_cylinders') ?? '5 Cylinders',
-  //       LocaleService.translate('six_cylinders') ?? '6 Cylinders',
-  //       LocaleService.translate('seven_cylinders') ?? '7 Cylinders',
-  //       LocaleService.translate('eight_cylinders') ?? '8 Cylinders',
-  //       LocaleService.translate('other') ?? 'Other',
-  //     ];
-  // static List<String> get numbDoorsOptions => [
-  //       LocaleService.translate('two_doors') ?? '2 Doors',
-  //       LocaleService.translate('three_doors') ?? '3 Doors',
-  //       LocaleService.translate('four_doors') ?? '4 Doors',
-  //       LocaleService.translate('five_plus_doors') ?? '5+ Doors',
-  //     ];
+  ///new keys
+
+  static String townHouseText =
+      LocaleService.translate('townHouseText') ?? 'Townhouse';
+  static String twinHouse =
+      LocaleService.translate('twinHouse') ?? 'Twin House';
+
+  static String iVilla =
+      LocaleService.translate('iVilla') ?? 'I-Villa';
+  static String mansion =
+      LocaleService.translate('mansion') ?? 'Mansion';
+
+  static String chalet =
+      LocaleService.translate('chalet') ?? 'Chalet';
+  static String standaloneVilla =
+      LocaleService.translate('standaloneVilla') ?? 'Stand Alone Villa';
+
+  static String townhouse =
+      LocaleService.translate('townhouse') ?? 'Townhouse Twin house';
+
+  static String cabin =
+      LocaleService.translate('cabin') ?? 'Cabin';
+
+  static String agriculturalLand =
+      LocaleService.translate('agriculturalLand') ?? 'Agricultural Land';
+  static String commercialLand =
+      LocaleService.translate('commercialLand') ?? 'Commercial Land';
+
+  static String residentialLand =
+      LocaleService.translate('residentialLand') ?? 'Residential Land';
+  static String industrialLand =
+      LocaleService.translate('industrialLand') ?? 'Industrial Land';
+  static String mixedLand =
+      LocaleService.translate('mixedLand') ?? 'Mixed-Use Land';
+  static String farmLand =
+      LocaleService.translate('farmLand') ?? 'Farm Land';
+
+  static String factory =
+      LocaleService.translate('factory') ?? 'Factory';
+  static String fullBuilding =
+      LocaleService.translate('fullBuilding') ?? 'Full building';
+  static String garage =
+      LocaleService.translate('garage') ?? 'Garage';
+  static String warehouse =
+      LocaleService.translate('warehouse') ?? 'Warehouse';
+
+  static String restaurantCafe =
+      LocaleService.translate('restaurantCafe') ?? 'Restaurant/ cafe';
+
+  static String offices =
+      LocaleService.translate('offices') ?? 'Offices';
+  static String pharmacy =
+      LocaleService.translate('pharmacy') ?? 'Pharmacy';
+  static String medicalFacility =
+      LocaleService.translate('medicalFacility') ?? 'Medical facility';
+  static String hotelMotel =
+      LocaleService.translate('hotelMotel') ?? 'Hotel/ motel';
+
+  static String gasStation =
+      LocaleService.translate('gasStation') ?? 'Gas station';
+  static String storageFacility =
+      LocaleService.translate('storageFacility') ?? 'Storage facility';
+  static String showroom =
+      LocaleService.translate('showroom') ?? 'Showroom';
+
+  static String clinic =
+      LocaleService.translate('clinic') ?? 'Clinic';
+
+  static String apartment =
+      LocaleService.translate('apartment') ?? 'Apartment';
+  static String duplex =
+      LocaleService.translate('duplex') ?? 'Duplex';
+  static String penthouse =
+      LocaleService.translate('penthouse') ?? 'Penthouse';
+  static String studio =
+      LocaleService.translate('studio') ?? 'Studio';
+  static String hotelApartment =
+      LocaleService.translate('hotelApartment') ?? 'Hotel Apartment';
+  static String roof =
+      LocaleService.translate('roof') ?? 'Roof';
+
+  static String tutions =
+      LocaleService.translate('tutions') ?? 'Tutions';
+
+  static String others =
+      LocaleService.translate('others') ?? 'Others';
+
+  static String hobbyClasses =
+      LocaleService.translate('hobbyClasses') ?? 'Hobby Classes';
+
+  static String skillDevelopment =
+      LocaleService.translate('skillDevelopment') ?? 'Skill Development';
+  static String none =
+      LocaleService.translate('none') ?? 'None';
+  static String student =
+      LocaleService.translate('student') ?? 'Student';
+
+  static String highSchool =
+      LocaleService.translate('highSchool') ?? 'High-Secondary School';
+  static String diploma =
+      LocaleService.translate('diploma') ?? 'Diploma';
+  static String bDegree =
+      LocaleService.translate('dDegree') ?? 'Bachelors Degree';
+  static String mDegree =
+      LocaleService.translate('mDegree') ?? 'Masters Degree';
+  static String phd =
+      LocaleService.translate('phd') ?? 'Doctorate/PhD';
+  static String remote =
+      LocaleService.translate('remote') ?? 'Remote';
+  static String officeBased =
+      LocaleService.translate('officeBased') ?? 'Office-based';
+  static String fieldBased =
+      LocaleService.translate('fieldBased') ?? 'Field-based';
+  static String mixOfficeBased =
+      LocaleService.translate('mixOfficeBased') ?? 'Mixed (Home & Office)';
+
+  static String adExpire =
+      LocaleService.translate('adExpire') ?? 'Ad Expires in';
+
+
   static void refresh() {
-    // Main Screen
     listLife = LocaleService.translate('listLife') ?? 'Daroory';
     howToConnect = LocaleService.translate('howToConnect') ?? 'How to connect?';
-    amenities = LocaleService.translate('amenities') ?? 'Amenities';
+    amenities = LocaleService.translate('amenities') ?? 'Features/Amenities';
 
     // OnBoarding Screen
+    unverifiedToast = LocaleService.translate('unverifiedToast') ??
+        'Verify your phone number in your profile before posting ads.';
+    unverifiedAddPhoneToast = LocaleService.translate(
+            'unverifiedAddPhoneToast') ??
+        'Add and verify your phone number in your profile before posting ads.';
     next = LocaleService.translate('next') ?? 'Next';
-    baths = LocaleService.translate('baths') ?? 'Baths';
     beds = LocaleService.translate('beds') ?? 'Beds';
     sqft = LocaleService.translate('sqft') ?? 'Sqft';
+    baths = LocaleService.translate('baths') ?? 'Baths';
     getStarted = LocaleService.translate('getStarted') ?? 'Get Started';
 
     // Login Screen
     login = LocaleService.translate('login') ?? 'Log In';
     guestLogin = LocaleService.translate('guestLogin') ?? 'Guest Login';
     continueButton = LocaleService.translate('continueButton') ?? 'Continue';
-    paymentType = LocaleService.translate('paymentType') ?? "Payment Type";
-    completionStatus =
-        LocaleService.translate('completionStatus') ?? 'Completion Status';
     loginWithSocial =
         LocaleService.translate('loginWithSocial') ?? 'Login with Social';
 
@@ -952,39 +1036,23 @@ class StringHelper {
     clickToVerifyPhoneNumber =
         LocaleService.translate('clickToVerifyPhoneNumber') ??
             'Click to verify Phone number';
-    didntReceiveCode =
-        LocaleService.translate('didntReceiveCode') ?? "Didn't receive code?";
-
     orConnectWith =
         LocaleService.translate('orConnectWith') ?? 'Or Connect With';
     loginWithGoogle =
         LocaleService.translate('loginWithGoogle') ?? 'Log In With Google';
+    didntReceiveCode =
+        LocaleService.translate('didntReceiveCode') ?? "Didn't receive code?";
+
     loginWithFb =
         LocaleService.translate('loginWithFb') ?? 'Log In With Facebook';
     loginWithIos = LocaleService.translate('loginWithIos') ?? 'Log In With IOS';
 
     // Verification Screen
     verification = LocaleService.translate('verification') ?? 'Verification';
-    workSetting = LocaleService.translate('workSetting') ?? 'Work Setting';
-    workExperience =
-        LocaleService.translate('workExperience') ?? 'Work Experience';
-    workEducation =
-        LocaleService.translate('workEducation') ?? 'Work Education';
-    other = LocaleService.translate('other') ?? 'Other';
     enterThe4DigitCode = LocaleService.translate('enterThe4DigitCode') ??
         'Enter the 4-digit code sent to you at';
     otp = LocaleService.translate('otp') ?? 'OTP';
     verifyButton = LocaleService.translate('verifyButton') ?? 'Verify';
-    numbDoorsTitle = LocaleService.translate('numb_doors') ?? 'Number of Doors';
-    engineCapacityTitle =
-        LocaleService.translate('engine_capacity') ?? 'Engine Capacity';
-    unverifiedToast = LocaleService.translate('unverifiedToast') ??
-        'Verify your phone number in your profile before posting ads.';
-    unverifiedAddPhoneToast = LocaleService.translate(
-            'unverifiedAddPhoneToast') ??
-        'Add and verify your phone number in your profile before posting ads.';
-    next = LocaleService.translate('next') ?? 'Next';
-    getStarted = LocaleService.translate('getStarted') ?? 'Get Started';
 
     // Home Screen
     location = LocaleService.translate('location') ?? 'Location';
@@ -993,11 +1061,7 @@ class StringHelper {
     findCarsMobilePhonesAndMore =
         LocaleService.translate('findCarsMobilePhonesAndMore') ??
             'Find Cars, Mobile Phones and more...';
-    resendCodeIn = LocaleService.translate('resendCodeIn') ?? "Resend code in";
-    resend = LocaleService.translate('resend') ?? "Resend";
-    readMore = LocaleService.translate('readMore') ?? 'Read More';
-    noOfBathrooms =
-        LocaleService.translate('noOfBathrooms') ?? 'No Of Bathrooms';
+
     // Chat Screen
     myChats = LocaleService.translate('myChats') ?? 'My Chats';
     search = LocaleService.translate('search') ?? 'Search...';
@@ -1010,8 +1074,6 @@ class StringHelper {
     pleaseEnterReasonOfReport =
         LocaleService.translate('pleaseEnterReasonOfReport') ??
             'Please enter reason of report.';
-    fieldShouldNotBeEmpty = LocaleService.translate('fieldShouldNotBeEmpty') ??
-        'Field should not be empty';
     reason = LocaleService.translate('reason') ?? 'Reason...';
     reportUser = LocaleService.translate('reportUser') ?? 'Report User';
     areYouSureWantToUnblockThisUser =
@@ -1029,18 +1091,6 @@ class StringHelper {
     somethingWantWrong = LocaleService.translate('somethingWantWrong') ??
         'Something Want Wrong!';
     goBack = LocaleService.translate('goBack') ?? 'Go Back';
-    safetyTips = LocaleService.translate('safetyTips') ??
-        'Safety Tips for Using Daroory';
-    doNotTransact = LocaleService.translate('doNotTransact') ??
-        'Do not make any transactions online with strangers.';
-    meetInPublic = LocaleService.translate('meetInPublic') ??
-        'Meet buyers and sellers in safe, public places.';
-    inspectItems = LocaleService.translate('inspectItems') ??
-        'Inspect items thoroughly before making a purchase.';
-    avoidSharing = LocaleService.translate('avoidSharing') ??
-        'Avoid sharing personal or financial details.';
-    reportSuspicious = LocaleService.translate('reportSuspicious') ??
-        'Report suspicious listings or activities to our support team.';
 
     // Favourite Screen
     ads = LocaleService.translate('ads') ?? 'Ads';
@@ -1055,22 +1105,24 @@ class StringHelper {
     rejected = LocaleService.translate('rejected') ?? 'Rejected';
     active = LocaleService.translate('active') ?? 'Active';
     review = LocaleService.translate('review') ?? 'In Review';
-    bodyTypeTitle = LocaleService.translate('body_type') ?? 'Body Type';
     thisAdisCurrentlyLive = LocaleService.translate('thisAdisCurrentlyLive') ??
         'This ad is currently live';
     thisAdisSold = LocaleService.translate('thisAdisSold') ?? 'This ad is sold';
     markAsSold = LocaleService.translate('markAsSold') ?? 'Mark as Sold';
     sellFasterNow =
         LocaleService.translate('sellFasterNow') ?? 'Sell Faster Now';
-    furnishing = LocaleService.translate('furnishing') ?? "Furnishing";
-    deliveryTerms =
-        LocaleService.translate('deliveryTerms') ?? "Delivery Terms";
 
     // Filter Screen
     filter = LocaleService.translate('filter') ?? 'Filter';
     newText = LocaleService.translate('newText') ?? 'New';
     used = LocaleService.translate('used') ?? 'Used';
     price = LocaleService.translate('price') ?? 'Price';
+    minPrice = LocaleService.translate('minPrice') ?? 'Min Price';
+    maxPrice = LocaleService.translate('maxPrice') ?? 'Max Price';
+    minArea = LocaleService.translate('minArea') ?? 'Min Area';
+    maxArea = LocaleService.translate('maxArea') ?? 'Max Area';
+    minKm = LocaleService.translate('minKm') ?? 'Min Km';
+    maxKm = LocaleService.translate('maxKm') ?? 'Max Km';
     egp0 = LocaleService.translate('egp0') ?? 'EGP 0';
     to = LocaleService.translate('to') ?? 'to';
     category = LocaleService.translate('category') ?? 'Category';
@@ -1108,6 +1160,8 @@ class StringHelper {
 
     /// Sell Screen
     sell = LocaleService.translate('sell') ?? 'Sell';
+    rent = LocaleService.translate('rent') ?? 'Rent';
+
     whatAreYouOffering = LocaleService.translate('whatAreYouOffering') ??
         'What are you offering?';
     uploadImages = LocaleService.translate('uploadImages') ?? 'Upload Images';
@@ -1127,13 +1181,18 @@ class StringHelper {
     manual = LocaleService.translate('manual') ?? 'Manual';
     owners = LocaleService.translate('owners') ?? 'Owners';
     kmDriven = LocaleService.translate('kmDriven') ?? 'Km Driven';
-    horsepowerTitle = LocaleService.translate('horsepower') ?? 'Horsepower';
     noOfOwners = LocaleService.translate('noOfOwners') ?? 'No. of Owners';
     adTitle = LocaleService.translate('adTitle') ?? 'Ad Title';
     priceEgp = LocaleService.translate('priceEgp') ?? 'Price (in EGP)';
     describeWhatYouAreSelling =
         LocaleService.translate('describeWhatYouAreSelling') ?? 'Description';
     enterPrice = LocaleService.translate('enterPrice') ?? 'Enter Price';
+    propertyFor = LocaleService.translate('propertyFor') ?? 'Property For';
+    propertyType = LocaleService.translate('propertyType') ?? 'Property Type';
+
+    areaSize = LocaleService.translate('areaSize') ?? 'Area Size';
+    noOfBathrooms =
+        LocaleService.translate('noOfBathrooms') ?? 'No Of Bathrooms';
 
     /// ShowToast
     pleaseUploadMainImage = LocaleService.translate('pleaseUploadMainImage') ??
@@ -1149,7 +1208,6 @@ class StringHelper {
         LocaleService.translate('adTitleIsRequired') ?? 'Ad title is required';
     descriptionIsRequired = LocaleService.translate('descriptionIsRequired') ??
         'Description is required';
-    specialty = LocaleService.translate('specialty') ?? 'Specialty';
     locationIsRequired =
         LocaleService.translate('locationIsRequired') ?? 'Location is required';
     priceIsRequired =
@@ -1168,6 +1226,11 @@ class StringHelper {
             "Please select salary form";
     pleaseSelectSalaryTo = LocaleService.translate('pleaseSelectSalaryTo') ??
         "Please select salary to";
+    workSetting = LocaleService.translate('workSetting') ?? "Work Setting";
+    workExperience =
+        LocaleService.translate('workExperience') ?? "Work Experience";
+    workEducation =
+        LocaleService.translate('workEducation') ?? "Work Education";
     pleaseSelectPaymentMethod =
         LocaleService.translate('pleaseSelectPaymentMethod') ??
             "Please Select Payment Method";
@@ -1186,8 +1249,11 @@ class StringHelper {
     screenSize = LocaleService.translate('screenSize') ?? "Screen Size";
     material = LocaleService.translate('material') ?? "Material";
     editProduct = LocaleService.translate('editProduct') ?? "Edit Product";
+
     type = LocaleService.translate('type') ?? "Type";
     km = LocaleService.translate('km') ?? "km";
+    level = LocaleService.translate('level') ?? "Level";
+    buildingAge = LocaleService.translate('buildingAge') ?? "Building Age";
     positionType = LocaleService.translate('positionType') ?? "Position Type";
     salaryPeriod = LocaleService.translate('salaryPeriod') ?? "Salary Period";
     salaryFrom = LocaleService.translate('salaryFrom') ?? "Salary from";
@@ -1248,7 +1314,13 @@ class StringHelper {
     /// Product Screen
     cars = LocaleService.translate('cars') ?? "Cars";
     owner = LocaleService.translate('owner') ?? "Owner";
+    paymentType = LocaleService.translate('paymentType') ?? "Payment Type";
+    completionStatus =
+        LocaleService.translate('completionStatus') ?? "Completion Status";
     city = LocaleService.translate('city') ?? "City";
+    furnishing = LocaleService.translate('furnishing') ?? "Furnishing";
+    deliveryTerms =
+        LocaleService.translate('deliveryTerms') ?? "Delivery Terms";
     postingDate = LocaleService.translate('postingDate') ?? "Posting Date";
     soldText = LocaleService.translate('soldText') ?? "sold";
     checkProductUrl = LocaleService.translate('checkProductUrl') ??
@@ -1262,6 +1334,7 @@ class StringHelper {
     call = LocaleService.translate('call') ?? "Call";
     chat = LocaleService.translate('chat') ?? "Chat";
     whatsapp = LocaleService.translate('whatsapp') ?? "Whatsapp";
+    details = LocaleService.translate('details') ?? 'Details';
 
     /// Profile Screen
     completeYourProfile = LocaleService.translate('completeYourProfile') ??
@@ -1292,9 +1365,11 @@ class StringHelper {
         LocaleService.translate('accountSettings') ?? 'Account Settings';
 
     language = LocaleService.translate('language') ?? 'Language';
+    theme = LocaleService.translate('theme') ?? 'Theme';
     home = LocaleService.translate('home') ?? 'Home';
     myChat = LocaleService.translate('myChat') ?? 'My Chats';
     myAds = LocaleService.translate('myAds') ?? 'My Ads';
+
     support = LocaleService.translate('support') ?? 'Support';
     appSettings = LocaleService.translate('appSettings') ?? 'App Settings';
     selectLanguage =
@@ -1308,33 +1383,36 @@ class StringHelper {
     deleteAccount =
         LocaleService.translate('deleteAccount') ?? 'Delete Account';
     logout = LocaleService.translate('logout') ?? 'Logout';
+
+    // Method to refresh all strings when locale changes
     noData = LocaleService.translate('noData') ?? 'No Data';
     allAds = LocaleService.translate('allAds') ?? 'All Ads';
     liveAds = LocaleService.translate('liveAds') ?? 'Live Ads';
+
     underReview = LocaleService.translate('underReview') ?? 'Under Review';
     rejectedAds = LocaleService.translate('rejectedAds') ?? 'Rejected Ads';
-    lookingFor = LocaleService.translate('lookingFor') ?? 'Looking For';
-    lookingJob = LocaleService.translate('lookingJob') ?? 'I am looking job';
-    hiringJob = LocaleService.translate('hiringJob') ?? 'I am hiring';
-    call = LocaleService.translate('call') ?? 'Call';
-    chat = LocaleService.translate('chat') ?? 'Chat';
-    whatsapp = LocaleService.translate('whatsapp') ?? 'Whatsapp';
-    details = LocaleService.translate('details') ?? 'Details';
 
-    ///new keys
+    lookingFor = LocaleService.translate('lookingFor') ?? 'Looking For';
+
+    lookingJob = LocaleService.translate('lookingJob') ?? 'I am looking job';
+
+    hiringJob = LocaleService.translate('hiringJob') ?? 'I am hiring';
+
+    ///new keys added
     salary = LocaleService.translate('salary') ?? 'Salary';
     locationServices =
         LocaleService.translate('locationServices') ?? 'Location Services';
     loginRequired =
         LocaleService.translate('loginRequired') ?? 'Login Required';
+
     youNeedLogin = LocaleService.translate('youNeedLogin') ??
         'You need to log in to perform this action.';
     profileCreatedSuccessfully =
         LocaleService.translate('profileCreatedSuccessfully') ??
             'Your Profile has been created successfully!';
-    learnMore = LocaleService.translate('learn_more') ?? 'Learn More.';
-
     ok = LocaleService.translate('ok') ?? 'Ok';
+    carColorTitle = LocaleService.translate('car_color') ?? 'Color';
+
     noInternet = LocaleService.translate('noInternet') ??
         'No Internet, Please try later!';
     noInternetFound = LocaleService.translate('noInternetFound') ??
@@ -1358,6 +1436,8 @@ class StringHelper {
     education = LocaleService.translate('education') ?? "Education";
     salaryRange = LocaleService.translate('salaryRange') ?? "Salary Range";
     experience = LocaleService.translate('experience') ?? "Experience";
+    resendCodeIn = LocaleService.translate('resendCodeIn') ?? "Resend code in";
+    resend = LocaleService.translate('resend') ?? "Resend";
     selectServices =
         LocaleService.translate('selectServices') ?? "Select Services";
     selectJobType =
@@ -1393,6 +1473,7 @@ class StringHelper {
     shellAndCore = LocaleService.translate('shellAndCore') ?? "Shell and Core";
     semiFinished = LocaleService.translate('semiFinished') ?? "Semi-Finished";
     rentalTerm = LocaleService.translate('rentalTerm') ?? "Rental Term";
+    hourly = LocaleService.translate('hourly') ?? "Hourly";
     daily = LocaleService.translate('daily') ?? "Daily";
     weekly = LocaleService.translate('weekly') ?? "Weekly";
     monthly = LocaleService.translate('monthly') ?? "Monthly";
@@ -1407,6 +1488,7 @@ class StringHelper {
         LocaleService.translate('showAllAdsInEgypt') ?? "Show All Ads in Egypt";
     recentSearches =
         LocaleService.translate('recentSearches') ?? "Recent Searches";
+
     clearAll = LocaleService.translate('clearAll') ?? "Clear All";
     seeAll = LocaleService.translate('seeAll') ?? "See All";
     insurance = LocaleService.translate('insurance') ?? "Insurance";
@@ -1432,7 +1514,7 @@ class StringHelper {
     plsSelectOwnership = LocaleService.translate('plsSelectOwnership') ??
         "Please select Ownership";
     plsSelectType =
-        LocaleService.translate('plsSelectType') ?? "Please select Type";
+        LocaleService.translate('plsSelectType') ?? "Please select type";
     plsAddArea =
         LocaleService.translate('plsAddArea') ?? "Please add area of Property";
     adLength = LocaleService.translate('adLength') ??
@@ -1444,21 +1526,36 @@ class StringHelper {
     plsSelectCompletionStatus =
         LocaleService.translate('plsSelectCompletionStatus') ??
             "Please select completion status";
-    finished = LocaleService.translate('finished') ?? "Finished";
-    notFinished = LocaleService.translate('notFinished') ?? "Not Finished";
-    coreAndSell = LocaleService.translate('coreAndSell') ?? "Core and sell";
+
+    finished = LocaleService.translate("finished") ?? "Finished";
+    notFinished = LocaleService.translate("notFinished") ?? "Not Finished";
+    coreAndSell = LocaleService.translate("coreAndSell") ?? "Core and sell";
     plsEnterAccessUtilities =
-        LocaleService.translate('plsEnterAccessUtilities') ??
+        LocaleService.translate("plsEnterAccessUtilities") ??
             "Please enter access of utilities";
     plsSelectRentalTerms = LocaleService.translate('plsSelectRentalTerms') ??
         "Please select rental terms";
+    safetyTips = LocaleService.translate('safetyTips') ??
+        'Safety Tips for Using Daroory';
+    doNotTransact = LocaleService.translate('doNotTransact') ??
+        'Do not make any transactions online with strangers.';
+    meetInPublic = LocaleService.translate('meetInPublic') ??
+        'Meet buyers and sellers in safe, public places.';
+    inspectItems = LocaleService.translate('inspectItems') ??
+        'Inspect items thoroughly before making a purchase.';
+    avoidSharing = LocaleService.translate('avoidSharing') ??
+        'Avoid sharing personal or financial details.';
+    reportSuspicious = LocaleService.translate('reportSuspicious') ??
+        'Report suspicious listings or activities to our support team.';
     deliveryTerm = LocaleService.translate('deliveryTerm') ?? "Delivery term";
     plsSelectDeliveryTerm = LocaleService.translate('plsSelectDeliveryTerm') ??
         "Please select delivery term";
+
     plsEnterDeposit =
         LocaleService.translate('plsEnterDeposit') ?? "Please enter deposit";
     plsSelectRentalTerm = LocaleService.translate('plsSelectRentalTerm') ??
         "Please select rental term";
+
     imageMaxLimit = LocaleService.translate('imageMaxLimit') ??
         "You have reached at maximum limit";
     blocked = LocaleService.translate('blocked') ?? "Blocked";
@@ -1478,10 +1575,12 @@ class StringHelper {
         "Are you sure you want to logout this account?";
     accountDelete =
         LocaleService.translate('accountDelete') ?? "Account Delete";
+
     notificationDelete =
         LocaleService.translate('notificationDelete') ?? "Notification Delete";
     accountDeleteMsg = LocaleService.translate('accountDeleteMsg') ??
         "Are you sure you want to delete this account?";
+    readMore = LocaleService.translate('readMore') ?? 'Read More';
     notificationDeleteMsg = LocaleService.translate('notificationDeleteMsg') ??
         "Are you sure you want to delete notifications?";
     specifications =
@@ -1494,7 +1593,7 @@ class StringHelper {
     phoneIsVerified =
         LocaleService.translate('phoneIsVerified') ?? "Phone is verified";
     emailIsVerified =
-        LocaleService.translate('EmailIsVerified') ?? "Email is verified";
+        LocaleService.translate('emailIsVerified') ?? "Email is verified";
     phoneIsUnverified =
         LocaleService.translate('phoneIsUnverified') ?? "Phone is Unverified";
     emailIsUnverified =
@@ -1503,16 +1602,22 @@ class StringHelper {
         "Please note that our app is currently only available for users in Egypt. Please select Egypt location for add product.";
     locationAlert =
         LocaleService.translate('locationAlert') ?? "Location Alert";
-    sendQueries =
-        LocaleService.translate('sendQueries') ?? "Send us your queries";
-    chatWithSupport = LocaleService.translate('chatWithSupport') ??
-        "Chat with our support team";
+    listingType = LocaleService.translate('listingType') ?? 'Listing Type';
+    area = LocaleService.translate('area') ?? 'Area';
+    bedrooms = LocaleService.translate('bedrooms') ?? 'Bedrooms';
+    bathrooms = LocaleService.translate('bathrooms') ?? 'Bathrooms';
+    furnishedType =
+        LocaleService.translate('furnishedType') ?? 'Furnished Type';
+    ownership = LocaleService.translate('ownership') ?? 'Ownership';
+    messageUsOnWhatsapp = LocaleService.translate('messageUsOnWhatsapp') ??
+        "Message us on WhatsApp for immediate support";
     sendMessage = LocaleService.translate('sendMessage') ?? "Send a message";
     enterName = LocaleService.translate('enterName') ?? "Enter your name";
     enterEmail = LocaleService.translate('enterEmail') ?? "Enter your email";
     enterSubject = LocaleService.translate('enterSubject') ?? "Enter subject";
     typeMessage =
         LocaleService.translate('typeMessage') ?? "Type your message here";
+    typeTitle = LocaleService.translate('type') ?? 'Type';
     nameRequired =
         LocaleService.translate('nameRequired') ?? "Name is required";
     emailRequired =
@@ -1521,44 +1626,59 @@ class StringHelper {
         "Please enter a valid email";
     subjectRequired =
         LocaleService.translate('subjectRequired') ?? "Subject is required";
-    type = LocaleService.translate('type') ?? 'Type';
-    plsSelectType =
-        LocaleService.translate('plsSelectType') ?? 'Please select Type';
     messageRequired =
         LocaleService.translate('messageRequired') ?? "Message is required";
     messageSentSuccess = LocaleService.translate('messageSentSuccess') ??
         "Message sent successfully! Our team will contact you soon.";
+    bodyTypeTitle = LocaleService.translate('body_type') ?? 'Body Type';
+
     failedToSendMessage = LocaleService.translate('failedToSendMessage') ??
         "Failed to send message";
+    learnMore = LocaleService.translate('learn_more') ?? 'Learn More.';
+
     contactFormDescription = LocaleService.translate(
             'contactFormDescription') ??
         "Send your message directly to our team. We'll get back to you within 24 hours.";
-    messageUsOnWhatsapp = LocaleService.translate('messageUsOnWhatsapp') ??
-        "Message us on WhatsApp for immediate support";
     leaveMessageDescription =
         LocaleService.translate('leaveMessageDescription') ??
             "Leave us a message and we will get back to you within 24 hours";
+    sendQueries =
+        LocaleService.translate('sendQueries') ?? "Send us your queries";
+    chatWithSupport = LocaleService.translate('chatWithSupport') ??
+        "Chat with our support team";
     enterPhoneNumber = LocaleService.translate('enterPhoneNumber') ??
         'Enter your phone number';
     phoneRequired =
         LocaleService.translate('phoneRequired') ?? 'Phone number is required';
+    horsepowerTitle = LocaleService.translate('horsepower') ?? 'Horsepower';
+
     invalidPhoneNumber = LocaleService.translate('invalidPhoneNumber') ??
         'Please enter a valid 10-digit phone number';
+    other = LocaleService.translate('other') ?? 'Other';
+    rentalCarTerm = LocaleService.translate('rentalCarTerm') ?? "Rental Term";
     subject = LocaleService.translate('subject') ?? 'Subject';
     subjectTooShort = LocaleService.translate('subjectTooShort') ??
         'Subject must be at least 5 characters';
     subjectTooLong = LocaleService.translate('subjectTooLong') ??
         'Subject cannot exceed 100 characters';
-    carColorTitle = LocaleService.translate('car_color') ?? 'Color';
     interiorColorTitle =
         LocaleService.translate('interior_color') ?? 'Interior Color';
     numbDoorsTitle = LocaleService.translate('numb_doors') ?? 'Number of Doors';
+    specialty = LocaleService.translate('specialty') ?? 'Specialty';
+
     engineCapacityTitle =
         LocaleService.translate('engine_capacity') ?? 'Engine Capacity';
+
+    fieldShouldNotBeEmpty = LocaleService.translate('fieldShouldNotBeEmpty') ??
+        'Field should not be empty';
     contract = LocaleService.translate('contract') ?? 'Contract';
     fullTime = LocaleService.translate('fullTime') ?? 'Full Time';
     partTime = LocaleService.translate('partTime') ?? 'Part-time';
     temporary = LocaleService.translate('temporary') ?? 'Temporary';
+    minValidPrice = LocaleService.translate('minValidPrice') ??
+        'The minimum valid price is EGP';
+    maxValidPrice = LocaleService.translate('maxValidPrice') ??
+        'The maximum valid price is EGP';
     transmissionRequired = LocaleService.translate('selectTransmission') ??
         'Please select transmission';
     enterKmDriven =
@@ -1575,13 +1695,12 @@ class StringHelper {
         'The minimum valid price is EGP 5000';
     maxPriceEgp50M = LocaleService.translate('maxPriceEgp50M') ??
         'The maximum valid price is EGP 50,000,000';
-    minValidPrice = LocaleService.translate('minValidPrice') ??
-        'The minimum valid price is EGP';
-    maxValidPrice = LocaleService.translate('maxValidPrice') ??
-        'The maximum valid price is EGP';
-    telecom = LocaleService.translate('telecom') ?? "Telecom";
+    telecom = LocaleService.translate('telecom') ?? 'Telecom';
     minValidAreaSize = LocaleService.translate('minValidAreaSize') ??
         'The minimum valid area size is';
+    depositPercentage =
+        LocaleService.translate('depositPercentage') ?? 'Deposit %';
+
     maxValidAreaSize = LocaleService.translate('maxValidAreaSize') ??
         'The maximum valid area size is';
     depositValidAmount = LocaleService.translate('depositValidAmount') ??
@@ -1594,14 +1713,128 @@ class StringHelper {
         'Percentage must be greater than 0';
     percentageExceed100 = LocaleService.translate('percentageExceed100') ??
         'Percentage cannot exceed 100%';
-    depositPercentage =
-        LocaleService.translate('depositPercentage') ?? 'Deposit %';
     invalidPercentage =
         LocaleService.translate('invalidPercentage') ?? 'Invalid';
     mustBeGreaterThanZero =
         LocaleService.translate('mustBeGreaterThanZero') ?? 'Must be > 0';
     maxOneHundredPercent =
         LocaleService.translate('maxOneHundredPercent') ?? 'Max 100%';
-    areaSize = LocaleService.translate('areaSize') ?? 'Area Size';
+    townHouseText =
+        LocaleService.translate('townHouseText') ?? 'Townhouse';
+    twinHouse =
+        LocaleService.translate('twinHouse') ?? 'Twin House';
+
+    iVilla =
+        LocaleService.translate('iVilla') ?? 'I-Villa';
+    mansion =
+        LocaleService.translate('mansion') ?? 'Mansion';
+
+    chalet =
+        LocaleService.translate('chalet') ?? 'Chalet';
+    standaloneVilla =
+        LocaleService.translate('standaloneVilla') ?? 'Standalone Villa';
+
+    townhouse =
+        LocaleService.translate('townhouse') ?? 'Townhouse Twin house';
+
+    cabin =
+        LocaleService.translate('cabin') ?? 'Cabin';
+
+    agriculturalLand =
+        LocaleService.translate('agriculturalLand') ?? 'Agricultural Land';
+    commercialLand =
+        LocaleService.translate('commercialLand') ?? 'Commercial Land';
+
+    residentialLand =
+        LocaleService.translate('residentialLand') ?? 'Residential Land';
+    industrialLand =
+        LocaleService.translate('industrialLand') ?? 'Industrial Land';
+    mixedLand =
+        LocaleService.translate('mixedLand') ?? 'Mixed-Use Land';
+    farmLand =
+        LocaleService.translate('farmLand') ?? 'Farm Land';
+
+    factory =
+        LocaleService.translate('factory') ?? 'Factory';
+    fullBuilding =
+        LocaleService.translate('fullBuilding') ?? 'Full building';
+    garage =
+        LocaleService.translate('garage') ?? 'Garage';
+    warehouse =
+        LocaleService.translate('warehouse') ?? 'Warehouse';
+
+    restaurantCafe =
+        LocaleService.translate('restaurantCafe') ?? 'Restaurant/ cafe';
+
+    offices =
+        LocaleService.translate('offices') ?? 'Offices';
+    pharmacy =
+        LocaleService.translate('pharmacy') ?? 'Pharmacy';
+    medicalFacility =
+        LocaleService.translate('medicalFacility') ?? 'Medical facility';
+    hotelMotel =
+        LocaleService.translate('hotelMotel') ?? 'Hotel/ motel';
+
+    gasStation =
+        LocaleService.translate('gasStation') ?? 'Gas station';
+    storageFacility =
+        LocaleService.translate('storageFacility') ?? 'Storage facility';
+    showroom =
+        LocaleService.translate('showroom') ?? 'Showroom';
+
+    clinic =
+        LocaleService.translate('clinic') ?? 'Clinic';
+
+    apartment =
+        LocaleService.translate('apartment') ?? 'Apartment';
+    duplex =
+        LocaleService.translate('duplex') ?? 'Duplex';
+    penthouse =
+        LocaleService.translate('penthouse') ?? 'Penthouse';
+    studio =
+        LocaleService.translate('studio') ?? 'Studio';
+    hotelApartment =
+        LocaleService.translate('hotelApartment') ?? 'Hotel Apartment';
+    roof =
+        LocaleService.translate('roof') ?? 'Roof';
+
+    tutions =
+        LocaleService.translate('tutions') ?? 'Tutions';
+
+    others =
+        LocaleService.translate('others') ?? 'Others';
+
+    hobbyClasses =
+        LocaleService.translate('hobbyClasses') ?? 'Hobby Classes';
+
+    skillDevelopment =
+        LocaleService.translate('skillDevelopment') ?? 'Skill Development';
+    none =
+        LocaleService.translate('none') ?? 'None';
+    student =
+        LocaleService.translate('student') ?? 'Student';
+
+    highSchool =
+        LocaleService.translate('highSchool') ?? 'High-Secondary School';
+    diploma =
+        LocaleService.translate('diploma') ?? 'Diploma';
+    bDegree =
+        LocaleService.translate('dDegree') ?? 'Bachelors Degree';
+    mDegree =
+        LocaleService.translate('mDegree') ?? 'Masters Degree';
+    phd =
+        LocaleService.translate('phd') ?? 'Doctorate/PhD';
+    remote =
+        LocaleService.translate('remote') ?? 'Remote';
+    officeBased =
+        LocaleService.translate('officeBased') ?? 'Office-based';
+    fieldBased =
+        LocaleService.translate('fieldBased') ?? 'Field-based';
+    mixOfficeBased =
+        LocaleService.translate('mixOfficeBased') ?? 'Mixed (Home & Office)';
+
+    adExpire =
+        LocaleService.translate('adExpire') ?? 'Ad Expires in';
+
   }
 }

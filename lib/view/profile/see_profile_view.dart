@@ -20,6 +20,7 @@ import '../../base/helpers/date_helper.dart';
 import '../../base/helpers/string_helper.dart';
 import '../../base/network/api_request.dart';
 import '../../base/network/base_client.dart';
+import '../../base/utils/utils.dart';
 import '../../models/common/map_response.dart';
 import '../../models/home_list_model.dart';
 import '../../models/user_model.dart';
@@ -430,7 +431,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                                                         .spaceBetween,
                                                 children: [
                                                   Text(
-                                                    "${StringHelper.egp}${_productsList[index].price}",
+                                                    "${StringHelper.egp}${parseAmount(_productsList[index].price)}",
                                                     style: context
                                                         .textTheme.titleMedium
                                                         ?.copyWith(
@@ -515,5 +516,10 @@ class _SeeProfileViewState extends State<SeeProfileView> {
         ),
       ),
     );
+  }
+
+  String parseAmount(dynamic amount) {
+    if ("${amount ?? ""}".isEmpty) return "0";
+    return Utils.formatPrice(num.parse("${amount ?? 0}").toStringAsFixed(0));
   }
 }

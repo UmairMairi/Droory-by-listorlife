@@ -620,7 +620,7 @@ class _MyProductViewState extends State<MyProductView> {
 
   String parseAmount(dynamic amount) {
     if ("${amount ?? ""}".isEmpty) return "0";
-    return num.parse("${amount ?? 0}").toStringAsFixed(0);
+    return Utils.formatPrice(num.parse("${amount ?? 0}").toStringAsFixed(0));
   }
 
   getPropertyInformation(
@@ -629,90 +629,90 @@ class _MyProductViewState extends State<MyProductView> {
       List<Widget> specs = [];
 
       if ((data?.propertyFor ?? "").isNotEmpty) {
-        specs.add(_buildInfoRow(context, "${data?.propertyFor?.capitalized}",
-            '🏠', 'Property For'));
+        specs.add(_buildInfoRow(context, Utils.getPropertyType("${data?.propertyFor??""}"),
+            '🏠', StringHelper.propertyFor));
       }
       if ((data?.area ?? 0) != 0) {
-        specs.add(_buildInfoRow(context, "${data?.area} sqft", '📏', 'Area'));
+        specs.add(_buildInfoRow(context, "${data?.area} ${StringHelper.sqft}", '📏', StringHelper.area));
       }
       if ((data?.bedrooms ?? 0) != 0) {
         specs.add(
-            _buildInfoRow(context, "${data?.bedrooms}", '🛏️', 'Bedrooms'));
+            _buildInfoRow(context, "${data?.bedrooms}", '🛏️', StringHelper.bedrooms));
       }
       if ((data?.bathrooms ?? 0) != 0) {
         specs.add(
-            _buildInfoRow(context, "${data?.bathrooms}", '🚽', 'Bathrooms'));
+            _buildInfoRow(context, "${data?.bathrooms}", '🚽', StringHelper.bathrooms));
       }
       if ((data?.furnishedType ?? "").isNotEmpty) {
-        specs.add(_buildInfoRow(context, "${data?.furnishedType?.capitalized}",
-            '🛋️', 'Furnished Type'));
+        specs.add(_buildInfoRow(context, Utils.getFurnished("${data?.furnishedType??""}"),
+            '🛋️', StringHelper.furnishedType));
       }
       if ((data?.ownership ?? "").isNotEmpty) {
         specs.add(_buildInfoRow(
-            context, "${data?.ownership?.capitalized}", '📜', 'Ownership'));
+            context, "${data?.ownership?.capitalized}", '📜', StringHelper.ownership));
       }
       if ((data?.paymentType ?? "").isNotEmpty) {
         specs.add(_buildInfoRow(context, "${data?.paymentType?.capitalized}",
-            '💳', 'Payment Type'));
+            '💳', StringHelper.paymentType));
       }
       if ((data?.completionStatus ?? "").isNotEmpty) {
         specs.add(_buildInfoRow(
             context,
             "${data?.completionStatus?.capitalized}",
             '✅',
-            'Completion Status'));
+            StringHelper.completionStatus));
       }
 
       if ((data?.deliveryTerm ?? "").isNotEmpty) {
         specs.add(_buildInfoRow(context, (data?.deliveryTerm ?? "").capitalized,
-            '🚚', 'Delivery Term'));
+            '🚚', StringHelper.deliveryTerm));
       }
 
       /// new data add without icon
       if ((data?.type ?? "").isNotEmpty) {
         specs.add(_buildInfoRow(
-            context, "${data?.type?.capitalized}", '💳', 'Property Type'));
+            context, Utils.getProperty("${data?.type??""}"), '💳', StringHelper.propertyType));
       }
       if ((data?.level ?? "").isNotEmpty) {
         specs.add(_buildInfoRow(
-            context, "${data?.level?.capitalized}", '✅', 'Level'));
+            context, "${data?.level?.capitalized}", '✅', StringHelper.level));
       }
       if ((data?.buildingAge ?? "").isNotEmpty) {
         specs.add(_buildInfoRow(
-            context, "${data?.buildingAge?.capitalized}", '✅', 'Building Age'));
+            context, "${data?.buildingAge?.capitalized}", '✅', StringHelper.buildingAge));
       }
       if ((data?.listedBy ?? "").isNotEmpty) {
         specs.add(_buildInfoRow(
-            context, "${data?.listedBy?.capitalized}", '✅', 'Listed By'));
+            context, "${data?.listedBy?.capitalized}", '✅', StringHelper.listedBy));
       }
       if ((data?.rentalPrice ?? "").isNotEmpty) {
         specs.add(_buildInfoRow(
             context,
             num.parse("${data?.rentalPrice ?? 0}").toStringAsFixed(0),
             '✅',
-            'Rental Price'));
+            StringHelper.rentalPrice));
       }
       if ((data?.rentalTerm ?? "").isNotEmpty) {
         specs.add(_buildInfoRow(
-            context, "${data?.rentalTerm?.capitalized}", '✅', 'Rental Term'));
+            context, Utils.carRentalTerm("${data?.rentalTerm??""}"), '✅', StringHelper.rentalTerm));
       }
       if ((data?.deposit ?? "").isNotEmpty) {
         specs.add(_buildInfoRow(
             context,
             num.parse("${data?.deposit ?? 0}").toStringAsFixed(0),
             '✅',
-            'Deposit'));
+            StringHelper.deposit));
       }
       if ((data?.insurance ?? "").isNotEmpty) {
         specs.add(_buildInfoRow(
-            context, "${data?.insurance?.capitalized}", '✅', 'Insurance'));
+            context, "${data?.insurance?.capitalized}", '✅', StringHelper.insurance));
       }
       if ((data?.accessToUtilities ?? "").isNotEmpty) {
         specs.add(_buildInfoRow(
             context,
             "${data?.accessToUtilities?.capitalized}",
             '✅',
-            'Access To Utilities'));
+            StringHelper.accessToUtilities));
       }
       return Column(
         mainAxisSize: MainAxisSize.min,

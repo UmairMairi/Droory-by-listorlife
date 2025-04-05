@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 
+/// A widget that enables programmatic app restarts by rebuilding the widget subtree.
+/// Wrap your `MaterialApp` or root widget with `RestartWidget`.
+///
+/// To restart the app:
+/// ```dart
+/// RestartWidget.restartApp(context);
+/// ```
 class RestartWidget extends StatefulWidget {
   final Widget child;
 
@@ -8,26 +15,32 @@ class RestartWidget extends StatefulWidget {
   @override
   State<RestartWidget> createState() => _RestartWidgetState();
 
-  // Call this method to restart the app
+  /// Call this method to restart the app by changing the widget tree key.
   static void restartApp(BuildContext context) {
-    context.findAncestorStateOfType<_RestartWidgetState>()?.restartApp();
+    final state = context.findAncestorStateOfType<_RestartWidgetState>();
+    if (state == null) {
+      debugPrint('RestartWidget: No ancestor state found to restart.');
+    } else {
+      state.restartApp();
+    }
   }
 }
 
 class _RestartWidgetState extends State<RestartWidget> {
-  Key key = UniqueKey();
+  Key _key = UniqueKey();
 
-  // This method triggers the app restart by changing the key
+  /// Triggers the app restart by assigning a new unique key,
+  /// which forces a rebuild of the entire subtree.
   void restartApp() {
     setState(() {
-      key = UniqueKey(); // Change the key to force the widget to rebuild
+      _key = UniqueKey();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return KeyedSubtree(
-      key: key,
+      key: _key,
       child: widget.child,
     );
   }

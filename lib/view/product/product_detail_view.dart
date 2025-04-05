@@ -888,7 +888,7 @@ class ProductDetailView extends BaseView<ProductVM> {
 
   String parseAmount(dynamic amount) {
     if ("${amount ?? ""}".isEmpty) return "0";
-    return num.parse("${amount ?? 0}").toStringAsFixed(0);
+    return Utils.formatPrice(num.parse("${amount ?? 0}").toStringAsFixed(0));
   }
 
   Widget getSpecifications({
@@ -909,7 +909,7 @@ class ProductDetailView extends BaseView<ProductVM> {
       if (productData?.fuel != null && productData!.fuel!.isNotEmpty) {
         specs.add(_buildSpecRow(
           context,
-          '${productData.fuel}',
+          Utils.getFuel('${productData.fuel}'),
           Icons.local_gas_station,
         ));
       }
@@ -1023,7 +1023,7 @@ class ProductDetailView extends BaseView<ProductVM> {
     if ((data?.propertyFor ?? "").isNotEmpty) {
       specs.add(_buildInfoRow(
         context,
-        "${data?.propertyFor?.capitalized}",
+        Utils.getPropertyType("${data?.propertyFor??""}"),
         '🏠',
         StringHelper.listingType,
       ));
@@ -1031,7 +1031,7 @@ class ProductDetailView extends BaseView<ProductVM> {
     if ((data?.area ?? 0) != 0) {
       specs.add(_buildInfoRow(
         context,
-        "${data?.area} sqft",
+        "${data?.area} ${StringHelper.sqft}",
         '📏',
         StringHelper.area,
       ));
@@ -1055,7 +1055,7 @@ class ProductDetailView extends BaseView<ProductVM> {
     if ((data?.furnishedType ?? "").isNotEmpty) {
       specs.add(_buildInfoRow(
         context,
-        "${data?.furnishedType?.capitalized}",
+        Utils.getFurnished("${data?.furnishedType??""}"),
         '🛋️',
         StringHelper.furnishedType,
       ));
@@ -1095,7 +1095,7 @@ class ProductDetailView extends BaseView<ProductVM> {
     if ((data?.type ?? "").isNotEmpty) {
       specs.add(_buildInfoRow(
         context,
-        "${data?.type?.capitalized}",
+        Utils.getProperty("${data?.type??""}"),
         '💳',
         StringHelper.propertyType,
       ));
@@ -1135,7 +1135,7 @@ class ProductDetailView extends BaseView<ProductVM> {
     if ((data?.rentalTerm ?? "").isNotEmpty) {
       specs.add(_buildInfoRow(
         context,
-        "${data?.rentalTerm?.capitalized}",
+          Utils.carRentalTerm("${data?.rentalTerm??""}"),
         '✅',
         StringHelper.rentalTerm,
       ));

@@ -99,17 +99,14 @@ class VillaForm extends StatelessWidget {
           title: StringHelper.type,
           hint: viewModel.propertyForTypeTextController.text,
           onSelected: (String? value) {
-            debugPrint("value ==111=> $value");
             viewModel.propertyForTypeTextController.text = value ?? "";
-            debugPrint(
-                "value ==222=> ${viewModel.propertyForTypeTextController.text}");
           },
           options: [
-            "Stand Alone",
-            "Townhouse",
-            "Twin House",
-            "I-Villa",
-            "Mansion"
+            StringHelper.standaloneVilla,
+            StringHelper.townHouseText,
+            StringHelper.twinHouse,
+            StringHelper.iVilla,
+            StringHelper.mansion
           ],
         ),
         AppTextField(

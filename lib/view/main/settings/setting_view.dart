@@ -21,12 +21,25 @@ import '../../../base/helpers/string_helper.dart';
 import '../../../models/setting_item_model.dart';
 import '../../../widgets/multi_select_category.dart';
 
-class SettingView extends BaseView<SettingVM> {
+class SettingView extends StatefulWidget {
   const SettingView({super.key});
 
+  @override
+  State<SettingView> createState() => _SettingViewState();
+}
+
+class _SettingViewState extends State<SettingView> {
+  late SettingVM viewModel;
 
   @override
-  Widget build(BuildContext context, SettingVM viewModel) {
+  void initState() {
+    viewModel = context.read<SettingVM>();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context, /*SettingVM viewModel*/) {
     viewModel.appSettingList = [
       SettingItemModel(
           isArrow: null,
@@ -309,65 +322,66 @@ class SettingView extends BaseView<SettingVM> {
   }
 
   void languageDialog(BuildContext context, SettingVM viewModel) {
+    final currentLang = DbHelper.getLanguage();
+
     showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(StringHelper.selectLanguage),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // English language option
-                ListTile(
-                  title: Text('Switch to English'),
-                  trailing: DbHelper.getLanguage() == 'en'
-                      ? Icon(Icons.check_circle,
-                      color: Colors.green)
-                      : null,
-                  onTap: () {
-                    if (DbHelper.getLanguage() != 'en') {
-                      DbHelper.saveLanguage(
-                          'en'); // Update to English
-                      context.read<LanguageProvider>().updateLanguage(
-                          context: context,
-                          lang:
-                          'en'); // Change app locale to Arabic
-                      // Change app locale to English
-                      Navigator.of(context)
-                          .pop(); // Close the dialog
-                    }
-                  },
-                ),
-                // Arabic language option
-                ListTile(
-                  title: Text('Switch to Arabic'),
-                  trailing: DbHelper.getLanguage() == 'ar'
-                      ? Icon(Icons.check_circle,
-                      color: Colors.green)
-                      : null,
-                  onTap: () {
-                    if (DbHelper.getLanguage() != 'ar') {
-                      DbHelper.saveLanguage(
-                          'ar'); // Update to Arabic
-                      context.read<LanguageProvider>().updateLanguage(
-                          context: context,
-                          lang:
-                          'ar'); // Change app locale to Arabic
-                      Navigator.of(context)
-                          .pop(); // Close the dialog
-                    }
-                  },
-                ),
-              ],
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text(StringHelper.cancel),
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(StringHelper.selectLanguage),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildLanguageTile(
+                context,
+                languageCode: 'en',
+                languageLabel: 'Switch to English',
+                isSelected: currentLang == 'en',
+              ),
+              _buildLanguageTile(
+                context,
+                languageCode: 'ar',
+                languageLabel: 'Switch to Arabic',
+                isSelected: currentLang == 'ar',
               ),
             ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(StringHelper.cancel),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildLanguageTile(
+      BuildContext context, {
+        required String languageCode,
+        required String languageLabel,
+        required bool isSelected,
+      }) {
+    return ListTile(
+      title: Text(languageLabel),
+      trailing: isSelected
+          ? const Icon(Icons.check_circle, color: Colors.green)
+          : null,
+      onTap: () {
+        if (!isSelected) {
+          DbHelper.saveLanguage(languageCode);
+          context.read<LanguageProvider>().updateLanguage(
+            context: context,
+            lang: languageCode,
           );
-        });
+          Navigator.of(context).pop();
+        }
+        if(mounted){
+          setState(() {});
+        }
+      },
+    );
   }
 
   void howToConnect(BuildContext context, SettingVM viewModel) {

@@ -193,60 +193,119 @@ class _FilterItemViewState extends State<FilterItemView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-            onPressed: () {
-              context.go(Routes.main);
-            },
-            icon: Icon(Icons.arrow_back_ios,
-                size: 20,
-                textDirection: TextDirection.ltr,
-                color: Colors.black)
-        ),
+        automaticallyImplyLeading: false,
         title: PreferredSize(
           preferredSize: const Size.fromHeight(60.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  autofocus: false,
-                  readOnly: true,
-                  onTap: ()async{
-                    String? value = await getSearchedData(context,
-                        query: "");
+          child: Directionality(
+            textDirection: TextDirection.ltr, // 👈 Force LTR layout for the row
+            child: Row(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    context.go(Routes.main);
                   },
-                  focusNode: searchFocusNode,
-                  onChanged: onSearchChanged,
-                  decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.search),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide:
-                              const BorderSide(color: Color(0xffd5d5d5))),
-                      hintStyle: Theme.of(context).textTheme.labelSmall,
-                      hintText: StringHelper.findCarsMobilePhonesAndMore),
-                ),
-              ),
-              const Gap(10),
-              InkWell(
-                onTap: () {
-                  //context.pop();
-                  context.push(Routes.filter, extra: filterModel);
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                      color: const Color(0xffd5d5d5),
-                      borderRadius: BorderRadius.circular(8)),
-                  child: Image.asset(
-                    AssetsRes.IC_FILTER_ICON,
-                    height: 25,
+                  icon: const Icon(
+                    Icons.arrow_back_ios,
+                    size: 20,
+                    color: Colors.black,
                   ),
                 ),
-              ),
-              const Gap(10),
-            ],
+                Expanded(
+                  child: TextField(
+                    autofocus: false,
+                    readOnly: true,
+                    onTap: () async {
+                      String? value = await getSearchedData(context, query: "");
+                    },
+                    focusNode: searchFocusNode,
+                    onChanged: onSearchChanged,
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.search),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: const BorderSide(color: Color(0xffd5d5d5)),
+                      ),
+                      hintStyle: Theme.of(context).textTheme.labelSmall,
+                      hintText: StringHelper.findCarsMobilePhonesAndMore,
+                    ),
+                  ),
+                ),
+                const Gap(10),
+                InkWell(
+                  onTap: () {
+                    context.push(Routes.filter, extra: filterModel);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                      color: const Color(0xffd5d5d5),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Image.asset(
+                      AssetsRes.IC_FILTER_ICON,
+                      height: 25,
+                    ),
+                  ),
+                ),
+                const Gap(10),
+              ],
+            ),
           ),
         ),
+        // leading: IconButton(
+        //     onPressed: () {
+        //       context.go(Routes.main);
+        //     },
+        //     icon: Icon(Icons.arrow_back_ios,
+        //         size: 20,
+        //         textDirection: TextDirection.ltr,
+        //         color: Colors.black)
+        // ),
+        // title: PreferredSize(
+        //   preferredSize: const Size.fromHeight(60.0),
+        //   child: Row(
+        //     children: [
+        //       Expanded(
+        //         child: TextField(
+        //           autofocus: false,
+        //           readOnly: true,
+        //           onTap: ()async{
+        //             String? value = await getSearchedData(context,
+        //                 query: "");
+        //           },
+        //           focusNode: searchFocusNode,
+        //           onChanged: onSearchChanged,
+        //           decoration: InputDecoration(
+        //               prefixIcon: const Icon(Icons.search),
+        //               border: OutlineInputBorder(
+        //                   borderRadius: BorderRadius.circular(8),
+        //                   borderSide:
+        //                       const BorderSide(color: Color(0xffd5d5d5))),
+        //               hintStyle: Theme.of(context).textTheme.labelSmall,
+        //               hintText: StringHelper.findCarsMobilePhonesAndMore),
+        //         ),
+        //       ),
+        //       const Gap(10),
+        //       InkWell(
+        //         onTap: () {
+        //           //context.pop();
+        //           context.push(Routes.filter, extra: filterModel);
+        //         },
+        //         child: Container(
+        //           padding: const EdgeInsets.all(15),
+        //           decoration: BoxDecoration(
+        //               color: const Color(0xffd5d5d5),
+        //               borderRadius: BorderRadius.circular(8)),
+        //           child: Image.asset(
+        //             AssetsRes.IC_FILTER_ICON,
+        //             height: 25,
+        //           ),
+        //         ),
+        //       ),
+        //       const Gap(10),
+        //     ],
+        //   ),
+        // ),
       ),
       body: SmartRefresher(
         controller: refreshController,

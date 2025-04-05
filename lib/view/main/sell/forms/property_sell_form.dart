@@ -33,7 +33,8 @@ class PropertyType extends BaseView<SellFormsVM> {
       this.brands});
   @override
   Widget build(BuildContext context, SellFormsVM viewModel) {
-    var propertyType = ["Rent","Sell"];
+    var propertyType = [CategoryModel(type:"Rent",name: StringHelper.rent),CategoryModel(type:"Sell",name: StringHelper.sell)];
+    //var propertyType = ["Rent","Sell"];
     return Scaffold(
       appBar: AppBar(
         title: Text(StringHelper.includeSomeDetails),
@@ -54,8 +55,8 @@ class PropertyType extends BaseView<SellFormsVM> {
                 itemBuilder: (context, index) {
                   return ListTile(
                     onTap: () {
-                      viewModel.currentPropertyType = propertyType[index];
-                      viewModel.propertyForTextController.text = propertyType[index];
+                      viewModel.currentPropertyType = propertyType[index].type??"";
+                      viewModel.propertyForTextController.text = propertyType[index].type??"";
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -69,7 +70,7 @@ class PropertyType extends BaseView<SellFormsVM> {
                           )));
                     },
                     title: Text(
-                      propertyType[index],
+                      propertyType[index].name??"",
                       style: context.textTheme.titleSmall,
                     ),
                     trailing: const Icon(Icons.arrow_forward_ios),

@@ -14,6 +14,7 @@ import 'package:list_and_life/models/common/map_response.dart';
 import 'package:list_and_life/models/product_detail_model.dart';
 
 import '../base/base_view_model.dart';
+import '../base/utils/utils.dart';
 import '../view/main/sell/forms/post_added_final_view.dart';
 
 class SellFormsVM extends BaseViewModel {
@@ -197,10 +198,10 @@ class SellFormsVM extends BaseViewModel {
   List<ProductMedias> imagesList = <ProductMedias>[];
   List<String> deletedImageIds = <String>[];
   List<String> educationList = [
-    'Tutions',
-    'Hobby Classes',
-    'Skill Development',
-    'Others'
+    StringHelper.tutions,
+    StringHelper.hobbyClasses,
+    StringHelper.skillDevelopment,
+    StringHelper.others
   ];
   List<String> jobPositionList = [
     StringHelper.contract,
@@ -208,21 +209,8 @@ class SellFormsVM extends BaseViewModel {
     StringHelper.partTime,
     StringHelper.temporary
   ];
-  List<String> salaryPeriodList = ['Hourly', 'Monthly', 'Weekly', 'Yearly'];
+  List<String> salaryPeriodList = [StringHelper.hourly, StringHelper.weekly, StringHelper.monthly, StringHelper.yearly];
 
-  // List of mileage ranges
-  // final List<String> mileageRanges = [
-  //   '0-5 km',
-  //   '5-10 km',
-  //   '10-15 km',
-  //   '15-20 km',
-  //   '20-25 km',
-  //   '25-30 km',
-  //   '30-35 km',
-  //   '35-40 km',
-  //   '40-45 km',
-  //   '45-50 km',
-  // ];
   final List<String> ramOptions = [
     '2 GB',
     '4 GB',
@@ -284,38 +272,22 @@ class SellFormsVM extends BaseViewModel {
     "10+ yrs"
   ];
   final List<String> workSettingOptions = [
-    "Remote",
-    "Office-based",
-    "Mixed (Home & Office)",
-    "Field-based"
+    StringHelper.remote,
+    StringHelper.officeBased,
+    StringHelper.mixOfficeBased,
+    StringHelper.fieldBased
   ];
   final List<String> workEducationOptions = [
-    "None",
-    "Student",
-    "High-Secondary School",
-    "Diploma",
-    "Bachelors Degree",
-    "Masters Degree",
-    "Doctorate/PhD"
+    StringHelper.none,
+    StringHelper.student,
+    StringHelper.highSchool,
+    StringHelper.diploma,
+    StringHelper.bDegree,
+    StringHelper.mDegree,
+    StringHelper.phd
   ];
 
-  final List<String> educationTypeOptions = ["Student", "High School"];
-  final List<String> carRentalTermOptions = ['Daily', 'Monthly', 'Yearly'];
-
-  final List<String> bodyTypeOptions = [
-    'SUV',
-    'Hatchback',
-    '4x4',
-    'Sedan',
-    'Coupe',
-    'Convertible',
-    'Estate',
-    'MPV',
-    'Pickup',
-    'Crossover',
-    'Van/bus',
-    'Other',
-  ];
+  final List<String> carRentalTermOptions = [StringHelper.daily, StringHelper.monthly, StringHelper.yearly];
 
   final List<String> horsepowerOptions = [
     'Less than 100 HP',
@@ -455,8 +427,9 @@ class SellFormsVM extends BaseViewModel {
   final List<CategoryModel> sizeOptions = [];
   List<CategoryModel?> _allModels = [];
   List<String> yearsType = [];
-  List<String> fuelsType = ['Petrol', 'Diesel', 'Electric', 'Hybrid', 'Gas'];
 
+
+  List<String> fuelsType = [StringHelper.petrol, StringHelper.diesel, StringHelper.electric, StringHelper.hybrid, StringHelper.gas];
   List<int?> get amenities => _amenities;
 
   List<CategoryModel?> get allModels => _allModels;
@@ -612,7 +585,7 @@ class SellFormsVM extends BaseViewModel {
 
     adTitleTextController.text = item.name ?? '';
     descriptionTextController.text = item.description ?? '';
-    lookingForController.text = item.lookingFor ?? '';
+    lookingForController.text = Utils.getCommon(item.lookingFor ?? '');
     addressTextController.text = item.nearby ?? '';
     priceTextController.text = item.price ?? '';
     productStatus = (item.status ?? 0).toInt();
@@ -633,24 +606,24 @@ class SellFormsVM extends BaseViewModel {
             ? "${item.storage} GB"
             : '';
     screenSizeTextController.text = item.screenSize ?? '';
-    jobPositionTextController.text = item.positionType ?? '';
-    jobSalaryTextController.text = item.salleryPeriod ?? '';
+    jobPositionTextController.text = Utils.getCommon(item.positionType ?? '');
+    jobSalaryTextController.text = Utils.carRentalTerm(item.salleryPeriod ?? '');
     jobSalaryFromController.text = item.salleryFrom ?? '';
     jobSalaryToController.text = item.salleryTo ?? '';
     mileageTextController.text = item.milleage ?? '';
-    educationTypeTextController.text = item.educationType ?? '';
-    workSettingTextController.text = item.workSetting ?? '';
+    educationTypeTextController.text = Utils.getEducationOptions(item.educationType ?? '');
+    workSettingTextController.text = Utils.getCommon(item.workSetting ?? '');
     workExperienceTextController.text = item.workExperience ?? '';
-    workEducationTextController.text = item.workEducation ?? '';
+    workEducationTextController.text = Utils.getEducationOptions(item.workEducation ?? '');
     yearTextController.text = item.year?.toString() ?? '';
-    fuelTextController.text = item.fuel ?? '';
+    fuelTextController.text = Utils.getFuel(item.fuel ?? '');
     horsePowerTextController.text = item.horsePower ?? '';
     bodyTypeTextController.text = item.bodyType ?? '';
     carColorTextController.text = item.carColor ?? '';
     engineCapacityTextController.text = item.engineCapacity ?? '';
     interiorColorTextController.text = item.interiorColor ?? '';
     numbCylindersTextController.text = item.numbCylinders ?? '';
-    carRentalTermTextController.text = item.carRentalTerm ?? '';
+    carRentalTermTextController.text = Utils.carRentalTerm(item.carRentalTerm ?? '');
     numbDoorsTextController.text = item.numbDoors ?? '';
     kmDrivenTextController.text = item.kmDriven?.toString() ?? '';
     numOfOwnerTextController.text = item.numberOfOwner?.toString() ?? '';
@@ -667,33 +640,32 @@ class SellFormsVM extends BaseViewModel {
         ? CategoryModel(id: item.sizeId, name: item.fashionSize?.name)
         : null;
 
-    propertyForTextController.text = item.propertyFor ?? '';
-    currentPropertyType = item.propertyFor ?? '';
-
+    propertyForTextController.text = Utils.setPropertyType(item.propertyFor ?? '');
+    currentPropertyType = Utils.setPropertyType(item.propertyFor ?? '');
     noOfBedroomsTextController.text = "${item.bedrooms ?? ''}";
     noOfBathroomsTextController.text = "${item.bathrooms ?? ''}";
     levelTextController.text = item.level ?? '';
     propertyAgeTextController.text = item.buildingAge ?? '';
     depositTextController.text = item.deposit ?? '';
     insuranceTextController.text = item.insurance ?? '';
-    rentalTermsTextController.text = item.rentalTerm ?? '';
+    rentalTermsTextController.text = Utils.carRentalTerm(item.rentalTerm ?? '');
     rentalPriceTextController.text = item.rentalPrice ?? '';
-    listedByTextController.text = item.listedBy ?? '';
-    propertyForTypeTextController.text = item.type ?? '';
-    furnishingStatusTextController.text = item.furnishedType ?? '';
-    currentFurnishing = item.furnishedType ?? '';
-    ownershipStatusTextController.text = item.ownership ?? '';
-    paymentTypeTextController.text = item.paymentType ?? '';
-    currentPaymentOption = item.paymentType ?? '';
-    accessToUtilitiesTextController.text = item.accessToUtilities ?? '';
+    listedByTextController.text = Utils.getCommon(item.listedBy ?? '');
+    propertyForTypeTextController.text = Utils.getProperty(item.type ?? '');
+    furnishingStatusTextController.text = Utils.getFurnished(item.furnishedType ?? '');
+    currentFurnishing = Utils.getFurnished(item.furnishedType ?? '');
+    ownershipStatusTextController.text = Utils.getCommon(item.ownership ?? '');
+    paymentTypeTextController.text = Utils.getPaymentTyp(item.paymentType ?? '');
+    currentPaymentOption = Utils.getPaymentTyp(item.paymentType ?? '');
+    accessToUtilitiesTextController.text = Utils.getUtilityTyp(item.accessToUtilities ?? '');
     sizeTextController.text = item.fashionSize?.name ?? '';
 
-    currentAccessToUtilities = item.accessToUtilities ?? '';
+    currentAccessToUtilities = Utils.getUtilityTyp(item.accessToUtilities ?? '');
     areaSizeTextController.text = "${item.area ?? ''}";
-    completionStatusTextController.text = item.completionStatus ?? '';
-    currentCompletion = item.completionStatus ?? '';
-    currentDeliveryTerm = item.deliveryTerm ?? '';
-    deliveryTermTextController.text = item.deliveryTerm ?? '';
+    completionStatusTextController.text = Utils.getUtilityTyp(item.completionStatus ?? '');
+    currentCompletion = Utils.getUtilityTyp(item.completionStatus ?? '');
+    currentDeliveryTerm = Utils.getCommon(item.deliveryTerm ?? '');
+    deliveryTermTextController.text = Utils.getCommon(item.deliveryTerm ?? '');
     amenities =
         item.productAmenities?.map((element) => element.amnityId).toList() ??
             [];
@@ -911,22 +883,22 @@ class SellFormsVM extends BaseViewModel {
     Map<String, dynamic> fields = {
       "name": trimController(adTitleTextController),
       "description": trimController(descriptionTextController),
-      "looking_for": trimController(lookingForController),
+      "looking_for": Utils.setCommon(trimController(lookingForController)),
       "price": trimController(priceTextController) ?? '0',
       "year": trimController(yearTextController),
-      "fuel": trimController(fuelTextController),
+      "fuel": Utils.setFuel(trimController(fuelTextController)),
       "milleage": trimController(mileageTextController),
       "km_driven": trimController(kmDrivenTextController),
       "number_of_owner": trimController(numOfOwnerTextController),
       "car_color": trimController(carColorTextController),
       "horse_power": trimController(horsePowerTextController),
-      "education_type": trimController(educationTypeTextController),
+      "education_type": Utils.setEducationOptions(trimController(educationTypeTextController)),
       "body_type": trimController(bodyTypeTextController),
       "engine_capacity": trimController(engineCapacityTextController),
       "interior_color": trimController(interiorColorTextController),
       "numb_cylinders": trimController(numbCylindersTextController),
       "numb_doors": trimController(numbDoorsTextController),
-      "car_rental_term": trimController(carRentalTermTextController),
+      "car_rental_term": Utils.setCarRentalTerm(trimController(carRentalTermTextController)),
       "country": country,
       "state": state,
       "city": city,
@@ -934,43 +906,43 @@ class SellFormsVM extends BaseViewModel {
       "longitude": position?.longitude,
       "nearby": trimController(addressTextController),
       "position_type": trimController(jobPositionTextController) != null
-          ? getPositionType(type: jobPositionTextController.text.trim())
+          ? getPositionType(type: Utils.setCommon(jobPositionTextController.text.trim()))
           : "",
       "sallery_period": trimController(jobSalaryTextController) != null
-          ? getSalaryPeriod(type: jobSalaryTextController.text.trim())
+          ? getSalaryPeriod(type: Utils.setCarRentalTerm(jobSalaryTextController.text.trim()))
           : "",
       "sallery_from": trimController(jobSalaryFromController),
       "sallery_to": trimController(jobSalaryToController),
-      "work_setting": trimController(workSettingTextController),
+      "work_setting": Utils.setCommon(trimController(workSettingTextController)),
       "work_experience": trimController(workExperienceTextController),
-      "work_education": trimController(workEducationTextController),
+      "work_education": Utils.setEducationOptions(trimController(workEducationTextController)),
       "material": trimController(materialTextController),
       "ram": trimController(ramTextController),
       "storage": trimController(storageTextController),
       "screen_size": trimController(screenSizeTextController),
       "communication_choice": communication,
-      "property_for": trimController(propertyForTextController),
+      "property_for": Utils.setPropertyType(trimController(propertyForTextController)),
       "bedrooms": trimController(noOfBedroomsTextController),
       "bathrooms": trimController(noOfBathroomsTextController),
-      "furnished_type": trimController(furnishingStatusTextController),
-      "ownership": trimController(ownershipStatusTextController),
+      "furnished_type": Utils.setFurnished(trimController(furnishingStatusTextController)),
+      "ownership": Utils.setCommon(trimController(ownershipStatusTextController)),
       "payment_type":
-          transformToSnakeCase(trimController(paymentTypeTextController)),
+          transformToSnakeCase(Utils.setPaymentTyp(trimController(paymentTypeTextController))),
       "completion_status":
-          transformToSnakeCase(trimController(completionStatusTextController)),
+          transformToSnakeCase(Utils.setUtilityTyp(trimController(completionStatusTextController))),
       "delivery_term":
-          transformToSnakeCase(trimController(deliveryTermTextController)),
+          transformToSnakeCase(Utils.setCommon(trimController(deliveryTermTextController))),
       "selected_amnities": amenities.isNotEmpty ? amenities.join(',') : "",
       "area": trimController(areaSizeTextController),
-      "type": trimController(propertyForTypeTextController),
+      "type": Utils.setProperty(trimController(propertyForTypeTextController)),
       "level": trimController(levelTextController),
       "building_age": trimController(propertyAgeTextController),
-      "listed_by": trimController(listedByTextController),
+      "listed_by": Utils.setCommon(trimController(listedByTextController)),
       "rental_price": trimController(rentalPriceTextController),
-      "rental_term": trimController(rentalTermsTextController),
+      "rental_term": Utils.setCarRentalTerm(trimController(rentalTermsTextController)),
       "deposit": trimController(depositTextController),
       "insurance": trimController(insuranceTextController),
-      "access_to_utilities": trimController(accessToUtilitiesTextController),
+      "access_to_utilities": Utils.setUtilityTyp(trimController(accessToUtilitiesTextController)),
     };
 
     if (mainImage.isNotEmpty) {
@@ -1048,14 +1020,14 @@ class SellFormsVM extends BaseViewModel {
       "product_id": productId,
       "name": trimController(adTitleTextController),
       "description": trimController(descriptionTextController),
-      "looking_for ": trimController(lookingForController),
+      "looking_for ": Utils.setCommon(trimController(lookingForController)),
       "price": trimController(priceTextController) ?? "0",
       "year": trimController(yearTextController),
-      "fuel": trimController(fuelTextController),
+      "fuel": Utils.setFuel(trimController(fuelTextController)),
       "milleage": trimController(mileageTextController),
       "km_driven": trimController(kmDrivenTextController),
       "number_of_owner": trimController(numOfOwnerTextController),
-      "education_type": trimController(educationTypeTextController),
+      "education_type": Utils.setEducationOptions(trimController(educationTypeTextController)),
       "country": country,
       "state": state,
       "city": city,
@@ -1063,22 +1035,22 @@ class SellFormsVM extends BaseViewModel {
       "longitude": position?.longitude,
       "nearby": trimController(addressTextController),
       "position_type": trimController(jobPositionTextController) != null
-          ? getPositionType(type: jobPositionTextController.text.trim())
+          ? getPositionType(type: Utils.setCommon(jobPositionTextController.text.trim()))
           : "",
       "sallery_period": trimController(jobSalaryTextController) != null
-          ? getSalaryPeriod(type: jobSalaryTextController.text.trim())
+          ? getSalaryPeriod(type: Utils.setCarRentalTerm(jobSalaryTextController.text.trim()))
           : "",
       "sallery_from": trimController(jobSalaryFromController),
       "sallery_to": trimController(jobSalaryToController),
-      "work_setting": trimController(workSettingTextController),
+      "work_setting": Utils.setCommon(trimController(workSettingTextController)),
       "work_experience": trimController(workExperienceTextController),
-      "work_education": trimController(workEducationTextController),
+      "work_education": Utils.setEducationOptions(trimController(workEducationTextController)),
       "material": trimController(materialTextController),
       "ram": trimController(ramTextController),
       "storage": trimController(storageTextController),
       "body_type": trimController(bodyTypeTextController),
       "car_color": trimController(carColorTextController),
-      "car_rental_term": trimController(carRentalTermTextController),
+      "car_rental_term": Utils.setCarRentalTerm(trimController(carRentalTermTextController)),
       "screen_size": trimController(screenSizeTextController),
       "horse_power": trimController(horsePowerTextController),
       "engine_capacity": trimController(engineCapacityTextController),
@@ -1091,25 +1063,25 @@ class SellFormsVM extends BaseViewModel {
       'property_for': trimController(propertyForTextController),
       'bedrooms': trimController(noOfBedroomsTextController),
       'bathrooms': trimController(noOfBathroomsTextController),
-      'furnished_type': trimController(furnishingStatusTextController),
-      'ownership': trimController(ownershipStatusTextController),
+      'furnished_type': Utils.setFurnished(trimController(furnishingStatusTextController)),
+      'ownership': Utils.setCommon(trimController(ownershipStatusTextController)),
       'payment_type':
-          transformToSnakeCase(trimController(paymentTypeTextController)),
+          transformToSnakeCase(Utils.setPaymentTyp(trimController(paymentTypeTextController))),
       'completion_status':
-          transformToSnakeCase(trimController(completionStatusTextController)),
+          transformToSnakeCase(Utils.setUtilityTyp(trimController(completionStatusTextController))),
       'delivery_term':
-          transformToSnakeCase(trimController(deliveryTermTextController)),
+          transformToSnakeCase(Utils.setCommon(trimController(deliveryTermTextController))),
       'selected_amnities': amenities.isNotEmpty ? amenities.join(',') : "",
       'area': trimController(areaSizeTextController),
-      'type': trimController(propertyForTypeTextController),
+      'type': Utils.setProperty(trimController(propertyForTypeTextController)),
       'level': trimController(levelTextController),
       'building_age': trimController(propertyAgeTextController),
-      'listed_by': trimController(listedByTextController),
+      'listed_by': Utils.setCommon(trimController(listedByTextController)),
       'rental_price': trimController(rentalPriceTextController),
-      'rental_term': trimController(rentalTermsTextController),
+      'rental_term': Utils.setCarRentalTerm(trimController(rentalTermsTextController)),
       'deposit': trimController(depositTextController),
       'insurance': trimController(insuranceTextController),
-      'access_to_utilities': trimController(accessToUtilitiesTextController),
+      'access_to_utilities': Utils.setUtilityTyp(trimController(accessToUtilitiesTextController)),
     };
 
     if (mainImage.isNotEmpty) {

@@ -114,7 +114,7 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget>
                         width: context.width,
                         borderRadius: widget.radius,
                         height: widget.height ?? 220,
-                        fit: widget.fit ?? BoxFit.cover,
+                        fit: BoxFit.contain,
                         /*onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
