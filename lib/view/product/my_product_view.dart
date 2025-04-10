@@ -649,22 +649,22 @@ class _MyProductViewState extends State<MyProductView> {
       }
       if ((data?.ownership ?? "").isNotEmpty) {
         specs.add(_buildInfoRow(
-            context, "${data?.ownership?.capitalized}", '📜', StringHelper.ownership));
+            context, "${Utils.getCommon(data?.ownership??"").capitalized}", '📜', StringHelper.ownership));
       }
       if ((data?.paymentType ?? "").isNotEmpty) {
-        specs.add(_buildInfoRow(context, "${data?.paymentType?.capitalized}",
+        specs.add(_buildInfoRow(context, "${Utils.getPaymentTyp(data?.paymentType??"").capitalized}",
             '💳', StringHelper.paymentType));
       }
       if ((data?.completionStatus ?? "").isNotEmpty) {
         specs.add(_buildInfoRow(
             context,
-            "${data?.completionStatus?.capitalized}",
+            "${Utils.getUtilityTyp(data?.completionStatus??"").capitalized}",
             '✅',
             StringHelper.completionStatus));
       }
 
       if ((data?.deliveryTerm ?? "").isNotEmpty) {
-        specs.add(_buildInfoRow(context, (data?.deliveryTerm ?? "").capitalized,
+        specs.add(_buildInfoRow(context, Utils.getCommon(data?.deliveryTerm ?? "").capitalized,
             '🚚', StringHelper.deliveryTerm));
       }
 
@@ -683,7 +683,7 @@ class _MyProductViewState extends State<MyProductView> {
       }
       if ((data?.listedBy ?? "").isNotEmpty) {
         specs.add(_buildInfoRow(
-            context, "${data?.listedBy?.capitalized}", '✅', StringHelper.listedBy));
+            context, "${Utils.getCommon(data?.listedBy??"").capitalized}", '✅', StringHelper.listedBy));
       }
       if ((data?.rentalPrice ?? "").isNotEmpty) {
         specs.add(_buildInfoRow(
@@ -710,7 +710,7 @@ class _MyProductViewState extends State<MyProductView> {
       if ((data?.accessToUtilities ?? "").isNotEmpty) {
         specs.add(_buildInfoRow(
             context,
-            "${data?.accessToUtilities?.capitalized}",
+            "${Utils.getUtilityTyp(data?.accessToUtilities??"")}",
             '✅',
             StringHelper.accessToUtilities));
       }

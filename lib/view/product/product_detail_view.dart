@@ -1063,7 +1063,7 @@ class ProductDetailView extends BaseView<ProductVM> {
     if ((data?.ownership ?? "").isNotEmpty) {
       specs.add(_buildInfoRow(
         context,
-        "${data?.ownership?.capitalized}",
+        "${Utils.getCommon(data?.ownership??"").capitalized}",
         '📜',
         StringHelper.ownership,
       ));
@@ -1071,7 +1071,7 @@ class ProductDetailView extends BaseView<ProductVM> {
     if ((data?.paymentType ?? "").isNotEmpty) {
       specs.add(_buildInfoRow(
         context,
-        "${data?.paymentType?.capitalized}",
+        "${Utils.getPaymentTyp(data?.paymentType??"").capitalized}",
         '💳',
         StringHelper.paymentType,
       ));
@@ -1079,7 +1079,7 @@ class ProductDetailView extends BaseView<ProductVM> {
     if ((data?.completionStatus ?? "").isNotEmpty) {
       specs.add(_buildInfoRow(
         context,
-        "${data?.completionStatus?.capitalized}",
+        "${Utils.getUtilityTyp(data?.completionStatus??"").capitalized}",
         '✅',
         StringHelper.completionStatus,
       ));
@@ -1087,7 +1087,7 @@ class ProductDetailView extends BaseView<ProductVM> {
     if ((data?.deliveryTerm ?? "").isNotEmpty) {
       specs.add(_buildInfoRow(
         context,
-        (data?.deliveryTerm ?? "").capitalized,
+        Utils.getCommon(data?.deliveryTerm ?? "").capitalized,
         '🚚',
         StringHelper.deliveryTerm,
       ));
@@ -1119,7 +1119,7 @@ class ProductDetailView extends BaseView<ProductVM> {
     if ((data?.listedBy ?? "").isNotEmpty) {
       specs.add(_buildInfoRow(
         context,
-        "${data?.listedBy?.capitalized}",
+        "${Utils.getCommon(data?.listedBy??"").capitalized}",
         '✅',
         StringHelper.listedBy,
       ));
@@ -1159,7 +1159,7 @@ class ProductDetailView extends BaseView<ProductVM> {
     if ((data?.accessToUtilities ?? "").isNotEmpty) {
       specs.add(_buildInfoRow(
         context,
-        "${data?.accessToUtilities?.capitalized}",
+        "${Utils.getUtilityTyp(data?.accessToUtilities??"")}",
         '✅',
         StringHelper.accessToUtilities,
       ));

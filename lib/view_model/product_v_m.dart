@@ -505,19 +505,19 @@ class ProductVM extends BaseViewModel {
             StringHelper.furnished));
       }
       if ((data?.ownership ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, data?.ownership ?? "",
+        specs.add(_buildSpecRow(context, Utils.getCommon(data?.ownership ?? ""),
             Icons.account_balance, StringHelper.owner));
       }
       if ((data?.paymentType ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, data?.paymentType ?? "", Icons.payment,
+        specs.add(_buildSpecRow(context, Utils.getPaymentTyp(data?.paymentType ?? ""), Icons.payment,
             StringHelper.paymentType));
       }
       if ((data?.completionStatus ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, data?.completionStatus ?? "",
+        specs.add(_buildSpecRow(context, Utils.getUtilityTyp(data?.completionStatus ?? ""),
             Icons.check_circle, StringHelper.completionStatus));
       }
       if ((data?.deliveryTerm ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, data?.deliveryTerm ?? "",
+        specs.add(_buildSpecRow(context, Utils.getCommon(data?.deliveryTerm ?? ""),
             Icons.local_shipping, StringHelper.deliveryTerm));
       }
     }
