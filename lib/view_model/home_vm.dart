@@ -422,7 +422,7 @@ class HomeVM extends BaseViewModel {
     }
   }
 
-  Future<void> onRefresh() async {
+  Future<void> onRefresh({bool? useLatLng}) async {
     // monitor network fetch
     try {
       page = 1;
@@ -430,7 +430,7 @@ class HomeVM extends BaseViewModel {
       if (!DbHelper.getIsGuest()) {
         getChatNotifyCount();
       }
-      await getProductsApi(loading: true);
+      await getProductsApi(loading: true,useLatLng:useLatLng);
       scrollController.animateTo(
         scrollController.position.minScrollExtent,
         duration: const Duration(milliseconds: 300),
@@ -442,24 +442,24 @@ class HomeVM extends BaseViewModel {
     }
   }
 
-  Future<void> onLoading() async {
+  Future<void> onLoading({bool? useLatLng}) async {
     // monitor network fetch
     ++page;
-    await getProductsApi(loading: false);
+    await getProductsApi(loading: false,useLatLng:useLatLng);
 
     ///await fetchProducts();
     refreshController.loadComplete();
   }
 
-  Future<void> getProductsApi({bool loading = false, String? search}) async {
+  Future<void> getProductsApi({bool loading = false, String? search, bool? useLatLng}) async {
     if (loading) isLoading = loading;
 
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.getProductsUrl(
             limit: limit,
             page: page,
-            latitude: latitude,
-            longitude: longitude,
+            latitude: useLatLng == true?0.0:latitude,
+            longitude: useLatLng == true?0.0:longitude,
             sellStatus: 'ongoing',
             search: searchQuery), // Add search parameter
         requestType: RequestType.get);

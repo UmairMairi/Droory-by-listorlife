@@ -209,7 +209,7 @@ class ProductVM extends BaseViewModel {
             Icons.aspect_ratio, StringHelper.screenSize));
       }
       if ((data?.itemCondition ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, "${data?.itemCondition}",
+        specs.add(_buildSpecRow(context, "${Utils.getCommon(data?.itemCondition)}",
             Icons.verified_user, StringHelper.condition));
       }
     }
@@ -217,7 +217,7 @@ class ProductVM extends BaseViewModel {
     // Home & Living Specifications
     if (data?.categoryId == 2) {
       if ((data?.itemCondition ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, "${data?.itemCondition}", Icons.chair,
+        specs.add(_buildSpecRow(context, "${Utils.getCommon(data?.itemCondition)}", Icons.chair,
             StringHelper.condition));
       }
       if (data?.fashionSize != null &&
@@ -254,7 +254,7 @@ class ProductVM extends BaseViewModel {
       }
 
       if ((data?.itemCondition ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, "${data?.itemCondition}",
+        specs.add(_buildSpecRow(context, "${Utils.getCommon(data?.itemCondition)}",
             Icons.visibility, StringHelper.condition));
       }
     }
@@ -292,7 +292,7 @@ class ProductVM extends BaseViewModel {
             StringHelper.kmDriven));
       }
       if ((data?.transmission ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, "${data?.transmission}",
+        specs.add(_buildSpecRow(context, "${Utils.getCommon(data?.transmission)}",
             Icons.autorenew, StringHelper.transmission));
       }
       if (("${data?.numberOfOwner ?? 0}") != "0") {
@@ -300,11 +300,11 @@ class ProductVM extends BaseViewModel {
             Icons.account_circle, StringHelper.noOfOwners));
       }
       if ((data?.itemCondition ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, "${data?.itemCondition}",
+        specs.add(_buildSpecRow(context, "${Utils.getCommon(Utils.getCommon(data?.itemCondition))}",
             Icons.verified_user, StringHelper.condition));
       }
       if ((data?.carColor ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, "${data?.carColor}",
+        specs.add(_buildSpecRow(context, "${Utils.getColor(data?.carColor)}",
             Icons.verified_user, StringHelper.carColorTitle));
       }
       if ((data?.bodyType ?? "").isNotEmpty) {
@@ -320,11 +320,11 @@ class ProductVM extends BaseViewModel {
             Icons.verified_user, StringHelper.engineCapacityTitle));
       }
       if ((data?.interiorColor ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, "${data?.interiorColor}",
+        specs.add(_buildSpecRow(context, "${Utils.getColor(data?.interiorColor)}",
             Icons.verified_user, StringHelper.interiorColorTitle));
       }
       if ((data?.numbDoors ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, "${data?.numbDoors}",
+        specs.add(_buildSpecRow(context, "${Utils.getDoorsText(data?.numbDoors)}",
             Icons.verified_user, StringHelper.numbDoorsTitle));
       }
       if ((data?.carRentalTerm ?? "").isNotEmpty) {
@@ -336,7 +336,7 @@ class ProductVM extends BaseViewModel {
     // Hobbies, Music, Art & Books Specifications
     if (data?.categoryId == 5) {
       if ((data?.itemCondition ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, data?.itemCondition ?? "",
+        specs.add(_buildSpecRow(context, Utils.getCommon(data?.itemCondition) ?? "",
             Icons.art_track, StringHelper.condition));
       }
       if (data?.brand != null && (data?.brand?.name ?? "").isNotEmpty) {
@@ -347,7 +347,7 @@ class ProductVM extends BaseViewModel {
     if (data?.categoryId == 8) {
       if (data?.brand != null && (data?.brand?.name ?? "").isNotEmpty) {
         specs.add(_buildSpecRow(
-            context, "${data?.brand?.name}", Icons.category, "Type"));
+            context, "${data?.brand?.name}", Icons.category, StringHelper.type));
       }
     }
     // Pets Specifications
@@ -390,7 +390,7 @@ class ProductVM extends BaseViewModel {
             StringHelper.models));
       }
       if ((data?.itemCondition ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, data?.itemCondition ?? "",
+        specs.add(_buildSpecRow(context, Utils.getCommon(data?.itemCondition) ?? "",
             Icons.visibility, StringHelper.condition));
       }
       if (data?.brand != null && (data?.brand?.name ?? "").isNotEmpty) {
@@ -477,7 +477,7 @@ class ProductVM extends BaseViewModel {
             Icons.sd_storage, StringHelper.strong));
       }
       if ((data?.itemCondition ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, "${data?.itemCondition}",
+        specs.add(_buildSpecRow(context, "${Utils.getCommon(data?.itemCondition)}",
             Icons.visibility, StringHelper.condition));
       }
     }

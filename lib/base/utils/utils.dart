@@ -13,6 +13,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../res/assets_res.dart';
+import '../lang/locale_service.dart';
 
 class Utils {
   static DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
@@ -384,6 +385,15 @@ class Utils {
       case 'field-based':
       case 'على أساس ميداني':
         return StringHelper.fieldBased;
+      case 'automatic':
+        return StringHelper.automatic;
+      case 'manual':
+        return StringHelper.manual;
+
+        case 'new':
+        return StringHelper.newText;
+        case 'used':
+        return StringHelper.used;
       default:
         return type ?? "";
     }
@@ -411,6 +421,64 @@ class Utils {
         return type ?? "";
     }
   }
+  static String getColor(String? color) {
+    if ((color ?? "").isEmpty) return "";
+
+    switch ((color ?? "").toLowerCase()) {
+      case "red":
+      case "أحمر":
+        return LocaleService.translate('red') ?? 'Red';
+      case "blue":
+      case "أزرق":
+        return LocaleService.translate('blue') ?? 'Blue';
+      case "green":
+      case "أخضر":
+        return LocaleService.translate('green') ?? 'Green';
+      case "black":
+      case "أسود":
+        return LocaleService.translate('black') ?? 'Black';
+      case "white":
+      case "أبيض":
+        return LocaleService.translate('white') ?? 'White';
+      case "silver":
+      case "فضي":
+        return LocaleService.translate('silver') ?? 'Silver';
+      case "gray":
+      case "رمادي":
+        return LocaleService.translate('gray') ?? 'Gray';
+      case "burgundy":
+      case "عنابي":
+        return LocaleService.translate('burgundy') ?? 'Burgundy';
+      case "gold":
+      case "ذهبي":
+        return LocaleService.translate('gold') ?? 'Gold';
+      case "beige":
+      case "بيج":
+        return LocaleService.translate('beige') ?? 'Beige';
+      case "orange":
+      case "برتقالي":
+        return LocaleService.translate('orange') ?? 'Orange';
+      case "other color":
+      case "لون آخر":
+        return LocaleService.translate('other_color') ?? 'Other color';
+      default:
+        return color ?? "";
+    }
+  }
+
+  static String getDoorsText(String? type) {
+    if ((type ?? "").isEmpty) return "";
+
+    if ((type ?? "").contains('Doors')) {
+      // Extract the number part (assuming it's before the word 'Doors')
+      final number = (type ?? "").split(' ').first;
+      final label = DbHelper.getLanguage() == 'en' ? "Doors" : "أبواب";
+      return "$number $label";
+    }
+
+    return type ?? "";
+  }
+
 
   static String getFurnished(String? type) {
     if ((type ?? "").isEmpty) return "";
@@ -1003,10 +1071,9 @@ class Utils {
   }
 
   static String formatPrice(dynamic price) {
-    if ("${price??""}".isEmpty) return "0";
-    var number = num.parse("${price??0}");
+    if ("${price ?? ""}".isEmpty) return "0";
+    var number = num.parse("${price ?? 0}");
     final formatter = NumberFormat('#,###.##');
     return formatter.format(number);
   }
-
 }
