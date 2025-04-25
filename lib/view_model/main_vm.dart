@@ -116,7 +116,7 @@ class MainVM extends BaseViewModel {
     switch (index) {
       case 0:
         context.read<HomeVM>().callApiMethods();
-        context.read<HomeVM>().onRefresh(useLatLng: true);
+        context.read<HomeVM>().onRefresh();
         return;
       case 1:
         if (DbHelper.getIsGuest()) {

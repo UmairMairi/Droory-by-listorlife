@@ -406,7 +406,7 @@ class ProductVM extends BaseViewModel {
             Icons.work, StringHelper.jobType));
       }
       if ((data?.positionType ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, "${data?.positionType}", Icons.work,
+        specs.add(_buildSpecRow(context, "${Utils.getCommon(Utils.transformToSnakeCase(data?.positionType))}", Icons.work,
             StringHelper.positionType));
       }
       if (data?.brand != null && (data?.brand?.name ?? "").isNotEmpty) {
@@ -509,7 +509,7 @@ class ProductVM extends BaseViewModel {
             Icons.account_balance, StringHelper.owner));
       }
       if ((data?.paymentType ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, Utils.getPaymentTyp(data?.paymentType ?? ""), Icons.payment,
+        specs.add(_buildSpecRow(context, Utils.getPaymentTyp(Utils.transformToSnakeCase(data?.paymentType ?? "")), Icons.payment,
             StringHelper.paymentType));
       }
       if ((data?.completionStatus ?? "").isNotEmpty) {
@@ -538,6 +538,8 @@ class ProductVM extends BaseViewModel {
 
     return specs.isNotEmpty ? [...specs] : [];
   }
+
+
 
   // Method to show modal with full specifications
   void _showFullSpecsModal(BuildContext context, List<Widget> specs) {

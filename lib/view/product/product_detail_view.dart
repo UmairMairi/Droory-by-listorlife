@@ -1008,7 +1008,7 @@ class ProductDetailView extends BaseView<ProductVM> {
     };
 
     return Icon(
-      amenityIconMap[amenityName] ?? Icons.help_outline,
+      amenityIconMap[(amenityName).replaceAll('\n', '')] ?? Icons.help_outline,
       color: Colors.blueGrey,
     );
   }
@@ -1071,7 +1071,7 @@ class ProductDetailView extends BaseView<ProductVM> {
     if ((data?.paymentType ?? "").isNotEmpty) {
       specs.add(_buildInfoRow(
         context,
-        "${Utils.getPaymentTyp(data?.paymentType??"").capitalized}",
+        "${Utils.getPaymentTyp(Utils.transformToSnakeCase(data?.paymentType??""))}",
         '💳',
         StringHelper.paymentType,
       ));

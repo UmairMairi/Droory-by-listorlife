@@ -652,7 +652,7 @@ class _MyProductViewState extends State<MyProductView> {
             context, "${Utils.getCommon(data?.ownership??"").capitalized}", '📜', StringHelper.ownership));
       }
       if ((data?.paymentType ?? "").isNotEmpty) {
-        specs.add(_buildInfoRow(context, "${Utils.getPaymentTyp(data?.paymentType??"").capitalized}",
+        specs.add(_buildInfoRow(context, "${Utils.getPaymentTyp(Utils.transformToSnakeCase(data?.paymentType??"")).capitalized}",
             '💳', StringHelper.paymentType));
       }
       if ((data?.completionStatus ?? "").isNotEmpty) {
@@ -861,7 +861,7 @@ class _MyProductViewState extends State<MyProductView> {
 
     // Return the icon if found in the map, otherwise return a default icon
     return Icon(
-      amenityIconMap[amenityName] ?? Icons.help_outline,
+      amenityIconMap[(amenityName).replaceAll('\n', '')] ?? Icons.help_outline,
       color: Colors.blueGrey, // "help_outline" as a default icon
     );
   }

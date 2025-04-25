@@ -482,7 +482,9 @@ class Utils {
 
   static String getFurnished(String? type) {
     if ((type ?? "").isEmpty) return "";
-    switch ((type ?? "").toLowerCase()) {
+    var tt = (transformToSnakeCase(type??"")??"").toLowerCase();
+
+    switch ((tt).toLowerCase()) {
       case "furnished":
       case "مفروشة":
         return StringHelper.furnished;
@@ -550,7 +552,9 @@ class Utils {
 
       return results.join(', ');
     }
-    switch ((type ?? "").toLowerCase()) {
+    var tt = (transformToSnakeCase(type??"")??"").toLowerCase();
+
+    switch ((tt).toLowerCase()) {
       case "water supply":
       case "إمدادات المياه":
         return "Water Supply";
@@ -621,7 +625,9 @@ class Utils {
 
       return results.join(', ');
     }
-    switch ((type ?? "").toLowerCase()) {
+    var tt = (transformToSnakeCase(type??"")??"").toLowerCase();
+
+    switch ((tt).toLowerCase()) {
       case "water supply":
       case "إمدادات المياه":
         return StringHelper.waterSupply;
@@ -665,9 +671,14 @@ class Utils {
     }
   }
 
+  static String? transformToSnakeCase(String? value) =>
+      value?.toLowerCase().split('_').join(' ');
   static String getPaymentTyp(String? type) {
+
     if ((type ?? "").isEmpty) return "";
-    switch ((type ?? "")) {
+    var tt = (transformToSnakeCase(type??"")??"").toLowerCase();
+    debugPrint("ghhhhhg $tt");
+    switch (tt) {
       case "installment":
       case "تقسيط":
         return StringHelper.installment;
@@ -684,7 +695,8 @@ class Utils {
 
   static String getFuel(String? fuelType) {
     if ((fuelType ?? "").isEmpty) return '';
-    switch ((fuelType ?? "").toLowerCase()) {
+    var tt = (transformToSnakeCase(fuelType??"")??"").toLowerCase();
+    switch ((tt).toLowerCase()) {
       case 'petrol':
       case 'بنزين':
         return StringHelper.petrol;
@@ -730,7 +742,9 @@ class Utils {
 
   static String getEducationOptions(String? type) {
     if ((type ?? "").isEmpty) return '';
-    switch ((type ?? "").toLowerCase()) {
+    var tt = (transformToSnakeCase(type??"")??"").toLowerCase();
+
+    switch ((tt).toLowerCase()) {
       case 'none':
       case 'لا أحد':
         return StringHelper.none;
@@ -771,7 +785,9 @@ class Utils {
 
   static String setEducationOptions(String? type) {
     if ((type ?? "").isEmpty) return '';
-    switch ((type ?? "").toLowerCase()) {
+    var tt = (transformToSnakeCase(type??"")??"").toLowerCase();
+
+    switch ((tt).toLowerCase()) {
       case 'none':
       case 'لا أحد':
         return 'None';
@@ -812,7 +828,9 @@ class Utils {
 
   static String carRentalTerm(String? type) {
     if ((type ?? "").isEmpty) return '';
-    switch ((type ?? "").toLowerCase()) {
+    var tt = (transformToSnakeCase(type??"")??"").toLowerCase();
+
+    switch ((tt).toLowerCase()) {
       case 'hourly':
       case 'كل ساعة':
         return StringHelper.hourly;
@@ -858,7 +876,9 @@ class Utils {
 
   static String getProperty(String? type) {
     if ((type ?? "").isEmpty) return '';
-    switch ((type ?? "").toLowerCase()) {
+    var tt = (transformToSnakeCase(type??"")??"").toLowerCase();
+
+    switch ((tt).toLowerCase()) {
       case 'apartment':
       case 'شقة':
         return StringHelper.apartment;

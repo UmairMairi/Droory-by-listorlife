@@ -14,7 +14,7 @@ import 'package:list_and_life/models/home_list_model.dart';
 import 'package:list_and_life/models/product_detail_model.dart';
 import 'package:list_and_life/models/user_model.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
+import 'dart:math';
 import '../base/helpers/db_helper.dart';
 import '../base/helpers/dialog_helper.dart';
 import '../models/category_model.dart';
@@ -422,7 +422,7 @@ class HomeVM extends BaseViewModel {
     }
   }
 
-  Future<void> onRefresh({bool? useLatLng}) async {
+  Future<void> onRefresh() async {
     // monitor network fetch
     try {
       page = 1;
@@ -430,7 +430,7 @@ class HomeVM extends BaseViewModel {
       if (!DbHelper.getIsGuest()) {
         getChatNotifyCount();
       }
-      await getProductsApi(loading: true,useLatLng:useLatLng);
+      await getProductsApi(loading: true);
       scrollController.animateTo(
         scrollController.position.minScrollExtent,
         duration: const Duration(milliseconds: 300),
@@ -442,30 +442,42 @@ class HomeVM extends BaseViewModel {
     }
   }
 
-  Future<void> onLoading({bool? useLatLng}) async {
+  Future<void> onLoading() async {
     // monitor network fetch
     ++page;
-    await getProductsApi(loading: false,useLatLng:useLatLng);
+    await getProductsApi(loading: false);
 
     ///await fetchProducts();
     refreshController.loadComplete();
   }
 
-  Future<void> getProductsApi({bool loading = false, String? search, bool? useLatLng}) async {
+  Future<void> getProductsApi({bool loading = false, String? search}) async {
     if (loading) isLoading = loading;
 
+    double sendLatitude = latitude;
+    double sendLongitude = longitude;
+
+    if (_isWithinCairoRadius(latitude, longitude, 100)) {
+      sendLatitude = 0;
+      sendLongitude = 0;
+    }
+
     ApiRequest apiRequest = ApiRequest(
-        url: ApiConstants.getProductsUrl(
-            limit: limit,
-            page: page,
-            latitude: useLatLng == true?0.0:latitude,
-            longitude: useLatLng == true?0.0:longitude,
-            sellStatus: 'ongoing',
-            search: searchQuery), // Add search parameter
-        requestType: RequestType.get);
+      url: ApiConstants.getProductsUrl(
+        limit: limit,
+        page: page,
+        latitude: sendLatitude,
+        longitude: sendLongitude,
+        sellStatus: 'ongoing',
+        search: searchQuery,
+      ),
+      requestType: RequestType.get,
+    );
+
     var response = await BaseClient.handleRequest(apiRequest);
     MapResponse<HomeListModel> model =
-        MapResponse.fromJson(response, (json) => HomeListModel.fromJson(json));
+    MapResponse.fromJson(response, (json) => HomeListModel.fromJson(json));
+
     if (search?.isNotEmpty ?? false) {
       productsList.clear();
     }
@@ -475,6 +487,59 @@ class HomeVM extends BaseViewModel {
     if (loading) isLoading = false;
     notifyListeners();
   }
+
+  /// Helper function to calculate distance and check if within 100 km of Cairo
+  bool _isWithinCairoRadius(double lat, double lng, double radiusKm) {
+    const double cairoLat = 31.2341262;
+    const double cairoLng = 30.0282809;
+
+    double distance = _calculateDistance(lat, lng, cairoLat, cairoLng);
+    return distance <= radiusKm;
+  }
+
+  /// Haversine formula to calculate distance between two lat/lng points
+  double _calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+    const double R = 6371; // Earth radius in km
+    double dLat = _degToRad(lat2 - lat1);
+    double dLon = _degToRad(lon2 - lon1);
+
+    double a = sin(dLat / 2) * sin(dLat / 2) +
+        cos(_degToRad(lat1)) * cos(_degToRad(lat2)) *
+            sin(dLon / 2) * sin(dLon / 2);
+
+    double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+    return R * c;
+  }
+
+  double _degToRad(double degree) {
+    return degree * pi / 180;
+  }
+
+
+  // Future<void> getProductsApi({bool loading = false, String? search, bool? useLatLng}) async {
+  //   if (loading) isLoading = loading;
+  //
+  //   ApiRequest apiRequest = ApiRequest(
+  //       url: ApiConstants.getProductsUrl(
+  //           limit: limit,
+  //           page: page,
+  //           latitude: useLatLng == true?0.0:latitude,
+  //           longitude: useLatLng == true?0.0:longitude,
+  //           sellStatus: 'ongoing',
+  //           search: searchQuery), // Add search parameter
+  //       requestType: RequestType.get);
+  //   var response = await BaseClient.handleRequest(apiRequest);
+  //   MapResponse<HomeListModel> model =
+  //       MapResponse.fromJson(response, (json) => HomeListModel.fromJson(json));
+  //   if (search?.isNotEmpty ?? false) {
+  //     productsList.clear();
+  //   }
+  //
+  //   productsList.addAll(model.body?.data ?? []);
+  //
+  //   if (loading) isLoading = false;
+  //   notifyListeners();
+  // }
 
   void onSearchChanged(String query) {
     if (query.isEmpty) {

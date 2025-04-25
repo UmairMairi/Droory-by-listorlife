@@ -205,12 +205,8 @@ class HomeView extends BaseView<HomeVM> {
               ? const CircularProgressIndicator()
               : const CupertinoActivityIndicator(),
         ),
-        onRefresh: (){
-          viewModel.onRefresh(useLatLng: true);
-        },
-        onLoading: (){
-          viewModel.onLoading(useLatLng: true);
-        },
+        onRefresh: viewModel.onRefresh,
+        onLoading: viewModel.onLoading,
         child: SingleChildScrollView(
           physics: ClampingScrollPhysics(),
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),

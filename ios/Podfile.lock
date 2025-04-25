@@ -36,7 +36,7 @@ PODS:
     - Firebase/Messaging (= 11.10.0)
     - firebase_core
     - Flutter
-  - FirebaseAppCheckInterop (11.10.0)
+  - FirebaseAppCheckInterop (11.12.0)
   - FirebaseAuth (11.10.0):
     - FirebaseAppCheckInterop (~> 11.0)
     - FirebaseAuthInterop (~> 11.0)
@@ -46,7 +46,7 @@ PODS:
     - GoogleUtilities/Environment (~> 8.0)
     - GTMSessionFetcher/Core (< 5.0, >= 3.4)
     - RecaptchaInterop (~> 101.0)
-  - FirebaseAuthInterop (11.10.0)
+  - FirebaseAuthInterop (11.12.0)
   - FirebaseCore (11.10.0):
     - FirebaseCoreInternal (~> 11.10.0)
     - GoogleUtilities/Environment (~> 8.0)
@@ -282,9 +282,9 @@ SPEC CHECKSUMS:
   firebase_auth: 34c515a8fa76a4ef678ac5ad5cfa3bb3120f5ab5
   firebase_core: 2d4534e7b489907dcede540c835b48981d890943
   firebase_messaging: 75bc93a4df25faccad67f6662ae872ac9ae69b64
-  FirebaseAppCheckInterop: 9664c858489710f682766ef54e2b6741d3b62070
+  FirebaseAppCheckInterop: 73b173e5ec45192e2d522ad43f526a82ad10b852
   FirebaseAuth: c4146bdfdc87329f9962babd24dae89373f49a32
-  FirebaseAuthInterop: 01a804fb074424fd58b92dd50dd0272277199356
+  FirebaseAuthInterop: b583210c039a60ed3f1e48865e1f3da44a796595
   FirebaseCore: 8344daef5e2661eb004b177488d6f9f0f24251b7
   FirebaseCoreExtension: 6f357679327f3614e995dc7cf3f2d600bdc774ac
   FirebaseCoreInternal: ef4505d2afb1d0ebbc33162cb3795382904b5679

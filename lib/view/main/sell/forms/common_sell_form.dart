@@ -38,6 +38,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
 
   @override
   Widget build(BuildContext context, SellFormsVM viewModel) {
+    debugPrint("subCategory?.id ${subCategory?.id}");
     // Brand dropdown title logic (unchanged)
     String brandTitle;
     if (category?.id == 5 || category?.id == 8 || category?.id == 7) {
@@ -51,6 +52,8 @@ class CommonSellForm extends BaseView<SellFormsVM> {
       brandTitle = StringHelper.type; // Furniture
     } else if (subCategory?.id == 91) {
       brandTitle = StringHelper.type; // Video Games and Consoles
+    } else if (subCategory?.id == 95) {
+      brandTitle = StringHelper.type; // vehicles
     } else if (subCategory?.id == 19 || subSubCategory?.id == 7) {
       brandTitle = StringHelper.brand; // Home Appliances or sub-subcategory 7
     } else if (subSubCategory?.id == 5) {
