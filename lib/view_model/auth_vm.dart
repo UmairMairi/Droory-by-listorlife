@@ -249,7 +249,6 @@ class AuthVM extends BaseViewModel {
       DbHelper.saveUserModel(model.body);
       DbHelper.saveToken(model.body?.token);
       DbHelper.saveNotificationStatus("${model.body?.notificationStatus}");
-      DbHelper.saveIsGuest(false);
       DbHelper.saveIsLoggedIn(true);
       SocketHelper().connectUser();
       if (context.mounted) {

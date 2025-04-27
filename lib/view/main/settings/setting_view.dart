@@ -21,25 +21,11 @@ import '../../../base/helpers/string_helper.dart';
 import '../../../models/setting_item_model.dart';
 import '../../../widgets/multi_select_category.dart';
 
-class SettingView extends StatefulWidget {
+class SettingView extends BaseView<SettingVM> {
   const SettingView({super.key});
 
   @override
-  State<SettingView> createState() => _SettingViewState();
-}
-
-class _SettingViewState extends State<SettingView> {
-  late SettingVM viewModel;
-
-  @override
-  void initState() {
-    viewModel = context.read<SettingVM>();
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context, /*SettingVM viewModel*/) {
+  Widget build(BuildContext context, SettingVM viewModel) {
     viewModel.appSettingList = [
       SettingItemModel(
           isArrow: null,
@@ -132,7 +118,7 @@ class _SettingViewState extends State<SettingView> {
                   scale: 0.6,
                   child: CupertinoSwitch(
                       value: viewModel.isActiveNotification,
-                      activeColor: Colors.black,
+                      activeTrackColor: Colors.black,
                       onChanged: viewModel.onSwitchChanged
                   ),
                 ),
@@ -159,14 +145,14 @@ class _SettingViewState extends State<SettingView> {
               const Divider(),
               Gap(10),
               InkWell(
-                onTap: (){
-                  logoutDialog(context,viewModel);
-                },
+                  onTap: (){
+                    logoutDialog(context,viewModel);
+                  },
                   child: SettingItemView(
-              item:SettingItemModel(
-                  icon: AssetsRes.IC_LOGOUT,
-                  title: StringHelper.logout,
-                  onTap: () {}),)),
+                    item:SettingItemModel(
+                        icon: AssetsRes.IC_LOGOUT,
+                        title: StringHelper.logout,
+                        onTap: () {}),)),
             }
           ],
         ),
@@ -307,7 +293,7 @@ class _SettingViewState extends State<SettingView> {
           onTap: () {
             context.pop();
             DialogHelper.showLoading();
-            viewModel.logoutUser();
+            viewModel.logoutUser(context);
           },
           icon: AssetsRes.IC_LOGOUT_ICON,
           onCancelTap: () {
@@ -377,9 +363,6 @@ class _SettingViewState extends State<SettingView> {
           );
           Navigator.of(context).pop();
         }
-        if(mounted){
-          setState(() {});
-        }
       },
     );
   }
@@ -439,7 +422,9 @@ class _SettingViewState extends State<SettingView> {
       },
     );
   }
+
 }
+
 
 class SettingItemView extends StatelessWidget {
   final SettingItemModel item;

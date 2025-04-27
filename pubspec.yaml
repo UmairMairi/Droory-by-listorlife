@@ -68,7 +68,7 @@ dependencies:
   like_button: ^2.0.5
   avatar_glow: ^3.0.1
   syncfusion_flutter_sliders: ^27.2.5
-  share_plus: ^10.1.4
+  share_plus: ^11.0.0
   keyboard_actions: ^4.2.0
   map_picker: ^0.0.3
   line_awesome_flutter: ^3.0.1

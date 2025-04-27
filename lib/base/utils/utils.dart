@@ -71,22 +71,28 @@ class Utils {
   }
 
   static void onShareProduct(BuildContext context, String title) async {
-    final box = context.findRenderObject() as RenderBox?;
+    //final box = context.findRenderObject() as RenderBox?;
     try {
-      final data = await rootBundle.load(AssetsRes.APP_LOGO);
-      final buffer = data.buffer;
-      await Share.shareXFiles(
-        [
-          XFile.fromData(
-            buffer.asUint8List(data.offsetInBytes, data.lengthInBytes),
-            name: AssetsRes.APP_LOGO,
-            mimeType: 'image/png',
-          ),
-        ],
-        text: title,
-        subject: 'Check out this listing on Daroory',
-        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+      SharePlus.instance.share(
+          ShareParams(text: title,
+              title: "Daroory",
+              subject: 'Check out this listing on Daroory')
       );
+      // final data = await rootBundle.load(AssetsRes.APP_LOGO);
+      // final buffer = data.buffer;
+      // await Share.share(
+      //   title,
+      //   // [
+      //   //   XFile.fromData(
+      //   //     buffer.asUint8List(data.offsetInBytes, data.lengthInBytes),
+      //   //     name: AssetsRes.APP_LOGO,
+      //   //     mimeType: 'image/png',
+      //   //   ),
+      //   // ],
+      //   // text: title,
+      //   subject: 'Check out this listing on Daroory',
+      //   sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+      // );
     } catch (e) {
       debugPrint("share error $e");
     }

@@ -414,7 +414,7 @@ class ProductVM extends BaseViewModel {
             Icons.cast_for_education, StringHelper.specialty));
       }
       if ((data?.lookingFor ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, data?.lookingFor ?? "", Icons.person,
+        specs.add(_buildSpecRow(context, Utils.getCommon(data?.lookingFor ?? ""), Icons.person,
             StringHelper.lookingFor));
       }
       if ((data?.salleryFrom ?? "").isNotEmpty) {
@@ -434,7 +434,7 @@ class ProductVM extends BaseViewModel {
       }
 
       if ((data?.workSetting ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, data?.workSetting ?? " ", Icons.work,
+        specs.add(_buildSpecRow(context, Utils.getCommon(data?.workSetting ?? " "), Icons.work,
             StringHelper.workSetting));
       }
 

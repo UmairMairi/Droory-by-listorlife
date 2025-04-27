@@ -1,3 +1,4 @@
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/db_helper.dart';
@@ -68,7 +69,7 @@ class SettingVM extends BaseViewModel {
     isActiveNotification = value ?? true;
   }
 
-  Future<void> logoutUser() async {
+  Future<void> logoutUser(BuildContext context) async {
     ApiRequest apiRequest =
         ApiRequest(url: ApiConstants.logoutUrl(), requestType: RequestType.get);
     var response = await BaseClient.handleRequest(apiRequest);

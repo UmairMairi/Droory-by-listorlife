@@ -960,8 +960,9 @@ class SellFormsVM extends BaseViewModel {
     // Adding dynamic fields
     if (category != null) fields["category_id"] = category.id;
     if (subCategory != null) fields["sub_category_id"] = subCategory.id;
-    if (subSubCategory != null)
+    if (subSubCategory != null) {
       fields["sub_sub_category_id"] = subSubCategory.id;
+    }
     if (brand != null) fields["brand_id"] = brand.id;
     if (models != null) fields["model_id"] = models.id;
     if (selectedSize != null) fields["size_id"] = selectedSize?.id;
@@ -1098,8 +1099,9 @@ class SellFormsVM extends BaseViewModel {
     // Adding dynamic fields
     if (category != null) fields["category_id"] = category.id;
     if (subCategory != null) fields["sub_category_id"] = subCategory.id;
-    if (subSubCategory != null)
+    if (subSubCategory != null) {
       fields["sub_sub_category_id"] = subSubCategory.id;
+    }
     if (brand != null) fields["brand_id"] = brand.id;
     if (models != null) fields["model_id"] = models.id;
     if (selectedSize != null) fields["size_id"] = selectedSize?.id;
