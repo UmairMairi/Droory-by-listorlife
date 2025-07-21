@@ -54,13 +54,15 @@ class AppTextField extends StatelessWidget {
   final MaxLengthEnforcement? maxLengthEnforcement;
   final GlobalKey<FormState>? formKey;
   final Color? cursorColor;
+
   const AppTextField({
     super.key,
     this.title,
     this.hint,
     this.contentPadding = const EdgeInsets.symmetric(
         horizontal: 10.0), // Default padding added here
-    this.isMandatory = false,
+    this.isMandatory =
+        true, // Changed default to true for backward compatibility
     this.maxLines,
     this.minLines,
     this.titleWidget,
@@ -148,8 +150,11 @@ class AppTextField extends StatelessWidget {
             obscureText: isPassword == true,
             validator: validator ??
                 (value) {
-                  if (value == null || value.isEmpty) {
-                    return "*${StringHelper.fieldShouldNotBeEmpty}";
+                  // FIXED: Only validate if field is mandatory
+                  if (isMandatory == true) {
+                    if (value == null || value.trim().isEmpty) {
+                      return "*${StringHelper.fieldShouldNotBeEmpty}";
+                    }
                   }
                   return null;
                 },
@@ -203,7 +208,6 @@ class AppTextField extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8.0),
                     ),
             )),
-        // const SizedBox(height: 6),
       ],
     );
   }

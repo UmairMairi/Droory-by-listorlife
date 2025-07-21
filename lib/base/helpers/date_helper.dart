@@ -259,11 +259,25 @@ class DateHelper {
         } else if (diff < 2 * _minuteMillis) {
           return "منذ دقيقة";
         } else if (diff < 50 * _minuteMillis) {
-          return "منذ ${(diff / _minuteMillis).floor()} دقائق";
+          return "منذ ${(diff / _minuteMillis).floor()} دقيقة";
         } else if (diff < 90 * _minuteMillis) {
           return "منذ ساعة";
         } else if (diff < 24 * _hourMillis) {
-          return "منذ ${(diff / _hourMillis).floor()} ساعات";
+          int hours = (diff / _hourMillis).floor();
+          // Arabic plural forms for hours:
+          // 1 = ساعة
+          // 2 = ساعتين
+          // 3-10 = ساعات
+          // 11+ = ساعة
+          if (hours == 1) {
+            return "منذ ساعة";
+          } else if (hours == 2) {
+            return "منذ ساعتين";
+          } else if (hours >= 3 && hours <= 10) {
+            return "منذ $hours ساعات";
+          } else {
+            return "منذ $hours ساعة";
+          }
         } else if (diff < 48 * _hourMillis) {
           return "أمس";
         } else {
@@ -274,13 +288,15 @@ class DateHelper {
         if (diff < _minuteMillis) {
           return "just now";
         } else if (diff < 2 * _minuteMillis) {
-          return "a min ago";
+          return "1 min ago";
         } else if (diff < 50 * _minuteMillis) {
-          return "${(diff / _minuteMillis).floor()} min ago";
+          int minutes = (diff / _minuteMillis).floor();
+          return "$minutes mins ago";
         } else if (diff < 90 * _minuteMillis) {
-          return "an hour ago";
+          return "1 hour ago";
         } else if (diff < 24 * _hourMillis) {
-          return "${(diff / _hourMillis).floor()} hours ago";
+          int hours = (diff / _hourMillis).floor();
+          return "$hours hours ago";
         } else if (diff < 48 * _hourMillis) {
           return "yesterday";
         } else {

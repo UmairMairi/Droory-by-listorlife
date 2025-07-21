@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
-class MessageBar extends StatelessWidget {
+class MessageBar extends StatefulWidget {
   final bool replying;
   final String replyingTo;
   final List<Widget> actions;
-  final TextEditingController _textController = TextEditingController();
   final Color replyWidgetColor;
   final Color replyIconColor;
   final Color replyCloseColor;
@@ -20,7 +19,8 @@ class MessageBar extends StatelessWidget {
   /// [MessageBar] constructor
   ///
   ///
-  MessageBar({super.key,
+  const MessageBar({
+    super.key,
     this.replying = false,
     this.replyingTo = "",
     this.actions = const [],
@@ -37,6 +37,25 @@ class MessageBar extends StatelessWidget {
     this.onTapCloseReply,
   });
 
+  @override
+  State<MessageBar> createState() => _MessageBarState();
+}
+
+class _MessageBarState extends State<MessageBar> {
+  late final TextEditingController _textController;
+
+  @override
+  void initState() {
+    super.initState();
+    _textController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
+  }
+
   /// [MessageBar] builder method
   ///
   @override
@@ -46,9 +65,9 @@ class MessageBar extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          replying
+          widget.replying
               ? Container(
-                  color: replyWidgetColor,
+                  color: widget.replyWidgetColor,
                   padding: const EdgeInsets.symmetric(
                     vertical: 8,
                     horizontal: 16,
@@ -57,41 +76,41 @@ class MessageBar extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.reply,
-                        color: replyIconColor,
+                        color: widget.replyIconColor,
                         size: 24,
                       ),
                       Expanded(
                         child: Text(
-                          'Re : $replyingTo',
+                          'Re : ${widget.replyingTo}',
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       InkWell(
-                        onTap: onTapCloseReply,
+                        onTap: widget.onTapCloseReply,
                         child: Icon(
                           Icons.close,
-                          color: replyCloseColor,
+                          color: widget.replyCloseColor,
                           size: 24,
                         ),
                       ),
                     ],
                   ))
               : Container(),
-          replying
+          widget.replying
               ? Container(
                   height: 1,
                   color: Colors.grey.shade300,
                 )
               : Container(),
           Container(
-            color: messageBarColor,
+            color: widget.messageBarColor,
             padding: const EdgeInsets.symmetric(
               vertical: 8,
               horizontal: 16,
             ),
             child: Row(
               children: <Widget>[
-                ...actions,
+                ...widget.actions,
                 Expanded(
                   child: TextField(
                     controller: _textController,
@@ -99,14 +118,14 @@ class MessageBar extends StatelessWidget {
                     textCapitalization: TextCapitalization.sentences,
                     minLines: 1,
                     maxLines: 3,
-                    onChanged: onTextChanged,
-                    style: textFieldTextStyle,
+                    onChanged: widget.onTextChanged,
+                    style: widget.textFieldTextStyle,
                     decoration: InputDecoration(
-                      hintText: messageBarHintText,
+                      hintText: widget.messageBarHintText,
                       hintMaxLines: 1,
                       contentPadding: const EdgeInsets.symmetric(
                           horizontal: 8.0, vertical: 10),
-                      hintStyle: messageBarHintStyle,
+                      hintStyle: widget.messageBarHintStyle,
                       fillColor: Colors.white,
                       filled: true,
                       enabledBorder: OutlineInputBorder(
@@ -131,13 +150,13 @@ class MessageBar extends StatelessWidget {
                   child: InkWell(
                     child: Icon(
                       Icons.send,
-                      color: sendButtonColor,
+                      color: widget.sendButtonColor,
                       size: 24,
                     ),
                     onTap: () {
                       if (_textController.text.trim() != '') {
-                        if (onSend != null) {
-                          onSend!(_textController.text.trim());
+                        if (widget.onSend != null) {
+                          widget.onSend!(_textController.text.trim());
                         }
                         _textController.text = '';
                       }

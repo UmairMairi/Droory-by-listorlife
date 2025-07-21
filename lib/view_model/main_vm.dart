@@ -34,13 +34,15 @@ class MainVM extends BaseViewModel {
   final PersistentTabController navController =
       PersistentTabController(initialIndex: 0);
 
-  List<Widget> screensView = [
-    const HomeView(),
-    const InboxView(),
-    const SellCategoryView(),
-    const AdsView(),
-    const SettingView()
-  ];
+  // CHANGED: Remove the const and make it a getter that creates fresh widgets
+  List<Widget> get screensView => [
+        const HomeView(),
+        const InboxView(),
+        const SellCategoryView(),
+        const AdsView(),
+        const SettingView() // This will now be recreated each time
+      ];
+
   final _appLinks = AppLinks();
   Future<void> initUniLinks() async {
     // Platform messages may fail, so we use a try/catch PlatformException.
@@ -57,7 +59,6 @@ class MainVM extends BaseViewModel {
       }
     });
   }
-
 
   bool _isGuest = DbHelper.getIsGuest();
 
@@ -99,6 +100,17 @@ class MainVM extends BaseViewModel {
     }
 
     initUniLinks();
+    // Listen for login state changes and refresh home when user logs in
+    DbHelper.box.listenKey('isLoggedIn', (value) {
+      if (DbHelper.getIsLoggedIn() && !isGuest) {
+        // User just logged in, refresh home immediately
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (context.mounted) {
+            context.read<HomeVM>().onRefresh();
+          }
+        });
+      }
+    });
     super.onInit();
   }
 
@@ -112,7 +124,7 @@ class MainVM extends BaseViewModel {
     super.onReady();
   }
 
-  void onIndexSelected({required int index,required BuildContext context}) {
+  void onIndexSelected({required int index, required BuildContext context}) {
     switch (index) {
       case 0:
         context.read<HomeVM>().callApiMethods();
@@ -151,27 +163,47 @@ class MainVM extends BaseViewModel {
     notifyListeners();
   }
 
-
   Future<void> getChatNotifyCount() async {
-    ApiRequest apiRequest = ApiRequest(
-        url: ApiConstants.getChatNotifyCount(), requestType: RequestType.get);
-    var response = await BaseClient.handleRequest(apiRequest);
+    try {
+      ApiRequest apiRequest = ApiRequest(
+          url: ApiConstants.getChatNotifyCount(), requestType: RequestType.get);
+      var response = await BaseClient.handleRequest(apiRequest);
 
-    MapResponse<UserModel?> model = MapResponse<UserModel>.fromJson(
-        response, (json) => UserModel.fromJson(json));
-    if(model.body != null){
-      countMessage = model.body?.count_message??0;
-      notifyListeners();
+      if (response is Map<String, dynamic>) {
+        MapResponse<UserModel?> model = MapResponse<UserModel>.fromJson(
+            response, (json) => UserModel.fromJson(json));
+        if (model.body != null) {
+          countMessage = model.body?.count_message ?? 0;
+          notifyListeners();
+        }
+      } else {
+        print('Error in getChatNotifyCount: $response');
+      }
+    } catch (e) {
+      print('Exception in getChatNotifyCount: $e');
     }
   }
 
   Future<void> getProfile() async {
-    ApiRequest apiRequest = ApiRequest(
-        url: ApiConstants.getProfileUrl(), requestType: RequestType.get);
-    var response = await BaseClient.handleRequest(apiRequest);
-    MapResponse<UserModel> model = MapResponse<UserModel>.fromJson(
-        response, (json) => UserModel.fromJson(json));
-    DbHelper.saveUserModel(model.body);
-    notifyListeners();
+    try {
+      ApiRequest apiRequest = ApiRequest(
+          url: ApiConstants.getProfileUrl(), requestType: RequestType.get);
+      var response = await BaseClient.handleRequest(apiRequest);
+
+      // Handle both success and error responses
+      if (response is Map<String, dynamic>) {
+        MapResponse<UserModel> model = MapResponse<UserModel>.fromJson(
+            response, (json) => UserModel.fromJson(json));
+        DbHelper.saveUserModel(model.body);
+        notifyListeners();
+      } else {
+        // Handle error case - user might be deleted
+        print('Error in getProfile: $response');
+        return; // Exit early if there's an error
+      }
+    } catch (e) {
+      print('Exception in getProfile: $e');
+      // Don't crash the app if profile fetch fails
+    }
   }
 }

@@ -62,9 +62,9 @@ class LoginView extends BaseView<AuthVM> {
                 const Gap(25),
                 Image.asset(
                   AssetsRes.APP_LOGO,
-                  height: 40,
+                  height: 80,
                 ),
-                const Flexible(child: Gap(40)),
+                const Flexible(child: Gap(10)),
                 AppTextField(
                   title: StringHelper.phoneNumber,
                   hint: StringHelper.phoneNumber,
@@ -73,23 +73,19 @@ class LoginView extends BaseView<AuthVM> {
                   controller: viewModel.phoneTextController,
                   keyboardType: TextInputType.number,
                   prefix: CountryPicker(
-                      selectedCountry: viewModel.selectedCountry,
-                      dense: true,
-                      isEnable: true,
-                      //displays arrow, true by default
-                      showLine: false,
-                      showFlag: true,
-                      showFlagCircle: false,
-                      showDialingCode: true,
-                      //displays dialing code, false by default
-                      showName: false,
-                      //displays Name, true by default
-                      withBottomSheet: true,
-                      //displays country name, true by default
-                      showCurrency: false,
-                      //eg. 'British pound'
-                      showCurrencyISO: false,
-                      onChanged: (country) => viewModel.updateCountry(country)),
+                    selectedCountry: viewModel.selectedCountry,
+                    dense: true,
+                    isEnable: false, // This disables the picker
+                    showLine: false,
+                    showFlag: true,
+                    showFlagCircle: false,
+                    showDialingCode: true,
+                    showName: false,
+                    withBottomSheet: true,
+                    showCurrency: false,
+                    showCurrencyISO: false,
+                    onChanged: (country) => viewModel.updateCountry(country),
+                  ),
                 ),
                 const Flexible(child: Gap(15)),
                 AppElevatedButton(
@@ -172,48 +168,48 @@ class LoginView extends BaseView<AuthVM> {
                         ],
                       ),
                     )),
-                // const SizedBox(
-                //   height: 15,
-                // ),
-                // GestureDetector(
-                //     onTap: () async {
-                //       Utils.hideKeyboard(context);
-                //       viewModel.socialLogin(type: 2);
-                //     },
-                //     child: Container(
-                //       padding: const EdgeInsets.symmetric(vertical: 16),
-                //       decoration: BoxDecoration(
-                //           color: Colors.white,
-                //           boxShadow: [
-                //             BoxShadow(
-                //               color: Colors.grey.withOpacity(0.5),
-                //               offset: const Offset(0, 1),
-                //               blurRadius: 6,
-                //             ),
-                //           ],
-                //           borderRadius: BorderRadius.circular(100)),
-                //       child: Row(
-                //         mainAxisAlignment: MainAxisAlignment.spaceAround,
-                //         children: [
-                //           ImageView.circle(
-                //             image: AssetsRes.IC_FACEBOOK,
-                //             height: 30,
-                //             width: 30,
-                //           ),
-                //           Text(
-                //             StringHelper.loginWithFb,
-                //             style: TextStyle(
-                //                 color: Colors.black,
-                //                 fontSize: 14,
-                //                 fontFamily: FontRes.MONTSERRAT_BOLD,
-                //                 fontWeight: FontWeight.w500),
-                //           ),
-                //           SizedBox(
-                //             width: 15,
-                //           )
-                //         ],
-                //       ),
-                //     )),
+                const SizedBox(
+                  height: 15,
+                ),
+                GestureDetector(
+                    onTap: () async {
+                      Utils.hideKeyboard(context);
+                      viewModel.socialLogin(type: 2);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              offset: const Offset(0, 1),
+                              blurRadius: 6,
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(100)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          ImageView.circle(
+                            image: AssetsRes.IC_FACEBOOK,
+                            height: 30,
+                            width: 30,
+                          ),
+                          Text(
+                            StringHelper.loginWithFb,
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                                fontFamily: FontRes.MONTSERRAT_BOLD,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          SizedBox(
+                            width: 15,
+                          )
+                        ],
+                      ),
+                    )),
                 const SizedBox(
                   height: 15,
                 ),

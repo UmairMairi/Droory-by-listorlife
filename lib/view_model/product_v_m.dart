@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:list_and_life/base/helpers/LocationService.dart';
+import 'package:list_and_life/models/city_model.dart';
 import 'package:list_and_life/base/base.dart';
+import '../models/home_list_model.dart';
 import 'package:list_and_life/base/helpers/db_helper.dart';
 import 'package:list_and_life/base/helpers/string_helper.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
@@ -68,6 +71,61 @@ class ProductVM extends BaseViewModel {
             response, (json) => ProductDetailModel.fromJson(json));
     productStream.sink.add(model.body);
     notifyListeners();
+  }
+
+// Add this new method to get fresh data with all updated metrics
+  Future<void> getMyProductDetailsWithFreshMetrics({num? id}) async {
+    // DON'T call productViewApi for own ads - this was causing the extra view count
+    // Views should only be incremented when OTHER users view your ad
+
+    // Fetch fresh data from the user products API (same as MyAdsView)
+    try {
+      print("DEBUG: Fetching fresh metrics for product ID: $id");
+
+      ApiRequest apiRequest = ApiRequest(
+          url: ApiConstants.getUsersProductsUrl(
+                  limit: 1000,
+                  page: 1,
+                  userId: "${DbHelper.getUserModel()?.id}") +
+              "&show_all_ads=true",
+          requestType: RequestType.get);
+
+      var response = await BaseClient.handleRequest(apiRequest);
+      print("DEBUG: API Response received");
+
+      MapResponse<HomeListModel> model = MapResponse.fromJson(
+          response, (json) => HomeListModel.fromJson(json));
+
+      // Find the specific product in the fresh data
+      if (model.body?.data != null) {
+        ProductDetailModel? freshProduct;
+        try {
+          freshProduct = model.body!.data!.firstWhere(
+            (product) => product.id == id,
+          );
+          print("DEBUG: Found product in fresh data");
+          print("DEBUG: Fresh product name: ${freshProduct.name}");
+          print("DEBUG: Fresh product price: ${freshProduct.price}");
+          print("DEBUG: Fresh product location: ${freshProduct.nearby}");
+        } catch (e) {
+          print("DEBUG: Product not found in the list");
+          freshProduct = null;
+        }
+
+        // If we found the product with fresh metrics, update the stream
+        if (freshProduct?.id != null) {
+          productStream.sink.add(freshProduct);
+          notifyListeners();
+          return;
+        }
+      }
+    } catch (e) {
+      print("DEBUG: Error fetching fresh metrics: $e");
+    }
+
+    // Fallback to regular API if the above fails
+    print("DEBUG: Falling back to regular API");
+    await getMyProductDetails(id: id);
   }
 
   Future<ProductDetailModel?> getProductDetails({num? id}) async {
@@ -162,6 +220,88 @@ class ProductVM extends BaseViewModel {
     return specs;
   }
 
+// In ProductVM class
+
+// Modify this method
+  String getLocalizedLocationFromCoordinates(
+      BuildContext context, double? lat, double? lng) {
+    // Added BuildContext
+    if (lat == null || lng == null || (lat == 0.0 && lng == 0.0)) {
+      return _isCurrentLanguageArabic(context)
+          ? "كل مصر"
+          : "All Egypt"; // Pass context
+    }
+
+    bool isArabic = _isCurrentLanguageArabic(context); // Pass context
+
+    // Find the nearest location using your LocationService
+    CityModel? nearestCity = LocationService.findNearestCity(lat, lng); //
+
+    if (nearestCity != null) {
+      // Check if coordinates match a specific neighborhood
+      if (nearestCity.districts != null) {
+        for (var district in nearestCity.districts!) {
+          if (district.neighborhoods != null) {
+            for (var neighborhood in district.neighborhoods!) {
+              double distance = LocationService.calculateDistance(
+                  //
+                  lat,
+                  lng,
+                  neighborhood.latitude,
+                  neighborhood.longitude);
+              if (distance <= (neighborhood.radius ?? 2.0)) {
+                // Using a default radius if null
+                return isArabic
+                    ? "${neighborhood.arabicName}، ${district.arabicName}، ${nearestCity.arabicName}"
+                    : "${neighborhood.name}, ${district.name}, ${nearestCity.name}";
+              }
+            }
+          }
+
+          // Check if coordinates match the district
+          double distanceToDistrict = LocationService.calculateDistance(
+              //
+              lat,
+              lng,
+              district.latitude,
+              district.longitude);
+          if (distanceToDistrict <= (district.radius ?? 5.0)) {
+            // Using a default radius if null
+            return isArabic
+                ? "${district.arabicName}، ${nearestCity.arabicName}"
+                : "${district.name}, ${nearestCity.name}";
+          }
+        }
+      }
+
+      // If no specific district/neighborhood found, return city name
+      return isArabic ? nearestCity.arabicName : nearestCity.name;
+    }
+
+    // Fallback: return "All Egypt" if no city found
+    return isArabic ? "كل مصر" : "All Egypt";
+  }
+
+// Modify this helper method to accept BuildContext
+  bool _isCurrentLanguageArabic(BuildContext context) {
+    // Primary check: Use DbHelper (same as your SettingView)
+    String currentLang = DbHelper.getLanguage();
+
+    // Secondary checks for fallback
+    bool isRTL = Directionality.of(context) == TextDirection.RTL;
+    bool isArabicLocale = Localizations.localeOf(context).languageCode == 'ar';
+
+    print("DEBUG: DbHelper language: $currentLang");
+    print("DEBUG: isRTL: $isRTL, isArabicLocale: $isArabicLocale");
+
+    // Primary method: DbHelper
+    if (currentLang == 'ar') return true;
+
+    // Fallback methods
+    return isRTL || isArabicLocale;
+  }
+
+// Ensure the rest of your ProductVM remains the same
   // Helper method to build the full list of specs
   List<Widget> _buildSpecList(BuildContext context, ProductDetailModel? data) {
     List<Widget> specs = [];
@@ -198,26 +338,38 @@ class ProductVM extends BaseViewModel {
       }
       if ((data?.ram ?? 0) != 0) {
         specs.add(_buildSpecRow(
-            context, '${data?.ram} GB', Icons.memory, StringHelper.ram));
+            context,
+            Utils.getRam(data?.ram?.toString() ?? "0"),
+            Icons.memory,
+            StringHelper.ram));
       }
       if ((data?.storage ?? 0) != 0) {
-        specs.add(_buildSpecRow(context, '${data?.storage} GB',
-            Icons.sd_storage, StringHelper.strong));
+        specs.add(_buildSpecRow(
+            context,
+            Utils.getStorage(data?.storage?.toString() ?? "0"),
+            Icons.sd_storage,
+            StringHelper.strong));
       }
       if ((data?.screenSize ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, "${data?.screenSize}",
+        specs.add(_buildSpecRow(context, "${Utils.getCommon(data?.screenSize)}",
             Icons.aspect_ratio, StringHelper.screenSize));
       }
       if ((data?.itemCondition ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, "${Utils.getCommon(data?.itemCondition)}",
-            Icons.verified_user, StringHelper.condition));
+        specs.add(_buildSpecRow(
+            context,
+            "${Utils.getCommon(data?.itemCondition)}",
+            Icons.verified_user,
+            StringHelper.condition));
       }
     }
 
     // Home & Living Specifications
     if (data?.categoryId == 2) {
       if ((data?.itemCondition ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, "${Utils.getCommon(data?.itemCondition)}", Icons.chair,
+        specs.add(_buildSpecRow(
+            context,
+            "${Utils.getCommon(data?.itemCondition)}",
+            Icons.chair,
             StringHelper.condition));
       }
       if (data?.fashionSize != null &&
@@ -254,8 +406,11 @@ class ProductVM extends BaseViewModel {
       }
 
       if ((data?.itemCondition ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, "${Utils.getCommon(data?.itemCondition)}",
-            Icons.visibility, StringHelper.condition));
+        specs.add(_buildSpecRow(
+            context,
+            "${Utils.getCommon(data?.itemCondition)}",
+            Icons.visibility,
+            StringHelper.condition));
       }
     }
 
@@ -288,47 +443,68 @@ class ProductVM extends BaseViewModel {
             Icons.battery_full, StringHelper.mileage));
       }
       if ((data?.kmDriven ?? 0) != 0) {
-        specs.add(_buildSpecRow(context, '${data?.kmDriven} ${StringHelper.km}', Icons.speed,
-            StringHelper.kmDriven));
+        specs.add(_buildSpecRow(context, '${data?.kmDriven} ${StringHelper.km}',
+            Icons.speed, StringHelper.kmDriven));
       }
       if ((data?.transmission ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, "${Utils.getCommon(data?.transmission)}",
-            Icons.autorenew, StringHelper.transmission));
+        specs.add(_buildSpecRow(
+            context,
+            "${Utils.getCommon(data?.transmission)}",
+            Icons.autorenew,
+            StringHelper.transmission));
       }
       if (("${data?.numberOfOwner ?? 0}") != "0") {
-        specs.add(_buildSpecRow(context, '${data?.numberOfOwner} ${StringHelper.owners}',
-            Icons.account_circle, StringHelper.noOfOwners));
+        specs.add(_buildSpecRow(
+            context,
+            '${data?.numberOfOwner} ${StringHelper.owners}',
+            Icons.account_circle,
+            StringHelper.noOfOwners));
       }
       if ((data?.itemCondition ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, "${Utils.getCommon(Utils.getCommon(data?.itemCondition))}",
-            Icons.verified_user, StringHelper.condition));
+        specs.add(_buildSpecRow(
+            context,
+            "${Utils.getCommon(Utils.getCommon(data?.itemCondition))}",
+            Icons.verified_user,
+            StringHelper.condition));
       }
       if ((data?.carColor ?? "").isNotEmpty) {
         specs.add(_buildSpecRow(context, "${Utils.getColor(data?.carColor)}",
             Icons.verified_user, StringHelper.carColorTitle));
       }
       if ((data?.bodyType ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, "${data?.bodyType}",
+        specs.add(_buildSpecRow(context, "${Utils.getBodyType(data?.bodyType)}",
             Icons.verified_user, StringHelper.bodyTypeTitle));
       }
       if ((data?.horsePower ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, "${data?.horsePower}",
+        specs.add(_buildSpecRow(context, Utils.getHorsePower(data?.horsePower),
             Icons.verified_user, StringHelper.horsepowerTitle));
       }
       if ((data?.engineCapacity ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, "${data?.engineCapacity}",
-            Icons.verified_user, StringHelper.engineCapacityTitle));
+        specs.add(_buildSpecRow(
+            context,
+            Utils.getEngineCapacity(data?.engineCapacity),
+            Icons.verified_user,
+            StringHelper.engineCapacityTitle));
       }
       if ((data?.interiorColor ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, "${Utils.getColor(data?.interiorColor)}",
-            Icons.verified_user, StringHelper.interiorColorTitle));
+        specs.add(_buildSpecRow(
+            context,
+            "${Utils.getColor(data?.interiorColor)}",
+            Icons.verified_user,
+            StringHelper.interiorColorTitle));
       }
       if ((data?.numbDoors ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, "${Utils.getDoorsText(data?.numbDoors)}",
-            Icons.verified_user, StringHelper.numbDoorsTitle));
+        specs.add(_buildSpecRow(
+            context,
+            "${Utils.getDoorsText(data?.numbDoors)}",
+            Icons.verified_user,
+            StringHelper.numbDoorsTitle));
       }
       if ((data?.carRentalTerm ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, Utils.carRentalTerm("${data?.carRentalTerm}"), Icons.timer,
+        specs.add(_buildSpecRow(
+            context,
+            Utils.carRentalTerm("${data?.carRentalTerm}"),
+            Icons.timer,
             StringHelper.rentalCarTerm));
       }
     }
@@ -336,8 +512,11 @@ class ProductVM extends BaseViewModel {
     // Hobbies, Music, Art & Books Specifications
     if (data?.categoryId == 5) {
       if ((data?.itemCondition ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, Utils.getCommon(data?.itemCondition) ?? "",
-            Icons.art_track, StringHelper.condition));
+        specs.add(_buildSpecRow(
+            context,
+            Utils.getCommon(data?.itemCondition) ?? "",
+            Icons.art_track,
+            StringHelper.condition));
       }
       if (data?.brand != null && (data?.brand?.name ?? "").isNotEmpty) {
         specs.add(_buildSpecRow(context, "${data?.brand?.name}", Icons.category,
@@ -346,8 +525,8 @@ class ProductVM extends BaseViewModel {
     }
     if (data?.categoryId == 8) {
       if (data?.brand != null && (data?.brand?.name ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(
-            context, "${data?.brand?.name}", Icons.category, StringHelper.type));
+        specs.add(_buildSpecRow(context, "${data?.brand?.name}", Icons.category,
+            StringHelper.type));
       }
     }
     // Pets Specifications
@@ -390,12 +569,15 @@ class ProductVM extends BaseViewModel {
             StringHelper.models));
       }
       if ((data?.itemCondition ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, Utils.getCommon(data?.itemCondition) ?? "",
-            Icons.visibility, StringHelper.condition));
+        specs.add(_buildSpecRow(
+            context,
+            Utils.getCommon(data?.itemCondition) ?? "",
+            Icons.visibility,
+            StringHelper.condition));
       }
       if (data?.brand != null && (data?.brand?.name ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(
-            context, "${data?.brand?.name}", Icons.cast_for_education, StringHelper.type));
+        specs.add(_buildSpecRow(context, "${data?.brand?.name}",
+            Icons.cast_for_education, StringHelper.type));
       }
     }
 
@@ -406,7 +588,10 @@ class ProductVM extends BaseViewModel {
             Icons.work, StringHelper.jobType));
       }
       if ((data?.positionType ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, "${Utils.getCommon(Utils.transformToSnakeCase(data?.positionType))}", Icons.work,
+        specs.add(_buildSpecRow(
+            context,
+            "${Utils.getCommon(Utils.transformToSnakeCase(data?.positionType))}",
+            Icons.work,
             StringHelper.positionType));
       }
       if (data?.brand != null && (data?.brand?.name ?? "").isNotEmpty) {
@@ -414,38 +599,52 @@ class ProductVM extends BaseViewModel {
             Icons.cast_for_education, StringHelper.specialty));
       }
       if ((data?.lookingFor ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, Utils.getCommon(data?.lookingFor ?? ""), Icons.person,
-            StringHelper.lookingFor));
+        specs.add(_buildSpecRow(
+            context,
+            Utils.getCommon(data?.lookingFor ?? ""),
+            Icons.person,
+            StringHelper.usertype));
       }
       if ((data?.salleryFrom ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(
-            context,
-            num.parse(data?.salleryFrom ?? " ").toStringAsFixed(0),
-            Icons.attach_money,
-            StringHelper.salaryFrom));
+        num salaryFromNum =
+            num.tryParse(data?.salleryFrom?.toString() ?? "0") ?? 0;
+        if (salaryFromNum > 0) {
+          specs.add(_buildSpecRow(context, parseAmount(data?.salleryFrom),
+              Icons.attach_money, StringHelper.salaryFrom));
+        }
       }
 
+// Only add salary to if it exists and is not 0 or empty
       if ((data?.salleryTo ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(
-            context,
-            num.parse(data?.salleryTo ?? " ").toStringAsFixed(0),
-            Icons.attach_money,
-            StringHelper.salaryTo));
+        num salaryToNum = num.tryParse(data?.salleryTo?.toString() ?? "0") ?? 0;
+        if (salaryToNum > 0) {
+          specs.add(_buildSpecRow(context, parseAmount(data?.salleryTo),
+              Icons.attach_money, StringHelper.salaryTo));
+        }
       }
 
       if ((data?.workSetting ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, Utils.getCommon(data?.workSetting ?? " "), Icons.work,
+        specs.add(_buildSpecRow(
+            context,
+            Utils.getCommon(data?.workSetting ?? " "),
+            Icons.work,
             StringHelper.workSetting));
       }
 
       if ((data?.workExperience ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, data?.workExperience ?? " ",
-            Icons.timer, StringHelper.workExperience));
+        specs.add(_buildSpecRow(
+            context,
+            Utils.getWorkExperience(data?.workExperience),
+            Icons.timer,
+            StringHelper.workExperience));
       }
 
       if ((data?.workEducation ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, Utils.getEducationOptions(data?.workEducation ?? " "),
-            Icons.school, StringHelper.workEducation));
+        specs.add(_buildSpecRow(
+            context,
+            Utils.getEducationOptions(data?.workEducation ?? " "),
+            Icons.school,
+            StringHelper.workEducation));
       }
     }
 
@@ -468,24 +667,36 @@ class ProductVM extends BaseViewModel {
         specs.add(_buildSpecRow(context, '${data?.model?.name}',
             Icons.tablet_mac, StringHelper.models));
       }
-      if ("${data?.ram ?? 0}" != "0") {
+      if ((data?.ram ?? 0) != 0) {
         specs.add(_buildSpecRow(
-            context, '${data?.ram} GB', Icons.memory, StringHelper.ram));
+            context,
+            Utils.getRam(data?.ram?.toString() ?? "0"),
+            Icons.memory,
+            StringHelper.ram));
       }
-      if ("${data?.storage ?? 0}" != "0") {
-        specs.add(_buildSpecRow(context, '${data?.storage} GB',
-            Icons.sd_storage, StringHelper.strong));
+      if ((data?.storage ?? 0) != 0) {
+        specs.add(_buildSpecRow(
+            context,
+            Utils.getStorage(data?.storage?.toString() ?? "0"),
+            Icons.sd_storage,
+            StringHelper.strong));
       }
       if ((data?.itemCondition ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, "${Utils.getCommon(data?.itemCondition)}",
-            Icons.visibility, StringHelper.condition));
+        specs.add(_buildSpecRow(
+            context,
+            "${Utils.getCommon(data?.itemCondition)}",
+            Icons.visibility,
+            StringHelper.condition));
       }
     }
 
     // Real Estate Specifications
     if (data?.categoryId == 11) {
       if ((data?.propertyFor ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, Utils.getPropertyType("${data?.propertyFor}"), Icons.house,
+        specs.add(_buildSpecRow(
+            context,
+            Utils.getPropertyType("${data?.propertyFor}"),
+            Icons.house,
             StringHelper.propertyType));
       }
       if ("${data?.area ?? 0}" != "0") {
@@ -493,15 +704,25 @@ class ProductVM extends BaseViewModel {
             context, "${data?.area}", Icons.straighten, StringHelper.areaSize));
       }
       if ("${data?.bedrooms ?? 0}" != "0") {
-        specs.add(_buildSpecRow(context, "${data?.bedrooms}", Icons.bed,
+        specs.add(_buildSpecRow(
+            context,
+            Utils.getBedroomsText("${data?.bedrooms}"),
+            Icons.bed,
             StringHelper.noOfBedrooms));
       }
+
       if (("${data?.bathrooms ?? 0}") != "0") {
-        specs.add(_buildSpecRow(context, "${data?.bathrooms}", Icons.bathtub,
+        specs.add(_buildSpecRow(
+            context,
+            Utils.getBathroomsText("${data?.bathrooms}"),
+            Icons.bathtub,
             StringHelper.noOfBathrooms));
       }
       if ((data?.furnishedType ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, Utils.getFurnished(data?.furnishedType ?? ""), Icons.chair,
+        specs.add(_buildSpecRow(
+            context,
+            Utils.getFurnished(data?.furnishedType ?? ""),
+            Icons.chair,
             StringHelper.furnished));
       }
       if ((data?.ownership ?? "").isNotEmpty) {
@@ -509,28 +730,37 @@ class ProductVM extends BaseViewModel {
             Icons.account_balance, StringHelper.owner));
       }
       if ((data?.paymentType ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, Utils.getPaymentTyp(Utils.transformToSnakeCase(data?.paymentType ?? "")), Icons.payment,
+        specs.add(_buildSpecRow(
+            context,
+            Utils.getPaymentTyp(
+                Utils.transformToSnakeCase(data?.paymentType ?? "")),
+            Icons.payment,
             StringHelper.paymentType));
       }
       if ((data?.completionStatus ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, Utils.getUtilityTyp(data?.completionStatus ?? ""),
-            Icons.check_circle, StringHelper.completionStatus));
+        specs.add(_buildSpecRow(
+            context,
+            Utils.getUtilityTyp(data?.completionStatus ?? ""),
+            Icons.check_circle,
+            StringHelper.completionStatus));
       }
       if ((data?.deliveryTerm ?? "").isNotEmpty) {
-        specs.add(_buildSpecRow(context, Utils.getCommon(data?.deliveryTerm ?? ""),
-            Icons.local_shipping, StringHelper.deliveryTerm));
+        specs.add(_buildSpecRow(
+            context,
+            Utils.getCommon(data?.deliveryTerm ?? ""),
+            Icons.local_shipping,
+            StringHelper.deliveryTerm));
       }
     }
 
     // Common specifications
-    if ((data?.nearby ?? "").isNotEmpty) {
-      specs.add(_buildSpecRow(context, (data?.nearby ?? "").split(',').last,
-          Icons.location_on, StringHelper.location));
-    }
+    // if ((data?.nearby ?? "").isNotEmpty) {
+    //   specs.add(_buildSpecRow(context, (data?.nearby ?? "").split(',').last,
+    //       Icons.location_on, StringHelper.location));
     if ((data?.createdAt ?? "").isNotEmpty) {
       specs.add(_buildSpecRow(
         context,
-        DateFormat('dd MMM yyyy').format(DateTime.parse(data?.createdAt ?? "")),
+        _formatDate(context, data?.createdAt ?? ""),
         Icons.access_time,
         StringHelper.posted,
       ));
@@ -539,7 +769,10 @@ class ProductVM extends BaseViewModel {
     return specs.isNotEmpty ? [...specs] : [];
   }
 
-
+  String parseAmount(dynamic amount) {
+    if ("${amount ?? ""}".isEmpty) return "0";
+    return Utils.formatPrice(num.parse("${amount ?? 0}").toStringAsFixed(0));
+  }
 
   // Method to show modal with full specifications
   void _showFullSpecsModal(BuildContext context, List<Widget> specs) {
@@ -584,6 +817,34 @@ class ProductVM extends BaseViewModel {
         );
       },
     );
+  }
+
+  String _formatDate(BuildContext context, String dateString) {
+    if (dateString.isEmpty) return "";
+
+    try {
+      DateTime date = DateTime.parse(dateString);
+      bool isArabic = _isCurrentLanguageArabic(context);
+
+      print(
+          "DEBUG: Date formatting - isArabic: $isArabic, dateString: $dateString");
+
+      if (isArabic) {
+        // Arabic format: DD/MM/YYYY
+        String formattedDate =
+            "${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}";
+        print("DEBUG: Arabic formatted date: $formattedDate");
+        return formattedDate;
+      } else {
+        // English format: DD MMM YYYY
+        String formattedDate = DateFormat('dd MMM yyyy').format(date);
+        print("DEBUG: English formatted date: $formattedDate");
+        return formattedDate;
+      }
+    } catch (e) {
+      print("DEBUG: Date parsing error: $e");
+      return dateString;
+    }
   }
 
   Widget _buildSpecRow(
@@ -664,7 +925,7 @@ class ProductVM extends BaseViewModel {
         );
       } else {
         return Text(
-          '${StringHelper.adExpire} : $remainingDays Days',
+          '${StringHelper.adExpire} : $remainingDays ${StringHelper.days}',
           style: TextStyle(
               color: Colors.green, fontWeight: FontWeight.w800, fontSize: 12),
         );

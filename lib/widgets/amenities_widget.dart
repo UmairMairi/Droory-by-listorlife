@@ -1,5 +1,5 @@
 import 'dart:developer';
-
+import 'dart:math' hide log;
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:list_and_life/base/helpers/db_helper.dart';
@@ -23,6 +23,8 @@ class AmenitiesWidget extends StatefulWidget {
 class _AmenitiesWidgetState extends State<AmenitiesWidget> {
   List<AmenitiesModel> _amenities = [];
   List<int?> amenitiesChecked = [];
+  bool _showAll = false; // Track expanded/collapsed state
+  final int _initialDisplayCount = 6;
 
   @override
   void initState() {
@@ -32,36 +34,35 @@ class _AmenitiesWidgetState extends State<AmenitiesWidget> {
     // Fetch amenities on init
   }
 
-  Icon getAmenityIcon(String amenityName) {
-    // Define a map that links each amenity name to an icon
+  IconData getAmenityIconData(String amenityName) {
     final Map<String, IconData> amenityIconMap = {
-      "Intercom": Icons.phone,
-      "Security": Icons.security,
-      "Storage": Icons.store_mall_directory,
-      "Broadband Internet": Icons.wifi,
-      "Garage Parking": Icons.local_parking,
-      "Elevator": Icons.elevator,
-      "Landline": Icons.phone_in_talk,
-      "Natural Gas": Icons.local_fire_department,
-      "Water Meter": Icons.water_drop,
-      "Electricity Meter": Icons.bolt,
-      "Pool": Icons.pool,
-      "Pets Allowed": Icons.pets,
-      "Maids Room": Icons.bed,
-      "Parking": Icons.directions_car,
-      "Central A/C and Heating":
-          Icons.ac_unit, // Can use separate icons if needed
-      "Private Garden": Icons.grass,
-      "Installed Kitchen": Icons.kitchen,
-      "Balcony": Icons.balcony,
+      "Intercom": Icons.doorbell_outlined,
+      "Security": Icons.security_outlined,
+      "Storage": Icons.inventory_2_outlined,
+      "Broadband Internet": Icons.wifi_outlined,
+      // "Garage Parking": Icons.garage_outlined,
+      "Elevator": Icons.elevator_outlined,
+      "Landline": Icons.phone_outlined,
+      "Natural Gas": Icons.local_fire_department_outlined,
+      "Water Meter": Icons.water_drop_outlined,
+      "Electricity Meter": Icons.electric_bolt_outlined,
+      "Pool": Icons.pool_outlined,
+      "Pets Allowed": Icons.pets_outlined,
+      "Maids Room": Icons.bedroom_child_outlined,
+      "Parking": Icons.local_parking_outlined,
+      "Central A/C and Heating": Icons.ac_unit_outlined,
+      "Private Garden": Icons.yard_outlined,
+      "Installed Kitchen": Icons.kitchen_outlined,
+      "Balcony": Icons.balcony_outlined,
+      "Washer": Icons.local_laundry_service_outlined,
+      "Dryer": Icons.dry_cleaning_outlined,
+      "Hot tub": Icons.hot_tub_outlined,
+      "Wifi": Icons.wifi_outlined,
+      "Air conditioning": Icons.ac_unit_outlined,
     };
 
-    // Return the icon if found in the map, otherwise return a default icon
-    return Icon(
-      amenityIconMap[(amenityName).replaceAll('\n', '')] ??
-          Icons.help_outline, // "help_outline" as a default icon
-      size: 18,
-    );
+    return amenityIconMap[(amenityName).replaceAll('\n', '')] ??
+        Icons.check_box_outline_blank;
   }
 
   // Fetch amenities and set state only once
@@ -104,43 +105,111 @@ class _AmenitiesWidgetState extends State<AmenitiesWidget> {
       return Text('No amenities available');
     }
 
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: _amenities.length,
-      itemBuilder: (context, index) {
-        final amenity = _amenities[index];
-        return CheckboxListTile(
-          visualDensity: VisualDensity.compact,
-          title: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              getAmenityIcon(amenity.name ?? ''),
-              Gap(05),
-              Text(DbHelper.getLanguage() == 'en'
+    // Determine which amenities to display based on show all state
+    final displayedAmenities =
+        _showAll ? _amenities : _amenities.take(_initialDisplayCount).toList();
+
+    // Check if we need a "Show More" button
+    final hasMoreToShow = _amenities.length > _initialDisplayCount;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Wrap(
+            spacing: 12, // Horizontal gap between items
+            runSpacing: 16, // Vertical gap between rows
+            children: displayedAmenities.map((amenity) {
+              final isSelected = amenitiesChecked.contains(amenity.id);
+              final amenityName = DbHelper.getLanguage() == 'en'
                   ? (amenity.name ?? '').replaceAll('\n', '')
-                  : (amenity.nameAr ?? '').replaceAll('\n', '') ,
-              style: TextStyle(fontSize: 14,fontWeight: FontWeight.w500),
-              ),
-            ],
+                  : (amenity.nameAr ?? '').replaceAll('\n', '');
+
+              return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    if (isSelected) {
+                      amenitiesChecked.remove(amenity.id);
+                    } else {
+                      amenitiesChecked.add(amenity.id);
+                    }
+                    widget.selectedAmenities.call(amenitiesChecked);
+                  });
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                  decoration: BoxDecoration(
+                    color: isSelected
+                        ? Colors.black.withOpacity(0.05)
+                        : Colors.white,
+                    borderRadius: BorderRadius.circular(30),
+                    border: Border.all(
+                      color: isSelected
+                          ? Colors.black
+                          : Colors.grey.withOpacity(0.3),
+                      width: isSelected ? 2.0 : 1.0,
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        getAmenityIconData(amenity.name ?? ''),
+                        size: 20,
+                        color: isSelected ? Colors.black : Colors.black54,
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        amenityName,
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight:
+                              isSelected ? FontWeight.w600 : FontWeight.w400,
+                          color: isSelected ? Colors.black : Colors.black87,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }).toList(),
           ),
-          contentPadding: EdgeInsets.symmetric(horizontal: 5),
-          dense: true,
-          value: amenitiesChecked.contains(amenity.id),
-          onChanged: (bool? value) {
-            setState(() {
-              if (value ?? false) {
-                amenitiesChecked.add(amenity.id);
-              } else {
-                amenitiesChecked.remove(amenity.id);
-              }
-              widget.selectedAmenities.call(amenitiesChecked);
-            });
-          },
-        );
-      },
+        ),
+
+        // Show More/Less button if there are more amenities
+        if (hasMoreToShow)
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _showAll = !_showAll;
+                });
+              },
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    _showAll ? StringHelper.seeLess : StringHelper.seeMore,
+                    style: TextStyle(
+                      color: const Color.fromARGB(255, 42, 46, 50),
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                    ),
+                  ),
+                  Icon(
+                    _showAll
+                        ? Icons.keyboard_arrow_up
+                        : Icons.keyboard_arrow_down,
+                    size: 18,
+                    color: const Color.fromARGB(255, 30, 34, 38),
+                  ),
+                ],
+              ),
+            ),
+          ),
+      ],
     );
   }
 }

@@ -54,5 +54,3 @@ class Pagination {
     return data;
   }
 }
-
-

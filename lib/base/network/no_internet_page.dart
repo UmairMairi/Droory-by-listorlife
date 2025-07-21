@@ -1,15 +1,60 @@
+import 'dart:io'; // Import for Socket
+
 import 'package:flutter/material.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/base/helpers/dialog_helper.dart'; // Import DialogHelper
 import 'package:list_and_life/base/helpers/string_helper.dart';
-
 import '../../res/assets_res.dart';
 import 'api_request.dart';
 
-class NoInternetPage extends StatelessWidget {
+class NoInternetPage extends StatefulWidget {
   const NoInternetPage(
       {super.key, required this.callBack, required this.apiRequest});
   final ApiRequest apiRequest;
   final Function(ApiRequest apiRequest) callBack;
+
+  @override
+  State<NoInternetPage> createState() => _NoInternetPageState();
+}
+
+class _NoInternetPageState extends State<NoInternetPage> {
+  // State to handle the loading indicator on the button
+  bool _isChecking = false;
+
+  // The robust refresh function
+  Future<void> _handleRefresh() async {
+    // Prevent multiple taps while checking
+    if (_isChecking) return;
+
+    setState(() {
+      _isChecking = true;
+    });
+
+    try {
+      // Use a direct socket connection to reliably check for internet
+      final socket = await Socket.connect('8.8.8.8', 53,
+          timeout: const Duration(seconds: 5));
+      socket.destroy();
+
+      // If the connection succeeds, pop the page and retry the API call
+      if (mounted) {
+        Navigator.pop(context);
+        widget.callBack(widget.apiRequest);
+      }
+    } on SocketException catch (_) {
+      // If the connection fails, show a toast instead of a SnackBar
+      if (mounted) {
+        DialogHelper.showToast(message: StringHelper.noInternetFound);
+      }
+    } finally {
+      // Always reset the loading state
+      if (mounted) {
+        setState(() {
+          _isChecking = false;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,30 +80,40 @@ class NoInternetPage extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-               Text(
+              Text(
                 StringHelper.noInternetFound,
-                style: TextStyle(color: Colors.grey, fontSize: 16),
+                style: const TextStyle(color: Colors.grey, fontSize: 16),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(
-                height: 15,
+                height: 25,
               ),
               GestureDetector(
-                  onTap: () async {
-                    Navigator.pop(context);
-                    await callBack(apiRequest);
-                  },
+                onTap: _handleRefresh,
                 child: Container(
                   width: MediaQuery.of(context).size.width * 0.6,
-                  padding: const EdgeInsets.all(10),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                       color: context.theme.primaryColor,
                       borderRadius: BorderRadius.circular(20)),
-                  child: Text(
-                    StringHelper.refreshText,
-                    style: context.titleMedium?.copyWith(color: Colors.white),
-                  ),
+                  child: _isChecking
+                      // Show a loading indicator while checking
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2.5,
+                          ),
+                        )
+                      // Show the text otherwise
+                      : Text(
+                          StringHelper.refreshText,
+                          style: context.titleMedium
+                              ?.copyWith(color: Colors.white),
+                        ),
                 ),
               )
             ],

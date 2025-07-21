@@ -71,6 +71,8 @@ class AssetsRes {
   static const String IC_CHAT_ICON = 'assets/icons/ic_chat_icon.png';
   static const String IC_CLOTHES_CAT_IMGE =
       'assets/icons/ic_clothes_cat_imge.png';
+  static const String NOT_AVAILABLE_LOTTIE =
+      'assets/lottie_jsons/not_available_lottie.json';
   static const String IC_COMMENT_ICON = 'assets/icons/ic_comment_icon.png';
   static const String IC_COMMUNICATION = 'assets/icons/ic_communication.png';
   static const String IC_CONGRATULATION_IMAGE =
@@ -123,6 +125,9 @@ class AssetsRes {
   static const String ON_BOARD_FIRST = 'assets/images/on_board_first.png';
   static const String ON_BOARD_SECOND = 'assets/images/on_board_second.png';
   static const String ON_BOARD_THIRD = 'assets/images/on_board_third.png';
+  static const String JOB_FILLER_IMAGE = 'assets/images/job_filler_image.png';
+  static const String SERVICE_FILLER_IMAGE =
+      'assets/images/service_filler_image.png';
   static const String SPLASH = 'assets/images/splash.png';
   static const String AR = 'assets/lang/ar.json';
   static const String EN = 'assets/lang/en.json';

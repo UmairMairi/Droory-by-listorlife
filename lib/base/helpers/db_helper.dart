@@ -175,7 +175,6 @@ class DbHelper {
     deleteData(_locationSearchHistory);
   }
 
-
   static void saveLanguage(String lang) {
     writeData(_language, lang);
   }

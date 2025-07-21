@@ -29,8 +29,8 @@ class NotificationView extends StatefulWidget {
 }
 
 class _NotificationViewState extends State<NotificationView> {
-
-  StreamController<List<NotificationDataModel>> notificationStream = StreamController<List<NotificationDataModel>>.broadcast();
+  StreamController<List<NotificationDataModel>> notificationStream =
+      StreamController<List<NotificationDataModel>>.broadcast();
   Future<void> getNotificationList() async {
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.getNotificationUrl(), requestType: RequestType.get);
@@ -41,7 +41,7 @@ class _NotificationViewState extends State<NotificationView> {
         MapResponse<NotificationListModel>.fromJson(
             response, (json) => NotificationListModel.fromJson(json));
 
-    notificationStream.sink.add (model.body?.data ?? []);
+    notificationStream.sink.add(model.body?.data ?? []);
   }
 
   Future<void> clearNotification() async {
@@ -52,9 +52,8 @@ class _NotificationViewState extends State<NotificationView> {
     var response = await BaseClient.handleRequest(apiRequest);
     DialogHelper.hideLoading();
     MapResponse<Object?> model =
-        MapResponse<Object>.fromJson(
-            response, (json) => json);
-    if(model.body!=null){
+        MapResponse<Object>.fromJson(response, (json) => json);
+    if (model.body != null) {
       getNotificationList();
     }
   }
@@ -66,8 +65,8 @@ class _NotificationViewState extends State<NotificationView> {
   }
 
   String getCreatedAt({String? time}) {
-    if((time??"").isEmpty)return "";
-    DateTime dateTime = DateTime.parse(time??"").toUtc().toLocal();
+    if ((time ?? "").isEmpty) return "";
+    DateTime dateTime = DateTime.parse(time ?? "").toUtc().toLocal();
 
     return DateHelper.getWalletDate(dateTime);
   }
@@ -79,9 +78,10 @@ class _NotificationViewState extends State<NotificationView> {
           title: Text(StringHelper.notifications),
           centerTitle: true,
           actions: [
-            IconButton(onPressed: (){
-              deleteDialog(context);
-            },
+            IconButton(
+                onPressed: () {
+                  deleteDialog(context);
+                },
                 icon: Icon(Icons.delete))
           ],
         ),
@@ -93,19 +93,17 @@ class _NotificationViewState extends State<NotificationView> {
                 return notifications.isEmpty
                     ? const AppEmptyNotificationWidget()
                     : ListView.separated(
-                  shrinkWrap: true,
+                        shrinkWrap: true,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 10),
                         itemBuilder: (context, index) {
                           return Card(
                             margin: EdgeInsets.zero,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)
-                            ),
+                                borderRadius: BorderRadius.circular(10)),
                             child: ListTile(
                               shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)
-                              ),
+                                  borderRadius: BorderRadius.circular(10)),
                               // leading: const ImageView.rect(
                               //     image: AssetsRes.IC_NOTIFICATION,
                               //     width: 50,
@@ -121,7 +119,11 @@ class _NotificationViewState extends State<NotificationView> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(notifications[index].title ?? ''),
-                                  Text(notifications[index].body ?? '',style: context.labelLarge,),
+                                  Text(
+                                    _getTranslatedNotificationBody(
+                                        notifications[index].body ?? ''),
+                                    style: context.labelLarge,
+                                  ),
                                 ],
                               ),
                               subtitle: Column(
@@ -228,4 +230,22 @@ class _NotificationViewState extends State<NotificationView> {
     );
   }
 
+  String _getTranslatedNotificationBody(String body) {
+    debugPrint('DEBUG: Notification body received: "$body"');
+
+    // Handle English text from backend
+    if (body == 'Congratulations! Your ad is now live') {
+      return '${StringHelper.notificationCongratulations} ${StringHelper.notificationAdLive}';
+    } else if (body == 'Your ad has been rejected') {
+      return StringHelper.notificationAdRejected;
+    }
+    // Keep the old key handling for backward compatibility
+    else if (body == 'notification_ad_live') {
+      return '${StringHelper.notificationCongratulations} ${StringHelper.notificationAdLive}';
+    } else if (body == 'notification_ad_rejected') {
+      return StringHelper.notificationAdRejected;
+    }
+
+    return body;
+  }
 }

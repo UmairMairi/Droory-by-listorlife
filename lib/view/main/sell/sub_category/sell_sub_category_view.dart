@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
+import 'package:list_and_life/base/helpers/filter_cache_manager.dart';
 import 'package:list_and_life/models/category_model.dart';
 import 'package:list_and_life/skeletons/sub_category_loading_widget.dart';
 import 'package:list_and_life/widgets/app_error_widget.dart';
@@ -17,14 +18,25 @@ class SellSubCategoryView extends StatefulWidget {
 }
 
 class _SellSubCategoryViewState extends State<SellSubCategoryView> {
-
   late SellVM viewModel;
+  final FilterCacheManager _cacheManager = FilterCacheManager();
+  List<CategoryModel>? _initialData;
+
   @override
   void initState() {
     viewModel = context.read<SellVM>();
-    viewModel.getSubCategoryListApi(category: widget.category);
-    // TODO: implement initState
+    _loadInitialData();
     super.initState();
+  }
+
+  void _loadInitialData() {
+    // Check cache immediately for initial data
+    String cacheKey =
+        _cacheManager.getSubCategoriesKey("${widget.category?.id}");
+    _initialData = _cacheManager.getFromCache(cacheKey);
+
+    // This will check cache first before making API call
+    viewModel.getSubCategoryListApi(category: widget.category);
   }
 
   @override
@@ -35,6 +47,7 @@ class _SellSubCategoryViewState extends State<SellSubCategoryView> {
         centerTitle: true,
       ),
       body: StreamBuilder<List<CategoryModel>>(
+          initialData: _initialData, // Add initial data from cache
           stream: viewModel.subcategoryStream.stream,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
@@ -49,7 +62,7 @@ class _SellSubCategoryViewState extends State<SellSubCategoryView> {
                       onTap: () {
                         DialogHelper.showLoading();
                         viewModel.getSubSubCategoryListApi(
-                          context: context,
+                            context: context,
                             category: widget.category,
                             subCategory: subCategoriesList[index]);
                       },

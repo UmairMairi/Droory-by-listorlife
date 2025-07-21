@@ -2,14 +2,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
+import 'package:list_and_life/base/utils/utils.dart';
+import 'package:list_and_life/widgets/car_model_selection.dart';
+import 'package:list_and_life/widgets/phone_form_verification_widget.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 import 'package:list_and_life/widgets/multi_select_category.dart';
+import 'package:list_and_life/view_model/car_brand_selection.dart';
 import '../../../../base/helpers/image_picker_helper.dart';
 import '../../../../base/helpers/string_helper.dart';
 import '../../../../models/category_model.dart';
+import "package:list_and_life/widgets/sell_form_location_screen.dart";
 import '../../../../models/product_detail_model.dart';
 import '../../../../view_model/sell_forms_vm.dart';
 import '../../../../widgets/app_map_widget.dart';
@@ -38,35 +43,99 @@ class CommonSellForm extends BaseView<SellFormsVM> {
 
   @override
   Widget build(BuildContext context, SellFormsVM viewModel) {
+    if (item != null && !viewModel.hasInitializedForEdit) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        viewModel.updateTextFieldsItems(item: item);
+        viewModel.hasInitializedForEdit = true;
+      });
+    }
+
+    void submitForm() {
+      // Check phone verification first
+      if (!viewModel.isPhoneVerified ||
+          viewModel.currentPhone == null ||
+          viewModel.currentPhone!.isEmpty) {
+        DialogHelper.showToast(message: StringHelper.phoneRequired);
+        return;
+      }
+
+      // Validate the form
+      if (viewModel.formKey.currentState?.validate() != true) {
+        return;
+      }
+
+      // Check if main image is uploaded
+      if (viewModel.mainImagePath.isEmpty) {
+        DialogHelper.showToast(
+          message: StringHelper.pleaseUploadMainImage,
+        );
+        return;
+      }
+
+      // Check if at least one additional image is uploaded
+      if (viewModel.imagesList.isEmpty) {
+        DialogHelper.showToast(
+          message: StringHelper.pleaseUploadAddAtLeastOneImage,
+        );
+        return;
+      }
+
+      // Show loading
+      DialogHelper.showLoading();
+
+      // Call appropriate method based on whether it's edit or add
+      if (viewModel.isEditProduct) {
+        viewModel.editProduct(
+          productId: item?.id,
+          category: category,
+          subCategory: subCategory,
+          subSubCategory: subSubCategory,
+          brand: viewModel.selectedBrand,
+          models: viewModel.selectedModel,
+          onSuccess: () {
+            Navigator.pop(context);
+          },
+        );
+      } else {
+        viewModel.addProduct(
+          category: category,
+          subCategory: subCategory,
+          subSubCategory: subSubCategory,
+          brand: viewModel.selectedBrand,
+          models: viewModel.selectedModel,
+        );
+      }
+    }
+
     debugPrint("subCategory?.id ${subCategory?.id}");
-    // Brand dropdown title logic (unchanged)
+
+    // Brand dropdown title logic
     String brandTitle;
+
     if (category?.id == 5 || category?.id == 8 || category?.id == 7) {
       brandTitle = StringHelper.type;
     } else if (subCategory?.id == 22) {
       brandTitle = StringHelper.type;
-      // Mobile Accessories
     } else if (subCategory?.id == 23) {
-      brandTitle = StringHelper.telecom; // Mobile Numbers
+      brandTitle = StringHelper.telecom;
     } else if (subCategory?.id == 4) {
-      brandTitle = StringHelper.type; // Furniture
+      brandTitle = StringHelper.type;
     } else if (subCategory?.id == 91) {
-      brandTitle = StringHelper.type; // Video Games and Consoles
+      brandTitle = StringHelper.type;
     } else if (subCategory?.id == 95) {
-      brandTitle = StringHelper.type; // vehicles
+      brandTitle = StringHelper.type;
     } else if (subCategory?.id == 19 || subSubCategory?.id == 7) {
-      brandTitle = StringHelper.brand; // Home Appliances or sub-subcategory 7
+      brandTitle = StringHelper.brand;
     } else if (subSubCategory?.id == 5) {
-      brandTitle = StringHelper.type; // Computer Accessories
+      brandTitle = StringHelper.type;
     } else {
-      brandTitle = StringHelper.brand; // Default
+      brandTitle = StringHelper.brand;
     }
 
-    // Visibility logic (updated for Screen Size)
+    // Visibility logic
     bool showBrandDropdown = (brands?.isNotEmpty ?? false) &&
         ![11, 12, 13].contains(subSubCategory?.id);
 
-    // Make the Models field visible only if subCategory == 20 AND a brand is chosen
     bool showModelsDropdown =
         (subCategory?.id == 20) && (viewModel.selectedBrand != null);
 
@@ -82,18 +151,16 @@ class CommonSellForm extends BaseView<SellFormsVM> {
         subCategory?.id != 20 &&
         ![7, 11, 12, 13, 5, 14, 15, 19].contains(subSubCategory?.id);
 
-    // Updated showScreenSize to include sub-subcategory 7 (Televisions)
     bool showScreenSize = (category?.id == 1 &&
             subCategory?.id != 91 &&
             subCategory?.id != 18 &&
             ![1, 2, 11, 12, 13, 5, 14, 15, 19].contains(subSubCategory?.id)) ||
         (subSubCategory?.id == 7);
 
-    // Phone-specific RAM and Storage (if subCategory.id == 20)
     bool showPhoneRam = subCategory?.id == 20;
     bool showPhoneStorage = subCategory?.id == 20;
 
-    // Define sub-subcategory lists for sizes dropdown (unchanged)
+    // Define sub-subcategory lists for sizes dropdown
     final List<int> sizeTypeSubSubCats = [
       5,
       19,
@@ -116,6 +183,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
       53,
       89,
       257,
+      317
     ];
     final List<int> sizeBrandSubSubCats = [
       1,
@@ -133,7 +201,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
       7
     ];
 
-    // Determine if sizes dropdown should be shown (unchanged)
+    // Determine if sizes dropdown should be shown
     bool shouldShowSizesDropdown() {
       if (subSubCategory != null) {
         return sizeTypeSubSubCats.contains(subSubCategory?.id) ||
@@ -142,7 +210,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
       return false;
     }
 
-    // Set the title for the sizes dropdown (unchanged)
+    // Set the title for the sizes dropdown
     String getSizesDropdownTitle() {
       if (subSubCategory != null) {
         if (sizeTypeSubSubCats.contains(subSubCategory?.id)) {
@@ -151,11 +219,10 @@ class CommonSellForm extends BaseView<SellFormsVM> {
           return StringHelper.brand;
         }
       }
-      return "Size"; // Fallback title
+      return "Size";
     }
 
-    // -- BEGIN REQUIRED-FIELD TITLE LOGIC
-    // We just append "*" to the label to indicate required, if the field will be visible
+    // Required-field title logic
     String brandTitleWithStar = brandTitle;
     if (showBrandDropdown && (brands?.isNotEmpty ?? false)) {
       brandTitleWithStar += " *";
@@ -167,7 +234,6 @@ class CommonSellForm extends BaseView<SellFormsVM> {
     if (showSizeDropdown) {
       sizeTitleWithStar += " *";
     }
-    // -- END REQUIRED-FIELD TITLE LOGIC
 
     return Form(
       key: viewModel.formKey,
@@ -185,7 +251,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Image Upload Section (unchanged)
+                // Image Upload Section
                 Text(
                   StringHelper.uploadImages,
                   style: context.textTheme.titleMedium,
@@ -199,22 +265,46 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: GestureDetector(
-                    onTap: () async {
-                      viewModel.mainImagePath =
-                          await ImagePickerHelper.openImagePicker(
-                                context: context,
-                                isCropping: true,
-                              ) ??
-                              '';
-                    },
-                    child: ImageView.rect(
-                      image: viewModel.mainImagePath,
-                      borderRadius: 10,
-                      width: context.width,
-                      placeholder: AssetsRes.IC_CAMERA,
-                      height: 220,
-                    ),
+                  child: Stack(
+                    children: [
+                      GestureDetector(
+                        onTap: () async {
+                          viewModel.mainImagePath =
+                              await ImagePickerHelper.openImagePicker(
+                                    context: context,
+                                    isCropping: false,
+                                  ) ??
+                                  '';
+                        },
+                        child: ImageView.rect(
+                          image: viewModel.mainImagePath,
+                          borderRadius: 10,
+                          width: context.width,
+                          placeholder: AssetsRes.IC_CAMERA,
+                          height: 220,
+                        ),
+                      ),
+                      // X button - only show if there's a main image
+                      if (viewModel.mainImagePath.isNotEmpty &&
+                          category?.id != 8)
+                        Positioned(
+                          top: 5,
+                          right: 5,
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                            ),
+                            child: InkWell(
+                              onTap: () {
+                                viewModel.removeMainImage();
+                              },
+                              child: const Icon(Icons.cancel,
+                                  color: Colors.red, size: 24),
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
                 ),
                 Wrap(
@@ -258,13 +348,34 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                     } else {
                       return GestureDetector(
                         onTap: () async {
-                          if (viewModel.imagesList.length < 10) {
-                            var image = await ImagePickerHelper.openImagePicker(
-                                  context: context,
-                                  isCropping: true,
-                                ) ??
-                                '';
-                            if (image.isNotEmpty) viewModel.addImage(image);
+                          if (viewModel.imagesList.length < 13) {
+                            // Show camera/gallery options
+                            String? result =
+                                await ImagePickerHelper.openImagePicker(
+                              context: context,
+                              isCropping: false,
+                              forMultiple: true,
+                            );
+
+                            if (result == 'OPEN_MULTI_GALLERY') {
+                              // User selected gallery, now open multi-select
+                              List<String>? images = await ImagePickerHelper
+                                  .pickMultipleImagesFromGallery();
+                              if (images != null && images.isNotEmpty) {
+                                for (var img in images) {
+                                  if (viewModel.imagesList.length < 13) {
+                                    viewModel.addImage(img);
+                                  } else {
+                                    DialogHelper.showToast(
+                                        message: StringHelper.imageMaxLimit);
+                                    break;
+                                  }
+                                }
+                              }
+                            } else if (result != null) {
+                              // User selected camera, add single image
+                              viewModel.addImage(result);
+                            }
                           } else {
                             DialogHelper.showToast(
                                 message: StringHelper.imageMaxLimit);
@@ -293,17 +404,71 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                     }
                   }),
                 ),
+                const SizedBox(height: 16),
 
-                // SIZES Dropdown
-                if (showSizeDropdown)
+                // SIZES Dropdown - Clean Version
+                // SIZES Dropdown - Clean Version (No Loading Indicator)
+                // SIZES Dropdown - Clean Version with Cached Loading
+                if (showSizeDropdown) ...[
                   FutureBuilder<List<CategoryModel>>(
-                    future: viewModel.getSizeOptions("${subSubCategory?.id}"),
+                    future:
+                        viewModel.getCachedSizeOptions("${subSubCategory?.id}"),
                     builder: (context, snapshot) {
-                      if (snapshot.hasData &&
-                          (snapshot.data?.isNotEmpty ?? false)) {
+                      // Show loading indicator while waiting (only first time)
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade50,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Colors.grey.shade300),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                sizeTitleWithStar,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      "Loading options...",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.grey.shade500,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 16,
+                                    height: 16,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.grey.shade600,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+
+                      // Only show if data exists and is not empty
+                      if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                         return FormField<CategoryModel?>(
                           validator: (value) {
-                            // If we're actually showing the sizes, it becomes required.
                             if (showSizeDropdown && value == null) {
                               return StringHelper.fieldShouldNotBeEmpty;
                             }
@@ -314,36 +479,104 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                CommonDropdown<CategoryModel?>(
-                                  title: sizeTitleWithStar,
-                                  titleColor: Colors.black,
-                                  hint: viewModel.sizeTextController.text,
-                                  options: snapshot.data!,
-                                  listItemBuilder:
-                                      (context, model, selected, fxn) {
-                                    return Text(model?.name ?? '');
+                                // Custom Size Selection Field
+                                GestureDetector(
+                                  onTap: () async {
+                                    final CategoryModel? selectedSize =
+                                        await Navigator.push<CategoryModel>(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            CarBrandSelectionScreen(
+                                          brands: snapshot.data ?? [],
+                                          selectedBrand: viewModel.selectedSize,
+                                          title: sizeTitleWithStar.replaceAll(
+                                              " *", ""),
+                                          showIcon: false,
+                                        ),
+                                      ),
+                                    );
+
+                                    if (selectedSize != null) {
+                                      field.didChange(selectedSize);
+                                      field.validate();
+                                      viewModel.selectedSize = selectedSize;
+                                      viewModel.sizeTextController.text =
+                                          selectedSize.name ?? '';
+                                    }
                                   },
-                                  headerBuilder:
-                                      (context, selectedItem, enabled) {
-                                    return Text(selectedItem?.name ?? "");
-                                  },
-                                  onSelected: (CategoryModel? value) {
-                                    field.didChange(value);
-                                    field.validate(); // Force revalidation
-                                    viewModel.selectedSize = value;
-                                    viewModel.sizeTextController.text =
-                                        value?.name ?? '';
-                                  },
+                                  child: Container(
+                                    width: double.infinity,
+                                    padding: const EdgeInsets.all(16),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: Border.all(
+                                        color: field.hasError
+                                            ? Colors.red
+                                            : Colors.grey.shade300,
+                                        width: field.hasError ? 2 : 1,
+                                      ),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          sizeTitleWithStar,
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Row(
+                                          children: [
+                                            // Size Name or Placeholder
+                                            Expanded(
+                                              child: Text(
+                                                viewModel.selectedSize?.name ??
+                                                    StringHelper.select,
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight:
+                                                      viewModel.selectedSize !=
+                                                              null
+                                                          ? FontWeight.w500
+                                                          : FontWeight.w400,
+                                                  color: viewModel
+                                                              .selectedSize !=
+                                                          null
+                                                      ? Colors.black
+                                                      : Colors.grey.shade500,
+                                                ),
+                                              ),
+                                            ),
+
+                                            // Dropdown Arrow
+                                            Icon(
+                                              Icons.keyboard_arrow_down,
+                                              color: Colors.grey.shade600,
+                                              size: 24,
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
+
+                                // Error Text
                                 if (field.hasError)
                                   Padding(
                                     padding: const EdgeInsets.only(
-                                        left: 10.0, top: 5),
+                                        left: 10.0, top: 8),
                                     child: Text(
                                       field.errorText!,
                                       style: const TextStyle(
                                         color: Colors.red,
-                                        fontSize: 14,
+                                        fontSize: 12,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -353,16 +586,17 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                           },
                         );
                       }
-                      // If there's no data, just return an empty widget
+
+                      // Don't show anything if no data or empty data
                       return const SizedBox.shrink();
                     },
                   ),
-
-                // BRAND Dropdown (only if sizes dropdown isn’t shown)
-                if (showBrandDropdown && !showSizeDropdown)
+                  const SizedBox(height: 16),
+                ],
+                // BRAND Dropdown - Clean Version
+                if (showBrandDropdown && !showSizeDropdown) ...[
                   FormField<CategoryModel?>(
                     validator: (value) {
-                      // If brand dropdown is visible & has data, require a value
                       if (showBrandDropdown &&
                           (brands?.isNotEmpty ?? false) &&
                           value == null) {
@@ -375,97 +609,114 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // We make the title bigger and bolder here
-                          // Text(
-                          //   brandTitleWithStar,
-                          //   style: const TextStyle(
-                          //     fontSize: 16,
-                          //     fontWeight: FontWeight.bold,
-                          //   ),
-                          // ),
-                          CommonDropdown<CategoryModel?>(
-                            title: brandTitleWithStar,
-                            titleColor: Colors.black,
-                            hint: viewModel.brandTextController.text,
-                            listItemBuilder: (context, model, selected, fxn) {
-                              return Text(model?.name ?? '');
+                          // Custom Brand Selection Field
+                          GestureDetector(
+                            onTap: () async {
+                              final CategoryModel? selectedBrand =
+                                  await Navigator.push<CategoryModel>(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CarBrandSelectionScreen(
+                                    brands: brands ?? [],
+                                    selectedBrand: viewModel.selectedBrand,
+                                    title:
+                                        brandTitleWithStar.replaceAll(" *", ""),
+                                  ),
+                                ),
+                              );
+
+                              if (selectedBrand != null) {
+                                field.didChange(selectedBrand);
+                                field.validate();
+
+                                // Clear model selection when brand changes
+                                viewModel.selectedModel = null;
+                                viewModel.modelTextController.clear();
+                                viewModel.allModels.clear();
+
+                                // Update brand
+                                viewModel.selectedBrand = selectedBrand;
+                                viewModel.brandTextController.text =
+                                    selectedBrand.name ?? '';
+
+                                // Load new models for the selected brand
+                                if (selectedBrand != null) {
+                                  viewModel.getModels(
+                                      brandId: selectedBrand.id);
+                                }
+
+                                // Force UI update
+                                viewModel.notifyListeners();
+                              }
                             },
-                            headerBuilder: (context, selectedItem, enabled) {
-                              return Text(selectedItem?.name ?? "");
-                            },
-                            options: brands ?? [],
-                            onSelected: (CategoryModel? value) {
-                              // IMPORTANT: We call 'didChange' and then 'validate'
-                              // so the error goes away if a brand is chosen
-                              field.didChange(value);
-                              field.validate();
-                              DialogHelper.showLoading();
-                              viewModel.getModels(brandId: value?.id);
-                              viewModel.selectedBrand = value;
-                              viewModel.brandTextController.text =
-                                  value?.name ?? '';
-                            },
-                          ),
-                          if (field.hasError)
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 10.0, top: 1),
-                              child: Text(
-                                field.errorText!,
-                                style: const TextStyle(
-                                  color: Color.fromARGB(255, 202, 64, 54),
-                                  fontSize: 11.5, // A little bigger
-                                  fontWeight: FontWeight.bold, // Bolder
+                            child: Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color: field.hasError
+                                      ? Colors.red
+                                      : Colors.grey.shade300,
+                                  width: field.hasError ? 2 : 1,
                                 ),
                               ),
-                            ),
-                        ],
-                      );
-                    },
-                  ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    brandTitleWithStar,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Row(
+                                    children: [
+                                      // Brand Name or Placeholder
+                                      Expanded(
+                                        child: Text(
+                                          viewModel.selectedBrand?.name ??
+                                              StringHelper.select,
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight:
+                                                viewModel.selectedBrand != null
+                                                    ? FontWeight.w500
+                                                    : FontWeight.w400,
+                                            color:
+                                                viewModel.selectedBrand != null
+                                                    ? Colors.black
+                                                    : Colors.grey.shade500,
+                                          ),
+                                        ),
+                                      ),
 
-                // MODELS Dropdown (appear only when brand is selected & subCategory == 20)
-                if (showModelsDropdown)
-                  FormField<CategoryModel?>(
-                    validator: (value) {
-                      // If subCategory is 20 and we show the models, let's require it
-                      if (subCategory?.id == 20 && value == null) {
-                        return StringHelper.fieldShouldNotBeEmpty;
-                      }
-                      return null;
-                    },
-                    initialValue: viewModel.selectedModel,
-                    builder: (field) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CommonDropdown<CategoryModel?>(
-                            title: StringHelper.models,
-                            titleColor: Colors.black,
-                            hint: viewModel.modelTextController.text,
-                            listItemBuilder: (context, model, selected, fxn) {
-                              return Text(model?.name ?? '');
-                            },
-                            headerBuilder: (context, selectedItem, enabled) {
-                              return Text(selectedItem?.name ?? "");
-                            },
-                            options: viewModel.allModels,
-                            onSelected: (value) {
-                              field.didChange(value);
-                              field.validate();
-                              viewModel.selectedModel = value;
-                              viewModel.modelTextController.text =
-                                  value?.name ?? '';
-                            },
+                                      // Dropdown Arrow
+                                      Icon(
+                                        Icons.keyboard_arrow_down,
+                                        color: Colors.grey.shade600,
+                                        size: 24,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
+
+                          // Error Text
                           if (field.hasError)
                             Padding(
                               padding:
-                                  const EdgeInsets.only(left: 10.0, top: 2),
+                                  const EdgeInsets.only(left: 10.0, top: 8),
                               child: Text(
                                 field.errorText!,
                                 style: const TextStyle(
-                                  color: Color.fromARGB(255, 152, 27, 27),
+                                  color: Colors.red,
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -475,28 +726,244 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                       );
                     },
                   ),
+                  const SizedBox(height: 16),
+                ],
 
-                // Phone-specific RAM/Storage
-                if (showPhoneRam)
-                  CommonDropdown<String?>(
+                // MODELS Dropdown (for subCategory?.id == 20)
+                if (subCategory?.id == 20 &&
+                    viewModel.selectedBrand != null) ...[
+                  FormField<CategoryModel?>(
+                    validator: (value) {
+                      if (subCategory?.id == 20 &&
+                          viewModel.allModels.isNotEmpty &&
+                          value == null) {
+                        return StringHelper.fieldShouldNotBeEmpty;
+                      }
+                      return null;
+                    },
+                    initialValue: viewModel.selectedModel,
+                    builder: (field) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Custom Model Selection Field
+                          GestureDetector(
+                            onTap: (viewModel.allModels.isNotEmpty)
+                                ? () async {
+                                    final CategoryModel? selectedModel =
+                                        await Navigator.push<CategoryModel>(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            CarModelSelectionScreen(
+                                          models: viewModel.allModels
+                                              .whereType<CategoryModel>()
+                                              .toList(),
+                                          selectedModel:
+                                              viewModel.selectedModel,
+                                          title: StringHelper.models ??
+                                              "Select Model",
+                                          brandName:
+                                              viewModel.selectedBrand?.name,
+                                          showIcon: false,
+                                        ),
+                                      ),
+                                    );
+
+                                    if (selectedModel != null) {
+                                      field.didChange(selectedModel);
+                                      field.validate();
+                                      viewModel.selectedModel = selectedModel;
+                                      viewModel.modelTextController.text =
+                                          selectedModel.name ?? '';
+                                    }
+                                  }
+                                : null,
+                            child: Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: viewModel.allModels.isEmpty
+                                    ? Colors.grey.shade50
+                                    : Colors.white,
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color: field.hasError
+                                      ? Colors.red
+                                      : Colors.grey.shade300,
+                                  width: field.hasError ? 2 : 1,
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "${StringHelper.models} *",
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Row(
+                                    children: [
+                                      // Model Name or Placeholder
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              viewModel.selectedModel?.name ??
+                                                  (viewModel.allModels.isEmpty
+                                                      ? StringHelper
+                                                              .loadingModels ??
+                                                          "Loading models..."
+                                                      : StringHelper
+                                                              .selectModel ??
+                                                          "Select Model"),
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight:
+                                                    viewModel.selectedModel !=
+                                                            null
+                                                        ? FontWeight.w500
+                                                        : FontWeight.w400,
+                                                color:
+                                                    viewModel.selectedModel !=
+                                                            null
+                                                        ? Colors.black
+                                                        : Colors.grey.shade500,
+                                              ),
+                                            ),
+                                            if (viewModel.selectedBrand != null)
+                                              Text(
+                                                "${StringHelper.forText ?? "for"} ${viewModel.selectedBrand!.name}",
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.grey.shade600,
+                                                ),
+                                              ),
+                                          ],
+                                        ),
+                                      ),
+
+                                      // Dropdown Arrow or Loading
+                                      viewModel.allModels.isEmpty &&
+                                              viewModel.selectedBrand != null
+                                          ? SizedBox(
+                                              width: 16,
+                                              height: 16,
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                                valueColor:
+                                                    AlwaysStoppedAnimation<
+                                                        Color>(
+                                                  Colors.grey.shade600,
+                                                ),
+                                              ),
+                                            )
+                                          : Icon(
+                                              Icons.keyboard_arrow_down,
+                                              color: Colors.grey.shade600,
+                                              size: 24,
+                                            ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+
+                          // Error Text
+                          if (field.hasError)
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 10.0, top: 8),
+                              child: Text(
+                                field.errorText!,
+                                style: const TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                        ],
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                ],
+
+                // Phone-specific RAM Dropdown
+                if (showPhoneRam) ...[
+                  CommonDropdown<String>(
                     title: StringHelper.ram,
-                    hint: viewModel.ramTextController.text,
+                    hint: viewModel.ramTextController.text.isNotEmpty
+                        ? viewModel.ramTextController.text
+                        : "",
+                    options: [
+                      StringHelper.lessThan1GB,
+                      StringHelper.gb1,
+                      StringHelper.gb2,
+                      StringHelper.gb3,
+                      StringHelper.gb4,
+                      StringHelper.gb6,
+                      StringHelper.gb8,
+                      StringHelper.gb12,
+                      StringHelper.gb16,
+                      StringHelper.gb16Plus,
+                    ],
+                    listItemBuilder: (context, option, selected, fxn) {
+                      return Text(option);
+                    },
+                    headerBuilder: (context, selectedItem, enabled) {
+                      return Text(selectedItem ?? "");
+                    },
                     onSelected: (String? value) {
                       viewModel.ramTextController.text = value ?? '';
+                      viewModel.notifyListeners();
                     },
-                    options: viewModel.phoneRamOptions,
                   ),
-                if (showPhoneStorage)
-                  CommonDropdown<String?>(
-                    title: StringHelper.strong, // "Storage"
-                    hint: viewModel.storageTextController.text,
+                  const SizedBox(height: 16),
+                ],
+
+                // Phone-specific Storage Dropdown
+                if (showPhoneStorage) ...[
+                  CommonDropdown<String>(
+                    title: StringHelper.strong,
+                    hint: viewModel.storageTextController.text.isNotEmpty
+                        ? viewModel.storageTextController.text
+                        : "",
+                    options: [
+                      StringHelper.lessThan8GB,
+                      StringHelper.gb8,
+                      StringHelper.gb16,
+                      StringHelper.gb32,
+                      StringHelper.gb64,
+                      StringHelper.gb128,
+                      StringHelper.gb256,
+                      StringHelper.gb512,
+                      StringHelper.tb1,
+                      StringHelper.tb1Plus,
+                    ],
+                    listItemBuilder: (context, option, selected, fxn) {
+                      return Text(option);
+                    },
+                    headerBuilder: (context, selectedItem, enabled) {
+                      return Text(selectedItem ?? "");
+                    },
                     onSelected: (String? value) {
                       viewModel.storageTextController.text = value ?? '';
+                      viewModel.notifyListeners();
                     },
-                    options: viewModel.phoneStorageOptions,
                   ),
+                  const SizedBox(height: 16),
+                ],
 
-                // Item Condition (unchanged)
+                // Item Condition
                 Visibility(
                   visible: ![23, 46, 31].contains(subCategory?.id),
                   child: Text(
@@ -506,71 +973,75 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                 ),
                 Visibility(
                   visible: ![23, 46, 31].contains(subCategory?.id),
-                  child: Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () => viewModel.itemCondition = 1,
-                        child: Container(
-                          width: 105,
-                          height: 42,
-                          margin: const EdgeInsets.only(top: 10, right: 10),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: viewModel.itemCondition == 1
-                                  ? Colors.transparent
-                                  : Colors.grey.withOpacity(0.5),
-                            ),
-                            color: viewModel.itemCondition == 1
-                                ? Colors.black
-                                : const Color(0xffFCFCFD),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Center(
-                            child: Text(
-                              StringHelper.newText,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () => viewModel.itemCondition = 1,
+                            child: Container(
+                              height: 42,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: viewModel.itemCondition == 1
+                                      ? Colors.transparent
+                                      : Colors.grey.withOpacity(0.5),
+                                ),
                                 color: viewModel.itemCondition == 1
-                                    ? Colors.white
-                                    : Colors.black,
+                                    ? Colors.black
+                                    : const Color(0xffFCFCFD),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  StringHelper.newText,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16,
+                                    color: viewModel.itemCondition == 1
+                                        ? Colors.white
+                                        : Colors.black,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () => viewModel.itemCondition = 2,
-                        child: Container(
-                          width: 105,
-                          height: 42,
-                          margin: const EdgeInsets.only(top: 10, left: 10),
-                          decoration: BoxDecoration(
-                            color: viewModel.itemCondition == 2
-                                ? Colors.black
-                                : const Color(0xffFCFCFD),
-                            border: Border.all(
-                              color: viewModel.itemCondition == 2
-                                  ? Colors.transparent
-                                  : Colors.grey.withOpacity(0.5),
-                            ),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Center(
-                            child: Text(
-                              StringHelper.used,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16,
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () => viewModel.itemCondition = 2,
+                            child: Container(
+                              height: 42,
+                              decoration: BoxDecoration(
                                 color: viewModel.itemCondition == 2
-                                    ? Colors.white
-                                    : Colors.black,
+                                    ? Colors.black
+                                    : const Color(0xffFCFCFD),
+                                border: Border.all(
+                                  color: viewModel.itemCondition == 2
+                                      ? Colors.transparent
+                                      : Colors.grey.withOpacity(0.5),
+                                ),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  StringHelper.used,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16,
+                                    color: viewModel.itemCondition == 2
+                                        ? Colors.white
+                                        : Colors.black,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 Visibility(
@@ -578,35 +1049,92 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                   child: const SizedBox(height: 25),
                 ),
 
-                // Additional RAM, Storage, Screen Size if category 1 or 2
+                // Additional RAM, Storage, Screen Size for category 1 or 2
                 if (category?.id == 1 || category?.id == 2) ...[
-                  if (showRam)
-                    CommonDropdown<String?>(
+                  if (showRam) ...[
+                    CommonDropdown<String>(
                       title: StringHelper.ram,
-                      hint: viewModel.ramTextController.text,
+                      hint: viewModel.ramTextController.text.isNotEmpty
+                          ? viewModel.ramTextController.text
+                          : "",
+                      options: [
+                        StringHelper.lessThan4GB,
+                        StringHelper.gb4,
+                        StringHelper.gb8,
+                        StringHelper.gb16,
+                        StringHelper.gb32,
+                        StringHelper.gb64,
+                        StringHelper.gb64Plus,
+                      ],
+                      listItemBuilder: (context, option, selected, fxn) {
+                        return Text(option);
+                      },
+                      headerBuilder: (context, selectedItem, enabled) {
+                        return Text(selectedItem ?? "");
+                      },
                       onSelected: (String? value) {
                         viewModel.ramTextController.text = value ?? '';
+                        viewModel.notifyListeners();
                       },
-                      options: viewModel.ramOptions,
                     ),
-                  if (showStorage)
-                    CommonDropdown<String?>(
-                      title: StringHelper.strong, // "Storage"
-                      hint: viewModel.storageTextController.text,
+                    const SizedBox(height: 16),
+                  ],
+                  if (showStorage) ...[
+                    CommonDropdown<String>(
+                      title: StringHelper.strong,
+                      hint: viewModel.storageTextController.text.isNotEmpty
+                          ? viewModel.storageTextController.text
+                          : "",
+                      options: [
+                        StringHelper.lessThan64GB,
+                        StringHelper.gb64,
+                        StringHelper.gb128,
+                        StringHelper.gb256,
+                        StringHelper.gb512,
+                        StringHelper.tb1,
+                        StringHelper.tb1_5,
+                        StringHelper.tb2,
+                        StringHelper.tb2Plus,
+                      ],
+                      listItemBuilder: (context, option, selected, fxn) {
+                        return Text(option);
+                      },
+                      headerBuilder: (context, selectedItem, enabled) {
+                        return Text(selectedItem ?? "");
+                      },
                       onSelected: (String? value) {
                         viewModel.storageTextController.text = value ?? '';
+                        viewModel.notifyListeners();
                       },
-                      options: viewModel.storageOptions,
                     ),
-                  if (showScreenSize)
+                    const SizedBox(height: 16),
+                  ],
+                  if (showScreenSize) ...[
                     CommonDropdown<String?>(
                       title: StringHelper.screenSize,
                       hint: viewModel.screenSizeTextController.text,
                       onSelected: (String? value) {
                         viewModel.screenSizeTextController.text = value ?? '';
                       },
-                      options: viewModel.tvSizeOptions,
+                      options: [
+                        '24',
+                        '28',
+                        '32',
+                        '40',
+                        '43',
+                        '48',
+                        '50',
+                        '55',
+                        '58',
+                        '65',
+                        '70',
+                        '75',
+                        '85',
+                        StringHelper.other
+                      ],
                     ),
+                    const SizedBox(height: 16),
+                  ],
                 ],
 
                 // Ad Title
@@ -631,12 +1159,12 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                       return StringHelper.fieldShouldNotBeEmpty;
                     }
                     if (value.trim().length < 10) {
-                      return StringHelper
-                          .adLength; // "Ad title must be at least 10 characters"
+                      return StringHelper.adLength;
                     }
                     return null;
                   },
                 ),
+                const SizedBox(height: 16),
 
                 // Description
                 AppTextField(
@@ -660,54 +1188,49 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                     return null;
                   },
                 ),
+                const SizedBox(height: 16),
 
-                // Location
+                // Location Field
                 AppTextField(
                   title: "${StringHelper.location} *",
-                  controller: viewModel.addressTextController,
-                  maxLines: 2,
-                  minLines: 1,
+                  titleColor: Colors.black,
+                  hint: StringHelper.select,
                   readOnly: true,
+                  controller: viewModel.addressTextController,
+                  suffix: Icon(Icons.location_on, color: Colors.grey.shade600),
+                  fillColor: Colors.white,
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 14,
+                  ),
                   onTap: () async {
-                    Map<String, dynamic>? value = await Navigator.push(
+                    Map<String, dynamic>? returnedLocationData =
+                        await Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const AppMapWidget()),
+                          builder: (context) =>
+                              SellFormLocationScreen(viewModel: viewModel)),
                     );
-                    if (value != null && value.isNotEmpty) {
-                      viewModel.state = value['state'];
-                      viewModel.city = value['city'];
-                      viewModel.country = value['country'];
-                      String address = "";
-                      if ("${value['location'] ?? ""}".isNotEmpty) {
-                        address = "${value['location'] ?? ""}";
-                      }
-                      if ("${value['city'] ?? ""}".isNotEmpty) {
-                        address += ", ${value['city'] ?? ""}";
-                      }
-                      if ("${value['state'] ?? ""}".isNotEmpty) {
-                        address += ", ${value['state'] ?? ""}";
-                      }
-                      viewModel.addressTextController.text = address;
+
+                    if (returnedLocationData != null &&
+                        returnedLocationData.isNotEmpty) {
+                      viewModel.handleLocationSelectedFromAdForm(
+                          returnedLocationData);
                     }
                   },
-                  hint: StringHelper.select,
-                  suffix: const Icon(Icons.location_on),
-                  hintStyle:
-                      const TextStyle(color: Color(0xffACACAC), fontSize: 14),
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return StringHelper.locationIsRequired;
+                    }
+                    return null;
+                  },
                   inputFormatters: [
                     FilteringTextInputFormatter.deny(
                         RegExp(viewModel.regexToRemoveEmoji)),
                   ],
-                  keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.done,
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return StringHelper.fieldShouldNotBeEmpty;
-                    }
-                    return null;
-                  },
+                  maxLines: 2,
                 ),
+                const SizedBox(height: 16),
 
                 // Price
                 AppTextField(
@@ -746,6 +1269,18 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                     return null;
                   },
                 ),
+                const SizedBox(height: 16),
+
+                // Phone Verification Widget
+                PhoneVerificationWidget(
+                  onPhoneStatusChanged: (isVerified, phone) {
+                    viewModel.updatePhoneVerificationStatus(isVerified, phone);
+                  },
+                  onAutoSubmit: () {
+                    submitForm();
+                  },
+                ),
+                const SizedBox(height: 16),
 
                 // Communication Choice
                 Text(
@@ -758,37 +1293,12 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                     viewModel.communicationChoice = value.name;
                   },
                 ),
+                const SizedBox(height: 16),
 
-                // Button
+                // Submit Button
                 if (viewModel.isEditProduct)
                   GestureDetector(
-                    onTap: () {
-                      if (viewModel.formKey.currentState?.validate() != true) {
-                        return;
-                      }
-                      if (viewModel.mainImagePath.isEmpty) {
-                        DialogHelper.showToast(
-                          message: StringHelper.pleaseUploadMainImage,
-                        );
-                        return;
-                      }
-                      if (viewModel.imagesList.isEmpty) {
-                        DialogHelper.showToast(
-                          message: StringHelper.pleaseUploadAddAtLeastOneImage,
-                        );
-                        return;
-                      }
-                      // If everything in the form is valid, proceed
-                      DialogHelper.showLoading();
-                      viewModel.editProduct(
-                        productId: item?.id,
-                        category: category,
-                        subCategory: subCategory,
-                        subSubCategory: subSubCategory,
-                        brand: viewModel.selectedBrand,
-                        models: viewModel.selectedModel,
-                      );
-                    },
+                    onTap: submitForm,
                     child: Container(
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(vertical: 15),
@@ -812,32 +1322,7 @@ class CommonSellForm extends BaseView<SellFormsVM> {
                   )
                 else
                   GestureDetector(
-                    onTap: () {
-                      if (viewModel.formKey.currentState?.validate() != true) {
-                        return;
-                      }
-                      if (viewModel.mainImagePath.isEmpty) {
-                        DialogHelper.showToast(
-                          message: StringHelper.pleaseUploadMainImage,
-                        );
-                        return;
-                      }
-                      if (viewModel.imagesList.isEmpty) {
-                        DialogHelper.showToast(
-                          message: StringHelper.pleaseUploadAddAtLeastOneImage,
-                        );
-                        return;
-                      }
-                      // If everything in the form is valid, proceed
-                      DialogHelper.showLoading();
-                      viewModel.addProduct(
-                        category: category,
-                        subCategory: subCategory,
-                        subSubCategory: subSubCategory,
-                        brand: viewModel.selectedBrand,
-                        models: viewModel.selectedModel,
-                      );
-                    },
+                    onTap: submitForm,
                     child: Container(
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(vertical: 15),

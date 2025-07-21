@@ -333,11 +333,10 @@ import 'notification_entity.dart';
 //   }
 // }
 
-
 class NotificationService {
   //Singleton pattern
   static final NotificationService _notificationService =
-  NotificationService._internal();
+      NotificationService._internal();
 
   factory NotificationService() {
     return _notificationService;
@@ -355,11 +354,11 @@ class NotificationService {
   );
 
   final StreamController<String?> selectNotificationSubject =
-  StreamController<String?>();
+      StreamController<String?>();
 
   //instance of FlutterLocalNotificationsPlugin
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+      FlutterLocalNotificationsPlugin();
 
   Future<void> init() async {
     if (Firebase.apps.isEmpty) {
@@ -369,12 +368,12 @@ class NotificationService {
       );
     }
     const AndroidInitializationSettings initializationSettingsAndroid =
-    AndroidInitializationSettings('@mipmap/ic_launcher');
+        AndroidInitializationSettings('@mipmap/ic_launcher');
 
     DarwinInitializationSettings initializationSettingsIOS =
-    DarwinInitializationSettings(
-      //onDidReceiveLocalNotification: onDidReceiveLocalNotification,
-    );
+        DarwinInitializationSettings(
+            //onDidReceiveLocalNotification: onDidReceiveLocalNotification,
+            );
 
     InitializationSettings initializationSettings = InitializationSettings(
       android: initializationSettingsAndroid,
@@ -385,18 +384,19 @@ class NotificationService {
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onDidReceiveNotificationResponse:
             (NotificationResponse notificationResponse) async {
-          debugPrint(notificationResponse.payload.toString());
+      debugPrint(notificationResponse.payload.toString());
 
-          NotificationEntity? notificationEntity = DbHelper
-              .convertStringToNotificationEntity(notificationResponse.payload);
+      NotificationEntity? notificationEntity =
+          DbHelper.convertStringToNotificationEntity(
+              notificationResponse.payload);
 
-          pushNextScreenFromForeground(notificationEntity!);
+      pushNextScreenFromForeground(notificationEntity!);
 
-          if (notificationResponse.payload != null) {
-            debugPrint('notification payload: ${notificationResponse.payload}');
-          }
-          selectNotificationSubject.add(notificationResponse.payload);
-        });
+      if (notificationResponse.payload != null) {
+        debugPrint('notification payload: ${notificationResponse.payload}');
+      }
+      selectNotificationSubject.add(notificationResponse.payload);
+    });
 
     /// Create an Android Notification Channel.
     ///
@@ -404,22 +404,22 @@ class NotificationService {
     /// default FCM channel to enable heads up notifications.
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>()
+            AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
 
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>()
+            AndroidFlutterLocalNotificationsPlugin>()
         ?.requestNotificationsPermission();
 
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
-        IOSFlutterLocalNotificationsPlugin>()
+            IOSFlutterLocalNotificationsPlugin>()
         ?.requestPermissions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
+          alert: true,
+          badge: true,
+          sound: true,
+        );
 
     /// Update the iOS foreground notification presentation options to allow
     /// heads up notifications.
@@ -439,7 +439,7 @@ class NotificationService {
   void _configureSelectNotificationSubject() {
     selectNotificationSubject.stream.listen((String? payload) async {
       NotificationEntity? entity =
-      DbHelper.convertStringToNotificationEntity(payload);
+          DbHelper.convertStringToNotificationEntity(payload);
       debugPrint(
           "notification _configureSelectNotificationSubject ${entity.toString()}");
       if (entity != null) {
@@ -456,7 +456,7 @@ class NotificationService {
 
     debugPrint(payload.toString());
     NotificationEntity? entity =
-    DbHelper.convertStringToNotificationEntity(payload);
+        DbHelper.convertStringToNotificationEntity(payload);
     debugPrint(
         "notification onDidReceiveLocalNotification ${entity.toString()}");
     if (entity != null) {
@@ -482,7 +482,8 @@ class NotificationService {
         return;
       }
 
-      NotificationEntity notificationEntity = NotificationEntity.fromJson(message.data);
+      NotificationEntity notificationEntity =
+          NotificationEntity.fromJson(message.data);
       debugPrint(message.data.toString());
       notificationEntity.title = notificationEntity.title ?? "Daroory";
       notificationEntity.body = message.notification?.body;
@@ -512,13 +513,13 @@ class NotificationService {
               priority: Priority.high,
               importance: Importance.high,
               styleInformation:
-              BigTextStyleInformation(notificationEntity.body ?? ""),
+                  BigTextStyleInformation(notificationEntity.body ?? ""),
             ),
             iOS: const DarwinNotificationDetails(
               categoryIdentifier: 'plainCategory',
             )),
         payload:
-        DbHelper.convertNotificationEntityToString(notificationEntity));
+            DbHelper.convertNotificationEntityToString(notificationEntity));
   }
 
   void pushNextScreenFromForeground(
@@ -533,43 +534,58 @@ class NotificationService {
           Navigator.of(AppPages.rootNavigatorKey.currentContext!).pop();
         }
 
-        Navigator.push(AppPages.rootNavigatorKey.currentContext!,
+        Navigator.push(
+            AppPages.rootNavigatorKey.currentContext!,
             MaterialPageRoute(
                 settings: RouteSettings(name: Routes.message),
-                builder: (context)=>MessageView(chat: InboxModel(
-            senderId: DbHelper.getUserModel()?.id,
-            receiverId: num.parse("${notificationEntity?.senderId}"),
-            productId: num.parse("${notificationEntity?.productId}"),
-            lastMessageDetail: MessageModel(roomId: "${notificationEntity?.roomId??""}"),
-            productDetail: ProductDetailModel(
-                image: "${notificationEntity?.productImage??""}",
-                name: "${notificationEntity?.productName??""}",
-                sellStatus: "${notificationEntity?.sellStatus??""}",
-                id: int.parse("${notificationEntity?.productId}")),
-            receiverDetail: SenderDetail(
-                id: num.parse("${notificationEntity?.senderId}"),
-                lastName: "${notificationEntity?.senderLastName??""}",
-                profilePic: "${notificationEntity?.profilePic??""}",
-                name: notificationEntity?.senderName),
-            senderDetail: SenderDetail(
-                id: DbHelper.getUserModel()?.id,
-                profilePic: DbHelper.getUserModel()?.profilePic,
-                lastName: DbHelper.getUserModel()?.lastName,
-                name: DbHelper.getUserModel()?.name)),
-        )));
+                builder: (context) => MessageView(
+                      chat: InboxModel(
+                          senderId: DbHelper.getUserModel()?.id,
+                          receiverId:
+                              num.parse("${notificationEntity?.senderId}"),
+                          productId:
+                              num.parse("${notificationEntity?.productId}"),
+                          lastMessageDetail: MessageModel(
+                              roomId: "${notificationEntity?.roomId ?? ""}"),
+                          productDetail: ProductDetailModel(
+                              image:
+                                  "${notificationEntity?.productImage ?? ""}",
+                              name: "${notificationEntity?.productName ?? ""}",
+                              sellStatus:
+                                  "${notificationEntity?.sellStatus ?? ""}",
+                              id: int.parse(
+                                  "${notificationEntity?.productId}")),
+                          receiverDetail: SenderDetail(
+                              id: num.parse("${notificationEntity?.senderId}"),
+                              lastName:
+                                  "${notificationEntity?.senderLastName ?? ""}",
+                              profilePic:
+                                  "${notificationEntity?.profilePic ?? ""}",
+                              name: notificationEntity?.senderName),
+                          senderDetail: SenderDetail(
+                              id: DbHelper.getUserModel()?.id,
+                              profilePic: DbHelper.getUserModel()?.profilePic,
+                              lastName: DbHelper.getUserModel()?.lastName,
+                              name: DbHelper.getUserModel()?.name)),
+                    )));
         break;
       case 'product_status':
-        Navigator.push(AppPages.rootNavigatorKey.currentContext!, MaterialPageRoute(builder: (context)=> MyProductView(
-          data: ProductDetailModel(
-              id: int.parse("${notificationEntity?.productId}")),
-        )
-        ));
+        Navigator.push(
+            AppPages.rootNavigatorKey.currentContext!,
+            MaterialPageRoute(
+                builder: (context) => MyProductView(
+                      data: ProductDetailModel(
+                          id: int.parse("${notificationEntity?.productId}")),
+                    )));
         //navigateToMyProduct(notificationEntity);
         break;
       default:
         //navigateToNotification(notificationEntity);
-        Navigator.push(AppPages.rootNavigatorKey.currentContext!, MaterialPageRoute(builder: (context)=>NotificationView(),));
+        Navigator.push(
+            AppPages.rootNavigatorKey.currentContext!,
+            MaterialPageRoute(
+              builder: (context) => NotificationView(),
+            ));
     }
   }
-
 }

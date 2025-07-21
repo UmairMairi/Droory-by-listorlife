@@ -8,6 +8,7 @@ class UserModel {
   num? emailVerified;
   num? phoneVerified;
   String? createdAt;
+  String? gender;
   dynamic password;
   num? socialType;
   dynamic referBy;
@@ -30,6 +31,9 @@ class UserModel {
   String? name;
   String? communicationChoice;
   num? status;
+  String? cityEn; // To store the English city name
+  String? districtEn; // To store the English district name
+  String? neighborhoodEn;
   num? count_notification;
   num? count_message;
 
@@ -48,6 +52,7 @@ class UserModel {
       this.referBy,
       this.id,
       this.email,
+      this.gender,
       this.isApprove,
       this.longitude,
       this.updatedAt,
@@ -64,6 +69,9 @@ class UserModel {
       this.deviceToken,
       this.name,
       this.communicationChoice,
+      this.cityEn,
+      this.districtEn,
+      this.neighborhoodEn,
       this.count_notification,
       this.count_message,
       this.status});
@@ -87,6 +95,7 @@ class UserModel {
     longitude = json['longitude'];
     updatedAt = json['updatedAt'];
     address = json['address'];
+    gender = json['gender'];
     deviceId = json['device_id'];
     profilePic = json['profile_pic'];
     lastName = json['last_name'];
@@ -102,6 +111,12 @@ class UserModel {
     count_notification = json['count_notification'];
     count_message = json['count_message'];
     status = json['status'];
+    cityEn:
+    json['city'];
+    districtEn:
+    json['district_name'];
+    neighborhoodEn:
+    json['neighborhood_name'];
   }
 
   Map<String, dynamic> toJson() {
@@ -139,6 +154,10 @@ class UserModel {
     data['count_notification'] = count_notification;
     data['count_message'] = count_message;
     data['status'] = status;
+    data['gender'] = gender;
+    data['city'] = cityEn; // Backend expects 'city' for English city name
+    data['district_name'] = districtEn; // Backend expects 'district_name'
+    data['neighborhood_name'] = neighborhoodEn;
     return data;
   }
 }

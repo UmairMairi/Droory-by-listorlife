@@ -28,6 +28,7 @@ class SellFormView extends StatefulWidget {
   final CategoryModel? subCategory;
   final CategoryModel? subSubCategory;
   final ProductDetailModel? item;
+  final bool isFromDetailPage;
 
   const SellFormView({
     super.key,
@@ -37,6 +38,7 @@ class SellFormView extends StatefulWidget {
     this.screenType,
     this.item,
     required this.type,
+    this.isFromDetailPage = false,
   });
 
   @override
@@ -48,7 +50,14 @@ class _SellFormViewState extends State<SellFormView> {
   void initState() {
     log("${widget.type}", name: "SellFormView");
     WidgetsBinding.instance.addPostFrameCallback((callback) {
-      context.read<SellFormsVM>().updateTextFieldsItems(item: widget.item);
+      final viewModel = context.read<SellFormsVM>();
+
+      // Clear fields for new ads, keep them for edits
+      if (widget.item == null) {
+        viewModel.resetTextFields();
+      } else {
+        viewModel.updateTextFieldsItems(item: widget.item);
+      }
     });
     super.initState();
   }

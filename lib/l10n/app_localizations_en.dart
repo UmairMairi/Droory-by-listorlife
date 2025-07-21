@@ -1,3 +1,5 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -82,7 +84,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get freshRecommendations => 'Fresh recommendations';
 
   @override
-  String get findCarsMobilePhonesAndMore => 'Find Cars, Mobile Phones and more...';
+  String get findCarsMobilePhonesAndMore =>
+      'Find Cars, Mobile Phones and more...';
 
   @override
   String get myChats => 'My Chats';
@@ -91,7 +94,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get search => 'Search...';
 
   @override
-  String get areYouSureWantToDeleteThisChat => 'Are you sure want to delete this chat?';
+  String get areYouSureWantToDeleteThisChat =>
+      'Are you sure want to delete this chat?';
 
   @override
   String get no => 'No';
@@ -112,10 +116,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reportUser => 'Report User';
 
   @override
-  String get areYouSureWantToUnblockThisUser => 'Are you sure want to unblock this user?';
+  String get areYouSureWantToUnblockThisUser =>
+      'Are you sure want to unblock this user?';
 
   @override
-  String get areYouSureWantToBlockThisUser => 'Are you sure want to block this user?';
+  String get areYouSureWantToBlockThisUser =>
+      'Are you sure want to block this user?';
 
   @override
   String get unblockUser => 'Unblock User';
@@ -280,7 +286,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get helloWelcome => 'Hello! Welcome';
 
   @override
-  String get loremText => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+  String get loremText =>
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
 
   @override
   String get useCurrentLocation => 'Use Current Location';
@@ -364,7 +371,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pleaseUploadMainImage => 'Please upload main image';
 
   @override
-  String get pleaseUploadAddAtLeastOneImage => 'Please upload add at least 2 images';
+  String get pleaseUploadAddAtLeastOneImage =>
+      'Please upload add at least 2 images';
 
   @override
   String get yearIsRequired => 'Year is required';
@@ -460,13 +468,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get yourAdWillGoLiveShortly => 'Your Ad will go live shortly...';
 
   @override
-  String get listOrLiftAllowsFreeAds => 'Daroory allows 2 free ads 180 days for cars';
+  String get listOrLiftAllowsFreeAds =>
+      'Daroory allows 2 free ads 180 days for cars';
 
   @override
-  String get reachMoreBuyersAndSellFaster => 'Reach more buyers and sell faster';
+  String get reachMoreBuyersAndSellFaster =>
+      'Reach more buyers and sell faster';
 
   @override
-  String get upgradingAnAdHelpsYouToReachMoreBuyers => 'Upgrading an ad helps you to reach more buyers';
+  String get upgradingAnAdHelpsYouToReachMoreBuyers =>
+      'Upgrading an ad helps you to reach more buyers';
 
   @override
   String get reviewAd => 'Review Ad';
@@ -559,7 +570,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get soldText => 'sold';
 
   @override
-  String get checkProductUrl => 'Check my this product on Daroory app url: www.google.com';
+  String get checkProductUrl =>
+      'Check my this product on Daroory app url: www.google.com';
 
   @override
   String get postedBy => 'Posted by';
@@ -703,7 +715,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get youNeedLogin => 'You need to log in to perform this action.';
 
   @override
-  String get profileCreatedSuccessfully => 'Your Profile has been created successfully!';
+  String get profileCreatedSuccessfully =>
+      'Your Profile has been created successfully!';
 
   @override
   String get ok => 'Ok';
@@ -715,10 +728,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noInternet => 'No Internet, Please try later!';
 
   @override
-  String get noInternetFound => 'No internet connection found.Please check your connection or try again.';
+  String get noInternetFound =>
+      'No internet connection found.Please check your connection or try again.';
 
   @override
-  String get hereToHelp => 'We\'re here to help! Reach out to us through any of the following methods.';
+  String get hereToHelp =>
+      'We\'re here to help! Reach out to us through any of the following methods.';
 
   @override
   String get sendUsYourQueries => 'Send us your queries';
@@ -991,7 +1006,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get customizeYourAppExperience => 'Customize your app experience.';
 
   @override
-  String get getHelpAndLearnMoreAboutTheApp => 'Get help and learn more about the app.';
+  String get getHelpAndLearnMoreAboutTheApp =>
+      'Get help and learn more about the app.';
 
   @override
   String get supportInformation => 'Support & Information';
@@ -1009,13 +1025,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get locationAlert => 'Location Alert';
 
   @override
-  String get locationAlertMsg => 'Please note that our app is currently only available for users in Egypt. Please select Egypt location for add product.';
+  String get locationAlertMsg =>
+      'Please note that our app is currently only available for users in Egypt. Please select Egypt location for add product.';
 
   @override
-  String get accountDeleteMsg => 'Are you sure you want to delete this account?';
+  String get accountDeleteMsg =>
+      'Are you sure you want to delete this account?';
 
   @override
-  String get notificationDeleteMsg => 'Are you sure you want to delete notifications?';
+  String get notificationDeleteMsg =>
+      'Are you sure you want to delete notifications?';
 
   @override
   String get lookingJob => 'I am looking job';
@@ -1036,19 +1055,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get safetyTips => 'Safety Tips for Using Daroory';
 
   @override
-  String get doNotTransact => 'Do not make any transactions online with strangers.';
+  String get doNotTransact =>
+      'Do not make any transactions online with strangers.';
 
   @override
   String get meetInPublic => 'Meet buyers and sellers in safe, public places.';
 
   @override
-  String get inspectItems => 'Inspect items thoroughly before making a purchase.';
+  String get inspectItems =>
+      'Inspect items thoroughly before making a purchase.';
 
   @override
   String get avoidSharing => 'Avoid sharing personal or financial details.';
 
   @override
-  String get reportSuspicious => 'Report suspicious listings or activities to our support team.';
+  String get reportSuspicious =>
+      'Report suspicious listings or activities to our support team.';
 
   @override
   String get listingType => 'Listing Type';
@@ -1105,7 +1127,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accessToUtilities => 'Access To Utilities';
 
   @override
-  String get chooseContactMethod => 'We\'re here to help. Choose your preferred method below:';
+  String get chooseContactMethod =>
+      'We\'re here to help. Choose your preferred method below:';
 
   @override
   String get sendQueries => 'Send us your queries';
@@ -1144,19 +1167,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get messageRequired => 'Message is required';
 
   @override
-  String get messageSentSuccess => 'Message sent successfully! Our team will contact you soon.';
+  String get messageSentSuccess =>
+      'Message sent successfully! Our team will contact you soon.';
 
   @override
   String get failedToSendMessage => 'Failed to send message';
 
   @override
-  String get contactFormDescription => 'Send your message directly to our team. We\'ll get back to you within 24 hours.';
+  String get contactFormDescription =>
+      'Send your message directly to our team. We\'ll get back to you within 24 hours.';
 
   @override
-  String get messageUsOnWhatsapp => 'Message us on WhatsApp for immediate support';
+  String get messageUsOnWhatsapp =>
+      'Message us on WhatsApp for immediate support';
 
   @override
-  String get leaveMessageDescription => 'Leave us a message and we will get back to you within 24 hours';
+  String get leaveMessageDescription =>
+      'Leave us a message and we will get back to you within 24 hours';
 
   @override
   String get enterPhoneNumber => 'Enter your phone number';
@@ -1511,6 +1538,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mixOfficeBased => 'Mixed (Home & Office)';
+
+  @override
+  String get propertyFor => 'Property for';
+
   @override
   String get adExpire => 'Ad Expires in';
 

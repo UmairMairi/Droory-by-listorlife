@@ -768,13 +768,15 @@ class StringHelper {
       LocaleService.translate('phoneRequired') ?? 'Phone number is required';
   static String horsepowerTitle =
       LocaleService.translate('horsepower') ?? 'Horsepower';
-
+  static String doors = LocaleService.translate('doors') ?? 'Doors';
+  static String hp = LocaleService.translate('hp') ?? 'HP';
   static String invalidPhoneNumber =
       LocaleService.translate('invalidPhoneNumber') ??
           'Please enter a valid 10-digit phone number';
   static String other = LocaleService.translate('other') ?? 'Other';
   static String rentalCarTerm =
       LocaleService.translate('rentalCarTerm') ?? "Rental Term";
+
   static String subject = LocaleService.translate('subject') ?? 'Subject';
   static String subjectTooShort = LocaleService.translate('subjectTooShort') ??
       'Subject must be at least 5 characters';
@@ -808,7 +810,7 @@ class StringHelper {
           'Field should not be empty';
   static String contract = LocaleService.translate('contract') ?? 'Contract';
   static String fullTime = LocaleService.translate('fullTime') ?? 'Full Time';
-  static String partTime = LocaleService.translate('partTime') ?? 'Part-time';
+  static String partTime = LocaleService.translate('partTime') ?? 'Part time';
   static String temporary = LocaleService.translate('temporary') ?? 'Temporary';
   static String minValidPrice = LocaleService.translate('minValidPrice') ??
       'The minimum valid price is EGP';
@@ -883,6 +885,14 @@ class StringHelper {
       LocaleService.translate('mustBeGreaterThanZero') ?? 'Must be > 0';
   static String maxOneHundredPercent =
       LocaleService.translate('maxOneHundredPercent') ?? 'Max 100%';
+  static String seeAllIn = LocaleService.translate('seeAllIn') ?? 'See all in';
+  static String searchResultsIn =
+      LocaleService.translate('searchResultsIn') ?? 'Search results in';
+  static String noDistrictsAvailable =
+      LocaleService.translate('noDistrictsAvailable') ??
+          'No districts available';
+  static String noAreasAvailable =
+      LocaleService.translate('noAreasAvailable') ?? 'No areas available';
 
   ///new keys
 
@@ -891,21 +901,17 @@ class StringHelper {
   static String twinHouse =
       LocaleService.translate('twinHouse') ?? 'Twin House';
 
-  static String iVilla =
-      LocaleService.translate('iVilla') ?? 'I-Villa';
-  static String mansion =
-      LocaleService.translate('mansion') ?? 'Mansion';
+  static String iVilla = LocaleService.translate('iVilla') ?? 'I-Villa';
+  static String mansion = LocaleService.translate('mansion') ?? 'Mansion';
 
-  static String chalet =
-      LocaleService.translate('chalet') ?? 'Chalet';
+  static String chalet = LocaleService.translate('chalet') ?? 'Chalet';
   static String standaloneVilla =
       LocaleService.translate('standaloneVilla') ?? 'Stand Alone Villa';
 
   static String townhouse =
       LocaleService.translate('townhouse') ?? 'Townhouse Twin house';
 
-  static String cabin =
-      LocaleService.translate('cabin') ?? 'Cabin';
+  static String cabin = LocaleService.translate('cabin') ?? 'Cabin';
 
   static String agriculturalLand =
       LocaleService.translate('agriculturalLand') ?? 'Agricultural Land';
@@ -918,25 +924,19 @@ class StringHelper {
       LocaleService.translate('industrialLand') ?? 'Industrial Land';
   static String mixedLand =
       LocaleService.translate('mixedLand') ?? 'Mixed-Use Land';
-  static String farmLand =
-      LocaleService.translate('farmLand') ?? 'Farm Land';
+  static String farmLand = LocaleService.translate('farmLand') ?? 'Farm Land';
 
-  static String factory =
-      LocaleService.translate('factory') ?? 'Factory';
+  static String factory = LocaleService.translate('factory') ?? 'Factory';
   static String fullBuilding =
       LocaleService.translate('fullBuilding') ?? 'Full building';
-  static String garage =
-      LocaleService.translate('garage') ?? 'Garage';
-  static String warehouse =
-      LocaleService.translate('warehouse') ?? 'Warehouse';
+  static String garage = LocaleService.translate('garage') ?? 'Garage';
+  static String warehouse = LocaleService.translate('warehouse') ?? 'Warehouse';
 
   static String restaurantCafe =
       LocaleService.translate('restaurantCafe') ?? 'Restaurant/ cafe';
 
-  static String offices =
-      LocaleService.translate('offices') ?? 'Offices';
-  static String pharmacy =
-      LocaleService.translate('pharmacy') ?? 'Pharmacy';
+  static String offices = LocaleService.translate('offices') ?? 'Offices';
+  static String pharmacy = LocaleService.translate('pharmacy') ?? 'Pharmacy';
   static String medicalFacility =
       LocaleService.translate('medicalFacility') ?? 'Medical facility';
   static String hotelMotel =
@@ -946,53 +946,41 @@ class StringHelper {
       LocaleService.translate('gasStation') ?? 'Gas station';
   static String storageFacility =
       LocaleService.translate('storageFacility') ?? 'Storage facility';
-  static String showroom =
-      LocaleService.translate('showroom') ?? 'Showroom';
+  static String showroom = LocaleService.translate('showroom') ?? 'Showroom';
+  static String noEducation =
+      LocaleService.translate('noEducation') ?? "No Education";
 
-  static String clinic =
-      LocaleService.translate('clinic') ?? 'Clinic';
+  static String clinic = LocaleService.translate('clinic') ?? 'Clinic';
 
-  static String apartment =
-      LocaleService.translate('apartment') ?? 'Apartment';
-  static String duplex =
-      LocaleService.translate('duplex') ?? 'Duplex';
-  static String penthouse =
-      LocaleService.translate('penthouse') ?? 'Penthouse';
-  static String studio =
-      LocaleService.translate('studio') ?? 'Studio';
+  static String apartment = LocaleService.translate('apartment') ?? 'Apartment';
+  static String duplex = LocaleService.translate('duplex') ?? 'Duplex';
+  static String penthouse = LocaleService.translate('penthouse') ?? 'Penthouse';
+  static String studio = LocaleService.translate('studio') ?? 'Studio';
   static String hotelApartment =
       LocaleService.translate('hotelApartment') ?? 'Hotel Apartment';
-  static String roof =
-      LocaleService.translate('roof') ?? 'Roof';
+  static String roof = LocaleService.translate('roof') ?? 'Roof';
 
-  static String tutions =
-      LocaleService.translate('tutions') ?? 'Tutions';
+  static String tutions = LocaleService.translate('tutions') ?? 'Tutions';
 
-  static String others =
-      LocaleService.translate('others') ?? 'Others';
+  static String others = LocaleService.translate('others') ?? 'Others';
 
   static String hobbyClasses =
       LocaleService.translate('hobbyClasses') ?? 'Hobby Classes';
 
   static String skillDevelopment =
       LocaleService.translate('skillDevelopment') ?? 'Skill Development';
-  static String none =
-      LocaleService.translate('none') ?? 'None';
-  static String student =
-      LocaleService.translate('student') ?? 'Student';
+  static String none = LocaleService.translate('none') ?? 'None';
+  static String student = LocaleService.translate('student') ?? 'Student';
 
   static String highSchool =
       LocaleService.translate('highSchool') ?? 'High-Secondary School';
-  static String diploma =
-      LocaleService.translate('diploma') ?? 'Diploma';
+  static String diploma = LocaleService.translate('diploma') ?? 'Diploma';
   static String bDegree =
-      LocaleService.translate('dDegree') ?? 'Bachelors Degree';
+      LocaleService.translate('bDegree') ?? 'Bachelors Degree';
   static String mDegree =
       LocaleService.translate('mDegree') ?? 'Masters Degree';
-  static String phd =
-      LocaleService.translate('phd') ?? 'Doctorate/PhD';
-  static String remote =
-      LocaleService.translate('remote') ?? 'Remote';
+  static String phd = LocaleService.translate('phd') ?? 'Doctorate/PhD';
+  static String remote = LocaleService.translate('remote') ?? 'Remote';
   static String officeBased =
       LocaleService.translate('officeBased') ?? 'Office-based';
   static String fieldBased =
@@ -1003,6 +991,504 @@ class StringHelper {
   static String adExpire =
       LocaleService.translate('adExpire') ?? 'Ad Expires in';
 
+  static String oneToThreeYears =
+      LocaleService.translate('oneToThreeYears') ?? '1–3 yrs';
+  static String threeToFiveYears =
+      LocaleService.translate('threeToFiveYears') ?? '3–5 yrs';
+  static String fiveToTenYears =
+      LocaleService.translate('fiveToTenYears') ?? '5–10 yrs';
+  static String tenPlusYears =
+      LocaleService.translate('tenPlusYears') ?? '10+ yrs';
+  static String noExperience =
+      LocaleService.translate('noExperience') ?? 'No experience/Just graduated';
+  static String shareListing = 'Check out this Daroory listing';
+  static String gigabyte = LocaleService.translate('gigabyte') ?? 'GB';
+  static String terabyte = LocaleService.translate('terabyte') ?? 'TB';
+  static String lessThan100HP =
+      LocaleService.translate('lessThan100HP') ?? 'Less than 100 HP';
+  static String hp100To200 =
+      LocaleService.translate('hp100To200') ?? '100 - 200 HP';
+  static String hp200To300 =
+      LocaleService.translate('hp200To300') ?? '200 - 300 HP';
+  static String hp300To400 =
+      LocaleService.translate('hp300To400') ?? '300 - 400 HP';
+  static String hp400To500 =
+      LocaleService.translate('hp400To500') ?? '400 - 500 HP';
+  static String hp500To600 =
+      LocaleService.translate('hp500To600') ?? '500 - 600 HP';
+  static String hp600To700 =
+      LocaleService.translate('hp600To700') ?? '600 - 700 HP';
+  static String hp700To800 =
+      LocaleService.translate('hp700To800') ?? '700 - 800 HP';
+  static String hp800Plus = LocaleService.translate('hp800Plus') ?? '800+ HP';
+  static String below500cc =
+      LocaleService.translate('below500cc') ?? 'Below 500 cc';
+  static String cc500To999 =
+      LocaleService.translate('cc500To999') ?? '500 - 999 cc';
+  static String cc1000To1499 =
+      LocaleService.translate('cc1000To1499') ?? '1000 - 1499 cc';
+  static String cc1500To1999 =
+      LocaleService.translate('cc1500To1999') ?? '1500 - 1999 cc';
+  static String cc2000To2499 =
+      LocaleService.translate('cc2000To2499') ?? '2000 - 2499 cc';
+  static String cc2500To2999 =
+      LocaleService.translate('cc2500To2999') ?? '2500 - 2999 cc';
+  static String cc3000To3499 =
+      LocaleService.translate('cc3000To3499') ?? '3000 - 3499 cc';
+  static String cc3500To3999 =
+      LocaleService.translate('cc3500To3999') ?? '3500 - 3999 cc';
+  static String cc4000Plus =
+      LocaleService.translate('cc4000Plus') ?? '4000+ cc';
+  static String doors2 = LocaleService.translate('doors2') ?? '2 Doors';
+  static String doors3 = LocaleService.translate('doors3') ?? '3 Doors';
+  static String doors4 = LocaleService.translate('doors4') ?? '4 Doors';
+  static String doors5Plus =
+      LocaleService.translate('doors5Plus') ?? '5+ Doors';
+  static String selectRam =
+      LocaleService.translate('selectRam') ?? 'Select RAM';
+  static String selectStorage =
+      LocaleService.translate('selectStorage') ?? 'Select Storage';
+  static String usertype = LocaleService.translate('usertype') ?? 'User Type';
+
+  static String lastFloor =
+      LocaleService.translate('lastFloor') ?? "Last Floor";
+  static String yearMinLimit =
+      LocaleService.translate('yearMinLimit') ?? 'Year must be at least 1900';
+  static String yearMaxLimit =
+      LocaleService.translate('yearMaxLimit') ?? 'Year cannot exceed';
+  static String account = LocaleService.translate('account') ?? 'Account';
+  static String preferences =
+      LocaleService.translate('preferences') ?? 'Preferences';
+  static String supportSection = LocaleService.translate('supportSection') ??
+      'Support'; // Renamed to avoid conflict with 'support'
+  static String accountActions =
+      LocaleService.translate('accountActions') ?? 'Account Actions';
+  static String editProfileTile = LocaleService.translate('editProfileTile') ??
+      'Edit Profile'; // Renamed to avoid conflict with 'editProfile'
+  static String notificationSettings =
+      LocaleService.translate('notificationSettings') ??
+          'Notification settings';
+  static String rateDaroory =
+      LocaleService.translate('rateDaroory') ?? 'Rate Daroory';
+  static String verified = LocaleService.translate('verified') ?? 'Verified';
+  static String maybeLater =
+      LocaleService.translate('maybeLater') ?? 'Maybe Later';
+  static String rateNow = LocaleService.translate('rateNow') ?? 'Rate Now';
+  static String enjoyingDaroory =
+      LocaleService.translate('enjoyingDaroory') ?? 'Enjoying Daroory?';
+  static String rateUsOnAppStore =
+      LocaleService.translate('rateUsOnAppStore') ?? 'Rate us on the App Store';
+  static String all = LocaleService.translate('all') ?? 'All';
+  static String any = LocaleService.translate('any') ?? 'Any';
+  static String chooseLocation =
+      LocaleService.translate('chooseLocation') ?? 'Choose Location';
+  static String allEgypt = LocaleService.translate('allEgypt') ?? 'All Egypt';
+  static String showAllListingsAcrossEgypt =
+      LocaleService.translate('showAllListingsAcrossEgypt') ??
+          'Show all listings across Egypt';
+  static String findListingsNearYou =
+      LocaleService.translate('findListingsNearYou') ??
+          'Find listings near you';
+  static String majorCities =
+      LocaleService.translate('majorCities') ?? 'Major Cities';
+  static String searchAboveToFindSpecificAreas =
+      LocaleService.translate('searchAboveToFindSpecificAreas') ??
+          'Search above to find specific areas';
+  static String searchCitiesDistrictsOrAreas =
+      LocaleService.translate('searchCitiesDistrictsOrAreas') ??
+          'Search cities, districts, or areas...';
+  static String searchDistrictsAndAreasIn =
+      LocaleService.translate('searchDistrictsAndAreasIn') ??
+          'Search districts & areas in';
+  static String searchAreasIn =
+      LocaleService.translate('searchAreasIn') ?? 'Search areas in';
+  static String searchIn = LocaleService.translate('searchIn') ?? 'Search in';
+  static String searchResults =
+      LocaleService.translate('searchResults') ?? 'Search Results';
+  static String noResultsFound =
+      LocaleService.translate('noResultsFound') ?? 'No results found';
+  static String trySearchingWithDifferentKeywords =
+      LocaleService.translate('trySearchingWithDifferentKeywords') ??
+          'Try searching with different keywords';
+  static String noAreasFoundIn =
+      LocaleService.translate('noAreasFoundIn') ?? 'No areas found in';
+  static String noDistrictsOrAreasFoundIn =
+      LocaleService.translate('noDistrictsOrAreasFoundIn') ??
+          'No districts or areas found in';
+  static String districts = LocaleService.translate('districts') ?? 'districts';
+  static String areas = LocaleService.translate('areas') ?? 'areas';
+  static String district = LocaleService.translate('district') ?? 'District';
+  static String searchAboveForDistrictsAndAreasIn =
+      LocaleService.translate('searchAboveForDistrictsAndAreasIn') ??
+          'Search above for districts & areas in';
+  static String searchAboveForAreasIn =
+      LocaleService.translate('searchAboveForAreasIn') ??
+          'Search above for areas in';
+  static String deleteAccountTitle =
+      LocaleService.translate('deleteAccountTitle') ?? 'Delete Account';
+  static String sorryToSeeYouGo = LocaleService.translate('sorryToSeeYouGo') ??
+      'We\'re sorry to see you go';
+  static String chooseDeleteOption =
+      LocaleService.translate('chooseDeleteOption') ??
+          'Choose how you\'d like to delete your account';
+  static String deleteAccountNow =
+      LocaleService.translate('deleteAccountNow') ?? 'Delete Account Now';
+  static String deleteAccountImmediately =
+      LocaleService.translate('deleteAccountImmediately') ??
+          'Permanently delete your account immediately';
+  static String accountDeletedInstantly =
+      LocaleService.translate('accountDeletedInstantly') ??
+          'Account deleted instantly';
+  static String allDataPermanentlyRemoved =
+      LocaleService.translate('allDataPermanentlyRemoved') ??
+          'All data permanently removed';
+  static String cannotBeUndone =
+      LocaleService.translate('cannotBeUndone') ?? 'Cannot be undone';
+  static String profileDisappearsImmediately =
+      LocaleService.translate('profileDisappearsImmediately') ??
+          'Profile disappears immediately';
+  static String deleteNowButton =
+      LocaleService.translate('deleteNowButton') ?? 'Delete Now';
+  static String deactivateFor90Days =
+      LocaleService.translate('deactivateFor90Days') ??
+          'Deactivate for 90 Days';
+  static String hideProfileAndDeleteLater =
+      LocaleService.translate('hideProfileAndDeleteLater') ??
+          'Hide your profile and delete later';
+  static String accountHiddenImmediately =
+      LocaleService.translate('accountHiddenImmediately') ??
+          'Account hidden immediately';
+  static String deletedAfter90Days =
+      LocaleService.translate('deletedAfter90Days') ??
+          'Deleted automatically after 90 days';
+  static String canRestoreAnytime =
+      LocaleService.translate('canRestoreAnytime') ??
+          'Can log back in to restore anytime';
+  static String dataSafeDuringPeriod =
+      LocaleService.translate('dataSafeDuringPeriod') ??
+          'Your data stays safe during this period';
+  static String deactivateAccountButton =
+      LocaleService.translate('deactivateAccountButton') ??
+          'Deactivate Account';
+  static String contactSupportInstead = LocaleService.translate(
+          'contactSupportInstead') ??
+      'Need help? Contact our support team instead of deleting your account.';
+  static String deleteForever =
+      LocaleService.translate('deleteForever') ?? 'Delete Forever?';
+  static String permanentActionWarning = LocaleService.translate(
+          'permanentActionWarning') ??
+      'This action is permanent and cannot be undone. All your data will be lost forever.';
+  static String areYouSure =
+      LocaleService.translate('areYouSure') ?? 'Are you absolutely sure?';
+  static String deleteForeverButton =
+      LocaleService.translate('deleteForeverButton') ?? 'Delete Forever';
+  static String scheduledDeletionTitle =
+      LocaleService.translate('scheduledDeletionTitle') ?? 'Deactivate Account';
+  static String scheduledDeletionDate =
+      LocaleService.translate('scheduledDeletionDate') ??
+          'Your account will be scheduled for deletion on:';
+  static String restoreBeforeDate = LocaleService.translate(
+          'restoreBeforeDate') ??
+      'You can log back in anytime before this date to restore your account.';
+  static String contentNotAllowed =
+      LocaleService.translate('contentNotAllowed') ?? 'Content Not Allowed';
+  static String inappropriateLanguageMessage = LocaleService.translate(
+          'inappropriateLanguageMessage') ??
+      'Your text contains inappropriate language. Please remove offensive words and try again.';
+  static String accountDeactivatedTitle =
+      LocaleService.translate('accountDeactivatedTitle') ??
+          'Account Deactivated';
+  static String restoreAccountInfo =
+      LocaleService.translate('restoreAccountInfo') ??
+          'Simply log back in anytime to restore your account';
+  static String pleaseWaitTitle =
+      LocaleService.translate('pleaseWaitTitle') ?? 'Please Wait';
+  static String iUnderstandButton =
+      LocaleService.translate('iUnderstandButton') ?? 'I Understand';
+  static String cooldownMessage = LocaleService.translate('cooldownMessage') ??
+      'You must wait 7 days after restoring your account before you can deactivate it again.';
+  static String preventAccidentalDeletion =
+      LocaleService.translate('preventAccidentalDeletion') ??
+          'This prevents accidental account deletions';
+  static String scheduledDeletionSuccess = LocaleService.translate(
+          'scheduledDeletionSuccess') ??
+      'Your account has been deactivated and will be permanently deleted on:';
+  static String accountDeletionCancelled =
+      LocaleService.translate('accountDeletionCancelled') ??
+          'Account deletion cancelled';
+  static String accountDeletionCancelFailed =
+      LocaleService.translate('accountDeletionCancelFailed') ??
+          'Failed to cancel deletion';
+  static String accountDeletionCancelError =
+      LocaleService.translate('accountDeletionCancelError') ??
+          'Error cancelling deletion';
+  static String accountDeletedSuccess =
+      LocaleService.translate('accountDeletedSuccess') ??
+          'Account deleted successfully';
+  static String accountDeletedFailed =
+      LocaleService.translate('accountDeletedFailed') ??
+          'Failed to delete account';
+  static String accountDeletedRestart =
+      LocaleService.translate('accountDeletedRestart') ??
+          'Account deleted but please restart app';
+  static String unknownError =
+      LocaleService.translate('unknownError') ?? 'Unknown error occurred';
+
+  static String preferNotToSay =
+      LocaleService.translate('preferNotToSay') ?? 'Prefer not to say';
+  static String optional = LocaleService.translate('optional') ?? 'Optional';
+  static String pleaseEnterFirstName =
+      LocaleService.translate('pleaseEnterFirstName') ??
+          'Please enter your first name';
+  static String pleaseEnterLastName =
+      LocaleService.translate('pleaseEnterLastName') ??
+          'Please enter your last name';
+  static String pleaseEnterValidEmail =
+      LocaleService.translate('pleaseEnterValidEmail') ??
+          'Please enter a valid email address';
+  static String emailAlreadyRegistered =
+      LocaleService.translate('emailAlreadyRegistered') ??
+          'This email is already registered';
+  static String unableToVerifyEmail =
+      LocaleService.translate('unableToVerifyEmail') ??
+          'Unable to verify email. Please try again.';
+  static String enterEmailAddress =
+      LocaleService.translate('enterEmailAddress') ??
+          'Enter your email address';
+  static String verify = LocaleService.translate('verify') ?? 'Verify';
+  static String minYear = LocaleService.translate('minYear') ?? 'Min year';
+  static String maxYear = LocaleService.translate('maxYear') ?? 'Max year';
+  static String phoneVerifiedSuccessfully =
+      LocaleService.translate('phone_verified_successfully') ??
+          'Phone number verified successfully';
+
+  static String emailVerifiedSuccessfully =
+      LocaleService.translate('email_verified_successfully') ??
+          'Email verified successfully';
+  static String pleaseSelectUserType =
+      LocaleService.translate('pleaseSelectUserType') ??
+          'Please select a user type';
+  static String pleaseSelectSpecialty =
+      LocaleService.translate('pleaseSelectSpecialty') ??
+          'Please select a specialty';
+  static String pleaseSelectPositionType =
+      LocaleService.translate('pleasesSelectPositionType') ??
+          'Please select position type';
+  static String pleaseSelectWorkExperience =
+      LocaleService.translate('pleaseSelectWorkExperience') ??
+          'Please select work experience';
+  static String pleaseSelectWorkEducation =
+      LocaleService.translate('pleaseSelectWorkEducation') ??
+          'Please select education level';
+  static String salaryFromRequired =
+      LocaleService.translate('salaryFromRequired') ??
+          'Salary from is required';
+  static String salaryToInvalid = LocaleService.translate('salaryToInvalid') ??
+      'Salary to must be greater than or equal to salary from';
+  static String salaryInvalidNumber =
+      LocaleService.translate('salaryInvalidNumber') ??
+          'Please enter a valid number for salary';
+  static String profilePreview =
+      LocaleService.translate('profilePreview') ?? 'Profile Preview';
+  static String profilePreviewDescription =
+      LocaleService.translate('profilePreviewDescription') ??
+          'This is how your profile appears to other users when they view it.';
+  static String previewMyProfile =
+      LocaleService.translate('previewMyProfile') ?? 'Preview My Profile';
+  static String loadingModels =
+      LocaleService.translate('loadingModels') ?? 'Loading models...';
+
+  static String forText = LocaleService.translate('for') ?? 'for';
+  static String oops = LocaleService.translate('oops') ?? 'Oops!';
+  static String lessThan1GB =
+      LocaleService.translate('lessThan1GB') ?? 'Less than 1 GB';
+  static String gb1 = LocaleService.translate('gb1') ?? '1 GB';
+  static String gb2 = LocaleService.translate('gb2') ?? '2 GB';
+  static String gb3 = LocaleService.translate('gb3') ?? '3 GB';
+  static String gb4 = LocaleService.translate('gb4') ?? '4 GB';
+  static String gb6 = LocaleService.translate('gb6') ?? '6 GB';
+  static String gb8 = LocaleService.translate('gb8') ?? '8 GB';
+  static String gb12 = LocaleService.translate('gb12') ?? '12 GB';
+  static String gb16 = LocaleService.translate('gb16') ?? '16 GB';
+  static String gb16Plus =
+      LocaleService.translate('gb16Plus') ?? 'More than 16 GB';
+
+// Storage options for mobile devices
+  static String lessThan8GB =
+      LocaleService.translate('lessThan8GB') ?? 'Less than 8 GB';
+  static String gb32 = LocaleService.translate('gb32') ?? '32 GB';
+  static String gb64 = LocaleService.translate('gb64') ?? '64 GB';
+  static String gb128 = LocaleService.translate('gb128') ?? '128 GB';
+  static String gb256 = LocaleService.translate('gb256') ?? '256 GB';
+  static String gb512 = LocaleService.translate('gb512') ?? '512 GB';
+  static String tb1 = LocaleService.translate('tb1') ?? '1 TB';
+  static String tb1Plus =
+      LocaleService.translate('tb1Plus') ?? 'More than 1 TB';
+  static String pleaseEnterYourFirstName =
+      LocaleService.translate('pleaseEnterYourFirstName') ??
+          'Please enter your first name';
+  static String pleaseEnterYourLastName =
+      LocaleService.translate('pleaseEnterYourLastName') ??
+          'Please enter your last name';
+// RAM options for other devices
+  static String lessThan4GB =
+      LocaleService.translate('lessThan4GB') ?? 'Less than 4 GB';
+  static String gb64Plus =
+      LocaleService.translate('gb64Plus') ?? 'More than 64 GB';
+  static String pleaseAcceptTerms =
+      LocaleService.translate('pleaseAcceptTerms') ??
+          'Please accept the terms and conditions';
+
+// Hard disk storage options
+  static String lessThan64GB =
+      LocaleService.translate('lessThan64GB') ?? 'Less than 64 GB';
+  static String tb1_5 = LocaleService.translate('tb1_5') ?? '1.5 TB';
+  static String tb2 = LocaleService.translate('tb2') ?? '2 TB';
+  static String tb2Plus =
+      LocaleService.translate('tb2Plus') ?? 'More than 2 TB';
+  static String days = LocaleService.translate('days') ?? 'Days';
+  static String profileUpdatedSuccessfully =
+      LocaleService.translate('profileUpdatedSuccessfully') ??
+          'Profile updated successfully';
+  static String notificationCongratulations =
+      LocaleService.translate('notification_congratulations') ??
+          'Congratulations!';
+  static String notificationAdLive =
+      LocaleService.translate('notification_ad_live') ?? 'Your ad is now live';
+  static String notificationAdRejected =
+      LocaleService.translate('notification_ad_rejected') ??
+          'Your ad has been rejected';
+  static String notificationAdSold =
+      LocaleService.translate('notification_ad_sold') ??
+          'Your ad has been marked as sold';
+  static String notificationNewMessage =
+      LocaleService.translate('notification_new_message') ??
+          'You have a new message';
+  static String notificationAdExpiring =
+      LocaleService.translate('notification_ad_expiring') ??
+          'Your ad is expiring soon';
+  static String adPerformance =
+      LocaleService.translate('adPerformance') ?? 'Ad Performance';
+  static String adSubmittedForApproval =
+      LocaleService.translate('adSubmittedForApproval') ??
+          'Your ad has been submitted to the admin and will be approved soon!';
+  static String bothUsersBlockedEachOther =
+      LocaleService.translate('bothUsersBlockedEachOther') ??
+          'Both you and this user have blocked each other';
+  static String thisUserIsBlockedByYou =
+      LocaleService.translate('thisUserIsBlockedByYou') ??
+          'This user is blocked by you';
+  static String thisUserHasBlockedYou =
+      LocaleService.translate('thisUserHasBlockedYou') ??
+          'This user has blocked you';
+  static String productSoldOut =
+      LocaleService.translate('productSoldOut') ?? 'Product Sold Out';
+  static String isItAvailable =
+      LocaleService.translate('isItAvailable') ?? 'Is it available?';
+  static String notInterested =
+      LocaleService.translate('notInterested') ?? 'Not interested';
+  static String canYouNegotiate = LocaleService.translate('canYouNegotiate') ??
+      'Can you negotiate the price?';
+  static String whereIsTheLocation =
+      LocaleService.translate('whereIsTheLocation') ?? 'Where is the location?';
+  static String canISeeIt =
+      LocaleService.translate('canISeeIt') ?? 'Can I see it?';
+  static String whenCanWeMeet =
+      LocaleService.translate('whenCanWeMeet') ?? 'When can we meet?';
+  static String isItStillForSale =
+      LocaleService.translate('isItStillForSale') ?? 'Is it still for sale?';
+  static String whatIsTheCondition =
+      LocaleService.translate('whatIsTheCondition') ?? 'What is the condition?';
+  static String canYouDeliverIt =
+      LocaleService.translate('canYouDeliverIt') ?? 'Can you deliver it?';
+  static String finalPrice =
+      LocaleService.translate('finalPrice') ?? 'What\'s your final price?';
+  static String thankYou = LocaleService.translate('thankYou') ?? 'Thank you';
+  static String goodLuck =
+      LocaleService.translate('goodLuck') ?? 'Good luck with the sale';
+  static String noChats = LocaleService.translate('noChats') ?? 'No Chats';
+  static String selectChats =
+      LocaleService.translate('selectChats') ?? 'Select Chats';
+  static String selectedChats =
+      LocaleService.translate('selectedChats') ?? 'selected';
+  static String deletingChats =
+      LocaleService.translate('deletingChats') ?? 'Deleting chats...';
+  static String chatsDeletedSuccessfully =
+      LocaleService.translate('chatsDeletedSuccessfully') ??
+          'chats deleted successfully';
+  static String markAsRead =
+      LocaleService.translate('markAsRead') ?? 'Mark as Read';
+  static String markedAsRead =
+      LocaleService.translate('markedAsRead') ?? 'chats marked as read';
+  static String deleteSelectedChats =
+      LocaleService.translate('deleteSelectedChats') ?? 'Delete Chats';
+  static String deleteChatsConfirm =
+      LocaleService.translate('deleteChatsConfirm') ??
+          'selected chats? This will permanently remove them from your inbox.';
+  static String selectAll =
+      LocaleService.translate('selectAll') ?? 'Select All';
+  static String startChat =
+      LocaleService.translate('startChat') ?? 'Start Chat';
+  static const String staySecure =
+      "Stay safe! Meet publicly, check items carefully, and keep your payment info private.";
+  static String blockAndReportUser =
+      LocaleService.translate('blockAndReportUser') ?? 'Block and Report User';
+  static String staySecureTranslatable =
+      LocaleService.translate('staySecureTranslatable') ?? "Stay safe";
+  static String typeHere =
+      LocaleService.translate('typeHere') ?? 'Type here...';
+  static String notAvailable =
+      LocaleService.translate('notAvailable') ?? 'Not Available';
+  static String backToChat =
+      LocaleService.translate('backToChat') ?? 'Back to Chat';
+  static String photoLibrary =
+      LocaleService.translate('photoLibrary') ?? 'Photo Library';
+  static String camera = LocaleService.translate('camera') ?? 'Camera';
+  static String chooseFile =
+      LocaleService.translate('chooseFile') ?? 'Choose File';
+  static String gallery = LocaleService.translate('gallery') ?? 'Gallery';
+  static String uploadingFile =
+      LocaleService.translate('uploadingFile') ?? 'Uploading file...';
+  static String uploadingImage =
+      LocaleService.translate('uploadingImage') ?? 'Uploading image...';
+  static String uploadingImages =
+      LocaleService.translate('uploadingImages') ?? 'Uploading images...';
+  static String am = LocaleService.translate('am') ?? 'AM';
+  static String pm = LocaleService.translate('pm') ?? 'PM';
+  // Profile Picture Modal
+  static String profilePicture =
+      LocaleService.translate('profilePicture') ?? 'Profile Picture';
+  static String takePhoto =
+      LocaleService.translate('takePhoto') ?? 'Take Photo';
+  static String chooseFromGallery =
+      LocaleService.translate('chooseFromGallery') ?? 'Choose from Gallery';
+  static String removePhoto =
+      LocaleService.translate('removePhoto') ?? 'Remove Photo';
+  static String photoRemoved =
+      LocaleService.translate('photoRemoved') ?? 'Photo removed.';
+  static String photoRemovedUpdate =
+      LocaleService.translate('photoRemovedUpdate') ??
+          'Photo removed. Click Update to save changes.';
+  static String firstNameTooLong =
+      LocaleService.translate('firstNameTooLong') ??
+          'First name cannot exceed 50 characters';
+  static String lastNameTooLong = LocaleService.translate('lastNameTooLong') ??
+      'Last name cannot exceed 50 characters';
+  static String bioTooLong = LocaleService.translate('bioTooLong') ??
+      'Bio cannot exceed 500 characters';
+  static String viewFullMap =
+      LocaleService.translate('viewFullMap') ?? 'View Full Map';
+
+// Error Messages
+  static String enterYourEmailAddress =
+      LocaleService.translate('enterYourEmailAddress') ??
+          'Enter your email address';
+  static String pleaseEnterAtLeastOneSalary =
+      LocaleService.translate('pleaseEnterAtLeastOneSalary') ??
+          'Please enter at least one salary field';
+// Optional field indicator
+  static String optionalField =
+      LocaleService.translate('optionalField') ?? '(Optional)';
 
   static void refresh() {
     listLife = LocaleService.translate('listLife') ?? 'Daroory';
@@ -1042,7 +1528,8 @@ class StringHelper {
         LocaleService.translate('loginWithGoogle') ?? 'Log In With Google';
     didntReceiveCode =
         LocaleService.translate('didntReceiveCode') ?? "Didn't receive code?";
-
+    shareListing = LocaleService.translate('share_listing') ??
+        'Check out this Daroory listing';
     loginWithFb =
         LocaleService.translate('loginWithFb') ?? 'Log In With Facebook';
     loginWithIos = LocaleService.translate('loginWithIos') ?? 'Log In With IOS';
@@ -1128,6 +1615,8 @@ class StringHelper {
     category = LocaleService.translate('category') ?? 'Category';
     selectCategory =
         LocaleService.translate('selectCategory') ?? 'Select Category';
+    doors = LocaleService.translate('doors') ?? 'Doors';
+    hp = LocaleService.translate('hp') ?? 'HP';
     selectSubCategory =
         LocaleService.translate('selectSubCategory') ?? 'Select Sub Category';
     subCategory = LocaleService.translate('subCategory') ?? 'Sub Category';
@@ -1275,6 +1764,8 @@ class StringHelper {
     reviewAd = LocaleService.translate('reviewAd') ?? "Review Ad";
     includeSomeDetails =
         LocaleService.translate('includeSomeDetails') ?? "Include some details";
+    loadingModels =
+        LocaleService.translate('loadingModels') ?? 'Loading models...';
 
     /// Setting Screen
     myProfile = LocaleService.translate('myProfile') ?? "My Profile";
@@ -1410,11 +1901,21 @@ class StringHelper {
     profileCreatedSuccessfully =
         LocaleService.translate('profileCreatedSuccessfully') ??
             'Your Profile has been created successfully!';
+    profileUpdatedSuccessfully =
+        LocaleService.translate('profileUpdatedSuccessfully') ??
+            'Profile updated successfully';
+
     ok = LocaleService.translate('ok') ?? 'Ok';
     carColorTitle = LocaleService.translate('car_color') ?? 'Color';
 
     noInternet = LocaleService.translate('noInternet') ??
         'No Internet, Please try later!';
+    pleaseEnterYourFirstName =
+        LocaleService.translate('pleaseEnterYourFirstName') ??
+            'Please enter your first name';
+    pleaseEnterYourLastName =
+        LocaleService.translate('pleaseEnterYourLastName') ??
+            'Please enter your last name';
     noInternetFound = LocaleService.translate('noInternetFound') ??
         'No internet connection found.Please check your connection or try again.';
     refreshText = LocaleService.translate('refresh') ?? 'Refresh';
@@ -1673,7 +2174,7 @@ class StringHelper {
         'Field should not be empty';
     contract = LocaleService.translate('contract') ?? 'Contract';
     fullTime = LocaleService.translate('fullTime') ?? 'Full Time';
-    partTime = LocaleService.translate('partTime') ?? 'Part-time';
+    partTime = LocaleService.translate('partTime') ?? 'Part time';
     temporary = LocaleService.translate('temporary') ?? 'Temporary';
     minValidPrice = LocaleService.translate('minValidPrice') ??
         'The minimum valid price is EGP';
@@ -1719,26 +2220,19 @@ class StringHelper {
         LocaleService.translate('mustBeGreaterThanZero') ?? 'Must be > 0';
     maxOneHundredPercent =
         LocaleService.translate('maxOneHundredPercent') ?? 'Max 100%';
-    townHouseText =
-        LocaleService.translate('townHouseText') ?? 'Townhouse';
-    twinHouse =
-        LocaleService.translate('twinHouse') ?? 'Twin House';
+    townHouseText = LocaleService.translate('townHouseText') ?? 'Townhouse';
+    twinHouse = LocaleService.translate('twinHouse') ?? 'Twin House';
 
-    iVilla =
-        LocaleService.translate('iVilla') ?? 'I-Villa';
-    mansion =
-        LocaleService.translate('mansion') ?? 'Mansion';
+    iVilla = LocaleService.translate('iVilla') ?? 'I-Villa';
+    mansion = LocaleService.translate('mansion') ?? 'Mansion';
 
-    chalet =
-        LocaleService.translate('chalet') ?? 'Chalet';
+    chalet = LocaleService.translate('chalet') ?? 'Chalet';
     standaloneVilla =
         LocaleService.translate('standaloneVilla') ?? 'Standalone Villa';
 
-    townhouse =
-        LocaleService.translate('townhouse') ?? 'Townhouse Twin house';
+    townhouse = LocaleService.translate('townhouse') ?? 'Townhouse Twin house';
 
-    cabin =
-        LocaleService.translate('cabin') ?? 'Cabin';
+    cabin = LocaleService.translate('cabin') ?? 'Cabin';
 
     agriculturalLand =
         LocaleService.translate('agriculturalLand') ?? 'Agricultural Land';
@@ -1749,92 +2243,472 @@ class StringHelper {
         LocaleService.translate('residentialLand') ?? 'Residential Land';
     industrialLand =
         LocaleService.translate('industrialLand') ?? 'Industrial Land';
-    mixedLand =
-        LocaleService.translate('mixedLand') ?? 'Mixed-Use Land';
-    farmLand =
-        LocaleService.translate('farmLand') ?? 'Farm Land';
+    mixedLand = LocaleService.translate('mixedLand') ?? 'Mixed-Use Land';
+    farmLand = LocaleService.translate('farmLand') ?? 'Farm Land';
 
-    factory =
-        LocaleService.translate('factory') ?? 'Factory';
-    fullBuilding =
-        LocaleService.translate('fullBuilding') ?? 'Full building';
-    garage =
-        LocaleService.translate('garage') ?? 'Garage';
-    warehouse =
-        LocaleService.translate('warehouse') ?? 'Warehouse';
+    factory = LocaleService.translate('factory') ?? 'Factory';
+    fullBuilding = LocaleService.translate('fullBuilding') ?? 'Full building';
+    garage = LocaleService.translate('garage') ?? 'Garage';
+    warehouse = LocaleService.translate('warehouse') ?? 'Warehouse';
 
     restaurantCafe =
         LocaleService.translate('restaurantCafe') ?? 'Restaurant/ cafe';
 
-    offices =
-        LocaleService.translate('offices') ?? 'Offices';
-    pharmacy =
-        LocaleService.translate('pharmacy') ?? 'Pharmacy';
+    offices = LocaleService.translate('offices') ?? 'Offices';
+    pharmacy = LocaleService.translate('pharmacy') ?? 'Pharmacy';
     medicalFacility =
         LocaleService.translate('medicalFacility') ?? 'Medical facility';
-    hotelMotel =
-        LocaleService.translate('hotelMotel') ?? 'Hotel/ motel';
+    hotelMotel = LocaleService.translate('hotelMotel') ?? 'Hotel/ motel';
 
-    gasStation =
-        LocaleService.translate('gasStation') ?? 'Gas station';
+    gasStation = LocaleService.translate('gasStation') ?? 'Gas station';
     storageFacility =
         LocaleService.translate('storageFacility') ?? 'Storage facility';
-    showroom =
-        LocaleService.translate('showroom') ?? 'Showroom';
+    showroom = LocaleService.translate('showroom') ?? 'Showroom';
 
-    clinic =
-        LocaleService.translate('clinic') ?? 'Clinic';
+    clinic = LocaleService.translate('clinic') ?? 'Clinic';
 
-    apartment =
-        LocaleService.translate('apartment') ?? 'Apartment';
-    duplex =
-        LocaleService.translate('duplex') ?? 'Duplex';
-    penthouse =
-        LocaleService.translate('penthouse') ?? 'Penthouse';
-    studio =
-        LocaleService.translate('studio') ?? 'Studio';
+    apartment = LocaleService.translate('apartment') ?? 'Apartment';
+    duplex = LocaleService.translate('duplex') ?? 'Duplex';
+    penthouse = LocaleService.translate('penthouse') ?? 'Penthouse';
+    studio = LocaleService.translate('studio') ?? 'Studio';
     hotelApartment =
         LocaleService.translate('hotelApartment') ?? 'Hotel Apartment';
-    roof =
-        LocaleService.translate('roof') ?? 'Roof';
+    roof = LocaleService.translate('roof') ?? 'Roof';
 
-    tutions =
-        LocaleService.translate('tutions') ?? 'Tutions';
+    tutions = LocaleService.translate('tutions') ?? 'Tutions';
 
-    others =
-        LocaleService.translate('others') ?? 'Others';
+    others = LocaleService.translate('others') ?? 'Others';
 
-    hobbyClasses =
-        LocaleService.translate('hobbyClasses') ?? 'Hobby Classes';
+    hobbyClasses = LocaleService.translate('hobbyClasses') ?? 'Hobby Classes';
 
     skillDevelopment =
         LocaleService.translate('skillDevelopment') ?? 'Skill Development';
-    none =
-        LocaleService.translate('none') ?? 'None';
-    student =
-        LocaleService.translate('student') ?? 'Student';
+    none = LocaleService.translate('none') ?? 'None';
+    student = LocaleService.translate('student') ?? 'Student';
 
     highSchool =
         LocaleService.translate('highSchool') ?? 'High-Secondary School';
-    diploma =
-        LocaleService.translate('diploma') ?? 'Diploma';
-    bDegree =
-        LocaleService.translate('dDegree') ?? 'Bachelors Degree';
-    mDegree =
-        LocaleService.translate('mDegree') ?? 'Masters Degree';
-    phd =
-        LocaleService.translate('phd') ?? 'Doctorate/PhD';
-    remote =
-        LocaleService.translate('remote') ?? 'Remote';
-    officeBased =
-        LocaleService.translate('officeBased') ?? 'Office-based';
-    fieldBased =
-        LocaleService.translate('fieldBased') ?? 'Field-based';
+    diploma = LocaleService.translate('diploma') ?? 'Diploma';
+    bDegree = LocaleService.translate('bDegree') ?? 'Bachelors Degree';
+    mDegree = LocaleService.translate('mDegree') ?? 'Masters Degree';
+    phd = LocaleService.translate('phd') ?? 'Doctorate/PhD';
+    remote = LocaleService.translate('remote') ?? 'Remote';
+    officeBased = LocaleService.translate('officeBased') ?? 'Office-based';
+    fieldBased = LocaleService.translate('fieldBased') ?? 'Field-based';
     mixOfficeBased =
         LocaleService.translate('mixOfficeBased') ?? 'Mixed (Home & Office)';
 
-    adExpire =
-        LocaleService.translate('adExpire') ?? 'Ad Expires in';
+    adExpire = LocaleService.translate('adExpire') ?? 'Ad Expires in';
+    oneToThreeYears = LocaleService.translate('oneToThreeYears') ?? '1–3 yrs';
+    threeToFiveYears = LocaleService.translate('threeToFiveYears') ?? '3–5 yrs';
+    fiveToTenYears = LocaleService.translate('fiveToTenYears') ?? '5–10 yrs';
+    tenPlusYears = LocaleService.translate('tenPlusYears') ?? '10+ yrs';
+    noExperience = LocaleService.translate('noExperience') ??
+        'No experience/Just graduated';
+    gigabyte = LocaleService.translate('gigabyte') ?? 'GB';
+    terabyte = LocaleService.translate('terabyte') ?? 'TB';
+    // Horsepower ranges
+    lessThan100HP =
+        LocaleService.translate('lessThan100HP') ?? 'Less than 100 HP';
+    hp100To200 = LocaleService.translate('hp100To200') ?? '100 - 200 HP';
+    hp200To300 = LocaleService.translate('hp200To300') ?? '200 - 300 HP';
+    hp300To400 = LocaleService.translate('hp300To400') ?? '300 - 400 HP';
+    hp400To500 = LocaleService.translate('hp400To500') ?? '400 - 500 HP';
+    hp500To600 = LocaleService.translate('hp500To600') ?? '500 - 600 HP';
+    hp600To700 = LocaleService.translate('hp600To700') ?? '600 - 700 HP';
+    hp700To800 = LocaleService.translate('hp700To800') ?? '700 - 800 HP';
+    hp800Plus = LocaleService.translate('hp800Plus') ?? '800+ HP';
+    // Engine capacity ranges
+    below500cc = LocaleService.translate('below500cc') ?? 'Below 500 cc';
+    cc500To999 = LocaleService.translate('cc500To999') ?? '500 - 999 cc';
+    cc1000To1499 = LocaleService.translate('cc1000To1499') ?? '1000 - 1499 cc';
+    cc1500To1999 = LocaleService.translate('cc1500To1999') ?? '1500 - 1999 cc';
+    cc2000To2499 = LocaleService.translate('cc2000To2499') ?? '2000 - 2499 cc';
+    cc2500To2999 = LocaleService.translate('cc2500To2999') ?? '2500 - 2999 cc';
+    cc3000To3499 = LocaleService.translate('cc3000To3499') ?? '3000 - 3499 cc';
+    cc3500To3999 = LocaleService.translate('cc3500To3999') ?? '3500 - 3999 cc';
+    cc4000Plus = LocaleService.translate('cc4000Plus') ?? '4000+ cc';
+    doors2 = LocaleService.translate('doors2') ?? '2 Doors';
+    doors3 = LocaleService.translate('doors3') ?? '3 Doors';
+    doors4 = LocaleService.translate('doors4') ?? '4 Doors';
+    doors5Plus = LocaleService.translate('doors5Plus') ?? '5+ Doors';
+    noEducation = LocaleService.translate('noEducation') ?? "No Education";
+    selectRam = LocaleService.translate('selectRam') ?? 'Select RAM';
+    selectStorage =
+        LocaleService.translate('selectStorage') ?? 'Select Storage';
+    contentNotAllowed =
+        LocaleService.translate('contentNotAllowed') ?? 'Content Not Allowed';
+    inappropriateLanguageMessage = LocaleService.translate(
+            'inappropriateLanguageMessage') ??
+        'Your text contains inappropriate language. Please remove offensive words and try again.';
+    usertype = LocaleService.translate('usertype') ?? 'User Type';
+    lastFloor = LocaleService.translate('lastFloor') ?? 'Last Floor';
+    yearMinLimit =
+        LocaleService.translate('yearMinLimit') ?? 'Year must be at least 1900';
+    yearMaxLimit =
+        LocaleService.translate('yearMaxLimit') ?? 'Year cannot exceed';
+    account = LocaleService.translate('account') ?? 'Account';
+    preferences = LocaleService.translate('preferences') ?? 'Preferences';
+    supportSection = LocaleService.translate('supportSection') ?? 'Support';
+    accountActions =
+        LocaleService.translate('accountActions') ?? 'Account Actions';
+    editProfileTile =
+        LocaleService.translate('editProfileTile') ?? 'Edit Profile';
+    notificationSettings = LocaleService.translate('notificationSettings') ??
+        'Notification settings';
+    rateDaroory = LocaleService.translate('rateDaroory') ?? 'Rate Daroory';
+    verified = LocaleService.translate('verified') ?? 'Verified';
+    maybeLater = LocaleService.translate('maybeLater') ?? 'Maybe Later';
+    rateNow = LocaleService.translate('rateNow') ?? 'Rate Now';
+    enjoyingDaroory =
+        LocaleService.translate('enjoyingDaroory') ?? 'Enjoying Daroory?';
+    rateUsOnAppStore = LocaleService.translate('rateUsOnAppStore') ??
+        'Rate us on the App Store';
+    chooseLocation =
+        LocaleService.translate('chooseLocation') ?? 'Choose Location';
+    allEgypt = LocaleService.translate('allEgypt') ?? 'All Egypt';
+    showAllListingsAcrossEgypt =
+        LocaleService.translate('showAllListingsAcrossEgypt') ??
+            'Show all listings across Egypt';
+    findListingsNearYou = LocaleService.translate('findListingsNearYou') ??
+        'Find listings near you';
+    majorCities = LocaleService.translate('majorCities') ?? 'Major Cities';
+    searchAboveToFindSpecificAreas =
+        LocaleService.translate('searchAboveToFindSpecificAreas') ??
+            'Search above to find specific areas';
+    searchCitiesDistrictsOrAreas =
+        LocaleService.translate('searchCitiesDistrictsOrAreas') ??
+            'Search cities, districts, or areas...';
+    searchDistrictsAndAreasIn =
+        LocaleService.translate('searchDistrictsAndAreasIn') ??
+            'Search districts & areas in';
+    searchAreasIn =
+        LocaleService.translate('searchAreasIn') ?? 'Search areas in';
+    searchIn = LocaleService.translate('searchIn') ?? 'Search in';
+    searchResults =
+        LocaleService.translate('searchResults') ?? 'Search Results';
+    noResultsFound =
+        LocaleService.translate('noResultsFound') ?? 'No results found';
+    trySearchingWithDifferentKeywords =
+        LocaleService.translate('trySearchingWithDifferentKeywords') ??
+            'Try searching with different keywords';
+    noAreasFoundIn =
+        LocaleService.translate('noAreasFoundIn') ?? 'No areas found in';
+    noDistrictsOrAreasFoundIn =
+        LocaleService.translate('noDistrictsOrAreasFoundIn') ??
+            'No districts or areas found in';
 
+    districts = LocaleService.translate('districts') ?? 'districts';
+    areas = LocaleService.translate('areas') ?? 'areas';
+    pleaseAcceptTerms = LocaleService.translate('pleaseAcceptTerms') ??
+        'Please accept the terms and conditions';
+
+    district = LocaleService.translate('district') ?? 'District';
+
+    searchAboveForDistrictsAndAreasIn =
+        LocaleService.translate('searchAboveForDistrictsAndAreasIn') ??
+            'Search above for districts & areas in';
+    searchAboveForAreasIn = LocaleService.translate('searchAboveForAreasIn') ??
+        'Search above for areas in';
+    seeAllIn = LocaleService.translate('seeAllIn') ?? 'See all in';
+    searchResultsIn =
+        LocaleService.translate('searchResultsIn') ?? 'Search results in';
+    noDistrictsAvailable = LocaleService.translate('noDistrictsAvailable') ??
+        'No districts available';
+    noAreasAvailable =
+        LocaleService.translate('noAreasAvailable') ?? 'No areas available';
+    deleteAccountTitle =
+        LocaleService.translate('deleteAccountTitle') ?? 'Delete Account';
+    sorryToSeeYouGo = LocaleService.translate('sorryToSeeYouGo') ??
+        'We\'re sorry to see you go';
+    chooseDeleteOption = LocaleService.translate('chooseDeleteOption') ??
+        'Choose how you\'d like to delete your account';
+    deleteAccountNow =
+        LocaleService.translate('deleteAccountNow') ?? 'Delete Account Now';
+    deleteAccountImmediately =
+        LocaleService.translate('deleteAccountImmediately') ??
+            'Permanently delete your account immediately';
+    accountDeletedInstantly =
+        LocaleService.translate('accountDeletedInstantly') ??
+            'Account deleted instantly';
+    allDataPermanentlyRemoved =
+        LocaleService.translate('allDataPermanentlyRemoved') ??
+            'All data permanently removed';
+    cannotBeUndone =
+        LocaleService.translate('cannotBeUndone') ?? 'Cannot be undone';
+    profileDisappearsImmediately =
+        LocaleService.translate('profileDisappearsImmediately') ??
+            'Profile disappears immediately';
+    deleteNowButton =
+        LocaleService.translate('deleteNowButton') ?? 'Delete Now';
+    deactivateFor90Days = LocaleService.translate('deactivateFor90Days') ??
+        'Deactivate for 90 Days';
+    hideProfileAndDeleteLater =
+        LocaleService.translate('hideProfileAndDeleteLater') ??
+            'Hide your profile and delete later';
+    accountHiddenImmediately =
+        LocaleService.translate('accountHiddenImmediately') ??
+            'Account hidden immediately';
+    deletedAfter90Days = LocaleService.translate('deletedAfter90Days') ??
+        'Deleted automatically after 90 days';
+    canRestoreAnytime = LocaleService.translate('canRestoreAnytime') ??
+        'Can log back in to restore anytime';
+    dataSafeDuringPeriod = LocaleService.translate('dataSafeDuringPeriod') ??
+        'Your data stays safe during this period';
+    deactivateAccountButton =
+        LocaleService.translate('deactivateAccountButton') ??
+            'Deactivate Account';
+    contactSupportInstead = LocaleService.translate('contactSupportInstead') ??
+        'Need help? Contact our support team instead of deleting your account.';
+    deleteForever =
+        LocaleService.translate('deleteForever') ?? 'Delete Forever?';
+    permanentActionWarning = LocaleService.translate(
+            'permanentActionWarning') ??
+        'This action is permanent and cannot be undone. All your data will be lost forever.';
+    areYouSure =
+        LocaleService.translate('areYouSure') ?? 'Are you absolutely sure?';
+    deleteForeverButton =
+        LocaleService.translate('deleteForeverButton') ?? 'Delete Forever';
+    scheduledDeletionTitle =
+        LocaleService.translate('scheduledDeletionTitle') ??
+            'Deactivate Account';
+    scheduledDeletionDate = LocaleService.translate('scheduledDeletionDate') ??
+        'Your account will be scheduled for deletion on:';
+    restoreBeforeDate = LocaleService.translate('restoreBeforeDate') ??
+        'You can log back in anytime before this date to restore your account.';
+    accountDeactivatedTitle =
+        LocaleService.translate('accountDeactivatedTitle') ??
+            'Account Deactivated';
+    restoreAccountInfo = LocaleService.translate('restoreAccountInfo') ??
+        'Simply log back in anytime to restore your account';
+    continueButton = LocaleService.translate('continueButton') ?? 'Continue';
+    pleaseWaitTitle =
+        LocaleService.translate('pleaseWaitTitle') ?? 'Please Wait';
+    iUnderstandButton =
+        LocaleService.translate('iUnderstandButton') ?? 'I Understand';
+    cooldownMessage = LocaleService.translate('cooldownMessage') ??
+        'You must wait 7 days after restoring your account before you can deactivate it again.';
+    preventAccidentalDeletion =
+        LocaleService.translate('preventAccidentalDeletion') ??
+            'This prevents accidental account deletions';
+    scheduledDeletionSuccess = LocaleService.translate(
+            'scheduledDeletionSuccess') ??
+        'Your account has been deactivated and will be permanently deleted on:';
+    accountDeletionCancelled =
+        LocaleService.translate('accountDeletionCancelled') ??
+            'Account deletion cancelled';
+    accountDeletionCancelFailed =
+        LocaleService.translate('accountDeletionCancelFailed') ??
+            'Failed to cancel deletion';
+    accountDeletionCancelError =
+        LocaleService.translate('accountDeletionCancelError') ??
+            'Error cancelling deletion';
+    accountDeletedSuccess = LocaleService.translate('accountDeletedSuccess') ??
+        'Account deleted successfully';
+    accountDeletedFailed = LocaleService.translate('accountDeletedFailed') ??
+        'Failed to delete account';
+    accountDeletedRestart = LocaleService.translate('accountDeletedRestart') ??
+        'Account deleted but please restart app';
+    unknownError =
+        LocaleService.translate('unknownError') ?? 'Unknown error occurred';
+    bio = LocaleService.translate('bio') ?? 'Bio';
+    gender = LocaleService.translate('gender') ?? 'Gender';
+    male = LocaleService.translate('male') ?? 'Male';
+    female = LocaleService.translate('female') ?? 'Female';
+    preferNotToSay =
+        LocaleService.translate('preferNotToSay') ?? 'Prefer not to say';
+    optional = LocaleService.translate('optional') ?? 'Optional';
+    writeHere = LocaleService.translate('writeHere') ?? 'Write here...';
+    pleaseEnterFirstName = LocaleService.translate('pleaseEnterFirstName') ??
+        'Please enter your first name';
+    pleaseEnterLastName = LocaleService.translate('pleaseEnterLastName') ??
+        'Please enter your last name';
+    pleaseEnterValidEmail = LocaleService.translate('pleaseEnterValidEmail') ??
+        'Please enter a valid email address';
+    emailAlreadyRegistered =
+        LocaleService.translate('emailAlreadyRegistered') ??
+            'This email is already registered';
+    unableToVerifyEmail = LocaleService.translate('unableToVerifyEmail') ??
+        'Unable to verify email. Please try again.';
+    enterEmailAddress = LocaleService.translate('enterEmailAddress') ??
+        'Enter your email address';
+    verify = LocaleService.translate('verify') ?? 'Verify';
+    minYear = LocaleService.translate('minYear') ?? 'Min year';
+    maxYear = LocaleService.translate('maxYear') ?? 'Max year';
+    phoneVerifiedSuccessfully =
+        LocaleService.translate('phone_verified_successfully') ??
+            'Phone number verified successfully';
+    emailVerifiedSuccessfully =
+        LocaleService.translate('email_verified_successfully') ??
+            'Email verified successfully';
+    pleaseSelectUserType = LocaleService.translate('pleaseSelectUserType') ??
+        'Please select a user type';
+    pleaseSelectSpecialty = LocaleService.translate('pleaseSelectSpecialty') ??
+        'Please select a specialty';
+    pleaseSelectPositionType =
+        LocaleService.translate('pleasesSelectPositionType') ??
+            'Please select position type';
+    pleaseSelectWorkExperience =
+        LocaleService.translate('pleaseSelectWorkExperience') ??
+            'Please select work experience';
+    pleaseSelectWorkEducation =
+        LocaleService.translate('pleaseSelectWorkEducation') ??
+            'Please select education level';
+    salaryFromRequired = LocaleService.translate('salaryFromRequired') ??
+        'Salary from is required';
+    salaryToInvalid = LocaleService.translate('salaryToInvalid') ??
+        'Salary to must be greater than or equal to salary from';
+    salaryInvalidNumber = LocaleService.translate('salaryInvalidNumber') ??
+        'Please enter a valid number for salary';
+    profilePreview =
+        LocaleService.translate('profilePreview') ?? 'Profile Preview';
+    profilePreviewDescription = LocaleService.translate(
+            'profilePreviewDescription') ??
+        'This is how your profile appears to other users when they view it.';
+    previewMyProfile =
+        LocaleService.translate('previewMyProfile') ?? 'Preview My Profile';
+    forText = LocaleService.translate('for') ?? 'for';
+    oops = LocaleService.translate('oops') ?? 'Oops!';
+    lessThan1GB = LocaleService.translate('lessThan1GB') ?? 'Less than 1 GB';
+    gb1 = LocaleService.translate('gb1') ?? '1 GB';
+    gb2 = LocaleService.translate('gb2') ?? '2 GB';
+    gb3 = LocaleService.translate('gb3') ?? '3 GB';
+    gb4 = LocaleService.translate('gb4') ?? '4 GB';
+    gb6 = LocaleService.translate('gb6') ?? '6 GB';
+    gb8 = LocaleService.translate('gb8') ?? '8 GB';
+    gb12 = LocaleService.translate('gb12') ?? '12 GB';
+    gb16 = LocaleService.translate('gb16') ?? '16 GB';
+    gb16Plus = LocaleService.translate('gb16Plus') ?? 'More than 16 GB';
+
+    lessThan8GB = LocaleService.translate('lessThan8GB') ?? 'Less than 8 GB';
+    gb32 = LocaleService.translate('gb32') ?? '32 GB';
+    gb64 = LocaleService.translate('gb64') ?? '64 GB';
+    gb128 = LocaleService.translate('gb128') ?? '128 GB';
+    gb256 = LocaleService.translate('gb256') ?? '256 GB';
+    gb512 = LocaleService.translate('gb512') ?? '512 GB';
+    tb1 = LocaleService.translate('tb1') ?? '1 TB';
+    tb1Plus = LocaleService.translate('tb1Plus') ?? 'More than 1 TB';
+
+    lessThan4GB = LocaleService.translate('lessThan4GB') ?? 'Less than 4 GB';
+    gb64Plus = LocaleService.translate('gb64Plus') ?? 'More than 64 GB';
+
+    lessThan64GB = LocaleService.translate('lessThan64GB') ?? 'Less than 64 GB';
+    tb1_5 = LocaleService.translate('tb1_5') ?? '1.5 TB';
+    tb2 = LocaleService.translate('tb2') ?? '2 TB';
+    tb2Plus = LocaleService.translate('tb2Plus') ?? 'More than 2 TB';
+    days = LocaleService.translate('days') ?? 'Days';
+    notificationCongratulations =
+        LocaleService.translate('notification_congratulations') ??
+            'Congratulations!';
+    notificationAdLive = LocaleService.translate('notification_ad_live') ??
+        'Your ad is now live';
+    notificationAdRejected =
+        LocaleService.translate('notification_ad_rejected') ??
+            'Your ad has been rejected';
+    notificationAdSold = LocaleService.translate('notification_ad_sold') ??
+        'Your ad has been marked as sold';
+    notificationNewMessage =
+        LocaleService.translate('notification_new_message') ??
+            'You have a new message';
+    notificationAdExpiring =
+        LocaleService.translate('notification_ad_expiring') ??
+            'Your ad is expiring soon';
+    adPerformance =
+        LocaleService.translate('adPerformance') ?? 'Ad Performance';
+    adSubmittedForApproval = LocaleService.translate(
+            'adSubmittedForApproval') ??
+        'Your ad has been submitted to the admin and will be approved soon!';
+    bothUsersBlockedEachOther =
+        LocaleService.translate('bothUsersBlockedEachOther') ??
+            'Both you and this user have blocked each other';
+    thisUserIsBlockedByYou =
+        LocaleService.translate('thisUserIsBlockedByYou') ??
+            'This user is blocked by you';
+    thisUserHasBlockedYou = LocaleService.translate('thisUserHasBlockedYou') ??
+        'This user has blocked you';
+    productSoldOut =
+        LocaleService.translate('productSoldOut') ?? 'Product Sold Out';
+    isItAvailable =
+        LocaleService.translate('isItAvailable') ?? 'Is it available?';
+    notInterested =
+        LocaleService.translate('notInterested') ?? 'Not interested';
+    canYouNegotiate = LocaleService.translate('canYouNegotiate') ??
+        'Can you negotiate the price?';
+    whereIsTheLocation = LocaleService.translate('whereIsTheLocation') ??
+        'Where is the location?';
+    canISeeIt = LocaleService.translate('canISeeIt') ?? 'Can I see it?';
+    whenCanWeMeet =
+        LocaleService.translate('whenCanWeMeet') ?? 'When can we meet?';
+    isItStillForSale =
+        LocaleService.translate('isItStillForSale') ?? 'Is it still for sale?';
+    whatIsTheCondition = LocaleService.translate('whatIsTheCondition') ??
+        'What is the condition?';
+    canYouDeliverIt =
+        LocaleService.translate('canYouDeliverIt') ?? 'Can you deliver it?';
+    finalPrice =
+        LocaleService.translate('finalPrice') ?? 'What\'s your final price?';
+    thankYou = LocaleService.translate('thankYou') ?? 'Thank you';
+    goodLuck = LocaleService.translate('goodLuck') ?? 'Good luck with the sale';
+    noChats = LocaleService.translate('noChats') ?? 'No Chats';
+    selectChats = LocaleService.translate('selectChats') ?? 'Select Chats';
+    selectedChats = LocaleService.translate('selectedChats') ?? 'selected';
+    deletingChats =
+        LocaleService.translate('deletingChats') ?? 'Deleting chats...';
+    chatsDeletedSuccessfully =
+        LocaleService.translate('chatsDeletedSuccessfully') ??
+            'chats deleted successfully';
+    markAsRead = LocaleService.translate('markAsRead') ?? 'Mark as Read';
+    markedAsRead =
+        LocaleService.translate('markedAsRead') ?? 'chats marked as read';
+    deleteSelectedChats =
+        LocaleService.translate('deleteSelectedChats') ?? 'Delete Chats';
+    deleteChatsConfirm = LocaleService.translate('deleteChatsConfirm') ??
+        'selected chats? This will permanently remove them from your inbox.';
+    selectAll = LocaleService.translate('selectAll') ?? 'Select All';
+    startChat = LocaleService.translate('startChat') ?? 'Start Chat';
+    blockAndReportUser = LocaleService.translate('blockAndReportUser') ??
+        'Block and Report User';
+    staySecureTranslatable =
+        LocaleService.translate('staySecureTranslatable') ?? "Stay safe";
+    typeHere = LocaleService.translate('typeHere') ?? 'Type here...';
+    notAvailable = LocaleService.translate('notAvailable') ?? 'Not Available';
+    backToChat = LocaleService.translate('backToChat') ?? 'Back to Chat';
+    photoLibrary = LocaleService.translate('photoLibrary') ?? 'Photo Library';
+    camera = LocaleService.translate('camera') ?? 'Camera';
+    chooseFile = LocaleService.translate('chooseFile') ?? 'Choose File';
+    gallery = LocaleService.translate('gallery') ?? 'Gallery';
+    uploadingFile =
+        LocaleService.translate('uploadingFile') ?? 'Uploading file...';
+    uploadingImage =
+        LocaleService.translate('uploadingImage') ?? 'Uploading image...';
+    uploadingImages =
+        LocaleService.translate('uploadingImages') ?? 'Uploading images...';
+    am = LocaleService.translate('am') ?? 'AM';
+    pm = LocaleService.translate('pm') ?? 'PM';
+    // In the refresh() method, add:
+    profilePicture =
+        LocaleService.translate('profilePicture') ?? 'Profile Picture';
+    takePhoto = LocaleService.translate('takePhoto') ?? 'Take Photo';
+    chooseFromGallery =
+        LocaleService.translate('chooseFromGallery') ?? 'Choose from Gallery';
+    removePhoto = LocaleService.translate('removePhoto') ?? 'Remove Photo';
+    photoRemoved = LocaleService.translate('photoRemoved') ?? 'Photo removed.';
+    photoRemovedUpdate = LocaleService.translate('photoRemovedUpdate') ??
+        'Photo removed. Click Update to save changes.';
+    enterYourEmailAddress = LocaleService.translate('enterYourEmailAddress') ??
+        'Enter your email address';
+    optionalField = LocaleService.translate('optionalField') ?? '(Optional)';
+    firstNameTooLong = LocaleService.translate('firstNameTooLong') ??
+        'First name cannot exceed 50 characters';
+    lastNameTooLong = LocaleService.translate('lastNameTooLong') ??
+        'Last name cannot exceed 50 characters';
+    bioTooLong = LocaleService.translate('bioTooLong') ??
+        'Bio cannot exceed 500 characters';
+    viewFullMap = LocaleService.translate('viewFullMap') ?? 'View Full Map';
+    all = LocaleService.translate('all') ?? 'All';
+    any = LocaleService.translate('any') ?? 'Any';
+    pleaseEnterAtLeastOneSalary =
+        LocaleService.translate('pleaseEnterAtLeastOneSalary') ??
+            'Please enter at least one salary field';
   }
 }

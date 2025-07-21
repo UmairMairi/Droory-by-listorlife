@@ -3,6 +3,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:flutter/material.dart';
 import 'package:list_and_life/base/helpers/string_helper.dart';
 import 'dialog_helper.dart';
+import 'dart:math' show sin, cos, sqrt, atan2, pi;
 
 class LocationHelper {
   static const double cairoLatitude = 31.2341262;
@@ -67,7 +68,6 @@ class LocationHelper {
     return position;
   }
 
-
   static Future<String> getAddressFromCoordinates(
       double latitude, double longitude) async {
     try {
@@ -80,18 +80,18 @@ class LocationHelper {
     }
   }
 
- static String _formatAddress(Placemark place) {
+  static String _formatAddress(Placemark place) {
     StringBuffer addressBuffer = StringBuffer();
-    if ((place.name??"").isNotEmpty) {
+    if ((place.name ?? "").isNotEmpty) {
       addressBuffer.write('${place.name}, ');
     }
-    if ((place.locality??"").isNotEmpty) {
+    if ((place.locality ?? "").isNotEmpty) {
       addressBuffer.write('${place.locality}, ');
     }
-    if ((place.administrativeArea??"").isNotEmpty) {
+    if ((place.administrativeArea ?? "").isNotEmpty) {
       addressBuffer.write('${place.administrativeArea}, ');
     }
-    if ((place.country??"").isNotEmpty) {
+    if ((place.country ?? "").isNotEmpty) {
       addressBuffer.write('${place.country}');
     }
     String address = addressBuffer.toString().replaceAll(RegExp(r',\s*$'), '');
@@ -144,12 +144,11 @@ class LocationHelper {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title:  Text(StringHelper.locationAlert),
-          content:  Text(
-              StringHelper.locationAlertMsg),
+          title: Text(StringHelper.locationAlert),
+          content: Text(StringHelper.locationAlertMsg),
           actions: [
             TextButton(
-              child:  Text(StringHelper.ok),
+              child: Text(StringHelper.ok),
               onPressed: () {
                 Navigator.pop(context);
                 onTap(); // Call the callback function

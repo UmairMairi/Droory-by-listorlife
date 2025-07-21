@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
+import 'package:list_and_life/base/helpers/filter_cache_manager.dart';
 import 'package:list_and_life/models/category_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/widgets/app_error_widget.dart';
@@ -15,6 +16,7 @@ import '../../../../routes/app_routes.dart';
 import '../../../../skeletons/sell_loading_widget.dart';
 import '../../../../view_model/profile_vm.dart';
 import '../../../../view_model/sell_v_m.dart';
+import '../../../../view_model/home_vm.dart';
 import '../../../../widgets/unauthorised_view.dart';
 
 class SellCategoryView extends StatefulWidget {
@@ -25,13 +27,20 @@ class SellCategoryView extends StatefulWidget {
 }
 
 class _SellCategoryViewState extends State<SellCategoryView> {
-  late SellVM viewModel;
-  @override
-  void initState() {
-    viewModel = context.read<SellVM>();
-    viewModel.getCategoryListApi();
-    // TODO: implement initState
-    super.initState();
+  final FilterCacheManager _cacheManager = FilterCacheManager();
+
+  Future<List<CategoryModel>> _getCachedCategories() async {
+    // Check cache first
+    List<CategoryModel>? cachedCategories =
+        _cacheManager.getFromCache(_cacheManager.categoriesKey);
+
+    if (cachedCategories != null) {
+      return cachedCategories;
+    }
+
+    // If not cached, fetch from HomeVM (which also caches)
+    var homeVM = context.read<HomeVM>();
+    return await homeVM.getCategoryListApi();
   }
 
   @override
@@ -55,8 +64,8 @@ class _SellCategoryViewState extends State<SellCategoryView> {
                   const SizedBox(
                     height: 20,
                   ),
-                  StreamBuilder<List<CategoryModel>>(
-                      stream:viewModel.categoryStream.stream ,
+                  FutureBuilder<List<CategoryModel>>(
+                      future: _getCachedCategories(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           List<CategoryModel> categoryData =
@@ -75,23 +84,8 @@ class _SellCategoryViewState extends State<SellCategoryView> {
                               itemBuilder: (buildContext, index) {
                                 return GestureDetector(
                                   onTap: () {
-                                    if(DbHelper.getUserModel()?.socialType == null){
-                                      if (DbHelper.getUserModel()?.phoneVerified != 1) {
-                                        DialogHelper.showToast(
-                                            message:
-                                            StringHelper.unverifiedToast);
-                                        return;
-                                      }
-                                    }else{
-                                      if (DbHelper.getUserModel()?.phoneVerified != 1) {
-                                        addContactDialog(context);
-                                         return;
-                                      }
-                                    }
-
-                                    context.push(Routes.sellSubCategoryView, extra: categoryData[index]);
-                                    // viewModel.handelSellCat(
-                                    //     item: categoryData[index]);
+                                    context.push(Routes.sellSubCategoryView,
+                                        extra: categoryData[index]);
                                   },
                                   child: Card(
                                     color: const Color(0xffFCFCFD),
@@ -117,10 +111,6 @@ class _SellCategoryViewState extends State<SellCategoryView> {
                                             height: 13,
                                           ),
                                           Text(
-                                            // DbHelper.getLanguage() == 'en'
-                                            //     ? categoryData[index].name ?? ''
-                                            //     : categoryData[index].nameAr ??
-                                            //         '',
                                             categoryData[index].name ?? '',
                                             textAlign: TextAlign.center,
                                             style: context.textTheme.titleSmall,
@@ -135,38 +125,13 @@ class _SellCategoryViewState extends State<SellCategoryView> {
                         if (snapshot.hasError) {
                           return const AppErrorWidget();
                         }
-                        return SellLoadingWidget(
-                          isLoading: snapshot.connectionState ==
-                              ConnectionState.waiting,
+                        return const SellLoadingWidget(
+                          isLoading: true,
                         );
                       })
                 ],
               ),
             ),
-    );
-  }
-
-  void addContactDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext dialogContext) {
-        return AppAlertDialogWithLottie(
-          title: StringHelper.add,
-          description: StringHelper.unverifiedAddPhoneToast,
-          onTap: () {
-            context.pop();
-            context.read<ProfileVM>().imagePath = '';
-            context.push(Routes.editProfile);
-          },
-          onCancelTap: () {
-            context.pop();
-          },
-          buttonText: StringHelper.yes,
-          cancelButtonText: StringHelper.no,
-          showCancelButton: true,
-        );
-      },
     );
   }
 }

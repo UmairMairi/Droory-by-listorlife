@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:list_and_life/base/helpers/db_helper.dart';
+import 'package:list_and_life/base/helpers/string_helper.dart'; // ADD THIS IMPORT
 
 enum CommunicationChoice {
   chat,
@@ -28,12 +29,19 @@ class MultiSelectCategory extends StatefulWidget {
 }
 
 class _MultiSelectCategoryState extends State<MultiSelectCategory> {
-  final List<String> categories = ["Call", "WhatsApp", "Chat"];
-  List<String> selectedCategories = ["Chat"]; // Ensure "Chat" is always selected
+  // CHANGE: Use StringHelper for translated categories
+  List<String> get categories =>
+      [StringHelper.call, StringHelper.whatsapp, StringHelper.chat];
+  List<String> selectedCategories = []; // Will be initialized in initState
 
   @override
   void initState() {
     super.initState();
+    // Initialize with translated "Chat" string
+    selectedCategories = [
+      StringHelper.chat
+    ]; // Ensure "Chat" is always selected
+
     WidgetsBinding.instance.addPostFrameCallback((callback) {
       if ((widget.choiceString ?? "").isNotEmpty) {
         updateSelectedCategories(widget.choiceString ?? "");
@@ -49,73 +57,77 @@ class _MultiSelectCategoryState extends State<MultiSelectCategory> {
   Widget build(BuildContext context) {
     return widget.inDialog
         ? Wrap(
-      children: categories.map((category) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4.0),
-          child: FilterChip(
-            label: Text(category),
-            backgroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            side: const BorderSide(color: Colors.blue),
-            selected: selectedCategories.contains(category),
-            selectedColor: Colors.blue.withOpacity(0.2),
-            onSelected: (bool isSelected) {
-              if (category != "Chat") {
-                setState(() {
-                  if (isSelected) {
-                    selectedCategories.add(category);
-                  } else {
-                    selectedCategories.remove(category);
-                  }
-                });
-                _updateCommunicationChoice();
-              }
-            },
-          ),
-        );
-      }).toList(),
-    )
+            children: categories.map((category) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                child: FilterChip(
+                  label: Text(category),
+                  backgroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  side: const BorderSide(color: Colors.blue),
+                  selected: selectedCategories.contains(category),
+                  selectedColor: Colors.blue.withOpacity(0.2),
+                  onSelected: (bool isSelected) {
+                    // CHANGE: Use StringHelper.chat instead of hardcoded "Chat"
+                    if (category != StringHelper.chat) {
+                      setState(() {
+                        if (isSelected) {
+                          selectedCategories.add(category);
+                        } else {
+                          selectedCategories.remove(category);
+                        }
+                      });
+                      _updateCommunicationChoice();
+                    }
+                  },
+                ),
+              );
+            }).toList(),
+          )
         : Row(
-      children: categories.map((category) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4.0),
-          child: FilterChip(
-            label: Text(category),
-            backgroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            side: const BorderSide(color: Colors.blue),
-            selected: selectedCategories.contains(category),
-            selectedColor: Colors.blue.withOpacity(0.2),
-            onSelected: (bool isSelected) {
-              if (category != "Chat") {
-                setState(() {
-                  if (isSelected) {
-                    selectedCategories.add(category);
-                  } else {
-                    selectedCategories.remove(category);
-                  }
-                });
-                _updateCommunicationChoice();
-              }
-            },
-          ),
-        );
-      }).toList(),
-    );
+            children: categories.map((category) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                child: FilterChip(
+                  label: Text(category),
+                  backgroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  side: const BorderSide(color: Colors.blue),
+                  selected: selectedCategories.contains(category),
+                  selectedColor: Colors.blue.withOpacity(0.2),
+                  onSelected: (bool isSelected) {
+                    // CHANGE: Use StringHelper.chat instead of hardcoded "Chat"
+                    if (category != StringHelper.chat) {
+                      setState(() {
+                        if (isSelected) {
+                          selectedCategories.add(category);
+                        } else {
+                          selectedCategories.remove(category);
+                        }
+                      });
+                      _updateCommunicationChoice();
+                    }
+                  },
+                ),
+              );
+            }).toList(),
+          );
   }
 
   void _updateCommunicationChoice() {
     CommunicationChoice choice;
 
+    // CHANGE: Use StringHelper for comparisons
     // Determine the CommunicationChoice based on the selected categories
     if (selectedCategories.length == 3) {
       choice = CommunicationChoice.call_chat_whatsapp; // All three selected
-    } else if (selectedCategories.contains("Call") &&
-        selectedCategories.contains("WhatsApp")) {
-      choice = CommunicationChoice.call_chat_whatsapp; // Call and WhatsApp selected
-    } else if (selectedCategories.contains("Call")) {
+    } else if (selectedCategories.contains(StringHelper.call) &&
+        selectedCategories.contains(StringHelper.whatsapp)) {
+      choice =
+          CommunicationChoice.call_chat_whatsapp; // Call and WhatsApp selected
+    } else if (selectedCategories.contains(StringHelper.call)) {
       choice = CommunicationChoice.call_chat; // Only Call selected
-    } else if (selectedCategories.contains("WhatsApp")) {
+    } else if (selectedCategories.contains(StringHelper.whatsapp)) {
       choice = CommunicationChoice.chat_whatsapp; // Chat and WhatsApp selected
     } else {
       choice = CommunicationChoice.chat; // Only Chat (default)
@@ -129,27 +141,28 @@ class _MultiSelectCategoryState extends State<MultiSelectCategory> {
   void updateSelectedCategories(String choiceString) {
     setState(() {
       selectedCategories.clear();
-      selectedCategories.add("Chat"); // Always add "Chat"
+      selectedCategories
+          .add(StringHelper.chat); // Always add "Chat" (translated)
 
       // Update selectedCategories based on the string input
       switch (choiceString) {
         case 'call_chat_whatsapp':
-          selectedCategories.addAll(["Call", "WhatsApp"]);
+          selectedCategories.addAll([StringHelper.call, StringHelper.whatsapp]);
           break;
         case 'call_chat':
-          selectedCategories.add("Call");
+          selectedCategories.add(StringHelper.call);
           break;
         case 'chat_whatsapp':
-          selectedCategories.add("WhatsApp");
+          selectedCategories.add(StringHelper.whatsapp);
           break;
         case 'call_whatsapp':
-          selectedCategories.addAll(["Call", "WhatsApp"]);
+          selectedCategories.addAll([StringHelper.call, StringHelper.whatsapp]);
           break;
         case 'call':
-          selectedCategories.add("Call");
+          selectedCategories.add(StringHelper.call);
           break;
         case 'whatsapp':
-          selectedCategories.add("WhatsApp");
+          selectedCategories.add(StringHelper.whatsapp);
           break;
         case 'none':
         default:

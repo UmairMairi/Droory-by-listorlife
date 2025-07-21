@@ -23,17 +23,32 @@ class CommunicationButtons extends StatelessWidget {
   });
 
   List<Widget> _buildButtons(BuildContext context) {
+    // Check if this is the user's own product
+    bool isOwnProduct = data?.userId == DbHelper.getUserModel()?.id;
+
+    // Don't show communication buttons for own products
+    if (isOwnProduct) {
+      return [];
+    }
+
     String selectedChoice = data?.communicationChoice ?? '';
     List<Widget> buttons = [];
 
-    if (selectedChoice.contains('call')) {
+    // Always show buttons if communicationChoice is empty or null
+    if (selectedChoice.isEmpty) {
       buttons.add(_buildCallButton(context));
-    }
-    if (selectedChoice.contains('chat')) {
       buttons.add(_buildChatButton(context));
-    }
-    if (selectedChoice.contains('whatsapp')) {
       buttons.add(_buildWhatsAppButton(context));
+    } else {
+      if (selectedChoice.contains('call')) {
+        buttons.add(_buildCallButton(context));
+      }
+      if (selectedChoice.contains('chat')) {
+        buttons.add(_buildChatButton(context));
+      }
+      if (selectedChoice.contains('whatsapp')) {
+        buttons.add(_buildWhatsAppButton(context));
+      }
     }
 
     return buttons;
@@ -171,9 +186,16 @@ class CommunicationButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> buttons = _buildButtons(context);
+
+    // If no buttons to show, return empty container
+    if (buttons.isEmpty) {
+      return Container();
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: _buildButtons(context),
+      children: buttons,
     );
   }
 
@@ -197,17 +219,32 @@ class CommunicationButtons2 extends StatelessWidget {
   });
 
   List<Widget> _buildButtons(BuildContext context) {
+    // Check if this is the user's own product
+    bool isOwnProduct = data?.userId == DbHelper.getUserModel()?.id;
+
+    // Don't show communication buttons for own products
+    if (isOwnProduct) {
+      return [];
+    }
+
     String selectedChoice = data?.communicationChoice ?? '';
     List<Widget> buttons = [];
 
-    if (selectedChoice.contains('call')) {
+    // Always show buttons if communicationChoice is empty or null
+    if (selectedChoice.isEmpty) {
       buttons.add(_buildCallButton(context));
-    }
-    if (selectedChoice.contains('chat')) {
       buttons.add(_buildChatButton(context));
-    }
-    if (selectedChoice.contains('whatsapp')) {
       buttons.add(_buildWhatsAppButton(context));
+    } else {
+      if (selectedChoice.contains('call')) {
+        buttons.add(_buildCallButton(context));
+      }
+      if (selectedChoice.contains('chat')) {
+        buttons.add(_buildChatButton(context));
+      }
+      if (selectedChoice.contains('whatsapp')) {
+        buttons.add(_buildWhatsAppButton(context));
+      }
     }
 
     return buttons;
@@ -346,9 +383,16 @@ class CommunicationButtons2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> buttons = _buildButtons(context);
+
+    // If no buttons to show, return empty container
+    if (buttons.isEmpty) {
+      return Container();
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: _buildButtons(context),
+      children: buttons,
     );
   }
 

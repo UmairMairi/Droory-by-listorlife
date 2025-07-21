@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -8,19 +7,156 @@ import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/extensions/bool_extension.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/base/helpers/image_picker_helper.dart';
+import 'package:list_and_life/base/helpers/profanity_helper.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/view_model/auth_vm.dart';
 import 'package:list_and_life/widgets/app_elevated_button.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
+import 'package:list_and_life/widgets/common_dropdown.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 import 'package:list_and_life/widgets/multi_select_category.dart';
+import 'dart:io';
 
 import '../../base/helpers/string_helper.dart';
 import '../../widgets/app_map_widget.dart';
 
 class CompleteProfileView extends BaseView<AuthVM> {
   const CompleteProfileView({super.key});
+
+  Widget _buildAvatarContent(AuthVM viewModel) {
+    // Check for local image
+    if (viewModel.imagePath.isNotEmpty) {
+      final file = File(viewModel.imagePath);
+      if (file.existsSync()) {
+        return ClipOval(
+          child: Image.file(
+            file,
+            fit: BoxFit.cover,
+            width: 140,
+            height: 140,
+            errorBuilder: (context, error, stackTrace) {
+              return _buildPlaceholderAvatar();
+            },
+          ),
+        );
+      }
+    }
+
+    // No image - show placeholder
+    return _buildPlaceholderAvatar();
+  }
+
+  Widget _buildPlaceholderAvatar() {
+    // For new user registration, always show person icon
+    return Container(
+      width: 140,
+      height: 140,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.blue.shade600,
+      ),
+      child: const Center(
+        child: Icon(
+          Icons.person,
+          size: 60,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+
+  void _showImageOptionsBottomSheet(BuildContext context, AuthVM viewModel) {
+    final hasImage = viewModel.imagePath.isNotEmpty;
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (BuildContext context) {
+        return Container(
+          color: Colors.white,
+          child: SafeArea(
+            child: Wrap(
+              children: [
+                Container(
+                  color: Colors.white,
+                  padding: const EdgeInsets.all(20),
+                  child: Text(
+                    StringHelper.profilePicture,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+                Container(
+                  color: Colors.white,
+                  child: Column(
+                    children: [
+                      ListTile(
+                        tileColor: Colors.white,
+                        leading:
+                            const Icon(Icons.camera_alt, color: Colors.blue),
+                        title: Text(
+                          StringHelper.takePhoto,
+                          style: const TextStyle(color: Colors.black),
+                        ),
+                        onTap: () async {
+                          Navigator.pop(context);
+                          String? imagePath =
+                              await ImagePickerHelper.pickImageFromCamera();
+                          if (imagePath != null) {
+                            viewModel.imagePath = imagePath;
+                          }
+                        },
+                      ),
+                      ListTile(
+                        tileColor: Colors.white,
+                        leading: const Icon(Icons.photo_library,
+                            color: Colors.green),
+                        title: Text(
+                          StringHelper.chooseFromGallery,
+                          style: const TextStyle(color: Colors.black),
+                        ),
+                        onTap: () async {
+                          Navigator.pop(context);
+                          String? imagePath =
+                              await ImagePickerHelper.pickImageFromGallery();
+                          if (imagePath != null) {
+                            viewModel.imagePath = imagePath;
+                          }
+                        },
+                      ),
+                      if (hasImage)
+                        ListTile(
+                          tileColor: Colors.white,
+                          leading: const Icon(Icons.delete, color: Colors.red),
+                          title: Text(
+                            StringHelper.removePhoto,
+                            style: const TextStyle(color: Colors.black),
+                          ),
+                          onTap: () {
+                            Navigator.pop(context);
+                            viewModel.imagePath = '';
+                            DialogHelper.showToast(
+                                message: StringHelper.photoRemoved);
+                          },
+                        ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context, AuthVM viewModel) {
@@ -45,117 +181,125 @@ class CompleteProfileView extends BaseView<AuthVM> {
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        border: Border.all(color: Colors.black, width: 1),
-                        color: const Color(0xfff5f5f5),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5), // Shadow color
-                            spreadRadius: 0.1, // Spread radius
-                            blurRadius: 0.1, // Blur radius
-                            offset: const Offset(0, 0.1), // Offset from the top
-                          ),
-                        ],
+                        border:
+                            Border.all(color: Colors.grey.shade300, width: 2),
+                        color: Colors.grey.shade200,
                       ),
                       child: const CupertinoActivityIndicator(),
                     )
                   : Stack(
                       clipBehavior: Clip.none,
                       children: [
-                        ImageView.circle(
-                          image: viewModel.imagePath,
+                        Container(
                           height: 140,
                           width: 140,
-                          borderColor: Colors.black,
-                          borderWidth: 2,
-                          placeholder: AssetsRes.IC_PROFILE,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                                color: Colors.grey.shade300, width: 2),
+                          ),
+                          child: _buildAvatarContent(viewModel),
                         ),
                         Positioned(
-                            bottom: 0,
-                            right: 0,
+                          bottom: 5,
+                          right: 5,
+                          child: GestureDetector(
+                            onTap: () => _showImageOptionsBottomSheet(
+                                context, viewModel),
                             child: Container(
+                              height: 40,
+                              width: 40,
                               decoration: BoxDecoration(
-                                color: context.theme.primaryColor,
+                                color: Colors.blue.shade600,
                                 shape: BoxShape.circle,
+                                border:
+                                    Border.all(color: Colors.white, width: 3),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.2),
+                                    spreadRadius: 1,
+                                    blurRadius: 5,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
                               ),
-                              child: IconButton(
-                                  onPressed: () {
-                                    viewModel.pickImage();
-                                  },
-                                  icon: Icon(
-                                    Icons.camera_alt,
-                                    color: context.theme.cardColor,
-                                  )),
-                            )),
+                              child: const Icon(
+                                Icons.camera_alt,
+                                color: Colors.white,
+                                size: 18,
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
             ),
             const Gap(50),
+
+            // First Name
             AppTextField(
               title: StringHelper.firstName,
               hint: StringHelper.enter,
               keyboardType: TextInputType.name,
               controller: viewModel.nameTextController,
-              inputFormatters: AppTextInputFormatters.withNameFormatter(),
+              maxLength: 50,
             ),
             const Gap(10),
+
+            // Last Name - Now Optional
             AppTextField(
-              title: StringHelper.lastName,
+              title: "${StringHelper.lastName} ${StringHelper.optionalField}",
               hint: StringHelper.enter,
               keyboardType: TextInputType.name,
               controller: viewModel.lNameTextController,
-              inputFormatters: AppTextInputFormatters.withNameFormatter(),
+              isMandatory: false,
+              validator: (value) => null,
+              maxLength: 50,
             ),
             const Gap(10),
+
+            // Bio Field
             AppTextField(
-              title: StringHelper.location,
-              hint: StringHelper.location,
-              keyboardType: TextInputType.text,
-              readOnly: true,
-              onTap: () async {
-                Map<String, dynamic>? value = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const AppMapWidget()));
+              title: StringHelper.bio,
+              hint: StringHelper.writeHere,
+              keyboardType: TextInputType.multiline,
+              controller: viewModel.bioTextController,
+              maxLines: 5,
+              minLines: 5,
+              maxLength: 500,
+            ),
+            const Gap(10),
 
-                if (value != null && value.isNotEmpty) {
-                  String address = "";
-
-                  if ("${value['location'] ?? ""}".isNotEmpty) {
-                    address = "${value['location'] ?? ""}";
-                  }
-                  if ("${value['city'] ?? ""}".isNotEmpty) {
-                    address += ", ${value['city'] ?? ""}";
-                  }
-                  if ("${value['state'] ?? ""}".isNotEmpty) {
-                    address += ", ${value['state'] ?? ""}";
-                  }
-
-                  viewModel.locationTextController.text = address;
-                  viewModel.latitude = "${value['latitude']}";
-                  viewModel.longitude = "${value['longitude']}";
-                }
+            // Gender Selection
+            CommonDropdown<String>(
+              title: StringHelper.gender,
+              titleColor: Colors.black,
+              hint: viewModel.selectedGender ?? StringHelper.selectGender,
+              onSelected: (String? value) {
+                viewModel.selectedGender = value;
+                viewModel.notifyListeners();
               },
-              inputFormatters: AppTextInputFormatters.withNameFormatter(),
-              controller: viewModel.locationTextController,
+              options: [
+                StringHelper.male,
+                StringHelper.female,
+                StringHelper.preferNotToSay,
+              ],
             ),
             const Gap(10),
-            AppTextField(
-              title: StringHelper.email,
-              hint: StringHelper.enter,
-              keyboardType: TextInputType.emailAddress,
-              controller: viewModel.emailTextController,
-              inputFormatters: AppTextInputFormatters.withEmailFormatter(),
-            ),
-            const Gap(10),
+
             Text(
               StringHelper.howToConnect,
-              style: context.textTheme.titleSmall,
+              style: Theme.of(context).textTheme.titleSmall,
             ),
             MultiSelectCategory(
-              onSelectedCommunicationChoice: (CommunicationChoice value) {
-                viewModel.communicationChoice = value.name;
+              onSelectedCommunicationChoice: (value) {
+                if (value != null) {
+                  viewModel.communicationChoice = value.toString();
+                }
               },
             ),
+
+            // Terms and Conditions
             Row(
               children: [
                 Checkbox(
@@ -186,39 +330,85 @@ class CompleteProfileView extends BaseView<AuthVM> {
                 ),
               ],
             ),
-            const Gap(50),
+            const Gap(20),
+
+            // Continue Button with all validations
             AppElevatedButton(
-              width: context.width,
-              onTap: () {
-                /*  if (viewModel.imagePath.isEmpty) {
+              width: MediaQuery.of(context).size.width,
+              onTap: () async {
+                final firstName = viewModel.nameTextController.text.trim();
+                final lastName = viewModel.lNameTextController.text.trim();
+                final bio = viewModel.bioTextController.text.trim();
+
+                // Only first name is required now
+                if (firstName.isEmpty) {
                   DialogHelper.showToast(
-                      message: FormFieldErrors.profilePicRequired);
+                      message: StringHelper.pleaseEnterFirstName);
                   return;
-                }*/
-                if (viewModel.nameTextController.text.trim().isEmpty) {
-                  DialogHelper.showToast(
-                      message: FormFieldErrors.firstNameRequired);
-                  return;
-                }
-                if (viewModel.lNameTextController.text.trim().isEmpty) {
-                  DialogHelper.showToast(
-                      message: FormFieldErrors.lastNameRequired);
-                  return;
-                }
-                if (viewModel.emailTextController.text.trim().isNotEmpty) {
-                  if (viewModel.emailTextController.text.trim().isNotEmail()) {
-                    DialogHelper.showToast(message: FormFieldErrors.invalidEmail);
-                    return;
-                  }
                 }
 
+                // Length validations
+                if (firstName.length > 50) {
+                  DialogHelper.showToast(
+                      message: StringHelper.firstNameTooLong);
+                  return;
+                }
+
+                if (lastName.isNotEmpty && lastName.length > 50) {
+                  DialogHelper.showToast(message: StringHelper.lastNameTooLong);
+                  return;
+                }
+
+                if (bio.length > 500) {
+                  DialogHelper.showToast(message: StringHelper.bioTooLong);
+                  return;
+                }
+
+                // Profanity checks
+                if (ProfanityHelper.containsProfanity(firstName)) {
+                  ProfanityHelper.showProfanityError(context);
+                  return;
+                }
+
+                // Only check last name if it's provided
+                if (lastName.isNotEmpty &&
+                    ProfanityHelper.containsProfanity(lastName)) {
+                  ProfanityHelper.showProfanityError(context);
+                  return;
+                }
+
+                if (bio.isNotEmpty && ProfanityHelper.containsProfanity(bio)) {
+                  ProfanityHelper.showProfanityError(context);
+                  return;
+                }
+
+                // Check for spam-like content
+                if (!ProfanityHelper.isAppropriateForClassifieds(firstName)) {
+                  ProfanityHelper.showSpamWarning(context);
+                  return;
+                }
+
+                // Only check last name if it's provided
+                if (lastName.isNotEmpty &&
+                    !ProfanityHelper.isAppropriateForClassifieds(lastName)) {
+                  ProfanityHelper.showSpamWarning(context);
+                  return;
+                }
+
+                if (bio.isNotEmpty &&
+                    !ProfanityHelper.isAppropriateForClassifieds(bio)) {
+                  ProfanityHelper.showSpamWarning(context);
+                  return;
+                }
+
+                // Terms validation
                 if (viewModel.agreedToTerms.isFalse) {
                   DialogHelper.showToast(
-                      message: FormFieldErrors.acceptTermsRequired);
+                      message: StringHelper.pleaseAcceptTerms);
                   return;
                 }
 
-                DialogHelper.showLoading();
+                // All validations passed - proceed with registration
                 viewModel.completeProfileApi();
               },
               title: StringHelper.continueButton,

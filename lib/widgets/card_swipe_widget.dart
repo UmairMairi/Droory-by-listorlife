@@ -16,7 +16,7 @@ class CardSwipeWidget extends StatefulWidget {
   final BorderRadiusGeometry? borderRadius;
   final String? screenType;
   final BoxFit? fit;
-  final Function()?  onItemTapped;
+  final Function()? onItemTapped;
 
   const CardSwipeWidget({
     super.key,
@@ -25,7 +25,9 @@ class CardSwipeWidget extends StatefulWidget {
     this.imagesList,
     this.borderRadius,
     this.screenType,
-    this.fit, this.onItemTapped, this.radius,
+    this.fit,
+    this.onItemTapped,
+    this.radius,
   });
 
   @override
@@ -34,26 +36,27 @@ class CardSwipeWidget extends StatefulWidget {
 
 class _CardSwipeWidgetState extends State<CardSwipeWidget>
     with AutomaticKeepAliveClientMixin<CardSwipeWidget> {
-  List<String?> bannerImages = [];
+  late List<String> bannerImages;
   int _currentPage = 0;
   late PageController _pageController;
 
   @override
   void initState() {
     super.initState();
-    if ((widget.data?.image ?? "").isNotEmpty) {
-      bannerImages.insert(0, widget.data?.image);
+
+    // gather images from passed list or model
+    final src = widget.imagesList ?? widget.data?.productMedias ?? [];
+    bannerImages = [];
+
+    // primary image
+    if ((widget.data?.image ?? '').trim().isNotEmpty) {
+      bannerImages.add(widget.data!.image!);
     }
-    var productImages = widget.data?.productMedias ?? [];
-    if (productImages.isNotEmpty) {
-      for (var element in productImages) {
-        if ((element.media ?? "").isNotEmpty) {
-          bannerImages.add(element.media);
-        }
-      }
-      // bannerImages =
-      //     widget.data?.productMedias?.map((element) => element.media??"").toList() ??
-      //         [];
+
+    // additional images
+    for (var m in src) {
+      final media = (m.media ?? '').trim();
+      if (media.isNotEmpty) bannerImages.add(media);
     }
 
     _pageController = PageController(initialPage: _currentPage);
@@ -65,177 +68,252 @@ class _CardSwipeWidgetState extends State<CardSwipeWidget>
     super.dispose();
   }
 
-  void _goToPreviousPage() {
-    setState(() {
-      if (_currentPage == 0) {
-        _currentPage = bannerImages.length - 1; // Go to last page if at first
-      } else {
-        _currentPage--;
-      }
-      _pageController.jumpToPage(_currentPage);
-    });
+  int? _normalizedCategoryId() {
+    final raw = widget.data?.categoryId;
+    if (raw == null) return null;
+    if (raw is int) return raw;
+    return int.tryParse(raw.toString());
   }
 
-  void _goToNextPage() {
-    setState(() {
-      if (_currentPage == bannerImages.length - 1) {
-        _currentPage = 0; // Go to first page if at last
-      } else {
-        _currentPage++;
-      }
-      _pageController.jumpToPage(_currentPage);
-    });
+  String _placeholderFor(int? catId) {
+    switch (catId) {
+      case 8:
+        return AssetsRes.SERVICE_FILLER_IMAGE;
+      case 9:
+        return AssetsRes.JOB_FILLER_IMAGE;
+      default:
+        return AssetsRes.APP_LOGO;
+    }
+  }
+
+  bool _isCurrentLanguageArabic(BuildContext context) {
+    return Directionality.of(context) == TextDirection.rtl;
+  }
+
+  String _getLocalizedCounter(int current, int total, BuildContext context) {
+    if (_isCurrentLanguageArabic(context)) {
+      // Convert to Arabic numerals
+      String currentArabic = _convertToArabicNumerals(current.toString());
+      String totalArabic = _convertToArabicNumerals(total.toString());
+      return '$currentArabic/$totalArabic';
+    } else {
+      return '$current/$total';
+    }
+  }
+
+  String _convertToArabicNumerals(String input) {
+    const arabicNumerals = [
+      '٠',
+      '١',
+      '٢',
+      '٣',
+      '٤',
+      '٥',
+      '٦',
+      '٧',
+      '٨',
+      '٩',
+      '١٠',
+      '١١',
+      '١٢',
+      '١٣',
+      '١٤',
+      '١٥',
+      '١٦',
+      '١٧',
+      '١٨',
+      '١٩',
+      '٢٠',
+      '٢١',
+      '٢٢',
+      '٢٣',
+      '٢٤',
+      '٢٥',
+      '٢٦',
+      '٢ه',
+      '٢٨',
+      '٢٩',
+      '٣٠'
+    ];
+
+    const englishNumerals = [
+      '0',
+      '1',
+      '2',
+      '3',
+      '4',
+      '5',
+      '6',
+      '7',
+      '8',
+      '9',
+      '10',
+      '11',
+      '12',
+      '13',
+      '14',
+      '15',
+      '16',
+      '17',
+      '18',
+      '19',
+      '20',
+      '21',
+      '22',
+      '23',
+      '24',
+      '25',
+      '26',
+      '27',
+      '28',
+      '29',
+      '30'
+    ];
+
+    String result = input;
+    for (int i = 0; i < englishNumerals.length; i++) {
+      result = result.replaceAll(englishNumerals[i], arabicNumerals[i]);
+    }
+    return result;
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return SizedBox(
-      height: widget.height ?? 250,
-      width: context.width,
-      child: bannerImages.isNotEmpty
-          ? Stack(
-              alignment: Alignment.center,
-              children: [
-                PageView.builder(
-                  controller: _pageController,
-                  physics: ClampingScrollPhysics(),
-                  onPageChanged: (index) {
-                    setState(() {
-                      _currentPage = index;
-                    });
-                  },
-                  itemCount: bannerImages.length,
-                  itemBuilder: (context, index) {
-                    return ImageView.rect(
-                        image:
-                            "${ApiConstants.imageUrl}/${bannerImages[index]}",
-                        placeholder: AssetsRes.APP_LOGO,
-                        width: context.width,
-                        borderRadius: widget.radius,
-                        height: widget.height ?? 220,
-                        fit: BoxFit.contain,
-                        /*onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ImageViewer(
-                            galleryItems:bannerImages))),*/
-                        onTap:widget.onItemTapped?? () {
-                          if ((widget.screenType ?? "").isEmpty) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ImageViewer(
-                                        pageController: _pageController,
-                                        initialIndex: index,
-                                        title:widget.data?.name??"",
-                                        galleryItems: bannerImages)));
-                          }
-                        });
-                  },
-                ),
-                // Positioned(
-                //   left: 0,
-                //   child: IconButton(
-                //     onPressed: _goToPreviousPage,
-                //     icon: Icon(
-                //       Icons.arrow_back_ios,
-                //       textDirection: TextDirection.ltr,
-                //       color: Colors.white,
-                //     ),
-                //   ),
-                // ),
-                // Positioned(
-                //   right: 0,
-                //   child: IconButton(
-                //     onPressed: _goToNextPage,
-                //     icon: Icon(
-                //       Icons.arrow_forward_ios,
-                //       textDirection: TextDirection.ltr,
-                //       color: Colors.white,
-                //     ),
-                //   ),
-                // ),
-                Positioned(bottom: 0, child: _buildDots(context: context)),
-              ],
-            )
-          : ImageView.rect(
-              image: "",
-              placeholder: AssetsRes.APP_LOGO,
-              width: context.width,
-              height: widget.height ?? 220,
-              fit: widget.fit ?? BoxFit.cover,
-              onTap: () {}),
-    );
-  }
 
-/*
-  Widget _buildDots({required BuildContext context}) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: List.generate(
-          bannerImages.length.clamp(0, 10), // Limit to a maximum of 10
-              (index) {
-            return Container(
-              margin: const EdgeInsets.symmetric(horizontal: 5),
-              width: 10,
-              height: 10,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: _currentPage == index
-                    ? Theme.of(context).primaryColor
-                    : Colors.grey.withOpacity(0.8),
-              ),
-            );
-          },
+    // filter out any empty or whitespace-only entries
+    final validImages =
+        bannerImages.where((img) => img.trim().isNotEmpty).toList();
+
+    // No valid user images: show single filler asset
+    if (validImages.isEmpty) {
+      return SizedBox(
+        height: widget.height ?? 300,
+        width: context.width,
+        child: ClipRRect(
+          borderRadius:
+              widget.borderRadius ?? BorderRadius.circular(widget.radius ?? 0),
+          child: ImageView.rect(
+            image: '',
+            placeholder: _placeholderFor(_normalizedCategoryId()),
+            width: context.width,
+            height: widget.height ?? 270,
+            fit: widget.fit ?? BoxFit.cover,
+            onTap: widget.onItemTapped ?? () {},
+          ),
         ),
+      );
+    }
+
+    // At least one valid image: show carousel
+    return SizedBox(
+      height: widget.height ?? 300,
+      width: context.width,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          PageView.builder(
+            controller: _pageController,
+            physics: const ClampingScrollPhysics(),
+            onPageChanged: (i) => setState(() => _currentPage = i),
+            itemCount: validImages.length,
+            itemBuilder: (context, i) {
+              final url = validImages[i];
+              return ClipRRect(
+                borderRadius: widget.borderRadius ??
+                    BorderRadius.circular(widget.radius ?? 0),
+                child: ImageView.rect(
+                  image: '${ApiConstants.imageUrl}/$url',
+                  placeholder: _placeholderFor(_normalizedCategoryId()),
+                  width: context.width,
+                  height: widget.height ?? 270,
+                  fit: widget.fit ?? BoxFit.cover,
+                  onTap: widget.onItemTapped ??
+                      () {
+                        if ((widget.screenType ?? '').isEmpty) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => ImageViewer(
+                                pageController: _pageController,
+                                initialIndex: i,
+                                title: widget.data?.name ?? '',
+                                galleryItems: validImages,
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                ),
+              );
+            },
+          ),
+
+          // Image counter positioned based on language
+          if (validImages.length > 1)
+            Positioned(
+              bottom: 20,
+              left: _isCurrentLanguageArabic(context) ? null : 12,
+              right: _isCurrentLanguageArabic(context) ? 12 : null,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.7),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.camera_alt,
+                      color: Colors.white,
+                      size: 12,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      _getLocalizedCounter(
+                          _currentPage + 1, validImages.length, context),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+          Positioned(bottom: 0, child: _buildDots(context)),
+        ],
       ),
     );
   }
-*/
 
-  Widget _buildDots({required BuildContext context}) {
+  Widget _buildDots(BuildContext context) {
+    final validImageCount =
+        bannerImages.where((img) => img.trim().isNotEmpty).length;
+
+    // Don't show dots if only one image
+    if (validImageCount <= 1) {
+      return const SizedBox.shrink();
+    }
+
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: SmoothPageIndicator(
-          controller: _pageController,  // PageController
-          count:  bannerImages.length,
-          effect:  ScrollingDotsEffect(
-            dotHeight: 10,
-            dotWidth: 10,
-            dotColor: Colors.grey.withOpacity(0.8),
-            activeDotColor: Theme.of(context).primaryColor
-          ),
-          onDotClicked: (index){
-          }
+        controller: _pageController,
+        count: validImageCount,
+        effect: ScrollingDotsEffect(
+          dotHeight: 8,
+          dotWidth: 8,
+          dotColor: Colors.white.withOpacity(0.5),
+          activeDotColor: Colors.white,
+        ),
+        onDotClicked: (i) => setState(() => _pageController.jumpToPage(i)),
       ),
     );
   }
-
-
-  // Widget _buildDots({required BuildContext context}) {
-  //   return Padding(
-  //     padding: const EdgeInsets.all(10.0),
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.center,
-  //       children: List.generate(bannerImages.length, (index) {
-  //         return Container(
-  //           margin: const EdgeInsets.symmetric(horizontal: 5),
-  //           width: 10,
-  //           height: 10,
-  //           decoration: BoxDecoration(
-  //             shape: BoxShape.circle,
-  //             color: _currentPage == index
-  //                 ? Theme.of(context).primaryColor
-  //                 : Colors.grey.withOpacity(0.8),
-  //           ),
-  //         );
-  //       }),
-  //     ),
-  //   );
-  // }
 
   @override
   bool get wantKeepAlive => true;

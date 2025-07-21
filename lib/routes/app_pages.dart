@@ -10,8 +10,11 @@ import 'package:list_and_life/view/contact_us/contact_u_s_view.dart';
 import 'package:list_and_life/view/contact_us/faq_view.dart';
 import 'package:list_and_life/view/main/chat/message_view.dart';
 import 'package:list_and_life/view/main/filtter/filter_view.dart';
+// Missing import
+import 'package:list_and_life/base/text_formatters/form_field_errors.dart';
 import 'package:list_and_life/view/main/permission/location_permission_view.dart';
 import 'package:list_and_life/view/main/sell/sub_category/sell_sub_category_view.dart';
+import 'package:list_and_life/view/main/settings/DeleteAccountScreen.dart';
 import 'package:list_and_life/view/main/settings/TermsOfUseView.dart';
 import 'package:list_and_life/view/main/settings/verification_profile_view.dart';
 import 'package:list_and_life/view/product/my_product_view.dart';
@@ -19,6 +22,7 @@ import 'package:list_and_life/view/product/product_detail_view.dart';
 import 'package:list_and_life/view/profile/complete_profile_view.dart';
 import 'package:list_and_life/view/profile/edit_profile_view.dart';
 import 'package:list_and_life/view/purchase/plans_list_view.dart';
+import 'package:list_and_life/view/profile/my_profile_view.dart';
 
 import '../view/auth/guest_login_view.dart';
 import '../view/auth/login_view.dart';
@@ -74,11 +78,33 @@ class AppPages {
       GoRoute(
         path: Routes.verifyProfile,
         pageBuilder: (context, state) {
+          // START OF MODIFIED SECTION FOR Routes.verifyProfile
+          final Map<String, dynamic>? args =
+              state.extra as Map<String, dynamic>?;
+
+          if (args != null) {
+            final String? valueToVerify = args['value'] as String?;
+            final String? verificationType = args['type'] as String?;
+            final String? countryCode = args['countryCode'] as String?;
+
+            if (valueToVerify != null && verificationType != null) {
+              return getPage(
+                child: VerificationProfileView(
+                  valueToVerify: valueToVerify,
+                  verificationType: verificationType,
+                  countryCode: countryCode,
+                ),
+                state: state,
+              );
+            }
+          }
+          // Fallback if args are not as expected
+          // Pass a custom message directly to NotFoundView
           return getPage(
-              child: VerificationProfileView(
-                phoneNo: state.extra as String,
-              ),
+              child: NotFoundView(
+                  message: "Invalid or missing arguments for verifyProfile"),
               state: state);
+          // END OF MODIFIED SECTION FOR Routes.verifyProfile
         },
       ),
       GoRoute(
@@ -92,6 +118,11 @@ class AppPages {
         pageBuilder: (context, state) {
           return getPage(child: const EditProfileView(), state: state);
         },
+      ),
+      // Add this route
+      GoRoute(
+        path: '/delete-account',
+        builder: (context, state) => const DeleteAccountScreen(),
       ),
       GoRoute(
         path: Routes.planList,
@@ -127,6 +158,12 @@ class AppPages {
                 data: state.extra as ProductDetailModel,
               ),
               state: state);
+        },
+      ),
+      GoRoute(
+        path: Routes.myProfilePreview,
+        pageBuilder: (context, state) {
+          return getPage(child: const MyProfilePreviewView(), state: state);
         },
       ),
       GoRoute(
@@ -173,6 +210,7 @@ class AppPages {
           return getPage(child: const LocationPermissionView(), state: state);
         },
       ),
+
       GoRoute(
         path: Routes.filter,
         pageBuilder: (context, state) {

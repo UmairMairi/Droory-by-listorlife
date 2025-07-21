@@ -37,7 +37,8 @@ class DialogHelper {
     if (message == null) {
       return;
     }
-    if (!isToastVisible){
+    if (!isToastVisible) {
+      isToastVisible = true; // ✅ SET TO TRUE IMMEDIATELY
       toastification.show(
         description: Text(message),
         alignment: Alignment.topRight,
@@ -46,10 +47,10 @@ class DialogHelper {
         type: error ? ToastificationType.error : ToastificationType.success,
         autoCloseDuration: const Duration(seconds: 2),
       );
+      Future.delayed(Duration(seconds: 2), () {
+        isToastVisible = false;
+      });
     }
-    Future.delayed(Duration(seconds: 2), () {
-      isToastVisible = false;
-    });
   }
 
   /// Hide the soft keyboard.

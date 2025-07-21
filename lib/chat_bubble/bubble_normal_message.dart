@@ -56,28 +56,29 @@ class BubbleNormalMessage extends StatelessWidget {
     bool stateTick = false;
     Widget? stateIcon;
     Widget? timeStateIcon;
+
     if (sent) {
       stateTick = true;
-      stateIcon = const Icon(
+      stateIcon = Icon(
         Icons.done,
         size: 15,
-        color: Colors.grey,
+        color: Colors.grey[600],
       );
     }
     if (delivered) {
       stateTick = true;
-      stateIcon = const Icon(
+      stateIcon = Icon(
         Icons.done_all,
         size: 15,
-        color: Colors.grey,
+        color: Colors.grey[600],
       );
     }
     if (seen) {
       stateTick = true;
-      stateIcon = const Icon(
+      stateIcon = Icon(
         Icons.done_all,
         size: 15,
-        color: Colors.green,
+        color: Colors.blue,
       );
     }
 
@@ -85,9 +86,9 @@ class BubbleNormalMessage extends StatelessWidget {
       stateTick = true;
       timeStateIcon = Text(
         createdAt ?? '',
-        style: const TextStyle(
-          fontSize: 8,
-          color: Colors.white70,
+        style: TextStyle(
+          fontSize: 11,
+          color: Colors.grey[600],
         ),
       );
     }
@@ -103,65 +104,62 @@ class BubbleNormalMessage extends StatelessWidget {
             : leading ?? Container(),
         Container(
           color: Colors.transparent,
-          constraints: constraints ??
-              BoxConstraints(maxWidth: size.width * .8),
+          constraints: constraints ?? BoxConstraints(maxWidth: size.width * .8),
           margin: margin,
           padding: padding,
-          child: GestureDetector(
-            onTap: onTap,
-            onDoubleTap: onDoubleTap,
-            onLongPress: onLongPress,
-            child: Container(
-              decoration: BoxDecoration(
-                color: color,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(bubbleRadius),
-                  topRight: Radius.circular(bubbleRadius),
-                  bottomLeft: Radius.circular(tail
-                      ? isSender
-                          ? bubbleRadius
-                          : 0
-                      : BUBBLE_RADIUS),
-                  bottomRight: Radius.circular(tail
-                      ? isSender
-                          ? 0
-                          : bubbleRadius
-                      : BUBBLE_RADIUS),
-                ),
-              ),
-              child: Stack(
-                children: <Widget>[
-                  Padding(
-                    padding: stateTick
-                        ? const EdgeInsets.fromLTRB(16, 6, 50, 16)
-                        : const EdgeInsets.symmetric(
-                            vertical: 6, horizontal: 12),
+          child: Column(
+            crossAxisAlignment:
+                isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+            children: [
+              // Message bubble
+              GestureDetector(
+                onTap: onTap,
+                onDoubleTap: onDoubleTap,
+                onLongPress: onLongPress,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: color,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(bubbleRadius),
+                      topRight: Radius.circular(bubbleRadius),
+                      bottomLeft: Radius.circular(tail
+                          ? isSender
+                              ? bubbleRadius
+                              : 0
+                          : BUBBLE_RADIUS),
+                      bottomRight: Radius.circular(tail
+                          ? isSender
+                              ? 0
+                              : bubbleRadius
+                          : BUBBLE_RADIUS),
+                    ),
+                  ),
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                     child: SelectableText(
                       text,
                       style: textStyle,
                       textAlign: TextAlign.left,
                     ),
                   ),
-                  stateIcon != null || timeStateIcon !=null && stateTick
-                      ? Positioned(
-                          bottom: 4,
-                          right: 6,
-                          child: Row(
-                            children: [
-                              timeStateIcon??SizedBox.shrink(),
-                              SizedBox(width: 5,),
-                              if(stateIcon!=null)...[
-                                stateIcon
-                              ]
-                            ],
-                          ),
-                        )
-                      : const SizedBox(
-                          width: 1,
-                        ),
-                ],
+                ),
               ),
-            ),
+              // Time and status below the bubble
+              if (stateTick)
+                Padding(
+                  padding: const EdgeInsets.only(top: 2),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (timeStateIcon != null) timeStateIcon,
+                      if (timeStateIcon != null && stateIcon != null)
+                        const SizedBox(width: 4),
+                      if (stateIcon != null) stateIcon,
+                    ],
+                  ),
+                ),
+            ],
           ),
         ),
         if (isSender && trailing != null) const SizedBox.shrink(),

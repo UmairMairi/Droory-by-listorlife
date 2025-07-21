@@ -1,7 +1,8 @@
 import 'dart:developer';
 import 'dart:io';
 import 'dart:ui';
-
+import 'dart:async';
+import 'package:dio/dio.dart';
 import 'package:ccp_dialog/country_picker/flutter_country_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -24,19 +25,20 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sign_in_with_apple_platform_interface/authorization_credential.dart';
 
 import '../base/helpers/image_picker_helper.dart';
+import '../../base/helpers/string_helper.dart';
 
 class AuthVM extends BaseViewModel {
   TextEditingController phoneTextController = TextEditingController();
-
   TextEditingController nameTextController = TextEditingController();
   TextEditingController lNameTextController = TextEditingController();
-  TextEditingController emailTextController = TextEditingController();
   TextEditingController locationTextController = TextEditingController();
+  TextEditingController bioTextController = TextEditingController();
 
   String _latitude = "${LocationHelper.cairoLatitude}";
   String _longitude = "${LocationHelper.cairoLatitude}";
 
   String get longitude => _longitude;
+  String? _selectedGender;
 
   set longitude(String value) {
     _longitude = value;
@@ -52,16 +54,13 @@ class AuthVM extends BaseViewModel {
 
   String _communicationChoice =
       DbHelper.getUserModel()?.communicationChoice ?? '';
-
   String countryCode = "+20";
   Country selectedCountry = Country.EG;
-
   String _imagePath = '';
   bool _agreedToTerms = false;
   String get imagePath => _imagePath;
-
+  String? get selectedGender => _selectedGender;
   bool get agreedToTerms => _agreedToTerms;
-
   final FocusNode nodeText = FocusNode();
 
   set agreedToTerms(bool value) {
@@ -72,6 +71,16 @@ class AuthVM extends BaseViewModel {
   set imagePath(String path) {
     _imagePath = path;
     notifyListeners();
+  }
+
+  set selectedGender(String? value) {
+    _selectedGender = value;
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   void pickImage() async {
@@ -87,6 +96,7 @@ class AuthVM extends BaseViewModel {
   }
 
   Future<void> loginApi({bool resend = false}) async {
+    DialogHelper.showLoading();
     Map<String, dynamic> body = {
       'country_code': countryCode,
       'phone_no': phoneTextController.text.trim(),
@@ -98,24 +108,25 @@ class AuthVM extends BaseViewModel {
         requestType: RequestType.post,
         body: body);
 
-    var response = await BaseClient.handleRequest(apiRequest);
+    try {
+      var response = await BaseClient.handleRequest(apiRequest);
+      MapResponse<UserModel> model =
+          MapResponse.fromJson(response, (json) => UserModel.fromJson(json));
+      DialogHelper.hideLoading();
 
-    MapResponse<UserModel> model =
-        MapResponse.fromJson(response, (json) => UserModel.fromJson(json));
-    DialogHelper.hideLoading();
-    // DialogHelper.showToast(message: model.message);
+      if (resend) {
+        return;
+      }
 
-    if (resend) {
-      //DialogHelper.showToast(message: "Your verification code is 1111");
-      return;
+      if (context.mounted) {
+        context.push(Routes.verify);
+      } else {
+        AppPages.rootNavigatorKey.currentContext?.push(Routes.verify);
+      }
+    } catch (e) {
+      DialogHelper.hideLoading();
+      log("Login API error: $e");
     }
-
-    if (context.mounted) {
-      context.push(Routes.verify);
-    } else {
-      AppPages.rootNavigatorKey.currentContext?.push(Routes.verify);
-    }
-    //DialogHelper.showToast(message: "Your verification code is 1111");
   }
 
   Future<void> socialLogin({required int type}) async {
@@ -123,32 +134,41 @@ class AuthVM extends BaseViewModel {
       case 1:
         var user = await SocialLoginHelper.loginWithGoogle();
         if (user != null) {
-          socialLoginApi(user: user, type: type);
+          await socialLoginApi(user: user, type: type);
         }
         break;
       case 2:
         var user = await SocialLoginHelper.loginWithFacebook();
         if (user != null) {
-          socialLoginApi(user: user, type: type);
+          await socialLoginApi(user: user, type: type);
         }
         break;
       case 3:
         var user = await SocialLoginHelper.loginWithApple();
         if (user != null) {
-
-          socialLoginApi(type: type,appleData:user);
+          await socialLoginApi(type: type, appleData: user);
         }
       default:
     }
   }
 
+  // In your AuthVM class
+  void initializeEgyptAsDefault() {
+    selectedCountry = Country.findCountryByIsoCode('EG');
+    countryCode = "+20";
+    notifyListeners();
+  }
+
   Future<void> socialLoginApi(
-      {UserCredential? user, required int type,AuthorizationCredentialAppleID? appleData}) async {
+      {UserCredential? user,
+      required int type,
+      AuthorizationCredentialAppleID? appleData}) async {
     DialogHelper.showLoading();
     String? deviceToken = await Utils.getFcmToken();
     String deviceType = Platform.isAndroid ? '1' : '2';
     Map<String, dynamic> body = {};
-    if(user != null){
+
+    if (user != null) {
       body.addAll({
         'device_token': deviceToken,
         'device_type': deviceType,
@@ -157,45 +177,40 @@ class AuthVM extends BaseViewModel {
         'social_type': type,
       });
 
-      if((user.user?.photoURL??"").isNotEmpty){
-        body.addAll({
-          'profile_pic': user.user?.photoURL,
-        });
+      if ((user.user?.photoURL ?? "").isNotEmpty) {
+        body.addAll({'profile_pic': user.user?.photoURL});
       }
-      if((user.user?.email??"").isNotEmpty){
-        body.addAll({
-          'email': user.user?.email,
-        });
+      if ((user.user?.email ?? "").isNotEmpty) {
+        body.addAll({'email': user.user?.email});
       }
-      if((user.user?.displayName??"").isNotEmpty){
+      if ((user.user?.displayName ?? "").isNotEmpty) {
+        var nameParts = user.user!.displayName!.split(' ');
         body.addAll({
-          'name': user.user?.displayName?.split(' ').first,
-          'last_name': user.user?.displayName?.split(' ').last,
+          'name': nameParts.first,
+          'last_name':
+              nameParts.length > 1 ? nameParts.sublist(1).join(' ') : '',
         });
       }
     }
 
-    ///for apple only
-    if(appleData != null){
+    if (appleData != null) {
       body.addAll({
         'device_token': deviceToken,
         'device_type': deviceType,
         'type': 1,
         'social_id': appleData.userIdentifier,
         'social_type': type,
-       // 'profile_pic': user.user?.photoURL,
       });
 
-      if((appleData.givenName??"").isNotEmpty){
+      if ((appleData.givenName ?? "").isNotEmpty ||
+          (appleData.familyName ?? "").isNotEmpty) {
         body.addAll({
-          'name': appleData.givenName?.split(' ').first,
-          'last_name': appleData.familyName??"",
+          'name': appleData.givenName ?? '',
+          'last_name': appleData.familyName ?? '',
         });
       }
-      if((appleData.email??"").isNotEmpty){
-        body.addAll({
-          'email': appleData.email,
-          });
+      if ((appleData.email ?? "").isNotEmpty) {
+        body.addAll({'email': appleData.email});
       }
     }
 
@@ -204,29 +219,33 @@ class AuthVM extends BaseViewModel {
         requestType: RequestType.post,
         body: body);
 
-    var response = await BaseClient.handleRequest(apiRequest);
+    try {
+      var response = await BaseClient.handleRequest(apiRequest);
+      MapResponse<UserModel> model =
+          MapResponse.fromJson(response, (json) => UserModel.fromJson(json));
+      DialogHelper.hideLoading();
 
-    MapResponse<UserModel> model =
-        MapResponse.fromJson(response, (json) => UserModel.fromJson(json));
-    DialogHelper.hideLoading();
-    ////DialogHelper.showToast(message: model.message);
+      DbHelper.saveIsGuest(false);
+      DbHelper.saveUserModel(model.body);
+      DbHelper.saveToken(model.body?.token);
+      DbHelper.saveNotificationStatus("${model.body?.notificationStatus}");
+      DbHelper.saveIsLoggedIn(true);
+      SocketHelper().connectUser();
 
-    DbHelper.saveIsGuest(false);
-    DbHelper.saveUserModel(model.body);
-    DbHelper.saveToken(model.body?.token);
-    DbHelper.saveNotificationStatus("${model.body?.notificationStatus}");
-    DbHelper.saveIsGuest(false);
-    DbHelper.saveIsLoggedIn(true);
-    SocketHelper().connectUser();
-    if (context.mounted) {
-      context.go(Routes.main);
-    } else {
-      AppPages.rootNavigatorKey.currentContext?.go(Routes.main);
+      if (context.mounted) {
+        context.go(Routes.main);
+      } else {
+        AppPages.rootNavigatorKey.currentContext?.go(Routes.main);
+      }
+      DialogHelper.showToast(message: model.message);
+    } catch (e) {
+      DialogHelper.hideLoading();
+      log("Social Login API error: $e");
     }
-    DialogHelper.showToast(message: model.message);
   }
 
   Future<void> verifyOtpApi({required String otp}) async {
+    DialogHelper.showLoading();
     Map<String, dynamic> body = {
       'country_code': countryCode,
       'phone_no': phoneTextController.text.trim(),
@@ -238,51 +257,59 @@ class AuthVM extends BaseViewModel {
         url: ApiConstants.verifyOtpUrl(),
         requestType: RequestType.post,
         body: body);
+    try {
+      var response = await BaseClient.handleRequest(apiRequest);
+      MapResponse<UserModel> model =
+          MapResponse.fromJson(response, (json) => UserModel.fromJson(json));
+      DialogHelper.hideLoading();
 
-    var response = await BaseClient.handleRequest(apiRequest);
-
-    MapResponse<UserModel> model =
-        MapResponse.fromJson(response, (json) => UserModel.fromJson(json));
-    DialogHelper.hideLoading();
-    if (model.body?.id != null) {
-      DbHelper.saveIsGuest(false);
-      DbHelper.saveUserModel(model.body);
-      DbHelper.saveToken(model.body?.token);
-      DbHelper.saveNotificationStatus("${model.body?.notificationStatus}");
-      DbHelper.saveIsLoggedIn(true);
-      SocketHelper().connectUser();
-      if (context.mounted) {
-        context.go(Routes.main);
+      if (model.body?.id != null) {
+        // User exists and OTP verified
+        DbHelper.saveIsGuest(false);
+        DbHelper.saveUserModel(model.body);
+        DbHelper.saveToken(model.body?.token);
+        DbHelper.saveNotificationStatus("${model.body?.notificationStatus}");
+        DbHelper.saveIsLoggedIn(true);
+        SocketHelper().connectUser();
+        if (context.mounted) {
+          context.go(Routes.main);
+        } else {
+          AppPages.rootNavigatorKey.currentContext?.go(Routes.main);
+        }
+        DialogHelper.showToast(message: model.message);
       } else {
-        AppPages.rootNavigatorKey.currentContext?.go(Routes.main);
+        // User does not exist (new user flow after OTP)
+        if (context.mounted) {
+          context.go(Routes.completeProfile);
+        } else {
+          AppPages.rootNavigatorKey.currentContext?.go(Routes.completeProfile);
+        }
       }
-      DialogHelper.showToast(message: model.message);
-    } else {
-      if (context.mounted) {
-        context.go(Routes.completeProfile);
-      } else {
-        AppPages.rootNavigatorKey.currentContext?.go(Routes.completeProfile);
-      }
-      /*DialogHelper.showToast(
-          message: 'Welcome to Daroory, Complete your profile.');*/
+    } catch (e) {
+      DialogHelper.hideLoading();
+      log("Verify OTP API error: $e");
     }
   }
 
   Future<void> completeProfileApi() async {
+    DialogHelper.showLoading();
+
     var communication = "";
-    if(communicationChoice == "none" || communicationChoice.isEmpty){
+    if (communicationChoice == "none" || communicationChoice.isEmpty) {
       communication = "chat";
-    }else{
+    } else {
       communication = communicationChoice;
     }
-    // If no image is selected, generate a default image with the first name's letter
-    if (imagePath.isEmpty) {
-      imagePath = await generateAndSaveDefaultAvatar(
-          firstName: nameTextController.text.trim(),
-          lastName: lNameTextController.text.trim());
-    }
 
-    log("image path => $imagePath");
+    // if (imagePath.isEmpty &&
+    //     nameTextController.text.isNotEmpty &&
+    //     lNameTextController.text.isNotEmpty) {
+    //   imagePath = await generateAndSaveDefaultAvatar(
+    //       firstName: nameTextController.text.trim(),
+    //       lastName: lNameTextController.text.trim());
+    // } else if (imagePath.isEmpty) {
+    //   log("Cannot generate default avatar due to empty name fields.");
+    // }
 
     Map<String, dynamic> body = {
       'country_code': countryCode,
@@ -292,37 +319,70 @@ class AuthVM extends BaseViewModel {
       'name': nameTextController.text.trim(),
       'type': '1',
       'last_name': lNameTextController.text.trim(),
-      'email': emailTextController.text.trim(),
       'address': locationTextController.text.trim(),
       'latitude': latitude,
       'longitude': longitude,
       'communication_choice': communication,
-      'profile_pic': await BaseClient.getMultipartImage(path: imagePath)
+      'bio': bioTextController.text.trim(),
+      'gender': selectedGender,
     };
+
+    if (imagePath.isNotEmpty) {
+      body['profile_pic'] = await BaseClient.getMultipartImage(path: imagePath);
+    }
 
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.signupUrl(),
         requestType: RequestType.post,
+        bodyType: imagePath.isNotEmpty ? BodyType.formData : BodyType.json,
         body: body);
 
-    var response = await BaseClient.handleRequest(apiRequest);
+    try {
+      var response = await BaseClient.handleRequest(apiRequest);
 
-    MapResponse<UserModel> model =
-        MapResponse.fromJson(response, (json) => UserModel.fromJson(json));
-    DialogHelper.hideLoading();
-    DialogHelper.showToast(message: model.message);
+      Map<String, dynamic> responseData;
+      if (response is Response) {
+        responseData = response.data;
+      } else {
+        responseData = response;
+      }
 
-    DbHelper.saveUserModel(model.body);
-    DbHelper.saveToken(model.body?.token);
-    DbHelper.saveNotificationStatus("${model.body?.notificationStatus}");
-    DbHelper.saveIsGuest(false);
-    DbHelper.saveIsLoggedIn(true);
-    if (context.mounted) {
-      context.go(Routes.main);
-    } else {
-      AppPages.rootNavigatorKey.currentContext?.go(Routes.main);
+      DialogHelper.hideLoading();
+
+      if (responseData['success'] == true) {
+        UserModel? userModel;
+        if (responseData['body'] != null) {
+          userModel = UserModel.fromJson(responseData['body']);
+        }
+
+        // Registration successful
+        DialogHelper.showToast(
+            message: responseData['message'] ?? "Registration successful");
+
+        if (userModel != null) {
+          DbHelper.saveUserModel(userModel);
+          DbHelper.saveToken(userModel.token);
+          DbHelper.saveNotificationStatus("${userModel.notificationStatus}");
+        }
+        DbHelper.saveIsGuest(false);
+        DbHelper.saveIsLoggedIn(true);
+        SocketHelper().connectUser();
+
+        if (context.mounted) {
+          context.go(Routes.main);
+        } else {
+          AppPages.rootNavigatorKey.currentContext?.go(Routes.main);
+        }
+        resetTextFields();
+      } else {
+        DialogHelper.showToast(
+            message: responseData['message'] ?? "Registration failed");
+      }
+    } catch (e) {
+      DialogHelper.hideLoading();
+      DialogHelper.showToast(message: "Registration failed. Please try again.");
+      log("Complete Profile API error: $e");
     }
-    resetTextFields();
   }
 
   set communicationChoice(String value) {
@@ -336,26 +396,31 @@ class AuthVM extends BaseViewModel {
       {required String firstName, required String lastName}) async {
     final recorder = PictureRecorder();
     final canvas = Canvas(recorder);
-    final paint = Paint()..color = Colors.blue;
+    final paint = Paint()..color = Colors.blueGrey;
     const radius = 70.0;
 
-    // Draw the circle
     canvas.drawCircle(
       const Offset(radius, radius),
       radius,
       paint,
     );
 
-    // Draw the initials (first letter of first and last name)
     const textStyle = TextStyle(
       color: Colors.white,
       fontSize: 40,
       fontWeight: FontWeight.bold,
     );
 
-    // Combine first and last name initials
-    final initials =
-        '${firstName[0].toUpperCase()}${lastName[0].toUpperCase()}';
+    String initials = "";
+    if (firstName.isNotEmpty && lastName.isNotEmpty) {
+      initials = '${firstName[0].toUpperCase()}${lastName[0].toUpperCase()}';
+    } else if (firstName.isNotEmpty) {
+      initials = firstName[0].toUpperCase();
+    } else if (lastName.isNotEmpty) {
+      initials = lastName[0].toUpperCase();
+    } else {
+      initials = "U";
+    }
 
     final textSpan = TextSpan(
       text: initials,
@@ -373,16 +438,16 @@ class AuthVM extends BaseViewModel {
       Offset(radius - textPainter.width / 2, radius - textPainter.height / 2),
     );
 
-    // Convert to image
     final picture = recorder.endRecording();
     final img = await picture.toImage(140, 140);
 
     final byteData = await img.toByteData(format: ImageByteFormat.png);
-    final buffer = byteData!.buffer.asUint8List();
+    if (byteData == null) return '';
+    final buffer = byteData.buffer.asUint8List();
 
-    // Save the image to a file
     final tempDir = await getTemporaryDirectory();
-    final filePath = '${tempDir.path}/default_avatar.png';
+    final filePath =
+        '${tempDir.path}/default_avatar_${DateTime.now().millisecondsSinceEpoch}.png';
     final file = await File(filePath).writeAsBytes(buffer);
 
     return file.path;
@@ -392,15 +457,21 @@ class AuthVM extends BaseViewModel {
     imagePath = '';
     nameTextController.clear();
     lNameTextController.clear();
-    emailTextController.clear();
-    agreedToTerms = false;
+    bioTextController.clear();
+    selectedGender = null;
+    _agreedToTerms = false;
+    notifyListeners();
   }
 
   void resendOTP() {
     DialogHelper.showLoading();
-    Future.delayed(Duration(seconds: 2), () {
+    loginApi(resend: true).then((_) {
       DialogHelper.hideLoading();
-      //DialogHelper.showToast(message: "Your verification code is 1111");
+    }).catchError((e) {
+      DialogHelper.hideLoading();
+      DialogHelper.showToast(
+          message: "Failed to resend OTP. Please try again.");
+      log("Resend OTP error: $e");
     });
   }
 }

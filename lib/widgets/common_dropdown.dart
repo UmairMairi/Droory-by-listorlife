@@ -68,7 +68,11 @@ class CommonDropdown<T> extends StatelessWidget {
               closedBorderRadius: BorderRadius.circular(8.0),
               closedErrorBorder: Border.all(color: Colors.red),
               closedErrorBorderRadius: BorderRadius.circular(8.0),
-              hintStyle: hintStyle ?? TextStyle(color:(hint ?? "").isNotEmpty?Colors.black: Colors.grey.shade500),
+              hintStyle: hintStyle ??
+                  TextStyle(
+                      color: (hint ?? "").isNotEmpty
+                          ? Colors.black
+                          : Colors.grey.shade500),
               expandedBorder:
                   Border.all(color: borderSideColor ?? Colors.grey.shade300),
               expandedBorderRadius: BorderRadius.circular(8.0),

@@ -36,8 +36,8 @@ class ProductDetailModel {
   num? year;
   String? fuel;
   String? material;
-  num? ram;
-  num? storage;
+  String? ram;
+  String? storage;
   int? sizeId;
   String? milleage;
   String? screenSize;
@@ -48,6 +48,8 @@ class ProductDetailModel {
   String? state;
   String? city;
   String? nearby;
+  String? districtName; // New field for English district name
+  String? neighborhoodName;
   String? latitude;
   String? longitude;
   num? status;
@@ -75,8 +77,8 @@ class ProductDetailModel {
 
   // New fields for property
   String? propertyFor;
-  int? bedrooms;
-  int? bathrooms;
+  String? bedrooms;
+  String? bathrooms;
   String? furnishedType;
   String? ownership;
   String? paymentType;
@@ -140,6 +142,8 @@ class ProductDetailModel {
     this.state,
     this.city,
     this.nearby,
+    this.districtName,
+    this.neighborhoodName,
     this.latitude,
     this.longitude,
     this.status,
@@ -232,6 +236,9 @@ class ProductDetailModel {
     state = json['state'];
     city = json['city'];
     nearby = json['nearby'];
+    districtName =
+        json['district_name']; // Assuming backend sends 'district_name'
+    neighborhoodName = json['neighborhood_name'];
     latitude = json['latitude'];
     longitude = json['longitude'];
     status = json['status'];
@@ -350,6 +357,9 @@ class ProductDetailModel {
     data['state'] = state;
     data['city'] = city;
     data['nearby'] = nearby;
+    data['district_name'] =
+        districtName; // Will be sent to backend if available
+    data['neighborhood_name'] = neighborhoodName;
     data['latitude'] = latitude;
     data['longitude'] = longitude;
     data['status'] = status;

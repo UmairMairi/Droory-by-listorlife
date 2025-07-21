@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/widgets/common_dropdown.dart';
-
+import "package:list_and_life/widgets/sell_form_location_screen.dart";
 import '../../../../../base/helpers/dialog_helper.dart';
 import '../../../../../base/helpers/string_helper.dart';
 import '../../../../../models/category_model.dart';
 import '../../../../../models/product_detail_model.dart';
 import '../../../../../view_model/sell_forms_vm.dart';
 import '../../../../../widgets/amenities_widget.dart';
-import '../../../../../widgets/app_map_widget.dart';
 import '../../../../../widgets/app_text_field.dart';
 import '../../../../../widgets/multi_select_category.dart';
+import '../../../../../widgets/phone_form_verification_widget.dart';
 
-class ApartmentForm extends StatelessWidget {
+class ApartmentForm extends StatefulWidget {
   final String? type;
   final CategoryModel? category;
   final CategoryModel? subCategory;
@@ -21,1176 +21,1374 @@ class ApartmentForm extends StatelessWidget {
   final List<CategoryModel>? brands;
   final ProductDetailModel? item;
   final SellFormsVM viewModel;
-  const ApartmentForm(
-      {super.key,
-      required this.viewModel,
-      this.type,
-      this.category,
-      this.subCategory,
-      this.subSubCategory,
-      this.brands,
-      this.item});
+
+  const ApartmentForm({
+    super.key,
+    required this.viewModel,
+    this.type,
+    this.category,
+    this.subCategory,
+    this.subSubCategory,
+    this.brands,
+    this.item,
+  });
+
+  @override
+  State<ApartmentForm> createState() => _ApartmentFormState();
+}
+
+class _ApartmentFormState extends State<ApartmentForm> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool _isMounted = false;
+  bool _hasAttemptedSubmit = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _isMounted = true;
+    widget.viewModel.addListener(_onViewModelUpdate);
+    if (widget.item != null && !widget.viewModel.hasInitializedForEdit) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        widget.viewModel.updateTextFieldsItems(item: widget.item);
+        widget.viewModel.hasInitializedForEdit = true;
+
+        // Add this debug line
+        print("DEBUG ApartmentForm: After updateTextFieldsItems");
+        print(
+            "DEBUG: adTitle = '${widget.viewModel.adTitleTextController.text}'");
+        print(
+            "DEBUG: propertyFor = '${widget.viewModel.propertyForTextController.text}'");
+        print(
+            "DEBUG: currentPropertyType = '${widget.viewModel.currentPropertyType}'");
+      });
+    }
+  }
+
+  void _onViewModelUpdate() {
+    if (_isMounted) {
+      setState(() {});
+    }
+  }
+
+  @override
+  void dispose() {
+    _isMounted = false;
+    widget.viewModel.removeListener(_onViewModelUpdate);
+    super.dispose();
+  }
+
+  // Helper method to get appropriate text size based on language
+  double _getTextSize(BuildContext context) {
+    // Check multiple ways to detect Arabic
+    final locale = Localizations.localeOf(context);
+    final direction = Directionality.of(context);
+
+    // Check if locale is Arabic or direction is RTL
+    if (locale.languageCode == 'ar' || direction == TextDirection.rtl) {
+      return 14.0; // Bigger for Arabic
+    }
+    return 11.0; // Smaller for English
+  }
+
+  void _performSubmit(BuildContext context) {
+    setState(() {
+      _hasAttemptedSubmit = true;
+    });
+
+    bool isValid = true;
+
+    // Check phone verification first
+    if (!widget.viewModel.isPhoneVerified ||
+        widget.viewModel.currentPhone == null ||
+        widget.viewModel.currentPhone!.isEmpty) {
+      DialogHelper.showToast(message: StringHelper.phoneRequired);
+      isValid = false;
+    }
+
+    // Validate FormFields using the FormKey
+    if (!_formKey.currentState!.validate()) {
+      isValid = false;
+    }
+
+    // Imperative checks
+    if (widget.viewModel.mainImagePath.isEmpty) {
+      DialogHelper.showToast(message: StringHelper.pleaseUploadMainImage);
+      isValid = false;
+    }
+    if (widget.viewModel.imagesList.isEmpty) {
+      DialogHelper.showToast(
+          message: StringHelper.pleaseUploadAddAtLeastOneImage);
+      isValid = false;
+    }
+
+    if (widget.viewModel.propertyForTextController.text.isEmpty) {
+      DialogHelper.showToast(message: StringHelper.plsSelectPropertyType);
+      isValid = false;
+    }
+
+    if (widget.viewModel.levelTextController.text.isEmpty) {
+      DialogHelper.showToast(message: StringHelper.plsSelectLevel);
+      isValid = false;
+    }
+
+    // Add payment type validation for non-rent properties
+    if (widget.viewModel.currentPropertyType.toLowerCase() != "rent" &&
+        widget.viewModel.paymentTypeTextController.text.isEmpty) {
+      DialogHelper.showToast(message: StringHelper.plsSelectPaymentType);
+      isValid = false;
+    }
+
+    if (widget.viewModel.currentPropertyType.toLowerCase() == "rent" &&
+        widget.viewModel.rentalTermsTextController.text.isEmpty) {
+      DialogHelper.showToast(message: StringHelper.plsSelectRentalTerm);
+      isValid = false;
+    }
+
+    // Deposit amount vs rent amount (if rent and deposit is entered)
+    if (widget.viewModel.currentPropertyType.toLowerCase() == "rent" &&
+        widget.viewModel.depositTextController.text.isNotEmpty) {
+      final depositAmountNum =
+          num.tryParse(widget.viewModel.depositTextController.text);
+      final priceAmountNum =
+          num.tryParse(widget.viewModel.priceTextController.text) ?? 0;
+      if (depositAmountNum != null &&
+          priceAmountNum > 0 &&
+          depositAmountNum > priceAmountNum) {
+        DialogHelper.showToast(message: StringHelper.depositExceedPrice);
+        isValid = false;
+      }
+    }
+
+    if (!isValid) {
+      return;
+    }
+
+    DialogHelper.showLoading();
+    if (widget.viewModel.isEditProduct) {
+      widget.viewModel.editProduct(
+        productId: widget.item?.id,
+        category: widget.category,
+        subCategory: widget.subCategory,
+        subSubCategory: widget.subSubCategory,
+        brand: widget.viewModel.selectedBrand,
+        models: widget.viewModel.selectedModel,
+        onSuccess: () {
+          if (mounted) {
+            Navigator.pop(context, true);
+          }
+        },
+      );
+    } else {
+      widget.viewModel.addProduct(
+        category: widget.category,
+        subCategory: widget.subCategory,
+        subSubCategory: widget.subSubCategory,
+        brand: widget.viewModel.selectedBrand,
+        models: widget.viewModel.selectedModel,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Visibility(
-          visible: false,
-          child: AppTextField(
-            title: StringHelper.propertyType,
-            hint: StringHelper.select,
-            controller: viewModel.propertyForTextController,
-            readOnly: true,
-            suffix: PopupMenuButton<String>(
-              clipBehavior: Clip.hardEdge,
-              icon: const Icon(
-                Icons.arrow_drop_down,
-                color: Colors.black,
+    const double fieldSpacing = 16;
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Visibility(
+            visible: false,
+            child: AppTextField(
+              title: StringHelper.propertyType,
+              hint: StringHelper.select,
+              controller: widget.viewModel.propertyForTextController,
+              readOnly: true,
+              suffix: PopupMenuButton<String>(
+                clipBehavior: Clip.hardEdge,
+                icon: const Icon(
+                  Icons.arrow_drop_down,
+                  color: Colors.black,
+                ),
+                onSelected: (String value) {
+                  widget.viewModel.currentPropertyType = value;
+                  widget.viewModel.propertyForTextController.text = value;
+                },
+                itemBuilder: (BuildContext bContext) {
+                  return ['Sell', 'Rent'].map((option) {
+                    return PopupMenuItem(
+                      value: option,
+                      child: Text(option),
+                    );
+                  }).toList();
+                },
               ),
-              onSelected: (String value) {
-                viewModel.currentPropertyType = value;
-                viewModel.propertyForTextController.text = value;
-              },
-              itemBuilder: (BuildContext context) {
-                return ['Sell', 'Rent'].map((option) {
-                  return PopupMenuItem(
-                    value: option,
-                    child: Text(option),
-                  );
-                }).toList();
-              },
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+              inputFormatters: [
+                FilteringTextInputFormatter.deny(
+                  RegExp(widget.viewModel.regexToRemoveEmoji),
+                ),
+              ],
+              keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.done,
+              fillColor: Colors.white,
+              elevation: 6,
             ),
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-            inputFormatters: [
-              FilteringTextInputFormatter.deny(
-                RegExp(viewModel.regexToRemoveEmoji),
-              ),
-            ],
-            keyboardType: TextInputType.text,
-            textInputAction: TextInputAction.done,
-            fillColor: Colors.white,
-            elevation: 6,
           ),
-        ),
-        AppTextField(
-          title: StringHelper.adTitle,
-          hint: StringHelper.enter,
-          controller: viewModel.adTitleTextController,
-          maxLines: 4,
-          minLines: 1,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-          inputFormatters: [
-            FilteringTextInputFormatter.deny(
-              RegExp(viewModel.regexToRemoveEmoji),
-            ),
-            LengthLimitingTextInputFormatter(65),
-          ],
-          keyboardType: TextInputType.text,
-          textInputAction: TextInputAction.done,
-          fillColor: Colors.white,
-          elevation: 6,
-        ),
-        CommonDropdown(
-          title: StringHelper.type,
-          hint: viewModel.propertyForTypeTextController.text,
-          //controller: viewModel.propertyForTypeTextController,
-          options: [
-            StringHelper.apartment,
-            StringHelper.duplex,
-            StringHelper.penthouse,
-            StringHelper.studio,
-            StringHelper.hotelApartment,
-            StringHelper.roof
-          ],
-          onSelected: (String? value) {
-            viewModel.propertyForTypeTextController.text = value ?? "";
-          },
-          // suffix: PopupMenuButton<String>(
-          //   clipBehavior: Clip.hardEdge,
-          //   icon: const Icon(
-          //     Icons.arrow_drop_down,
-          //     color: Colors.black,
-          //   ),
-          //   onSelected: (String value) {
-          //     viewModel.propertyForTypeTextController.text = value;
-          //   },
-          //   itemBuilder: (BuildContext context) {
-          //     return ["Apartment", "Duplex", "Penthouse", "Studio", "Hotel" "Apartment", "Roof"].map((option) {
-          //       return PopupMenuItem(
-          //         value: option,
-          //         child: Text(option),
-          //       );
-          //     }).toList();
-          //   },
-          // ),
-          // contentPadding:
-          // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-          // inputFormatters: [
-          //   FilteringTextInputFormatter.deny(
-          //     RegExp(viewModel.regexToRemoveEmoji),
-          //   ),
-          // ],
-          // keyboardType: TextInputType.text,
-          // textInputAction: TextInputAction.done,
-          // fillColor: Colors.white,
-          // elevation: 6,
-        ),
-        Visibility(
-          visible: viewModel.currentPropertyType.toLowerCase() != "rent",
-          child: CommonDropdown(
-            title: StringHelper.owner,
-            hint: viewModel.ownershipStatusTextController.text,
-            //controller: viewModel.ownershipStatusTextController,
-            //readOnly: true,
-            onSelected: (String? value) {
-              viewModel.ownershipStatusTextController.text = value ?? "";
-            },
-            options: [StringHelper.primary, StringHelper.resell],
-            // suffix: PopupMenuButton<String>(
-            //   clipBehavior: Clip.hardEdge,
-            //   icon: const Icon(
-            //     Icons.arrow_drop_down,
-            //     color: Colors.black,
-            //   ),
-            //   onSelected: (String value) {
-            //     viewModel.ownershipStatusTextController.text = value;
-            //   },
-            //   itemBuilder: (BuildContext context) {
-            //     return ['Primary', 'Resell'].map((option) {
-            //       return PopupMenuItem(
-            //         value: option,
-            //         child: Text(option),
-            //       );
-            //     }).toList();
-            //   },
-            // ),
-            // contentPadding:
-            // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-            // inputFormatters: [
-            //   FilteringTextInputFormatter.deny(
-            //     RegExp(viewModel.regexToRemoveEmoji),
-            //   ),
-            // ],
-            // keyboardType: TextInputType.text,
-            // textInputAction: TextInputAction.done,
-            // fillColor: Colors.white,
-            // elevation: 6,
-          ),
-        ),
-        AppTextField(
-          title: StringHelper.area,
-          hint: StringHelper.enter,
-          controller: viewModel.areaSizeTextController,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-          textInputAction: TextInputAction.done,
-          fillColor: Colors.white,
-          elevation: 6,
-          maxLength: 10,
-          keyboardType: TextInputType.number,
-          inputFormatters: [
-            FilteringTextInputFormatter.deny(
-                RegExp(viewModel.regexToRemoveEmoji)),
-            FilteringTextInputFormatter.digitsOnly,
-          ],
-          validator: (value) {
-            if (value == null || value.trim().isEmpty) {
-              return '* This field is required';
-            }
-
-            final amount = num.tryParse(value);
-
-            if (amount == null) {
-              return '* ${StringHelper.enterValidNumber}';
-            }
-
-            if (amount < 20) {
-              return '* ${StringHelper.minValidAreaSize} 20';
-            }
-
-            if (amount > 1000000) {
-              return '* ${StringHelper.maxValidAreaSize} 1,000,000';
-            }
-
-            return null;
-          },
-        ),
-        Visibility(
-          visible: viewModel.currentPropertyType.toLowerCase() == "rent",
-          child: AppTextField(
-            title: StringHelper.insurance,
+          AppTextField(
+            title: "${StringHelper.adTitle} *",
             hint: StringHelper.enter,
-            controller: viewModel.insuranceTextController,
+            controller: widget.viewModel.adTitleTextController,
             maxLines: 4,
             minLines: 1,
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
             inputFormatters: [
               FilteringTextInputFormatter.deny(
-                RegExp(viewModel.regexToRemoveEmoji),
+                RegExp(widget.viewModel.regexToRemoveEmoji),
               ),
+              LengthLimitingTextInputFormatter(65),
             ],
             keyboardType: TextInputType.text,
             textInputAction: TextInputAction.done,
             fillColor: Colors.white,
             elevation: 6,
             validator: (value) {
-              if (value != null && value.trim().isNotEmpty) {
-                final amount = num.tryParse(value);
-                if (amount == null) {
-                  return '* Enter a valid number';
-                }
-                if (amount > 300000) {
-                  return '* Insurance cannot exceed 300,000';
-                }
+              if (value == null || value.trim().isEmpty) {
+                return StringHelper.adTitleIsRequired;
+              }
+              if (value.trim().length < 10) {
+                return StringHelper.adLength;
               }
               return null;
             },
           ),
-        ),
-        CommonDropdown(
-          title: StringHelper.noOfBedrooms,
-          hint: viewModel.noOfBedroomsTextController.text,
-          //controller: viewModel.noOfBedroomsTextController,
-          //readOnly: true,
-          onSelected: (String? value) {
-            viewModel.noOfBedroomsTextController.text = value ?? "";
-          },
-          options: ["Studio", "1", "2", "3", "4", "5", "6+"],
-          // suffix: PopupMenuButton<String>(
-          //   clipBehavior: Clip.hardEdge,
-          //   icon: const Icon(
-          //     Icons.arrow_drop_down,
-          //     color: Colors.black,
-          //   ),
-          //   onSelected: (String value) {
-          //     viewModel.noOfBedroomsTextController.text = value;
-          //   },
-          //
-          //   itemBuilder: (BuildContext context) {
-          //     return ["Studio", "1", "2", "3", "4", "5", "6+"].map((option) {
-          //       return PopupMenuItem(
-          //         value: option,
-          //         child: Text(option),
-          //       );
-          //     }).toList();
-          //   },
-          // ),
-          // contentPadding:
-          // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-          // inputFormatters: [
-          //   FilteringTextInputFormatter.deny(
-          //     RegExp(viewModel.regexToRemoveEmoji),
-          //   ),
-          // ],
-          // keyboardType: TextInputType.text,
-          // textInputAction: TextInputAction.done,
-          // fillColor: Colors.white,
-          // elevation: 6,
-        ),
-        CommonDropdown(
-          title: StringHelper.bathrooms,
-          //hint: StringHelper.select,
-          hint: viewModel.noOfBathroomsTextController.text,
-          //readOnly: true,
-          onSelected: (String? value) {
-            viewModel.noOfBathroomsTextController.text = value ?? "";
-          },
-          options: ['1', '2', '3', '4', '5', '6', '7', '7+'],
-          // suffix: PopupMenuButton<String>(
-          //   clipBehavior: Clip.hardEdge,
-          //   icon: const Icon(
-          //     Icons.arrow_drop_down,
-          //     color: Colors.black,
-          //   ),
-          //   onSelected: (String value) {
-          //     viewModel.noOfBathroomsTextController.text = value;
-          //   },
-          //   itemBuilder: (BuildContext context) {
-          //     return ['1', '2', '3', '4', '5', '6', '7', '7+']
-          //         .map((option) {
-          //       return PopupMenuItem(
-          //         value: option,
-          //         child: Text('$option Bathrooms'),
-          //       );
-          //     }).toList();
-          //   },
-          // ),
-          // contentPadding:
-          // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-          // inputFormatters: [
-          //   FilteringTextInputFormatter.deny(
-          //     RegExp(viewModel.regexToRemoveEmoji),
-          //   ),
-          // ],
-          // keyboardType: TextInputType.text,
-          // textInputAction: TextInputAction.done,
-          // fillColor: Colors.white,
-          // elevation: 6,
-        ),
-        CommonDropdown(
-          title: StringHelper.furnishing,
-          //hint: StringHelper.select,
-          hint: viewModel.furnishingStatusTextController.text,
-          //readOnly: true,
-          onSelected: (String? value) {
-            viewModel.furnishingStatusTextController.text = value ?? "";
-          },
-          options: [
-            StringHelper.furnished,
-            StringHelper.unfurnished,
-            StringHelper.semiFurnished
-          ],
-          // suffix: PopupMenuButton<String>(
-          //   clipBehavior: Clip.hardEdge,
-          //   icon: const Icon(
-          //     Icons.arrow_drop_down,
-          //     color: Colors.black,
-          //   ),
-          //   onSelected: (String value) {
-          //     viewModel.furnishingStatusTextController.text = value;
-          //   },
-          //   itemBuilder: (BuildContext context) {
-          //     return ['Furnished', 'Unfurnished', 'Semi Furnished']
-          //         .map((option) {
-          //       return PopupMenuItem(
-          //         value: option,
-          //         child: Text(option),
-          //       );
-          //     }).toList();
-          //   },
-          // ),
-          // contentPadding:
-          // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-          // inputFormatters: [
-          //   FilteringTextInputFormatter.deny(
-          //     RegExp(viewModel.regexToRemoveEmoji),
-          //   ),
-          // ],
-          // keyboardType: TextInputType.text,
-          // textInputAction: TextInputAction.done,
-          // fillColor: Colors.white,
-          // elevation: 6,
-        ),
-        CommonDropdown(
-          title: StringHelper.level,
-          //hint: StringHelper.select,
-          hint: viewModel.levelTextController.text,
-          //readOnly: true,
-          onSelected: (String? value) {
-            viewModel.levelTextController.text = value ?? "";
-          },
-          options: [
-            "Ground",
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10+",
-            "Last Floor"
-          ],
-          // suffix: PopupMenuButton<String>(
-          //   clipBehavior: Clip.hardEdge,
-          //   icon: const Icon(
-          //     Icons.arrow_drop_down,
-          //     color: Colors.black,
-          //   ),
-          //
-          //   onSelected: (String value) {
-          //     viewModel.levelTextController.text = value;
-          //   },
-          //   itemBuilder: (BuildContext context) {
-          //     return ["Ground", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10+", "Last Floor"]
-          //         .map((option) {
-          //       return PopupMenuItem(
-          //         value: option,
-          //         child: Text(option),
-          //       );
-          //     }).toList();
-          //   },
-          // ),
-          // contentPadding:
-          // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-          // inputFormatters: [
-          //   FilteringTextInputFormatter.deny(
-          //     RegExp(viewModel.regexToRemoveEmoji),
-          //   ),
-          // ],
-          // keyboardType: TextInputType.text,
-          // textInputAction: TextInputAction.done,
-          // fillColor: Colors.white,
-          // elevation: 6,
-        ),
-        Visibility(
-          visible: viewModel.currentPropertyType.toLowerCase() != "rent",
-          child: CommonDropdown(
-            title: StringHelper.buildingAge,
-            //hint: StringHelper.select,
-            hint: viewModel.propertyAgeTextController.text,
-            //readOnly: true,
-            onSelected: (String? value) {
-              viewModel.propertyAgeTextController.text = value ?? "";
-            },
-            options: [
-              StringHelper.underConstruction,
-              "0-11 months",
-              "1-4 years",
-              "5-9 years",
-              "10-19 years",
-              "20+ years"
-            ],
-            // suffix: PopupMenuButton<String>(
-            //   clipBehavior: Clip.hardEdge,
-            //   icon: const Icon(
-            //     Icons.arrow_drop_down,
-            //     color: Colors.black,
-            //   ),
-            //   onSelected: (String value) {
-            //     viewModel.propertyAgeTextController.text = value;
-            //   },
-            //   itemBuilder: (BuildContext context) {
-            //     return ["Under Construction", "0-11 months", "1-4 years", "5-9 years", "10-19 years", "20+ years"]
-            //         .map((option) {
-            //       return PopupMenuItem(
-            //         value: option,
-            //         child: Text(option),
-            //       );
-            //     }).toList();
-            //   },
-            // ),
-            // contentPadding:
-            // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-            // inputFormatters: [
-            //   FilteringTextInputFormatter.deny(
-            //     RegExp(viewModel.regexToRemoveEmoji),
-            //   ),
-            // ],
-            // keyboardType: TextInputType.text,
-            // textInputAction: TextInputAction.done,
-            // fill juzColor: Colors.white,
-            // elevation: 6,
-          ),
-        ),
-        Visibility(
-          visible: viewModel.currentPropertyType.toLowerCase() != "rent",
-          child: CommonDropdown(
-            title: StringHelper.completionStatus,
-            //hint: StringHelper.select,
-            hint: viewModel.completionStatusTextController.text,
-            onSelected: (String? value) {
-              viewModel.completionStatusTextController.text = value ?? "";
-            },
-            options: [StringHelper.ready, StringHelper.offPlan],
-            //readOnly: true,
-            // suffix: PopupMenuButton<String>(
-            //   clipBehavior: Clip.hardEdge,
-            //   icon: const Icon(
-            //     Icons.arrow_drop_down,
-            //     color: Colors.black,
-            //   ),
-            //   onSelected: (String value) {
-            //     viewModel.completionStatusTextController.text = value;
-            //   },
-            //   itemBuilder: (BuildContext context) {
-            //     return ['Ready', 'Off Plan'].map((option) {
-            //       return PopupMenuItem(
-            //         value: option,
-            //         child: Text(option),
-            //       );
-            //     }).toList();
-            //   },
-            // ),
-            // contentPadding:
-            // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-            // inputFormatters: [
-            //   FilteringTextInputFormatter.deny(
-            //     RegExp(viewModel.regexToRemoveEmoji),
-            //   ),
-            // ],
-            // keyboardType: TextInputType.text,
-            // textInputAction: TextInputAction.done,
-            // fillColor: Colors.white,
-            // elevation: 6,
-          ),
-        ),
-        Visibility(
-          visible: viewModel.currentPropertyType.toLowerCase() != "rent",
-          child: CommonDropdown(
-            title: StringHelper.paymentType,
-            //hint: StringHelper.select,
-            hint: viewModel.paymentTypeTextController.text,
-            onSelected: (String? value) {
-              viewModel.paymentTypeTextController.text = value ?? "";
-            },
-            options: [
-              StringHelper.installment,
-              StringHelper.cashOrInstallment,
-              StringHelper.cash
-            ],
-            //readOnly: true,
-            // suffix: PopupMenuButton<String>(
-            //   clipBehavior: Clip.hardEdge,
-            //   icon: const Icon(
-            //     Icons.arrow_drop_down,
-            //     color: Colors.black,
-            //   ),
-            //   onSelected: (String value) {
-            //     viewModel.paymentTypeTextController.text = value;
-            //   },
-            //   itemBuilder: (BuildContext context) {
-            //     return ['Installment', 'Cash or Installment', 'cash']
-            //         .map((option) {
-            //       return PopupMenuItem(
-            //         value: option,
-            //         child: Text(option),
-            //       );
-            //     }).toList();
-            //   },
-            // ),
-            // contentPadding:
-            // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-            // inputFormatters: [
-            //   FilteringTextInputFormatter.deny(
-            //     RegExp(viewModel.regexToRemoveEmoji),
-            //   ),
-            // ],
-            // keyboardType: TextInputType.text,
-            // textInputAction: TextInputAction.done,
-            // fillColor: Colors.white,
-            // elevation: 6,
-          ),
-        ),
-        Visibility(
-          visible: viewModel.currentPropertyType.toLowerCase() != "rent",
-          child: CommonDropdown(
-            title: StringHelper.listedBy,
-            //hint: StringHelper.select,
-            hint: viewModel.listedByTextController.text,
-            //readOnly: true,
-            onSelected: (String? value) {
-              viewModel.listedByTextController.text = value ?? "";
-            },
-            options: [StringHelper.agent, StringHelper.landlord],
-            // suffix: PopupMenuButton<String>(
-            //   clipBehavior: Clip.hardEdge,
-            //   icon: const Icon(
-            //     Icons.arrow_drop_down,
-            //     color: Colors.black,
-            //   ),
-            //   onSelected: (String value) {
-            //     viewModel.listedByTextController.text = value;
-            //   },
-            //   itemBuilder: (BuildContext context) {
-            //     return ['Agent', 'Landlord']
-            //         .map((option) {
-            //       return PopupMenuItem(
-            //         value: option,
-            //         child: Text(option),
-            //       );
-            //     }).toList();
-            //   },
-            // ),
-            // contentPadding:
-            // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-            // inputFormatters: [
-            //   FilteringTextInputFormatter.deny(
-            //     RegExp(viewModel.regexToRemoveEmoji),
-            //   ),
-            // ],
-            // keyboardType: TextInputType.text,
-            // textInputAction: TextInputAction.done,
-            // fillColor: Colors.white,
-            // elevation: 6,
-          ),
-        ),
-        Visibility(
-          visible: viewModel.currentPropertyType.toLowerCase() == "rent",
-          child: CommonDropdown(
-            title: StringHelper.rentalTerm,
-            //hint: StringHelper.select,
-            hint: viewModel.rentalTermsTextController.text,
-            onSelected: (String? value) {
-              viewModel.rentalTermsTextController.text = value ?? "";
-            },
-            options: [
-              StringHelper.daily,
-              StringHelper.weekly,
-              StringHelper.monthly,
-              StringHelper.yearly
-            ],
-            //readOnly: true,
-            // suffix: PopupMenuButton<String>(
-            //   clipBehavior: Clip.hardEdge,
-            //   icon: const Icon(
-            //     Icons.arrow_drop_down,
-            //     color: Colors.black,
-            //   ),
-            //   onSelected: (String value) {
-            //     viewModel.rentalTermsTextController.text = value;
-            //   },
-            //   itemBuilder: (BuildContext context) {
-            //     return ['Daily', 'Weekly', 'Monthly', 'Yearly']
-            //         .map((option) {
-            //       return PopupMenuItem(
-            //         value: option,
-            //         child: Text(option),
-            //       );
-            //     }).toList();
-            //   },
-            // ),
-            // contentPadding:
-            // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
-            // inputFormatters: [
-            //   FilteringTextInputFormatter.deny(
-            //     RegExp(viewModel.regexToRemoveEmoji),
-            //   ),
-            // ],
-            // keyboardType: TextInputType.text,
-            // textInputAction: TextInputAction.done,
-            // fillColor: Colors.white,
-            // elevation: 6,
-          ),
-        ),
-        AppTextField(
-          title: StringHelper.location,
-          controller: viewModel.addressTextController,
-          hint: StringHelper.select,
-          readOnly: true,
-          onTap: () async {
-            Map<String, dynamic>? value = await Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const AppMapWidget()));
-            if (value != null && value.isNotEmpty) {
-              viewModel.state = value['state'];
-              viewModel.city = value['city'];
-              viewModel.country = value['country'];
-              String address = "";
-
-              if ("${value['location'] ?? ""}".isNotEmpty) {
-                address = "${value['location'] ?? ""}";
-              }
-              if ("${value['city'] ?? ""}".isNotEmpty) {
-                address += ", ${value['city'] ?? ""}";
-              }
-              if ("${value['state'] ?? ""}".isNotEmpty) {
-                address += ", ${value['state'] ?? ""}";
-              }
-
-              viewModel.addressTextController.text = address;
-            }
-          },
-          suffix: Icon(Icons.location_on),
-          inputFormatters: [
-            FilteringTextInputFormatter.deny(
-                RegExp(viewModel.regexToRemoveEmoji)),
-          ],
-          maxLines: 2,
-          minLines: 1,
-          keyboardType: TextInputType.text,
-          textInputAction: TextInputAction.done,
-        ),
-        AppTextField(
-          title: StringHelper.priceEgp,
-          controller: viewModel.priceTextController,
-          hint: StringHelper.enterPrice,
-          maxLength: 10,
-          keyboardType: TextInputType.number,
-          inputFormatters: [
-            LengthLimitingTextInputFormatter(10),
-            FilteringTextInputFormatter.deny(
-                RegExp(viewModel.regexToRemoveEmoji)),
-            FilteringTextInputFormatter.digitsOnly,
-          ],
-          focusNode: viewModel.priceText,
-          validator: (value) {
-            if (value == null || value.trim().isEmpty) {
-              return '* ${StringHelper.fieldShouldNotBeEmpty}';
-            }
-
-            final amount = num.tryParse(value);
-
-            if (amount == null) {
-              return '* ${StringHelper.enterValidNumber}';
-            }
-
-            if (amount < 10) {
-              return '* ${StringHelper.minValidPrice} EGP 100';
-            }
-
-            if (viewModel.currentPropertyType.toLowerCase() == "sell") {
-              if (amount > 150000000) {
-                // 150 million EGP for Sell
-                return '* ${StringHelper.maxValidPrice} 150,000,000';
-              }
-            } else if (viewModel.currentPropertyType.toLowerCase() == "rent") {
-              if (amount > 800000) {
-                // 800,000 EGP for Rent
-                return '* ${StringHelper.maxValidPrice} 800,000';
-              }
-            }
-
-            return null;
-          },
-        ),
-        Visibility(
-          visible: viewModel.currentPropertyType.toLowerCase() == "rent",
-          child: Row(
+          const SizedBox(height: fieldSpacing),
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Expanded(
-                flex: 3,
-                child: AppTextField(
-                  title: "${StringHelper.deposit} ",
-                  controller: viewModel.depositTextController,
-                  hint: "Enter deposit amount",
+              Text(
+                "${StringHelper.type} *",
+                style: context.textTheme.titleSmall,
+              ),
+              const SizedBox(height: 12),
+              FormField<String>(
+                initialValue:
+                    widget.viewModel.propertyForTypeTextController.text,
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return StringHelper.plsSelectType;
+                  }
+                  return null;
+                },
+                builder: (FormFieldState<String> field) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            _buildPropertyTypeOption(context,
+                                StringHelper.apartment, Icons.apartment, field),
+                            _buildPropertyTypeOption(context,
+                                StringHelper.duplex, Icons.home_work, field),
+                            _buildPropertyTypeOption(
+                                context,
+                                StringHelper.penthouse,
+                                Icons.location_city,
+                                field),
+                            _buildPropertyTypeOption(
+                                context,
+                                StringHelper.hotelApartment,
+                                Icons.hotel,
+                                field),
+                            _buildPropertyTypeOption(context, StringHelper.roof,
+                                Icons.roofing, field),
+                          ],
+                        ),
+                      ),
+                      if (field.hasError)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10.0, top: 5),
+                          child: Text(
+                            field.errorText!,
+                            style: const TextStyle(
+                              color: Color(0xFFD32F2F),
+                              fontSize: 13,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                    ],
+                  );
+                },
+              ),
+            ],
+          ),
+          const SizedBox(height: fieldSpacing),
+          Visibility(
+            visible:
+                widget.viewModel.currentPropertyType.toLowerCase() != "rent",
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                FormField<String>(
+                  initialValue:
+                      widget.viewModel.ownershipStatusTextController.text,
+                  validator: (value) {
+                    if (widget.viewModel.currentPropertyType.toLowerCase() !=
+                            "rent" &&
+                        (value == null || value.trim().isEmpty)) {
+                      return StringHelper.plsSelectOwnership;
+                    }
+                    return null;
+                  },
+                  builder: (FormFieldState<String> field) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ownershipStatusWidget(context, field),
+                        if (field.hasError)
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10.0, top: 5),
+                            child: Text(
+                              field.errorText!,
+                              style: const TextStyle(
+                                color: Color(0xFFD32F2F),
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                      ],
+                    );
+                  },
+                ),
+                const SizedBox(height: fieldSpacing),
+              ],
+            ),
+          ),
+          AppTextField(
+            title: "${StringHelper.area} *",
+            hint: StringHelper.enter,
+            controller: widget.viewModel.areaSizeTextController,
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+            textInputAction: TextInputAction.done,
+            fillColor: Colors.white,
+            elevation: 6,
+            maxLength: 10,
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(
+                  RegExp(widget.viewModel.regexToRemoveEmoji)),
+              FilteringTextInputFormatter.digitsOnly,
+            ],
+            validator: (value) {
+              if (value == null || value.trim().isEmpty) {
+                return '* ${StringHelper.fieldShouldNotBeEmpty}';
+              }
+              final amount = num.tryParse(value);
+              if (amount == null) {
+                return '* ${StringHelper.enterValidNumber}';
+              }
+              if (amount < 20) {
+                return '* ${StringHelper.minValidAreaSize} 20';
+              }
+              if (amount > 1000000) {
+                return '* ${StringHelper.maxValidAreaSize} 1,000,000';
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: fieldSpacing),
+          Visibility(
+            visible:
+                widget.viewModel.currentPropertyType.toLowerCase() == "rent",
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AppTextField(
+                  title: StringHelper.insurance,
+                  hint: StringHelper.enter,
+                  controller: widget.viewModel.insuranceTextController,
                   keyboardType: TextInputType.number,
-                  textInputAction: TextInputAction.done,
-                  maxLength: 10,
                   inputFormatters: [
                     FilteringTextInputFormatter.deny(
-                        RegExp(viewModel.regexToRemoveEmoji)),
+                        RegExp(widget.viewModel.regexToRemoveEmoji)),
                     FilteringTextInputFormatter.digitsOnly,
+                    LengthLimitingTextInputFormatter(10),
                   ],
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+                  textInputAction: TextInputAction.done,
+                  fillColor: Colors.white,
+                  elevation: 6,
                   validator: (value) {
                     if (value != null && value.trim().isNotEmpty) {
                       final amount = num.tryParse(value);
                       if (amount == null) {
-                        return '* Enter a valid number';
+                        return '* ${StringHelper.enterValidNumber}';
                       }
-                      final rentAmount =
-                          num.tryParse(viewModel.priceTextController.text) ?? 0;
-                      if (rentAmount > 0 && amount > rentAmount) {
-                        return '* Deposit cannot exceed monthly rent';
-                      }
-                    }
-                    return null; // Not required
-                  },
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                flex: 1,
-                child: AppTextField(
-                  title: "${StringHelper.deposit} %",
-                  controller: viewModel.percentageController,
-                  hint: "%",
-                  keyboardType: TextInputType.number,
-                  textInputAction: TextInputAction.done,
-                  maxLength: 3,
-                  readOnly: viewModel.priceTextController.text.isEmpty ||
-                      num.tryParse(viewModel.priceTextController.text) == null,
-                  onTap: viewModel.priceTextController.text.isEmpty ||
-                          num.tryParse(viewModel.priceTextController.text) ==
-                              null
-                      ? null
-                      : () {},
-                  inputFormatters: [
-                    FilteringTextInputFormatter.deny(
-                        RegExp(viewModel.regexToRemoveEmoji)),
-                    FilteringTextInputFormatter.digitsOnly,
-                  ],
-                  validator: (value) {
-                    if (value != null && value.trim().isNotEmpty) {
-                      final percentage = num.tryParse(value);
-                      if (percentage == null) {
-                        return '* ${StringHelper.invalidPercentage}';
-                      }
-                      if (percentage <= 0) {
-                        return '* ${StringHelper.mustBeGreaterThanZero}';
-                      }
-                      if (percentage > 100) {
-                        return '* ${StringHelper.maxOneHundredPercent}';
+                      if (amount > 300000) {
+                        return '* ${StringHelper.maxValidPrice} 300,000';
                       }
                     }
                     return null;
                   },
                 ),
+                const SizedBox(height: fieldSpacing),
+              ],
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "${StringHelper.noOfBedrooms} *",
+                style: context.textTheme.titleSmall,
+              ),
+              const SizedBox(height: 8),
+              FormField<String>(
+                initialValue: widget.viewModel.noOfBedroomsTextController.text,
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return StringHelper.plsSelectBedrooms;
+                  }
+                  return null;
+                },
+                builder: (FormFieldState<String> field) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            '1',
+                            '2',
+                            '3',
+                            '4',
+                            '5',
+                            '6',
+                            '7',
+                            '8',
+                            '9',
+                            '10+'
+                          ].map((option) {
+                            bool isSelected = widget.viewModel
+                                    .noOfBedroomsTextController.text ==
+                                option;
+                            return GestureDetector(
+                              onTap: () {
+                                widget.viewModel.noOfBedroomsTextController
+                                    .text = option;
+                                field.didChange(option);
+                                field.validate();
+                                if (_isMounted) {
+                                  widget.viewModel.notifyListeners();
+                                }
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.only(right: 8),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 10),
+                                decoration: BoxDecoration(
+                                  color: isSelected
+                                      ? const Color.fromARGB(255, 59, 130, 246)
+                                      : Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: isSelected
+                                        ? const Color.fromARGB(
+                                            255, 59, 130, 246)
+                                        : Colors.grey.shade300,
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.1),
+                                      spreadRadius: 1,
+                                      blurRadius: 2,
+                                      offset: const Offset(0, 1),
+                                    ),
+                                  ],
+                                ),
+                                child: Text(
+                                  option,
+                                  style: TextStyle(
+                                    color: isSelected
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                      if (field.hasError)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10.0, top: 5),
+                          child: Text(
+                            field.errorText!,
+                            style: const TextStyle(
+                              color: Color(0xFFD32F2F),
+                              fontSize: 13,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                    ],
+                  );
+                },
               ),
             ],
           ),
-        ),
-        AppTextField(
-          title: StringHelper.describeWhatYouAreSelling,
-          controller: viewModel.descriptionTextController,
-          hint: StringHelper.enter,
-          maxLines: 4,
-          inputFormatters: [
-            FilteringTextInputFormatter.deny(
-                RegExp(viewModel.regexToRemoveEmoji)),
+          const SizedBox(height: fieldSpacing),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "${StringHelper.bathrooms} *",
+                style: context.textTheme.titleSmall,
+              ),
+              const SizedBox(height: 8),
+              FormField<String>(
+                initialValue: widget.viewModel.noOfBathroomsTextController.text,
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return StringHelper.plsSelectBathrooms;
+                  }
+                  return null;
+                },
+                builder: (FormFieldState<String> field) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: ['1', '2', '3', '4', '5', '6', '7', '8+']
+                              .map((option) {
+                            bool isSelected = widget.viewModel
+                                    .noOfBathroomsTextController.text ==
+                                option;
+                            return GestureDetector(
+                              onTap: () {
+                                widget.viewModel.noOfBathroomsTextController
+                                    .text = option;
+                                field.didChange(option);
+                                field.validate();
+                                if (_isMounted) {
+                                  widget.viewModel.notifyListeners();
+                                }
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.only(right: 8),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 10),
+                                decoration: BoxDecoration(
+                                  color: isSelected
+                                      ? const Color.fromARGB(255, 59, 130, 246)
+                                      : Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: isSelected
+                                        ? const Color.fromARGB(
+                                            255, 59, 130, 246)
+                                        : Colors.grey.shade300,
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.1),
+                                      spreadRadius: 1,
+                                      blurRadius: 2,
+                                      offset: const Offset(0, 1),
+                                    ),
+                                  ],
+                                ),
+                                child: Text(
+                                  option,
+                                  style: TextStyle(
+                                    color: isSelected
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                      if (field.hasError)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10.0, top: 5),
+                          child: Text(
+                            field.errorText!,
+                            style: const TextStyle(
+                              color: Color(0xFFD32F2F),
+                              fontSize: 13,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                    ],
+                  );
+                },
+              ),
+            ],
+          ),
+          const SizedBox(height: fieldSpacing),
+          furnishedWidget(context),
+          const SizedBox(height: fieldSpacing),
+          CommonDropdown(
+            title: StringHelper.level,
+            hint: widget.viewModel.levelTextController.text.isEmpty
+                ? StringHelper.select
+                : widget.viewModel.levelTextController.text,
+            onSelected: (String? value) {
+              widget.viewModel.levelTextController.text = value ?? "";
+            },
+            options: [
+              StringHelper.ground,
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "10+",
+              StringHelper.lastFloor,
+            ],
+          ),
+          const SizedBox(height: fieldSpacing),
+          Visibility(
+            visible:
+                widget.viewModel.currentPropertyType.toLowerCase() != "rent",
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                FormField<String>(
+                  initialValue:
+                      widget.viewModel.completionStatusTextController.text,
+                  validator: (value) {
+                    if (widget.viewModel.currentPropertyType.toLowerCase() !=
+                            "rent" &&
+                        (value == null || value.trim().isEmpty)) {
+                      return StringHelper.plsSelectCompletionStatus;
+                    }
+                    return null;
+                  },
+                  builder: (FormFieldState<String> field) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        completionWidget(context, field),
+                        if (field.hasError)
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10.0, top: 5),
+                            child: Text(
+                              field.errorText!,
+                              style: const TextStyle(
+                                color: Color(0xFFD32F2F),
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                      ],
+                    );
+                  },
+                ),
+                const SizedBox(height: fieldSpacing),
+              ],
+            ),
+          ),
+          Visibility(
+            visible:
+                widget.viewModel.currentPropertyType.toLowerCase() != "rent",
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                FormField<String>(
+                  initialValue: widget.viewModel.paymentTypeTextController.text,
+                  validator: (value) {
+                    if (widget.viewModel.currentPropertyType.toLowerCase() !=
+                            "rent" &&
+                        (value == null || value.trim().isEmpty)) {
+                      return StringHelper.plsSelectPaymentType;
+                    }
+                    return null;
+                  },
+                  builder: (FormFieldState<String> field) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        paymentOptionWidget(context, field),
+                        if (field.hasError)
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10.0, top: 5),
+                            child: Text(
+                              field.errorText!,
+                              style: const TextStyle(
+                                color: Color(0xFFD32F2F),
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                      ],
+                    );
+                  },
+                ),
+                const SizedBox(height: fieldSpacing),
+              ],
+            ),
+          ),
+          Visibility(
+            visible:
+                widget.viewModel.currentPropertyType.toLowerCase() == "rent",
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                FormField<String>(
+                  initialValue: widget.viewModel.rentalTermsTextController.text,
+                  validator: (value) {
+                    if (widget.viewModel.currentPropertyType.toLowerCase() ==
+                            "rent" &&
+                        (value == null || value.trim().isEmpty)) {
+                      return StringHelper.plsSelectRentalTerm;
+                    }
+                    return null;
+                  },
+                  builder: (FormFieldState<String> field) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CommonDropdown(
+                          title: "${StringHelper.rentalTerm} *",
+                          hint: widget.viewModel.rentalTermsTextController.text
+                                  .isEmpty
+                              ? StringHelper.select
+                              : widget.viewModel.rentalTermsTextController.text,
+                          onSelected: (String? value) {
+                            widget.viewModel.rentalTermsTextController.text =
+                                value ?? "";
+                            field.didChange(value);
+                            field.validate();
+                          },
+                          options: [
+                            StringHelper.daily,
+                            StringHelper.weekly,
+                            StringHelper.monthly,
+                            StringHelper.yearly,
+                          ],
+                        ),
+                        if (field.hasError)
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10.0, top: 5),
+                            child: Text(
+                              field.errorText!,
+                              style: const TextStyle(
+                                color: Color(0xFFD32F2F),
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                      ],
+                    );
+                  },
+                ),
+                const SizedBox(height: fieldSpacing),
+              ],
+            ),
+          ),
+
+          // AMENITIES SECTION - Moved before location, price, description
+          AmenitiesWidget(
+              amenitiesChecked: widget.viewModel.amenities,
+              selectedAmenities: (List<int?> selectedIds) {
+                widget.viewModel.amenities = selectedIds;
+              }),
+          const SizedBox(height: fieldSpacing),
+
+          // LOCATION FIELD - Moved after amenities
+          AppTextField(
+            title: "${StringHelper.location} *",
+            titleColor: Colors.black,
+            hint: StringHelper.select,
+            readOnly: true,
+            controller: widget.viewModel.addressTextController,
+            suffix: Icon(Icons.location_on, color: Colors.grey.shade600),
+            fillColor: Colors.white,
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 14,
+            ),
+            onTap: () async {
+              Map<String, dynamic>? returnedLocationData = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        SellFormLocationScreen(viewModel: widget.viewModel)),
+              );
+
+              if (returnedLocationData != null &&
+                  returnedLocationData.isNotEmpty &&
+                  mounted) {
+                widget.viewModel
+                    .handleLocationSelectedFromAdForm(returnedLocationData);
+              }
+            },
+            validator: (value) {
+              if (value == null || value.trim().isEmpty) {
+                return StringHelper.locationIsRequired;
+              }
+              return null;
+            },
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(
+                  RegExp(widget.viewModel.regexToRemoveEmoji)),
+            ],
+            maxLines: 2,
+          ),
+          const SizedBox(height: fieldSpacing),
+
+          // PRICE FIELD - Moved after amenities and location
+          AppTextField(
+            title: "${StringHelper.priceEgp} *",
+            controller: widget.viewModel.priceTextController,
+            hint: StringHelper.enterPrice,
+            maxLength: 10,
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(
+                  RegExp(widget.viewModel.regexToRemoveEmoji)),
+              FilteringTextInputFormatter.digitsOnly,
+            ],
+            focusNode: widget.viewModel.priceText,
+            validator: (value) {
+              if (value == null || value.trim().isEmpty) {
+                return '* ${StringHelper.fieldShouldNotBeEmpty}';
+              }
+              final amount = num.tryParse(value);
+              if (amount == null) {
+                return '* ${StringHelper.enterValidNumber}';
+              }
+              if (amount < 100) {
+                return '* ${StringHelper.minValidPrice} 100';
+              }
+              if (widget.viewModel.currentPropertyType.toLowerCase() ==
+                  "sell") {
+                if (amount > 150000000) {
+                  return '* ${StringHelper.maxValidPrice} 150,000,000';
+                }
+              } else if (widget.viewModel.currentPropertyType.toLowerCase() ==
+                  "rent") {
+                if (amount > 800000) {
+                  return '* ${StringHelper.maxValidPrice} 800,000';
+                }
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: fieldSpacing),
+
+          // DEPOSIT FIELD - Only for rent, moved after price
+          Visibility(
+            visible:
+                widget.viewModel.currentPropertyType.toLowerCase() == "rent",
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: AppTextField(
+                        title: StringHelper.deposit,
+                        controller: widget.viewModel.depositTextController,
+                        hint: StringHelper.enter,
+                        keyboardType: TextInputType.number,
+                        textInputAction: TextInputAction.done,
+                        maxLength: 10,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.deny(
+                              RegExp(widget.viewModel.regexToRemoveEmoji)),
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                        validator: (value) {
+                          if (value != null && value.trim().isNotEmpty) {
+                            final amount = num.tryParse(value);
+                            if (amount == null) {
+                              return '* Enter a valid number';
+                            }
+                            final rentAmount = num.tryParse(widget
+                                    .viewModel.priceTextController.text) ??
+                                0;
+                            if (rentAmount > 0 && amount > rentAmount) {
+                              return '* Deposit cannot exceed monthly rent';
+                            }
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      flex: 1,
+                      child: AppTextField(
+                        title: "${StringHelper.deposit} %",
+                        controller: widget.viewModel.percentageController,
+                        hint: "%",
+                        keyboardType: TextInputType.number,
+                        textInputAction: TextInputAction.done,
+                        maxLength: 3,
+                        readOnly:
+                            widget.viewModel.priceTextController.text.isEmpty ||
+                                num.tryParse(widget
+                                        .viewModel.priceTextController.text) ==
+                                    null,
+                        onTap:
+                            widget.viewModel.priceTextController.text.isEmpty ||
+                                    num.tryParse(widget.viewModel
+                                            .priceTextController.text) ==
+                                        null
+                                ? null
+                                : () {},
+                        inputFormatters: [
+                          FilteringTextInputFormatter.deny(
+                              RegExp(widget.viewModel.regexToRemoveEmoji)),
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                        validator: (value) {
+                          if (value != null && value.trim().isNotEmpty) {
+                            final percentage = num.tryParse(value);
+                            if (percentage == null) {
+                              return '* ${StringHelper.invalidPercentage}';
+                            }
+                            if (percentage <= 0) {
+                              return '* ${StringHelper.mustBeGreaterThanZero}';
+                            }
+                            if (percentage > 100) {
+                              return '* ${StringHelper.maxOneHundredPercent}';
+                            }
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: fieldSpacing),
+              ],
+            ),
+          ),
+
+          // DESCRIPTION FIELD - Moved after price and deposit
+          AppTextField(
+            title: "${StringHelper.describeWhatYouAreSelling} *",
+            controller: widget.viewModel.descriptionTextController,
+            hint: StringHelper.enter,
+            maxLines: 4,
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(
+                  RegExp(widget.viewModel.regexToRemoveEmoji)),
+            ],
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.done,
+            validator: (value) {
+              if (value == null || value.trim().isEmpty) {
+                return StringHelper.descriptionIsRequired;
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: fieldSpacing),
+
+          // PHONE VERIFICATION - After description
+          PhoneVerificationWidget(
+            onPhoneStatusChanged: (isVerified, phone) {
+              widget.viewModel.updatePhoneVerificationStatus(isVerified, phone);
+            },
+            onAutoSubmit: () {
+              _performSubmit(context);
+            },
+          ),
+          const SizedBox(height: fieldSpacing),
+
+          // HOW TO CONNECT - After phone verification
+          Text(
+            StringHelper.howToConnect,
+            style: context.textTheme.titleSmall,
+          ),
+          const SizedBox(height: fieldSpacing),
+          MultiSelectCategory(
+            choiceString: widget.viewModel.communicationChoice,
+            onSelectedCommunicationChoice: (CommunicationChoice value) {
+              widget.viewModel.communicationChoice = value.name;
+            },
+          ),
+          const SizedBox(height: fieldSpacing),
+
+          // SUBMIT BUTTONS
+          if (widget.viewModel.isEditProduct) ...[
+            GestureDetector(
+              onTap: () => _performSubmit(context),
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 15),
+                margin: const EdgeInsets.symmetric(vertical: 20),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                child: Text(
+                  widget.viewModel.adStatus == "deactivate"
+                      ? StringHelper.updateRepublish
+                      : StringHelper.updateNow,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+          ] else ...[
+            GestureDetector(
+              onTap: () => _performSubmit(context),
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 15),
+                margin: const EdgeInsets.symmetric(vertical: 20),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                child: Text(
+                  StringHelper.postNow,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
           ],
-          keyboardType: TextInputType.text,
-          textInputAction: TextInputAction.done,
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPropertyTypeOption(
+    BuildContext context,
+    String propertyType,
+    IconData iconData,
+    FormFieldState<String> field,
+  ) {
+    bool isSelected =
+        widget.viewModel.propertyForTypeTextController.text == propertyType;
+
+    return GestureDetector(
+      onTap: () {
+        widget.viewModel.propertyForTypeTextController.text = propertyType;
+        field.didChange(propertyType);
+        field.validate();
+        if (_isMounted) {
+          widget.viewModel.notifyListeners();
+        }
+      },
+      child: Container(
+        margin: const EdgeInsets.only(right: 12),
+        padding: const EdgeInsets.all(14),
+        width: 98,
+        height: 95,
+        decoration: BoxDecoration(
+          color: isSelected
+              ? const Color.fromARGB(255, 59, 130, 246).withOpacity(0.1)
+              : Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: isSelected
+                ? const Color.fromARGB(255, 59, 130, 246)
+                : Colors.grey.shade300,
+            width: isSelected ? 2 : 1,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.08),
+              spreadRadius: 1,
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
-        AmenitiesWidget(
-            amenitiesChecked: viewModel.amenities,
-            selectedAmenities: (List<int?> selectedIds) {
-              debugPrint("$selectedIds");
-              viewModel.amenities = selectedIds;
-              debugPrint("${viewModel.amenities}");
-            }),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              iconData,
+              size: 30,
+              color: isSelected
+                  ? const Color.fromARGB(255, 59, 130, 246)
+                  : Colors.grey.shade600,
+            ),
+            const SizedBox(height: 8),
+            Flexible(
+              child: Text(
+                propertyType,
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: _getTextSize(context),
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                  color: isSelected
+                      ? const Color.fromARGB(255, 59, 130, 246)
+                      : Colors.grey.shade700,
+                  height: 1.2,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget ownershipStatusWidget(
+      BuildContext context, FormFieldState<String> field) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
         Text(
-          StringHelper.howToConnect,
+          "${StringHelper.owner} *",
           style: context.textTheme.titleSmall,
         ),
-        MultiSelectCategory(
-          choiceString: viewModel.communicationChoice,
-          onSelectedCommunicationChoice: (CommunicationChoice value) {
-            viewModel.communicationChoice = value.name;
-          },
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 8,
+          children: [StringHelper.primary, StringHelper.resell].map((status) {
+            bool isSelected = widget
+                    .viewModel.ownershipStatusTextController.text
+                    .toLowerCase() ==
+                status.toLowerCase();
+            return GestureDetector(
+              onTap: () {
+                widget.viewModel.ownershipStatusTextController.text = status;
+                widget.viewModel.currentOwnership = status;
+                field.didChange(status);
+                field.validate();
+                if (_isMounted) {
+                  widget.viewModel.notifyListeners();
+                }
+              },
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? const Color.fromARGB(255, 59, 130, 246)
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: isSelected
+                        ? const Color.fromARGB(255, 59, 130, 246)
+                        : Colors.grey,
+                  ),
+                ),
+                child: Text(
+                  status,
+                  style: TextStyle(
+                    color: isSelected ? Colors.white : Colors.black,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
         ),
-        if (viewModel.isEditProduct) ...{
-          GestureDetector(
-            onTap: () {
-              viewModel.formKey.currentState?.validate();
-              if (viewModel.mainImagePath.isEmpty) {
-                DialogHelper.showToast(
-                    message: StringHelper.pleaseUploadMainImage);
-                return;
-              }
-              if (viewModel.imagesList.isEmpty) {
-                DialogHelper.showToast(
-                    message: StringHelper.pleaseUploadAddAtLeastOneImage);
-                return;
-              }
+      ],
+    );
+  }
 
-              if (viewModel.propertyForTextController.text.isEmpty) {
-                DialogHelper.showToast(
-                    message: StringHelper.plsSelectPropertyType);
-                return;
-              }
-              if (viewModel.adTitleTextController.text.trim().isEmpty) {
-                DialogHelper.showToast(message: StringHelper.adTitleIsRequired);
-                return;
-              }
-              if (viewModel.adTitleTextController.text.trim().length < 10) {
-                DialogHelper.showToast(
-                  message: StringHelper.adLength,
-                );
-                return;
-              }
-              if (viewModel.propertyForTypeTextController.text.trim().isEmpty) {
-                DialogHelper.showToast(message: StringHelper.plsSelectType);
-                return;
-              }
-              if (viewModel.currentPropertyType.toLowerCase() != "rent" &&
-                  viewModel.ownershipStatusTextController.text.isEmpty) {
-                DialogHelper.showToast(
-                    message: StringHelper.plsSelectOwnership);
-                return;
-              }
-              if (viewModel.areaSizeTextController.text.trim().isEmpty) {
-                DialogHelper.showToast(message: StringHelper.plsAddArea);
-                return;
-              }
-              if (viewModel.currentPropertyType.toLowerCase() == "rent" &&
-                  viewModel.insuranceTextController.text.isEmpty) {
-                DialogHelper.showToast(
-                    message: StringHelper.plsSelectInsurance);
-                return;
-              }
-              if (viewModel.noOfBedroomsTextController.text.isEmpty) {
-                DialogHelper.showToast(message: StringHelper.plsSelectBedrooms);
-                return;
-              }
-              if (viewModel.noOfBathroomsTextController.text.isEmpty) {
-                DialogHelper.showToast(
-                    message: StringHelper.plsSelectBathrooms);
-                return;
-              }
-              if (viewModel.furnishingStatusTextController.text.isEmpty) {
-                DialogHelper.showToast(
-                    message: StringHelper.plsSelectFurnishing);
-                return;
-              }
-              if (viewModel.levelTextController.text.isEmpty) {
-                DialogHelper.showToast(message: StringHelper.plsSelectLevel);
-                return;
-              }
-              if (viewModel.currentPropertyType.toLowerCase() != "rent" &&
-                  viewModel.propertyAgeTextController.text.isEmpty) {
-                DialogHelper.showToast(
-                    message: StringHelper.plsSelectBuildingAge);
-                return;
-              }
-              if (viewModel.currentPropertyType.toLowerCase() != "rent" &&
-                  viewModel.paymentTypeTextController.text.isEmpty) {
-                DialogHelper.showToast(
-                    message: StringHelper.plsSelectPaymentType);
-                return;
-              }
-              if (viewModel.currentPropertyType.toLowerCase() != "rent" &&
-                  viewModel.listedByTextController.text.isEmpty) {
-                DialogHelper.showToast(message: StringHelper.plsSelectListedBy);
-                return;
-              }
-              if (viewModel.addressTextController.text.trim().isEmpty) {
-                DialogHelper.showToast(
-                    message: StringHelper.locationIsRequired);
-                return;
-              }
-              if (viewModel.priceTextController.text.trim().isEmpty) {
-                DialogHelper.showToast(message: StringHelper.priceIsRequired);
-                return;
-              }
-              if (viewModel.currentPropertyType.toLowerCase() == "rent" &&
-                  viewModel.depositTextController.text.isNotEmpty) {
-                // Validate deposit amount
-                final depositAmount =
-                    num.tryParse(viewModel.depositTextController.text);
-                final priceAmount =
-                    num.tryParse(viewModel.priceTextController.text) ?? 0;
-
-                if (depositAmount == null) {
-                  DialogHelper.showToast(
-                      message: StringHelper.depositValidAmount);
-                  return;
+  Widget furnishedWidget(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          StringHelper.furnishing,
+          style: context.textTheme.titleSmall,
+        ),
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 8,
+          children: [StringHelper.yes, StringHelper.no].map((status) {
+            bool isSelected = widget.viewModel.currentFurnishing == status;
+            return GestureDetector(
+              onTap: () {
+                widget.viewModel.furnishingStatusTextController.text = status;
+                widget.viewModel.currentFurnishing = status;
+                if (_isMounted) {
+                  widget.viewModel.notifyListeners();
                 }
-
-                if (priceAmount > 0 && depositAmount > priceAmount) {
-                  DialogHelper.showToast(
-                      message: StringHelper.depositExceedPrice);
-                  return;
-                }
-              }
-
-// Check if deposit percentage is valid when present
-              if (viewModel.currentPropertyType.toLowerCase() == "rent" &&
-                  viewModel.percentageController.text.isNotEmpty) {
-                // Validate deposit percentage
-                final percentage =
-                    num.tryParse(viewModel.percentageController.text);
-
-                if (percentage == null) {
-                  DialogHelper.showToast(
-                      message: StringHelper.percentageValidAmount);
-                  return;
-                }
-
-                if (percentage <= 0) {
-                  DialogHelper.showToast(
-                      message: StringHelper.percentageGreaterZero);
-                  return;
-                }
-
-                if (percentage > 100) {
-                  DialogHelper.showToast(
-                      message: StringHelper.percentageExceed100);
-                  return;
-                }
-              }
-              if (viewModel.descriptionTextController.text.trim().isEmpty) {
-                DialogHelper.showToast(
-                    message: StringHelper.descriptionIsRequired);
-                return;
-              }
-
-              DialogHelper.showLoading();
-              viewModel.editProduct(
-                  productId: item?.id,
-                  category: category,
-                  subCategory: subCategory,
-                  subSubCategory: subSubCategory,
-                  brand: viewModel.selectedBrand,
-                  models: viewModel.selectedModel);
-            },
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 15),
-              margin: const EdgeInsets.symmetric(vertical: 20),
-              decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.circular(100)),
-              child: Text(
-                viewModel.adStatus == "deactivate"
-                    ? StringHelper.updateRepublish
-                    : StringHelper.updateNow,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600),
+              },
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? const Color.fromARGB(255, 59, 130, 246)
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: isSelected
+                        ? const Color.fromARGB(255, 59, 130, 246)
+                        : Colors.grey,
+                  ),
+                ),
+                child: Text(
+                  status,
+                  style: TextStyle(
+                    color: isSelected ? Colors.white : Colors.black,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ),
-            ),
-          ),
-        } else ...{
-          GestureDetector(
-            onTap: () {
-              viewModel.formKey.currentState?.validate();
-              if (viewModel.mainImagePath.isEmpty) {
-                DialogHelper.showToast(
-                    message: StringHelper.pleaseUploadMainImage);
-                return;
-              }
-              if (viewModel.imagesList.isEmpty) {
-                DialogHelper.showToast(
-                    message: StringHelper.pleaseUploadAddAtLeastOneImage);
-                return;
-              }
-              if (viewModel.propertyForTextController.text.isEmpty) {
-                DialogHelper.showToast(
-                    message: StringHelper.plsSelectPropertyType);
-                return;
-              }
-              if (viewModel.adTitleTextController.text.trim().isEmpty) {
-                DialogHelper.showToast(message: StringHelper.adTitleIsRequired);
-                return;
-              }
-              if (viewModel.adTitleTextController.text.trim().length < 10) {
-                DialogHelper.showToast(
-                  message: StringHelper.adLength,
-                );
-                return;
-              }
-              if (viewModel.propertyForTypeTextController.text.trim().isEmpty) {
-                DialogHelper.showToast(message: StringHelper.plsSelectType);
-                return;
-              }
-              if (viewModel.currentPropertyType.toLowerCase() != "rent" &&
-                  viewModel.ownershipStatusTextController.text.isEmpty) {
-                DialogHelper.showToast(
-                    message: StringHelper.plsSelectOwnership);
-                return;
-              }
-              if (viewModel.areaSizeTextController.text.trim().isEmpty) {
-                DialogHelper.showToast(message: StringHelper.plsAddArea);
-                return;
-              }
-              if (viewModel.currentPropertyType.toLowerCase() == "rent" &&
-                  viewModel.insuranceTextController.text.isEmpty) {
-                DialogHelper.showToast(
-                    message: StringHelper.plsSelectInsurance);
-                return;
-              }
-              if (viewModel.noOfBedroomsTextController.text.isEmpty) {
-                DialogHelper.showToast(message: StringHelper.plsSelectBedrooms);
-                return;
-              }
-              if (viewModel.noOfBathroomsTextController.text.isEmpty) {
-                DialogHelper.showToast(
-                    message: StringHelper.plsSelectBathrooms);
-                return;
-              }
-              if (viewModel.furnishingStatusTextController.text.isEmpty) {
-                DialogHelper.showToast(
-                    message: StringHelper.plsSelectFurnishing);
-                return;
-              }
-              if (viewModel.levelTextController.text.isEmpty) {
-                DialogHelper.showToast(message: StringHelper.plsSelectLevel);
-                return;
-              }
-              if (viewModel.currentPropertyType.toLowerCase() != "rent" &&
-                  viewModel.propertyAgeTextController.text.isEmpty) {
-                DialogHelper.showToast(
-                    message: StringHelper.plsSelectBuildingAge);
-                return;
-              }
-              if (viewModel.currentPropertyType.toLowerCase() != "rent" &&
-                  viewModel.paymentTypeTextController.text.isEmpty) {
-                DialogHelper.showToast(
-                    message: StringHelper.plsSelectPaymentType);
-                return;
-              }
-              if (viewModel.currentPropertyType.toLowerCase() != "rent" &&
-                  viewModel.listedByTextController.text.isEmpty) {
-                DialogHelper.showToast(message: StringHelper.plsSelectListedBy);
-                return;
-              }
-              if (viewModel.addressTextController.text.trim().isEmpty) {
-                DialogHelper.showToast(
-                    message: StringHelper.locationIsRequired);
-                return;
-              }
-              if (viewModel.priceTextController.text.trim().isEmpty) {
-                DialogHelper.showToast(message: StringHelper.priceIsRequired);
-                return;
-              }
-              if (viewModel.currentPropertyType.toLowerCase() == "rent" &&
-                  viewModel.depositTextController.text.isNotEmpty) {
-                // Validate deposit amount
-                final depositAmount =
-                    num.tryParse(viewModel.depositTextController.text);
-                final priceAmount =
-                    num.tryParse(viewModel.priceTextController.text) ?? 0;
+            );
+          }).toList(),
+        ),
+      ],
+    );
+  }
 
-                if (depositAmount == null) {
-                  DialogHelper.showToast(
-                      message: StringHelper.depositValidAmount);
-                  return;
+  Widget completionWidget(BuildContext context, FormFieldState<String> field) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          "${StringHelper.completionStatus} *",
+          style: context.textTheme.titleSmall,
+        ),
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 8,
+          children: [StringHelper.ready, StringHelper.offPlan].map((status) {
+            bool isSelected = widget.viewModel.currentCompletion == status;
+            return GestureDetector(
+              onTap: () {
+                widget.viewModel.completionStatusTextController.text = status;
+                widget.viewModel.currentCompletion = status;
+                field.didChange(status);
+                field.validate();
+                if (_isMounted) {
+                  widget.viewModel.notifyListeners();
                 }
-
-                if (priceAmount > 0 && depositAmount > priceAmount) {
-                  DialogHelper.showToast(
-                      message: StringHelper.depositExceedPrice);
-                  return;
-                }
-              }
-
-// Check if deposit percentage is valid when present
-              if (viewModel.currentPropertyType.toLowerCase() == "rent" &&
-                  viewModel.percentageController.text.isNotEmpty) {
-                // Validate deposit percentage
-                final percentage =
-                    num.tryParse(viewModel.percentageController.text);
-
-                if (percentage == null) {
-                  DialogHelper.showToast(
-                      message: StringHelper.percentageValidAmount);
-                  return;
-                }
-
-                if (percentage <= 0) {
-                  DialogHelper.showToast(
-                      message: StringHelper.percentageGreaterZero);
-                  return;
-                }
-
-                if (percentage > 100) {
-                  DialogHelper.showToast(
-                      message: StringHelper.percentageExceed100);
-                  return;
-                }
-              }
-              if (viewModel.descriptionTextController.text.trim().isEmpty) {
-                DialogHelper.showToast(
-                    message: StringHelper.descriptionIsRequired);
-                return;
-              }
-
-              DialogHelper.showLoading();
-              viewModel.addProduct(
-                  category: category,
-                  subCategory: subCategory,
-                  subSubCategory: subSubCategory,
-                  brand: viewModel.selectedBrand,
-                  models: viewModel.selectedModel);
-            },
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 15),
-              margin: const EdgeInsets.symmetric(vertical: 20),
-              decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.circular(100)),
-              child: Text(
-                StringHelper.postNow,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600),
+              },
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? const Color.fromARGB(255, 59, 130, 246)
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: isSelected
+                        ? const Color.fromARGB(255, 59, 130, 246)
+                        : Colors.grey,
+                  ),
+                ),
+                child: Text(
+                  status,
+                  style: TextStyle(
+                    color: isSelected ? Colors.white : Colors.black,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ),
-            ),
-          ),
-        },
+            );
+          }).toList(),
+        ),
+      ],
+    );
+  }
+
+  Widget paymentOptionWidget(
+      BuildContext context, FormFieldState<String> field) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          "${StringHelper.paymentType} *",
+          style: context.textTheme.titleSmall,
+        ),
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            StringHelper.installment,
+            StringHelper.cash,
+            StringHelper.cashOrInstallment,
+          ].map((status) {
+            final isSelected = widget.viewModel.currentPaymentOption == status;
+            return GestureDetector(
+              onTap: () {
+                widget.viewModel.paymentTypeTextController.text = status;
+                widget.viewModel.currentPaymentOption = status;
+                field.didChange(status);
+                field.validate();
+                if (_isMounted) {
+                  widget.viewModel.notifyListeners();
+                }
+              },
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? const Color.fromARGB(255, 59, 130, 246)
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: isSelected
+                        ? const Color.fromARGB(255, 59, 130, 246)
+                        : Colors.grey,
+                  ),
+                ),
+                child: Text(
+                  status,
+                  style: TextStyle(
+                    color: isSelected ? Colors.white : Colors.black,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
+        ),
       ],
     );
   }

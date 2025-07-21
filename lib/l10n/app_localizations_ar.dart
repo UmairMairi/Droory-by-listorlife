@@ -1,3 +1,5 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -67,7 +69,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get verification => 'التحقق';
 
   @override
-  String get enterThe4DigitCode => 'أدخل الرمز المكون من 4 أرقام الذي تم إرساله إليك في';
+  String get enterThe4DigitCode =>
+      'أدخل الرمز المكون من 4 أرقام الذي تم إرساله إليك في';
 
   @override
   String get otp => 'رمز التحقق';
@@ -82,7 +85,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get freshRecommendations => 'توصيات جديدة';
 
   @override
-  String get findCarsMobilePhonesAndMore => 'ابحث عن سيارات، هواتف محمولة والمزيد...';
+  String get findCarsMobilePhonesAndMore =>
+      'ابحث عن سيارات، هواتف محمولة والمزيد...';
 
   @override
   String get myChats => 'دردشاتي';
@@ -91,7 +95,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get search => 'بحث...';
 
   @override
-  String get areYouSureWantToDeleteThisChat => 'هل أنت متأكد أنك تريد حذف هذه الدردشة؟';
+  String get areYouSureWantToDeleteThisChat =>
+      'هل أنت متأكد أنك تريد حذف هذه الدردشة؟';
 
   @override
   String get no => 'لا';
@@ -112,10 +117,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reportUser => 'إبلاغ عن المستخدم';
 
   @override
-  String get areYouSureWantToUnblockThisUser => 'هل أنت متأكد أنك تريد إلغاء حظر هذا المستخدم؟';
+  String get areYouSureWantToUnblockThisUser =>
+      'هل أنت متأكد أنك تريد إلغاء حظر هذا المستخدم؟';
 
   @override
-  String get areYouSureWantToBlockThisUser => 'هل أنت متأكد أنك تريد حظر هذا المستخدم؟';
+  String get areYouSureWantToBlockThisUser =>
+      'هل أنت متأكد أنك تريد حظر هذا المستخدم؟';
 
   @override
   String get unblockUser => 'إلغاء حظر المستخدم';
@@ -280,7 +287,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get helloWelcome => 'مرحباً! أهلاً بك';
 
   @override
-  String get loremText => 'لوريم إيبسوم دولور سيت أميت، كونسيكتيتور أديبيسكينغ إيليت.';
+  String get loremText =>
+      'لوريم إيبسوم دولور سيت أميت، كونسيكتيتور أديبيسكينغ إيليت.';
 
   @override
   String get useCurrentLocation => 'استخدم الموقع الحالي';
@@ -364,7 +372,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get pleaseUploadMainImage => 'يرجى تحميل الصورة الرئيسية';
 
   @override
-  String get pleaseUploadAddAtLeastOneImage => 'يرجى تحميل إضافة صورتين على الأقل';
+  String get pleaseUploadAddAtLeastOneImage =>
+      'يرجى تحميل إضافة صورتين على الأقل';
 
   @override
   String get yearIsRequired => 'السنة مطلوبة';
@@ -460,13 +469,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get yourAdWillGoLiveShortly => 'إعلانك سيظهر قريباً...';
 
   @override
-  String get listOrLiftAllowsFreeAds => 'يسمح تطبيق داروري بـ 2 إعلانات مجانية لمدة 180 يوماً للسيارات';
+  String get listOrLiftAllowsFreeAds =>
+      'يسمح تطبيق داروري بـ 2 إعلانات مجانية لمدة 180 يوماً للسيارات';
 
   @override
-  String get reachMoreBuyersAndSellFaster => 'تواصل مع المزيد من المشترين وبع بشكل أسرع';
+  String get reachMoreBuyersAndSellFaster =>
+      'تواصل مع المزيد من المشترين وبع بشكل أسرع';
 
   @override
-  String get upgradingAnAdHelpsYouToReachMoreBuyers => 'ترقية الإعلان تساعدك على الوصول إلى المزيد من المشترين';
+  String get upgradingAnAdHelpsYouToReachMoreBuyers =>
+      'ترقية الإعلان تساعدك على الوصول إلى المزيد من المشترين';
 
   @override
   String get reviewAd => 'مراجعة الإعلان';
@@ -559,7 +571,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get soldText => 'تم البيع';
 
   @override
-  String get checkProductUrl => 'تحقق من هذا المنتج على تطبيق داروري على الرابط: www.google.com';
+  String get checkProductUrl =>
+      'تحقق من هذا المنتج على تطبيق داروري على الرابط: www.google.com';
 
   @override
   String get postedBy => 'نشر بواسطة';
@@ -703,7 +716,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get youNeedLogin => 'تحتاج إلى تسجيل الدخول لتنفيذ هذا الإجراء.';
 
   @override
-  String get profileCreatedSuccessfully => 'تم إنشاء ملف التعريف الخاص بك بنجاح!';
+  String get profileCreatedSuccessfully =>
+      'تم إنشاء ملف التعريف الخاص بك بنجاح!';
 
   @override
   String get ok => 'نعم';
@@ -715,16 +729,19 @@ class AppLocalizationsAr extends AppLocalizations {
   String get noInternet => 'لا يوجد إنترنت، يرجى المحاولة لاحقًا!';
 
   @override
-  String get noInternetFound => 'لم يتم العثور على اتصال بالإنترنت. يرجى التحقق من الاتصال أو المحاولة مرة أخرى.';
+  String get noInternetFound =>
+      'لم يتم العثور على اتصال بالإنترنت. يرجى التحقق من الاتصال أو المحاولة مرة أخرى.';
 
   @override
-  String get hereToHelp => 'نحن هنا للمساعدة! تواصل معنا عبر أي من الطرق التالية.';
+  String get hereToHelp =>
+      'نحن هنا للمساعدة! تواصل معنا عبر أي من الطرق التالية.';
 
   @override
   String get sendUsYourQueries => 'أرسل لنا استفساراتك';
 
   @override
-  String get callUsForImmediateAssistance => 'اتصل بنا للحصول على المساعدة الفورية';
+  String get callUsForImmediateAssistance =>
+      'اتصل بنا للحصول على المساعدة الفورية';
 
   @override
   String get petrol => 'بنزين';
@@ -991,7 +1008,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get customizeYourAppExperience => 'تخصيص تجربة التطبيق الخاص بك.';
 
   @override
-  String get getHelpAndLearnMoreAboutTheApp => 'احصل على المساعدة وتعرف على المزيد حول التطبيق.';
+  String get getHelpAndLearnMoreAboutTheApp =>
+      'احصل على المساعدة وتعرف على المزيد حول التطبيق.';
 
   @override
   String get supportInformation => 'الدعم والمعلومات';
@@ -1009,7 +1027,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get locationAlert => 'تنبيه الموقع';
 
   @override
-  String get locationAlertMsg => 'يرجى ملاحظة أن تطبيقنا متاح حاليًا للمستخدمين في مصر فقط. الرجاء تحديد موقع مصر لإضافة المنتج.';
+  String get locationAlertMsg =>
+      'يرجى ملاحظة أن تطبيقنا متاح حاليًا للمستخدمين في مصر فقط. الرجاء تحديد موقع مصر لإضافة المنتج.';
 
   @override
   String get accountDeleteMsg => 'هل أنت متأكد أنك تريد حذف هذا الحساب؟';
@@ -1048,7 +1067,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get avoidSharing => 'تجنب مشاركة التفاصيل الشخصية أو المالية.';
 
   @override
-  String get reportSuspicious => 'أبلغ عن القوائم أو الأنشطة المشبوهة لفريق الدعم لدينا.';
+  String get reportSuspicious =>
+      'أبلغ عن القوائم أو الأنشطة المشبوهة لفريق الدعم لدينا.';
 
   @override
   String get listingType => 'نوع الإعلان';
@@ -1105,7 +1125,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get accessToUtilities => 'الوصول إلى المرافق';
 
   @override
-  String get chooseContactMethod => 'نحن هنا للمساعدة. اختر طريقة التواصل المناسبة لك:';
+  String get chooseContactMethod =>
+      'نحن هنا للمساعدة. اختر طريقة التواصل المناسبة لك:';
 
   @override
   String get sendQueries => 'أرسل استفساراتك';
@@ -1144,19 +1165,22 @@ class AppLocalizationsAr extends AppLocalizations {
   String get messageRequired => 'الرسالة مطلوبة';
 
   @override
-  String get messageSentSuccess => 'تم إرسال الرسالة بنجاح! سيتواصل معك فريقنا قريباً.';
+  String get messageSentSuccess =>
+      'تم إرسال الرسالة بنجاح! سيتواصل معك فريقنا قريباً.';
 
   @override
   String get failedToSendMessage => 'فشل في إرسال الرسالة';
 
   @override
-  String get contactFormDescription => 'أرسل رسالتك مباشرة إلى فريقنا. سنرد عليك خلال 24 ساعة.';
+  String get contactFormDescription =>
+      'أرسل رسالتك مباشرة إلى فريقنا. سنرد عليك خلال 24 ساعة.';
 
   @override
   String get messageUsOnWhatsapp => 'راسلنا على واتساب للدعم الفوري';
 
   @override
-  String get leaveMessageDescription => 'اترك لنا رسالة وسنقوم بالرد عليك خلال 24 ساعة';
+  String get leaveMessageDescription =>
+      'اترك لنا رسالة وسنقوم بالرد عليك خلال 24 ساعة';
 
   @override
   String get enterPhoneNumber => 'يرجى إدخال رقم هاتف صالح';
@@ -1306,10 +1330,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get enterValidNumber => 'يرجى إدخال رقم صحيح';
 
   @override
-  String get kmDrivenNotNegative => 'لا يمكن أن تكون الكيلومترات المقطوعة سالبة';
+  String get kmDrivenNotNegative =>
+      'لا يمكن أن تكون الكيلومترات المقطوعة سالبة';
 
   @override
-  String get kmDrivenMaxLimit => 'لا يمكن أن تتجاوز الكيلومترات المقطوعة 1000000';
+  String get kmDrivenMaxLimit =>
+      'لا يمكن أن تتجاوز الكيلومترات المقطوعة 1000000';
 
   @override
   String get numberBetween1And12 => 'يجب أن يكون الرقم بين 1 و 12';
@@ -1511,6 +1537,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get mixOfficeBased => 'مختلط (المنزل والمكتب)';
+
+  @override
+  String get propertyFor => 'الملكية ل';
 
   @override
   String get adExpire => 'ينتهي الإعلان في';

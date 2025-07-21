@@ -151,23 +151,23 @@ class BubbleNormalImage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    stateIcon != null || timeStateIcon !=null && stateTick
+                    stateIcon != null || timeStateIcon != null && stateTick
                         ? Positioned(
-                      bottom: 4,
-                      right: 6,
-                      child: Row(
-                        children: [
-                          timeStateIcon??SizedBox.shrink(),
-                          SizedBox(width: 5,),
-                          if(stateIcon!=null)...[
-                            stateIcon
-                          ]
-                        ],
-                      ),
-                    )
+                            bottom: 4,
+                            right: 6,
+                            child: Row(
+                              children: [
+                                timeStateIcon ?? SizedBox.shrink(),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                if (stateIcon != null) ...[stateIcon]
+                              ],
+                            ),
+                          )
                         : const SizedBox(
-                      width: 1,
-                    ),
+                            width: 1,
+                          ),
                   ],
                 ),
               )),
@@ -204,30 +204,75 @@ class _DetailScreenState extends State<_DetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      child: Scaffold(
-        appBar: AppBar(),
-        body: Center(
-          child: Hero(
-            tag: widget.tag,
-            child: InteractiveViewer(
-                minScale: 0.2,
-                maxScale: 5.0,
-                child: Center(
-                  child: CachedNetworkImage(
-                    imageUrl: widget.imageUrl,
-                    placeholder: (context, url) =>
-                        const CircularProgressIndicator(),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Stack(
+        children: [
+          // Main image
+          GestureDetector(
+            onTap: () {
+              // Could be used to show/hide UI elements
+            },
+            child: Center(
+              child: Hero(
+                tag: widget.tag,
+                child: InteractiveViewer(
+                  minScale: 0.2,
+                  maxScale: 5.0,
+                  child: Center(
+                    child: CachedNetworkImage(
+                      imageUrl: widget.imageUrl,
+                      fit: BoxFit.contain,
+                      placeholder: (context, url) =>
+                          const CircularProgressIndicator(color: Colors.white),
+                      errorWidget: (context, url, error) => const Icon(
+                          Icons.error,
+                          color: Colors.white,
+                          size: 50),
+                    ),
                   ),
-                )),
+                ),
+              ),
+            ),
           ),
-        ),
+
+          // Top bar with close button
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.black.withOpacity(0.7),
+                    Colors.transparent,
+                  ],
+                ),
+              ),
+              child: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Close button
+                      IconButton(
+                        icon: Icon(Icons.close, color: Colors.white, size: 28),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                      // Empty space for balance
+                      SizedBox(width: 48),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
-      onTap: () {
-        Navigator.pop(context);
-      },
     );
   }
 }

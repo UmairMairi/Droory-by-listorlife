@@ -21,9 +21,10 @@ import 'package:toastification/toastification.dart';
 import '/base/notification/notification_service.dart';
 import 'base/helpers/string_helper.dart';
 import 'base/helpers/theme_helper.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'firebase_options.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+
+import 'l10n/app_localizations.dart';
 
 bool isMessageScreenOpen = false;
 

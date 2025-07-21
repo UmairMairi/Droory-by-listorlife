@@ -24,6 +24,21 @@ import '../../../widgets/unauthorised_view.dart';
 
 class MyAdsView extends BaseView<MyAdsVM> {
   const MyAdsView({super.key});
+  static String getPlaceholderImage(ProductDetailModel product) {
+    // Check if it's a job category (categoryId 9 based on your code)
+    if (product.categoryId == 9) {
+      return AssetsRes
+          .JOB_FILLER_IMAGE; // Replace with your actual job placeholder asset
+    }
+    // Check if it's a service category - adjust the ID as needed based on your category system
+    else if (product.categoryId == 8) {
+      // Assuming 10 is your service category ID
+      return AssetsRes
+          .SERVICE_FILLER_IMAGE; // Replace with your actual service placeholder asset
+    }
+    // Default placeholder for other categories
+    return AssetsRes.APP_LOGO;
+  }
 
   @override
   Widget build(BuildContext context, MyAdsVM viewModel) {
@@ -151,7 +166,9 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                               Text(
                                                 viewModel.getCreatedAt(
                                                     time: productDetails
-                                                        .createdAt),
+                                                        .createdAt,
+                                                    productId:
+                                                        productDetails.id),
                                                 style: context
                                                     .textTheme.titleSmall,
                                               ),
@@ -228,8 +245,9 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                               Expanded(
                                                   flex: 6,
                                                   child: ImageView.rect(
-                                                    placeholder:
-                                                        AssetsRes.APP_LOGO,
+                                                    placeholder: MyAdsView
+                                                        .getPlaceholderImage(
+                                                            productDetails),
                                                     image:
                                                         "${ApiConstants.imageUrl}/${productDetails.image}",
                                                     width: 250,
@@ -269,8 +287,8 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                             .categoryId ==
                                                         9) ...{
                                                       Text(
-                                                        "${StringHelper.egp} ${parseAmount(productDetails.salleryFrom)}",
-                                                        //"${StringHelper.egp} ${data?.salleryFrom} - ${data?.salleryTo}",
+                                                        getSalaryDisplayText(
+                                                            productDetails),
                                                         style: context.textTheme
                                                             .titleMedium
                                                             ?.copyWith(
@@ -441,6 +459,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                 viewModel.getStatus(
                     context: context, productDetails: productDetails),
                 if ("${productDetails.status}" != "0" &&
+                    "${productDetails.status}" != "2" &&
                     productDetails.sellStatus !=
                         StringHelper.sold.toLowerCase()) ...{
                   viewModel.getRemainDays(item: productDetails)
@@ -471,8 +490,9 @@ class MyAdsView extends BaseView<MyAdsVM> {
                       ?.copyWith(fontFamily: FontRes.MONTSERRAT_MEDIUM),
                 ),
           if ("${productDetails.adStatus}" != "deactivate" &&
-                  "${productDetails.status}" == "0" ||
-              "${productDetails.status}" == "2") ...{
+              ("${productDetails.status}" == "0" ||
+                  "${productDetails.status}" == "2" ||
+                  viewModel.isAdExpired(productDetails))) ...{
             AppElevatedButton(
               onTap: () {
                 viewModel.handelPopupMenuItemClick(
@@ -485,8 +505,9 @@ class MyAdsView extends BaseView<MyAdsVM> {
             ),
           } else ...{
             if ("${productDetails.adStatus}" != "deactivate" &&
-                productDetails.sellStatus !=
-                    StringHelper.sold.toLowerCase()) ...{
+                productDetails.sellStatus != StringHelper.sold.toLowerCase() &&
+                "${productDetails.status}" == "1" &&
+                !viewModel.isAdExpired(productDetails)) ...{
               const Gap(10),
               InkWell(
                 onTap: () async {
@@ -570,35 +591,67 @@ class MyAdsView extends BaseView<MyAdsVM> {
     );
   }
 
+  String getSalaryDisplayText(ProductDetailModel? productData) {
+    if (productData?.categoryId != 9) return "";
+
+    // Get the raw values directly from the model
+    String fromValue = productData?.salleryFrom?.toString() ?? "";
+    String toValue = productData?.salleryTo?.toString() ?? "";
+
+    // Parse to numbers for comparison, treating empty/null as 0
+    num fromNum = num.tryParse(fromValue) ?? 0;
+    num toNum = num.tryParse(toValue) ?? 0;
+
+    // Format for display (only if > 0)
+    String fromFormatted =
+        fromNum > 0 ? Utils.formatPrice(fromNum.toStringAsFixed(0)) : "";
+    String toFormatted =
+        toNum > 0 ? Utils.formatPrice(toNum.toStringAsFixed(0)) : "";
+
+    // Both values exist and are not zero
+    if (fromNum > 0 && toNum > 0) {
+      return "${StringHelper.egp} $fromFormatted - ${StringHelper.egp} $toFormatted";
+    }
+    // Only salary from exists
+    else if (fromNum > 0 && toNum == 0) {
+      return "${StringHelper.salaryFrom}: ${StringHelper.egp} $fromFormatted";
+    }
+    // Only salary to exists
+    else if (fromNum == 0 && toNum > 0) {
+      return "${StringHelper.salaryTo}: ${StringHelper.egp} $toFormatted";
+    }
+
+    // Both are zero or empty - fallback
+    return "${StringHelper.egp} 0";
+  }
+
   rejectedReason(BuildContext context, MyAdsVM viewModel,
       ProductDetailModel productDetails) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 10), // Spacing before the link
+        SizedBox(height: 10),
+        // Better Learn More Button - keeping your existing dialog
         GestureDetector(
           onTap: () {
+            // Keep your existing dialog code exactly as it is
             showDialog(
               context: context,
               builder: (BuildContext context) {
                 return Dialog(
-                  backgroundColor: Colors.white, // White background
+                  backgroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(12.0), // Rounded corners
+                    borderRadius: BorderRadius.circular(12.0),
                   ),
                   child: Container(
-                    width: MediaQuery.of(context).size.width *
-                        0.98, // Increased to 95%
+                    width: MediaQuery.of(context).size.width * 0.98,
                     constraints: BoxConstraints(
-                      maxHeight: MediaQuery.of(context).size.height *
-                          0.7, // Increased to 60%
+                      maxHeight: MediaQuery.of(context).size.height * 0.7,
                     ),
                     child: Stack(
                       children: [
                         Padding(
-                          padding:
-                              const EdgeInsets.all(24.0), // Padding for content
+                          padding: const EdgeInsets.all(24.0),
                           child: SingleChildScrollView(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -606,21 +659,20 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                 Text(
                                   "Rejected Reason",
                                   style: TextStyle(
-                                    color: Colors.black, // Black text
-                                    fontSize: 22, // Bold title
+                                    color: Colors.black,
+                                    fontSize: 22,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                SizedBox(
-                                    height: 16), // Space between title and text
+                                SizedBox(height: 16),
                                 Text(
                                   productDetails.rejectedReason ??
                                       "No reason provided.",
                                   style: TextStyle(
-                                    color: Colors.black, // Black text
-                                    fontSize: 16, // Readable size
+                                    color: Colors.black,
+                                    fontSize: 16,
                                   ),
-                                  softWrap: true, // Wraps long text
+                                  softWrap: true,
                                 ),
                               ],
                             ),
@@ -633,7 +685,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                             icon: Icon(Icons.close,
                                 color: Colors.black, size: 30),
                             onPressed: () {
-                              Navigator.of(context).pop(); // Close dialog
+                              Navigator.of(context).pop();
                             },
                           ),
                         ),
@@ -644,12 +696,32 @@ class MyAdsView extends BaseView<MyAdsVM> {
               },
             );
           },
-          child: Text(
-            StringHelper.learnMore,
-            style: Theme.of(context)
-                .textTheme
-                .titleSmall
-                ?.copyWith(color: Colors.blue),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              color: Colors.red.shade50,
+              borderRadius: BorderRadius.circular(6),
+              border: Border.all(color: Colors.red.shade200, width: 1),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.info_outline,
+                  size: 14,
+                  color: Colors.red.shade600,
+                ),
+                const SizedBox(width: 6),
+                Text(
+                  StringHelper.learnMore,
+                  style: TextStyle(
+                    color: Colors.red.shade600,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ],

@@ -10,6 +10,12 @@ class ApiConstants {
   static String signupUrl() => "$_baseUrl/signup";
   static String editProfileUrl() => "$_baseUrl/edit/profile";
   static String deleteAccountUrl() => "$_baseUrl/delete/account";
+  static String deleteAccountImmediateUrl() =>
+      "$_baseUrl/delete/account/immediate";
+  static String requestAccountDeletionUrl() =>
+      "$_baseUrl/request/account/deletion";
+  static String cancelAccountDeletionUrl() =>
+      "$_baseUrl/cancel/account/deletion";
   static String logoutUrl() => "$_baseUrl/logout";
   static String getProfileUrl() => "$_baseUrl/get/profile/detail";
   static String getCmsUrl({String? id}) => "$_baseUrl/get/cms/$id";
@@ -25,7 +31,7 @@ class ApiConstants {
   static String addProductsUrl() => "$_baseUrl/add/products";
   static String editProductsUrl() => "$_baseUrl/edit/product";
   static String storeSearchesUrl() => "$_baseUrl/store/searches";
-  static String contactFormUrl() => "$_baseUrl/contact";
+  static String contactFormUrl() => "$_baseUrl/contactForm";
   static String getSearchesUrl() => "$_baseUrl/get/searches";
   static String deleteSearchesUrl() => "$_baseUrl/delete/searches";
   static String getProductsUrl({
@@ -35,6 +41,7 @@ class ApiConstants {
     double? longitude,
     String? search,
     required String? sellStatus,
+    double? distance,
   }) {
     final Map<String, dynamic> queryParams = {
       'limit': limit,
@@ -102,7 +109,7 @@ class ApiConstants {
       "$_baseUrl/get/models?brand_id=$brandId";
 
   static String getSearchProductUrl({String? search}) =>
-      "$_baseUrl/serach/category/product?search=$search&&sell_status=ongoing";
+      "$_baseUrl/search/category/product?search=$search&sell_status=ongoing";
 
   static String getNotificationUrl({
     int? limit = 1000,
@@ -123,7 +130,17 @@ class ApiConstants {
   static String getAmnitiesUrl() => "$_baseUrl/get/amnities";
   static String deleteProductUrl() => "$_baseUrl/delete/product";
   static String deactivateProductUrl() => "$_baseUrl/edit/product";
+  static String confirmCancelDeletionUrl() =>
+      "$_baseUrl/confirm-cancel-deletion";
+  static String checkPhoneExistsUrl(
+          {required String phoneNumber, required String countryCode}) =>
+      "$_baseUrl/check/phone/exists?phone_no=${Uri.encodeComponent(phoneNumber)}&country_code=${Uri.encodeComponent(countryCode)}";
+  static String checkEmailExistsUrl({required String email}) =>
+      "$_baseUrl/check/email/exists?email=${Uri.encodeComponent(email)}";
+
   static String getFaqUrl() => "$_baseUrl/get/faqs";
+  static String checkDeletionStatusUrl() => "$_baseUrl/check-deletion-status";
+
   static String getBlockListUrl() => "$_baseUrl/block/list?limit=1000&page=1";
   static String sendMailForVerifyUrl() => "$_baseUrl/send/mail/for/verify";
   static String verifyOtpEmailUrl() => "$_baseUrl/verify/otp/email";

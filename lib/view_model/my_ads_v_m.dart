@@ -69,6 +69,7 @@ class MyAdsVM extends BaseViewModel {
   List<ProductDetailModel> draftAds = [];
   List<ProductDetailModel> expiredAds = [];
   List<ProductDetailModel> rejectedAds = [];
+  Map<int, String> localUpdatedTimes = {}; // Track locally updated times
 
   int selectedFilter = 0; // Tracks the currently selected filter
 
@@ -88,6 +89,7 @@ class MyAdsVM extends BaseViewModel {
     _learnMore = value;
     notifyListeners();
   }
+
   @override
   void onInit() {
     // TODO: implement onInit
@@ -99,7 +101,7 @@ class MyAdsVM extends BaseViewModel {
   }
 
   @override
-  void onReady(){
+  void onReady() {
     // TODO: implement onReady
     DbHelper.box.listenKey('isGuest', (value) {
       isGuest = DbHelper.getIsGuest();
@@ -132,34 +134,63 @@ class MyAdsVM extends BaseViewModel {
     refreshController.loadComplete();
   }
 
+// Helper method to check if ad is expired
+  bool isAdExpired(ProductDetailModel ad) {
+    if (ad.approvalDate == null || ad.approvalDate!.isEmpty) {
+      // If no approval date, check created date as fallback
+      if (ad.createdAt == null || ad.createdAt!.isEmpty) return false;
+      DateTime createdDate = DateTime.parse(ad.createdAt!);
+      return DateTime.now().difference(createdDate).inDays > 30;
+    }
+
+    try {
+      DateTime approvalDate = DateFormat("yyyy-MM-dd").parse(ad.approvalDate!);
+      DateTime expirationDate = approvalDate.add(Duration(days: 30));
+      return DateTime.now().isAfter(expirationDate);
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<void> getProductsApi({bool loading = false}) async {
     if (loading) isLoading = loading;
     ApiRequest apiRequest = ApiRequest(
         url: ApiConstants.getUsersProductsUrl(
-            limit: 1000, page: 1, userId: "${DbHelper.getUserModel()?.id}"),
+                limit: 1000,
+                page: 1,
+                userId: "${DbHelper.getUserModel()?.id}") +
+            "&show_all_ads=true",
         requestType: RequestType.get);
     var response = await BaseClient.handleRequest(apiRequest);
     MapResponse<HomeListModel> model =
         MapResponse.fromJson(response, (json) => HomeListModel.fromJson(json));
+
     allAds.clear();
     liveAds.clear();
     underReviewAds.clear();
     expiredAds.clear();
     rejectedAds.clear();
+
     allAds.addAll(model.body?.data ?? []);
+
+    // Sort by most recent (updatedAt or createdAt)
+    allAds.sort((a, b) {
+      String timeA = a.updatedAt ?? a.createdAt ?? '';
+      String timeB = b.updatedAt ?? b.createdAt ?? '';
+      if (timeA.isEmpty && timeB.isEmpty) return 0;
+      if (timeA.isEmpty) return 1;
+      if (timeB.isEmpty) return -1;
+      return DateTime.parse(timeB).compareTo(DateTime.parse(timeA));
+    });
 
     // Categorize ads based on their status
     liveAds = allAds
-        .where((ad) => ad.status == 1 && ad.sellStatus == 'ongoing')
-        .toList();
-    underReviewAds = allAds.where((ad) => ad.status == 0).toList();
-    expiredAds = allAds
         .where((ad) =>
-            DateTime.now()
-                .difference(DateTime.parse(ad.createdAt ?? ''))
-                .inDays >
-            30)
+            ad.status == 1 && ad.sellStatus == 'ongoing' && !isAdExpired(ad))
         .toList();
+    underReviewAds =
+        allAds.where((ad) => ad.status == 0 && !isAdExpired(ad)).toList();
+    expiredAds = allAds.where((ad) => isAdExpired(ad)).toList();
     rejectedAds = allAds.where((ad) => ad.status == 2).toList();
 
     // Set initial filter to All Ads
@@ -169,7 +200,12 @@ class MyAdsVM extends BaseViewModel {
     notifyListeners();
   }
 
-  String getCreatedAt({String? time}) {
+  String getCreatedAt({String? time, int? productId}) {
+    // Check if we have a local updated time for this product
+    if (productId != null && localUpdatedTimes.containsKey(productId)) {
+      time = localUpdatedTimes[productId];
+    }
+
     String dateTimeString = "2024-06-25T01:01:47.000Z";
     DateTime dateTime = DateTime.parse(time ?? dateTimeString);
     int timestamp = dateTime.millisecondsSinceEpoch ~/ 1000;
@@ -206,47 +242,55 @@ class MyAdsVM extends BaseViewModel {
 
         return;
       case 2:
-        deactivateDialog(context: context,
+        deactivateDialog(
+            context: context,
             title: StringHelper.deactivate,
             description: StringHelper.deactivate.toLowerCase(),
-            onTap: ()async{
-          await deactivateProductApi(id: item?.id,status: "deactivate");
-          if (context.mounted) context.pop();
-        });
+            onTap: () async {
+              await deactivateProductApi(id: item?.id, status: "deactivate");
+              if (context.mounted) context.pop();
+            });
 
         return;
       case 3:
-        deactivateDialog(context: context,
+        deactivateDialog(
+            context: context,
             title: StringHelper.remove,
             description: StringHelper.remove.toLowerCase(),
-            onTap: ()async{
+            onTap: () async {
               await removeProductApi(id: item?.id);
               if (context.mounted) context.pop();
             });
 
       case 4:
         navigateToEditProduct(context: context, item: item);
-        // deactivateDialog(context: context,
-        //     title: "Republish",
-        //     description: "Republish",
-        //     image: AssetsRes.TICK_MARK_LOTTIE,
-        //     onTap: ()async{
-        //       await deactivateProductApi(id: item?.id,status: "activate");
-        //       if (context.mounted) context.pop();
-        //     });
+      // deactivateDialog(context: context,
+      //     title: "Republish",
+      //     description: "Republish",
+      //     image: AssetsRes.TICK_MARK_LOTTIE,
+      //     onTap: ()async{
+      //       await deactivateProductApi(id: item?.id,status: "activate");
+      //       if (context.mounted) context.pop();
+      //     });
       default:
         return;
     }
   }
-  void deactivateDialog({required BuildContext context,String? title,String? description,String? image,required Function() onTap}) {
+
+  void deactivateDialog(
+      {required BuildContext context,
+      String? title,
+      String? description,
+      String? image,
+      required Function() onTap}) {
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext dialogContext) {
         return AppAlertDialogWithLottie(
-          lottieIcon: image ??AssetsRes.DELETE_LOTTIE,
-          title: title??"",
-          description: 'Are you sure you want to ${description??""} this ad?',
+          lottieIcon: image ?? AssetsRes.DELETE_LOTTIE,
+          title: title ?? "",
+          description: 'Are you sure you want to ${description ?? ""} this ad?',
           onTap: () {
             context.pop();
             DialogHelper.showLoading();
@@ -279,7 +323,7 @@ class MyAdsVM extends BaseViewModel {
     onRefresh();
   }
 
-  Future<void> deactivateProductApi({num? id,String? status}) async {
+  Future<void> deactivateProductApi({num? id, String? status}) async {
     DialogHelper.showLoading();
 
     ApiRequest apiRequest = ApiRequest(
@@ -297,32 +341,78 @@ class MyAdsVM extends BaseViewModel {
     onRefresh();
   }
 
-  void navigateToEditProduct(
+  Future<void> navigateToEditProduct(
       {ProductDetailModel? item, required BuildContext context}) async {
     CategoryModel category = CategoryModel(
-        id: item?.categoryId?.toInt(), name: item?.category?.name, type: item?.category?.type);
+        id: item?.categoryId?.toInt(),
+        name: item?.category?.name,
+        type: item?.category?.type);
     CategoryModel subCategory = CategoryModel(
-        id: item?.subCategoryId?.toInt(), name: item?.subCategory?.name, type: item?.subCategory?.type);
+        id: item?.subCategoryId?.toInt(),
+        name: item?.subCategory?.name,
+        type: item?.subCategory?.type);
     CategoryModel subSubCategory = CategoryModel(
-        id: item?.subSubCategoryId?.toInt(), name: item?.subSubCategory?.name, type: item?.subSubCategory?.type);
+        id: item?.subSubCategoryId?.toInt(),
+        name: item?.subSubCategory?.name,
+        type: item?.subSubCategory?.type);
 
     await Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => SellFormView(
-              screenType: "edit",
+                  screenType: "edit",
                   category: category,
                   subSubCategory: subSubCategory,
                   subCategory: subCategory,
                   type: category.type?.toLowerCase(),
                   item: item,
-                ))).then((value){
-                  if(value != null){
-                  Provider.of<ProductVM>(context, listen: false).getMyProductDetails(id: item?.id);
+                ))).then((value) {
+      if (value != null && value == true) {
+        Provider.of<ProductVM>(context, listen: false)
+            .getMyProductDetails(id: item?.id);
 
-                  }
+        // Track the local update time
+        if (item?.id != null) {
+          localUpdatedTimes[item!.id!] = DateTime.now().toIso8601String();
+        }
+
+        // Move the edited item to top
+        moveEditedItemToTop(item?.id);
+
+        // Refresh from API
+        onRefresh();
+      }
     });
-    onRefresh();
+  }
+
+  void moveEditedItemToTop(int? itemId) {
+    if (itemId == null) return;
+
+    // Find the item in allAds and move it to top
+    int index = allAds.indexWhere((item) => item.id == itemId);
+    if (index != -1) {
+      ProductDetailModel editedItem = allAds.removeAt(index);
+      allAds.insert(0, editedItem);
+
+      // Update other lists as well
+      _updateFilteredLists();
+
+      // Refresh the current filter
+      changeFilter(selectedFilter);
+
+      notifyListeners();
+    }
+  }
+
+  void _updateFilteredLists() {
+    liveAds = allAds
+        .where((ad) =>
+            ad.status == 1 && ad.sellStatus == 'ongoing' && !isAdExpired(ad))
+        .toList();
+    underReviewAds =
+        allAds.where((ad) => ad.status == 0 && !isAdExpired(ad)).toList();
+    expiredAds = allAds.where((ad) => isAdExpired(ad)).toList();
+    rejectedAds = allAds.where((ad) => ad.status == 2).toList();
   }
 
   // Method to change the selected filter and update the filtered list
@@ -362,19 +452,22 @@ class MyAdsVM extends BaseViewModel {
     notifyListeners(); // To update UI with the filtered list
   }
 
-  Widget getStatus({required BuildContext context,required ProductDetailModel productDetails}) {
+  Widget getStatus(
+      {required BuildContext context,
+      required ProductDetailModel productDetails}) {
+    // Check if expired first, regardless of status
+    if (isAdExpired(productDetails)) {
+      return AppElevatedButton(
+        onTap: () {},
+        title: StringHelper.expiredAds,
+        height: 30,
+        width: 100,
+        backgroundColor: Colors.red, // Red for Expired Ads
+      );
+    }
+
     switch (productDetails.status) {
       case 0:
-        if (DateTime.now().difference(DateTime.parse(productDetails.createdAt ?? '')).inDays >
-            30) {
-          return AppElevatedButton(
-            onTap: () {},
-            title: StringHelper.expiredAds,
-            height: 30,
-            width: 100,
-            backgroundColor: Colors.red, // Red for Expired Ads
-          );
-        }
         return AppElevatedButton(
           onTap: () {},
           title: StringHelper.review,
@@ -384,7 +477,8 @@ class MyAdsVM extends BaseViewModel {
         );
 
       case 1:
-        return productDetails.sellStatus?.toLowerCase() != StringHelper.sold.toLowerCase()
+        return productDetails.sellStatus?.toLowerCase() !=
+                StringHelper.sold.toLowerCase()
             ? AppElevatedButton(
                 onTap: () {},
                 title: StringHelper.active,
@@ -416,6 +510,20 @@ class MyAdsVM extends BaseViewModel {
   }
 
   Widget getRemainDays({required ProductDetailModel item}) {
+    // First check if the ad is rejected - don't show expiry for rejected ads
+    if (item.status == 2) {
+      return SizedBox.shrink(); // Don't show anything for rejected ads
+    }
+
+    // Check if the ad is expired
+    if (isAdExpired(item)) {
+      return Text(
+        StringHelper.expired,
+        style: TextStyle(
+            color: Colors.red, fontWeight: FontWeight.bold, fontSize: 12),
+      );
+    }
+
     String approvalDateString = item.approvalDate ?? '';
 
     if (approvalDateString.isNotEmpty) {
@@ -432,13 +540,13 @@ class MyAdsVM extends BaseViewModel {
       // Check if the date is expired
       if (remainingDays <= 0) {
         return Text(
-          'Expired',
+          StringHelper.expired,
           style: TextStyle(
               color: Colors.red, fontWeight: FontWeight.bold, fontSize: 12),
         );
       } else {
         return Text(
-          'Ad Expires in : $remainingDays Days',
+          '${StringHelper.adExpire} : $remainingDays ${StringHelper.days} ',
           style: TextStyle(
               color: Colors.green, fontWeight: FontWeight.w800, fontSize: 12),
         );

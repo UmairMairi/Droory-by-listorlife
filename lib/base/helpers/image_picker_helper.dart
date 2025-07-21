@@ -3,7 +3,11 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:list_and_life/base/helpers/string_helper.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImagePickerHelper {
@@ -14,178 +18,142 @@ class ImagePickerHelper {
   ///for picking image from camera and gallery
   static Future<String?> openImagePicker({
     required BuildContext context,
-    bool isCropping = true,
+    bool isCropping = false,
     bool isCircle = false,
+    bool forMultiple = false, // Add this parameter
   }) async {
     _imagePickerCompleter = Completer<String?>();
 
-    showModalBottomSheet(
+    await showModalBottomSheet(
       context: context,
-      useRootNavigator: false,
       backgroundColor: Colors.transparent,
-      builder: (BuildContext bc) => GestureDetector(
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-          padding: const EdgeInsets.symmetric(
-            vertical: 15,
-          ),
-          decoration: const BoxDecoration(
-              color: Colors.black87,
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.all(Radius.circular(30))),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(
-                height: 20,
+      builder: (BuildContext context) {
+        if (Platform.isIOS) {
+          return CupertinoActionSheet(
+            actions: <Widget>[
+              CupertinoActionSheetAction(
+                child: Text(StringHelper.camera),
+                onPressed: () async {
+                  Navigator.pop(context);
+                  isLoading = true;
+                  try {
+                    String? selectedImage = await pickImageFromCamera(
+                      isCropping: isCropping,
+                      isCircle: isCircle,
+                    );
+                    if (selectedImage != null) {
+                      _completeImagePicker(selectedImage);
+                    }
+                    await Future.delayed(const Duration(milliseconds: 250));
+                    isLoading = false;
+                  } catch (e) {
+                    await Future.delayed(const Duration(milliseconds: 250));
+                    isLoading = false;
+                  }
+                },
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    child: Column(
-                      children: [
-                        Container(
-                          height: 50,
-                          width: 50,
-                          decoration: const BoxDecoration(
-                              color: Colors.pinkAccent,
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Color(0x194A841C),
-                                  offset: Offset(0.0, 1.0), //(x,y)
-                                  blurRadius: 19,
-                                ),
-                              ]),
-                          child: const Icon(
-                            Icons.camera_alt_rounded,
-                            size: 25,
-                            color: Colors.white,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        const Text(
-                          "Camera",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12),
-                        )
-                      ],
-                    ),
+              CupertinoActionSheetAction(
+                child: Text(StringHelper.gallery),
+                onPressed: () async {
+                  Navigator.pop(context);
+                  if (forMultiple) {
+                    // Return special marker for multiple selection
+                    _completeImagePicker('OPEN_MULTI_GALLERY');
+                  } else {
+                    // Single image selection
+                    isLoading = true;
+                    try {
+                      String? selectedImage = await pickImageFromGallery(
+                        isCropping: isCropping,
+                        isCircle: isCircle,
+                      );
+                      if (selectedImage != null) {
+                        _completeImagePicker(selectedImage);
+                      }
+                      await Future.delayed(const Duration(milliseconds: 250));
+                      isLoading = false;
+                    } catch (e) {
+                      await Future.delayed(const Duration(milliseconds: 250));
+                      isLoading = false;
+                    }
+                  }
+                },
+              ),
+            ],
+            cancelButton: CupertinoActionSheetAction(
+              child: const Text('Cancel'),
+              isDefaultAction: true,
+              onPressed: () {
+                Navigator.pop(context);
+                _completeImagePicker(null);
+              },
+            ),
+          );
+        } else {
+          // Android
+          return SafeArea(
+            child: Container(
+              color: Colors.white,
+              child: Wrap(
+                children: <Widget>[
+                  ListTile(
+                    leading: const Icon(Icons.camera_alt),
+                    title: const Text('Camera'),
                     onTap: () async {
                       Navigator.pop(context);
                       isLoading = true;
                       try {
                         String? selectedImage = await pickImageFromCamera(
-                            isCropping: isCropping, isCircle: isCircle);
+                          isCropping: isCropping,
+                          isCircle: isCircle,
+                        );
                         if (selectedImage != null) {
-                          _completeImagePicker(
-                              selectedImage); // Complete the Future with the selected image path
+                          _completeImagePicker(selectedImage);
                         }
                         await Future.delayed(const Duration(milliseconds: 250));
                         isLoading = false;
                       } catch (e) {
-                        await Future.delayed(const Duration(milliseconds: 250));
-                        isLoading = false;
-                      } finally {
                         await Future.delayed(const Duration(milliseconds: 250));
                         isLoading = false;
                       }
                     },
                   ),
-                  const SizedBox(
-                    width: 60,
-                  ),
-                  GestureDetector(
-                    child: Column(
-                      children: [
-                        Container(
-                          height: 50,
-                          width: 50,
-                          decoration: const BoxDecoration(
-                              color: Color(0xff6BBBAE),
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Color(0x194A841C),
-                                  offset: Offset(0.0, 1.0), //(x,y)
-                                  blurRadius: 19,
-                                ),
-                              ]),
-                          child: const Icon(
-                            Icons.image_rounded,
-                            size: 25,
-                            color: Colors.white,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        const Text(
-                          "Gallery",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12),
-                        )
-                      ],
-                    ),
+                  ListTile(
+                    leading: const Icon(Icons.photo_library),
+                    title: const Text('Gallery'),
                     onTap: () async {
                       Navigator.pop(context);
-                      isLoading = true;
-                      try {
-                        String? selectedImage = await pickImageFromGallery(
-                            isCropping: isCropping, isCircle: isCircle);
-                        if (selectedImage != null) {
-                          _completeImagePicker(
-                              selectedImage); // Complete the Future with the selected image path
+                      if (forMultiple) {
+                        // Return special marker for multiple selection
+                        _completeImagePicker('OPEN_MULTI_GALLERY');
+                      } else {
+                        // Single image selection
+                        isLoading = true;
+                        try {
+                          String? selectedImage = await pickImageFromGallery(
+                            isCropping: isCropping,
+                            isCircle: isCircle,
+                          );
+                          if (selectedImage != null) {
+                            _completeImagePicker(selectedImage);
+                          }
+                          await Future.delayed(
+                              const Duration(milliseconds: 250));
+                          isLoading = false;
+                        } catch (e) {
+                          await Future.delayed(
+                              const Duration(milliseconds: 250));
+                          isLoading = false;
                         }
-                        await Future.delayed(const Duration(milliseconds: 250));
-                        isLoading = false;
-                      } catch (e) {
-                        await Future.delayed(const Duration(milliseconds: 250));
-                        isLoading = false;
-                      } finally {
-                        await Future.delayed(const Duration(milliseconds: 250));
-                        isLoading = false;
                       }
                     },
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 15,
-              ),
-              InkWell(
-                child: const Padding(
-                  padding: EdgeInsets.all(13.0),
-                  child: Text(
-                    "Cancel",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.normal,
-                      fontSize: 14,
-                      decoration: TextDecoration.underline,
-                    ),
-                  ),
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              )
-            ],
-          ),
-        ),
-        onTap: () {
-          FocusScope.of(context).requestFocus(FocusScopeNode());
-        },
-      ),
+            ),
+          );
+        }
+      },
     );
 
     return _imagePickerCompleter.future;
@@ -208,29 +176,82 @@ class ImagePickerHelper {
     return null;
   }
 
-  static Future<String?> pickImageFromGallery(
-      {bool isCropping = false, bool isCircle = false}) async {
-    XFile? path = await ImagePicker().pickImage(source: ImageSource.gallery);
+  static Future<String?> pickImageFromGallery({
+    bool isCropping = false,
+    bool isCircle = false,
+  }) async {
+    // 1) Pick
+    XFile? picked = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (picked == null) return null;
+    String filePath = picked.path;
 
-    if (path != null && isCropping) {
-      String? croppedPath =
-          await cropSelectedImage(path.path, isCircle: isCircle);
-      return croppedPath;
+    // 2) Optional crop
+    if (isCropping) {
+      String? cropped = await cropSelectedImage(filePath, isCircle: isCircle);
+      if (cropped != null) filePath = cropped;
     }
-    return path?.path;
+
+    // 3) Compress with fallback
+    String finalPath = filePath;
+    try {
+      final dir = await getTemporaryDirectory();
+      final target = '${dir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
+      final compressed = await FlutterImageCompress.compressAndGetFile(
+        filePath,
+        target,
+        quality: 75,
+        minWidth: 800,
+        minHeight: 600,
+      );
+      if (compressed != null && await File(compressed.path).exists()) {
+        finalPath = compressed.path;
+      }
+    } catch (e) {
+      print('⚠️ Compression failed, using original: $e');
+    }
+
+    print('✔️ Image path returned: $finalPath');
+    return finalPath;
   }
 
-  /// Pick image from Gallery and return cropped image
-  Future<List<File>?> pickMultipleImagesFromGallery(
-      {CropAspectRatioPreset? cropAspectRatioPreset}) async {
-    List<XFile>? paths = await ImagePicker().pickMultiImage(imageQuality: 30);
-    List<File> selectedImages = [];
-    if (paths.isNotEmpty) {
-      for (XFile file in paths) {
-        selectedImages.add(File(file.path));
+  static Future<List<String>?> pickMultipleImagesFromGallery({
+    bool compress = true,
+  }) async {
+    // 1) Let user pick multiple
+    List<XFile>? picks = await ImagePicker().pickMultiImage();
+    if (picks == null || picks.isEmpty) return null;
+
+    final dir = await getTemporaryDirectory();
+    List<String> finalPaths = []; // ← declare this
+
+    // 2) Loop & compress
+    for (var xfile in picks) {
+      String path = xfile.path;
+
+      if (compress) {
+        try {
+          final target =
+              '${dir.path}/${DateTime.now().millisecondsSinceEpoch}_${finalPaths.length}.jpg';
+          final compressed = await FlutterImageCompress.compressAndGetFile(
+            path,
+            target,
+            quality: 75,
+            minWidth: 800,
+            minHeight: 600,
+          );
+          if (compressed != null && await File(compressed.path).exists()) {
+            path = compressed.path;
+          }
+        } catch (e) {
+          print('⚠️ Multi-compress failed for $path: $e');
+        }
       }
+
+      finalPaths.add(path);
+      print('✔️ Multi-picked: $path (${await File(path).length()} bytes)');
     }
-    return selectedImages;
+
+    return finalPaths;
   }
 
   /// Pick image from Camera and return cropped image

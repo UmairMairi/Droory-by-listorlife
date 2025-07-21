@@ -59,40 +59,31 @@ class Utils {
       required String image,
       required BuildContext context}) async {
     final box = context.findRenderObject() as RenderBox?;
+    if (box == null) {
+      debugPrint("RenderBox is null, cannot share");
+      return;
+    }
     Directory tempDir = await getTemporaryDirectory();
     final path = '${tempDir.path}/daroory.jpeg';
     await Dio().download(image, path);
     await Share.shareXFiles(
       [XFile(path)],
-      text: title,
-      subject: 'Check out this listing on Daroory',
-      sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+      text: '${StringHelper.shareListing}\n$title',
+      subject: StringHelper.shareListing,
+      sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size,
     );
   }
 
   static void onShareProduct(BuildContext context, String title) async {
-    //final box = context.findRenderObject() as RenderBox?;
     try {
-      SharePlus.instance.share(
-          ShareParams(text: title,
-              title: "Daroory",
-              subject: 'Check out this listing on Daroory')
+      final box = context.findRenderObject() as RenderBox?;
+      final shareMessage = StringHelper.shareListing;
+      await Share.share(
+        '$shareMessage\n$title',
+        subject: shareMessage,
+        sharePositionOrigin:
+            box != null ? box.localToGlobal(Offset.zero) & box.size : null,
       );
-      // final data = await rootBundle.load(AssetsRes.APP_LOGO);
-      // final buffer = data.buffer;
-      // await Share.share(
-      //   title,
-      //   // [
-      //   //   XFile.fromData(
-      //   //     buffer.asUint8List(data.offsetInBytes, data.lengthInBytes),
-      //   //     name: AssetsRes.APP_LOGO,
-      //   //     mimeType: 'image/png',
-      //   //   ),
-      //   // ],
-      //   // text: title,
-      //   subject: 'Check out this listing on Daroory',
-      //   sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
-      // );
     } catch (e) {
       debugPrint("share error $e");
     }
@@ -189,11 +180,11 @@ class Utils {
             results.add("Move-in Ready");
             break;
           case 'under construction':
-          case 'تحت الإنشاء':
+          case 'غير مشطب':
             results.add("Under Construction");
             break;
           case 'shell and core':
-          case 'شل والأساسية':
+          case 'محارة وحلوق':
             results.add("Shell and Core");
             break;
           case 'semi-finished':
@@ -208,14 +199,28 @@ class Utils {
           case 'إعادة بيع':
             results.add("Resell");
             break;
+          case 'ground':
+          case 'الطابق الأرضي':
+          case 'أرضي': // Added new case for Arabic term in UI
+            results.add("Ground");
+          case 'last floor':
+          case 'الطابق الأخير':
+            results.add("Last Floor");
+            break;
+          case 'other':
+          case 'أخرى':
+            results.add("Other");
+            break;
           case 'agent':
           case 'عامل':
             results.add("Agent");
             break;
+
           case 'landlord':
           case 'المالك':
             results.add("Landlord");
             break;
+
           default:
             results.add(t);
         }
@@ -235,10 +240,10 @@ class Utils {
       case 'الانتقال جاهز':
         return "Move-in Ready";
       case 'under construction':
-      case 'تحت الإنشاء':
+      case 'غير مشطب':
         return "Under Construction";
       case 'shell and core':
-      case 'شل والأساسية':
+      case 'محارة وحلوق':
         return "Shell and Core";
       case 'semi-finished':
       case 'نصف تشطيب':
@@ -255,21 +260,31 @@ class Utils {
       case 'landlord':
       case 'المالك':
         return "Landlord";
-      case 'contract':
-      case 'تعاقدي':
-        return "Contract";
+      case 'ground':
+      case 'الطابق الأرضي':
+      case 'أرضي': // Added new case for Arabic term in UI
+        return "Ground";
+      case 'last floor':
+      case 'الطابق الأخير':
+        return "Last Floor";
+      case 'freelance':
+      case 'فريلانس':
+        return "Freelance";
       case 'full time':
       case 'دوام كامل':
         return "Full Time";
-      case 'part-time':
+      case 'part time':
+      case "Part-time": // Changed from 'part-time' to 'part time'
       case 'دوام جزئي':
-        return "Part-time";
-      case 'temporary':
-      case 'مؤقت':
-        return "Temporary";
+        return "Part time";
+      case 'internship':
+      case 'تدريب':
+        return "Internship";
       case 'remote':
       case 'بعيد':
         return "Remote";
+      case '10+':
+        return "11";
       case 'office-based':
       case 'القائم على المكتب':
         return "Office-based";
@@ -279,6 +294,15 @@ class Utils {
       case 'field-based':
       case 'على أساس ميداني':
         return "Field-based";
+      case 'automatic':
+      case 'اوتوماتيك':
+        return "Automatic";
+      case 'other':
+      case 'أخرى':
+        return "Other";
+      case 'manual':
+      case 'مانيوال':
+        return "Manual";
       default:
         return type ?? "";
     }
@@ -300,11 +324,11 @@ class Utils {
             results.add(StringHelper.moveInReady);
             break;
           case 'under construction':
-          case 'تحت الإنشاء':
+          case 'غير مشطب':
             results.add(StringHelper.underConstruction);
             break;
           case 'shell and core':
-          case 'شل والأساسية':
+          case "محارة وحلوق":
             results.add(StringHelper.shellAndCore);
             break;
           case 'semi-finished':
@@ -327,6 +351,18 @@ class Utils {
           case 'المالك':
             results.add(StringHelper.landlord);
             break;
+          case 'ground':
+          case 'الطابق الأرضي':
+          case 'أرضي': // Added new case for Arabic term in UI
+            results.add(StringHelper.ground);
+          case 'other':
+          case 'أخرى':
+            results.add(StringHelper.other);
+            break;
+          case 'last floor':
+          case 'الطابق الأخير':
+            results.add(StringHelper.lastFloor);
+            break;
           default:
             results.add(t);
         }
@@ -339,7 +375,7 @@ class Utils {
     switch ((type ?? "").toLowerCase()) {
       case 'i am looking job':
       case 'أبحث عن عمل':
-        return StringHelper.lookingFor;
+        return StringHelper.lookingJob;
       case 'i am hiring':
       case 'أنا أقوم بالتوظيف':
         return StringHelper.hiringJob;
@@ -347,10 +383,10 @@ class Utils {
       case 'الانتقال جاهز':
         return StringHelper.moveInReady;
       case 'under construction':
-      case 'تحت الإنشاء':
+      case 'غير مشطب':
         return StringHelper.underConstruction;
       case 'shell and core':
-      case 'شل والأساسية':
+      case "محارة وحلوق":
         return StringHelper.shellAndCore;
       case 'semi-finished':
       case 'نصف تشطيب':
@@ -367,17 +403,26 @@ class Utils {
       case 'landlord':
       case 'المالك':
         return StringHelper.landlord;
-      case 'contract':
-      case 'تعاقدي':
+      case 'freelance':
+      case 'فريلانس':
         return StringHelper.contract;
+      case 'ground':
+      case 'الطابق الأرضي':
+      case 'أرضي': // Added new case for Arabic term in UI
+        return StringHelper.ground;
+      case 'last floor':
+      case 'الطابق الأخير':
+        return StringHelper.lastFloor;
+      case '11':
+        return "10+";
       case 'full time':
       case 'دوام كامل':
         return StringHelper.fullTime;
-      case 'part-time':
+      case 'part time': // Changed from 'part-time' to 'part time'
       case 'دوام جزئي':
         return StringHelper.partTime;
-      case 'temporary':
-      case 'مؤقت':
+      case 'internship':
+      case 'تدريب':
         return StringHelper.temporary;
       case 'remote':
       case 'بعيد':
@@ -393,16 +438,61 @@ class Utils {
         return StringHelper.fieldBased;
       case 'automatic':
         return StringHelper.automatic;
+      case 'other':
+      case 'أخرى':
+        return StringHelper.other;
       case 'manual':
         return StringHelper.manual;
 
-        case 'new':
+      case 'new':
         return StringHelper.newText;
-        case 'used':
+      case 'used':
         return StringHelper.used;
       default:
         return type ?? "";
     }
+  }
+
+  static String getWorkExperience(String? experience) {
+    if ((experience ?? "").isEmpty) return '';
+
+    switch ((experience ?? "").toLowerCase()) {
+      case 'just graduated':
+        return StringHelper.noExperience;
+      case '1–3 yrs':
+      case '1-3 yrs':
+        return StringHelper.oneToThreeYears;
+      case '3–5 yrs':
+      case '3-5 yrs':
+        return StringHelper.threeToFiveYears;
+      case '5–10 yrs':
+      case '5-10 yrs':
+        return StringHelper.fiveToTenYears;
+      case '11': // Backend value for "10+ yrs"
+        return StringHelper
+            .tenPlusYears; // Display as "10+ yrs" or Arabic equivalent
+      default:
+        return experience ?? "";
+    }
+  }
+
+  static String setWorkExperience(String? experience) {
+    if ((experience ?? "").isEmpty) return '';
+
+    // Map display values (including translations) to backend values
+    if (experience == StringHelper.noExperience) {
+      return "Just graduated";
+    } else if (experience == StringHelper.oneToThreeYears) {
+      return "1–3 yrs";
+    } else if (experience == StringHelper.threeToFiveYears) {
+      return "3–5 yrs";
+    } else if (experience == StringHelper.fiveToTenYears) {
+      return "5–10 yrs";
+    } else if (experience == StringHelper.tenPlusYears) {
+      return "11"; // Send "11" to backend for "10+ yrs"
+    }
+
+    return experience ?? "";
   }
 
   static String setFurnished(String? type) {
@@ -427,6 +517,7 @@ class Utils {
         return type ?? "";
     }
   }
+
   static String getColor(String? color) {
     if ((color ?? "").isEmpty) return "";
 
@@ -472,23 +563,254 @@ class Utils {
     }
   }
 
+  static String setColor(String? color) {
+    if ((color ?? "").isEmpty) return "";
+
+    // Check if the color matches any of the localized values in StringHelper.carColorOptions
+    // and return the English equivalent
+    if (color == LocaleService.translate('red')) return 'Red';
+    if (color == LocaleService.translate('blue')) return 'Blue';
+    if (color == LocaleService.translate('green')) return 'Green';
+    if (color == LocaleService.translate('black')) return 'Black';
+    if (color == LocaleService.translate('white')) return 'White';
+    if (color == LocaleService.translate('silver')) return 'Silver';
+    if (color == LocaleService.translate('gray')) return 'Gray';
+    if (color == LocaleService.translate('burgundy')) return 'Burgundy';
+    if (color == LocaleService.translate('gold')) return 'Gold';
+    if (color == LocaleService.translate('beige')) return 'Beige';
+    if (color == LocaleService.translate('orange')) return 'Orange';
+    if (color == LocaleService.translate('other_color')) return 'Other color';
+
+    return color ?? "";
+  }
+
+// Add this method to handle getting storage values from backend
+  static String getRam(String? ram) {
+    if ((ram ?? "").isEmpty) return '';
+
+    switch (ram?.trim()) {
+      case 'Less than 1':
+        return StringHelper.lessThan1GB;
+      case '1':
+        return StringHelper.gb1;
+      case '2':
+        return StringHelper.gb2;
+      case '3':
+        return StringHelper.gb3;
+      case '4':
+        return StringHelper.gb4;
+      case '6':
+        return StringHelper.gb6;
+      case '8':
+        return StringHelper.gb8;
+      case '12':
+        return StringHelper.gb12;
+      case '16':
+        return StringHelper.gb16;
+      case '17': // Backend value for "More than 16"
+        return StringHelper.gb16Plus;
+      case 'Less than 4':
+        return StringHelper.lessThan4GB;
+      case '32':
+        return StringHelper.gb32;
+      case '64':
+        return StringHelper.gb64;
+      case '65': // Backend value for "More than 64"
+        return StringHelper.gb64Plus;
+      default:
+        return ram ?? '';
+    }
+  }
+
+// Set RAM for backend (from frontend to backend)
+  static String setRam(String? ram) {
+    if ((ram ?? "").isEmpty) return '';
+
+    // Check against localized values
+    if (ram == StringHelper.lessThan1GB) return 'Less than 1';
+    if (ram == StringHelper.gb1) return '1';
+    if (ram == StringHelper.gb2) return '2';
+    if (ram == StringHelper.gb3) return '3';
+    if (ram == StringHelper.gb4) return '4';
+    if (ram == StringHelper.gb6) return '6';
+    if (ram == StringHelper.gb8) return '8';
+    if (ram == StringHelper.gb12) return '12';
+    if (ram == StringHelper.gb16) return '16';
+    if (ram == StringHelper.gb16Plus) return '17';
+    if (ram == StringHelper.lessThan4GB) return 'Less than 4';
+    if (ram == StringHelper.gb32) return '32';
+    if (ram == StringHelper.gb64) return '64';
+    if (ram == StringHelper.gb64Plus) return '65';
+
+    return ram ?? '';
+  }
+
+// Get Storage for display (from backend to frontend)
+  static String getStorage(String? storage) {
+    if ((storage ?? "").isEmpty) return '';
+
+    switch (storage?.trim()) {
+      case 'Less than 8':
+        return StringHelper.lessThan8GB;
+      case '8':
+        return StringHelper.gb8;
+      case '16':
+        return StringHelper.gb16;
+      case '32':
+        return StringHelper.gb32;
+      case '64':
+        return StringHelper.gb64;
+      case '128':
+        return StringHelper.gb128;
+      case '256':
+        return StringHelper.gb256;
+      case '512':
+        return StringHelper.gb512;
+      case '1000': // 1 TB in GB
+        return StringHelper.tb1;
+      case '1001': // Backend value for "More than 1 TB"
+        return StringHelper.tb1Plus;
+      case 'Less than 64':
+        return StringHelper.lessThan64GB;
+      case '1500': // 1.5 TB in GB
+        return StringHelper.tb1_5;
+      case '2000': // 2 TB in GB
+        return StringHelper.tb2;
+      case '2001': // Backend value for "More than 2 TB"
+        return StringHelper.tb2Plus;
+      default:
+        return storage ?? '';
+    }
+  }
+
+// Set Storage for backend (from frontend to backend)
+  static String setStorage(String? storage) {
+    if ((storage ?? "").isEmpty) return '';
+
+    // Check against localized values
+    if (storage == StringHelper.lessThan8GB) return 'Less than 8';
+    if (storage == StringHelper.gb8) return '8';
+    if (storage == StringHelper.gb16) return '16';
+    if (storage == StringHelper.gb32) return '32';
+    if (storage == StringHelper.gb64) return '64';
+    if (storage == StringHelper.gb128) return '128';
+    if (storage == StringHelper.gb256) return '256';
+    if (storage == StringHelper.gb512) return '512';
+    if (storage == StringHelper.tb1) return '1000';
+    if (storage == StringHelper.tb1Plus) return '1001';
+    if (storage == StringHelper.lessThan64GB) return 'Less than 64';
+    if (storage == StringHelper.tb1_5) return '1500';
+    if (storage == StringHelper.tb2) return '2000';
+    if (storage == StringHelper.tb2Plus) return '2001';
+
+    return storage ?? '';
+  }
+
+  static String getStorageUnitText(dynamic value,
+      {required bool isForStorage}) {
+    if (value == null || "$value".isEmpty) return '';
+
+    String numericValue = value.toString();
+
+    if (isForStorage) {
+      // For storage, check if it's TB values
+      switch (numericValue) {
+        case '1000':
+          return StringHelper.tb1;
+        case '1001':
+          return StringHelper.tb1Plus;
+        case '1500':
+          return StringHelper.tb1_5;
+        case '2000':
+          return StringHelper.tb2;
+        case '2001':
+          return StringHelper.tb2Plus;
+        default:
+          return '$numericValue ${StringHelper.gigabyte}';
+      }
+    } else {
+      // For RAM, everything is in GB
+      return '$numericValue ${StringHelper.gigabyte}';
+    }
+  }
+
   static String getDoorsText(String? type) {
     if ((type ?? "").isEmpty) return "";
 
-    if ((type ?? "").contains('Doors')) {
-      // Extract the number part (assuming it's before the word 'Doors')
-      final number = (type ?? "").split(' ').first;
-      final label = DbHelper.getLanguage() == 'en' ? "Doors" : "أبواب";
-      return "$number $label";
+    // Map backend values to display values (StringHelper constants)
+    switch (type?.trim()) {
+      case '2 Doors':
+        return StringHelper.doors2;
+      case '3 Doors':
+        return StringHelper.doors3;
+      case '4 Doors':
+        return StringHelper.doors4;
+      case '6 Doors': // This is the backend value for "5+ Doors"
+        return StringHelper.doors5Plus;
+      default:
+        return type ?? "";
     }
-
-    return type ?? "";
   }
 
+  static String setDoorsText(String? type) {
+    if ((type ?? "").isEmpty) return '';
+
+    // Map display values to backend values
+    if (type == StringHelper.doors2) return '2 Doors';
+    if (type == StringHelper.doors3) return '3 Doors';
+    if (type == StringHelper.doors4) return '4 Doors';
+    if (type == StringHelper.doors5Plus)
+      return '6 Doors'; // Store "5+ Doors" as "6 Doors"
+
+    return type ?? '';
+  }
+
+  static String getBedroomsText(String? value) {
+    if ((value ?? "").isEmpty) return "";
+
+    // Convert backend to display value
+    if (value == "11") return "10+";
+    if (value == "9") return "8+";
+    if (value?.toLowerCase() == "studio") return StringHelper.studio;
+    if (value?.toLowerCase() == "استوديو") return StringHelper.studio;
+
+    return value ?? "";
+  }
+
+  static String setBedroomsText(String? value) {
+    if ((value ?? "").isEmpty) return "";
+
+    // Convert display to backend value
+    if (value == "10+") return "11";
+    if (value == "8+") return "9";
+    if (value == StringHelper.studio) return "Studio";
+
+    return value ?? "";
+  }
+
+  static String getBathroomsText(String? value) {
+    if ((value ?? "").isEmpty) return "";
+
+    // Convert backend to display value
+    if (value == "11") return "10+";
+    if (value == "9") return "8+";
+
+    return value ?? "";
+  }
+
+  static String setBathroomsText(String? value) {
+    if ((value ?? "").isEmpty) return "";
+
+    // Convert display to backend value
+    if (value == "10+") return "11";
+    if (value == "8+") return "9";
+
+    return value ?? "";
+  }
 
   static String getFurnished(String? type) {
     if ((type ?? "").isEmpty) return "";
-    var tt = (transformToSnakeCase(type??"")??"").toLowerCase();
+    var tt = (transformToSnakeCase(type ?? "") ?? "").toLowerCase();
 
     switch ((tt).toLowerCase()) {
       case "furnished":
@@ -558,7 +880,7 @@ class Utils {
 
       return results.join(', ');
     }
-    var tt = (transformToSnakeCase(type??"")??"").toLowerCase();
+    var tt = (transformToSnakeCase(type ?? "") ?? "").toLowerCase();
 
     switch ((tt).toLowerCase()) {
       case "water supply":
@@ -578,7 +900,7 @@ class Utils {
         return "Road Access";
       case "off plan":
       case "خارج الخطة":
-        return "Off Plan";
+        return "Off_Plan";
       case "ready":
       case "مستعد":
         return "Ready";
@@ -631,7 +953,7 @@ class Utils {
 
       return results.join(', ');
     }
-    var tt = (transformToSnakeCase(type??"")??"").toLowerCase();
+    var tt = (transformToSnakeCase(type ?? "") ?? "").toLowerCase();
 
     switch ((tt).toLowerCase()) {
       case "water supply":
@@ -665,13 +987,21 @@ class Utils {
     switch ((type ?? "")) {
       case "installment":
       case "تقسيط":
-        return "Installment";
-      case "cash or installment":
+        return "installment";
+      case "Cash or Installment":
       case "نقدا أو بالتقسيط":
-        return "Cash or Installment";
+        return "cash_or_installment";
       case "cash":
       case "نقدي":
-        return "Cash";
+        return "cash";
+      case "Part Time":
+      case "part time":
+      case "دوام جزئي":
+        return "part_time";
+      case "Full Time":
+      case "full time":
+      case "دوام كامل":
+        return "full_time";
       default:
         return type ?? "";
     }
@@ -680,9 +1010,8 @@ class Utils {
   static String? transformToSnakeCase(String? value) =>
       value?.toLowerCase().split('_').join(' ');
   static String getPaymentTyp(String? type) {
-
     if ((type ?? "").isEmpty) return "";
-    var tt = (transformToSnakeCase(type??"")??"").toLowerCase();
+    var tt = (transformToSnakeCase(type ?? "") ?? "").toLowerCase();
     debugPrint("ghhhhhg $tt");
     switch (tt) {
       case "installment":
@@ -694,6 +1023,12 @@ class Utils {
       case "cash":
       case "نقدي":
         return StringHelper.cash;
+      case "part time":
+      case "دوام جزئي":
+        return StringHelper.partTime;
+      case "full time":
+      case "دوام كامل":
+        return StringHelper.fullTime;
       default:
         return type ?? "";
     }
@@ -701,7 +1036,7 @@ class Utils {
 
   static String getFuel(String? fuelType) {
     if ((fuelType ?? "").isEmpty) return '';
-    var tt = (transformToSnakeCase(fuelType??"")??"").toLowerCase();
+    var tt = (transformToSnakeCase(fuelType ?? "") ?? "").toLowerCase();
     switch ((tt).toLowerCase()) {
       case 'petrol':
       case 'بنزين':
@@ -748,16 +1083,18 @@ class Utils {
 
   static String getEducationOptions(String? type) {
     if ((type ?? "").isEmpty) return '';
-    var tt = (transformToSnakeCase(type??"")??"").toLowerCase();
 
-    switch ((tt).toLowerCase()) {
-      case 'none':
-      case 'لا أحد':
-        return StringHelper.none;
+    // Convert to lowercase and remove 'snake_case' formatting
+    var tt = (transformToSnakeCase(type ?? "") ?? "").toLowerCase();
+
+    switch (tt) {
+      case 'no education':
+      case 'غير متعلم':
+        return StringHelper.noEducation;
       case 'student':
       case 'طالب':
         return StringHelper.student;
-      case 'high-secondary school':
+      case 'high/secondary school':
       case 'المدرسة الثانوية العليا':
         return StringHelper.highSchool;
       case 'diploma':
@@ -791,18 +1128,20 @@ class Utils {
 
   static String setEducationOptions(String? type) {
     if ((type ?? "").isEmpty) return '';
-    var tt = (transformToSnakeCase(type??"")??"").toLowerCase();
+    var tt = (transformToSnakeCase(type ?? "") ?? "").toLowerCase();
 
     switch ((tt).toLowerCase()) {
-      case 'none':
-      case 'لا أحد':
-        return 'None';
+      case 'no education':
+      case 'غير متعلم':
+        return 'No Education';
+      // case 'none': // Add "none" to map to "No Education"
+      //   return 'No Education';
       case 'student':
       case 'طالب':
         return 'Student';
-      case 'high-secondary school':
+      case 'high/Secondary School':
       case 'المدرسة الثانوية العليا':
-        return 'High-Secondary School';
+        return 'High/Secondary School';
       case 'diploma':
       case 'دبلوم':
         return 'Diploma';
@@ -834,7 +1173,7 @@ class Utils {
 
   static String carRentalTerm(String? type) {
     if ((type ?? "").isEmpty) return '';
-    var tt = (transformToSnakeCase(type??"")??"").toLowerCase();
+    var tt = (transformToSnakeCase(type ?? "") ?? "").toLowerCase();
 
     switch ((tt).toLowerCase()) {
       case 'hourly':
@@ -882,7 +1221,7 @@ class Utils {
 
   static String getProperty(String? type) {
     if ((type ?? "").isEmpty) return '';
-    var tt = (transformToSnakeCase(type??"")??"").toLowerCase();
+    var tt = (transformToSnakeCase(type ?? "") ?? "").toLowerCase();
 
     switch ((tt).toLowerCase()) {
       case 'apartment':
@@ -910,7 +1249,7 @@ class Utils {
       case "مبنى كامل":
         return StringHelper.fullBuilding;
       case "garage":
-      case "كراج":
+      case "جراج":
         return StringHelper.garage;
       case "warehouse":
       case "مستودع":
@@ -966,16 +1305,27 @@ class Utils {
       case "standalone villa":
       case "فيلا مستقلة":
         return StringHelper.standaloneVilla;
-      case "townhouse twin house":
-      case "تاون هاوس / توين هاوس":
-        return StringHelper.townhouse;
+      case 'sell':
+        return StringHelper.sell;
+      case 'rent':
+        return StringHelper.rent;
+      // Add cases for Arabic values
+      case 'بيع': // Arabic for "sell"
+        return StringHelper.sell;
+      case 'إيجار': // Arabic for "rent"
+        return StringHelper.rent;
       case "cabin":
-      case "كوخ":
+      case "كابينا":
         return StringHelper.cabin;
       case "townhouse":
       case "تاون هاوس":
         return StringHelper.townHouseText;
-      case "twin House":
+      case "townhouse/twinhouse":
+      case "townhouse / twin house":
+      case "تاون هاوس / توين هاوس":
+        return StringHelper
+            .townhouse; // or create a new StringHelper constant if needed
+      case "twin house":
       case "توين هاوس":
         return StringHelper.twinHouse;
       case "i-villa":
@@ -1017,7 +1367,7 @@ class Utils {
       case "مبنى كامل":
         return "Full building";
       case "garage":
-      case "كراج":
+      case "جراج":
         return "Garage";
       case "warehouse":
       case "مستودع":
@@ -1034,6 +1384,12 @@ class Utils {
       case "pharmacy":
       case "صيدلية":
         return "Pharmacy";
+      case 'sell':
+      case 'بيع':
+        return "Sell";
+      case 'rent':
+      case 'إيجار':
+        return "Rent";
       case "medical facility":
       case "مرفق طبي":
         return "Medical facility";
@@ -1073,11 +1429,12 @@ class Utils {
       case "standalone villa":
       case "فيلا مستقلة":
         return "Standalone Villa";
-      case "townhouse twin house":
+      case "townhouse/twinhouse":
+      case "townhouse / twin house":
       case "تاون هاوس / توين هاوس":
-        return "Townhouse Twin house";
+        return "Townhouse/Twinhouse";
       case "cabin":
-      case "كوخ":
+      case "كابينا":
         return "Cabin";
       case "townhouse":
       case "تاون هاوس":
@@ -1085,12 +1442,14 @@ class Utils {
       case "twin house":
       case "توين هاوس":
         return "twin house";
+
       case "i-villa":
       case "آي-فيلا":
         return "I-Villa";
       case "mansion":
       case "قصر":
         return "Mansion";
+
       default:
         return type ?? "";
     }
@@ -1101,5 +1460,209 @@ class Utils {
     var number = num.parse("${price ?? 0}");
     final formatter = NumberFormat('#,###.##');
     return formatter.format(number);
+  }
+
+  static String normalizeFilterValue(String? value) {
+    if ((value ?? "").isEmpty) return "";
+
+    // Handle special values with "+"
+    if (value?.endsWith("+") == true) {
+      // Extract the numeric part
+      String numPart = value!.substring(0, value.length - 1);
+      // For database queries that need to match or for numeric comparisons
+      return numPart;
+    }
+
+    return value ?? "";
+  }
+
+  static String getHorsePower(String? horsePower) {
+    if ((horsePower ?? "").isEmpty) return '';
+
+    // Map English values to StringHelper constants
+    switch (horsePower?.trim()) {
+      case 'Less than 100 HP':
+        return StringHelper.lessThan100HP;
+      case '100 - 200 HP':
+        return StringHelper.hp100To200;
+      case '200 - 300 HP':
+        return StringHelper.hp200To300;
+      case '300 - 400 HP':
+        return StringHelper.hp300To400;
+      case '400 - 500 HP':
+        return StringHelper.hp400To500;
+      case '500 - 600 HP':
+        return StringHelper.hp500To600;
+      case '600 - 700 HP':
+        return StringHelper.hp600To700;
+      case '700 - 800 HP':
+        return StringHelper.hp700To800;
+      case '800+ HP':
+        return StringHelper.hp800Plus;
+      case 'Other':
+        return StringHelper.other;
+      default:
+        return horsePower ?? '';
+    }
+  }
+
+  static String setHorsePower(String? horsePower) {
+    if ((horsePower ?? "").isEmpty) return '';
+
+    // Map translated values back to English
+    if (horsePower == StringHelper.lessThan100HP) return 'Less than 100 HP';
+    if (horsePower == StringHelper.hp100To200) return '100 - 200 HP';
+    if (horsePower == StringHelper.hp200To300) return '200 - 300 HP';
+    if (horsePower == StringHelper.hp300To400) return '300 - 400 HP';
+    if (horsePower == StringHelper.hp400To500) return '400 - 500 HP';
+    if (horsePower == StringHelper.hp500To600) return '500 - 600 HP';
+    if (horsePower == StringHelper.hp600To700) return '600 - 700 HP';
+    if (horsePower == StringHelper.hp700To800) return '700 - 800 HP';
+    if (horsePower == StringHelper.hp800Plus) return '800+ HP';
+    if (horsePower == StringHelper.other) return 'Other';
+
+    return horsePower ?? '';
+  }
+
+  static String getEngineCapacity(String? engineCapacity) {
+    if ((engineCapacity ?? "").isEmpty) return '';
+
+    // Map English values to StringHelper constants
+    switch (engineCapacity?.trim()) {
+      case 'Below 500 cc':
+        return StringHelper.below500cc;
+      case '500 - 999 cc':
+        return StringHelper.cc500To999;
+      case '1000 - 1499 cc':
+        return StringHelper.cc1000To1499;
+      case '1500 - 1999 cc':
+        return StringHelper.cc1500To1999;
+      case '2000 - 2499 cc':
+        return StringHelper.cc2000To2499;
+      case '2500 - 2999 cc':
+        return StringHelper.cc2500To2999;
+      case '3000 - 3499 cc':
+        return StringHelper.cc3000To3499;
+      case '3500 - 3999 cc':
+        return StringHelper.cc3500To3999;
+      case '4000+ cc':
+        return StringHelper.cc4000Plus;
+      case 'Other':
+        return StringHelper.other;
+      default:
+        return engineCapacity ?? '';
+    }
+  }
+
+  static String setEngineCapacity(String? engineCapacity) {
+    if ((engineCapacity ?? "").isEmpty) return '';
+
+    // Map translated values back to English
+    if (engineCapacity == StringHelper.below500cc) return 'Below 500 cc';
+    if (engineCapacity == StringHelper.cc500To999) return '500 - 999 cc';
+    if (engineCapacity == StringHelper.cc1000To1499) return '1000 - 1499 cc';
+    if (engineCapacity == StringHelper.cc1500To1999) return '1500 - 1999 cc';
+    if (engineCapacity == StringHelper.cc2000To2499) return '2000 - 2499 cc';
+    if (engineCapacity == StringHelper.cc2500To2999) return '2500 - 2999 cc';
+    if (engineCapacity == StringHelper.cc3000To3499) return '3000 - 3499 cc';
+    if (engineCapacity == StringHelper.cc3500To3999) return '3500 - 3999 cc';
+    if (engineCapacity == StringHelper.cc4000Plus) return '4000+ cc';
+    if (engineCapacity == StringHelper.other) return 'Other';
+
+    return engineCapacity ?? '';
+  }
+
+  static String getBodyType(String? bodyType) {
+    if ((bodyType ?? "").isEmpty) return "";
+    var tt = (transformToSnakeCase(bodyType ?? "") ?? "").toLowerCase();
+
+    switch ((tt).toLowerCase()) {
+      case "suv":
+      case "إس يو في":
+        return StringHelper.bodyTypeOptions[0]; // SUV
+      case "hatchback":
+      case "هاتشباك":
+        return StringHelper.bodyTypeOptions[1]; // Hatchback
+      case "4x4":
+      case "دفع رباعي":
+        return StringHelper.bodyTypeOptions[2]; // 4x4
+      case "sedan":
+      case "سيدان":
+        return StringHelper.bodyTypeOptions[3]; // Sedan
+      case "coupe":
+      case "كوبيه":
+        return StringHelper.bodyTypeOptions[4]; // Coupe
+      case "convertible":
+      case "قابلة للتحويل":
+        return StringHelper.bodyTypeOptions[5]; // Convertible
+      case "estate":
+      case "عائلي":
+        return StringHelper.bodyTypeOptions[6]; // Estate
+      case "mpv":
+      case "سيارة متعددة الاستخدامات":
+        return StringHelper.bodyTypeOptions[7]; // MPV
+      case "pickup":
+      case "بيك أب":
+        return StringHelper.bodyTypeOptions[8]; // Pickup
+      case "crossover":
+      case "كروس أوفر":
+        return StringHelper.bodyTypeOptions[9]; // Crossover
+      case "van/bus":
+      case "فان/حافلة":
+        return StringHelper.bodyTypeOptions[10]; // Van/bus
+      case "other":
+      case "أخرى":
+        return StringHelper.bodyTypeOptions[11]; // Other
+      default:
+        return bodyType ?? "";
+    }
+  }
+
+  static String setBodyType(String? bodyType) {
+    if ((bodyType ?? "").isEmpty) return "";
+
+    // Check if the value matches any localized options in StringHelper.bodyTypeOptions
+    if (bodyType == StringHelper.bodyTypeOptions[0]) return "SUV";
+    if (bodyType == StringHelper.bodyTypeOptions[1]) return "Hatchback";
+    if (bodyType == StringHelper.bodyTypeOptions[2]) return "4x4";
+    if (bodyType == StringHelper.bodyTypeOptions[3]) return "Sedan";
+    if (bodyType == StringHelper.bodyTypeOptions[4]) return "Coupe";
+    if (bodyType == StringHelper.bodyTypeOptions[5]) return "Convertible";
+    if (bodyType == StringHelper.bodyTypeOptions[6]) return "Estate";
+    if (bodyType == StringHelper.bodyTypeOptions[7]) return "MPV";
+    if (bodyType == StringHelper.bodyTypeOptions[8]) return "Pickup";
+    if (bodyType == StringHelper.bodyTypeOptions[9]) return "Crossover";
+    if (bodyType == StringHelper.bodyTypeOptions[10]) return "Van/bus";
+    if (bodyType == StringHelper.bodyTypeOptions[11]) return "Other";
+
+    // Direct mapping for Arabic values
+    switch ((bodyType ?? "").toLowerCase()) {
+      case "إس يو في":
+        return "SUV";
+      case "هاتشباك":
+        return "Hatchback";
+      case "دفع رباعي":
+        return "4x4";
+      case "سيدان":
+        return "Sedan";
+      case "كوبيه":
+        return "Coupe";
+      case "قابلة للتحويل":
+        return "Convertible";
+      case "عائلي":
+        return "Estate";
+      case "سيارة متعددة الاستخدامات":
+        return "MPV";
+      case "بيك أب":
+        return "Pickup";
+      case "كروس أوفر":
+        return "Crossover";
+      case "فان/حافلة":
+        return "Van/bus";
+      case "أخرى":
+        return "Other";
+    }
+
+    return bodyType ?? "";
   }
 }

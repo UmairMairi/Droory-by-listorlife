@@ -127,7 +127,9 @@ class InboxModel {
     if (receiverDetail != null) {
       data['receiver_detail'] = receiverDetail!.toJson();
     }
-    data['product_detail'] = productDetail;
+    if (productDetail != null) {
+      data['product_detail'] = productDetail!.toJson();
+    }
     if (lastMessageDetail != null) {
       data['last_message_detail'] = lastMessageDetail!.toJson();
     }

@@ -260,6 +260,8 @@ class FilterModel {
   String? brandId;
   String? sizeId;
   String? userId;
+  String? minYear;
+  String? maxYear;
   String? ram;
   String? storage;
   String? favourite;
@@ -313,77 +315,91 @@ class FilterModel {
   String? workSetting;
   String? workExperience;
   String? workEducation;
+  String? positionType;
   String? milleage;
   String? engineCapacity;
   String? interiorColor;
   String? numbCylinders;
   String? numbDoors;
+  String? lookingFor;
+  String?
+      locationType; // e.g., "all", "city", "district", "neighborhood", "coordinates"
+  String? city; // English city name for API (key will be 'city')
+  String? districtName; // English district name
+  String? neighborhoodName; // English neighborhood name
 
-  FilterModel({
-    this.screenFrom,
-    this.limit,
-    this.page,
-    this.categoryId,
-    this.subcategoryId,
-    this.subSubCategoryId,
-    this.brandId,
-    this.userId,
-    this.sizeId,
-    this.favourite,
-    this.latitude,
-    this.longitude,
-    this.minPrice,
-    this.maxPrice,
-    this.minKmDriven,
-    this.maxKmDriven,
-    this.fuel,
-    this.numberOfOwner,
-    this.year,
-    this.horsePower,
-    this.carColor,
-    this.bodyType,
-    this.sellStatus,
-    this.search,
-    this.datePublished,
-    this.sortByPrice,
-    this.distance,
-    this.itemCondition,
-    this.startDate,
-    this.endDate,
-    this.transmission,
-    this.modelId,
-    this.screenSize,
-    this.selectedAmnities,
-    this.propertyFor,
-    this.bedrooms,
-    this.bathrooms,
-    this.furnishedType,
-    this.ownership,
-    this.paymentType,
-    this.completionStatus,
-    this.deliveryTerm,
-    this.type,
-    this.level,
-    this.buildingAge,
-    this.listedBy,
-    this.rentalTerm,
-    this.accessToUtilities,
-    this.minDownPrice,
-    this.maxDownPrice,
-    this.maxAreaSize,
-    this.minAreaSize,
-    this.salleryFrom,
-    this.salleryTo,
-    this.workSetting,
-    this.workExperience,
-    this.workEducation,
-    this.milleage,
-    this.engineCapacity,
-    this.interiorColor,
-    this.numbCylinders,
-    this.numbDoors,
-    this.carRentalTerm,
-  });
+  FilterModel(
+      {this.screenFrom,
+      this.limit,
+      this.page,
+      this.categoryId,
+      this.subcategoryId,
+      this.subSubCategoryId,
+      this.brandId,
+      this.userId,
+      this.sizeId,
+      this.favourite,
+      this.latitude,
+      this.longitude,
+      this.minPrice,
+      this.maxPrice,
+      this.minKmDriven,
+      this.maxKmDriven,
+      this.fuel,
+      this.numberOfOwner,
+      this.year,
+      this.minYear, // Add
+      this.maxYear,
+      this.horsePower,
+      this.carColor,
+      this.bodyType,
+      this.sellStatus,
+      this.search,
+      this.datePublished,
+      this.sortByPrice,
+      this.distance,
+      this.itemCondition,
+      this.startDate,
+      this.endDate,
+      this.transmission,
+      this.modelId,
+      this.screenSize,
+      this.selectedAmnities,
+      this.propertyFor,
+      this.bedrooms,
+      this.bathrooms,
+      this.furnishedType,
+      this.ownership,
+      this.paymentType,
+      this.completionStatus,
+      this.deliveryTerm,
+      this.type,
+      this.level,
+      this.buildingAge,
+      this.listedBy,
+      this.rentalTerm,
+      this.accessToUtilities,
+      this.minDownPrice,
+      this.maxDownPrice,
+      this.maxAreaSize,
+      this.minAreaSize,
+      this.salleryFrom,
+      this.salleryTo,
+      this.workSetting,
+      this.workExperience,
+      this.workEducation,
+      this.milleage,
+      this.engineCapacity,
+      this.positionType,
+      this.interiorColor,
+      this.numbCylinders,
+      this.numbDoors,
+      this.carRentalTerm,
+      this.lookingFor,
+      this.locationType,
+      this.city,
+      this.districtName,
+      this.neighborhoodName});
 
   // fromJson method
   FilterModel.fromJson(Map<String, dynamic> json) {
@@ -404,6 +420,7 @@ class FilterModel {
     horsePower = json['horse_power'];
     screenSize = json['screen_size'];
     bodyType = json['body_type'];
+    positionType = json['position_type'];
     minKmDriven = json['min_km_driven'];
     maxKmDriven = json['max_km_driven'];
     fuel = json['fuel'];
@@ -416,6 +433,8 @@ class FilterModel {
     datePublished = json['date_published'];
     sortByPrice = json['sort_by_price'];
     distance = json['distance'];
+    minYear = json['min_year']; // Add
+    maxYear = json['max_year'];
     itemCondition = json['item_condition'];
     startDate = json['start_date'];
     endDate = json['end_date'];
@@ -451,6 +470,15 @@ class FilterModel {
     numbCylinders = json['numb_cylinders'];
     numbDoors = json['numb_doors'];
     carRentalTerm = json['car_rental_term'];
+    lookingFor = json['looking_for'];
+    city:
+    json['city']; // API response key should be 'city'
+    districtName:
+    json['district_name'];
+    neighborhoodName:
+    json['neighborhood_name'];
+    locationType:
+    json['location_type'];
   }
 
   // toJson method
@@ -473,6 +501,7 @@ class FilterModel {
     data['max_km_driven'] = maxKmDriven;
     data['car_color'] = carColor;
     data['body_type'] = bodyType;
+    data['position_type'] = positionType;
     data['horse_power'] = horsePower;
     data['screen_size'] = screenSize;
     data['fuel'] = fuel;
@@ -499,6 +528,8 @@ class FilterModel {
     data['delivery_term'] = deliveryTerm;
     data['type'] = type;
     data['level'] = level;
+    data['min_year'] = minYear; // Add
+    data['max_year'] = maxYear;
     data['building_age'] = buildingAge;
     data['listed_by'] = listedBy;
     data['rental_term'] = rentalTerm;
@@ -520,6 +551,11 @@ class FilterModel {
     data['car_rental_term'] = carRentalTerm;
     data['ram'] = ram;
     data['storage'] = storage;
+    data['looking_for'] = lookingFor;
+    data['location_type'] = locationType;
+    data['city'] = city; // API key is 'city'
+    data['district_name'] = districtName; // API key is 'district_name'
+    data['neighborhood_name'] = neighborhoodName;
     data.removeWhere((key, value) => value == "" || value == null);
     return data;
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:list_and_life/base/helpers/db_helper.dart';
+import 'package:list_and_life/base/helpers/filter_cache_manager.dart';
 
 import '../base/helpers/string_helper.dart';
 import '../base/lang/locale_service.dart';
@@ -10,12 +11,16 @@ class LanguageProvider extends ChangeNotifier {
   String _selectedTheme = DbHelper.getTheme();
   String get selectedLang => _selectedLang;
   String get selectedTheme => _selectedTheme;
+
   Future<void> updateLanguage(
       {required BuildContext context, required String lang}) async {
     await LocaleService.load(lang); // Load default language
     DbHelper.saveLanguage(lang);
     StringHelper.refresh();
     _selectedLang = lang;
+
+    // Clear cache when language changes
+    FilterCacheManager().clearCacheForLanguageChange();
 
     notifyListeners();
     RestartWidget.restartApp(context);
