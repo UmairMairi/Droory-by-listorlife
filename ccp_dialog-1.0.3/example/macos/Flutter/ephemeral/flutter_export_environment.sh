@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=/Users/alokdubey/fvm/versions/stable"
-export "FLUTTER_APPLICATION_PATH=/Users/alokdubey/StudioProjects/list_and_life/ccp_dialog-1.0.3/example"
+export "FLUTTER_ROOT=/Users/apple/Developer/flutter"
+export "FLUTTER_APPLICATION_PATH=/Users/apple/Downloads/list_and_life/ccp_dialog-1.0.3/example"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_BUILD_DIR=build"
 export "FLUTTER_BUILD_NAME=1.0.0"

@@ -2,5 +2,6 @@
 <resources>
     <string name="app_name">List or Life</string>
     <string name="facebook_app_id">2346950282326086</string>
+    <string name="fb_login_protocol_scheme">fb2346950282326086</string>
     <string name="facebook_client_token">6e21770ecc2ad9a5d5ee82701956adb0</string>
 </resources>
