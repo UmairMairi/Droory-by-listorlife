@@ -84,7 +84,7 @@ class SocialLoginHelper {
       // }
 
       // Trigger the sign-in flow using the flutter_facebook_auth plugin
-      final LoginResult loginResult = await FacebookAuth.instance.login();
+      final LoginResult loginResult = await FacebookAuth.instance.login(permissions: ['public_profile', 'email']);
 
       // Check if the login was successful
       if (loginResult.status == LoginStatus.success) {
