@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:list_and_life/LoggingNavigatorObserver.dart';
 import 'package:list_and_life/base/helpers/db_helper.dart';
 import 'package:list_and_life/models/category_model.dart';
 import 'package:list_and_life/models/filter_model.dart';
@@ -13,6 +14,7 @@ import 'package:list_and_life/view/main/filtter/filter_view.dart';
 // Missing import
 import 'package:list_and_life/base/text_formatters/form_field_errors.dart';
 import 'package:list_and_life/view/main/permission/location_permission_view.dart';
+import 'package:list_and_life/view/main/sell/forms/sell_form_view.dart';
 import 'package:list_and_life/view/main/sell/sub_category/sell_sub_category_view.dart';
 import 'package:list_and_life/view/main/settings/DeleteAccountScreen.dart';
 import 'package:list_and_life/view/main/settings/TermsOfUseView.dart';
@@ -23,6 +25,7 @@ import 'package:list_and_life/view/profile/complete_profile_view.dart';
 import 'package:list_and_life/view/profile/edit_profile_view.dart';
 import 'package:list_and_life/view/purchase/plans_list_view.dart';
 import 'package:list_and_life/view/profile/my_profile_view.dart';
+import 'package:list_and_life/widgets/otp_form_verification_screen.dart';
 
 import '../view/auth/guest_login_view.dart';
 import '../view/auth/login_view.dart';
@@ -52,7 +55,10 @@ class AppPages {
     debugLogDiagnostics: true,
     initialLocation: '/',
     navigatorKey: rootNavigatorKey,
-    observers: [RemoveFocusObserver()],
+    observers: [
+      RemoveFocusObserver(),
+      LoggingNavigatorObserver()
+    ],
     routes: [
       GoRoute(
         path: Routes.root,
@@ -274,6 +280,46 @@ class AppPages {
         path: Routes.guestLogin,
         pageBuilder: (context, state) {
           return getPage(child: const GuestLoginView(), state: state);
+        },
+      ),
+      GoRoute(
+        path: Routes.sellFormView,
+        pageBuilder: (context, state) {
+          final extras = state.extra as Map<String, dynamic>;
+          final category = extras['category'] as CategoryModel?;
+          final subCategory = extras['subCategory'] as CategoryModel?;
+          return getPage(child: SellFormView(
+            category: category,
+            subCategory: subCategory,
+            type: category?.type?.toLowerCase(),
+          ), state: state);
+        },
+      ),
+      GoRoute(
+        path: Routes.sellFormView,
+        pageBuilder: (context, state) {
+          final extras = state.extra as Map<String, dynamic>;
+          final category = extras['category'] as CategoryModel?;
+          final subCategory = extras['subCategory'] as CategoryModel?;
+          return getPage(child: SellFormView(
+            category: category,
+            subCategory: subCategory,
+            type: category?.type?.toLowerCase(),
+          ), state: state);
+        },
+      ),
+      GoRoute(
+        path: Routes.verifyOTP,
+        pageBuilder: (context, state) {
+          final extras = state.extra as Map<String, dynamic>;
+          final phoneNumber = extras['phoneNumber'] as String?;
+          final countryCode = extras['countryCode'] as String?;
+          final onVerificationSuccess = extras['onVerificationSuccess'] as Function();
+          return getPage(child: OtpFormVerificationScreen(
+            phoneNumber: phoneNumber ?? "",
+            countryCode: countryCode ?? "",
+            onVerificationSuccess: onVerificationSuccess,
+          ), state: state);
         },
       ),
 

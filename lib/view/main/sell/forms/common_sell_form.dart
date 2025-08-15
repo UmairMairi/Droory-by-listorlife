@@ -1,8 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
+import 'package:list_and_life/base/observer/route_observer.dart';
 import 'package:list_and_life/base/utils/utils.dart';
+import 'package:list_and_life/routes/app_pages.dart';
+import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/widgets/car_model_selection.dart';
 import 'package:list_and_life/widgets/phone_form_verification_widget.dart';
 import 'package:list_and_life/base/base.dart';
@@ -20,6 +24,7 @@ import '../../../../view_model/sell_forms_vm.dart';
 import '../../../../widgets/app_map_widget.dart';
 import '../../../../widgets/app_text_field.dart';
 import '../../../../widgets/common_dropdown.dart';
+import 'post_added_final_view.dart';
 
 class CommonSellForm extends BaseView<SellFormsVM> {
   final String? type;
@@ -103,6 +108,17 @@ class CommonSellForm extends BaseView<SellFormsVM> {
           subSubCategory: subSubCategory,
           brand: viewModel.selectedBrand,
           models: viewModel.selectedModel,
+          onSuccess: (model){
+            context.pushReplacement(Routes.postAddedFinalView, extra: model);
+
+
+            // Navigator.pushReplacement(
+            //     context,
+            //     MaterialPageRoute(
+            //         builder: (context) => PostAddedFinalView(
+            //           data: model,
+            //         )));
+          }
         );
       }
     }

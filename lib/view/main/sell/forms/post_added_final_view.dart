@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/res/assets_res.dart';
+import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/widgets/app_outline_button.dart';
 import 'package:lottie/lottie.dart';
 
@@ -104,12 +106,13 @@ class PostAddedFinalView extends StatelessWidget {
             ),*/
             AppOutlineButton(
               onTap: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => MyProductView(
-                              data: data,
-                            )));
+                context.pushReplacement(Routes.myProduct, extra: data);
+                // Navigator.pushReplacement(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) => MyProductView(
+                //               data: data,
+                //             )));
               },
               title: StringHelper.reviewAd,
               width: context.width,

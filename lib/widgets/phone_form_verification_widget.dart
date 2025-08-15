@@ -2,9 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/helpers/db_helper.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/base/helpers/string_helper.dart';
+import 'package:list_and_life/routes/app_routes.dart';
 import 'package:list_and_life/view_model/profile_vm.dart';
 import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:list_and_life/widgets/otp_form_verification_screen.dart';
@@ -121,6 +123,61 @@ class _PhoneVerificationWidgetState extends State<PhoneVerificationWidget> {
     if (_isNavigatingToOtp) return; // Prevent multiple navigations
     _isNavigatingToOtp = true;
 
+    context.push(Routes.verifyOTP,extra: {
+      'phoneNumber': phoneController.text.trim(),
+      'countryCode': '+20',
+      'onVerificationSuccess': () {
+        print("DEBUG: OTP Verification Success Callback Called");
+
+        setState(() {
+          isPhoneVerified = true;
+          originalPhone = phoneController.text.trim();
+        });
+
+        print("DEBUG: State updated - isPhoneVerified: $isPhoneVerified");
+        widget.onPhoneStatusChanged(true, phoneController.text.trim());
+        print("DEBUG: Parent notified of phone verification");
+
+        // 🔧 FIX: Don't navigate back immediately, let the OTP screen handle it
+        // The OTP screen will pop itself after calling this callback
+
+        // Schedule auto-submit after the OTP screen has popped
+        if (widget.onAutoSubmit != null) {
+          print("DEBUG: Auto-submit callback is available, scheduling...");
+          Future.delayed(Duration(milliseconds: 800), () {
+            if (mounted && isPhoneVerified) {
+              print("DEBUG: Triggering auto-submit now!");
+              widget.onAutoSubmit!();
+            } else {
+              print(
+                  "DEBUG: Auto-submit conditions not met - mounted: $mounted, isPhoneVerified: $isPhoneVerified");
+            }
+          });
+        } else {
+          print("DEBUG: No auto-submit callback provided");
+        }
+      },
+    }).then((_) {
+      // Reset the flag when returning from OTP screen
+      _isNavigatingToOtp = false;
+
+      print("DEBUG: Returned from OTP screen");
+      if (mounted) {
+        final user = DbHelper.getUserModel();
+        setState(() {
+          isPhoneVerified = user?.phoneVerified == 1 &&
+              phoneController.text.trim() == user?.phoneNo;
+          if (isPhoneVerified) {
+            originalPhone = phoneController.text.trim();
+          }
+        });
+        widget.onPhoneStatusChanged(
+            isPhoneVerified, phoneController.text.trim());
+        print(
+            "DEBUG: State refreshed after returning - isPhoneVerified: $isPhoneVerified");
+      }
+    });
+    return;
     Navigator.push(
       context,
       MaterialPageRoute(

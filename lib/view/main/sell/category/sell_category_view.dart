@@ -84,8 +84,7 @@ class _SellCategoryViewState extends State<SellCategoryView> {
                               itemBuilder: (buildContext, index) {
                                 return GestureDetector(
                                   onTap: () {
-                                    context.push(Routes.sellSubCategoryView,
-                                        extra: categoryData[index]);
+                                    context.push(Routes.sellSubCategoryView, extra: categoryData[index]);
                                   },
                                   child: Card(
                                     color: const Color(0xffFCFCFD),

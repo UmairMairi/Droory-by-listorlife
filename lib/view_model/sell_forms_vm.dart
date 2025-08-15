@@ -1655,6 +1655,7 @@ class SellFormsVM extends BaseViewModel {
     CategoryModel? subSubCategory,
     CategoryModel? brand,
     CategoryModel? models,
+    Function(ProductDetailModel? model)? onSuccess,
   }) async {
     Position? position = await _getPositionFromAddress();
     if (!_isPhoneVerified || _currentPhone == null || _currentPhone!.isEmpty) {
@@ -1829,13 +1830,16 @@ class SellFormsVM extends BaseViewModel {
         response, (json) => ProductDetailModel.fromJson(json));
     DialogHelper.hideLoading();
     DialogHelper.showToast(message: StringHelper.adSubmittedForApproval);
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-          builder: (context) => PostAddedFinalView(
-                data: model.body,
-              )),
-    );
+    if (onSuccess != null) {
+      onSuccess.call(model.body);
+    } else {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => PostAddedFinalView(
+                    data: model.body,
+                  )));
+    }
   }
 
   // In your SellFormsVM, replace the editProduct method with this version:

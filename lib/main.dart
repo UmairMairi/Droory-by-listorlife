@@ -122,10 +122,8 @@ class _MyAppState extends State<MyApp> {
                     ],
                     locale: Locale(value.selectedLang),
                     supportedLocales: const [Locale('en'), Locale('ar')],
-                    routeInformationProvider:
-                        AppPages.router.routeInformationProvider,
-                    routeInformationParser:
-                        AppPages.router.routeInformationParser,
+                    routeInformationProvider: AppPages.router.routeInformationProvider,
+                    routeInformationParser: AppPages.router.routeInformationParser,
                     routerDelegate: AppPages.router.routerDelegate,
                   ),
                 );

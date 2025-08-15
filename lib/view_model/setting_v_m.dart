@@ -144,7 +144,7 @@ class SettingVM extends BaseViewModel {
         );
 
         if (context.mounted) {
-          context.go('/login');
+          context.go(Routes.login);
         }
       } else {
         DialogHelper.showToast(
@@ -163,7 +163,7 @@ class SettingVM extends BaseViewModel {
       DbHelper.saveToken(null);
       DbHelper.saveIsLoggedIn(false);
       if (context.mounted) {
-        context.go('/login');
+        context.go(Routes.login);
       }
     }
   }

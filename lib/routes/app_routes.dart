@@ -3,6 +3,7 @@ class Routes {
   static const String root = '/';
   static const String onBoarding = '/on_boarding';
   static const String login = '/login';
+  static const String verifyOTP = '/verify_OTP';
   static const String verify = '/verify';
   static const String verifyProfile = '/verifyProfile';
   static const String completeProfile = '/complete_profile';
@@ -34,4 +35,5 @@ class Routes {
   static const String chooseLocationView = '/choose_location';
   static const String postAddedFinalView = '/post_added_final';
   static const String mobileSubcategoryView = '/mobile_subcategory';
+  static const String sellFormView = '/sell_form_view';
 }

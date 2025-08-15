@@ -148,14 +148,18 @@ class SellVM extends BaseViewModel {
                   )));
     } else {
       context.read<SellFormsVM>().allModels.clear();
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => SellFormView(
-                    category: category,
-                    subCategory: subCategory,
-                    type: category?.type?.toLowerCase(),
-                  )));
+      context.push(Routes.sellFormView,extra: {
+        'category': category,
+        'subCategory': subCategory,
+      });
+      // Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //         builder: (context) => SellFormView(
+      //               category: category,
+      //               subCategory: subCategory,
+      //               type: category?.type?.toLowerCase(),
+      //             )));
     }
 
     DialogHelper.hideLoading();
