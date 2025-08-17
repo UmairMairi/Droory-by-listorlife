@@ -11,6 +11,7 @@ import 'package:list_and_life/base/helpers/LocationService.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/models/city_model.dart';
 import 'package:list_and_life/routes/app_routes.dart';
+import 'package:list_and_life/routes/app_pages.dart';
 import 'package:list_and_life/base/utils/utils.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:list_and_life/view_model/car_brand_selection.dart';
@@ -3136,8 +3137,15 @@ class _FilterViewState extends State<FilterView> {
                   if (widget.filters?.screenFrom == "home") {
                     context.push(Routes.filterDetails, extra: filter);
                   } else {
-                    context.pushReplacement(Routes.filterDetails,
-                        extra: filter);
+                    // Store the navigation context before the widget is disposed
+                    final navigatorKey = AppPages.rootNavigatorKey;
+                    // Use a post-frame callback to ensure navigation happens after the current frame
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      if (navigatorKey.currentContext != null) {
+                        GoRouter.of(navigatorKey.currentContext!).pushReplacement(Routes.filterDetails,
+                            extra: filter);
+                      }
+                    });
                   }
                 },
                 title: StringHelper.apply,

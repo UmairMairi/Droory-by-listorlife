@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
+import 'package:list_and_life/routes/app_pages.dart';
 import 'package:list_and_life/widgets/app_outline_button.dart';
 import 'package:lottie/lottie.dart';
 
@@ -106,7 +107,14 @@ class PostAddedFinalView extends StatelessWidget {
             ),*/
             AppOutlineButton(
               onTap: () {
-                context.pushReplacement(Routes.myProduct, extra: data);
+                // Store the navigation context before the widget is disposed
+                final navigatorKey = AppPages.rootNavigatorKey;
+                // Use a post-frame callback to ensure navigation happens after the current frame
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (navigatorKey.currentContext != null) {
+                    GoRouter.of(navigatorKey.currentContext!).pushReplacement(Routes.myProduct, extra: data);
+                  }
+                });
                 // Navigator.pushReplacement(
                 //     context,
                 //     MaterialPageRoute(

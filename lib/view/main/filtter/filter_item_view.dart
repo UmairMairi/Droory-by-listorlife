@@ -12,6 +12,7 @@ import 'package:list_and_life/base/network/api_request.dart';
 import 'package:list_and_life/base/network/base_client.dart';
 import 'package:list_and_life/models/category_model.dart';
 import 'package:list_and_life/models/city_model.dart';
+import 'package:list_and_life/routes/app_pages.dart';
 import 'package:list_and_life/view_model/home_vm.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -486,13 +487,20 @@ class _FilterItemViewState extends State<FilterItemView> {
   }
 
   Future<String>? getSearchedData(BuildContext context, {String? query}) async {
-    var value = await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => AppSearchView(value: query),
-      ),
-    );
-    return value?.name ?? '';
+    String? value;
+    
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final navigatorKey = AppPages.rootNavigatorKey;
+      Navigator.of(navigatorKey.currentContext!).push(
+        MaterialPageRoute(
+          builder: (context) => AppSearchView(value: query),
+        ),
+      ).then((result) {
+        value = result?.name ?? '';
+      });
+    });
+    
+    return value ?? '';
   }
 
   @override

@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
+import 'package:list_and_life/routes/app_pages.dart';
 import 'package:list_and_life/base/helpers/LocationService.dart';
 import 'package:list_and_life/base/helpers/db_helper.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
@@ -1833,12 +1834,13 @@ class SellFormsVM extends BaseViewModel {
     if (onSuccess != null) {
       onSuccess.call(model.body);
     } else {
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) => PostAddedFinalView(
-                    data: model.body,
-                  )));
+      // Use a safer navigation approach with AppPages.rootNavigatorKey
+      final navigatorKey = AppPages.rootNavigatorKey;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (navigatorKey.currentContext != null) {
+          GoRouter.of(navigatorKey.currentContext!).pushReplacement(Routes.postAddedFinalView, extra: model.body);
+        }
+      });
     }
   }
 

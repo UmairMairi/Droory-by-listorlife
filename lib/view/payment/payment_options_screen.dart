@@ -4,6 +4,7 @@ import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/routes/app_routes.dart';
+import 'package:list_and_life/routes/app_pages.dart';
 import 'package:list_and_life/view/payment/select_card_view.dart';
 
 import '../../base/helpers/string_helper.dart';
@@ -83,8 +84,14 @@ class _PaymentOptionsScreenState extends State<PaymentOptionsScreen> {
             context.go(Routes.main);
             return;
           }
-          Navigator.push(context,
-              MaterialPageRoute(builder: (builder) => const SelectCardView()));
+          
+          // Use WidgetsBinding to ensure navigation happens after the current frame
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            final navigatorKey = AppPages.rootNavigatorKey;
+            Navigator.of(navigatorKey.currentContext!).push(
+              MaterialPageRoute(builder: (context) => const SelectCardView())
+            );
+          });
           //context.go(Routes.main);
         },
         title: StringHelper.payNow,

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:list_and_life/routes/app_pages.dart';
 
 const double BUBBLE_RADIUS_IMAGE = 16;
 
@@ -114,12 +115,15 @@ class BubbleNormalImage extends StatelessWidget {
               onLongPress: onLongPress,
               onTap: onTap ??
                   () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_) {
-                      return _DetailScreen(
-                        tag: id,
-                        imageUrl: imageUrl,
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      final navigatorKey = AppPages.rootNavigatorKey;
+                      Navigator.of(navigatorKey.currentContext!).push(
+                        MaterialPageRoute(builder: (context) => _DetailScreen(
+                          tag: id,
+                          imageUrl: imageUrl,
+                        ))
                       );
-                    }));
+                    });
                   },
               child: Hero(
                 tag: id,

@@ -111,7 +111,13 @@ class CommonSellForm extends BaseView<SellFormsVM> {
           onSuccess: (model){
             context.pushReplacement(Routes.postAddedFinalView, extra: model);
 
-
+            // final navigatorKey = AppPages.rootNavigatorKey;
+            // // Use a post-frame callback to ensure navigation happens after the current frame
+            // WidgetsBinding.instance.addPostFrameCallback((_) {
+            //   if (navigatorKey.currentContext != null) {
+            //     GoRouter.of(navigatorKey.currentContext!).pushReplacement(Routes.postAddedFinalView, extra: model);
+            //   }
+            // });
             // Navigator.pushReplacement(
             //     context,
             //     MaterialPageRoute(

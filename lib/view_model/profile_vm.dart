@@ -888,16 +888,9 @@ class ProfileVM extends BaseViewModel {
 
         DialogHelper.showToast(message: StringHelper.phoneIsVerified);
 
-        if (context.mounted) {
-          int popCount = 0;
-          Navigator.of(context).popUntil((_) => popCount++ >= 2);
-        } else {
-          if (AppPages.rootNavigatorKey.currentContext != null) {
-            int popCount = 0;
-            Navigator.of(AppPages.rootNavigatorKey.currentContext!)
-                .popUntil((_) => popCount++ >= 2);
-          }
-        }
+        // Don't navigate here - let the OTP screen handle navigation
+        // This prevents navigating to root instead of returning to CommonSellForm
+        // The OTP verification screen will call the success callback and handle its own navigation
       } else {
         DialogHelper.showToast(
             message: responseData['message'] ?? "Phone verification failed");
@@ -952,16 +945,9 @@ class ProfileVM extends BaseViewModel {
             message: responseData['message'] ??
                 StringHelper.emailVerifiedSuccessfully);
 
-        if (context.mounted) {
-          int popCount = 0;
-          Navigator.of(context).popUntil((_) => popCount++ >= 2);
-        } else {
-          if (AppPages.rootNavigatorKey.currentContext != null) {
-            int popCount = 0;
-            Navigator.of(AppPages.rootNavigatorKey.currentContext!)
-                .popUntil((_) => popCount++ >= 2);
-          }
-        }
+        // Don't navigate here - let the OTP screen handle navigation
+        // This prevents navigating to root instead of returning to the previous screen
+        // The OTP verification screen will call the success callback and handle its own navigation
       } else {
         DialogHelper.showToast(
             message: responseData['message'] ?? "Email verification failed");
