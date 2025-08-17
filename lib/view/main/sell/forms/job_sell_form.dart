@@ -113,7 +113,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
     return Form(
       key: viewModel.formKey,
       child: SingleChildScrollView(
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        // keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         physics: const ClampingScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Column(
