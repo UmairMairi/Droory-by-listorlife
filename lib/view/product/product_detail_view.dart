@@ -65,211 +65,115 @@ class _ProductDetailViewState extends State<ProductDetailView> {
       child: Consumer<ProductVM>(
         builder: (context, vm, child) {
           return Scaffold(
-            body: SafeArea(
-              child: Stack(
-                children: [
-                  FutureBuilder<ProductDetailModel?>(
-                    future: vm.getProductDetails(id: widget.productDetails?.id),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        ProductDetailModel? productData = snapshot.data;
-                        final bool isJobListing = productData?.categoryId == 9;
+            extendBodyBehindAppBar: true,
+            body: Stack(
+              children: [
+                FutureBuilder<ProductDetailModel?>(
+                  future: vm.getProductDetails(id: widget.productDetails?.id),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      ProductDetailModel? productData = snapshot.data;
+                      final bool isJobListing = productData?.categoryId == 9;
 
-                        return SingleChildScrollView(
-                          controller: vm.scrollController,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              // Only show image carousel if NOT a job listing
-                              if (!isJobListing)
-                                Stack(
-                                  children: [
-                                    CardSwipeWidget(
-                                      radius: 0,
-                                      height: 350,
-                                      data: productData,
-                                      fit: BoxFit.fill,
-                                      imagesList: productData?.productMedias,
-                                      borderRadius: const BorderRadius.only(
-                                        topLeft: Radius.circular(20),
-                                        topRight: Radius.circular(20),
-                                      ),
+                      return SingleChildScrollView(
+                        controller: vm.scrollController,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            // Only show image carousel if NOT a job listing
+                            if (!isJobListing)
+                              Stack(
+                                children: [
+                                  CardSwipeWidget(
+                                    radius: 0,
+                                    height: 350,
+                                    data: productData,
+                                    fit: BoxFit.cover,
+                                    imagesList: productData?.productMedias,
+                                    borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(20),
+                                      topRight: Radius.circular(20),
                                     ),
-                                    // Back Button with white container
-                                    Positioned(
-                                      top: 0,
-                                      left: Directionality.of(context) ==
-                                              TextDirection.ltr
-                                          ? 0
-                                          : null,
-                                      right: Directionality.of(context) ==
-                                              TextDirection.rtl
-                                          ? 0
-                                          : null,
-                                      child: SafeArea(
-                                        child: Container(
-                                          margin: const EdgeInsets.all(8),
-                                          width: 40,
-                                          height: 40,
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            shape: BoxShape.circle,
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.black
-                                                    .withOpacity(0.1),
-                                                spreadRadius: 1,
-                                                blurRadius: 3,
-                                                offset: const Offset(0, 1),
-                                              ),
-                                            ],
-                                          ),
-                                          child: IconButton(
-                                            padding: EdgeInsets.zero,
-                                            constraints: const BoxConstraints(),
-                                            onPressed: () {
-                                              context.pop();
-                                            },
-                                            icon: Icon(
-                                              Directionality.of(context) ==
-                                                      TextDirection.ltr
-                                                  ? LineAwesomeIcons
-                                                      .arrow_left_solid
-                                                  : LineAwesomeIcons
-                                                      .arrow_right_solid,
-                                              size: 28,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-
-                                    // Like Button
-                                    Positioned(
-                                      top: 0,
-                                      right: Directionality.of(context) ==
-                                              TextDirection.ltr
-                                          ? 60
-                                          : null,
-                                      left: Directionality.of(context) ==
-                                              TextDirection.rtl
-                                          ? 60
-                                          : null,
-                                      child: SafeArea(
-                                        child: Container(
-                                          margin: const EdgeInsets.all(8),
-                                          width: 40,
-                                          height: 40,
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            shape: BoxShape.circle,
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.black
-                                                    .withOpacity(0.1),
-                                                spreadRadius: 1,
-                                                blurRadius: 3,
-                                                offset: const Offset(0, 1),
-                                              ),
-                                            ],
-                                          ),
-                                          child: LikeButton(
-                                            isFav:
-                                                productData?.isFavourite == 1,
-                                            onTap: () async {
-                                              await vm.onLikeButtonTapped(
-                                                  id: productData?.id);
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-
-                                    // Share Button
-                                    Positioned(
-                                      top: 0,
-                                      right: Directionality.of(context) ==
-                                              TextDirection.ltr
-                                          ? 10
-                                          : null,
-                                      left: Directionality.of(context) ==
-                                              TextDirection.rtl
-                                          ? 10
-                                          : null,
-                                      child: SafeArea(
-                                        child: Container(
-                                          margin: const EdgeInsets.all(8),
-                                          width: 40,
-                                          height: 40,
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            shape: BoxShape.circle,
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.black
-                                                    .withOpacity(0.1),
-                                                spreadRadius: 1,
-                                                blurRadius: 3,
-                                                offset: const Offset(0, 1),
-                                              ),
-                                            ],
-                                          ),
-                                          child: IconButton(
-                                            padding: EdgeInsets.zero,
-                                            constraints: const BoxConstraints(),
-                                            onPressed: () {
-                                              Utils.onShareProduct(
-                                                context,
-                                                "Hello, Please check this useful product on following link",
-                                              );
-                                            },
-                                            icon: const Icon(
-                                              Icons.share,
-                                              size: 22,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-
-                              // For job listings, show a simple header without image
-                              if (isJobListing)
-                                Container(
-                                  color: Colors.white,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16, vertical: 12),
-                                  child: Row(
-                                    children: [
-                                      IconButton(
-                                        padding: EdgeInsets.zero,
-                                        constraints: const BoxConstraints(),
-                                        onPressed: () {
-                                          context.pop();
-                                        },
-                                        icon: Icon(
-                                          Directionality.of(context) ==
-                                                  TextDirection.ltr
-                                              ? LineAwesomeIcons
-                                                  .arrow_left_solid
-                                              : LineAwesomeIcons
-                                                  .arrow_right_solid,
-                                          size: 28,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                      const Spacer(),
-                                      // Like Button
-                                      Container(
+                                  ),
+                                  // Back Button with white container
+                                  Positioned(
+                                    top: 0,
+                                    left: Directionality.of(context) ==
+                                            TextDirection.ltr
+                                        ? 0
+                                        : null,
+                                    right: Directionality.of(context) ==
+                                            TextDirection.rtl
+                                        ? 0
+                                        : null,
+                                    child: SafeArea(
+                                      child: Container(
+                                        margin: const EdgeInsets.all(8),
                                         width: 40,
                                         height: 40,
                                         decoration: BoxDecoration(
-                                          color: Colors.grey.shade100,
+                                          color: Colors.white,
                                           shape: BoxShape.circle,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.black.withOpacity(0.1),
+                                              spreadRadius: 1,
+                                              blurRadius: 3,
+                                              offset: const Offset(0, 1),
+                                            ),
+                                          ],
+                                        ),
+                                        child: IconButton(
+                                          padding: EdgeInsets.zero,
+                                          constraints: const BoxConstraints(),
+                                          onPressed: () {
+                                            context.pop();
+                                          },
+                                          icon: Icon(
+                                            Directionality.of(context) ==
+                                                    TextDirection.ltr
+                                                ? LineAwesomeIcons
+                                                    .arrow_left_solid
+                                                : LineAwesomeIcons
+                                                    .arrow_right_solid,
+                                            size: 28,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+
+                                  // Like Button
+                                  Positioned(
+                                    top: 0,
+                                    right: Directionality.of(context) ==
+                                            TextDirection.ltr
+                                        ? 10
+                                        : null,
+                                    left: Directionality.of(context) ==
+                                            TextDirection.rtl
+                                        ? 10
+                                        : null,
+                                    child: SafeArea(
+                                      child: Container(
+                                        margin: const EdgeInsets.all(8),
+                                        width: 40,
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          shape: BoxShape.circle,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.black.withOpacity(0.1),
+                                              spreadRadius: 1,
+                                              blurRadius: 3,
+                                              offset: const Offset(0, 1),
+                                            ),
+                                          ],
                                         ),
                                         child: LikeButton(
                                           isFav: productData?.isFavourite == 1,
@@ -279,937 +183,1019 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                                           },
                                         ),
                                       ),
-                                      const Gap(8),
-                                      // Share Button
-                                      Container(
-                                        width: 40,
-                                        height: 40,
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey.shade100,
-                                          shape: BoxShape.circle,
+                                    ),
+                                  ),
+
+                                  // Share Button
+                                  // Positioned(
+                                  //   top: 0,
+                                  //   right: Directionality.of(context) ==
+                                  //           TextDirection.ltr
+                                  //       ? 10
+                                  //       : null,
+                                  //   left: Directionality.of(context) ==
+                                  //           TextDirection.rtl
+                                  //       ? 10
+                                  //       : null,
+                                  //   child: SafeArea(
+                                  //     child: Container(
+                                  //       margin: const EdgeInsets.all(8),
+                                  //       width: 40,
+                                  //       height: 40,
+                                  //       decoration: BoxDecoration(
+                                  //         color: Colors.white,
+                                  //         shape: BoxShape.circle,
+                                  //         boxShadow: [
+                                  //           BoxShadow(
+                                  //             color:
+                                  //                 Colors.black.withOpacity(0.1),
+                                  //             spreadRadius: 1,
+                                  //             blurRadius: 3,
+                                  //             offset: const Offset(0, 1),
+                                  //           ),
+                                  //         ],
+                                  //       ),
+                                  //       child: IconButton(
+                                  //         padding: EdgeInsets.zero,
+                                  //         constraints: const BoxConstraints(),
+                                  //         onPressed: () {
+                                  //           Utils.onShareProduct(
+                                  //             context,
+                                  //             "📍 ${productData?.name}\n💰 ${StringHelper.egp} ${parseAmount(productData?.price)}\n\nView this listing on Daroory:\nhttps://daroory.com/listing/${productData?.id}",
+                                  //           );
+                                  //         },
+                                  //         icon: const Icon(
+                                  //           Icons.share,
+                                  //           size: 22,
+                                  //           color: Colors.black,
+                                  //         ),
+                                  //       ),
+                                  //     ),
+                                  //   ),
+                                  // )
+                                ],
+                              ),
+
+                            // For job listings, show a simple header without image
+                            if (isJobListing)
+                              Container(
+                                color: Colors.white,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 12),
+                                child: Row(
+                                  children: [
+                                    IconButton(
+                                      padding: EdgeInsets.zero,
+                                      constraints: const BoxConstraints(),
+                                      onPressed: () {
+                                        context.pop();
+                                      },
+                                      icon: Icon(
+                                        Directionality.of(context) ==
+                                                TextDirection.ltr
+                                            ? LineAwesomeIcons.arrow_left_solid
+                                            : LineAwesomeIcons
+                                                .arrow_right_solid,
+                                        size: 28,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    const Spacer(),
+                                    // Like Button
+                                    Container(
+                                      width: 40,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey.shade100,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: LikeButton(
+                                        isFav: productData?.isFavourite == 1,
+                                        onTap: () async {
+                                          await vm.onLikeButtonTapped(
+                                              id: productData?.id);
+                                        },
+                                      ),
+                                    ),
+                                    const Gap(8),
+                                    // Share Button
+                                    Container(
+                                      width: 40,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey.shade100,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: IconButton(
+                                        padding: EdgeInsets.zero,
+                                        constraints: const BoxConstraints(),
+                                        onPressed: () {
+                                          Utils.onShareProduct(
+                                            context,
+                                            "Hello, Please check this useful product on following link",
+                                          );
+                                        },
+                                        icon: const Icon(
+                                          Icons.share,
+                                          size: 22,
+                                          color: Colors.black,
                                         ),
-                                        child: IconButton(
-                                          padding: EdgeInsets.zero,
-                                          constraints: const BoxConstraints(),
-                                          onPressed: () {
-                                            Utils.onShareProduct(
-                                              context,
-                                              "Hello, Please check this useful product on following link",
-                                            );
-                                          },
-                                          icon: const Icon(
-                                            Icons.share,
-                                            size: 22,
-                                            color: Colors.black,
-                                          ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                            Padding(
+                              padding: EdgeInsets.only(
+                                top: isJobListing ? 0 : 10,
+                                right: 20,
+                                left: 20,
+                                bottom: 40,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  if (isJobListing) const Gap(20),
+                                  Text(
+                                    "${productData?.name}",
+                                    style: context.textTheme.titleMedium,
+                                  ),
+                                  if (isJobListing) ...{
+                                    const Gap(8),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16, vertical: 6),
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context)
+                                            .primaryColor
+                                            .withOpacity(0.1),
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      child: Text(
+                                        StringHelper.lookingFor,
+                                        style: context.textTheme.bodyMedium
+                                            ?.copyWith(
+                                          color: Theme.of(context).primaryColor,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                  },
+                                  if (productData?.categoryId == 11 &&
+                                      productData?.propertyFor != null) ...{
+                                    const Gap(8),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16, vertical: 6),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey.shade200,
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      child: Text(
+                                        Utils.getPropertyType(
+                                            "${productData?.propertyFor ?? ""}"),
+                                        style: context.textTheme.bodyMedium
+                                            ?.copyWith(
+                                          color: Colors.grey.shade700,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                  },
+                                  // Dynamic spacing based on whether specs exist
+                                  const Gap(8),
+                                  getSpecifications(
+                                    context: context,
+                                    productData: productData,
+                                  ),
+                                  const Gap(8),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      SvgPicture.asset(
+                                        'assets/icons/location.svg', // SVG location icon
+                                        width: 20,
+                                        height: 20,
+                                        colorFilter: ColorFilter.mode(
+                                          Colors.black,
+                                          BlendMode.srcIn,
+                                        ),
+                                      ),
+                                      const Gap(10),
+                                      Flexible(
+                                        child: Text(
+                                          getLocalizedLocationForProduct(
+                                              context, productData),
                                         ),
                                       ),
                                     ],
                                   ),
-                                ),
-
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  top: isJobListing ? 0 : 10,
-                                  right: 20,
-                                  left: 20,
-                                  bottom: 40,
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    if (isJobListing) const Gap(20),
+                                  const Gap(10),
+                                  if (productData?.categoryId == 9) ...{
                                     Text(
-                                      "${productData?.name}",
-                                      style: context.textTheme.titleMedium,
+                                      getSalaryDisplayText(
+                                          productData), // Use the new helper method
+                                      style: context.textTheme.titleLarge
+                                          ?.copyWith(color: Colors.red),
                                     ),
-                                    if (isJobListing) ...{
-                                      const Gap(8),
+                                  } else ...{
+                                    Text(
+                                      "${StringHelper.egp} ${parseAmount(productData?.price)}",
+                                      style: context.textTheme.titleLarge
+                                          ?.copyWith(color: Colors.red),
+                                    ),
+                                  },
+                                  const Gap(12),
+                                  const Divider(),
+                                  const Gap(8),
+                                  Text(
+                                    StringHelper.description,
+                                    style: context.textTheme.titleMedium,
+                                  ),
+                                  const Gap(5),
+                                  // Updated description with "Read More"
+                                  _buildDescription(
+                                    context,
+                                    productData?.description ?? '',
+                                  ),
+                                  const Divider(),
+                                  if (productData?.categoryId != 11) ...{
+                                    if (vm
+                                        .getSpecifications(
+                                          context: context,
+                                          data: productData,
+                                        )
+                                        .isNotEmpty) ...{
+                                      Text(
+                                        StringHelper.specifications,
+                                        style: context.textTheme.titleSmall,
+                                      ),
+                                      const SizedBox(height: 10),
                                       Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16, vertical: 6),
                                         decoration: BoxDecoration(
-                                          color: Theme.of(context)
-                                              .primaryColor
-                                              .withOpacity(0.1),
                                           borderRadius:
-                                              BorderRadius.circular(16),
+                                              BorderRadius.circular(5),
+                                          color: Colors.white,
                                         ),
-                                        child: Text(
-                                          StringHelper.lookingFor,
-                                          style: context.textTheme.bodyMedium
-                                              ?.copyWith(
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                            fontWeight: FontWeight.w600,
-                                          ),
+                                        child: Wrap(
+                                          spacing: 20,
+                                          runSpacing: 15,
+                                          children: vm
+                                              .getSpecifications(
+                                                context: context,
+                                                data: widget.productDetails,
+                                              )
+                                              .map((spec) =>
+                                                  SizedBox(child: spec))
+                                              .toList(),
                                         ),
                                       ),
-                                    },
-                                    if (productData?.categoryId == 11 &&
-                                        productData?.propertyFor != null) ...{
-                                      const Gap(8),
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16, vertical: 6),
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey.shade200,
-                                          borderRadius:
-                                              BorderRadius.circular(16),
-                                        ),
-                                        child: Text(
-                                          Utils.getPropertyType(
-                                              "${productData?.propertyFor ?? ""}"),
-                                          style: context.textTheme.bodyMedium
-                                              ?.copyWith(
-                                            color: Colors.grey.shade700,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                    },
-                                    // Dynamic spacing based on whether specs exist
-                                    const Gap(8),
-                                    getSpecifications(
-                                      context: context,
-                                      productData: productData,
-                                    ),
-                                    const Gap(8),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        SvgPicture.asset(
-                                          'assets/icons/location.svg', // SVG location icon
-                                          width: 20,
-                                          height: 20,
-                                          colorFilter: ColorFilter.mode(
-                                            Colors.black,
-                                            BlendMode.srcIn,
-                                          ),
-                                        ),
-                                        const Gap(10),
-                                        Flexible(
-                                          child: Text(
-                                            getLocalizedLocationForProduct(
-                                                context, productData),
-                                          ),
-                                        ),
-                                      ],
+                                    }
+                                  },
+                                  if (productData?.categoryId == 11) ...{
+                                    Text(
+                                      StringHelper.propertyInformation,
+                                      style: context.titleMedium,
                                     ),
                                     const Gap(10),
-                                    if (productData?.categoryId == 9) ...{
-                                      Text(
-                                        getSalaryDisplayText(
-                                            productData), // Use the new helper method
-                                        style: context.textTheme.titleLarge
-                                            ?.copyWith(color: Colors.red),
-                                      ),
-                                    } else ...{
-                                      Text(
-                                        "${StringHelper.egp} ${parseAmount(productData?.price)}",
-                                        style: context.textTheme.titleLarge
-                                            ?.copyWith(color: Colors.red),
-                                      ),
-                                    },
-                                    const Gap(12),
-                                    const Divider(),
-                                    const Gap(8),
+                                    getPropertyInformation(
+                                          context: context,
+                                          data: productData,
+                                        ) ??
+                                        const SizedBox.shrink(),
+                                  },
+                                  if ((widget.productDetails
+                                              ?.accessToUtilities ??
+                                          "")
+                                      .isNotEmpty) ...[
+                                    Divider(),
                                     Text(
-                                      StringHelper.description,
+                                      StringHelper.accessToUtilities,
                                       style: context.textTheme.titleMedium,
                                     ),
-                                    const Gap(5),
-                                    // Updated description with "Read More"
-                                    _buildDescription(
-                                      context,
-                                      productData?.description ?? '',
+                                    Gap(10),
+                                    UtilitiesDisplayWidget(
+                                      utilitiesString: widget.productDetails
+                                              ?.accessToUtilities ??
+                                          "",
+                                      isDetailView: false,
                                     ),
+                                  ],
+                                  if (productData?.categoryId == 11 &&
+                                      (productData?.productAmenities ?? [])
+                                          .isNotEmpty) ...[
                                     const Divider(),
-                                    if (productData?.categoryId != 11) ...{
-                                      if (vm
-                                          .getSpecifications(
-                                            context: context,
-                                            data: productData,
-                                          )
-                                          .isNotEmpty) ...{
-                                        Text(
-                                          StringHelper.specifications,
-                                          style: context.textTheme.titleSmall,
-                                        ),
-                                        const SizedBox(height: 10),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            color: Colors.white,
-                                          ),
-                                          child: Wrap(
-                                            spacing: 20,
-                                            runSpacing: 15,
-                                            children: vm
-                                                .getSpecifications(
-                                                  context: context,
-                                                  data: widget.productDetails,
-                                                )
-                                                .map((spec) =>
-                                                    SizedBox(child: spec))
-                                                .toList(),
-                                          ),
-                                        ),
-                                      }
-                                    },
-                                    if (productData?.categoryId == 11) ...{
-                                      Text(
-                                        StringHelper.propertyInformation,
-                                        style: context.titleMedium,
+                                    Text(
+                                      StringHelper.amenities,
+                                      style: context.textTheme.titleMedium
+                                          ?.copyWith(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 18,
                                       ),
-                                      const Gap(10),
-                                      getPropertyInformation(
-                                            context: context,
-                                            data: productData,
-                                          ) ??
-                                          const SizedBox.shrink(),
-                                    },
-                                    if ((widget.productDetails
-                                                ?.accessToUtilities ??
-                                            "")
-                                        .isNotEmpty) ...[
-                                      Divider(),
-                                      Text(
-                                        StringHelper.accessToUtilities,
-                                        style: context.textTheme.titleMedium,
-                                      ),
-                                      Gap(10),
-                                      UtilitiesDisplayWidget(
-                                        utilitiesString: widget.productDetails
-                                                ?.accessToUtilities ??
-                                            "",
-                                        isDetailView: false,
-                                      ),
-                                    ],
-                                    if (productData?.categoryId == 11 &&
-                                        (productData?.productAmenities ?? [])
-                                            .isNotEmpty) ...[
-                                      const Divider(),
-                                      Text(
-                                        StringHelper.amenities,
-                                        style: context.textTheme.titleMedium
-                                            ?.copyWith(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 18,
-                                        ),
-                                      ),
-                                      const Gap(15),
-                                      Consumer<ProductVM>(
-                                        builder: (context, vm, child) {
-                                          final totalAmenities = productData
-                                                  ?.productAmenities?.length ??
-                                              0;
-                                          final visibleItemCount = vm.showAll
-                                              ? totalAmenities
-                                              : totalAmenities < 6
-                                                  ? totalAmenities
-                                                  : 6;
+                                    ),
+                                    const Gap(15),
+                                    Consumer<ProductVM>(
+                                      builder: (context, vm, child) {
+                                        final totalAmenities = productData
+                                                ?.productAmenities?.length ??
+                                            0;
+                                        final visibleItemCount = vm.showAll
+                                            ? totalAmenities
+                                            : totalAmenities < 6
+                                                ? totalAmenities
+                                                : 6;
 
-                                          return Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              // Improved Grid Layout with better aspect ratio
-                                              GridView.builder(
-                                                physics:
-                                                    const NeverScrollableScrollPhysics(),
-                                                shrinkWrap: true,
-                                                gridDelegate:
-                                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                                  crossAxisCount: 2,
-                                                  childAspectRatio:
-                                                      2.5, // Reduced for more height to accommodate text
-                                                  crossAxisSpacing: 12,
-                                                  mainAxisSpacing: 12,
-                                                ),
-                                                itemCount: visibleItemCount,
-                                                itemBuilder:
-                                                    (BuildContext context,
-                                                        int index) {
-                                                  var amenity = productData
-                                                          ?.productAmenities?[
-                                                      index];
-                                                  return Container(
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              12),
-                                                      border: Border.all(
-                                                        color: Colors
-                                                            .grey.shade200,
-                                                        width: 1,
-                                                      ),
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                          color: Colors.black
-                                                              .withOpacity(
-                                                                  0.04),
-                                                          spreadRadius: 0,
-                                                          blurRadius: 8,
-                                                          offset: const Offset(
-                                                              0, 2),
-                                                        ),
-                                                      ],
+                                        return Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            // Improved Grid Layout with better aspect ratio
+                                            GridView.builder(
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
+                                              shrinkWrap: true,
+                                              gridDelegate:
+                                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                                crossAxisCount: 2,
+                                                childAspectRatio:
+                                                    2.2, // Reduced from 2.5 to 2.2 for more height
+                                                crossAxisSpacing:
+                                                    8, // Reduced from 12 to 8
+                                                mainAxisSpacing:
+                                                    8, // Reduced from 12 to 8
+                                              ),
+                                              itemCount: visibleItemCount,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                var amenity = productData
+                                                    ?.productAmenities?[index];
+                                                return Container(
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10), // Reduced from 12 to 10
+                                                    border: Border.all(
+                                                      color:
+                                                          Colors.grey.shade200,
+                                                      width: 1,
                                                     ),
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              12.0),
-                                                      child: Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          // Icon Container
-                                                          Container(
-                                                            width: 48,
-                                                            height: 48,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .primaryColor
-                                                                  .withOpacity(
-                                                                      0.1),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          8),
-                                                            ),
-                                                            child: Center(
-                                                              child: SvgPicture
-                                                                  .asset(
-                                                                getAmenitySvgPath(amenity
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: Colors.black
+                                                            .withOpacity(0.04),
+                                                        spreadRadius: 0,
+                                                        blurRadius: 8,
+                                                        offset:
+                                                            const Offset(0, 2),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .all(
+                                                        10.0), // Reduced from 12 to 10
+                                                    child: Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        // Icon Container
+                                                        Container(
+                                                          width:
+                                                              40, // Reduced from 48 to 40
+                                                          height:
+                                                              40, // Reduced from 48 to 40
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor
+                                                                .withOpacity(
+                                                                    0.1),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8),
+                                                          ),
+                                                          child: Center(
+                                                            child: SvgPicture
+                                                                .asset(
+                                                              getAmenitySvgPath(
+                                                                  amenity?.amnity
+                                                                          ?.name ??
+                                                                      ''),
+                                                              width:
+                                                                  22, // Reduced from 28 to 22
+                                                              height:
+                                                                  22, // Reduced from 28 to 22
+                                                              colorFilter:
+                                                                  ColorFilter
+                                                                      .mode(
+                                                                Theme.of(
+                                                                        context)
+                                                                    .primaryColor,
+                                                                BlendMode.srcIn,
+                                                              ),
+                                                              // Enhanced fallback with better error handling
+                                                              placeholderBuilder:
+                                                                  (context) =>
+                                                                      Icon(
+                                                                getAmenityFallbackIcon(amenity
                                                                         ?.amnity
                                                                         ?.name ??
                                                                     ''),
-                                                                width: 28,
-                                                                height: 28,
-                                                                colorFilter:
-                                                                    ColorFilter
-                                                                        .mode(
-                                                                  Theme.of(
-                                                                          context)
-                                                                      .primaryColor,
-                                                                  BlendMode
-                                                                      .srcIn,
-                                                                ),
-                                                                // Enhanced fallback with better error handling
-                                                                placeholderBuilder:
-                                                                    (context) =>
-                                                                        Icon(
-                                                                  getAmenityFallbackIcon(amenity
-                                                                          ?.amnity
-                                                                          ?.name ??
-                                                                      ''),
-                                                                  size: 20,
-                                                                  color: Theme.of(
-                                                                          context)
-                                                                      .primaryColor,
-                                                                ),
+                                                                size:
+                                                                    18, // Reduced from 20 to 18
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .primaryColor,
                                                               ),
                                                             ),
                                                           ),
-                                                          const SizedBox(
-                                                              width: 12),
-                                                          // Improved Text Layout
-                                                          Expanded(
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                Text(
-                                                                  DbHelper.getLanguage() ==
-                                                                          'en'
-                                                                      ? "${amenity?.amnity?.name}"
-                                                                      : "${amenity?.amnity?.nameAr}",
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        13,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                    color: Colors
-                                                                        .grey
-                                                                        .shade800,
-                                                                    height:
-                                                                        1.2, // Better line height
-                                                                  ),
-                                                                  maxLines:
-                                                                      3, // Allow up to 3 lines
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                              const Gap(15),
-                                              // Show More/Less Button
-                                              if (totalAmenities > 6)
-                                                Center(
-                                                  child: GestureDetector(
-                                                    onTap: () {
-                                                      vm.showAll = !vm.showAll;
-                                                    },
-                                                    child: Container(
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                          horizontal: 20,
-                                                          vertical: 8),
-                                                      decoration: BoxDecoration(
-                                                        color:
-                                                            Colors.transparent,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(20),
-                                                        border: Border.all(
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .primaryColor,
-                                                          width: 1.5,
                                                         ),
-                                                      ),
-                                                      child: Row(
-                                                        mainAxisSize:
-                                                            MainAxisSize.min,
-                                                        children: [
-                                                          Text(
-                                                            vm.showAll
-                                                                ? StringHelper
-                                                                    .seeLess
-                                                                : StringHelper
-                                                                    .seeMore,
+                                                        const SizedBox(
+                                                            width:
+                                                                8), // Reduced from 12 to 8
+                                                        // Improved Text Layout
+                                                        Expanded(
+                                                          child: Text(
+                                                            DbHelper.getLanguage() ==
+                                                                    'en'
+                                                                ? "${amenity?.amnity?.name}"
+                                                                : "${amenity?.amnity?.nameAr}",
                                                             style: TextStyle(
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .primaryColor,
+                                                              fontSize:
+                                                                  12, // Reduced from 13 to 12
                                                               fontWeight:
                                                                   FontWeight
-                                                                      .w600,
-                                                              fontSize: 14,
+                                                                      .w500,
+                                                              color: Colors.grey
+                                                                  .shade800,
+                                                              height:
+                                                                  1.2, // Better line height
                                                             ),
+                                                            maxLines:
+                                                                3, // Allow up to 3 lines
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
                                                           ),
-                                                          const Gap(4),
-                                                          Icon(
-                                                            vm.showAll
-                                                                ? Icons
-                                                                    .keyboard_arrow_up
-                                                                : Icons
-                                                                    .keyboard_arrow_down,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                            const Gap(15),
+                                            // Show More/Less Button
+                                            if (totalAmenities > 6)
+                                              Center(
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    vm.showAll = !vm.showAll;
+                                                  },
+                                                  child: Container(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 20,
+                                                        vertical: 8),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.transparent,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                      border: Border.all(
+                                                        color: Theme.of(context)
+                                                            .primaryColor,
+                                                        width: 1.5,
+                                                      ),
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        Text(
+                                                          vm.showAll
+                                                              ? StringHelper
+                                                                  .seeLess
+                                                              : StringHelper
+                                                                  .seeMore,
+                                                          style: TextStyle(
                                                             color: Theme.of(
                                                                     context)
                                                                 .primaryColor,
-                                                            size: 18,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: 14,
                                                           ),
-                                                        ],
-                                                      ),
+                                                        ),
+                                                        const Gap(4),
+                                                        Icon(
+                                                          vm.showAll
+                                                              ? Icons
+                                                                  .keyboard_arrow_up
+                                                              : Icons
+                                                                  .keyboard_arrow_down,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .primaryColor,
+                                                          size: 18,
+                                                        ),
+                                                      ],
                                                     ),
                                                   ),
                                                 ),
-                                            ],
-                                          );
-                                        },
+                                              ),
+                                          ],
+                                        );
+                                      },
+                                    ),
+                                  ],
+
+                                  const Divider(),
+                                  Text(
+                                    StringHelper.mapView,
+                                    style: context.titleMedium,
+                                  ),
+                                  const Gap(5),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                        AssetsRes.IC_LOACTION_ICON,
+                                        height: 16,
+                                      ),
+                                      const Gap(05),
+                                      Expanded(
+                                        child: Text(
+                                          getLocalizedLocationForProduct(
+                                              context, productData),
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 5,
+                                          style: context.textTheme.bodyMedium,
+                                        ),
                                       ),
                                     ],
+                                  ),
+                                  const Gap(05),
+                                  InkWell(
+                                    onTap: () async {
+                                      if (DbHelper.getIsGuest()) {
+                                        DialogHelper.showLoginDialog(
+                                          context: context,
+                                        );
+                                        return;
+                                      }
 
-                                    const Divider(),
-                                    Text(
-                                      StringHelper.mapView,
-                                      style: context.titleMedium,
-                                    ),
-                                    const Gap(5),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Image.asset(
-                                          AssetsRes.IC_LOACTION_ICON,
-                                          height: 16,
+                                      // Navigate to in-app map view instead of launching external maps
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ProductLocationMapView(
+                                            productData: productData!,
+                                          ),
                                         ),
-                                        const Gap(05),
-                                        Expanded(
-                                          child: Text(
-                                            getLocalizedLocationForProduct(
-                                                context, productData),
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 5,
-                                            style: context.textTheme.bodyMedium,
+                                      );
+                                    },
+                                    child: Text(
+                                      StringHelper.getDirection,
+                                      style: context.textTheme.titleSmall
+                                          ?.copyWith(
+                                        color: Colors.red,
+                                        decorationColor: Colors.red,
+                                      ),
+                                    ),
+                                  ),
+                                  const Gap(5),
+                                  InkWell(
+                                    onTap: () {
+                                      if (DbHelper.getIsGuest()) {
+                                        DialogHelper.showLoginDialog(
+                                          context: context,
+                                        );
+                                        return;
+                                      }
+
+                                      // Navigate to in-app map view
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ProductLocationMapView(
+                                            productData: productData!,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: Stack(
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          child: SizedBox(
+                                            height: 150,
+                                            width: context.width,
+                                            child: AbsorbPointer(
+                                              absorbing:
+                                                  true, // Prevents map gestures
+                                              child: AddressMapWidget(
+                                                latLng: LatLng(
+                                                  double.parse(
+                                                      productData?.latitude ??
+                                                          '0'),
+                                                  double.parse(
+                                                      productData?.longitude ??
+                                                          '0'),
+                                                ),
+                                                address:
+                                                    productData?.nearby ?? "",
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        // View Full Map overlay (clickable)
+                                        Positioned(
+                                          top: 10,
+                                          right: 10,
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 12,
+                                              vertical: 6,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  Colors.white.withOpacity(0.9),
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.black
+                                                      .withOpacity(0.1),
+                                                  blurRadius: 4,
+                                                  offset: const Offset(0, 2),
+                                                ),
+                                              ],
+                                            ),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Icon(
+                                                  Icons.fullscreen,
+                                                  size: 16,
+                                                  color: Colors.black87,
+                                                ),
+                                                const Gap(4),
+                                                Text(
+                                                  StringHelper.viewFullMap,
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.black87,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ],
                                     ),
-                                    const Gap(05),
-                                    InkWell(
-                                      onTap: () async {
-                                        if (DbHelper.getIsGuest()) {
-                                          DialogHelper.showLoginDialog(
-                                            context: context,
-                                          );
-                                          return;
-                                        }
-
-                                        // Navigate to in-app map view instead of launching external maps
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ProductLocationMapView(
-                                              productData: productData!,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      child: Text(
-                                        StringHelper.getDirection,
-                                        style: context.textTheme.titleSmall
-                                            ?.copyWith(
-                                          color: Colors.red,
-                                          decorationColor: Colors.red,
-                                        ),
-                                      ),
-                                    ),
-                                    const Gap(5),
-                                    InkWell(
-                                      onTap: () {
-                                        if (DbHelper.getIsGuest()) {
-                                          DialogHelper.showLoginDialog(
-                                            context: context,
-                                          );
-                                          return;
-                                        }
-
-                                        // Navigate to in-app map view
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ProductLocationMapView(
-                                              productData: productData!,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      child: Stack(
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                            child: SizedBox(
-                                              height: 150,
-                                              width: context.width,
-                                              child: AbsorbPointer(
-                                                absorbing:
-                                                    true, // Prevents map gestures
-                                                child: AddressMapWidget(
-                                                  latLng: LatLng(
-                                                    double.parse(
-                                                        productData?.latitude ??
-                                                            '0'),
-                                                    double.parse(productData
-                                                            ?.longitude ??
-                                                        '0'),
-                                                  ),
-                                                  address:
-                                                      productData?.nearby ?? "",
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          // View Full Map overlay (clickable)
-                                          Positioned(
-                                            top: 10,
-                                            right: 10,
-                                            child: Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                horizontal: 12,
-                                                vertical: 6,
-                                              ),
-                                              decoration: BoxDecoration(
-                                                color: Colors.white
-                                                    .withOpacity(0.9),
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: Colors.black
-                                                        .withOpacity(0.1),
-                                                    blurRadius: 4,
-                                                    offset: const Offset(0, 2),
-                                                  ),
-                                                ],
-                                              ),
-                                              child: Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  Icon(
-                                                    Icons.fullscreen,
-                                                    size: 16,
-                                                    color: Colors.black87,
-                                                  ),
-                                                  const Gap(4),
-                                                  Text(
-                                                    StringHelper.viewFullMap,
-                                                    style: TextStyle(
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      color: Colors.black87,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    const Gap(10),
-                                    const Gap(10),
-                                    // "Posted by" section without grey background
-                                    Padding(
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          ImageView.circle(
-                                            placeholder: AssetsRes.IC_USER_ICON,
-                                            image:
-                                                "${ApiConstants.imageUrl}/${productData?.user?.profilePic}",
-                                            width: 80,
-                                            height: 80,
-                                          ),
-                                          const Gap(20),
-                                          Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                StringHelper.postedBy,
-                                                style: context
-                                                    .textTheme.titleSmall
-                                                    ?.copyWith(
-                                                        color: Colors.grey),
-                                              ),
-                                              Text(
-                                                "${productData?.user?.name} ${productData?.user?.lastName}",
-                                                style: context
-                                                    .textTheme.titleMedium
-                                                    ?.copyWith(
-                                                  fontFamily: FontRes
-                                                      .MONTSERRAT_SEMIBOLD,
-                                                ),
-                                              ),
-                                              Text(
-                                                '${StringHelper.postedOn} ${DateHelper.joiningDate(DateTime.parse('${productData?.createdAt}'))}',
-                                                style: context
-                                                    .textTheme.titleSmall
-                                                    ?.copyWith(
-                                                        color: Colors.grey),
-                                              ),
-                                              const Gap(10),
-                                              InkWell(
-                                                onTap: () {
-                                                  if (DbHelper.getIsGuest()) {
-                                                    DialogHelper
-                                                        .showLoginDialog(
-                                                      context: context,
-                                                    );
-                                                    return;
-                                                  }
-                                                  productData?.user?.id =
-                                                      productData.userId;
-                                                  context.push(
-                                                    Routes.seeProfile,
-                                                    extra: productData?.user,
-                                                  );
-                                                },
-                                                child: Text(
-                                                  StringHelper.seeProfile,
-                                                  style: context
-                                                      .textTheme.titleSmall
-                                                      ?.copyWith(
-                                                    color: Colors.red,
-                                                    decorationColor: Colors.red,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    // Safety guidelines section
-                                    const Divider(),
-                                    Text(
-                                      StringHelper.safetyTips,
-                                      style: context.textTheme.titleLarge
-                                          ?.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black87,
-                                      ),
-                                    ),
-                                    const Gap(10),
-                                    Column(
+                                  ),
+                                  const Gap(10),
+                                  const Gap(10),
+                                  // "Posted by" section without grey background
+                                  Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Row(
+                                        ImageView.circle(
+                                          placeholder: AssetsRes.IC_USER_ICON,
+                                          image:
+                                              "${ApiConstants.imageUrl}/${productData?.user?.profilePic}",
+                                          width: 80,
+                                          height: 80,
+                                        ),
+                                        const Gap(20),
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            const Icon(
-                                              Icons.warning,
-                                              color: Colors.red,
+                                            Text(
+                                              StringHelper.postedBy,
+                                              style: context
+                                                  .textTheme.titleSmall
+                                                  ?.copyWith(
+                                                      color: Colors.grey),
                                             ),
-                                            const SizedBox(width: 10),
-                                            Expanded(
-                                              child: Text(
-                                                StringHelper.doNotTransact,
-                                                style: context
-                                                    .textTheme.bodyMedium,
+                                            Text(
+                                              "${productData?.user?.name} ${productData?.user?.lastName}",
+                                              style: context
+                                                  .textTheme.titleMedium
+                                                  ?.copyWith(
+                                                fontFamily:
+                                                    FontRes.MONTSERRAT_SEMIBOLD,
                                               ),
                                             ),
-                                          ],
-                                        ),
-                                        const Gap(8),
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const Icon(
-                                              Icons.warning,
-                                              color: Colors.red,
+                                            Text(
+                                              '${StringHelper.postedOn} ${DateHelper.joiningDate(DateTime.parse('${productData?.createdAt}'))}',
+                                              style: context
+                                                  .textTheme.titleSmall
+                                                  ?.copyWith(
+                                                      color: Colors.grey),
                                             ),
-                                            const SizedBox(width: 10),
-                                            Expanded(
+                                            const Gap(10),
+                                            InkWell(
+                                              onTap: () {
+                                                if (DbHelper.getIsGuest()) {
+                                                  DialogHelper.showLoginDialog(
+                                                    context: context,
+                                                  );
+                                                  return;
+                                                }
+                                                productData?.user?.id =
+                                                    productData.userId;
+                                                context.push(
+                                                  Routes.seeProfile,
+                                                  extra: productData?.user,
+                                                );
+                                              },
                                               child: Text(
-                                                StringHelper.meetInPublic,
+                                                StringHelper.seeProfile,
                                                 style: context
-                                                    .textTheme.bodyMedium,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        const Gap(8),
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const Icon(
-                                              Icons.warning,
-                                              color: Colors.red,
-                                            ),
-                                            const SizedBox(width: 10),
-                                            Expanded(
-                                              child: Text(
-                                                StringHelper.inspectItems,
-                                                style: context
-                                                    .textTheme.bodyMedium,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        const Gap(8),
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const Icon(
-                                              Icons.warning,
-                                              color: Colors.red,
-                                            ),
-                                            const SizedBox(width: 10),
-                                            Expanded(
-                                              child: Text(
-                                                StringHelper.avoidSharing,
-                                                style: context
-                                                    .textTheme.bodyMedium,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        const Gap(8),
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const Icon(
-                                              Icons.warning,
-                                              color: Colors.red,
-                                            ),
-                                            const SizedBox(width: 10),
-                                            Expanded(
-                                              child: Text(
-                                                StringHelper.reportSuspicious,
-                                                style: context
-                                                    .textTheme.bodyMedium,
+                                                    .textTheme.titleSmall
+                                                    ?.copyWith(
+                                                  color: Colors.red,
+                                                  decorationColor: Colors.red,
+                                                ),
                                               ),
                                             ),
                                           ],
                                         ),
                                       ],
                                     ),
-                                    const Gap(20),
-                                    const Divider(),
-                                    const Gap(30),
-                                  ],
+                                  ),
+                                  // Safety guidelines section
+                                  const Divider(),
+                                  Text(
+                                    StringHelper.safetyTips,
+                                    style:
+                                        context.textTheme.titleLarge?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                  const Gap(10),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Icon(
+                                            Icons.warning,
+                                            color: Colors.red,
+                                          ),
+                                          const SizedBox(width: 10),
+                                          Expanded(
+                                            child: Text(
+                                              StringHelper.doNotTransact,
+                                              style:
+                                                  context.textTheme.bodyMedium,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const Gap(8),
+                                      Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Icon(
+                                            Icons.warning,
+                                            color: Colors.red,
+                                          ),
+                                          const SizedBox(width: 10),
+                                          Expanded(
+                                            child: Text(
+                                              StringHelper.meetInPublic,
+                                              style:
+                                                  context.textTheme.bodyMedium,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const Gap(8),
+                                      Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Icon(
+                                            Icons.warning,
+                                            color: Colors.red,
+                                          ),
+                                          const SizedBox(width: 10),
+                                          Expanded(
+                                            child: Text(
+                                              StringHelper.inspectItems,
+                                              style:
+                                                  context.textTheme.bodyMedium,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const Gap(8),
+                                      Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Icon(
+                                            Icons.warning,
+                                            color: Colors.red,
+                                          ),
+                                          const SizedBox(width: 10),
+                                          Expanded(
+                                            child: Text(
+                                              StringHelper.avoidSharing,
+                                              style:
+                                                  context.textTheme.bodyMedium,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const Gap(8),
+                                      Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Icon(
+                                            Icons.warning,
+                                            color: Colors.red,
+                                          ),
+                                          const SizedBox(width: 10),
+                                          Expanded(
+                                            child: Text(
+                                              StringHelper.reportSuspicious,
+                                              style:
+                                                  context.textTheme.bodyMedium,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  const Gap(20),
+                                  const Divider(),
+                                  const Gap(30),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                    if (snapshot.hasError) {
+                      return const AppErrorWidget();
+                    }
+                    return ProductDetailSkeleton(
+                      isLoading:
+                          snapshot.connectionState == ConnectionState.waiting,
+                    );
+                  },
+                ),
+
+                // -- Sticky Header Added Here --
+                // Smooth fade in/out once the user scrolls ~350 px
+                // No changes to your existing code; it just sits atop in the same Stack.
+                // -- Sticky Header Added Here --
+                AnimatedBuilder(
+                  animation: vm.scrollController,
+                  builder: (context, child) {
+                    final offset = vm.scrollController.hasClients
+                        ? vm.scrollController.offset
+                        : 0.0;
+                    final bool showHeader = offset >= 350.0;
+                    return IgnorePointer(
+                      ignoring:
+                          !showHeader, // Allows taps to pass through when header is hidden
+                      child: AnimatedOpacity(
+                        duration: const Duration(milliseconds: 300),
+                        opacity: showHeader ? 1.0 : 0.0,
+                        child: Container(
+                          height: 60 +
+                              MediaQuery.of(context)
+                                  .padding
+                                  .top, // Adjust height for status bar
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                offset: const Offset(0, 2),
+                                blurRadius: 4,
+                                spreadRadius: 0,
+                              ),
+                            ],
+                          ),
+                          padding: EdgeInsets.only(
+                            left: 8,
+                            right: 8,
+                            top: MediaQuery.of(context).padding.top +
+                                8, // Add status bar padding + 8
+                            bottom: 8,
+                          ),
+                          child: Row(
+                            children: [
+                              IconButton(
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                                onPressed: () {
+                                  context.pop();
+                                },
+                                icon: Icon(
+                                  Directionality.of(context) ==
+                                          TextDirection.ltr
+                                      ? LineAwesomeIcons.arrow_left_solid
+                                      : LineAwesomeIcons.arrow_right_solid,
+                                  size: 28,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  widget.productDetails?.name ?? '',
+                                  style: context.textTheme.titleMedium,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              IconButton(
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                                onPressed: () {
+                                  Utils.onShareProduct(
+                                    context,
+                                    "📍 ${widget.productDetails?.name}\n💰 ${StringHelper.egp} ${parseAmount(widget.productDetails?.price)}\n\nView this listing on Daroory:\nhttps://daroory.com/listing/${widget.productDetails?.id}",
+                                  );
+                                },
+                                icon: const Icon(
+                                  Icons.share,
+                                  size: 22,
+                                  color: Colors.black,
                                 ),
                               ),
                             ],
                           ),
-                        );
-                      }
-                      if (snapshot.hasError) {
-                        return const AppErrorWidget();
-                      }
-                      return ProductDetailSkeleton(
-                        isLoading:
-                            snapshot.connectionState == ConnectionState.waiting,
-                      );
-                    },
-                  ),
-
-                  // -- Sticky Header Added Here --
-                  // Smooth fade in/out once the user scrolls ~350 px
-                  // No changes to your existing code; it just sits atop in the same Stack.
-                  AnimatedBuilder(
-                    animation: vm.scrollController,
-                    builder: (context, child) {
-                      final offset = vm.scrollController.hasClients
-                          ? vm.scrollController.offset
-                          : 0.0;
-                      final bool showHeader = offset >= 350.0;
-                      return IgnorePointer(
-                        ignoring:
-                            !showHeader, // Allows taps to pass through when header is hidden
-                        child: AnimatedOpacity(
-                          duration: const Duration(milliseconds: 300),
-                          opacity: showHeader ? 1.0 : 0.0,
-                          child: Container(
-                            height: 60,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
-                                  offset: const Offset(0, 2),
-                                  blurRadius: 4,
-                                  spreadRadius: 0,
-                                ),
-                              ],
-                            ),
-                            padding: const EdgeInsets.only(
-                                left: 8, right: 8, top: 8),
-                            child: SafeArea(
-                              child: Row(
-                                children: [
-                                  IconButton(
-                                    padding: EdgeInsets.zero,
-                                    constraints: const BoxConstraints(),
-                                    onPressed: () {
-                                      context.pop();
-                                    },
-                                    icon: Icon(
-                                      Directionality.of(context) ==
-                                              TextDirection.ltr
-                                          ? LineAwesomeIcons.arrow_left_solid
-                                          : LineAwesomeIcons.arrow_right_solid,
-                                      size: 28,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Expanded(
-                                    child: Text(
-                                      widget.productDetails?.name ?? '',
-                                      style: context.textTheme.titleMedium,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                  IconButton(
-                                    padding: EdgeInsets.zero,
-                                    constraints: const BoxConstraints(),
-                                    onPressed: () {
-                                      Utils.onShareProduct(
-                                        context,
-                                        "Hello, Please check this useful product on following link",
-                                      );
-                                    },
-                                    icon: const Icon(
-                                      Icons.share,
-                                      size: 22,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
+                ),
 
-                  // Communication buttons with white container
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 20),
-                      height: 75,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(12),
-                          topRight: Radius.circular(12),
+                // Communication buttons with white container
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 20),
+                    height: 75,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(12),
+                        topRight: Radius.circular(12),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 10,
+                          offset: const Offset(0, -3),
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 10,
-                            offset: const Offset(0, -3),
-                          ),
-                        ],
-                      ),
-                      child: CommunicationButtons(
-                        data: widget.productDetails,
-                      ),
+                      ],
+                    ),
+                    child: CommunicationButtons(
+                      data: widget.productDetails,
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           );
         },

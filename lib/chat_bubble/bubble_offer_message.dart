@@ -368,7 +368,7 @@ class BubbleOfferAcceptedMessage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'OFFER',
+                          'FILE',
                           style: context.textTheme.titleSmall
                               ?.copyWith(color: Colors.white),
                         ),

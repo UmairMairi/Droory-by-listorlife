@@ -165,8 +165,10 @@ class _MyProductViewState extends State<MyProductView> {
       child: Consumer<ProductVM>(
         builder: (context, vm, child) {
           return Scaffold(
-            body: SafeArea(
-              child: StreamBuilder<ProductDetailModel?>(
+            extendBodyBehindAppBar: true,
+            body: Stack(
+              children: [
+                StreamBuilder<ProductDetailModel?>(
                   stream: vm.productStream.stream,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
@@ -939,9 +941,12 @@ class _MyProductViewState extends State<MyProductView> {
                                               gridDelegate:
                                                   SliverGridDelegateWithFixedCrossAxisCount(
                                                 crossAxisCount: 2,
-                                                childAspectRatio: 2.5,
-                                                crossAxisSpacing: 12,
-                                                mainAxisSpacing: 12,
+                                                childAspectRatio:
+                                                    2.2, // Reduced from 2.5 to 2.2
+                                                crossAxisSpacing:
+                                                    8, // Reduced from 12 to 8
+                                                mainAxisSpacing:
+                                                    8, // Reduced from 12 to 8
                                               ),
                                               itemCount: visibleItemCount,
                                               itemBuilder:
@@ -954,7 +959,7 @@ class _MyProductViewState extends State<MyProductView> {
                                                     color: Colors.white,
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            12),
+                                                            10), // Reduced from 12 to 10
                                                     border: Border.all(
                                                       color:
                                                           Colors.grey.shade200,
@@ -971,17 +976,19 @@ class _MyProductViewState extends State<MyProductView> {
                                                     ],
                                                   ),
                                                   child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            12.0),
+                                                    padding: const EdgeInsets
+                                                        .all(
+                                                        10.0), // Reduced from 12 to 10
                                                     child: Row(
                                                       crossAxisAlignment:
                                                           CrossAxisAlignment
                                                               .center,
                                                       children: [
                                                         Container(
-                                                          width: 48,
-                                                          height: 48,
+                                                          width:
+                                                              40, // Reduced from 48 to 40
+                                                          height:
+                                                              40, // Reduced from 48 to 40
                                                           decoration:
                                                               BoxDecoration(
                                                             color: Theme.of(
@@ -992,7 +999,7 @@ class _MyProductViewState extends State<MyProductView> {
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .circular(
-                                                                        10),
+                                                                        8), // Reduced from 10 to 8
                                                           ),
                                                           child: Center(
                                                             child: SvgPicture
@@ -1001,8 +1008,10 @@ class _MyProductViewState extends State<MyProductView> {
                                                                   amenity?.amnity
                                                                           ?.name ??
                                                                       ''),
-                                                              width: 28,
-                                                              height: 28,
+                                                              width:
+                                                                  22, // Reduced from 28 to 22
+                                                              height:
+                                                                  22, // Reduced from 28 to 22
                                                               colorFilter:
                                                                   ColorFilter
                                                                       .mode(
@@ -1018,7 +1027,8 @@ class _MyProductViewState extends State<MyProductView> {
                                                                         ?.amnity
                                                                         ?.name ??
                                                                     ''),
-                                                                size: 24,
+                                                                size:
+                                                                    18, // Reduced from 24 to 18
                                                                 color: Theme.of(
                                                                         context)
                                                                     .primaryColor,
@@ -1026,38 +1036,29 @@ class _MyProductViewState extends State<MyProductView> {
                                                             ),
                                                           ),
                                                         ),
-                                                        SizedBox(width: 14),
+                                                        SizedBox(
+                                                            width:
+                                                                8), // Reduced from 14 to 8
                                                         Expanded(
-                                                          child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Text(
-                                                                DbHelper.getLanguage() ==
-                                                                        'en'
-                                                                    ? "${amenity?.amnity?.name}"
-                                                                    : "${amenity?.amnity?.nameAr}",
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize: 13,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                  color: Colors
-                                                                      .grey
-                                                                      .shade800,
-                                                                  height: 1.2,
-                                                                ),
-                                                                maxLines: 3,
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                              ),
-                                                            ],
+                                                          child: Text(
+                                                            DbHelper.getLanguage() ==
+                                                                    'en'
+                                                                ? "${amenity?.amnity?.name}"
+                                                                : "${amenity?.amnity?.nameAr}",
+                                                            style: TextStyle(
+                                                              fontSize:
+                                                                  12, // Reduced from 13 to 12
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              color: Colors.grey
+                                                                  .shade800,
+                                                              height: 1.2,
+                                                            ),
+                                                            maxLines: 3,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
                                                           ),
                                                         ),
                                                       ],
@@ -1066,6 +1067,7 @@ class _MyProductViewState extends State<MyProductView> {
                                                 );
                                               },
                                             ),
+                                            Gap(10), // Reduced from 15 to 10
                                             Gap(15),
                                             if (totalAmenities > 6)
                                               Center(
@@ -1309,7 +1311,9 @@ class _MyProductViewState extends State<MyProductView> {
                       isLoading:
                           snapshot.connectionState == ConnectionState.waiting,
                     );
-                  }),
+                  },
+                ),
+              ],
             ),
           );
         },
