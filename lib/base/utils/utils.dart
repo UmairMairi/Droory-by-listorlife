@@ -19,7 +19,7 @@ class Utils {
   static DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 
   static void goToUrl({required String url}) async {
-    if (!await launchUrl(Uri.parse(url), mode: LaunchMode.inAppWebView)) {
+    if (!await launchUrl(Uri.parse(url), mode: LaunchMode.inAppBrowserView)) {
       throw Exception('Could not launch $url');
     }
   }

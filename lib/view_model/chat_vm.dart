@@ -499,6 +499,7 @@ class ChatVM extends BaseViewModel {
     print("✅ STREAM UPDATED and notifyListeners called");
   }
 
+  final ScrollController scrollController = ScrollController();
   void sendMessage(
       {String? message,
       int? type,
@@ -534,6 +535,11 @@ class ChatVM extends BaseViewModel {
     messageStreamController.sink.add(chatItems);
     DialogHelper.hideLoading();
     notifyListeners();
+
+
+    scrollController.jumpTo(
+      scrollController.position.maxScrollExtent,
+    );
   }
 
   void readChatStatus(

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/base/helpers/dialog_helper.dart';
+import 'package:list_and_life/base/network/api_constants.dart';
+import 'package:list_and_life/base/utils/utils.dart';
+import 'package:list_and_life/routes/app_pages.dart';
 
 import 'bubble_normal_message.dart';
 
@@ -323,96 +327,103 @@ class BubbleOfferAcceptedMessage extends StatelessWidget {
                 ),
               )
             : leading ?? Container(),
-        Container(
-          color: Colors.transparent,
-          constraints: constraints ??
-              BoxConstraints(maxWidth: MediaQuery.of(context).size.width * .8),
-          margin: margin,
-          padding: padding,
+        GestureDetector(
+          onTap: (){
+            var endpoint = text.split("|")[1];
+            var url = "${ApiConstants.imageUrl}/$endpoint";
+            Utils.goToUrl(url: url);
+          },
           child: Container(
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(bubbleRadius),
-                topRight: Radius.circular(bubbleRadius),
-                bottomLeft: Radius.circular(tail
-                    ? isSender
-                        ? bubbleRadius
-                        : 0
-                    : BUBBLE_RADIUS),
-                bottomRight: Radius.circular(tail
-                    ? isSender
-                        ? 0
-                        : bubbleRadius
-                    : BUBBLE_RADIUS),
+            color: Colors.transparent,
+            constraints: constraints ??
+                BoxConstraints(maxWidth: MediaQuery.of(context).size.width * .8),
+            margin: margin,
+            padding: padding,
+            child: Container(
+              decoration: BoxDecoration(
+                color: color,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(bubbleRadius),
+                  topRight: Radius.circular(bubbleRadius),
+                  bottomLeft: Radius.circular(tail
+                      ? isSender
+                          ? bubbleRadius
+                          : 0
+                      : BUBBLE_RADIUS),
+                  bottomRight: Radius.circular(tail
+                      ? isSender
+                          ? 0
+                          : bubbleRadius
+                      : BUBBLE_RADIUS),
+                ),
               ),
-            ),
-            child: Stack(
-              children: <Widget>[
-                Padding(
-                  padding: stateTick
-                      ? const EdgeInsets.fromLTRB(16, 6, 50, 16)
-                      : const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'OFFER',
-                        style: context.textTheme.titleSmall
-                            ?.copyWith(color: Colors.white),
-                      ),
-                      const Gap(05),
-                      SelectableText(
-                        "EGP $text",
-                        style: context.textTheme.titleLarge
-                            ?.copyWith(color: Colors.white),
-                        textAlign: TextAlign.left,
-                      ),
-                      Gap(10),
-                      Container(
-                          margin: const EdgeInsets.symmetric(vertical: 5),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10)),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 2),
-                          child: isAccepted
-                              ? const Text(
-                                  '✅Accepted',
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.green),
-                                )
-                              : const Text(
-                                  '❌Rejected',
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.red),
-                                ))
-                    ],
+              child: Stack(
+                children: <Widget>[
+                  Padding(
+                    padding: stateTick
+                        ? const EdgeInsets.fromLTRB(16, 6, 50, 16)
+                        : const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'OFFER',
+                          style: context.textTheme.titleSmall
+                              ?.copyWith(color: Colors.white),
+                        ),
+                        const Gap(05),
+                        SelectableText(
+                          "EGP $text",
+                          style: context.textTheme.titleLarge
+                              ?.copyWith(color: Colors.white),
+                          textAlign: TextAlign.left,
+                        ),
+                        Gap(10),
+                        Container(
+                            margin: const EdgeInsets.symmetric(vertical: 5),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10)),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 2),
+                            child: isAccepted
+                                ? const Text(
+                                    '✅Accepted',
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.green),
+                                  )
+                                : const Text(
+                                    '❌Rejected',
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.red),
+                                  ))
+                      ],
+                    ),
                   ),
-                ),
-                stateIcon != null || timeStateIcon !=null && stateTick
-                    ? Positioned(
-                  bottom: 4,
-                  right: 6,
-                  child: Row(
-                    children: [
-                      timeStateIcon??SizedBox.shrink(),
-                      SizedBox(width: 5,),
-                      if(stateIcon!=null)...[
-                        stateIcon
-                      ]
-                    ],
+                  stateIcon != null || timeStateIcon !=null && stateTick
+                      ? Positioned(
+                    bottom: 4,
+                    right: 6,
+                    child: Row(
+                      children: [
+                        timeStateIcon??SizedBox.shrink(),
+                        SizedBox(width: 5,),
+                        if(stateIcon!=null)...[
+                          stateIcon
+                        ]
+                      ],
+                    ),
+                  )
+                      : const SizedBox(
+                    width: 1,
                   ),
-                )
-                    : const SizedBox(
-                  width: 1,
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

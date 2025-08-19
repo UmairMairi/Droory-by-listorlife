@@ -1296,8 +1296,8 @@ class _MessageViewState extends State<MessageView> {
                         children: [
                           Expanded(
                             child: ListView.builder(
-                              keyboardDismissBehavior:
-                                  ScrollViewKeyboardDismissBehavior.onDrag,
+                              controller: viewModel.scrollController,
+                              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
                               itemCount: data.length + 1, // +1 for safety tips
                               reverse: false,
                               shrinkWrap: true,
@@ -1369,9 +1369,7 @@ class _MessageViewState extends State<MessageView> {
                               },
                             ),
                           ),
-                          if ((widget.chat?.productDetail?.sellStatus ?? "")
-                                  .toLowerCase() !=
-                              "sold") ...{
+                          if ((widget.chat?.productDetail?.sellStatus ?? "").toLowerCase() != "sold") ...{
                             viewModel.blockedUser
                                 ? SafeArea(
                                     child: Container(

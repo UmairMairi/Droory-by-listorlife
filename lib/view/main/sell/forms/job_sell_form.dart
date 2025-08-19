@@ -481,8 +481,7 @@ class JobSellForm extends BaseView<SellFormsVM> {
                       title: StringHelper.remote,
                       icon: Icons.home_work_outlined,
                       value: "Remote",
-                      isSelected:
-                          viewModel.workSettingTextController.text == "Remote",
+                      isSelected: viewModel.workSettingTextController.text == "Remote",
                       onTap: () {
                         viewModel.workSettingTextController.text = "Remote";
                         viewModel.notifyListeners();
