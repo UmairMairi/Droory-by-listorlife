@@ -1016,26 +1016,28 @@ class ChatVM extends BaseViewModel {
             width: 120,
             height: 150,
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.blue, width: 2),
+              // border: Border.all(color: Colors.blue, width: 1),
+              borderRadius: BorderRadius.circular(BUBBLE_RADIUS_IMAGE)
             ),
-            child: Image.asset(
-              AssetsRes.SERVICE_FILLER_IMAGE,
-              width: 120,
-              height: 150,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Container(
-                  color: Colors.red,
-                  child: Center(
-                    child: Text(
-                      "SERVICE\nIMAGE\nMISSING",
-                      style: TextStyle(color: Colors.white, fontSize: 10),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                );
-              },
-            ),
+            // child: Image.asset(
+            //   AssetsRes.SERVICE_FILLER_IMAGE,
+            //   width: 120,
+            //   height: 150,
+            //   fit: BoxFit.cover,
+            //   errorBuilder: (context, error, stackTrace) {
+            //     return Container(
+            //       color: Colors.red,
+            //       child: Center(
+            //         child: Text(
+            //           "SERVICE\nIMAGE\nMISSING",
+            //           style: TextStyle(color: Colors.white, fontSize: 10),
+            //           textAlign: TextAlign.center,
+            //         ),
+            //       ),
+            //     );
+            //   },
+            // ),
+            child: FadeInImage(placeholder: AssetImage(AssetsRes.SERVICE_FILLER_IMAGE), image: NetworkImage("${ApiConstants.imageUrl}/${data.message}"),fit: BoxFit.cover,),
           ),
         );
       case 4:

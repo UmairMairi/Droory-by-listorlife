@@ -244,52 +244,52 @@ class _MyProductViewState extends State<MyProductView> {
                                       ),
                                     ),
                                   ),
-                                  Positioned(
-                                    top: 0,
-                                    left: Directionality.of(context) ==
-                                            TextDirection.rtl
-                                        ? 60
-                                        : null,
-                                    right: Directionality.of(context) ==
-                                            TextDirection.ltr
-                                        ? 60
-                                        : null,
-                                    child: SafeArea(
-                                      child: Container(
-                                        margin: const EdgeInsets.all(8),
-                                        width: 40,
-                                        height: 40,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          shape: BoxShape.circle,
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                                  Colors.black.withOpacity(0.1),
-                                              spreadRadius: 1,
-                                              blurRadius: 3,
-                                              offset: const Offset(0, 1),
-                                            ),
-                                          ],
-                                        ),
-                                        child: IconButton(
-                                          padding: EdgeInsets.zero,
-                                          constraints: const BoxConstraints(),
-                                          onPressed: () {
-                                            Utils.onShareProduct(
-                                              context,
-                                              "Hello, Please check this useful product on following link",
-                                            );
-                                          },
-                                          icon: const Icon(
-                                            Icons.share,
-                                            size: 22,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                  // Positioned(
+                                  //   top: 0,
+                                  //   left: Directionality.of(context) ==
+                                  //           TextDirection.rtl
+                                  //       ? 60
+                                  //       : null,
+                                  //   right: Directionality.of(context) ==
+                                  //           TextDirection.ltr
+                                  //       ? 60
+                                  //       : null,
+                                  //   child: SafeArea(
+                                  //     child: Container(
+                                  //       margin: const EdgeInsets.all(8),
+                                  //       width: 40,
+                                  //       height: 40,
+                                  //       decoration: BoxDecoration(
+                                  //         color: Colors.white,
+                                  //         shape: BoxShape.circle,
+                                  //         boxShadow: [
+                                  //           BoxShadow(
+                                  //             color:
+                                  //                 Colors.black.withOpacity(0.1),
+                                  //             spreadRadius: 1,
+                                  //             blurRadius: 3,
+                                  //             offset: const Offset(0, 1),
+                                  //           ),
+                                  //         ],
+                                  //       ),
+                                  //       child: IconButton(
+                                  //         padding: EdgeInsets.zero,
+                                  //         constraints: const BoxConstraints(),
+                                  //         onPressed: () {
+                                  //           Utils.onShareProduct(
+                                  //             context,
+                                  //             "Hello, Please check this useful product on following link",
+                                  //           );
+                                  //         },
+                                  //         icon: const Icon(
+                                  //           Icons.share,
+                                  //           size: 22,
+                                  //           color: Colors.black,
+                                  //         ),
+                                  //       ),
+                                  //     ),
+                                  //   ),
+                                  // ),
                                   Positioned(
                                     top: 0,
                                     left: Directionality.of(context) ==
@@ -433,29 +433,29 @@ class _MyProductViewState extends State<MyProductView> {
                                     ),
                                     const Spacer(),
                                     // Share Button
-                                    Container(
-                                      width: 40,
-                                      height: 40,
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey.shade100,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: IconButton(
-                                        padding: EdgeInsets.zero,
-                                        constraints: const BoxConstraints(),
-                                        onPressed: () {
-                                          Utils.onShareProduct(
-                                            context,
-                                            "Hello, Please check this useful product on following link",
-                                          );
-                                        },
-                                        icon: const Icon(
-                                          Icons.share,
-                                          size: 22,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    ),
+                                    // Container(
+                                    //   width: 40,
+                                    //   height: 40,
+                                    //   decoration: BoxDecoration(
+                                    //     color: Colors.grey.shade100,
+                                    //     shape: BoxShape.circle,
+                                    //   ),
+                                    //   child: IconButton(
+                                    //     padding: EdgeInsets.zero,
+                                    //     constraints: const BoxConstraints(),
+                                    //     onPressed: () {
+                                    //       Utils.onShareProduct(
+                                    //         context,
+                                    //         "Hello, Please check this useful product on following link",
+                                    //       );
+                                    //     },
+                                    //     icon: const Icon(
+                                    //       Icons.share,
+                                    //       size: 22,
+                                    //       color: Colors.black,
+                                    //     ),
+                                    //   ),
+                                    // ),
                                     const Gap(8),
                                     // More options menu
                                     Container(

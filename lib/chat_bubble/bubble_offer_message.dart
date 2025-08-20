@@ -387,21 +387,29 @@ class BubbleOfferAcceptedMessage extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(10)),
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 2),
-                            child: isAccepted
-                                ? const Text(
-                                    '✅Accepted',
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.green),
-                                  )
-                                : const Text(
-                                    '❌Rejected',
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.red),
-                                  ))
+                            child:const Text(
+                              'Open',
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.green),
+                            )
+                            // child: isAccepted
+                            //     ? const Text(
+                            //         '✅Accepted',
+                            //         style: TextStyle(
+                            //             fontSize: 12,
+                            //             fontWeight: FontWeight.bold,
+                            //             color: Colors.green),
+                            //       )
+                            //     : const Text(
+                            //         '❌Rejected',
+                            //         style: TextStyle(
+                            //             fontSize: 12,
+                            //             fontWeight: FontWeight.bold,
+                            //             color: Colors.red),
+                            //       )
+                                )
                       ],
                     ),
                   ),

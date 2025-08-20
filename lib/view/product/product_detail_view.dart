@@ -279,29 +279,29 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                                     ),
                                     const Gap(8),
                                     // Share Button
-                                    Container(
-                                      width: 40,
-                                      height: 40,
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey.shade100,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: IconButton(
-                                        padding: EdgeInsets.zero,
-                                        constraints: const BoxConstraints(),
-                                        onPressed: () {
-                                          Utils.onShareProduct(
-                                            context,
-                                            "Hello, Please check this useful product on following link",
-                                          );
-                                        },
-                                        icon: const Icon(
-                                          Icons.share,
-                                          size: 22,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    ),
+                                    // Container(
+                                    //   width: 40,
+                                    //   height: 40,
+                                    //   decoration: BoxDecoration(
+                                    //     color: Colors.grey.shade100,
+                                    //     shape: BoxShape.circle,
+                                    //   ),
+                                    //   child: IconButton(
+                                    //     padding: EdgeInsets.zero,
+                                    //     constraints: const BoxConstraints(),
+                                    //     onPressed: () {
+                                    //       Utils.onShareProduct(
+                                    //         context,
+                                    //         "Hello, Please check this useful product on following link",
+                                    //       );
+                                    //     },
+                                    //     icon: const Icon(
+                                    //       Icons.share,
+                                    //       size: 22,
+                                    //       color: Colors.black,
+                                    //     ),
+                                    //   ),
+                                    // ),
                                   ],
                                 ),
                               ),
@@ -1145,21 +1145,21 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                              IconButton(
-                                padding: EdgeInsets.zero,
-                                constraints: const BoxConstraints(),
-                                onPressed: () {
-                                  Utils.onShareProduct(
-                                    context,
-                                    "📍 ${widget.productDetails?.name}\n💰 ${StringHelper.egp} ${parseAmount(widget.productDetails?.price)}\n\nView this listing on Daroory:\nhttps://daroory.com/listing/${widget.productDetails?.id}",
-                                  );
-                                },
-                                icon: const Icon(
-                                  Icons.share,
-                                  size: 22,
-                                  color: Colors.black,
-                                ),
-                              ),
+                              // IconButton(
+                              //   padding: EdgeInsets.zero,
+                              //   constraints: const BoxConstraints(),
+                              //   onPressed: () {
+                              //     Utils.onShareProduct(
+                              //       context,
+                              //       "📍 ${widget.productDetails?.name}\n💰 ${StringHelper.egp} ${parseAmount(widget.productDetails?.price)}\n\nView this listing on Daroory:\nhttps://daroory.com/listing/${widget.productDetails?.id}",
+                              //     );
+                              //   },
+                              //   icon: const Icon(
+                              //     Icons.share,
+                              //     size: 22,
+                              //     color: Colors.black,
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
