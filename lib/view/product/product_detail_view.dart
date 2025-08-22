@@ -491,8 +491,7 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                                     const Divider(),
                                     Text(
                                       StringHelper.amenities,
-                                      style: context.textTheme.titleMedium
-                                          ?.copyWith(
+                                      style: context.textTheme.titleMedium?.copyWith(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 18,
                                       ),
@@ -515,18 +514,14 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                                           children: [
                                             // Improved Grid Layout with better aspect ratio
                                             GridView.builder(
-                                              physics:
-                                                  const NeverScrollableScrollPhysics(),
+                                              physics: const NeverScrollableScrollPhysics(),
                                               shrinkWrap: true,
-                                              gridDelegate:
-                                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                              padding: EdgeInsets.zero,
+                                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                                                 crossAxisCount: 2,
-                                                childAspectRatio:
-                                                    2.2, // Reduced from 2.5 to 2.2 for more height
-                                                crossAxisSpacing:
-                                                    8, // Reduced from 12 to 8
-                                                mainAxisSpacing:
-                                                    8, // Reduced from 12 to 8
+                                                childAspectRatio: 2.2, // Reduced from 2.5 to 2.2 for more height
+                                                crossAxisSpacing: 8, // Reduced from 12 to 8
+                                                mainAxisSpacing: 8, // Reduced from 12 to 8
                                               ),
                                               itemCount: visibleItemCount,
                                               itemBuilder:
@@ -537,8 +532,7 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                                                 return Container(
                                                   decoration: BoxDecoration(
                                                     color: Colors.white,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
+                                                    borderRadius: BorderRadius.circular(
                                                             10), // Reduced from 12 to 10
                                                     border: Border.all(
                                                       color:
@@ -556,9 +550,7 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                                                       ),
                                                     ],
                                                   ),
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                        .all(
+                                                  child: Padding(padding: const EdgeInsets.all(
                                                         10.0), // Reduced from 12 to 10
                                                     child: Row(
                                                       crossAxisAlignment:

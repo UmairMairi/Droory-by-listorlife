@@ -87,22 +87,20 @@
 			<key>NSAllowsArbitraryLoads</key>
 			<true/>
 		</dict>
-		<key>NSCameraUsageDescription</key>
-		<string>Describe why your app needs access to the camera.</string>
-		<key>NSDocumentPickerUsageDescription</key>
-		<string>This app needs access to files to share documents</string>
-		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-		<string>Your location is used to provide essential features, even when the app is not in use. This helps us offer location-based services like geofencing and location alerts.</string>
-		<key>NSLocationAlwaysUsageDescription</key>
-		<string>Your app's access to location data is being updated in the background. Please use NSLocationAlwaysAndWhenInUseUsageDescription instead.</string>
-		<key>NSLocationWhenInUseUsageDescription</key>
-		<string>We use your location to provide relevant services and information while you use the app.</string>
-		<key>NSMicrophoneUsageDescription</key>
-		<string>Describe why your app needs access to the microphone, if you intend to record videos.</string>
-		<key>NSPhotoLibraryUsageDescription</key>
-		<string>Describe why your app needs permission for the photo library.</string>
-		<key>UIApplicationSupportsIndirectInputEvents</key>
-		<true/>
+        <key>NSCameraUsageDescription</key>
+        <string>We use your camera so you can take and upload photos of items when creating a listing to sell or hire.</string>
+        <key>NSDocumentPickerUsageDescription</key>
+        <string>We use the document picker so you can upload and share files such as resumes or job-related documents when applying for or posting a job.</string>
+        <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+        <string>Your location is used to show nearby listings and jobs, and to improve search results based on your area, even when the app is not in use.</string>
+        <key>NSLocationWhenInUseUsageDescription</key>
+        <string>We use your location while the app is open to display nearby items for sale and job opportunities relevant to your area.</string>
+        <key>NSMicrophoneUsageDescription</key>
+        <string>We use the microphone only if you choose to record audio or video while creating a listing.</string>
+        <key>NSPhotoLibraryUsageDescription</key>
+        <string>We use your photo library so you can select and upload existing photos of your items (e.g. cars, mobiles) when creating a listing.</string>
+        <key>UIApplicationSupportsIndirectInputEvents</key>
+        <true/>
 		<key>UIBackgroundModes</key>
 		<array>
 			<string>fetch</string>
