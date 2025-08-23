@@ -8,13 +8,19 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart'
     hide TextDirection; // Hide TextDirection from intl
 import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/base/helpers/db_helper.dart';
+import 'package:list_and_life/base/helpers/dialog_helper.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
+import 'package:list_and_life/models/inbox_model.dart';
 import 'package:list_and_life/models/product_detail_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
 import 'package:list_and_life/res/font_res.dart';
+import 'package:list_and_life/view_model/chat_vm.dart';
 import 'package:list_and_life/widgets/app_empty_widget.dart';
+import 'package:list_and_life/widgets/app_text_field.dart';
 import 'package:list_and_life/widgets/image_view.dart';
 import 'package:list_and_life/widgets/like_button.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -33,7 +39,8 @@ import '../../models/city_model.dart';
 
 class SeeProfileView extends StatefulWidget {
   final UserModel? user;
-  const SeeProfileView({super.key, required this.user});
+  final InboxModel? chat;
+  const SeeProfileView({super.key, required this.user,this.chat});
 
   @override
   State<SeeProfileView> createState() => _SeeProfileViewState();
@@ -46,11 +53,13 @@ class _SeeProfileViewState extends State<SeeProfileView> {
   final List<ProductDetailModel> _productsList = [];
   final int _limit = 30;
   int _page = 1;
+  late ChatVM viewModel;
 
   @override
   void initState() {
     log("${widget.user?.toJson()}", name: "USER");
     _refreshController = RefreshController(initialRefresh: true);
+    viewModel = context.read<ChatVM>();
     super.initState();
   }
 
@@ -501,12 +510,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
                                                 children: [
-                                                  // REPLACE the salary display in SeeProfileView with:
-
                                                   Text(
                                                     _productsList[index]
                                                                 .categoryId ==
@@ -521,6 +525,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                                                             fontFamily: FontRes
                                                                 .MONTSERRAT_BOLD),
                                                   ),
+                                                  Spacer(),
                                                   LikeButton(
                                                     color: Colors.black,
                                                     onTap: () async =>
@@ -531,7 +536,12 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                                                     isFav: _productsList[index]
                                                             .isFavourite ==
                                                         1,
-                                                  )
+                                                  ),
+                                                  IconButton(
+                                                    icon:
+                                                    const Icon(Icons.more_vert, color: Colors.black87, size: 24),
+                                                    onPressed: _showBlockReportActionSheet,
+                                                  ),
                                                 ],
                                               ),
                                               Text(
@@ -642,5 +652,151 @@ class _SeeProfileViewState extends State<SeeProfileView> {
   String parseAmount(dynamic amount) {
     if ("${amount ?? ""}".isEmpty) return "0";
     return Utils.formatPrice(num.parse("${amount ?? 0}").toStringAsFixed(0));
+  }
+
+
+
+  // Show native block/report action sheet
+  void _showBlockReportActionSheet() {
+    bool isArabic = _isCurrentLanguageArabic();
+
+    if (Platform.isIOS) {
+      showCupertinoModalPopup(
+        context: context,
+        builder: (BuildContext context) => CupertinoActionSheet(
+          actions: [
+            CupertinoActionSheetAction(
+              onPressed: () {
+                Navigator.pop(context);
+                _showReportDialog();
+              },
+              isDestructiveAction: true,
+              child: Text(
+                StringHelper.reportUser,
+                textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
+              ),
+            ),
+            CupertinoActionSheetAction(
+              onPressed: () {
+                Navigator.pop(context);
+                _showBlockDialog();
+              },
+              isDestructiveAction: true,
+              child: Text(
+                viewModel.blockedUser
+                    ? StringHelper.unblockUser
+                    : StringHelper.blockUser,
+                textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
+              ),
+            ),
+          ],
+          cancelButton: CupertinoActionSheetAction(
+            isDefaultAction: true,
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              StringHelper.cancel,
+              textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
+            ),
+          ),
+        ),
+      );
+    } else {
+      showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return SafeArea(
+            child: Wrap(
+              children: [
+                ListTile(
+                  leading: Icon(Icons.report, color: Colors.red),
+                  title: Text(
+                    StringHelper.reportUser,
+                    style: TextStyle(color: Colors.red),
+                    textDirection:
+                    isArabic ? TextDirection.rtl : TextDirection.ltr,
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    _showReportDialog();
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.block, color: Colors.red),
+                  title: Text(
+                    viewModel.blockedUser
+                        ? StringHelper.unblockUser
+                        : StringHelper.blockUser,
+                    style: TextStyle(color: Colors.red),
+                    textDirection:
+                    isArabic ? TextDirection.rtl : TextDirection.ltr,
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    _showBlockDialog();
+                  },
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+  }
+
+  void _showReportDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AppAlertDialogWithWidget(
+        description: '',
+        onTap: () {
+          if (viewModel.reportTextController.text.trim().isEmpty) {
+            DialogHelper.showToast(
+                message: StringHelper.pleaseEnterReasonOfReport);
+            return;
+          }
+          context.pop();
+          viewModel.reportBlockUser(
+              report: true,
+              reason: viewModel.reportTextController.text,
+              userId: "${widget.chat?.senderId == DbHelper.getUserModel()?.id ? widget.chat?.receiverDetail?.id : widget.chat?.senderDetail?.id}");
+        },
+        icon: AssetsRes.IC_REPORT_USER,
+        showCancelButton: true,
+        isTextDescription: false,
+        content: AppTextField(
+          controller: viewModel.reportTextController,
+          maxLines: 4,
+          hint: StringHelper.reason,
+        ),
+        cancelButtonText: StringHelper.no,
+        title: StringHelper.reportUser,
+        buttonText: StringHelper.yes,
+      ),
+    );
+  }
+
+  void _showBlockDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AppAlertDialogWithWidget(
+        description: viewModel.blockedUser
+            ? StringHelper.areYouSureWantToUnblockThisUser
+            : StringHelper.areYouSureWantToBlockThisUser,
+        onTap: () {
+          context.pop();
+          viewModel.reportBlockUser(
+              productId: widget.chat?.productId,
+              userId:
+              "${widget.chat?.senderId == DbHelper.getUserModel()?.id ? widget.chat?.receiverDetail?.id : widget.chat?.senderDetail?.id}");
+        },
+        icon: AssetsRes.IC_BLOCK_USER,
+        showCancelButton: true,
+        cancelButtonText: StringHelper.no,
+        title: viewModel.blockedUser
+            ? StringHelper.unblockUser
+            : StringHelper.blockUser,
+        buttonText: StringHelper.yes,
+      ),
+    );
   }
 }

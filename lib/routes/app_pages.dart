@@ -169,7 +169,9 @@ class AppPages {
       GoRoute(
         path: Routes.myProfilePreview,
         pageBuilder: (context, state) {
-          return getPage(child: const MyProfilePreviewView(), state: state);
+          final extras = state.extra as Map<String, dynamic>;
+          final chat = extras['chat'] as InboxModel?;
+          return getPage(child: MyProfilePreviewView(chat:chat), state: state);
         },
       ),
       GoRoute(
@@ -203,9 +205,13 @@ class AppPages {
       GoRoute(
         path: Routes.seeProfile,
         pageBuilder: (context, state) {
+          final extras = state.extra as Map<String, dynamic>;
+          final chat = extras['chat'] as InboxModel?;
+          final user = extras['user'] as UserModel?;
           return getPage(
               child: SeeProfileView(
-                user: state.extra as UserModel,
+                user: user,
+                chat: chat,
               ),
               state: state);
         },

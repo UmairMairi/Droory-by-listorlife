@@ -962,8 +962,7 @@ class _MessageViewState extends State<MessageView> {
           viewModel.reportBlockUser(
               report: true,
               reason: viewModel.reportTextController.text,
-              userId:
-                  "${widget.chat?.senderId == DbHelper.getUserModel()?.id ? widget.chat?.receiverDetail?.id : widget.chat?.senderDetail?.id}");
+              userId: "${widget.chat?.senderId == DbHelper.getUserModel()?.id ? widget.chat?.receiverDetail?.id : widget.chat?.senderDetail?.id}");
         },
         icon: AssetsRes.IC_REPORT_USER,
         showCancelButton: true,
@@ -1050,7 +1049,7 @@ class _MessageViewState extends State<MessageView> {
               // Navigate to user profile
               if (widget.chat?.productDetail?.userId ==
                   DbHelper.getUserModel()?.id) {
-                context.push(Routes.myProfilePreview);
+                context.push(Routes.myProfilePreview,extra: {'chat':widget.chat});
               } else {
                 UserModel? userToShow;
                 if (widget.chat?.senderId == DbHelper.getUserModel()?.id) {
@@ -1077,7 +1076,7 @@ class _MessageViewState extends State<MessageView> {
                   }
                 }
                 if (userToShow != null) {
-                  context.push(Routes.seeProfile, extra: userToShow);
+                  context.push(Routes.seeProfile, extra: {"user":userToShow,"chat":widget.chat});
                 }
               }
             },

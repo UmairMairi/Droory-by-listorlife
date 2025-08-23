@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -6,10 +9,12 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/base/utils/utils.dart';
+import 'package:list_and_life/models/inbox_model.dart';
 import 'dart:developer';
 import "package:list_and_life/view/product/product_location_map_view.dart";
 import 'package:list_and_life/base/helpers/LocationService.dart';
 import 'package:list_and_life/models/city_model.dart';
+import 'package:list_and_life/view_model/chat_vm.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:list_and_life/models/product_detail_model.dart';
 import 'package:list_and_life/res/assets_res.dart';
@@ -27,6 +32,7 @@ import '../../routes/app_routes.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../skeletons/product_detail_skeleton.dart';
 import '../../widgets/app_error_widget.dart';
+import '../../widgets/app_text_field.dart';
 import '../../widgets/card_swipe_widget.dart';
 import '../../widgets/common_grid_view.dart';
 import '../../widgets/like_button.dart';
@@ -41,11 +47,32 @@ class ProductDetailView extends StatefulWidget {
 
 class _ProductDetailViewState extends State<ProductDetailView> {
   late ProductVM viewModel;
+  late InboxModel? chat;
+  late ChatVM _chatViewModel;
 
   @override
   void initState() {
     super.initState();
     viewModel = ProductVM();
+    _chatViewModel = context.read<ChatVM>();
+    chat = InboxModel(
+      senderId: DbHelper.getUserModel()?.id,
+      receiverId: widget.productDetails?.userId,
+      productId: widget.productDetails?.id,
+      productDetail: widget.productDetails,
+      receiverDetail: SenderDetail(
+        id: widget.productDetails?.userId,
+        lastName: widget.productDetails?.user?.lastName,
+        profilePic: widget.productDetails?.user?.profilePic,
+        name: widget.productDetails?.user?.name,
+      ),
+      senderDetail: SenderDetail(
+        id: DbHelper.getUserModel()?.id,
+        profilePic: DbHelper.getUserModel()?.profilePic,
+        lastName: DbHelper.getUserModel()?.lastName,
+        name: DbHelper.getUserModel()?.name,
+      ),
+    );
   }
 
   @override
@@ -151,11 +178,11 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                                     top: 0,
                                     right: Directionality.of(context) ==
                                             TextDirection.ltr
-                                        ? 10
+                                        ? 60
                                         : null,
                                     left: Directionality.of(context) ==
                                             TextDirection.rtl
-                                        ? 10
+                                        ? 60
                                         : null,
                                     child: SafeArea(
                                       child: Container(
@@ -181,6 +208,43 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                                             await vm.onLikeButtonTapped(
                                                 id: productData?.id);
                                           },
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: 0,
+                                    right: Directionality.of(context) ==
+                                            TextDirection.ltr
+                                        ? 10
+                                        : null,
+                                    left: Directionality.of(context) ==
+                                            TextDirection.rtl
+                                        ? 10
+                                        : null,
+                                    child: SafeArea(
+                                      child: Container(
+                                        margin: const EdgeInsets.all(8),
+                                        width: 40,
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          shape: BoxShape.circle,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.black.withOpacity(0.1),
+                                              spreadRadius: 1,
+                                              blurRadius: 3,
+                                              offset: const Offset(0, 1),
+                                            ),
+                                          ],
+                                        ),
+                                        child:
+                                        IconButton(
+                                          icon:
+                                          const Icon(Icons.more_vert, color: Colors.black87, size: 24),
+                                          onPressed: ()=>_showBlockReportActionSheet(context),
                                         ),
                                       ),
                                     ),
@@ -1799,6 +1863,150 @@ class _ProductDetailViewState extends State<ProductDetailView> {
             style: const TextStyle(fontWeight: FontWeight.w500),
           ),
         ],
+      ),
+    );
+  }
+
+
+  void _showBlockReportActionSheet(BuildContext context) {
+    bool isArabic = _isCurrentLanguageArabic(context);
+
+    if (Platform.isIOS) {
+      showCupertinoModalPopup(
+        context: context,
+        builder: (BuildContext context) => CupertinoActionSheet(
+          actions: [
+            CupertinoActionSheetAction(
+              onPressed: () {
+                Navigator.pop(context);
+                _showReportDialog();
+              },
+              isDestructiveAction: true,
+              child: Text(
+                StringHelper.reportUser,
+                textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
+              ),
+            ),
+            CupertinoActionSheetAction(
+              onPressed: () {
+                Navigator.pop(context);
+                _showBlockDialog();
+              },
+              isDestructiveAction: true,
+              child: Text(
+                _chatViewModel.blockedUser
+                    ? StringHelper.unblockUser
+                    : StringHelper.blockUser,
+                textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
+              ),
+            ),
+          ],
+          cancelButton: CupertinoActionSheetAction(
+            isDefaultAction: true,
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              StringHelper.cancel,
+              textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
+            ),
+          ),
+        ),
+      );
+    } else {
+      showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return SafeArea(
+            child: Wrap(
+              children: [
+                ListTile(
+                  leading: Icon(Icons.report, color: Colors.red),
+                  title: Text(
+                    StringHelper.reportUser,
+                    style: TextStyle(color: Colors.red),
+                    textDirection:
+                    isArabic ? TextDirection.rtl : TextDirection.ltr,
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    _showReportDialog();
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.block, color: Colors.red),
+                  title: Text(
+                    _chatViewModel.blockedUser
+                        ? StringHelper.unblockUser
+                        : StringHelper.blockUser,
+                    style: TextStyle(color: Colors.red),
+                    textDirection:
+                    isArabic ? TextDirection.rtl : TextDirection.ltr,
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    _showBlockDialog();
+                  },
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+  }
+
+  void _showReportDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AppAlertDialogWithWidget(
+        description: '',
+        onTap: () {
+          if (_chatViewModel.reportTextController.text.trim().isEmpty) {
+            DialogHelper.showToast(
+                message: StringHelper.pleaseEnterReasonOfReport);
+            return;
+          }
+          context.pop();
+          _chatViewModel.reportBlockUser(
+              report: true,
+              reason: _chatViewModel.reportTextController.text,
+              userId: "${chat?.senderId == DbHelper.getUserModel()?.id ? chat?.receiverDetail?.id : chat?.senderDetail?.id}");
+        },
+        icon: AssetsRes.IC_REPORT_USER,
+        showCancelButton: true,
+        isTextDescription: false,
+        content: AppTextField(
+          controller: _chatViewModel.reportTextController,
+          maxLines: 4,
+          hint: StringHelper.reason,
+        ),
+        cancelButtonText: StringHelper.no,
+        title: StringHelper.reportUser,
+        buttonText: StringHelper.yes,
+      ),
+    );
+  }
+
+  void _showBlockDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AppAlertDialogWithWidget(
+        description: _chatViewModel.blockedUser
+            ? StringHelper.areYouSureWantToUnblockThisUser
+            : StringHelper.areYouSureWantToBlockThisUser,
+        onTap: () {
+          context.pop();
+          _chatViewModel.reportBlockUser(
+              productId: chat?.productId,
+              userId:
+              "${chat?.senderId == DbHelper.getUserModel()?.id ? chat?.receiverDetail?.id : chat?.senderDetail?.id}");
+        },
+        icon: AssetsRes.IC_BLOCK_USER,
+        showCancelButton: true,
+        cancelButtonText: StringHelper.no,
+        title: _chatViewModel.blockedUser
+            ? StringHelper.unblockUser
+            : StringHelper.blockUser,
+        buttonText: StringHelper.yes,
       ),
     );
   }
