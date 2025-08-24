@@ -10,6 +10,7 @@ import 'package:list_and_life/base/base.dart';
 import 'package:list_and_life/base/network/api_constants.dart';
 import 'package:list_and_life/base/utils/utils.dart';
 import 'package:list_and_life/models/inbox_model.dart';
+import 'package:list_and_life/models/user_model.dart';
 import 'dart:developer';
 import "package:list_and_life/view/product/product_location_map_view.dart";
 import 'package:list_and_life/base/helpers/LocationService.dart';
@@ -983,12 +984,9 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                                                   );
                                                   return;
                                                 }
-                                                productData?.user?.id =
-                                                    productData.userId;
-                                                context.push(
-                                                  Routes.seeProfile,
-                                                  extra: productData?.user,
-                                                );
+                                                productData?.user?.id = productData.userId;
+                                                context.push(Routes.seeProfile, extra: {"user":productData?.user,"chat":chat});
+
                                               },
                                               child: Text(
                                                 StringHelper.seeProfile,
@@ -1883,7 +1881,7 @@ class _ProductDetailViewState extends State<ProductDetailView> {
               },
               isDestructiveAction: true,
               child: Text(
-                StringHelper.reportUser,
+                StringHelper.reportAd,
                 textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
               ),
             ),
@@ -1921,7 +1919,7 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                 ListTile(
                   leading: Icon(Icons.report, color: Colors.red),
                   title: Text(
-                    StringHelper.reportUser,
+                    StringHelper.reportAd,
                     style: TextStyle(color: Colors.red),
                     textDirection:
                     isArabic ? TextDirection.rtl : TextDirection.ltr,
@@ -1980,7 +1978,7 @@ class _ProductDetailViewState extends State<ProductDetailView> {
           hint: StringHelper.reason,
         ),
         cancelButtonText: StringHelper.no,
-        title: StringHelper.reportUser,
+        title: StringHelper.reportAd,
         buttonText: StringHelper.yes,
       ),
     );

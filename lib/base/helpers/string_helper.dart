@@ -85,8 +85,8 @@ class StringHelper {
       LocaleService.translate('pleaseEnterReasonOfReport') ??
           'Please enter reason of report.';
   static String reason = LocaleService.translate('reason') ?? 'Reason...';
-  static String reportUser =
-      LocaleService.translate('reportUser') ?? 'Report User';
+  static String reportUser = LocaleService.translate('reportUser') ?? 'Report User';
+  static String reportAd = LocaleService.translate('reportAd') ?? 'Report Ad';
   static String areYouSureWantToUnblockThisUser =
       LocaleService.translate('areYouSureWantToUnblockThisUser') ??
           'Are you sure want to unblock this user?';

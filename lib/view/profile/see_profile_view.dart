@@ -351,6 +351,13 @@ class _SeeProfileViewState extends State<SeeProfileView> {
       appBar: AppBar(
         title: Text(StringHelper.seeProfile),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon:
+            const Icon(Icons.more_vert, color: Colors.black87, size: 24),
+            onPressed: _showBlockReportActionSheet,
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -536,12 +543,7 @@ class _SeeProfileViewState extends State<SeeProfileView> {
                                                     isFav: _productsList[index]
                                                             .isFavourite ==
                                                         1,
-                                                  ),
-                                                  IconButton(
-                                                    icon:
-                                                    const Icon(Icons.more_vert, color: Colors.black87, size: 24),
-                                                    onPressed: _showBlockReportActionSheet,
-                                                  ),
+                                                  )
                                                 ],
                                               ),
                                               Text(
