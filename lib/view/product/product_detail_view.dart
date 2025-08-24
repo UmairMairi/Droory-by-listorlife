@@ -1885,19 +1885,6 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                 textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
               ),
             ),
-            CupertinoActionSheetAction(
-              onPressed: () {
-                Navigator.pop(context);
-                _showBlockDialog();
-              },
-              isDestructiveAction: true,
-              child: Text(
-                _chatViewModel.blockedUser
-                    ? StringHelper.unblockUser
-                    : StringHelper.blockUser,
-                textDirection: isArabic ? TextDirection.rtl : TextDirection.ltr,
-              ),
-            ),
           ],
           cancelButton: CupertinoActionSheetAction(
             isDefaultAction: true,
@@ -1927,21 +1914,6 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                   onTap: () {
                     Navigator.pop(context);
                     _showReportDialog();
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.block, color: Colors.red),
-                  title: Text(
-                    _chatViewModel.blockedUser
-                        ? StringHelper.unblockUser
-                        : StringHelper.blockUser,
-                    style: TextStyle(color: Colors.red),
-                    textDirection:
-                    isArabic ? TextDirection.rtl : TextDirection.ltr,
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                    _showBlockDialog();
                   },
                 ),
               ],
@@ -1984,30 +1956,6 @@ class _ProductDetailViewState extends State<ProductDetailView> {
     );
   }
 
-  void _showBlockDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AppAlertDialogWithWidget(
-        description: _chatViewModel.blockedUser
-            ? StringHelper.areYouSureWantToUnblockThisUser
-            : StringHelper.areYouSureWantToBlockThisUser,
-        onTap: () {
-          context.pop();
-          _chatViewModel.reportBlockUser(
-              productId: chat?.productId,
-              userId:
-              "${chat?.senderId == DbHelper.getUserModel()?.id ? chat?.receiverDetail?.id : chat?.senderDetail?.id}");
-        },
-        icon: AssetsRes.IC_BLOCK_USER,
-        showCancelButton: true,
-        cancelButtonText: StringHelper.no,
-        title: _chatViewModel.blockedUser
-            ? StringHelper.unblockUser
-            : StringHelper.blockUser,
-        buttonText: StringHelper.yes,
-      ),
-    );
-  }
 }
 
 String _getDetailedLocalizedAddressFromCoordinates(
