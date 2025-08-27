@@ -116,12 +116,10 @@ class MyAdsView extends BaseView<MyAdsVM> {
                       : viewModel.productsList.isNotEmpty
                           ? ListView.separated(
                               shrinkWrap: true,
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 10),
+                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                               itemCount: viewModel.productsList.length,
                               itemBuilder: (context, index) {
-                                var productDetails =
-                                    viewModel.productsList[index];
+                                var productDetails = viewModel.productsList[index];
                                 var soldStatus =
                                     productDetails.sellStatus?.toLowerCase() !=
                                         StringHelper.sold.toLowerCase();
@@ -185,48 +183,19 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                                                 Radius.circular(
                                                                     15.0))),
                                                 onSelected: (int value) {
-                                                  viewModel
-                                                      .handelPopupMenuItemClick(
-                                                          context: context,
-                                                          index: value,
-                                                          item: productDetails);
+                                                  viewModel.handelPopupMenuItemClick(context: context, index: value, item: productDetails);
                                                 },
-                                                itemBuilder:
-                                                    (BuildContext context) =>
-                                                        <PopupMenuEntry<int>>[
-                                                  if ("${productDetails.status}" ==
-                                                          "1" &&
-                                                      soldStatus) ...{
-                                                    PopupMenuItem(
-                                                      value: 1,
-                                                      child: Text(
-                                                          StringHelper.edit),
-                                                    )
+                                                itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
+                                                  if ("${productDetails.status}" == "1" && soldStatus) ...{
+                                                    PopupMenuItem(value: 1, child: Text(StringHelper.edit),)
                                                   },
-                                                  if ("${productDetails.adStatus}" !=
-                                                          "deactivate" &&
-                                                      productStatus &&
-                                                      soldStatus) ...{
-                                                    PopupMenuItem(
-                                                      value: 2,
-                                                      child: Text(StringHelper
-                                                          .deactivate),
-                                                    ),
+                                                  if ("${productDetails.adStatus}" != "deactivate" && productStatus && soldStatus) ...{
+                                                    PopupMenuItem(value: 2, child: Text(StringHelper.deactivate),),
                                                   },
-                                                  if ("${productDetails.adStatus}" ==
-                                                          "deactivate" &&
-                                                      productStatus &&
-                                                      soldStatus) ...{
-                                                    PopupMenuItem(
-                                                      value: 4,
-                                                      child: Text("Republish"),
-                                                    ),
+                                                  if ("${productDetails.adStatus}" == "deactivate" && productStatus && soldStatus) ...{
+                                                    PopupMenuItem(value: 4, child: Text("Republish"),),
                                                   },
-                                                  PopupMenuItem(
-                                                    value: 3,
-                                                    child: Text(
-                                                        StringHelper.remove),
-                                                  ),
+                                                  PopupMenuItem(value: 3, child: Text(StringHelper.remove),),
                                                 ],
                                               )
                                             ],

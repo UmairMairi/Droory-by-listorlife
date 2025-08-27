@@ -188,11 +188,8 @@ class _AppSearchViewState extends State<AppSearchView> {
       List<SearchHistoryModel> uniqueSearches = [];
 
       for (var search in model.body ?? []) {
-        String searchKey =
-            "${search.searchData?.name}-${search.searchData?.type}";
-        if (!seenSearches.contains(searchKey) &&
-            uniqueSearches.length < 6 &&
-            (search.searchData?.name?.isNotEmpty == true)) {
+        String searchKey = "${search.searchData?.name}-${search.searchData?.type}";
+        if (!seenSearches.contains(searchKey) && uniqueSearches.length < 6 && (search.searchData?.name?.isNotEmpty == true)) {
           seenSearches.add(searchKey);
           uniqueSearches.add(search);
         }

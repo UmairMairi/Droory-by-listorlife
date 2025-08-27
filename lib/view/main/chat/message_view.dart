@@ -1083,13 +1083,21 @@ class _MessageViewState extends State<MessageView> {
             child: Row(
               children: [
                 // User profile image
-                ImageView.circle(
-                  placeholder: AssetsRes.IC_USER_ICON,
-                  image:
-                      "${ApiConstants.imageUrl}/${widget.chat?.senderId == DbHelper.getUserModel()?.id ? widget.chat?.receiverDetail?.profilePic ?? '' : widget.chat?.senderDetail?.profilePic ?? ''}",
-                  height: 40,
-                  width: 40,
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20.0),
+                  child: FadeInImage(
+                      height: 40,
+                      width: 40,
+                      fit: BoxFit.cover,
+                      placeholder: AssetImage(AssetsRes.IC_USER_ICON),
+                      image: NetworkImage(widget.chat?.senderId == DbHelper.getUserModel()?.id ? widget.chat?.receiverDetail?.profilePic ?? '' : widget.chat?.senderDetail?.profilePic ?? '')),
                 ),
+                // ImageView.circle(
+                //   placeholder: AssetsRes.IC_USER_ICON,
+                //   image:"${ApiConstants.imageUrl}/${widget.chat?.senderId == DbHelper.getUserModel()?.id ? widget.chat?.receiverDetail?.profilePic ?? '' : widget.chat?.senderDetail?.profilePic ?? ''}",
+                //   height: 40,
+                //   width: 40,
+                // ),
                 const Gap(10),
                 // User name with blocked indicator
                 Expanded(

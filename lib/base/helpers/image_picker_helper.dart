@@ -4,11 +4,13 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:list_and_life/base/helpers/string_helper.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class ImagePickerHelper {
   static late Completer<String?> _imagePickerCompleter;
@@ -37,10 +39,11 @@ class ImagePickerHelper {
                   Navigator.pop(context);
                   isLoading = true;
                   try {
-                    String? selectedImage = await pickImageFromCamera(
-                      isCropping: isCropping,
-                      isCircle: isCircle,
-                    );
+                    var status = await Permission.camera.status;
+                    if(status.isPermanentlyDenied){
+                      await openAppSettings();
+                    }
+                    String? selectedImage = await pickImageFromCamera(isCropping: isCropping, isCircle: isCircle,);
                     if (selectedImage != null) {
                       _completeImagePicker(selectedImage);
                     }
@@ -103,6 +106,10 @@ class ImagePickerHelper {
                       Navigator.pop(context);
                       isLoading = true;
                       try {
+                        var status = await Permission.camera.status;
+                        if(status.isDenied || status.isPermanentlyDenied){
+                          await openAppSettings();
+                        }
                         String? selectedImage = await pickImageFromCamera(
                           isCropping: isCropping,
                           isCircle: isCircle,

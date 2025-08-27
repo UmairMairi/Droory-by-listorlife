@@ -1056,8 +1056,7 @@ class ChatVM extends BaseViewModel {
           delivered: isMyMessage && data.id != null && data.isRead == 0,
           seen: isMyMessage && data.isRead == 1,
           timeStamp: true,
-          createdAt: formatBubbleTime(
-              data.updatedAt, context), // Use context for translation
+          createdAt: formatBubbleTime(data.updatedAt, context), // Use context for translation
           color: isMyMessage ? Colors.black : Colors.grey[200]!,
         );
       case 5:

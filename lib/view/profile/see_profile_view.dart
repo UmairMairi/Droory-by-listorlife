@@ -366,12 +366,21 @@ class _SeeProfileViewState extends State<SeeProfileView> {
           children: [
             Row(
               children: [
-                ImageView.circle(
-                  placeholder: AssetsRes.IC_USER_ICON,
-                  image: "${ApiConstants.imageUrl}/${widget.user?.profilePic}",
-                  height: 60,
-                  width: 60,
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(30.0),
+                  child: FadeInImage(
+                      height: 60,
+                      width: 60,
+                      fit: BoxFit.cover,
+                      placeholder: AssetImage(AssetsRes.IC_USER_ICON),
+                      image: NetworkImage(widget.chat?.senderId == DbHelper.getUserModel()?.id ? widget.chat?.receiverDetail?.profilePic ?? '' : widget.chat?.senderDetail?.profilePic ?? '')),
                 ),
+                // ImageView.circle(
+                //   placeholder: AssetsRes.IC_USER_ICON,
+                //   image: "${ApiConstants.imageUrl}/${widget.user?.profilePic}",
+                //   height: 60,
+                //   width: 60,
+                // ),
                 const SizedBox(width: 15),
                 Expanded(
                   child: Column(
