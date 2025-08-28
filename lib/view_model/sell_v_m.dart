@@ -29,10 +29,8 @@ class SellVM extends BaseViewModel {
     notifyListeners();
   }
 
-  StreamController<List<CategoryModel>> categoryStream =
-      StreamController<List<CategoryModel>>.broadcast();
-  StreamController<List<CategoryModel>> subcategoryStream =
-      StreamController<List<CategoryModel>>.broadcast();
+  StreamController<List<CategoryModel>> categoryStream = StreamController<List<CategoryModel>>.broadcast();
+  StreamController<List<CategoryModel>> subcategoryStream =   StreamController<List<CategoryModel>>.broadcast();
 
   @override
   void onInit() {

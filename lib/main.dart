@@ -32,8 +32,8 @@ bool isMessageScreenOpen = false;
 Future<void> _firebaseBackgroundHandler(RemoteMessage message) async {
   debugPrint("_firebaseBackgroundHandler ${message.data} ");
   await Firebase.initializeApp(
-    name: "list-and-life",
-    options: DefaultFirebaseOptions.currentPlatform,
+    // name: "list-and-life",
+    // options: DefaultFirebaseOptions.currentPlatform,
   );
 }
 
@@ -41,12 +41,20 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Firebase.initializeApp(
-    name: "list-and-life",
-    options: DefaultFirebaseOptions.currentPlatform,
+    // name: "list-and-life",
+    // options: DefaultFirebaseOptions.currentPlatform,
   );
   HttpOverrides.global = MyHttpOverrides();
   await GetStorage.init();
-  FirebaseMessaging.instance.requestPermission();
+  FirebaseMessaging.instance.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
   FirebaseMessaging.onBackgroundMessage(_firebaseBackgroundHandler);
   await NotificationService().init();
   var appStateObserver = AppStateObserver();

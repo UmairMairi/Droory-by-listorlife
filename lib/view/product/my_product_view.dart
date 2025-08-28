@@ -174,7 +174,6 @@ class _MyProductViewState extends State<MyProductView> {
                     if (snapshot.hasData) {
                       ProductDetailModel? productDetails = snapshot.data;
                       final bool isJobListing = productDetails?.categoryId == 9;
-
                       return SingleChildScrollView(
                         controller: vm.scrollController,
                         child: Column(
@@ -409,146 +408,145 @@ class _MyProductViewState extends State<MyProductView> {
 
                             // For job listings, show a simple header without image
                             if (isJobListing)
-                              Container(
-                                color: Colors.white,
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 12),
-                                child: Row(
-                                  children: [
-                                    IconButton(
-                                      padding: EdgeInsets.zero,
-                                      constraints: const BoxConstraints(),
-                                      onPressed: () {
-                                        context.pop();
-                                      },
-                                      icon: Icon(
-                                        Directionality.of(context) ==
-                                                TextDirection.ltr
-                                            ? LineAwesomeIcons.arrow_left_solid
-                                            : LineAwesomeIcons
-                                                .arrow_right_solid,
-                                        size: 28,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    const Spacer(),
-                                    // Share Button
-                                    // Container(
-                                    //   width: 40,
-                                    //   height: 40,
-                                    //   decoration: BoxDecoration(
-                                    //     color: Colors.grey.shade100,
-                                    //     shape: BoxShape.circle,
-                                    //   ),
-                                    //   child: IconButton(
-                                    //     padding: EdgeInsets.zero,
-                                    //     constraints: const BoxConstraints(),
-                                    //     onPressed: () {
-                                    //       Utils.onShareProduct(
-                                    //         context,
-                                    //         "Hello, Please check this useful product on following link",
-                                    //       );
-                                    //     },
-                                    //     icon: const Icon(
-                                    //       Icons.share,
-                                    //       size: 22,
-                                    //       color: Colors.black,
-                                    //     ),
-                                    //   ),
-                                    // ),
-                                    const Gap(8),
-                                    // More options menu
-                                    Container(
-                                      width: 40,
-                                      height: 40,
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey.shade100,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: PopupMenuButton<int>(
+                              SafeArea(
+                                child: Container(
+                                  color: Colors.white,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 12),
+                                  child: Row(
+                                    children: [
+                                      IconButton(
                                         padding: EdgeInsets.zero,
-                                        icon: const Icon(
-                                          Icons.more_vert_outlined,
-                                          size: 24,
+                                        constraints: const BoxConstraints(),
+                                        onPressed: () {
+                                          context.pop();
+                                        },
+                                        icon: Icon(
+                                          Directionality.of(context) ==
+                                                  TextDirection.ltr
+                                              ? LineAwesomeIcons.arrow_left_solid
+                                              : LineAwesomeIcons
+                                                  .arrow_right_solid,
+                                          size: 28,
                                           color: Colors.black,
                                         ),
-                                        offset: const Offset(0, 40),
-                                        shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(15.0)),
-                                        ),
-                                        onSelected: (int value) async {
-                                          var myAdsVm = context.read<MyAdsVM>();
-
-                                          if (value == 1) {
-                                            // Edit option
-                                            await myAdsVm.navigateToEditProduct(
-                                              context: context,
-                                              item: productDetails,
-                                            );
-                                            // Refresh the data after edit
-                                            await viewModel
-                                                .getMyProductDetailsWithFreshMetrics(
-                                              id: productDetails?.id,
-                                            );
-                                          } else {
-                                            // Handle other options normally
-                                            await myAdsVm
-                                                .handelPopupMenuItemClick(
-                                              context: context,
-                                              index: value,
-                                              item: productDetails,
-                                            );
-                                          }
-                                        },
-                                        itemBuilder: (BuildContext context) =>
-                                            <PopupMenuEntry<int>>[
-                                          if ("${productDetails?.status}" ==
-                                                  "1" &&
-                                              productDetails?.sellStatus
-                                                      ?.toLowerCase() !=
-                                                  StringHelper.sold
-                                                      .toLowerCase()) ...{
-                                            PopupMenuItem(
-                                              value: 1,
-                                              child: Text(StringHelper.edit),
-                                            )
-                                          },
-                                          if ("${productDetails?.adStatus}" !=
-                                                  "deactivate" &&
-                                              "${productDetails?.status}" ==
-                                                  "0" &&
-                                              productDetails?.sellStatus
-                                                      ?.toLowerCase() !=
-                                                  StringHelper.sold
-                                                      .toLowerCase()) ...{
-                                            PopupMenuItem(
-                                              value: 2,
-                                              child:
-                                                  Text(StringHelper.deactivate),
-                                            ),
-                                          },
-                                          if ("${productDetails?.adStatus}" ==
-                                                  "deactivate" &&
-                                              "${productDetails?.status}" ==
-                                                  "0" &&
-                                              productDetails?.sellStatus
-                                                      ?.toLowerCase() !=
-                                                  StringHelper.sold
-                                                      .toLowerCase()) ...{
-                                            PopupMenuItem(
-                                              value: 4,
-                                              child: Text("Republish"),
-                                            ),
-                                          },
-                                          PopupMenuItem(
-                                            value: 3,
-                                            child: Text(StringHelper.remove),
-                                          ),
-                                        ],
                                       ),
-                                    ),
-                                  ],
+                                      const Spacer(),
+                                      // Share Button
+                                      // Container(
+                                      //   width: 40,
+                                      //   height: 40,
+                                      //   decoration: BoxDecoration(
+                                      //     color: Colors.grey.shade100,
+                                      //     shape: BoxShape.circle,
+                                      //   ),
+                                      //   child: IconButton(
+                                      //     padding: EdgeInsets.zero,
+                                      //     constraints: const BoxConstraints(),
+                                      //     onPressed: () {
+                                      //       Utils.onShareProduct(
+                                      //         context,
+                                      //         "Hello, Please check this useful product on following link",
+                                      //       );
+                                      //     },
+                                      //     icon: const Icon(
+                                      //       Icons.share,
+                                      //       size: 22,
+                                      //       color: Colors.black,
+                                      //     ),
+                                      //   ),
+                                      // ),
+                                      const Gap(8),
+                                      // More options menu
+                                      Container(
+                                        width: 40,
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey.shade100,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: PopupMenuButton<int>(
+                                          padding: EdgeInsets.zero,
+                                          icon: const Icon(
+                                            Icons.more_vert_outlined,
+                                            size: 24,
+                                            color: Colors.black,
+                                          ),
+                                          offset: const Offset(0, 40),
+                                          shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(15.0)),
+                                          ),
+                                          onSelected: (int value) async {
+                                            var myAdsVm = context.read<MyAdsVM>();
+
+                                            if (value == 1) {
+                                              // Edit option
+                                              await myAdsVm.navigateToEditProduct(
+                                                context: context,
+                                                item: productDetails,
+                                              );
+                                              // Refresh the data after edit
+                                              await viewModel.getMyProductDetailsWithFreshMetrics(id: productDetails?.id,);
+                                            } else {
+                                              // Handle other options normally
+                                              await myAdsVm
+                                                  .handelPopupMenuItemClick(
+                                                context: context,
+                                                index: value,
+                                                item: productDetails,
+                                              );
+                                            }
+                                          },
+                                          itemBuilder: (BuildContext context) =>
+                                              <PopupMenuEntry<int>>[
+                                            if ("${productDetails?.status}" ==
+                                                    "1" &&
+                                                productDetails?.sellStatus
+                                                        ?.toLowerCase() !=
+                                                    StringHelper.sold
+                                                        .toLowerCase()) ...{
+                                              PopupMenuItem(
+                                                value: 1,
+                                                child: Text(StringHelper.edit),
+                                              )
+                                            },
+                                            if ("${productDetails?.adStatus}" !=
+                                                    "deactivate" &&
+                                                "${productDetails?.status}" ==
+                                                    "0" &&
+                                                productDetails?.sellStatus
+                                                        ?.toLowerCase() !=
+                                                    StringHelper.sold
+                                                        .toLowerCase()) ...{
+                                              PopupMenuItem(
+                                                value: 2,
+                                                child:
+                                                    Text(StringHelper.deactivate),
+                                              ),
+                                            },
+                                            if ("${productDetails?.adStatus}" ==
+                                                    "deactivate" &&
+                                                "${productDetails?.status}" ==
+                                                    "0" &&
+                                                productDetails?.sellStatus
+                                                        ?.toLowerCase() !=
+                                                    StringHelper.sold
+                                                        .toLowerCase()) ...{
+                                              PopupMenuItem(
+                                                value: 4,
+                                                child: Text("Republish"),
+                                              ),
+                                            },
+                                            PopupMenuItem(
+                                              value: 3,
+                                              child: Text(StringHelper.remove),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
 

@@ -51,8 +51,8 @@ class _SellCategoryViewState extends State<SellCategoryView> {
         title: Text(StringHelper.sell),
         centerTitle: true,
       ),
-      body: DbHelper.getIsGuest()
-          ? const UnauthorisedView()
+      body:  DbHelper.getIsGuest()
+          ? UnauthorisedView(onSuccess: (){setState(() {});},)
           : SingleChildScrollView(
               padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
               child: Column(

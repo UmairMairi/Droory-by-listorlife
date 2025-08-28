@@ -127,8 +127,7 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                     "${productDetails.status}" == "0";
                                 return InkWell(
                                   onTap: () async {
-                                    await context.push(Routes.myProduct,
-                                        extra: productDetails);
+                                    await context.push(Routes.myProduct, extra: productDetails);
                                     viewModel.onRefresh();
                                   },
                                   child: Card(
@@ -378,15 +377,13 @@ class MyAdsView extends BaseView<MyAdsVM> {
                                           ),
                                         ),
                                         const Gap(20),
-                                        detailsWidget(
-                                            context, viewModel, productDetails)
+                                        detailsWidget(context, viewModel, productDetails)
                                       ],
                                     ),
                                   ),
                                 );
                               },
-                              separatorBuilder:
-                                  (BuildContext context, int index) {
+                              separatorBuilder: (BuildContext context, int index) {
                                 return const Gap(20);
                               },
                             )

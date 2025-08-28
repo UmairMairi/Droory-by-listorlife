@@ -363,8 +363,8 @@ class NotificationService {
   Future<void> init() async {
     if (Firebase.apps.isEmpty) {
       await Firebase.initializeApp(
-        name: "list-and-life",
-        options: DefaultFirebaseOptions.currentPlatform,
+        // name: "list-and-life",
+        // options: DefaultFirebaseOptions.currentPlatform,
       );
     }
     const AndroidInitializationSettings initializationSettingsAndroid =

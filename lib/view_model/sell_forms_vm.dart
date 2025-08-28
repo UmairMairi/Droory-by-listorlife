@@ -1862,10 +1862,9 @@ class SellFormsVM extends BaseViewModel {
       return;
     }
     if (!await _validateLocationIsEgypt(position)) return;
-
-    if (addressTextController.text.trim().isEmpty ||
-        adLatitude == null ||
-        adLongitude == null) {
+    adLatitude = position?.latitude;
+    adLongitude = position?.longitude;
+    if (addressTextController.text.trim().isEmpty || adLatitude == null || adLongitude == null) {
       DialogHelper.showToast(message: StringHelper.locationIsRequired);
       return;
     }

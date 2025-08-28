@@ -93,7 +93,7 @@ class _ProductDetailViewState extends State<ProductDetailView> {
       child: Consumer<ProductVM>(
         builder: (context, vm, child) {
           return Scaffold(
-            extendBodyBehindAppBar: true,
+            extendBodyBehindAppBar: false,
             body: Stack(
               children: [
                 FutureBuilder<ProductDetailModel?>(

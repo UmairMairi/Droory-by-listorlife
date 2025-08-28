@@ -10,7 +10,8 @@ import '../res/assets_res.dart';
 
 class UnauthorisedView extends StatelessWidget {
   final String? text;
-  const UnauthorisedView({super.key, this.text});
+  final Function()? onSuccess;
+  const UnauthorisedView({super.key, this.text,this.onSuccess});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,11 @@ class UnauthorisedView extends StatelessWidget {
             20.height,
             AppElevatedButton(
               onTap: () {
-                context.push(Routes.login);
+                context.push(Routes.login).then((val){
+                  if(onSuccess!=null){
+                    onSuccess?.call();
+                  }
+                });
               },
               title: 'Login',
             ),

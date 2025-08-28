@@ -36,11 +36,11 @@ class MainVM extends BaseViewModel {
 
   // CHANGED: Remove the const and make it a getter that creates fresh widgets
   List<Widget> get screensView => [
-        const HomeView(),
-        const InboxView(),
-        const SellCategoryView(),
-        const AdsView(),
-        const SettingView() // This will now be recreated each time
+        HomeView(),
+        InboxView(),
+        SellCategoryView(),
+        AdsView(),
+        SettingView() // This will now be recreated each time
       ];
 
   final _appLinks = AppLinks();
