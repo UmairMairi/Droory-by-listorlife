@@ -1,0 +1,275 @@
+import 'dart:io';
+
+import 'package:ccp_dialog/country_picker/flutter_country_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:keyboard_actions/keyboard_actions.dart';
+import 'package:list_and_life/base/base.dart';
+import 'package:list_and_life/base/helpers/db_helper.dart';
+import 'package:list_and_life/base/helpers/dialog_helper.dart';
+import 'package:list_and_life/base/utils/utils.dart';
+import 'package:list_and_life/res/assets_res.dart';
+import 'package:list_and_life/res/font_res.dart';
+import 'package:list_and_life/widgets/app_elevated_button.dart';
+import 'package:list_and_life/widgets/image_view.dart';
+
+import '../../base/helpers/string_helper.dart';
+import '../../view_model/auth_vm.dart';
+import '../../widgets/app_text_field.dart';
+
+class GuestLoginView extends BaseView<AuthVM> {
+  const GuestLoginView({super.key});
+
+  @override
+  Widget build(BuildContext context, AuthVM viewModel) {
+    return GestureDetector(
+      onTap: () {
+        Utils.hideKeyboard(context);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              DbHelper.saveIsGuest(true);
+              context.pop();
+            },
+            icon: const Icon(
+              Icons.close,
+              weight: 20,
+            ),
+          ),
+          titleTextStyle: const TextStyle(
+              fontWeight: FontWeight.w600, fontSize: 20, color: Colors.black),
+          centerTitle: true,
+        ),
+        body: KeyboardActions(
+          config: KeyboardActionsConfig(
+              keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
+              keyboardBarColor: Colors.grey[200],
+              actions: [
+                KeyboardActionsItem(
+                  focusNode: viewModel.nodeText,
+                ),
+              ]),
+          child: SingleChildScrollView(
+            physics: ClampingScrollPhysics(),
+            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  StringHelper.loginNow,
+                  style: context.titleLarge,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  StringHelper.pleaseLoginToContinue,
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                AppTextField(
+                  title: StringHelper.phoneNumber,
+                  hint: StringHelper.phoneNumber,
+                  inputFormatters:
+                      AppTextInputFormatters.withPhoneNumberFormatter(),
+                  controller: viewModel.phoneTextController,
+                  keyboardType: TextInputType.number,
+                  prefix: CountryPicker(
+                    selectedCountry: viewModel.selectedCountry,
+                    dense: true,
+                    isEnable: false, // This disables the picker
+                    showLine: false,
+                    showFlag: true,
+                    showFlagCircle: false,
+                    showDialingCode: true,
+                    showName: false,
+                    withBottomSheet: true,
+                    showCurrency: false,
+                    showCurrencyISO: false,
+                    onChanged: (country) => viewModel.updateCountry(country),
+                  ),
+                ),
+                const SizedBox(
+                  height: 25,
+                ),
+                AppElevatedButton(
+                  title: StringHelper.clickToVerifyPhoneNumber,
+                  onTap: () {
+                    if (viewModel.phoneTextController.text.trim().isEmpty) {
+                      DialogHelper.showToast(
+                          message: FormFieldErrors.phoneNumberRequired);
+                      return;
+                    }
+                    DialogHelper.showLoading();
+                    viewModel.loginApi();
+                  },
+                  width: context.width,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(children: <Widget>[
+                  Expanded(
+                    child: Container(
+                        margin: const EdgeInsets.only(left: 10.0, right: 20.0),
+                        child: const Divider(
+                          color: Colors.black,
+                          height: 36,
+                        )),
+                  ),
+                  Text(
+                    StringHelper.orConnectWith,
+                    style: context.titleSmall,
+                  ),
+                  Expanded(
+                    child: Container(
+                        margin: const EdgeInsets.only(left: 20.0, right: 10.0),
+                        child: const Divider(
+                          color: Colors.black,
+                          height: 36,
+                        )),
+                  ),
+                ]),
+                const SizedBox(
+                  height: 30,
+                ),
+                GestureDetector(
+                    onTap: () async {
+                      Utils.hideKeyboard(context);
+                      viewModel.socialLogin(type: 1);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              offset: const Offset(0, 1),
+                              blurRadius: 6,
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(100)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          ImageView.circle(
+                            image: AssetsRes.IC_GOOGLE_ICON,
+                            height: 30,
+                            width: 30,
+                          ),
+                          Text(
+                            StringHelper.loginWithGoogle,
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                                fontFamily: FontRes.MONTSERRAT_BOLD,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          SizedBox(
+                            width: 15,
+                          )
+                        ],
+                      ),
+                    )),
+                const SizedBox(
+                  height: 15,
+                ),
+                GestureDetector(
+                    onTap: () async {
+                      Utils.hideKeyboard(context);
+                      viewModel.socialLogin(type: 2);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              offset: const Offset(0, 1),
+                              blurRadius: 6,
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(100)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          ImageView.circle(
+                            image: AssetsRes.IC_FACEBOOK,
+                            height: 30,
+                            width: 30,
+                          ),
+                          Text(
+                            StringHelper.loginWithFb,
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                                fontFamily: FontRes.MONTSERRAT_BOLD,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          SizedBox(
+                            width: 15,
+                          )
+                        ],
+                      ),
+                    )),
+                const SizedBox(
+                  height: 15,
+                ),
+                if (Platform.isIOS) ...{
+                  GestureDetector(
+                      onTap: () {
+                        Utils.hideKeyboard(context);
+                        viewModel.socialLogin(type: 3);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        decoration: BoxDecoration(
+                            color: Colors.black,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                offset: const Offset(0, 1),
+                                blurRadius: 6,
+                              ),
+                            ],
+                            borderRadius: BorderRadius.circular(100)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            ImageView.circle(
+                              image: AssetsRes.IC_APPLE_LOGO,
+                              height: 30,
+                              width: 30,
+                            ),
+                            Text(
+                              StringHelper.loginWithIos,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: FontRes.MONTSERRAT_BOLD,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            SizedBox(
+                              width: 15,
+                            )
+                          ],
+                        ),
+                      )),
+                }
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

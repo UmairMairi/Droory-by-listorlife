@@ -1,0 +1,743 @@
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:list_and_life/base/base.dart';
+
+import '../../../../../base/helpers/dialog_helper.dart';
+import '../../../../../base/helpers/string_helper.dart';
+import '../../../../../models/category_model.dart';
+import '../../../../../models/product_detail_model.dart';
+import '../../../../../view_model/sell_forms_vm.dart';
+import '../../../../../widgets/amenities_widget.dart';
+import '../../../../../widgets/app_map_widget.dart';
+import '../../../../../widgets/common_dropdown.dart';
+import '../../../../../widgets/multi_select_category.dart';
+import '../../../../../widgets/app_text_field.dart';
+
+class DefaultForm extends StatelessWidget {
+  final String? type;
+  final CategoryModel? category;
+  final CategoryModel? subCategory;
+  final CategoryModel? subSubCategory;
+  final List<CategoryModel>? brands;
+  final ProductDetailModel? item;
+  final SellFormsVM viewModel;
+  const DefaultForm({super.key, required this.viewModel, this.type, this.category, this.subCategory, this.subSubCategory, this.brands, this.item});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        // Field 1: Ad Title
+        AppTextField(
+          title: StringHelper.adTitle,
+          hint: StringHelper.enter,
+          controller: viewModel.adTitleTextController,
+          maxLines: 4,
+          minLines: 1,
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+              RegExp(viewModel.regexToRemoveEmoji),
+            ),
+            LengthLimitingTextInputFormatter(65),
+          ],
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+          fillColor: Colors.white,
+          elevation: 6,
+        ),
+
+        // Field 2: Property Type
+        Visibility(
+          visible: false,
+          child: AppTextField(
+            title: StringHelper.propertyType,
+            hint: StringHelper.select,
+            controller: viewModel.propertyForTextController,
+            readOnly: true,
+            suffix: PopupMenuButton<String>(
+              clipBehavior: Clip.hardEdge,
+              icon: const Icon(
+                Icons.arrow_drop_down,
+                color: Colors.black,
+              ),
+              onSelected: (String value) {
+                viewModel.propertyForTextController.text = value;
+              },
+              itemBuilder: (BuildContext context) {
+                return ['Sell', 'Rent'].map((option) {
+                  return PopupMenuItem(
+                    value: option,
+                    child: Text(option),
+                  );
+                }).toList();
+              },
+            ),
+            contentPadding:
+            const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(
+                RegExp(viewModel.regexToRemoveEmoji),
+              ),
+            ],
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.done,
+            fillColor: Colors.white,
+            elevation: 6,
+          ),
+        ),
+
+        // Field 3: Area Size
+        AppTextField(
+          title: StringHelper.areaSize,
+          hint: StringHelper.enter,
+          controller: viewModel.areaSizeTextController,
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          maxLength: 6,
+          keyboardType: TextInputType.number,
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+                RegExp(viewModel.regexToRemoveEmoji)),
+            FilteringTextInputFormatter.digitsOnly,
+          ],
+          validator: (value) {
+            if (value == null || value.trim().isEmpty) {
+              return '* This field is required';
+            }
+
+            final amount = num.tryParse(value);
+
+            if (amount == null) {
+              return '* Please enter a valid number';
+            }
+
+            if (amount < 100) {
+              return '* The minimum valid area size 100';
+            }
+
+            if (amount > 100000) {
+              return '* The maximum valid area size is 100,000';
+            }
+
+            return null;
+          },
+          textInputAction: TextInputAction.done,
+          fillColor: Colors.white,
+          elevation: 6,
+        ),
+
+        // Field 4: No Of Bedrooms
+        CommonDropdown(
+          title: StringHelper.noOfBedrooms,
+          //hint: StringHelper.select,
+          hint: viewModel.noOfBedroomsTextController.text,
+          onSelected: (String? value) {
+            viewModel.noOfBedroomsTextController.text = value??"";
+          },
+          options: ["Studio", "1", "2", "3", "4", "5", "6+"],
+          // readOnly: true,
+          // suffix: PopupMenuButton<String>(
+          //   clipBehavior: Clip.hardEdge,
+          //   icon: const Icon(
+          //     Icons.arrow_drop_down,
+          //     color: Colors.black,
+          //   ),
+          //   onSelected: (String value) {
+          //     viewModel.noOfBedroomsTextController.text = value;
+          //   },
+          //   itemBuilder: (BuildContext context) {
+          //     return ["Studio", "1", "2", "3", "4", "5", "6+"].map((option) {
+          //       return PopupMenuItem(
+          //         value: option,
+          //         child: Text(option),
+          //       );
+          //     }).toList();
+          //   },
+          // ),
+          // contentPadding:
+          // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          // inputFormatters: [
+          //   FilteringTextInputFormatter.deny(
+          //     RegExp(viewModel.regexToRemoveEmoji),
+          //   ),
+          // ],
+          // keyboardType: TextInputType.text,
+          // textInputAction: TextInputAction.done,
+          // fillColor: Colors.white,
+          // elevation: 6,
+        ),
+
+        // Field 1: No Of Bathrooms
+        CommonDropdown(
+          title: StringHelper.noOfBathrooms,
+          //hint: StringHelper.select,
+          hint: viewModel.noOfBathroomsTextController.text,
+          onSelected: (String? value) {
+            viewModel.noOfBathroomsTextController.text = value??"";
+          },
+          options: ['1', '2', '3', '4', '5', '6', '7', '7+'],
+          // readOnly: true,
+          // suffix: PopupMenuButton<String>(
+          //   clipBehavior: Clip.hardEdge,
+          //   icon: const Icon(
+          //     Icons.arrow_drop_down,
+          //     color: Colors.black,
+          //   ),
+          //   onSelected: (String value) {
+          //     viewModel.noOfBathroomsTextController.text = "$value";
+          //   },
+          //   itemBuilder: (BuildContext context) {
+          //     return ['1', '2', '3', '4', '5', '6', '7', '7+']
+          //         .map((option) {
+          //       return PopupMenuItem(
+          //         value: option,
+          //         child: Text('$option Bathrooms'),
+          //       );
+          //     }).toList();
+          //   },
+          // ),
+          // contentPadding:
+          // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          // inputFormatters: [
+          //   FilteringTextInputFormatter.deny(
+          //     RegExp(viewModel.regexToRemoveEmoji),
+          //   ),
+          // ],
+          // keyboardType: TextInputType.text,
+          // textInputAction: TextInputAction.done,
+          // fillColor: Colors.white,
+          // elevation: 6,
+        ),
+
+        // Field 2: Furnishing Status
+        CommonDropdown(
+          title: StringHelper.furnishing,
+          //hint: StringHelper.select,
+          hint: viewModel.furnishingStatusTextController.text,
+          onSelected: (String? value) {
+            viewModel.furnishingStatusTextController.text = value??"";
+          },
+          options: [StringHelper.furnished, StringHelper.unfurnished, StringHelper.semiFurnished],
+          // readOnly: true,
+          // suffix: PopupMenuButton<String>(
+          //   clipBehavior: Clip.hardEdge,
+          //   icon: const Icon(
+          //     Icons.arrow_drop_down,
+          //     color: Colors.black,
+          //   ),
+          //   onSelected: (String value) {
+          //     viewModel.furnishingStatusTextController.text = value;
+          //   },
+          //   itemBuilder: (BuildContext context) {
+          //     return ['Furnished', 'Unfurnished', 'Semi Furnished']
+          //         .map((option) {
+          //       return PopupMenuItem(
+          //         value: option,
+          //         child: Text(option),
+          //       );
+          //     }).toList();
+          //   },
+          // ),
+          // contentPadding:
+          // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          // inputFormatters: [
+          //   FilteringTextInputFormatter.deny(
+          //     RegExp(viewModel.regexToRemoveEmoji),
+          //   ),
+          // ],
+          // keyboardType: TextInputType.text,
+          // textInputAction: TextInputAction.done,
+          // fillColor: Colors.white,
+          // elevation: 6,
+        ),
+
+        // Field 3: Ownership Status
+        CommonDropdown(
+          title: StringHelper.owner,
+          //hint: StringHelper.select,
+          hint: viewModel.ownershipStatusTextController.text,
+          onSelected: (String? value) {
+            viewModel.ownershipStatusTextController.text = value??"";
+          },
+          options: [StringHelper.primary, StringHelper.resell],
+          // readOnly: true,
+          // suffix: PopupMenuButton<String>(
+          //   clipBehavior: Clip.hardEdge,
+          //   icon: const Icon(
+          //     Icons.arrow_drop_down,
+          //     color: Colors.black,
+          //   ),
+          //   onSelected: (String value) {
+          //     viewModel.ownershipStatusTextController.text = value;
+          //   },
+          //   itemBuilder: (BuildContext context) {
+          //     return ['Primary', 'Resell'].map((option) {
+          //       return PopupMenuItem(
+          //         value: option,
+          //         child: Text(option),
+          //       );
+          //     }).toList();
+          //   },
+          // ),
+          // contentPadding:
+          // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          // inputFormatters: [
+          //   FilteringTextInputFormatter.deny(
+          //     RegExp(viewModel.regexToRemoveEmoji),
+          //   ),
+          // ],
+          // keyboardType: TextInputType.text,
+          // textInputAction: TextInputAction.done,
+          // fillColor: Colors.white,
+          // elevation: 6,
+        ),
+
+        // Field 4: Payment Type
+        CommonDropdown(
+          title: StringHelper.paymentType,
+          //hint: StringHelper.select,
+          hint: viewModel.paymentTypeTextController.text,
+          onSelected: (String? value) {
+            viewModel.paymentTypeTextController.text = value??"";
+          },
+          options: [StringHelper.installment, StringHelper.cashOrInstallment, StringHelper.cash],
+          // readOnly: true,
+          // suffix: PopupMenuButton<String>(
+          //   clipBehavior: Clip.hardEdge,
+          //   icon: const Icon(
+          //     Icons.arrow_drop_down,
+          //     color: Colors.black,
+          //   ),
+          //   onSelected: (String value) {
+          //     viewModel.paymentTypeTextController.text = value;
+          //   },
+          //   itemBuilder: (BuildContext context) {
+          //     return ['Installment', 'Cash or Installment', 'cash']
+          //         .map((option) {
+          //       return PopupMenuItem(
+          //         value: option,
+          //         child: Text(option),
+          //       );
+          //     }).toList();
+          //   },
+          // ),
+          // contentPadding:
+          // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          // inputFormatters: [
+          //   FilteringTextInputFormatter.deny(
+          //     RegExp(viewModel.regexToRemoveEmoji),
+          //   ),
+          // ],
+          // keyboardType: TextInputType.text,
+          // textInputAction: TextInputAction.done,
+          // fillColor: Colors.white,
+          // elevation: 6,
+        ),
+
+        // Field 5: Completion Status
+        CommonDropdown(
+          title: StringHelper.completionStatus,
+          //hint: StringHelper.select,
+          hint: viewModel.completionStatusTextController.text,
+          onSelected: (String? value) {
+            viewModel.completionStatusTextController.text = value??"";
+          },
+          options: [StringHelper.ready, StringHelper.offPlan],
+          // readOnly: true,
+          // suffix: PopupMenuButton<String>(
+          //   clipBehavior: Clip.hardEdge,
+          //   icon: const Icon(
+          //     Icons.arrow_drop_down,
+          //     color: Colors.black,
+          //   ),
+          //   onSelected: (String value) {
+          //     viewModel.completionStatusTextController.text = value;
+          //   },
+          //   itemBuilder: (BuildContext context) {
+          //     return ['Ready', 'Off Plan'].map((option) {
+          //       return PopupMenuItem(
+          //         value: option,
+          //         child: Text(option),
+          //       );
+          //     }).toList();
+          //   },
+          // ),
+          // contentPadding:
+          // const EdgeInsets.symmetric(horizontal: 25, vertical: 18),
+          // inputFormatters: [
+          //   FilteringTextInputFormatter.deny(
+          //     RegExp(viewModel.regexToRemoveEmoji),
+          //   ),
+          // ],
+          // keyboardType: TextInputType.text,
+          // textInputAction: TextInputAction.done,
+          // fillColor: Colors.white,
+          // elevation: 6,
+        ),
+
+        CommonDropdown(
+          title: StringHelper.deliveryTerms,
+          hint: viewModel.deliveryTermTextController.text,
+          //hint: StringHelper.select,
+          onSelected: (String? value) {
+            viewModel.deliveryTermTextController.text = value??"";
+          },
+          options: [
+            StringHelper.finished,
+            StringHelper.notFinished,
+            StringHelper.coreAndSell,
+            StringHelper.semiFinished
+          ],
+          // readOnly: true,
+          // suffix: PopupMenuButton<String>(
+          //   clipBehavior: Clip.hardEdge,
+          //   icon: const Icon(
+          //     Icons.arrow_drop_down,
+          //     color: Colors.black,
+          //   ),
+          //   onSelected: (String value) {
+          //     viewModel.deliveryTermTextController.text = value;
+          //   },
+          //   itemBuilder: (BuildContext context) {
+          //     return [
+          //       'Finished',
+          //       'Not Finished',
+          //       'Core and sell',
+          //       'Semi finished'
+          //     ].map((option) {
+          //       return PopupMenuItem(
+          //         value: option,
+          //         child: Text(option),
+          //       );
+          //     }).toList();
+          //   },
+          // ),
+          // inputFormatters: [
+          //   FilteringTextInputFormatter.deny(
+          //       RegExp(viewModel.regexToRemoveEmoji)),
+          // ],
+          // maxLines: 4,
+          // minLines: 1,
+          // keyboardType: TextInputType.text,
+          // textInputAction: TextInputAction.done,
+        ),
+
+        AppTextField(
+          title: StringHelper.describeWhatYouAreSelling,
+          controller: viewModel.descriptionTextController,
+          hint: StringHelper.enter,
+          maxLines: 4,
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+                RegExp(viewModel.regexToRemoveEmoji)),
+          ],
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+        ),
+
+        AppTextField(
+          title: StringHelper.location,
+          controller: viewModel.addressTextController,
+          hint: StringHelper.select,
+          readOnly: true,
+          onTap: () async {
+            Map<String, dynamic>? value = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const AppMapWidget()));
+            if (value != null && value.isNotEmpty) {
+              viewModel.state = value['state'];
+              viewModel.city = value['city'];
+              viewModel.country = value['country'];
+              String address = "";
+
+              if ("${value['location'] ?? ""}".isNotEmpty) {
+                address = "${value['location'] ?? ""}";
+              }
+              if ("${value['city'] ?? ""}".isNotEmpty) {
+                address += ", ${value['city'] ?? ""}";
+              }
+              if ("${value['state'] ?? ""}".isNotEmpty) {
+                address += ", ${value['state'] ?? ""}";
+              }
+
+              viewModel.addressTextController.text = address;
+            }
+          },
+          suffix: Icon(Icons.location_on),
+          inputFormatters: [
+            FilteringTextInputFormatter.deny(
+                RegExp(viewModel.regexToRemoveEmoji)),
+          ],
+          maxLines: 2,
+          minLines: 1,
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.done,
+        ),
+
+        AppTextField(
+          title: StringHelper.priceEgp,
+          controller: viewModel.priceTextController,
+          hint: StringHelper.enterPrice,
+          maxLength: 6,
+          keyboardType: TextInputType.number,
+          inputFormatters: [
+            LengthLimitingTextInputFormatter(6),
+            FilteringTextInputFormatter.deny(
+                RegExp(viewModel.regexToRemoveEmoji)),
+            FilteringTextInputFormatter.digitsOnly,
+          ],
+          focusNode: viewModel.priceText,
+          validator: (value) {
+            if (value == null || value.trim().isEmpty) {
+              return '* This field is required';
+            }
+
+            final amount = num.tryParse(value);
+
+            if (amount == null) {
+              return '* Please enter a valid number';
+            }
+
+            if (amount < 1000) {
+              return '* The minimum valid price is EGP 1000';
+            }
+
+            if (amount > 100000) {
+              return '* The maximum valid price is EGP 100,000';
+            }
+
+            return null;
+          },
+
+        ),
+
+        AmenitiesWidget(
+            amenitiesChecked: viewModel.amenities,
+            selectedAmenities: (List<int?> selectedIds) {
+              print(selectedIds);
+              viewModel.amenities = selectedIds;
+              print(viewModel.amenities);
+            }),
+        Text(
+          StringHelper.howToConnect,
+          style: context.textTheme.titleSmall,
+        ),
+        MultiSelectCategory(
+          choiceString: viewModel.communicationChoice,
+          onSelectedCommunicationChoice: (CommunicationChoice value) {
+            viewModel.communicationChoice = value.name;
+          },
+        ),
+        if (viewModel.isEditProduct) ...{
+          GestureDetector(
+            onTap: () {
+              viewModel.formKey.currentState?.validate();
+              if (viewModel.mainImagePath.isEmpty) {
+                DialogHelper.showToast(
+                    message: StringHelper.pleaseUploadMainImage);
+                return;
+              }
+              if (viewModel.imagesList.isEmpty) {
+                DialogHelper.showToast(
+                    message: StringHelper.pleaseUploadAddAtLeastOneImage);
+                return;
+              }
+
+              if (viewModel.adTitleTextController.text.trim().isEmpty) {
+                DialogHelper.showToast(
+                    message: StringHelper.adTitleIsRequired);
+                return;
+              }
+              if (viewModel.adTitleTextController.text.trim().length < 10) {
+                DialogHelper.showToast(
+                  message: StringHelper.adLength,
+                );
+                return;
+              }
+              if (viewModel.propertyForTextController.text.isEmpty) {
+                DialogHelper.showToast(
+                    message: StringHelper.plsSelectPropertyType);
+                return;
+              }
+              if (viewModel.areaSizeTextController.text.trim().isEmpty) {
+                DialogHelper.showToast(
+                    message: StringHelper.plsAddArea);
+                return;
+              }
+
+              if (viewModel.noOfBedroomsTextController.text.isEmpty) {
+                DialogHelper.showToast(message: StringHelper.plsSelectBedrooms);
+                return;
+              }
+              if (viewModel.noOfBathroomsTextController.text.isEmpty) {
+                DialogHelper.showToast(
+                    message: StringHelper.plsSelectBathrooms);
+                return;
+              }
+
+              if (viewModel.furnishingStatusTextController.text.isEmpty) {
+                DialogHelper.showToast(
+                    message: StringHelper.plsSelectFurnishing);
+                return;
+              }
+
+              if (viewModel.ownershipStatusTextController.text.isEmpty) {
+                DialogHelper.showToast(
+                    message: StringHelper.plsSelectOwnership);
+                return;
+              }
+
+              if (viewModel.descriptionTextController.text
+                  .trim()
+                  .isEmpty) {
+                DialogHelper.showToast(
+                    message: StringHelper.descriptionIsRequired);
+                return;
+              }
+              if (viewModel.addressTextController.text.trim().isEmpty) {
+                DialogHelper.showToast(
+                    message: StringHelper.locationIsRequired);
+                return;
+              }
+              if (viewModel.priceTextController.text.trim().isEmpty) {
+                DialogHelper.showToast(
+                    message: StringHelper.priceIsRequired);
+                return;
+              }
+              DialogHelper.showLoading();
+              viewModel.editProduct(
+                  productId: item?.id,
+                  category: category,
+                  subCategory: subCategory,
+                  subSubCategory: subSubCategory,
+                  brand: viewModel.selectedBrand,
+                  models: viewModel.selectedModel);
+            },
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 15),
+              margin: const EdgeInsets.symmetric(vertical: 20),
+              decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(100)),
+              child: Text(
+                viewModel.adStatus == "deactivate"?StringHelper.updateRepublish:StringHelper.updateNow,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600),
+              ),
+            ),
+          ),
+        }
+        else ...{
+          GestureDetector(
+            onTap: () {
+              viewModel.formKey.currentState?.validate();
+              if (viewModel.mainImagePath.isEmpty) {
+                DialogHelper.showToast(
+                    message: StringHelper.pleaseUploadMainImage);
+                return;
+              }
+              if (viewModel.imagesList.isEmpty) {
+                DialogHelper.showToast(
+                    message: StringHelper.pleaseUploadAddAtLeastOneImage);
+                return;
+              }
+
+              if (viewModel.adTitleTextController.text.trim().isEmpty) {
+                DialogHelper.showToast(
+                    message: StringHelper.adTitleIsRequired);
+                return;
+              }
+              if (viewModel.adTitleTextController.text.trim().length < 10) {
+                DialogHelper.showToast(
+                  message: StringHelper.adLength,
+                );
+                return;
+              }
+              if (viewModel.propertyForTextController.text.isEmpty) {
+                DialogHelper.showToast(
+                    message: StringHelper.plsSelectPropertyType);
+                return;
+              }
+              if (viewModel.areaSizeTextController.text.trim().isEmpty) {
+                DialogHelper.showToast(
+                    message: StringHelper.plsAddArea);
+                return;
+              }
+
+              if (viewModel.noOfBedroomsTextController.text.isEmpty) {
+                DialogHelper.showToast(message: StringHelper.plsSelectBedrooms);
+                return;
+              }
+              if (viewModel.noOfBathroomsTextController.text.isEmpty) {
+                DialogHelper.showToast(
+                    message: StringHelper.plsSelectBathrooms);
+                return;
+              }
+
+              if (viewModel.furnishingStatusTextController.text.isEmpty) {
+                DialogHelper.showToast(
+                    message: StringHelper.plsSelectFurnishing);
+                return;
+              }
+
+              if (viewModel.ownershipStatusTextController.text.isEmpty) {
+                DialogHelper.showToast(
+                    message: StringHelper.plsSelectOwnership);
+                return;
+              }
+
+              if (viewModel.descriptionTextController.text
+                  .trim()
+                  .isEmpty) {
+                DialogHelper.showToast(
+                    message: StringHelper.descriptionIsRequired);
+                return;
+              }
+              if (viewModel.addressTextController.text.trim().isEmpty) {
+                DialogHelper.showToast(
+                    message: StringHelper.locationIsRequired);
+                return;
+              }
+              if (viewModel.priceTextController.text.trim().isEmpty) {
+                DialogHelper.showToast(
+                    message: StringHelper.priceIsRequired);
+                return;
+              }
+              DialogHelper.showLoading();
+              viewModel.addProduct(
+                  category: category,
+                  subCategory: subCategory,
+                  subSubCategory: subSubCategory,
+                  brand: viewModel.selectedBrand,
+                  models: viewModel.selectedModel);
+            },
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 15),
+              margin: const EdgeInsets.symmetric(vertical: 20),
+              decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(100)),
+              child: Text(
+                StringHelper.postNow,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600),
+              ),
+            ),
+          ),
+        },
+      ],
+    );
+  }
+}

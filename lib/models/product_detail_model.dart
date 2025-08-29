@@ -1,0 +1,493 @@
+import 'package:list_and_life/models/user_model.dart';
+
+import 'category_model.dart';
+
+class ProductDetailModel {
+  int? id;
+  num? userId;
+  num? categoryId;
+  num? subCategoryId;
+  num? subSubCategoryId;
+  int? brandId;
+  int? modelId;
+  String? name;
+  String? image;
+  String? itemCondition;
+  String? positionType;
+  String? salleryPeriod;
+  String? carColor;
+  String? bodyType;
+  String? horsePower;
+  String? engineCapacity;
+  String? interiorColor;
+  String? numbCylinders;
+  String? numbDoors;
+  String? carRentalTerm;
+  String? educationType;
+  String? salleryFrom;
+  String? salleryTo;
+  String? workSetting;
+  String? workExperience;
+  String? workEducation;
+  String? approvalDate;
+  String? price;
+  String? description;
+  String? lookingFor;
+  num? year;
+  String? fuel;
+  String? material;
+  String? ram;
+  String? storage;
+  int? sizeId;
+  String? milleage;
+  String? screenSize;
+  String? transmission;
+  num? kmDriven;
+  num? numberOfOwner;
+  String? country;
+  String? state;
+  String? city;
+  String? nearby;
+  String? districtName; // New field for English district name
+  String? neighborhoodName;
+  String? latitude;
+  String? longitude;
+  num? status;
+  String? sellStatus;
+  String? adStatus;
+  String? rejectedReason;
+  String? deletedAt;
+  String? createdAt;
+  String? updatedAt;
+  num? countViews;
+  num? isFavourite;
+  num? favouritesCount;
+  List<ProductMedias>? productMedias;
+  List<AmenitiesProductModel>? productAmenities; // New field for amenities
+  CategoryModel? category;
+  CategoryModel? subCategory;
+  CategoryModel? subSubCategory;
+  CategoryModel? model;
+  CategoryModel? fashionSize;
+  CategoryModel? brand;
+  UserModel? user;
+  String? communicationChoice;
+  num? chatCount;
+  num? callCount;
+
+  // New fields for property
+  String? propertyFor;
+  String? bedrooms;
+  String? bathrooms;
+  String? furnishedType;
+  String? ownership;
+  String? paymentType;
+  String? completionStatus;
+  String? deliveryTerm;
+  dynamic area;
+
+  String? accessToUtilities;
+  String? insurance;
+  String? deposit;
+  String? rentalTerm;
+  String? rentalPrice;
+  String? listedBy;
+  String? buildingAge;
+  String? level;
+  String? type;
+
+  ProductDetailModel({
+    this.id,
+    this.userId,
+    this.categoryId,
+    this.subCategoryId,
+    this.subSubCategoryId,
+    this.brandId,
+    this.modelId,
+    this.name,
+    this.image,
+    this.itemCondition,
+    this.positionType,
+    this.salleryPeriod,
+    this.educationType,
+    this.salleryFrom,
+    this.salleryTo,
+    this.workSetting,
+    this.workExperience,
+    this.workEducation,
+    this.approvalDate,
+    this.price,
+    this.bodyType,
+    this.carColor,
+    this.horsePower,
+    this.engineCapacity,
+    this.interiorColor,
+    this.numbCylinders,
+    this.numbDoors,
+    this.carRentalTerm,
+    this.description,
+    this.lookingFor,
+    this.year,
+    this.fuel,
+    this.material,
+    this.ram,
+    this.storage,
+    this.sizeId,
+    this.milleage,
+    this.screenSize,
+    this.transmission,
+    this.kmDriven,
+    this.numberOfOwner,
+    this.country,
+    this.state,
+    this.city,
+    this.nearby,
+    this.districtName,
+    this.neighborhoodName,
+    this.latitude,
+    this.longitude,
+    this.status,
+    this.sellStatus,
+    this.adStatus,
+    this.rejectedReason,
+    this.deletedAt,
+    this.createdAt,
+    this.updatedAt,
+    this.isFavourite,
+    this.favouritesCount,
+    this.countViews,
+    this.productMedias,
+    this.productAmenities, // Initialize the new field
+    this.category,
+    this.subCategory,
+    this.subSubCategory,
+    this.model,
+    this.fashionSize,
+    this.brand,
+    this.chatCount,
+    this.callCount,
+    this.communicationChoice,
+    this.area,
+
+    // New fields for property
+    this.propertyFor,
+    this.bedrooms,
+    this.bathrooms,
+    this.furnishedType,
+    this.ownership,
+    this.paymentType,
+    this.completionStatus,
+    this.deliveryTerm,
+    this.accessToUtilities,
+    this.insurance,
+    this.deposit,
+    this.rentalTerm,
+    this.rentalPrice,
+    this.listedBy,
+    this.buildingAge,
+    this.level,
+    this.type,
+  });
+
+  ProductDetailModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userId = json['user_id'];
+    categoryId = json['category_id'];
+    subCategoryId = json['sub_category_id'];
+    subSubCategoryId = json['sub_sub_category_id'];
+    brandId = json['brand_id'];
+    modelId = json['model_id'];
+    name = json['name'];
+    approvalDate = json['approval_date'];
+    image = json['image'];
+    itemCondition = json['item_condition'];
+    positionType = json['position_type'];
+    salleryPeriod = json['sallery_period'];
+    educationType = json['education_type'];
+    carRentalTerm = json['car_rental_term'];
+    salleryFrom = json['sallery_from'];
+    salleryTo = json['sallery_to'];
+    workSetting = json['work_setting'];
+    workExperience = json['work_experience'];
+    workEducation = json['work_education'];
+    price = json['price'];
+    description = json['description'];
+    lookingFor = json['looking_for'];
+    year = json['year'];
+    fuel = json['fuel'];
+    area = json['area'];
+    material = json['material'];
+    ram = json['ram'];
+    storage = json['storage'];
+    sizeId = json['size_id'];
+    milleage = json['milleage'];
+    screenSize = json['screen_size'];
+    transmission = json['transmission'];
+    kmDriven = json['km_driven'];
+    horsePower = json['horse_power'];
+    carColor = json['car_color'];
+    bodyType = json['body_type'];
+    engineCapacity = json['engine_capacity'];
+    interiorColor = json['interior_color'];
+    numbCylinders = json['numb_cylinders'];
+    numbDoors = json['numb_doors'];
+    numberOfOwner = json['number_of_owner'];
+    country = json['country'];
+    state = json['state'];
+    city = json['city'];
+    nearby = json['nearby'];
+    districtName =
+        json['district_name']; // Assuming backend sends 'district_name'
+    neighborhoodName = json['neighborhood_name'];
+    latitude = json['latitude'];
+    longitude = json['longitude'];
+    status = json['status'];
+    sellStatus = json['sell_status'];
+    adStatus = json['ad_status'];
+    rejectedReason = json['rejected_reason'];
+    deletedAt = json['deleted_at'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    chatCount = json['chat_count'];
+    callCount = json['call_count'];
+    isFavourite = json['is_favourite'];
+    communicationChoice = json['communication_choice'];
+    favouritesCount = json['favourites_count'];
+    countViews = json['count_views'];
+
+    // Deserialize the new productAmenities field
+    if (json['product_medias'] != null) {
+      productMedias = <ProductMedias>[];
+      json['product_medias'].forEach((v) {
+        productMedias!.add(ProductMedias.fromJson(v));
+      });
+    }
+
+    // Deserialize the new productAmenities field
+    if (json['product_amnities'] != null) {
+      productAmenities = <AmenitiesProductModel>[];
+      json['product_amnities'].forEach((v) {
+        productAmenities!.add(AmenitiesProductModel.fromJson(v));
+      });
+    }
+
+    category = json['category'] != null
+        ? CategoryModel.fromJson(json['category'])
+        : null;
+    subCategory = json['sub_category'] != null
+        ? CategoryModel.fromJson(json['sub_category'])
+        : null;
+    subSubCategory = json['sub_sub_category'] != null
+        ? CategoryModel.fromJson(json['sub_sub_category'])
+        : null;
+    model =
+        json['model'] != null ? CategoryModel.fromJson(json['model']) : null;
+    fashionSize = json['fashion_size'] != null
+        ? CategoryModel.fromJson(json['fashion_size'])
+        : null;
+    brand =
+        json['brand'] != null ? CategoryModel.fromJson(json['brand']) : null;
+    user = json['user'] != null ? UserModel.fromJson(json['user']) : null;
+
+    // Deserialize new property fields
+    propertyFor = json['property_for'];
+    bedrooms = json['bedrooms'];
+    bathrooms = json['bathrooms'];
+    furnishedType = json['furnished_type'];
+    ownership = json['ownership'];
+    paymentType = json['payment_type'];
+    completionStatus = json['completion_status'];
+    deliveryTerm = json['delivery_term'];
+    accessToUtilities = json['access_to_utilities'];
+    insurance = json['insurance'];
+    deposit = json['deposit'];
+    rentalTerm = json['rental_term'];
+    rentalPrice = json['rental_price'];
+    listedBy = json['listed_by'];
+    buildingAge = json['building_age'];
+    level = json['level'];
+    type = json['type'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['user_id'] = userId;
+    data['category_id'] = categoryId;
+    data['sub_category_id'] = subCategoryId;
+    data['sub_sub_category_id'] = subSubCategoryId;
+    data['brand_id'] = brandId;
+    data['model_id'] = modelId;
+    data['name'] = name;
+    data['image'] = image;
+    data['area'] = area;
+    data['item_condition'] = itemCondition;
+    data['position_type'] = positionType;
+    data['sallery_period'] = salleryPeriod;
+    data['education_type'] = educationType;
+    data['sallery_from'] = salleryFrom;
+    data['sallery_to'] = salleryTo;
+    data['work_setting'] = workSetting;
+    data['work_experience'] = workExperience;
+    data['work_education'] = workEducation;
+    data['price'] = price;
+    data['description'] = description;
+    data['looking_for'] = lookingFor;
+    data['year'] = year;
+    data['approval_date'] = approvalDate;
+    data['fuel'] = fuel;
+    data['material'] = material;
+    data['ram'] = ram;
+    data['storage'] = storage;
+    data['size_id'] = sizeId;
+    data['milleage'] = milleage;
+    data['body_type'] = bodyType;
+    data['horse_power'] = horsePower;
+    data['car_color'] = carColor;
+    data['engine_capacity'] = engineCapacity;
+    data['interior_color'] = interiorColor;
+    data['numb_cylinders'] = numbCylinders;
+    data['numb_doors'] = numbDoors;
+    data['car_rental_term'] = carRentalTerm;
+    data['screen_size'] = screenSize;
+    data['transmission'] = transmission;
+    data['km_driven'] = kmDriven;
+    data['number_of_owner'] = numberOfOwner;
+    data['country'] = country;
+    data['state'] = state;
+    data['city'] = city;
+    data['nearby'] = nearby;
+    data['district_name'] =
+        districtName; // Will be sent to backend if available
+    data['neighborhood_name'] = neighborhoodName;
+    data['latitude'] = latitude;
+    data['longitude'] = longitude;
+    data['status'] = status;
+    data['sell_status'] = sellStatus;
+    data['ad_status'] = adStatus;
+    data['rejected_reason'] = rejectedReason;
+    data['deleted_at'] = deletedAt;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['is_favourite'] = isFavourite;
+    data['favourites_count'] = favouritesCount;
+    data['count_views'] = countViews;
+    data['communication_choice'] = communicationChoice;
+
+    // Serialize the new productAmenities field
+    if (productAmenities != null) {
+      data['product_amnities'] =
+          productAmenities!.map((v) => v.toJson()).toList();
+    }
+
+    if (productMedias != null) {
+      data['product_medias'] = productMedias!.map((v) => v.toJson()).toList();
+    }
+    if (category != null) {
+      data['category'] = category!.toJson();
+    }
+    if (subCategory != null) {
+      data['sub_category'] = subCategory!.toJson();
+    }
+    if (subSubCategory != null) {
+      data['sub_sub_category'] = subSubCategory!.toJson();
+    }
+    if (model != null) {
+      data['model'] = model!.toJson();
+    }
+    if (fashionSize != null) {
+      data['fashion_size'] = fashionSize!.toJson();
+    }
+    if (brand != null) {
+      data['brand'] = brand!.toJson();
+    }
+    if (user != null) {
+      data['user'] = user!.toJson();
+    }
+
+    // Serialize new property fields
+    data['property_for'] = propertyFor;
+    data['bedrooms'] = bedrooms;
+    data['bathrooms'] = bathrooms;
+    data['furnished_type'] = furnishedType;
+    data['ownership'] = ownership;
+    data['payment_type'] = paymentType;
+    data['completion_status'] = completionStatus;
+    data['delivery_term'] = deliveryTerm;
+    data['access_to_utilities'] = accessToUtilities;
+    data['insurance'] = insurance;
+    data['deposit'] = deposit;
+    data['rental_term'] = rentalTerm;
+    data['rental_price'] = rentalPrice;
+    data['listed_by'] = listedBy;
+    data['building_age'] = buildingAge;
+    data['level'] = level;
+    data['type'] = type;
+    return data;
+  }
+}
+
+class ProductMedias {
+  int? id;
+  String? media;
+
+  ProductMedias({this.media, this.id});
+
+  ProductMedias.fromJson(Map<String, dynamic> json) {
+    media = json['media'];
+    id = json['id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['media'] = media;
+    data['id'] = id;
+    return data;
+  }
+}
+
+class AmenitiesProductModel {
+  int? id;
+  int? amnityId;
+  Amnity? amnity;
+
+  AmenitiesProductModel({this.id, this.amnityId, this.amnity});
+
+  AmenitiesProductModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    amnityId = json['amnity_id'];
+    amnity = json['amnity'] != null ? Amnity.fromJson(json['amnity']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['amnity_id'] = amnityId;
+    if (amnity != null) {
+      data['amnity'] = amnity!.toJson();
+    }
+    return data;
+  }
+}
+
+class Amnity {
+  int? id;
+  String? name;
+  String? nameAr;
+
+  Amnity({this.id, this.name, this.nameAr});
+
+  Amnity.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    nameAr = json['name_ar'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['name_ar'] = nameAr;
+    return data;
+  }
+}
