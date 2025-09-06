@@ -48,6 +48,11 @@
 		<string>2346950282326086</string>
 		<key>FacebookClientToken</key>
 		<string>6e21770ecc2ad9a5d5ee82701956adb0</string>
+        <key>FacebookAutoLogAppEventsEnabled</key>
+        <true/>
+        <key>FacebookLoginLimitedLoginEnabled</key>
+        <false/>
+
 		<key>FacebookDisplayName</key>
 		<string>Daroory</string>
 		<key>FirebaseAppDelegateProxyEnabled</key>

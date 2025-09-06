@@ -82,13 +82,24 @@ class SocialLoginHelper {
       //   debugPrint('Error during Facebook Sign-In: ${result.status}');
       //   return null;
       // }
+      final AccessToken? accessToken = await FacebookAuth.instance.accessToken;
+
+      if (accessToken != null) {
+        // User is already logged in
+        print('User already logged in with token: ${accessToken.tokenString}');
+
+        // If you want fresh login, log out first
+        await FacebookAuth.instance.logOut();
+      }
 
       // Trigger the sign-in flow using the flutter_facebook_auth plugin
-      final LoginResult loginResult = await FacebookAuth.instance.login(permissions: ['public_profile', 'email']);
+      final LoginResult loginResult = await FacebookAuth.instance.login(
+          loginBehavior: LoginBehavior.nativeWithFallback,
+          permissions: ['public_profile', 'email']);
 
       // Check if the login was successful
       if (loginResult.status == LoginStatus.success) {
-        // Create a Firebase credential from the access token obtained from Facebook
+        print('logged in with token: ${loginResult.accessToken?.tokenString}');
         final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.tokenString);
 
         // Sign the user in to Firebase with the Facebook credential
